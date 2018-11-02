@@ -46,6 +46,12 @@ class XmlCommandTestCase(unittest.TestCase):
 
         self.assertEqual(cmd.to_string(), '<foo bar="1"/>')
 
+    def test_should_allow_to_set_attributes(self):
+        cmd = XmlCommand('foo')
+        cmd.set_attributes({'bar': '1', 'baz': '2'})
+
+        self.assertEqual(cmd.to_string(), '<foo bar="1" baz="2"/>')
+
     def test_should_convert_to_string(self):
         cmd = XmlCommand('foo')
 
