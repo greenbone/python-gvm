@@ -1993,3 +1993,23 @@ class _GmpCommandFactory:
         cmd = XmlCommand('verify_scanner')
         cmd.set_attribute('scanner_id', scanner_id)
         return cmd.to_string()
+
+
+def pretty_print(xml):
+    """Prints beautiful XML-Code
+
+    This function gets an object of list<lxml.etree._Element>
+    or directly a lxml element.
+    Print it with good readable format.
+
+    Arguments:
+        xml: List<lxml.etree.Element> or directly a lxml element
+    """
+    if isinstance(xml, list):
+        for item in xml:
+            if etree.iselement(item):
+                print(etree.tostring(item, pretty_print=True).decode('utf-8'))
+            else:
+                print(item)
+    elif etree.iselement(xml):
+        print(etree.tostring(xml, pretty_print=True).decode('utf-8'))

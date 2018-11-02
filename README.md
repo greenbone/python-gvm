@@ -48,7 +48,7 @@ development version:
 ```python3
 from gvm.connections import UnixSocketConnection
 from gvm.protocols.latest import Gmp
-from gvm.utils import pretty_print
+from gvm.xml import pretty_print
 
 connection = UnixSocketConnection()
 gmp = Gmp(connection)

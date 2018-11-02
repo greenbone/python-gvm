@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from lxml import etree
-
 
 def get_version_string(version):
     """Create a version string from a version tuple
@@ -34,23 +32,3 @@ def get_version_string(version):
         return ver
     else:
         return '.'.join(str(x) for x in version)
-
-
-def pretty_print(xml):
-    """Prints beautiful XML-Code
-
-    This function gets an object of list<lxml.etree._Element>
-    or directly a lxml element.
-    Print it with good readable format.
-
-    Arguments:
-        xml: List<lxml.etree.Element> or directly a lxml element
-    """
-    if isinstance(xml, list):
-        for item in xml:
-            if etree.iselement(item):
-                print(etree.tostring(item, pretty_print=True).decode('utf-8'))
-            else:
-                print(item)
-    elif etree.iselement(xml):
-        print(etree.tostring(xml, pretty_print=True).decode('utf-8'))
