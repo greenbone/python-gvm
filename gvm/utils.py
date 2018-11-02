@@ -21,7 +21,7 @@ def get_version_string(version):
     """Create a version string from a version tuple
 
     Arguments:
-        version (tuple): version as tuple e.g. (1, 2, dev, 5)
+        version (tuple): version as tuple e.g. (1, 2, 0, dev, 5)
 
     Returns:
         str: The version tuple converted into a string representation
