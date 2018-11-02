@@ -1,7 +1,7 @@
-.. _userguide:
+.. _usage:
 
-Userguide
-=========
+Usage
+=====
 
 Introduction
 ------------
