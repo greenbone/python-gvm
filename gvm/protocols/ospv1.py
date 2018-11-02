@@ -18,11 +18,49 @@
 """
 Module for communication to a daemon speaking Open Scanner Protocol version 1
 """
-from gvm.protocols.base import GvmProtocol
+import logging
+
 from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
+from .base import GvmProtocol
+
+logger = logging.getLogger(__name__)
+
 PROTOCOL_VERSION = (1, 2,)
+
+
+def create_credentials_element(_xmlcredentials, credentials):
+    """Generates an xml element with credentials."""
+    for service, credential in credentials.items():
+        cred_type = credential.get('type')
+        serv_port = credential.get('port')
+        username = credential.get('username')
+        password = credential.get('password')
+        _xmlcredential = _xmlcredentials.add_element('credential',
+                                                     attrs={'type': cred_type,
+                                                            'port': serv_port,
+                                                            'service': service,
+                                                     })
+        _xmlcredential.add_element('username', username)
+        _xmlcredential.add_element('password', password)
+    return _xmlcredentials
+
+def create_vt_selection_element(_xmlvtselection, vt_selection):
+    """Generates an xml element with a selection of Vulnerability tests."""
+    for vt_id, vt_values in vt_selection.items():
+        if vt_id != 'vt_groups':
+            _xmlvt = _xmlvtselection.add_element('vt_single',
+                                                 attrs={'id': vt_id})
+            if vt_values:
+                for key, value in vt_values.items():
+                    _xmlvt.add_element('vt_value', value, attrs={'id': key})
+        else:
+            for group in vt_values:
+                _xmlvt = _xmlvtselection.add_element('vt_group',
+                                                 attrs={'filter': group})
+
+    return _xmlvtselection
 
 class Osp(GvmProtocol):
 
@@ -97,14 +135,77 @@ class Osp(GvmProtocol):
 
         return self.send_command(cmd.to_string())
 
-    def start_scan(self):
+    def start_scan(self, scan_id=None, parallel='1', target=None,
+                   ports=None, **kwargs):
         """Start a new scan.
 
         Args:
             scan_id (uuid): Identifier for a running scan.
+            kwargs (dict): A dict with scanner parameters, targets and a
+                           VT selection.
+
         Returns:
             str: Response from server.
+
+
+        kwargs example:
+        {'scanner_parameters': {'scan_param1': 'scan_param1_value',
+                                'scan_param2': 'scan_param2_value'},
+         'targets': [{'hosts': 'localhost',
+                      'ports': '80,43'},
+                     {'hosts': '192.168.0.0/24',
+                      'ports': '22'},
+                      'credentials': {'smb': {'password': 'pass',
+                                              'port': 'port',
+                                              'type': 'type',
+                                              'username': 'username'}},
+                    ],
+         'vt_selection': {'vt1': {},
+                          'vt2': {'value_id': 'value'},
+                          'vt_groups': ['family=debian', 'family=general']}
+        }
+
         """
+        cmd = XmlCommand('start_scan')
+        if scan_id:
+            cmd.set_attribute('scan_id', scan_id)
+        cmd.set_attribute('parallel', parallel)
+
+        # Add <scanner_params> even if it is empty, since it is mandatory
+        _xmlscanparams = cmd.add_element('scanner_params')
+        scanner_params = kwargs.get('scanner_params')
+        if scanner_params:
+            _xmlscanparams.set_attributes(scanner_params)
+
+        targets = kwargs.get('targets')
+        if targets:
+            _xmltargets = cmd.add_element('targets')
+            for target in targets:
+                _xmltarget = _xmltargets.add_element('target')
+                hosts = target.get('hosts')
+                ports = target.get('ports')
+                credentials = target.get('credentials')
+                _xmltarget.add_element('hosts', hosts)
+                _xmltarget.add_element('ports', ports)
+                if credentials:
+                    _xmlcredentials = _xmltarget.add_element('credentials')
+                    _xmlcredentials = (create_credentials_element(
+                        _xmlcredentials, credentials))
+        # Check target as attribute for legacy mode compatibility. Deprecated.
+        elif target:
+            cmd.set_attribute('target', target)
+            if ports:
+                cmd.set_attribute('ports', ports)
+        else:
+            raise ValueError('start_scan requires a target')
+
+        _xmlvtselection = cmd.add_element('vt_selection')
+        vt_selection = kwargs.get('vt_selection')
+        if vt_selection:
+            _xmlvtselection = create_vt_selection_element(
+                _xmlvtselection, vt_selection)
+
+        return self.send_command(cmd.to_string())
 
     def stop_scan(self, scan_id=None):
         """Stop a currently running scan.
