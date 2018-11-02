@@ -16,19 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import unittest
 
-def get_version_string(version):
-    """Create a version string from a version tuple
+from lxml import etree
 
-    Arguments:
-        version (tuple): version as tuple e.g. (1, 2, 0, dev, 5)
+from gvm.transforms import EtreeTransform
 
-    Returns:
-        str: The version tuple converted into a string representation
-    """
-    if len(version) > 3:
-        ver = '.'.join(str(x) for x in version[:4])
-        ver += str(version[4])
-        return ver
-    else:
-        return '.'.join(str(x) for x in version)
+
+class EtreeTransformTestCase(unittest.TestCase):
+
+    def test_transform_response(self):
+        transform = EtreeTransform()
+        result = transform('<foo/')
+
+        self.assertTrue(etree.iselement(result))
+
+    def test_transform_more_complex_response(self):
+        transform = EtreeTransform()
+        result = transform('<foo id="bar"><lorem/><ipsum/></foo>')
+
+        self.assertTrue(etree.iselement(result))
+        self.assertEqual(result.tag, 'foo')
+        self.assertEqual(result.get('id'), 'bar')
+        self.assertEqual(len(result), 2)

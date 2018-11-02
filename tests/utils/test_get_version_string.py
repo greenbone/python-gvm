@@ -16,19 +16,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import unittest
 
-def get_version_string(version):
-    """Create a version string from a version tuple
+from gvm.utils import get_version_string
 
-    Arguments:
-        version (tuple): version as tuple e.g. (1, 2, 0, dev, 5)
+class TestGetVersionString(unittest.TestCase):
 
-    Returns:
-        str: The version tuple converted into a string representation
-    """
-    if len(version) > 3:
-        ver = '.'.join(str(x) for x in version[:4])
-        ver += str(version[4])
-        return ver
-    else:
-        return '.'.join(str(x) for x in version)
+    def test_simple_version(self):
+        self.assertEqual(get_version_string((1, 0)), '1.0')
+
+    def test_release_patch_version(self):
+        self.assertEqual(get_version_string((1, 0, 1)), '1.0.1')
+
+    def test_dev_version(self):
+        self.assertEqual(get_version_string((1, 0, 1, 'dev', 1)), '1.0.1.dev1')
+
+    def test_beta_version(self):
+        self.assertEqual(
+            get_version_string((1, 0, 1, 'beta', 1)), '1.0.1.beta1')

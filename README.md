@@ -100,7 +100,7 @@ Afterwards run
     pipenv install --dev
 
 in the checkout directory of python-gvm (the directory containing the Pipfile)
-to install all dependencies including the packages only required fori
+to install all dependencies including the packages only required for
 development.
 
 ## License
