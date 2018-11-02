@@ -6,14 +6,19 @@ Vulnerability Manager (GVM).
 
 .. note:: **python-gvm** requires at least Python 3.5. Python 2 is not supported.
 
+User Guide
+----------
+
+This sections explains how to install python-gvm and shows example use cases.
+
 .. toctree::
    :maxdepth: 2
 
    install
-   userguide
+   usage
 
-The API Documentation / Guide
------------------------------
+The API Documentation
+---------------------
 
 If you are looking for information on a specific function, class, or method,
 this part of the documentation is for you.
