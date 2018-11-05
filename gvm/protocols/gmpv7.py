@@ -116,7 +116,7 @@ class Gmp(GvmProtocol):
         """Authenticate to gvmd.
 
         The generated authenticate command will be send to server.
-        Afterwards the response is read, tranformed and returned.
+        Afterwards the response is read, transformed and returned.
 
         Arguments:
             username (str): Username

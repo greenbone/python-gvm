@@ -274,7 +274,7 @@ class UnixSocketConnection(GvmConnection, XmlReader):
             try:
                 data = self._socket.recv(BUF_SIZE)
             except (socketlib.timeout) as exception:
-                logger.debug('Warning: No data recieved '
+                logger.debug('Warning: No data received '
                              'from server: %s', exception)
                 continue
 

@@ -86,7 +86,7 @@ class XmlCommand(XmlCommandElement):
 
 class _GmpCommandFactory:
 
-    """Factory to create gmp - Greenbone Manangement Protocol - commands
+    """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
     def create_agent_command(self, installer, signature, name, comment='',
@@ -164,7 +164,7 @@ class _GmpCommandFactory:
         return cmd.to_string()
 
     def create_authenticate_command(self, username, password):
-        """Generates string for authentification on gvmd
+        """Generates string for authentication on gvmd
 
         Creates the gmp authentication xml string.
         Inserts the username and password into it.
