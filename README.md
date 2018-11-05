@@ -48,10 +48,12 @@ development version:
 ```python3
 from gvm.connections import UnixSocketConnection
 from gvm.protocols.latest import Gmp
+from gvm.transforms import EtreeTransform
 from gvm.xml import pretty_print
 
 connection = UnixSocketConnection()
-gmp = Gmp(connection)
+transform = EtreeTransform()
+gmp = Gmp(connection, transform)
 
 # Retrieve current GMP version
 version = gmp.get_version()
