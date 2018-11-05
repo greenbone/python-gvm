@@ -24,3 +24,8 @@ class GvmError(Exception):
     """A exception for gvm errors
     """
     pass
+
+
+class InvalidArgument(GvmError):
+    """Raised if an invalid argument/parameter is passed
+    """
