@@ -39,11 +39,15 @@ class EtreeTransform:
 
 
 def _check_command_status(root):
-    status = root.attrib['status']
-    status_text = root.attrib['status_text']
+    status = root.get('status')
 
-    if status is None or status[0] != '2':
-        raise GvmError('Error in response. {0}'.format(status_text))
+    if status is None:
+        raise GvmError('No status in response.', root)
+
+    if status[0] != '2':
+        status_text = root.get('status_text')
+
+        raise GvmError('Error in response. {0}'.format(status_text), root)
 
 
 class CheckCommandTransform(EtreeTransform):
