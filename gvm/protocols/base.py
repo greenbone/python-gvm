@@ -80,6 +80,14 @@ class GvmProtocol:
             return data
         return transform(data)
 
+    def _send_xml_command(self, xmlcmd):
+        """Send a xml command to the remote server
+
+        Arguments:
+            xmlcmd (gvm.xml.XmlCommand): XmlCommand instance to send
+        """
+        return self.send_command(xmlcmd.to_string())
+
     def is_connected(self):
         """Status of the current connection
 
