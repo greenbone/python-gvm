@@ -682,9 +682,37 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_port_list(self, name, port_range, **kwargs):
-        cmd = self._generator.create_port_list_command(name, port_range, kwargs)
-        return self.send_command(cmd)
+    def create_port_list(self, name, port_range, comment=None, copy=None):
+        """Create a new port list
+
+        Arguments:
+            name (str): Name of the new port list
+            port_range (str): Port list ranges e.g. `"T: 1-1234"` for tcp port
+                1 - 1234
+            comment (str, optional): Comment for the port list
+            copy (str, optional): UUID of existing port list to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_port_list requires a name argument')
+
+        if not port_range:
+            raise RequiredArgument(
+                'create_port_list requires a port_range argument')
+
+        cmd = XmlCommand('create_port_list')
+        cmd.add_element('name', name)
+        cmd.add_element('port_range', port_range)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        return self._send_xml_command(cmd)
 
     def create_port_range(self, port_list_id, start, end, port_range_type,
                           comment=''):

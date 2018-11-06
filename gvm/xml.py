@@ -65,27 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_port_list_command(self, name, port_range, kwargs):
-        """Generates xml string for create port list on gvmd."""
-        if not name:
-            raise ValueError('create_port_list requires a name element')
-        if not port_range:
-            raise ValueError('create_port_list requires a port_range element')
-
-        cmd = XmlCommand('create_port_list')
-        cmd.add_element('name', name)
-        cmd.add_element('port_range', port_range)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        return cmd.to_string()
-
     def create_port_range_command(self, port_list_id, start, end, type,
                                   comment=''):
         """Generates xml string for create port range on gvmd."""
