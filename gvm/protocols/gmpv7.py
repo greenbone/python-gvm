@@ -799,9 +799,35 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_role(self, name, **kwargs):
-        cmd = self._generator.create_role_command(name, kwargs)
-        return self.send_command(cmd)
+    def create_role(self, name, comment=None, copy=None, users=None):
+        """Create a new role
+
+        Arguments:
+            name (str): Name of the role
+            comment (str, optional): Comment for the role
+            copy (str, optional): UUID of existing role to clone from
+            users (list, optional): List of user names to add to the role
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+
+        if not name:
+            raise RequiredArgument('create_role requires a name argument')
+
+        cmd = XmlCommand('create_role')
+        cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if users:
+            cmd.add_element('users', ",".join(users))
+
+        return self._send_xml_command(cmd)
 
     def create_scanner(self, name, host, port, scanner_type, ca_pub,
                        credential_id, **kwargs):
