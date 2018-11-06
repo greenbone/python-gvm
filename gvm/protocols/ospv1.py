@@ -83,7 +83,7 @@ class Osp(GvmProtocol):
         cmd = XmlCommand('help')
         return self.send_command(cmd.to_string())
 
-    def get_scans(self, scan_id=None, details='1', pop_results='0'):
+    def get_scans(self, scan_id=None, details=True, pop_results=False):
         """Get the stored scans.
 
          Args:
@@ -97,8 +97,15 @@ class Osp(GvmProtocol):
         cmd = XmlCommand('get_scans')
         if scan_id:
             cmd.set_attribute('scan_id', scan_id)
-        cmd.set_attribute('details', details)
-        cmd.set_attribute('pop_results', pop_results)
+        if details:
+            cmd.set_attribute('details', '1')
+        else:
+            cmd.set_attribute('details', '0')
+
+        if pop_results:
+            cmd.set_attribute('pop_results', '1')
+        else:
+            cmd.set_attribute('pop_results', '0')
 
         return self.send_command(cmd.to_string())
 
