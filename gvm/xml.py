@@ -65,14 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_config_command(self, copy_id, name):
-        """Generates xml string for create config on gvmd."""
-        cmd = XmlCommand('create_config')
-        cmd.add_element('copy', copy_id)
-        cmd.add_element('name', name)
-
-        return cmd.to_string()
-
     def create_credential_command(self, name, kwargs):
         """Generates xml string for create credential on gvmd."""
         cmd = XmlCommand('create_credential')
