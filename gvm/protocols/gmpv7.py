@@ -1499,9 +1499,25 @@ class Gmp(GvmProtocol):
         cmd = self._generator.help_command(kwargs)
         return self.send_command(cmd)
 
-    def modify_agent(self, agent_id, name='', comment=''):
-        cmd = self._generator.modify_agent_command(agent_id, name, comment)
-        return self.send_command(cmd)
+    def modify_agent(self, agent_id, name=None, comment=None):
+        """Generates xml string for modify agent on gvmd
+
+        Arguments:
+            agent_id (int) ID of the agent to be modified.
+            name (str, optional): Name of the new credential
+            comment (str, optional): Comment for the credential
+        """
+        if not agent_id:
+            raise RequiredArgument('modify_agent requires agent_id argument')
+
+        cmd = XmlCommand('modify_agent')
+        cmd.set_attribute('agent_id', str(agent_id))
+        if name:
+            cmd.add_element('name', name)
+        if comment:
+            cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
 
     def modify_alert(self, alert_id, **kwargs):
         cmd = self._generator.modify_alert_command(alert_id, kwargs)
