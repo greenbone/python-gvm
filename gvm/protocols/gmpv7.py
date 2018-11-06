@@ -185,6 +185,9 @@ class Gmp(GvmProtocol):
                 the agent
             howto_user (str, optional): A file that describes how to use the
                 agent
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not name:
             raise RequiredArgument('create_agent requires name argument')
@@ -231,6 +234,9 @@ class Gmp(GvmProtocol):
             filter_id (str, optional): Filter to apply when executing alert
             copy (str, optional): UUID of the alert to clone from
             comment (str, optional): Comment for the alert
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not name:
             raise RequiredArgument('create_alert requires name argument')
@@ -283,6 +289,9 @@ class Gmp(GvmProtocol):
             name (str): Name for the new asset
             asset_type (str): Either 'os' or 'host'
             comment (str, optional): Comment for the new asset
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if asset_type not in ('host', 'os'):
             raise InvalidArgument(
@@ -307,6 +316,9 @@ class Gmp(GvmProtocol):
         Arguments:
             name (str): Name of the new scan config
             copy (str): UUID of the existing scan config
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not name:
             raise RequiredArgument('create_config requires name argument')
@@ -344,6 +356,9 @@ class Gmp(GvmProtocol):
             privacy_password (str, optional): The SNMP privacy password
             credential_type (str, optionla): The credential type. One of 'cc',
                 'snmp', 'up', 'usk'
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not name:
             raise RequiredArgument('create_credential requires name argument')
