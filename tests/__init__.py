@@ -16,23 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import functools
-
 
 class CallableMock:
 
-    def __init__(self, func):
-        # look like the function we are wrapping
-        functools.update_wrapper(self, func)
+    def __init__(self, name):
+        self.name = name
         self.calls = []
-        self.func = func
         self.result = None
 
     def __call__(self, *args, **kwargs):
         self.calls.append({'args': args, 'kwargs': kwargs})
-
-        if self.result is None and not self.func is None:
-            return self.func(self, *args, **kwargs)
 
         return self.result
 
@@ -40,12 +33,11 @@ class CallableMock:
         self.result = value
 
     def has_been_called(self):
-        assert len(self.calls) > 0, "{0} havn't been called.".format(
-            self.func.__name__)
+        assert len(self.calls) > 0, "{0} hasn't been called.".format(self.name)
 
     def has_been_called_times(self, times):
-        assert len(self.calls) == times, "{name} haven't been called {times}" \
-            " times.".format(name=self.func.__name__, times=times)
+        assert len(self.calls) == times, "{name} hasn't been called {times}" \
+            " times.".format(name=self.name, times=times)
 
     def has_been_called_with(self, *args, **kwargs):
         if len(self.calls) == 0:
@@ -57,7 +49,7 @@ class CallableMock:
         assert lastcall['args'] == args and lastcall['kwargs'] == kwargs, \
             "Expected arguments {eargs} {ekwargs} of {name} don't match." \
             "Received: {rargs} {rkwargs}".format(
-                name=self.func.__name__,
+                name=self.name,
                 eargs=args,
                 ekwargs=kwargs,
                 rargs=lastcall['args'],
