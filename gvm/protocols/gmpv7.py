@@ -496,10 +496,67 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    # TODO: Create notes with comment returns bogus element. Research
-    def create_note(self, text, nvt_oid, **kwargs):
-        cmd = self._generator.create_note_command(text, nvt_oid, kwargs)
-        return self.send_command(cmd)
+    def create_note(self, text, nvt_oid, active=None, comment=None, copy=None,
+                    hosts=None, result_id=None, severity=None, task_id=None,
+                    threat=None, port=None):
+        """Create a new note
+
+        Arguments:
+            text (str): Text of the new note
+            nvt_id (str): OID of the nvt to which note applies
+            active (int, optional): Seconds note will be active. -1 on
+                always, 0 off
+            comment (str, optional): Comment for the note
+            copy (str, optional): UUID of existing note to clone from
+            hosts (str, optional): A textual list of hosts
+            port (str, optional): Port ot which the note applies
+            result_id (str, optional): UUID of a result to which note applies
+            severity (decimal, optional): Severity to which note applies
+            task_id (str, optional): UUID of task to which note applies
+            threat (str, optional): Threat level to which note applies. Will be
+                converted to severity
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not text:
+            raise RequiredArgument('create_note requires a text argument')
+
+        if not nvt_oid:
+            raise RequiredArgument('create_note requires a nvt_oid argument')
+
+        cmd = XmlCommand('create_note')
+        cmd.add_element('text', text)
+        cmd.add_element('nvt', attrs={"oid": nvt_oid})
+
+        if not active is None:
+            cmd.add_element('active', str(active))
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if hosts:
+            cmd.add_element('hosts', hosts)
+
+        if port:
+            cmd.add_element('port', port)
+
+        if result_id:
+            cmd.add_element('result', attrs={'id': result_id})
+
+        if severity:
+            cmd.add_element('severity', severity)
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+
+        if threat:
+            cmd.add_element('threat', threat)
+
+        return self._send_xml_command(cmd)
 
     def create_override(self, text, nvt_oid, **kwargs):
         cmd = self._generator.create_override_command(text, nvt_oid, kwargs)

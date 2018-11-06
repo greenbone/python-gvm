@@ -65,51 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_note_command(self, text, nvt_oid, kwargs):
-        """Generates xml string for create note on gvmd."""
-
-        cmd = XmlCommand('create_note')
-        cmd.add_element('text', text)
-        cmd.add_element('nvt', attrs={"oid": nvt_oid})
-
-        active = kwargs.get('active', '')
-        if active:
-            cmd.add_element('active', active)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        hosts = kwargs.get('hosts', '')
-        if hosts:
-            cmd.add_element('hosts', hosts)
-
-        port = kwargs.get('port', '')
-        if port:
-            cmd.add_element('port', port)
-
-        result_id = kwargs.get('result_id', '')
-        if result_id:
-            cmd.add_element('result', attrs={'id': result_id})
-
-        severity = kwargs.get('severity', '')
-        if severity:
-            cmd.add_element('severity', severity)
-
-        task_id = kwargs.get('task_id', '')
-        if task_id:
-            cmd.add_element('task', attrs={'id': task_id})
-
-        threat = kwargs.get('threat', '')
-        if threat:
-            cmd.add_element('threat', threat)
-
-        return cmd.to_string()
-
     def create_override_command(self, text, nvt_oid, kwargs):
         """Generates xml string for create override on gvmd."""
 
