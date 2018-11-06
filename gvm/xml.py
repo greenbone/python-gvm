@@ -79,50 +79,6 @@ class _GmpCommandFactory:
 
         return cmd.to_string()
 
-    def modify_alert_command(self, alert_id, kwargs):
-        """Generates xml string for modify alert on gvmd."""
-
-        if not alert_id:
-            raise ValueError('modify_alert requires an agent_id element')
-
-        cmd = XmlCommand('modify_alert')
-        cmd.set_attribute('alert_id', str(alert_id))
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        filter_id = kwargs.get('filter_id', '')
-        if filter_id:
-            cmd.add_element('filter', attrs={'id': filter_id})
-
-        event = kwargs.get('event', '')
-        if len(event) > 1:
-            _xmlevent = cmd.add_element('event', event[0])
-            for value, key in event[1].items():
-                _xmldata = _xmlevent.add_element('data', value)
-                _xmldata.add_element('name', key)
-
-        condition = kwargs.get('condition', '')
-        if len(condition) > 1:
-            _xmlcond = cmd.add_element('condition', condition[0])
-            for value, key in condition[1].items():
-                _xmldata = _xmlcond.add_element('data', value)
-                _xmldata.add_element('name', key)
-
-        method = kwargs.get('method', '')
-        if len(method) > 1:
-            _xmlmethod = cmd.add_element('method', method[0])
-            for value, key in method[1].items():
-                _xmldata = _xmlmethod.add_element('data', value)
-                _xmldata.add_element('name', key)
-
-        return cmd.to_string()
-
     def modify_asset_command(self, asset_id, comment):
         """Generates xml string for modify asset on gvmd."""
         cmd = XmlCommand('modify_asset')

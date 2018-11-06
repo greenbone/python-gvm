@@ -1519,9 +1519,45 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_alert(self, alert_id, **kwargs):
-        cmd = self._generator.modify_alert_command(alert_id, kwargs)
-        return self.send_command(cmd)
+    def modify_alert_command(self, alert_id, name=None, comment=None,
+                             filter_id=None, event= None, condition=None,
+                             method=None):
+        """Generates xml string for modify alert on gvmd."""
+
+        if not alert_id:
+            raise RequiredArgument('modify_alert requires an alert_id argument')
+
+        cmd = XmlCommand('modify_alert')
+        cmd.set_attribute('alert_id', str(alert_id))
+
+        if name:
+            cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if filter_id:
+            cmd.add_element('filter', attrs={'id': filter_id})
+
+        if len(event) > 1:
+            _xmlevent = cmd.add_element('event', event[0])
+            for value, key in event[1].items():
+                _xmldata = _xmlevent.add_element('data', value)
+                _xmldata.add_element('name', key)
+
+        if len(condition) > 1:
+            _xmlcond = cmd.add_element('condition', condition[0])
+            for value, key in condition[1].items():
+                _xmldata = _xmlcond.add_element('data', value)
+                _xmldata.add_element('name', key)
+
+        if len(method) > 1:
+            _xmlmethod = cmd.add_element('method', method[0])
+            for value, key in method[1].items():
+                _xmldata = _xmlmethod.add_element('data', value)
+                _xmldata.add_element('name', key)
+
+        return self._send_xml_command(cmd)
 
     def modify_asset(self, asset_id, comment):
         cmd = self._generator.modify_asset_command(asset_id, comment)
