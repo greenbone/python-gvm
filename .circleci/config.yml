@@ -23,7 +23,7 @@ jobs:
             - ./.venv
           key: v1-dependencies-{{ checksum "Pipfile.lock" }}
       - run:
-          name: Install GVM-Tools
+          name: Install python-gvm
           command: |
             pipenv install .
   test:

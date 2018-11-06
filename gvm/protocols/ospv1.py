@@ -20,6 +20,7 @@ Module for communication to a daemon speaking Open Scanner Protocol version 1
 """
 import logging
 
+from gvm.errors import RequiredArgument
 from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
@@ -142,7 +143,8 @@ class Osp(GvmProtocol):
         """Start a new scan.
 
         Args:
-            scan_id (uuid): Identifier for a running scan.
+            scan_id (uuid, optinal): Identifier for a running scan.
+            parallel (str, optional): Default '1'.
             target (dict, optional): Deprecated. Please use targets instead.
             targets (list, optional): List of dictionaries. See example.
             ports (str, optional): Deprecated. Ports to use for target
@@ -192,8 +194,10 @@ class Osp(GvmProtocol):
                 }
         """
         cmd = XmlCommand('start_scan')
+
         if scan_id:
             cmd.set_attribute('scan_id', scan_id)
+
         cmd.set_attribute('parallel', parallel)
 
         # Add <scanner_params> even if it is empty, since it is mandatory
@@ -220,7 +224,8 @@ class Osp(GvmProtocol):
             if ports:
                 cmd.set_attribute('ports', ports)
         else:
-            raise ValueError('start_scan requires a target')
+            raise RequiredArgument('start_scan requires a target. Please pass '
+                                   'targets parameter.')
 
         _xmlvtselection = cmd.add_element('vt_selection')
         if vt_selection:
