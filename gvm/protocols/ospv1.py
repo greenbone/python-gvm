@@ -236,8 +236,8 @@ class Osp(GvmProtocol):
             raise RequiredArgument('start_scan requires a target. Please pass '
                                    'targets parameter.')
 
-        _xmlvtselection = cmd.add_element('vt_selection')
         if vt_selection:
+            _xmlvtselection = cmd.add_element('vt_selection')
             _xmlvtselection = create_vt_selection_element(
                 _xmlvtselection, vt_selection)
 
