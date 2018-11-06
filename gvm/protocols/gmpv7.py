@@ -354,7 +354,7 @@ class Gmp(GvmProtocol):
             privacy_alogorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optionla): The credential type. One of 'cc',
+            credential_type (str, optional): The credential type. One of 'cc',
                 'snmp', 'up', 'usk'
 
         Returns:
