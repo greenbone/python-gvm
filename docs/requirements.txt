@@ -1,0 +1,5 @@
+lxml
+paramiko
+defusedxml
+sphinx
+sphinxcontrib-napoleon
