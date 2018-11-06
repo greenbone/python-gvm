@@ -194,11 +194,14 @@ class Gmp(GvmProtocol):
 
         Arguments:
             name (str): Name of the new filter
-            make_unique (Boolean):
-            filter_type (str): Filter for entity type
-            comment (str): Comment for the filter
-            term (str): Filter term e.g. 'name=foo'
-            copy (str): UUID of an existing filter
+            make_unique (boolean, optional):
+            filter_type (str, optional): Filter for entity type
+            comment (str, optional): Comment for the filter
+            term (str, optional): Filter term e.g. 'name=foo'
+            copy (str, optional): UUID of an existing filter
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not name:
             raise RequiredArgument('create_filter requires a name argument')
