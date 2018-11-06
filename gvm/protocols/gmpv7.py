@@ -301,15 +301,15 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_config(self, name, copy_id):
+    def create_config(self, name, copy):
         """Create a new scan config from an existing one
 
         Arguments:
             name (str): Name of the new scan config
-            copy_id (str): UUID of the existing scan config
+            copy (str): UUID of the existing scan config
         """
         cmd = XmlCommand('create_config')
-        cmd.add_element('copy', copy_id)
+        cmd.add_element('copy', copy)
         cmd.add_element('name', name)
         return self._send_xml_command(cmd)
 
