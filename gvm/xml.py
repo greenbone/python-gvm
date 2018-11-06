@@ -65,43 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_permission_command(self, name, subject_id, type, kwargs):
-        # pretty(gmp.create_permission('get_version',
-        # 'cc9cac5e-39a3-11e4-abae-406186ea4fc5', 'role'))
-        # libs.gvm_connection.GMPError: Error in NAME
-        # TODO: Research why!!
-
-        if not name:
-            raise ValueError('create_permission requires a name element')
-        if not subject_id:
-            raise ValueError('create_permission requires a subject_id element')
-        if type not in ('user', 'group', 'role'):
-            raise ValueError('create_permission requires type '
-                             'to be either user, group or role')
-
-        cmd = XmlCommand('create_permission')
-        cmd.add_element('name', name)
-        _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
-        _xmlsubject.add_element('type', type)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        resource = kwargs.get('resource', '')
-        if resource:
-            resource_id = resource.id
-            resource_type = resource.type
-            _xmlresource = cmd.add_element('resource',
-                                           attrs={'id': resource_id})
-            _xmlresource.add_element('type', resource_type)
-
-        return cmd.to_string()
-
     def create_port_list_command(self, name, port_range, kwargs):
         """Generates xml string for create port list on gvmd."""
         if not name:

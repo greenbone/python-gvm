@@ -632,10 +632,55 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_permission(self, name, subject_id, permission_type, **kwargs):
-        cmd = self._generator.create_permission_command(
-            name, subject_id, permission_type, kwargs)
-        return self.send_command(cmd)
+    def create_permission(self, name, subject_id, subject_type,
+                          resource_id=None, resource_type=None, copy=None,
+                          comment=None):
+        """Create a new permission
+
+        Arguments:
+            name (str): Name of the new permission
+            subject_id (str): UUID of subject to whom the permission is granted
+            subject_type (str): Type of the subject user, group or role
+            comment (str, optional): Comment for the permission
+            resource_id (str, optional): UUID of entity to which the permission
+                applies
+            resource_type (str, optional): Type of the resource. For Super
+                permissions user, group or role
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_permission requires a name argument')
+
+        if not subject_id:
+            raise RequiredArgument(
+                'create_permission requires a subject_id argument')
+
+        if subject_type not in ('user', 'group', 'role'):
+            raise InvalidArgument(
+                'create_permission requires subject_type to be either user, '
+                'group or role')
+
+        cmd = XmlCommand('create_permission')
+        cmd.add_element('name', name)
+
+        _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
+        _xmlsubject.add_element('type', type)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if resource_id and resource_type:
+            _xmlresource = cmd.add_element('resource',
+                                           attrs={'id': resource_id})
+            _xmlresource.add_element('type', resource_type)
+
+
+        return self._send_xml_command(cmd)
 
     def create_port_list(self, name, port_range, **kwargs):
         cmd = self._generator.create_port_list_command(name, port_range, kwargs)
