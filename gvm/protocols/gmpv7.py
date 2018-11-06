@@ -587,10 +587,11 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not text:
-            raise RequiredArgument('create_note requires a text argument')
+            raise RequiredArgument('create_override requires a text argument')
 
         if not nvt_oid:
-            raise RequiredArgument('create_note requires a nvt_oid argument')
+            raise RequiredArgument('create_override requires a nvt_oid '
+                                   'argument')
 
         cmd = XmlCommand('create_override')
         cmd.add_element('text', text)
