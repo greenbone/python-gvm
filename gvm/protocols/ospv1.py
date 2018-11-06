@@ -37,11 +37,12 @@ def create_credentials_element(_xmlcredentials, credentials):
         serv_port = credential.get('port')
         username = credential.get('username')
         password = credential.get('password')
-        _xmlcredential = _xmlcredentials.add_element('credential',
-                                                     attrs={'type': cred_type,
-                                                            'port': serv_port,
-                                                            'service': service,
-                                                     })
+        _xmlcredential = _xmlcredentials.add_element(
+            'credential', attrs={
+                'type': cred_type,
+                'port': serv_port,
+                'service': service,
+            })
         _xmlcredential.add_element('username', username)
         _xmlcredential.add_element('password', password)
     return _xmlcredentials
@@ -57,8 +58,8 @@ def create_vt_selection_element(_xmlvtselection, vt_selection):
                     _xmlvt.add_element('vt_value', value, attrs={'id': key})
         else:
             for group in vt_values:
-                _xmlvt = _xmlvtselection.add_element('vt_group',
-                                                 attrs={'filter': group})
+                _xmlvt = _xmlvtselection.add_element(
+                    'vt_group', attrs={'filter': group})
 
     return _xmlvtselection
 
