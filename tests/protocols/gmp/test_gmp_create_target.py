@@ -16,9 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint can't read decorators => disable member checks
-# pylint: disable=no-member
-
 import unittest
 
 from gvm.errors import RequiredArgument
