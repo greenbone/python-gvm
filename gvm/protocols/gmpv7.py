@@ -308,6 +308,12 @@ class Gmp(GvmProtocol):
             name (str): Name of the new scan config
             copy (str): UUID of the existing scan config
         """
+        if not name:
+            raise RequiredArgument('create_config requires name argument')
+
+        if not copy:
+            raise RequiredArgument('create_config requires copy argument')
+
         cmd = XmlCommand('create_config')
         cmd.add_element('copy', copy)
         cmd.add_element('name', name)
