@@ -21,7 +21,7 @@ Module for GVM errors
 
 
 class GvmError(Exception):
-    """A exception for gvm errors
+    """An exception for gvm errors
     """
     pass
 
