@@ -55,7 +55,7 @@ class OSPStartScanTestCase(unittest.TestCase):
 
         self.osp.start_scan(
             scan_id='123-456',
-            parallel='10',
+            parallel=10,
             scanner_params=scanner_params,
             targets=targets,
             vt_selection=vts
@@ -87,7 +87,7 @@ class OSPStartScanTestCase(unittest.TestCase):
     def test_start_scan_legacy(self):
         self.osp.start_scan(
             scan_id='123-456',
-            parallel='10',
+            parallel=10,
             target="localhost",
             ports="22"
         )
