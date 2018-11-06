@@ -109,16 +109,17 @@ class Osp(GvmProtocol):
 
         return self.send_command(cmd.to_string())
 
-    def delete_scan(self, scan_id):
+    def delete_scan(self, scan_id=None):
         """Delete a finished scan.
         Args:
             scan_id (uuid): Identifier for a finished scan.
         Returns:
             str: Response from server.
         """
+        if not scan_id:
+            raise ValueError('delete_scan requires a scan_id element')
         cmd = XmlCommand('delete_scan')
-        if scan_id:
-            cmd.set_attribute('scan_id', scan_id)
+        cmd.set_attribute('scan_id', scan_id)
 
         return self.send_command(cmd.to_string())
 
