@@ -755,9 +755,49 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_report(self, report_xml_string, **kwargs):
-        cmd = self._generator.create_report_command(report_xml_string, kwargs)
-        return self.send_command(cmd)
+    def import_report(self, report, task_id=None, task_name=None,
+                      task_comment=None, in_assets=None):
+        """Import a Report
+
+        Arguments:
+            report (str): Report XML as string to import
+            task_id (str, optional): UUID of task to import report to
+            task_name (str, optional): Name of task to be createed if task_id is
+                not present. Either task_id or task_name must be passed
+            task_comment (str, optional): Comment for task to be created if
+                task_id is not present
+            in_asset (boolean, optional): Whether to create or update assets
+                using the report
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not report:
+            raise RequiredArgument('create_report requires a report argument')
+
+        cmd = XmlCommand('create_report')
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+        elif task_name:
+            _xmltask = cmd.add_element('task')
+            _xmltask.add_element('name', task_name)
+
+            if task_comment:
+                _xmltask.add_element('comment', task_comment)
+        else:
+            raise RequiredArgument(
+                'import_report requires a task_id or task_name argument')
+
+        if not in_assets is None:
+            if in_assets:
+                cmd.add_element('in_assets', '1')
+            else:
+                cmd.add_element('in_assets', '0')
+
+        cmd.append_xml_str(report)
+
+        return self._send_xml_command(cmd)
 
     def create_role(self, name, **kwargs):
         cmd = self._generator.create_role_command(name, kwargs)

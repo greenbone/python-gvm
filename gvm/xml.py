@@ -65,35 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_report_command(self, report_xml_string, kwargs):
-        """Generates xml string for create report on gvmd."""
-
-        if not report_xml_string:
-            raise ValueError('create_report requires a report')
-
-        task_id = kwargs.get('task_id', '')
-        task_name = kwargs.get('task_name', '')
-
-        cmd = XmlCommand('create_report')
-        comment = kwargs.get('comment', '')
-        if task_id:
-            cmd.add_element('task', attrs={'id': task_id})
-        elif task_name:
-            _xmltask = cmd.add_element('task')
-            _xmltask.add_element('name', task_name)
-            if comment:
-                _xmltask.add_element('comment', comment)
-        else:
-            raise ValueError('create_report requires an id or name for a task')
-
-        in_assets = kwargs.get('in_assets', '')
-        if in_assets:
-            cmd.add_element('in_assets', in_assets)
-
-        cmd.append_xml_str(report_xml_string)
-
-        return cmd.to_string()
-
     def create_role_command(self, name, kwargs):
         """Generates xml string for create role on gvmd."""
 
