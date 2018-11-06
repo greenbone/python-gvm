@@ -277,9 +277,29 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_asset(self, name, asset_type, comment=''):
-        # TODO: Add the missing second method. Also the docs are not complete!
-        cmd = self._generator.create_asset_command(name, asset_type, comment)
-        return self.send_command(cmd)
+        """Create a new asset
+
+        Arguments:
+            name (str): Name for the new asset
+            asset_type (str): 'os' or 'host'
+            comment (str, optional): Comment for the new asset
+        """
+        if asset_type not in ('host', 'os'):
+            raise InvalidArgument(
+                'create_asset requires asset_type to be either host or os')
+
+        if not name:
+            raise RequiredArgument('create_asset requires name argument')
+
+        cmd = XmlCommand('create_asset')
+        asset = cmd.add_element('asset')
+        asset.add_element('type', asset_type)
+        asset.add_element('name', name)
+
+        if comment:
+            asset.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
 
     def create_config(self, copy_id, name):
         cmd = self._generator.create_config_command(copy_id, name)

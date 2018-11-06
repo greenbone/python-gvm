@@ -65,20 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_asset_command(self, name, asset_type, comment=''):
-        if asset_type not in ('host', 'os'):
-            raise ValueError('create_asset requires asset_type to be either '
-                             'host or os')
-        cmd = XmlCommand('create_asset')
-        asset = cmd.add_element('asset')
-        asset.add_element('type', asset_type)
-        asset.add_element('name', name)
-
-        if comment:
-            asset.add_element('comment', comment)
-
-        return cmd.to_string()
-
     def create_config_command(self, copy_id, name):
         """Generates xml string for create config on gvmd."""
         cmd = XmlCommand('create_config')
