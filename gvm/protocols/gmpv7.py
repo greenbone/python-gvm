@@ -194,11 +194,14 @@ class Gmp(GvmProtocol):
 
         Arguments:
             name (str): Name of the new filter
-            make_unique (Boolean):
-            filter_type (str): Filter for entity type
-            comment (str): Comment for the filter
-            term (str): Filter term e.g. 'name=foo'
-            copy (str): UUID of an existing filter
+            make_unique (boolean, optional):
+            filter_type (str, optional): Filter for entity type
+            comment (str, optional): Comment for the filter
+            term (str, optional): Filter term e.g. 'name=foo'
+            copy (str, optional): UUID of an existing filter
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not name:
             raise RequiredArgument('create_filter requires a name argument')
@@ -280,10 +283,114 @@ class Gmp(GvmProtocol):
                                                  resource_type, kwargs)
         return self.send_command(cmd)
 
-    def create_target(self, name, make_unique, **kwargs):
-        # TODO: Missing variables
-        cmd = self._generator.create_target_command(name, make_unique, kwargs)
-        return self.send_command(cmd)
+    def create_target(self, name, make_unique=False, asset_hosts_filter=None,
+                      hosts=None, comment=None, copy=None, exclude_hosts=None,
+                      ssh_credential_id=None, ssh_credential_port=None,
+                      smb_credential_id=None, esxi_credential_id=None,
+                      snmp_credential_id=None, alive_tests=None,
+                      reverse_lookup_only=None, reverse_lookup_unify=None,
+                      port_range=None, port_list_id=None):
+        """Create a new target
+
+        Arguments:
+            name (str): Name of the target
+            make_unique (boolean, optional): Append a unique suffix if the name
+                already exists
+            asset_hosts_filter (str, optional): Filter to select target host
+                from assets hosts
+            hosts (str, optional): Hosts to scan
+            exclude_hosts (str, optional): Hosts to exclude from scan
+            comment (str, optional): Comment for the target
+            copy (str, optional): UUID of an existing target to clone from
+            ssh_credential_id (str, optional): UUID of a ssh credential to use
+                on target
+            ssh_credential_port (str, optional): The port to use for ssh
+                credential
+            smb_credential_id (str, optional): UUID of a smb credential to use
+                on target
+            snmp_credential_id (str, optional): UUID of a snmp credential to use
+                on target
+            esxi_credential_id (str, optional): UUID of a esxi credential to use
+                on target
+            alive_tests (str, optional): Which alive tests to use
+            reverse_lookup_only (boolean, optional): Whether to scan only hosts
+                that have names
+            reverse_lookup_unify (boolean, optional): Whether to scan only one
+                IP when multiple IPs have the same name.
+            port_range (str, optional): Port range for the target
+            port_list_id (str, optional): UUID of the port list to use on target
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_target requires a name argument')
+
+        cmd = XmlCommand('create_target')
+        _xmlname = cmd.add_element('name', name)
+        if make_unique:
+            _xmlname.add_element('make_unique', '1')
+
+        if asset_hosts_filter:
+            cmd.add_element('asset_hosts',
+                            attrs={'filter': str(asset_hosts_filter)})
+        elif hosts:
+            cmd.add_element('hosts', hosts)
+        else:
+            raise RequiredArgument('create_target requires either a hosts or '
+                                   'an asset_hosts_filter argument')
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            # TODO move copy case into clone_target method
+
+            # NOTE: It seems that hosts/asset_hosts is silently ignored by the
+            # server when copy is supplied. But for specification conformance
+            # we raise the ValueError above and consider copy optional.
+            cmd.add_element('copy', copy)
+
+        if exclude_hosts:
+            cmd.add_element('exclude_hosts', exclude_hosts)
+
+        if ssh_credential_id:
+            _xmlssh = cmd.add_element('ssh_credential',
+                                      attrs={'id': ssh_credential_id})
+            if ssh_credential_port:
+                _xmlssh.add_element('port', ssh_credential_port)
+
+        if smb_credential_id:
+            cmd.add_element('smb_credential', attrs={'id': smb_credential_id})
+
+        if esxi_credential_id:
+            cmd.add_element('esxi_credential', attrs={'id': esxi_credential_id})
+
+        if snmp_credential_id:
+            cmd.add_element('snmp_credential', attrs={'id': snmp_credential_id})
+
+        if alive_tests:
+            cmd.add_element('alive_tests', alive_tests)
+
+        if not reverse_lookup_only is None:
+            if reverse_lookup_only:
+                cmd.add_element('reverse_lookup_only', '1')
+            else:
+                cmd.add_element('reverse_lookup_only', '0')
+
+        if not reverse_lookup_unify is None:
+            if reverse_lookup_unify:
+                cmd.add_element('reverse_lookup_unify', '1')
+            else:
+                cmd.add_element('reverse_lookup_unify', '0')
+
+        if port_range:
+            cmd.add_element('port_range', port_range)
+
+        if port_list_id:
+            cmd.add_element('port_list', attrs={'id': port_list_id})
+
+        return self._send_xml_command(cmd)
 
     def create_task(self, name, config_id, target_id, scanner_id,
                     alert_ids=None, comment=''):

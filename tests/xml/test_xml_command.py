@@ -57,6 +57,26 @@ class XmlCommandTestCase(unittest.TestCase):
 
         self.assertEqual(str(cmd), '<foo/>')
 
+    def test_invalid_xml(self):
+        with self.assertRaises(ValueError):
+            XmlCommand('Foo & Bar')
+
+    def test_xml_escaping(self):
+        cmd = XmlCommand('foo')
+        cmd.add_element('bar', 'Foo & Bar')
+
+        self.assertEqual(cmd.to_string(), '<foo><bar>Foo &amp; Bar</bar></foo>')
+
+        cmd = XmlCommand('foo')
+        cmd.set_attribute('bar', 'Foo & Bar')
+
+        self.assertEqual(cmd.to_string(), '<foo bar="Foo &amp; Bar"/>')
+
+        cmd = XmlCommand('foo')
+        cmd.set_attribute('bar', 'Foo "Bar"')
+
+        self.assertEqual(cmd.to_string(), '<foo bar="Foo &quot;Bar&quot;"/>')
+
 
 if __name__ == '__main__':
     unittest.main()
