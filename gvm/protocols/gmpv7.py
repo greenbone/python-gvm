@@ -214,12 +214,67 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_alert(self, name, condition, event, method, filter_id='',
-                     copy='', comment=''):
-        cmd = self._generator.create_alert_command(name, condition, event,
-                                                   method, filter_id, copy,
-                                                   comment)
-        return self.send_command(cmd)
+    def create_alert(self, name, condition, event, method, method_data=None,
+                     event_data=None, condition_data=None, filter_id=None,
+                     copy=None, comment=None):
+        """Create a new alert
+
+        Arguments:
+            name (str): Name of the new Alert
+            condition (str): The condition that must be satisfied for the alert
+                to occur.
+            event (str): The event that must happen for the alert to occur
+            method (str): The method by which the user is alerted
+            condition_data (dict, optional): Data that defines the condition
+            event_data (dict, optional): Data that defines the event
+            method_data (dict, optional): Data that defines the method
+            filter_id (str, optional): Filter to apply when executing alert
+            copy (str, optional): UUID of the alert to clone from
+            comment (str, optional): Comment for the alert
+        """
+        if not name:
+            raise RequiredArgument('create_alert requires name argument')
+
+        if condition is None or len(condition) == 0:
+            raise RequiredArgument('create_alert requires condition argument')
+
+        if event is None or len(event) == 0:
+            raise RequiredArgument('create_alert requires event argument')
+
+        cmd = XmlCommand('create_alert')
+        cmd.add_element('name', name)
+
+        conditions = cmd.add_element('condition', condition)
+
+        if not condition_data is None:
+            for value, key in condition_data.items():
+                _data = conditions.add_element('data', value)
+                _data.add_element('name', key)
+
+        events = cmd.add_element('event', event)
+
+        if not event_data is None:
+            for value, key in event_data.items():
+                _data = events.add_element('data', value)
+                _data.add_element('name', key)
+
+        methods = cmd.add_element('method', method)
+
+        if not method_data is None:
+            for value, key in method_data.items():
+                _data = methods.add_element('data', value)
+                _data.add_element('name', key)
+
+        if filter_id:
+            cmd.add_element('filter', attrs={'id': filter_id})
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
 
     def create_asset(self, name, asset_type, comment=''):
         # TODO: Add the missing second method. Also the docs are not complete!

@@ -65,44 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_alert_command(self, name, condition, event, method, filter_id='',
-                             copy='', comment=''):
-
-        cmd = XmlCommand('create_alert')
-        cmd.add_element('name', name)
-
-        if len(condition) > 1:
-            conditions = cmd.add_element('condition', condition[0])
-            for value, key in condition[1].items():
-                _data = conditions.add_element('data', value)
-                _data.add_element('name', key)
-
-        elif condition[0] == "Always":
-            conditions = cmd.add_element('condition', condition[0])
-
-        if len(event) > 1:
-            events = cmd.add_element('event', event[0])
-            for value, key in event[1].items():
-                _data = events.add_element('data', value)
-                _data.add_element('name', key)
-
-        if len(method) > 1:
-            methods = cmd.add_element('method', method[0])
-            for value, key in method[1].items():
-                _data = methods.add_element('data', value)
-                _data.add_element('name', key)
-
-        if filter_id:
-            cmd.add_element('filter', attrs={'id': filter_id})
-
-        if copy:
-            cmd.add_element('copy', copy)
-
-        if comment:
-            cmd.add_element('comment', comment)
-
-        return cmd.to_string()
-
     def create_asset_command(self, name, asset_type, comment=''):
         if asset_type not in ('host', 'os'):
             raise ValueError('create_asset requires asset_type to be either '
