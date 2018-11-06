@@ -137,35 +137,59 @@ class Osp(GvmProtocol):
         return self.send_command(cmd.to_string())
 
     def start_scan(self, scan_id=None, parallel='1', target=None,
-                   ports=None, **kwargs):
+                   ports=None, targets=None, scanner_params=None,
+                   vt_selection=None):
         """Start a new scan.
 
         Args:
             scan_id (uuid): Identifier for a running scan.
-            kwargs (dict): A dict with scanner parameters, targets and a
-                           VT selection.
+            target (dict, optional): Deprecated. Please use targets instead.
+            targets (list, optional): List of dictionaries. See example.
+            ports (str, optional): Deprecated. Ports to use for target
+                parameter.
+            scanner_params: (dict, optional): Dictionary of scanner parameters.
+            vt_selection: (dict, optional): Vulnerability tests to select. See
+                example.
 
         Returns:
             str: Response from server.
 
 
-        kwargs example:
-        {'scanner_parameters': {'scan_param1': 'scan_param1_value',
-                                'scan_param2': 'scan_param2_value'},
-         'targets': [{'hosts': 'localhost',
-                      'ports': '80,43'},
-                     {'hosts': '192.168.0.0/24',
-                      'ports': '22'},
-                      'credentials': {'smb': {'password': 'pass',
-                                              'port': 'port',
-                                              'type': 'type',
-                                              'username': 'username'}},
-                    ],
-         'vt_selection': {'vt1': {},
-                          'vt2': {'value_id': 'value'},
-                          'vt_groups': ['family=debian', 'family=general']}
-        }
+        Examples:
 
+            Scanner Paramters::
+
+                scanner_parameters = {
+                    'scan_param1': 'scan_param1_value',
+                    'scan_param2': 'scan_param2_value',
+                }
+
+            Targets::
+
+                targets = [{
+                    'hosts': 'localhost',
+                    'ports': '80,43'
+                }, {
+                    'hosts': '192.168.0.0/24',
+                    'ports': '22',
+                }, {
+                    'credentials': {
+                        'smb': {
+                            'password': 'pass',
+                            'port': 'port',
+                            'type': 'type',
+                            'username': 'username',
+                        }
+                    }
+                }]
+
+            VT Selection::
+
+                vt_selection = {
+                    'vt1': {},
+                    'vt2': {'value_id': 'value'},
+                    'vt_groups': ['family=debian', 'family=general']
+                }
         """
         cmd = XmlCommand('start_scan')
         if scan_id:
@@ -174,11 +198,9 @@ class Osp(GvmProtocol):
 
         # Add <scanner_params> even if it is empty, since it is mandatory
         _xmlscanparams = cmd.add_element('scanner_params')
-        scanner_params = kwargs.get('scanner_params')
         if scanner_params:
             _xmlscanparams.set_attributes(scanner_params)
 
-        targets = kwargs.get('targets')
         if targets:
             _xmltargets = cmd.add_element('targets')
             for target in targets:
@@ -201,7 +223,6 @@ class Osp(GvmProtocol):
             raise ValueError('start_scan requires a target')
 
         _xmlvtselection = cmd.add_element('vt_selection')
-        vt_selection = kwargs.get('vt_selection')
         if vt_selection:
             _xmlvtselection = create_vt_selection_element(
                 _xmlvtselection, vt_selection)
