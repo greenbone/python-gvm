@@ -558,9 +558,78 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_override(self, text, nvt_oid, **kwargs):
-        cmd = self._generator.create_override_command(text, nvt_oid, kwargs)
-        return self.send_command(cmd)
+    def create_override(self, text, nvt_oid, active=None, copy=None, hosts=None,
+                        port=None, result_id=None, severity=None, comment=None,
+                        new_severity=None, task_id=None, threat=None,
+                        new_threat=None):
+        """Create a new override
+
+        Arguments:
+            text (str): Text of the new override
+            nvt_id (str): OID of the nvt to which override applies
+            active (int, optional): Seconds override will be active. -1 on
+                always, 0 off
+            comment (str, optional): Comment for the override
+            copy (str, optional): UUID of existing override to clone from
+            hosts (str, optional): A textual list of hosts
+            port (str, optional): Port ot which the override applies
+            result_id (str, optional): UUID of a result to which override
+                applies
+            severity (decimal, optional): Severity to which override applies
+            new_severity (decimal, optional): New severity for result
+            task_id (str, optional): UUID of task to which override applies
+            threat (str, optional): Threat level to which override applies. Will
+                be converted to severity
+            new_threat (str, optional): New threat level for result, will be
+                converted to a new_severity
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not text:
+            raise RequiredArgument('create_note requires a text argument')
+
+        if not nvt_oid:
+            raise RequiredArgument('create_note requires a nvt_oid argument')
+
+        cmd = XmlCommand('create_override')
+        cmd.add_element('text', text)
+        cmd.add_element('nvt', attrs={'oid': nvt_oid})
+
+        if active:
+            cmd.add_element('active', active)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if hosts:
+            cmd.add_element('hosts', hosts)
+
+        if port:
+            cmd.add_element('port', port)
+
+        if result_id:
+            cmd.add_element('result', attrs={'id': result_id})
+
+        if severity:
+            cmd.add_element('severity', severity)
+
+        if new_severity:
+            cmd.add_element('new_severity', new_severity)
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+
+        if threat:
+            cmd.add_element('threat', threat)
+
+        if new_threat:
+            cmd.add_element('new_threat', new_threat)
+
+        return self._send_xml_command(cmd)
 
     def create_permission(self, name, subject_id, permission_type, **kwargs):
         cmd = self._generator.create_permission_command(
