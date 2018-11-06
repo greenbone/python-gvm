@@ -83,7 +83,7 @@ class Osp(GvmProtocol):
         cmd = XmlCommand('help')
         return self.send_command(cmd.to_string())
 
-    def get_scans(self, scan_id=None, details='1', pop_results='0'):
+    def get_scans(self, scan_id=None, details=True, pop_results=False):
         """Get the stored scans.
 
          Args:
@@ -97,21 +97,29 @@ class Osp(GvmProtocol):
         cmd = XmlCommand('get_scans')
         if scan_id:
             cmd.set_attribute('scan_id', scan_id)
-        cmd.set_attribute('details', details)
-        cmd.set_attribute('pop_results', pop_results)
+        if details:
+            cmd.set_attribute('details', '1')
+        else:
+            cmd.set_attribute('details', '0')
+
+        if pop_results:
+            cmd.set_attribute('pop_results', '1')
+        else:
+            cmd.set_attribute('pop_results', '0')
 
         return self.send_command(cmd.to_string())
 
-    def delete_scan(self, scan_id):
+    def delete_scan(self, scan_id=None):
         """Delete a finished scan.
         Args:
             scan_id (uuid): Identifier for a finished scan.
         Returns:
             str: Response from server.
         """
+        if not scan_id:
+            raise ValueError('delete_scan requires a scan_id element')
         cmd = XmlCommand('delete_scan')
-        if scan_id:
-            cmd.set_attribute('scan_id', scan_id)
+        cmd.set_attribute('scan_id', scan_id)
 
         return self.send_command(cmd.to_string())
 
@@ -215,8 +223,9 @@ class Osp(GvmProtocol):
         Returns:
             str: Response from server.
         """
+        if not scan_id:
+            raise ValueError('stop_scan requires a scan_id element')
         cmd = XmlCommand('stop_scan')
-        if scan_id:
-            cmd.set_attribute('scan_id', scan_id)
+        cmd.set_attribute('scan_id', scan_id)
 
         return self.send_command(cmd.to_string())
