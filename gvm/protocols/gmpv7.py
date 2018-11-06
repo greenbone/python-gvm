@@ -170,12 +170,49 @@ class Gmp(GvmProtocol):
 
         return self._transform(response)
 
-    def create_agent(self, installer, signature, name, comment='', copy='',
-                     howto_install='', howto_use=''):
-        cmd = self._generator.create_agent_command(
-            installer, signature, name, comment, copy, howto_install,
-            howto_use)
-        return self.send_command(cmd)
+    def create_agent(self, installer, signature, name, comment=None, copy=None,
+                     howto_install=None, howto_use=None):
+        """Create a new agent
+
+        Arguments:
+            installer (str): A base64 encoded file that installs the agent on a
+                target machine
+            signature: (str): A detached OpenPGP signature of the installer
+            name (str): A name for the agent
+            comment (str, optional): A comment for the agent
+            copy (str, optional): UUID of an existing agent to clone from
+            howto_install (str, optional): A file that describes how to install
+                the agent
+            howto_user (str, optional): A file that describes how to use the
+                agent
+        """
+        if not name:
+            raise RequiredArgument('create_agent requires name argument')
+
+        if not installer:
+            raise RequiredArgument('create_agent requires installer argument')
+
+        if not signature:
+            raise RequiredArgument('create_agent requires signature argument')
+
+        cmd = XmlCommand('create_agent')
+        cmd.add_element('installer', installer)
+        cmd.add_element('signature', signature)
+        cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if howto_install:
+            cmd.add_element('howto_install', howto_install)
+
+        if howto_use:
+            cmd.add_element('howto_use', howto_use)
+
+        return self._send_xml_command(cmd)
 
     def create_alert(self, name, condition, event, method, filter_id='',
                      copy='', comment=''):

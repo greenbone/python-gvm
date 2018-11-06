@@ -65,28 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_agent_command(self, installer, signature, name, comment='',
-                             copy='', howto_install='', howto_use=''):
-
-        cmd = XmlCommand('create_agent')
-        cmd.add_element('installer', installer)
-        cmd.add_element('signature', signature)
-        cmd.add_element('name', name)
-
-        if comment:
-            cmd.add_element('comment', comment)
-
-        if copy:
-            cmd.add_element('copy', copy)
-
-        if howto_install:
-            cmd.add_element('howto_install', howto_install)
-
-        if howto_use:
-            cmd.add_element('howto_use', howto_use)
-
-        return cmd.to_string()
-
     def create_alert_command(self, name, condition, event, method, filter_id='',
                              copy='', comment=''):
 
