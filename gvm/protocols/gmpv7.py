@@ -22,7 +22,7 @@ import logging
 
 from lxml import etree
 
-from gvm.errors import InvalidArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
 from gvm.xml import _GmpCommandFactory as GmpCommandFactory, XmlCommand
 
@@ -200,6 +200,9 @@ class Gmp(GvmProtocol):
             term (str): Filter term e.g. 'name=foo'
             copy (str): UUID of an existing filter
         """
+        if not name:
+            raise RequiredArgument('create_filter requires a name argument')
+
         cmd = XmlCommand('create_filter')
         _xmlname = cmd.add_element('name', name)
         if make_unique:
