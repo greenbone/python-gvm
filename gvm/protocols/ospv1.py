@@ -151,7 +151,7 @@ class Osp(GvmProtocol):
         """Start a new scan.
 
         Args:
-            scan_id (uuid, optinal): Identifier for a running scan.
+            scan_id (uuid, optional): Identifier for a running scan.
             parallel (int, optional): Number of parallel scanned targets.
                 Default 1.
             target (dict, optional): Deprecated. Please use targets instead.
@@ -168,7 +168,7 @@ class Osp(GvmProtocol):
 
         Examples:
 
-            Scanner Paramters::
+            Scanner Parameters::
 
                 scanner_parameters = {
                     'scan_param1': 'scan_param1_value',
