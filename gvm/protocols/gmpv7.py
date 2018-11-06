@@ -150,10 +150,19 @@ class Gmp(GvmProtocol):
         Returns:
             any, str by default: Transformed response from server.
         """
-        cmd = self._generator.create_authenticate_command(
-            username=username, password=password)
+        cmd = XmlCommand('authenticate')
 
-        self._send(cmd)
+        if not username:
+            raise RequiredArgument('authenticate requires username')
+
+        if not password:
+            raise RequiredArgument('authenticate requires password')
+
+        credentials = cmd.add_element('credentials')
+        credentials.add_element('username', username)
+        credentials.add_element('password', password)
+
+        self._send(cmd.to_string())
         response = self._read()
 
         if _check_command_status(response):
@@ -161,32 +170,252 @@ class Gmp(GvmProtocol):
 
         return self._transform(response)
 
-    def create_agent(self, installer, signature, name, comment='', copy='',
-                     howto_install='', howto_use=''):
-        cmd = self._generator.create_agent_command(
-            installer, signature, name, comment, copy, howto_install,
-            howto_use)
-        return self.send_command(cmd)
+    def create_agent(self, installer, signature, name, comment=None, copy=None,
+                     howto_install=None, howto_use=None):
+        """Create a new agent
 
-    def create_alert(self, name, condition, event, method, filter_id='',
-                     copy='', comment=''):
-        cmd = self._generator.create_alert_command(name, condition, event,
-                                                   method, filter_id, copy,
-                                                   comment)
-        return self.send_command(cmd)
+        Arguments:
+            installer (str): A base64 encoded file that installs the agent on a
+                target machine
+            signature: (str): A detached OpenPGP signature of the installer
+            name (str): A name for the agent
+            comment (str, optional): A comment for the agent
+            copy (str, optional): UUID of an existing agent to clone from
+            howto_install (str, optional): A file that describes how to install
+                the agent
+            howto_user (str, optional): A file that describes how to use the
+                agent
 
-    def create_asset(self, name, asset_type, comment=''):
-        # TODO: Add the missing second method. Also the docs are not complete!
-        cmd = self._generator.create_asset_command(name, asset_type, comment)
-        return self.send_command(cmd)
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_agent requires name argument')
 
-    def create_config(self, copy_id, name):
-        cmd = self._generator.create_config_command(copy_id, name)
-        return self.send_command(cmd)
+        if not installer:
+            raise RequiredArgument('create_agent requires installer argument')
 
-    def create_credential(self, name, **kwargs):
-        cmd = self._generator.create_credential_command(name, kwargs)
-        return self.send_command(cmd)
+        if not signature:
+            raise RequiredArgument('create_agent requires signature argument')
+
+        cmd = XmlCommand('create_agent')
+        cmd.add_element('installer', installer)
+        cmd.add_element('signature', signature)
+        cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if howto_install:
+            cmd.add_element('howto_install', howto_install)
+
+        if howto_use:
+            cmd.add_element('howto_use', howto_use)
+
+        return self._send_xml_command(cmd)
+
+    def create_alert(self, name, condition, event, method, method_data=None,
+                     event_data=None, condition_data=None, filter_id=None,
+                     copy=None, comment=None):
+        """Create a new alert
+
+        Arguments:
+            name (str): Name of the new Alert
+            condition (str): The condition that must be satisfied for the alert
+                to occur.
+            event (str): The event that must happen for the alert to occur
+            method (str): The method by which the user is alerted
+            condition_data (dict, optional): Data that defines the condition
+            event_data (dict, optional): Data that defines the event
+            method_data (dict, optional): Data that defines the method
+            filter_id (str, optional): Filter to apply when executing alert
+            copy (str, optional): UUID of the alert to clone from
+            comment (str, optional): Comment for the alert
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_alert requires name argument')
+
+        if condition is None or len(condition) == 0:
+            raise RequiredArgument('create_alert requires condition argument')
+
+        if event is None or len(event) == 0:
+            raise RequiredArgument('create_alert requires event argument')
+
+        cmd = XmlCommand('create_alert')
+        cmd.add_element('name', name)
+
+        conditions = cmd.add_element('condition', condition)
+
+        if not condition_data is None:
+            for value, key in condition_data.items():
+                _data = conditions.add_element('data', value)
+                _data.add_element('name', key)
+
+        events = cmd.add_element('event', event)
+
+        if not event_data is None:
+            for value, key in event_data.items():
+                _data = events.add_element('data', value)
+                _data.add_element('name', key)
+
+        methods = cmd.add_element('method', method)
+
+        if not method_data is None:
+            for value, key in method_data.items():
+                _data = methods.add_element('data', value)
+                _data.add_element('name', key)
+
+        if filter_id:
+            cmd.add_element('filter', attrs={'id': filter_id})
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
+
+    def create_asset(self, name, asset_type, comment=None):
+        """Create a new asset
+
+        Arguments:
+            name (str): Name for the new asset
+            asset_type (str): Either 'os' or 'host'
+            comment (str, optional): Comment for the new asset
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if asset_type not in ('host', 'os'):
+            raise InvalidArgument(
+                'create_asset requires asset_type to be either host or os')
+
+        if not name:
+            raise RequiredArgument('create_asset requires name argument')
+
+        cmd = XmlCommand('create_asset')
+        asset = cmd.add_element('asset')
+        asset.add_element('type', asset_type)
+        asset.add_element('name', name)
+
+        if comment:
+            asset.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
+
+    def create_config(self, name, copy):
+        """Create a new scan config from an existing one
+
+        Arguments:
+            name (str): Name of the new scan config
+            copy (str): UUID of the existing scan config
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_config requires name argument')
+
+        if not copy:
+            raise RequiredArgument('create_config requires copy argument')
+
+        cmd = XmlCommand('create_config')
+        cmd.add_element('copy', copy)
+        cmd.add_element('name', name)
+        return self._send_xml_command(cmd)
+
+    def create_credential(self, name, comment=None, copy=None,
+                          allow_insecure=False, certificate=None,
+                          key_phrase=None, private_key=None, login=None,
+                          password=None, auth_algorithm=None, community=None,
+                          privacy_algorithm=None, privacy_password=None,
+                          credential_type=None):
+        """Create a new credential
+
+        Arguments:
+            name (str): Name of the new credential
+            comment (str, optional): Comment for the credential
+            copy (str, optional): UUID of credential to clone from
+            allow_insecure (boolean, optional): Whether to allow insecure use of
+                the credential
+            certificate (str, optional): Certificate for the credential
+            key_phrase (str, optional): Key passphrase for the private key
+            private_key (str, optional): Private key to use for login
+            login (str, optional): Username for the credential
+            password (str, optional): Password for the credential
+            community (str, optional): The SNMP community
+            privacy_alogorithm (str, optional): The SNMP privacy algorithm,
+                either aes or des.
+            privacy_password (str, optional): The SNMP privacy password
+            credential_type (str, optionla): The credential type. One of 'cc',
+                'snmp', 'up', 'usk'
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_credential requires name argument')
+
+        cmd = XmlCommand('create_credential')
+        cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if allow_insecure:
+            cmd.add_element('allow_insecure', '1')
+
+        if certificate:
+            cmd.add_element('certificate', certificate)
+
+        if not key_phrase is None and private_key:
+            _xmlkey = cmd.add_element('key')
+            _xmlkey.add_element('phrase', key_phrase)
+            _xmlkey.add_element('private', private_key)
+
+        if login:
+            cmd.add_element('login', login)
+
+        if password:
+            cmd.add_element('password', password)
+
+        if auth_algorithm:
+            if auth_algorithm not in ('md5', 'sha1'):
+                raise InvalidArgument(
+                    'create_credential requires auth_algorithm to be either '
+                    'md5 or sha1')
+            cmd.add_element('auth_algorithm', auth_algorithm)
+
+        if community:
+            cmd.add_element('community', community)
+
+        if privacy_algorithm and privacy_password:
+            if privacy_algorithm not in ('aes', 'des'):
+                raise InvalidArgument(
+                    'create_credential requires algorithm to be either aes or '
+                    'des')
+            _xmlprivacy = cmd.add_element('privacy')
+            _xmlprivacy.add_element('algorithm', privacy_algorithm)
+            _xmlprivacy.add_element('password', privacy_password)
+
+        if credential_type:
+            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
+                raise InvalidArgument(
+                    'create_credential requires type to be either cc, snmp, up '
+                    ' or usk')
+            cmd.add_element('type', credential_type)
+
+        return self._send_xml_command(cmd)
 
     def create_filter(self, name, make_unique=False, filter_type=None,
                       comment=None, term=None, copy=None):
@@ -231,23 +460,227 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_group(self, name, **kwargs):
-        cmd = self._generator.create_group_command(name, kwargs)
-        return self.send_command(cmd)
+    def create_group(self, name, comment=None, copy=None, special=False,
+                     users=None):
+        """Create a new group
 
-    # TODO: Create notes with comment returns bogus element. Research
-    def create_note(self, text, nvt_oid, **kwargs):
-        cmd = self._generator.create_note_command(text, nvt_oid, kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            name (str): Name of the new group
+            comment (str, optional): Comment for the group
+            copy (str, optional): UUID of group to clone from
+            special (boolean, optional): Create permission giving members full
+                access to each other's entities
+            users (list, optional): List of user names to be in the group
 
-    def create_override(self, text, nvt_oid, **kwargs):
-        cmd = self._generator.create_override_command(text, nvt_oid, kwargs)
-        return self.send_command(cmd)
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_group requires a name argument')
 
-    def create_permission(self, name, subject_id, permission_type, **kwargs):
-        cmd = self._generator.create_permission_command(
-            name, subject_id, permission_type, kwargs)
-        return self.send_command(cmd)
+        cmd = XmlCommand('create_group')
+        cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if special:
+            _xmlspecial = cmd.add_element('specials')
+            _xmlspecial.add_element('full')
+
+        if users:
+            cmd.add_element('users', ', '.join(users))
+
+        return self._send_xml_command(cmd)
+
+    def create_note(self, text, nvt_oid, active=None, comment=None, copy=None,
+                    hosts=None, result_id=None, severity=None, task_id=None,
+                    threat=None, port=None):
+        """Create a new note
+
+        Arguments:
+            text (str): Text of the new note
+            nvt_id (str): OID of the nvt to which note applies
+            active (int, optional): Seconds note will be active. -1 on
+                always, 0 off
+            comment (str, optional): Comment for the note
+            copy (str, optional): UUID of existing note to clone from
+            hosts (str, optional): A textual list of hosts
+            port (str, optional): Port ot which the note applies
+            result_id (str, optional): UUID of a result to which note applies
+            severity (decimal, optional): Severity to which note applies
+            task_id (str, optional): UUID of task to which note applies
+            threat (str, optional): Threat level to which note applies. Will be
+                converted to severity
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not text:
+            raise RequiredArgument('create_note requires a text argument')
+
+        if not nvt_oid:
+            raise RequiredArgument('create_note requires a nvt_oid argument')
+
+        cmd = XmlCommand('create_note')
+        cmd.add_element('text', text)
+        cmd.add_element('nvt', attrs={"oid": nvt_oid})
+
+        if not active is None:
+            cmd.add_element('active', str(active))
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if hosts:
+            cmd.add_element('hosts', hosts)
+
+        if port:
+            cmd.add_element('port', port)
+
+        if result_id:
+            cmd.add_element('result', attrs={'id': result_id})
+
+        if severity:
+            cmd.add_element('severity', severity)
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+
+        if threat:
+            cmd.add_element('threat', threat)
+
+        return self._send_xml_command(cmd)
+
+    def create_override(self, text, nvt_oid, active=None, copy=None, hosts=None,
+                        port=None, result_id=None, severity=None, comment=None,
+                        new_severity=None, task_id=None, threat=None,
+                        new_threat=None):
+        """Create a new override
+
+        Arguments:
+            text (str): Text of the new override
+            nvt_id (str): OID of the nvt to which override applies
+            active (int, optional): Seconds override will be active. -1 on
+                always, 0 off
+            comment (str, optional): Comment for the override
+            copy (str, optional): UUID of existing override to clone from
+            hosts (str, optional): A textual list of hosts
+            port (str, optional): Port ot which the override applies
+            result_id (str, optional): UUID of a result to which override
+                applies
+            severity (decimal, optional): Severity to which override applies
+            new_severity (decimal, optional): New severity for result
+            task_id (str, optional): UUID of task to which override applies
+            threat (str, optional): Threat level to which override applies. Will
+                be converted to severity
+            new_threat (str, optional): New threat level for result, will be
+                converted to a new_severity
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not text:
+            raise RequiredArgument('create_override requires a text argument')
+
+        if not nvt_oid:
+            raise RequiredArgument('create_override requires a nvt_oid '
+                                   'argument')
+
+        cmd = XmlCommand('create_override')
+        cmd.add_element('text', text)
+        cmd.add_element('nvt', attrs={'oid': nvt_oid})
+
+        if active:
+            cmd.add_element('active', active)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if hosts:
+            cmd.add_element('hosts', hosts)
+
+        if port:
+            cmd.add_element('port', port)
+
+        if result_id:
+            cmd.add_element('result', attrs={'id': result_id})
+
+        if severity:
+            cmd.add_element('severity', severity)
+
+        if new_severity:
+            cmd.add_element('new_severity', new_severity)
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+
+        if threat:
+            cmd.add_element('threat', threat)
+
+        if new_threat:
+            cmd.add_element('new_threat', new_threat)
+
+        return self._send_xml_command(cmd)
+
+    def create_permission(self, name, subject_id, subject_type,
+                          resource_id=None, resource_type=None, copy=None,
+                          comment=None):
+        """Create a new permission
+
+        Arguments:
+            name (str): Name of the new permission
+            subject_id (str): UUID of subject to whom the permission is granted
+            subject_type (str): Type of the subject user, group or role
+            comment (str, optional): Comment for the permission
+            resource_id (str, optional): UUID of entity to which the permission
+                applies
+            resource_type (str, optional): Type of the resource. For Super
+                permissions user, group or role
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_permission requires a name argument')
+
+        if not subject_id:
+            raise RequiredArgument(
+                'create_permission requires a subject_id argument')
+
+        if subject_type not in ('user', 'group', 'role'):
+            raise InvalidArgument(
+                'create_permission requires subject_type to be either user, '
+                'group or role')
+
+        cmd = XmlCommand('create_permission')
+        cmd.add_element('name', name)
+
+        _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
+        _xmlsubject.add_element('type', type)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if resource_id and resource_type:
+            _xmlresource = cmd.add_element('resource',
+                                           attrs={'id': resource_id})
+            _xmlresource.add_element('type', resource_type)
+
+
+        return self._send_xml_command(cmd)
 
     def create_port_list(self, name, port_range, **kwargs):
         cmd = self._generator.create_port_list_command(name, port_range, kwargs)

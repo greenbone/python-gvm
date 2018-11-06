@@ -145,14 +145,15 @@ class Osp(GvmProtocol):
 
         return self.send_command(cmd.to_string())
 
-    def start_scan(self, scan_id=None, parallel='1', target=None,
+    def start_scan(self, scan_id=None, parallel=1, target=None,
                    ports=None, targets=None, scanner_params=None,
                    vt_selection=None):
         """Start a new scan.
 
         Args:
             scan_id (uuid, optinal): Identifier for a running scan.
-            parallel (str, optional): Default '1'.
+            parallel (int, optional): Number of parallel scanned targets.
+                Default 1.
             target (dict, optional): Deprecated. Please use targets instead.
             targets (list, optional): List of dictionaries. See example.
             ports (str, optional): Deprecated. Ports to use for target
@@ -206,7 +207,7 @@ class Osp(GvmProtocol):
         if scan_id:
             cmd.set_attribute('scan_id', scan_id)
 
-        cmd.set_attribute('parallel', parallel)
+        cmd.set_attribute('parallel', str(parallel))
 
         # Add <scanner_params> even if it is empty, since it is mandatory
         _xmlscanparams = cmd.add_element('scanner_params')

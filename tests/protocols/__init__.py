@@ -21,18 +21,9 @@ from tests import CallableMock
 
 class MockConnection:
 
-    @CallableMock
-    def connect(self):
-        pass
-
-    @CallableMock
-    def send(self, data):
-        pass
-
-    @CallableMock
-    def read(self):
-        return '<foo_response status="200"/>'
-
-    @CallableMock
-    def disconnect(self):
-        pass
+    def __init__(self):
+        self.connect = CallableMock('connect')
+        self.disconnect = CallableMock('disconnect')
+        self.send = CallableMock('send')
+        self.read = CallableMock('read')
+        self.read.return_value('<foo_response status="200"/>')
