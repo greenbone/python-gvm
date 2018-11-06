@@ -715,10 +715,45 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_port_range(self, port_list_id, start, end, port_range_type,
-                          comment=''):
-        cmd = self._generator.create_port_range_command(
-            port_list_id, start, end, port_range_type, comment)
-        return self.send_command(cmd)
+                          comment=None):
+        """Create new port range
+
+        Arguments:
+            port_list_id (str): UUID of the port list to which to add the range
+            start (int): The first port in the range
+            end (int): The last port in the range
+            type (str): The type of the ports: TCP, UDP, ...
+            comment (str, optional): Comment for the port range
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not port_list_id:
+            raise RequiredArgument('create_port_range requires '
+                                   'a port_list_id argument')
+
+        if not port_range_type:
+            raise RequiredArgument(
+                'create_port_range requires a port_range_type argument')
+
+        if not start:
+            raise RequiredArgument(
+                'create_port_range requires a start argument')
+
+        if not end:
+            raise RequiredArgument(
+                'create_port_range requires a end argument')
+
+        cmd = XmlCommand('create_port_range')
+        cmd.add_element('port_list', attrs={'id': port_list_id})
+        cmd.add_element('start', start)
+        cmd.add_element('end', end)
+        cmd.add_element('type', port_range_type)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
 
     def create_report(self, report_xml_string, **kwargs):
         cmd = self._generator.create_report_command(report_xml_string, kwargs)
