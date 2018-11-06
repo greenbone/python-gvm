@@ -830,11 +830,57 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_scanner(self, name, host, port, scanner_type, ca_pub,
-                       credential_id, **kwargs):
-        cmd = self._generator.create_scanner_command(name, host, port,
-                                                     scanner_type, ca_pub,
-                                                     credential_id, kwargs)
-        return self.send_command(cmd)
+                       credential_id, copy=None, comment=None):
+        """Create a new role
+
+        Arguments:
+            name (str): Name of the scanner
+            host (str): The host of the scanner
+            port (str): The port of the scanner
+            scanner_type (str): The type of the scanner
+            ca_pub (str): Certificate of CA to verify scanner certificate
+            credential_id (str): UUID of client certificate credential for the
+                scanner
+            copy (str, optional): UUID of existing scanner to clone from
+            comment (str, optional): Comment for the scanner
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_scanner requires a name argument')
+
+        if not host:
+            raise RequiredArgument('create_scanner requires a host argument')
+
+        if not port:
+            raise RequiredArgument('create_scanner requires a port argument')
+
+        if not type:
+            raise RequiredArgument('create_scanner requires a scanner_type '
+                                   'argument')
+        if not ca_pub:
+            raise RequiredArgument('create_scanner requires a ca_pub argument')
+
+        if not credential_id:
+            raise RequiredArgument('create_scanner requires a credential_id '
+                                   'argument')
+
+        cmd = XmlCommand('create_scanner')
+        cmd.add_element('name', name)
+        cmd.add_element('host', host)
+        cmd.add_element('port', port)
+        cmd.add_element('type', scanner_type)
+        cmd.add_element('ca_pub', ca_pub)
+        cmd.add_element('credential', attrs={'id': str(credential_id)})
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        return self._send_xml_command(cmd)
 
     def create_schedule(self, name, **kwargs):
         cmd = self._generator.create_schedule_command(name, kwargs)

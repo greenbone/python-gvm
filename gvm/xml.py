@@ -65,40 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_scanner_command(self, name, host, port, type, ca_pub,
-                               credential_id, kwargs):
-        """Generates xml string for create scanner on gvmd."""
-        if not name:
-            raise ValueError('create_scanner requires a name element')
-        if not host:
-            raise ValueError('create_scanner requires a host element')
-        if not port:
-            raise ValueError('create_scanner requires a port element')
-        if not type:
-            raise ValueError('create_scanner requires a type element')
-        if not ca_pub:
-            raise ValueError('create_scanner requires a ca_pub element')
-        if not credential_id:
-            raise ValueError('create_scanner requires a credential_id element')
-
-        cmd = XmlCommand('create_scanner')
-        cmd.add_element('name', name)
-        cmd.add_element('host', host)
-        cmd.add_element('port', port)
-        cmd.add_element('type', type)
-        cmd.add_element('ca_pub', ca_pub)
-        cmd.add_element('credential', attrs={'id': str(credential_id)})
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        return cmd.to_string()
-
     def create_schedule_command(self, name, kwargs):
         """Generates xml string for create schedule on gvmd."""
         if not name:
