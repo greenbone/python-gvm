@@ -26,6 +26,30 @@ jobs:
           name: Install python-gvm
           command: |
             pipenv install .
+  docs:
+    docker:
+      - image: circleci/python:3.6
+        environment:
+            PIPENV_VENV_IN_PROJECT: true
+    working_directory: ~/repo
+    steps:
+      - checkout
+      # Download and cache dependencies
+      - restore_cache:
+          keys:
+            - v1-dependencies-{{ checksum "Pipfile.lock" }}
+            # fallback to using the latest cache if no exact match is found
+            - v1-dependencies-
+      - run:
+          name: Install dependencies
+          command: pipenv install --dev
+      - save_cache:
+          paths:
+            - ./.venv
+          key: v1-dependencies-{{ checksum "Pipfile.lock" }}
+      - run:
+          name: Build docs
+          command: pipenv run make -C docs html
   test:
     docker:
       - image: circleci/python:3.6
@@ -64,3 +88,4 @@ workflows:
     jobs:
       - build
       - test
+      - docs
