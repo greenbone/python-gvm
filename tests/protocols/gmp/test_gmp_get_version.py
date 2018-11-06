@@ -16,22 +16,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# pylint can't read decorators => disable member checks
+# pylint: disable=no-member
+
 import unittest
 
-from gvm.xml import _GmpCommandFactory as GmpCommandFactory
+from gvm.protocols.gmpv7 import Gmp
 
+from .. import MockConnection
 
-class GMPGetVersionCommandTestCase(unittest.TestCase):
+class GmpGetVersionCommandTestCase(unittest.TestCase):
+
     def setUp(self):
-        self.gmp = GmpCommandFactory()
-
-    def tearDown(self):
-        pass
+        self.connection = MockConnection()
+        self.gmp = Gmp(self.connection)
 
     def test_get_version(self):
-        cmd = self.gmp.get_version_command()
+        self.gmp.get_version()
 
-        self.assertEqual('<get_version/>', cmd)
+        self.connection.connect.has_been_called()
+        self.connection.read.has_been_called()
+        self.connection.send.has_been_called()
+        self.connection.send.has_been_called_with('<get_version/>')
 
 
 if __name__ == '__main__':

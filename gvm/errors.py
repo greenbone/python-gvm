@@ -21,6 +21,15 @@ Module for GVM errors
 
 
 class GvmError(Exception):
-    """A exception for gvm errors
+    """An exception for gvm errors
     """
     pass
+
+
+class InvalidArgument(GvmError):
+    """Raised if an invalid argument/parameter is passed
+    """
+
+class RequiredArgument(GvmError):
+    """Raised if a required argument/parameter is missing
+    """

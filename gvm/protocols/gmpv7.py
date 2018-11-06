@@ -22,14 +22,39 @@ import logging
 
 from lxml import etree
 
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
-from gvm.xml import _GmpCommandFactory as GmpCommandFactory
+from gvm.xml import _GmpCommandFactory as GmpCommandFactory, XmlCommand
 
 from .base import GvmProtocol
 
 logger = logging.getLogger(__name__)
 
 PROTOCOL_VERSION = (7,)
+
+FILTER_TYPES = [
+    'agent',
+    'alert',
+    'asset',
+    'config',
+    'credential',
+    'filter',
+    'group',
+    'note',
+    'override',
+    'permission',
+    'port_list',
+    'report',
+    'report_format',
+    'result',
+    'role',
+    'schedule',
+    'secinfo',
+    'tag',
+    'target',
+    'task',
+    'user',
+]
 
 
 def _check_command_status(xml):
@@ -163,10 +188,45 @@ class Gmp(GvmProtocol):
         cmd = self._generator.create_credential_command(name, kwargs)
         return self.send_command(cmd)
 
-    def create_filter(self, name, make_unique, **kwargs):
-        cmd = self._generator.create_filter_command(name, make_unique,
-                                                    kwargs)
-        return self.send_command(cmd)
+    def create_filter(self, name, make_unique=False, filter_type=None,
+                      comment=None, term=None, copy=None):
+        """Create a new filter
+
+        Arguments:
+            name (str): Name of the new filter
+            make_unique (Boolean):
+            filter_type (str): Filter for entity type
+            comment (str): Comment for the filter
+            term (str): Filter term e.g. 'name=foo'
+            copy (str): UUID of an existing filter
+        """
+        if not name:
+            raise RequiredArgument('create_filter requires a name argument')
+
+        cmd = XmlCommand('create_filter')
+        _xmlname = cmd.add_element('name', name)
+        if make_unique:
+            _xmlname.add_element('make_unique', '1')
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        # TODO: Move copy into an extra method
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if term:
+            cmd.add_element('term', term)
+
+        if filter_type:
+            filter_type = filter_type.lower()
+            if filter_type not in FILTER_TYPES:
+                raise InvalidArgument(
+                    'create_filter requires type to be one of {0} but '
+                    'was {1}'.format(', '.join(FILTER_TYPES), filter_type))
+            cmd.add_element('type', filter_type)
+
+        return self._send_xml_command(cmd)
 
     def create_group(self, name, **kwargs):
         cmd = self._generator.create_group_command(name, kwargs)

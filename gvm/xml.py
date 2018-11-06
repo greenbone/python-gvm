@@ -20,30 +20,6 @@ import defusedxml.lxml as secET
 
 from lxml import etree
 
-FILTER_NAMES = [
-    'Agent',
-    'Alert',
-    'Asset',
-    'Config',
-    'Credential',
-    'Filter',
-    'Group',
-    'Note',
-    'Override',
-    'Permission',
-    'Port List',
-    'Report',
-    'Report Format',
-    'Result',
-    'Role',
-    'Schedule',
-    'SecInfo',
-    'Tag',
-    'Target',
-    'Task',
-    'User',
-]
-
 class XmlCommandElement:
 
     def __init__(self, element):
@@ -260,37 +236,6 @@ class _GmpCommandFactory:
                 raise ValueError('create_credential requires type '
                                  'to be either cc, snmp, up or usk')
             cmd.add_element('type', cred_type)
-
-        return cmd.to_string()
-
-    def create_filter_command(self, name, make_unique, kwargs):
-        """Generates xml string for create filter on gvmd."""
-
-        cmd = XmlCommand('create_filter')
-        _xmlname = cmd.add_element('name', name)
-        if make_unique:
-            _xmlname.add_element('make_unique', '1')
-        else:
-            _xmlname.add_element('make_unique', '0')
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        term = kwargs.get('term', '')
-        if term:
-            cmd.add_element('term', term)
-
-        filter_type = kwargs.get('type', '')
-        if filter_type:
-            if filter_type not in FILTER_NAMES:
-                raise ValueError('create_filter requires type '
-                                 'to be either cc, snmp, up or usk')
-            cmd.add_element('type', filter_type)
 
         return cmd.to_string()
 

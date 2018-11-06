@@ -16,36 +16,67 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# pylint can't read decorators => disable member checks
+# pylint: disable=no-member
+
 import unittest
 
-from gvm.xml import _GmpCommandFactory as GmpCommandFactory, FILTER_NAMES
+from gvm.errors import InvalidArgument
+from gvm.protocols.gmpv7 import Gmp, FILTER_TYPES
 
+from .. import MockConnection
 
 class GMPCreateFilterCommandTestCase(unittest.TestCase):
 
     FILTER_NAME = "special filter"
 
     def setUp(self):
-        self.gmp = GmpCommandFactory()
+        self.connection = MockConnection()
+        self.gmp = Gmp(self.connection)
 
-    def test_all_available_filters_correct_cmd(self):
-        for filter_type in FILTER_NAMES:
-            cmd = self.gmp.create_filter_command(
-                name=self.FILTER_NAME, make_unique=True,
-                kwargs={
-                    'term': 'sort-reverse=threat result_hosts_only=1 '
-                            'notes=1 overrides=1 levels=hml first=1 rows=1000',
-                    'type': filter_type
-                })
+    def test_all_available_filters_types_correct(self):
+        for filter_type in FILTER_TYPES:
+            self.gmp.create_filter(
+                name=self.FILTER_NAME,
+                term='sort-reverse=threat first=1 rows=1000',
+                filter_type=filter_type,
+            )
 
-            self.assertEqual(
+            self.connection.send.has_been_called_with(
                 '<create_filter>'
-                '<name>{0}<make_unique>1</make_unique></name>'
-                '<term>sort-reverse=threat result_hosts_only=1 notes=1 '
-                'overrides=1 levels=hml first=1 rows=1000</term>'
+                '<name>{0}</name>'
+                '<term>sort-reverse=threat first=1 rows=1000</term>'
                 '<type>{1}</type>'
                 '</create_filter>'.format(self.FILTER_NAME, filter_type),
-                cmd)
+            )
+
+    def test_invalid_filters_type(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_filter(
+                name=self.FILTER_NAME,
+                term='sort-reverse=threat result_hosts_only=1 '
+                     'notes=1 overrides=1 levels=hml first=1 rows=1000',
+                filter_type='foo',
+            )
+
+    def test_all_arguments(self):
+        self.gmp.create_filter(
+            name=self.FILTER_NAME, make_unique=True,
+            term='sort-reverse=threat result_hosts_only=1 '
+                 'notes=1 overrides=1 levels=hml first=1 rows=1000',
+            filter_type='task',
+            comment='foo',
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_filter>'
+            '<name>{0}<make_unique>1</make_unique></name>'
+            '<comment>foo</comment>'
+            '<term>sort-reverse=threat result_hosts_only=1 notes=1 '
+            'overrides=1 levels=hml first=1 rows=1000</term>'
+            '<type>task</type>'
+            '</create_filter>'.format(self.FILTER_NAME),
+        )
 
 
 if __name__ == '__main__':
