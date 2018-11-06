@@ -276,12 +276,12 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_asset(self, name, asset_type, comment=''):
+    def create_asset(self, name, asset_type, comment=None):
         """Create a new asset
 
         Arguments:
             name (str): Name for the new asset
-            asset_type (str): 'os' or 'host'
+            asset_type (str): Either 'os' or 'host'
             comment (str, optional): Comment for the new asset
         """
         if asset_type not in ('host', 'os'):
