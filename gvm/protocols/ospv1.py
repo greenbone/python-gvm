@@ -88,10 +88,12 @@ class Osp(GvmProtocol):
     def get_scans(self, scan_id=None, details=True, pop_results=False):
         """Get the stored scans.
 
-         Args:
-            scan_id (uuid): Identifier for a scan.
-            details (boolean): Whether to get full scan reports.
-            pop_results (boolean) Whether to remove the fetched results.
+        Arguments:
+            scan_id (str, optional): UUID identifier for a scan.
+            details (boolean, optional): Whether to get full scan reports.
+                Default: True
+            pop_results (boolean, optional) Whether to remove the fetched
+                results. Default: False
 
         Returns:
             str: Response from server.
@@ -113,8 +115,10 @@ class Osp(GvmProtocol):
 
     def delete_scan(self, scan_id=None):
         """Delete a finished scan.
-        Args:
-            scan_id (uuid): Identifier for a finished scan.
+
+        Arguments:
+            scan_id (str): UUID identifier for a finished scan.
+
         Returns:
             str: Response from server.
         """
@@ -134,8 +138,9 @@ class Osp(GvmProtocol):
         """Return information about vulnerability tests,
         if offered by scanner.
 
-        Args:
-            vt_id (uuid): Identifier for a vulnerability test.
+        Arguments:
+            vt_id (str, optional): UUID identifier for a vulnerability test.
+
         Returns:
             str: Response from server.
         """
@@ -150,8 +155,8 @@ class Osp(GvmProtocol):
                    vt_selection=None):
         """Start a new scan.
 
-        Args:
-            scan_id (uuid, optional): Identifier for a running scan.
+        Arguments:
+            scan_id (str, optinal): UUID identifier for a running scan.
             parallel (int, optional): Number of parallel scanned targets.
                 Default 1.
             target (dict, optional): Deprecated. Please use targets instead.
@@ -247,7 +252,8 @@ class Osp(GvmProtocol):
         """Stop a currently running scan.
 
         Args:
-            scan_id (uuid): Identifier for a running scan.
+            scan_id (str, optional): UUID identifier for a running scan.
+
         Returns:
             str: Response from server.
         """
