@@ -460,9 +460,41 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_group(self, name, **kwargs):
-        cmd = self._generator.create_group_command(name, kwargs)
-        return self.send_command(cmd)
+    def create_group(self, name, comment=None, copy=None, special=False,
+                     users=None):
+        """Create a new group
+
+        Arguments:
+            name (str): Name of the new group
+            comment (str, optional): Comment for the group
+            copy (str, optional): UUID of group to clone from
+            special (boolean, optional): Create permission giving members full
+                access to each other's entities
+            users (list, optional): List of user names to be in the group
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_group requires a name argument')
+
+        cmd = XmlCommand('create_group')
+        cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if special:
+            _xmlspecial = cmd.add_element('specials')
+            _xmlspecial.add_element('full')
+
+        if users:
+            cmd.add_element('users', ', '.join(users))
+
+        return self._send_xml_command(cmd)
 
     # TODO: Create notes with comment returns bogus element. Research
     def create_note(self, text, nvt_oid, **kwargs):

@@ -65,31 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_group_command(self, name, kwargs):
-        """Generates xml string for create group on gvmd."""
-
-        cmd = XmlCommand('create_group')
-        cmd.add_element('name', name)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        special = kwargs.get('special', '')
-        if special:
-            _xmlspecial = cmd.add_element('specials')
-            _xmlspecial.add_element('full')
-
-        users = kwargs.get('users', '')
-        if users:
-            cmd.add_element('users', users)
-
-        return cmd.to_string()
-
     def create_note_command(self, text, nvt_oid, kwargs):
         """Generates xml string for create note on gvmd."""
 
