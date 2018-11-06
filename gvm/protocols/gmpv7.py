@@ -150,10 +150,19 @@ class Gmp(GvmProtocol):
         Returns:
             any, str by default: Transformed response from server.
         """
-        cmd = self._generator.create_authenticate_command(
-            username=username, password=password)
+        cmd = XmlCommand('authenticate')
 
-        self._send(cmd)
+        if not username:
+            raise RequiredArgument('authenticate requires username')
+
+        if not password:
+            raise RequiredArgument('authenticate requires password')
+
+        credentials = cmd.add_element('credentials')
+        credentials.add_element('username', username)
+        credentials.add_element('password', password)
+
+        self._send(cmd.to_string())
         response = self._read()
 
         if _check_command_status(response):

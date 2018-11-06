@@ -139,24 +139,6 @@ class _GmpCommandFactory:
 
         return cmd.to_string()
 
-    def create_authenticate_command(self, username, password):
-        """Generates string for authentication on gvmd
-
-        Creates the gmp authentication xml string.
-        Inserts the username and password into it.
-
-        Keyword Arguments:
-            username {str} -- Username for GVM User
-            password {str} -- Password for GVM User
-        """
-        cmd = XmlCommand('authenticate')
-
-        credentials = cmd.add_element('credentials')
-        credentials.add_element('username', username)
-        credentials.add_element('password', password)
-
-        return cmd.to_string()
-
     def create_config_command(self, copy_id, name):
         """Generates xml string for create config on gvmd."""
         cmd = XmlCommand('create_config')
