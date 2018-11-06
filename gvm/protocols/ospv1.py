@@ -152,7 +152,8 @@ class Osp(GvmProtocol):
 
         Args:
             scan_id (uuid, optinal): Identifier for a running scan.
-            parallel (int, optional): Default 1.
+            parallel (int, optional): Number of parallel scanned targets.
+                Default 1.
             target (dict, optional): Deprecated. Please use targets instead.
             targets (list, optional): List of dictionaries. See example.
             ports (str, optional): Deprecated. Ports to use for target
