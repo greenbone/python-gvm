@@ -29,3 +29,7 @@ class GvmError(Exception):
 class InvalidArgument(GvmError):
     """Raised if an invalid argument/parameter is passed
     """
+
+class RequiredArgument(GvmError):
+    """Raised if a required argument/parameter is missing
+    """
