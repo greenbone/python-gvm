@@ -1519,10 +1519,21 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_alert_command(self, alert_id, name=None, comment=None,
+    def modify_alert(self, alert_id, name=None, comment=None,
                              filter_id=None, event= None, condition=None,
                              method=None):
-        """Generates xml string for modify alert on gvmd."""
+        """Generates xml string for modify alert on gvmd.
+
+        Arguments:
+            alert_id (int) ID of the alert to be modified.
+            name (str): Name of the Alert.
+            condition (str): The condition that must be satisfied for the alert
+                to occur.
+            event (str): The event that must happen for the alert to occur
+            method (str): The method by which the user is alerted
+            filter_id (str, optional): Filter to apply when executing alert
+            comment (str, optional): Comment for the alert
+        """
 
         if not alert_id:
             raise RequiredArgument('modify_alert requires an alert_id argument')
