@@ -1589,9 +1589,25 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_auth(self, group_name, auth_conf_settings):
-        cmd = self._generator.modify_auth_command(group_name,
-                                                  auth_conf_settings)
-        return self.send_command(cmd)
+        """Generates xml string for modify auth on gvmd.
+        Arguments:
+            group_name (str) Name of the group to be modified.
+            auth_conf_settings (dict): The new auth config.
+        """
+        if not group_name:
+            raise RequiredArgument('modify_auth requires a group_name argument')
+        if not auth_conf_settings:
+            raise RequiredArgument('modify_auth requires an '
+                                   'auth_conf_settings argument')
+        cmd = XmlCommand('modify_auth')
+        _xmlgroup = cmd.add_element('group', attrs={'name': str(group_name)})
+
+        for key, value in auth_conf_settings.items():
+            _xmlauthconf = _xmlgroup.add_element('auth_conf_setting')
+            _xmlauthconf.add_element('key', key)
+            _xmlauthconf.add_element('value', value)
+
+        return self._send_xml_command(cmd)
 
     def modify_config(self, selection, **kwargs):
         cmd = self._generator.modify_config_command(selection, kwargs)
