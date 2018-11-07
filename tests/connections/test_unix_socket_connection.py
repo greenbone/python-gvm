@@ -52,11 +52,6 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         self.sockserv.server_close()
         os.unlink(self.socketname)
 
-    def test_unix_socket_connection_connect(self):
-        self.connection = UnixSocketConnection(self.socketname, DEFAULT_TIMEOUT)
-        self.connection.connect()
-        self.connection.disconnect()
-
     def test_unix_socket_connection_connect_read(self):
         self.connection = UnixSocketConnection(self.socketname, DEFAULT_TIMEOUT)
         self.connection.connect()
