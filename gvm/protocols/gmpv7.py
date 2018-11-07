@@ -519,8 +519,8 @@ class Gmp(GvmProtocol):
                 always, 0 off
             comment (str, optional): Comment for the note
             copy (str, optional): UUID of existing note to clone from
-            hosts (str, optional): A textual list of hosts
-            port (str, optional): Port ot which the note applies
+            hosts (list, optional): A list of hosts addresses
+            port (str, optional): Port to which the note applies
             result_id (str, optional): UUID of a result to which note applies
             severity (decimal, optional): Severity to which note applies
             task_id (str, optional): UUID of task to which note applies
@@ -550,7 +550,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('copy', copy)
 
         if hosts:
-            cmd.add_element('hosts', hosts)
+            cmd.add_element('hosts', ', '.join(hosts))
 
         if port:
             cmd.add_element('port', port)
@@ -582,7 +582,7 @@ class Gmp(GvmProtocol):
                 always, 0 off
             comment (str, optional): Comment for the override
             copy (str, optional): UUID of existing override to clone from
-            hosts (str, optional): A textual list of hosts
+            hosts (list, optional): A list of host addresses
             port (str, optional): Port ot which the override applies
             result_id (str, optional): UUID of a result to which override
                 applies
@@ -618,7 +618,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('copy', copy)
 
         if hosts:
-            cmd.add_element('hosts', hosts)
+            cmd.add_element('hosts', ', '.join(hosts))
 
         if port:
             cmd.add_element('port', port)
@@ -1059,8 +1059,9 @@ class Gmp(GvmProtocol):
                 already exists
             asset_hosts_filter (str, optional): Filter to select target host
                 from assets hosts
-            hosts (str, optional): Hosts to scan
-            exclude_hosts (str, optional): Hosts to exclude from scan
+            hosts (list, optional): List of hosts addresses to scan
+            exclude_hosts (list, optional): List of hosts addresses to exclude
+                from scan
             comment (str, optional): Comment for the target
             copy (str, optional): UUID of an existing target to clone from
             ssh_credential_id (str, optional): UUID of a ssh credential to use
@@ -1096,7 +1097,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('asset_hosts',
                             attrs={'filter': str(asset_hosts_filter)})
         elif hosts:
-            cmd.add_element('hosts', hosts)
+            cmd.add_element('hosts', ', '.join(hosts))
         else:
             raise RequiredArgument('create_target requires either a hosts or '
                                    'an asset_hosts_filter argument')
@@ -1113,7 +1114,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('copy', copy)
 
         if exclude_hosts:
-            cmd.add_element('exclude_hosts', exclude_hosts)
+            cmd.add_element('exclude_hosts', ', '.join(exclude_hosts))
 
         if ssh_credential_id:
             _xmlssh = cmd.add_element('ssh_credential',
