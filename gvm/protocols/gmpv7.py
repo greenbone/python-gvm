@@ -2134,8 +2134,23 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_report(self, report_id, comment):
-        cmd = self._generator.modify_report_format_command(report_id, comment)
-        return self.send_command(cmd)
+        """Generates xml string for modify report on gvmd.
+
+        Arguments:
+            report_id (str): ID of report to modify.
+            comment (str): The comment on the report.
+        """
+        if not report_id:
+            raise RequiredArgument('modify_report requires '
+                                   'a report_id attribute')
+        if not comment_id:
+            raise RequiredArgument('modify_report requires '
+                                   'a comment attribute')
+        cmd = XmlCommand('modify_report')
+        cmd.set_attribute('report_id', report_id)
+        cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
 
     def modify_report_format(self, report_format_id, **kwargs):
         cmd = self._generator.modify_report_format_command(report_format_id,

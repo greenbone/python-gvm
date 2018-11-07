@@ -65,13 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_report_command(self, report_id, comment):
-        """Generates xml string for modify report on gvmd."""
-        cmd = XmlCommand('modify_report')
-        cmd.set_attribute('report_id', report_id)
-        cmd.add_element('comment', comment)
-        return cmd.to_string()
-
     def modify_report_format_command(self, report_format_id, kwargs):
         """Generates xml string for modify report format on gvmd."""
         if len(kwargs) < 1:
