@@ -65,31 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_task_command(self, name, config_id, target_id, scanner_id,
-                            alert_ids=None, comment=''):
-        """Generates xml string for create task on gvmd."""
-
-        if alert_ids is None:
-            alert_ids = []
-        cmd = XmlCommand('create_task')
-        cmd.add_element('name', name)
-        cmd.add_element('comment', comment)
-        cmd.add_element('config', attrs={'id': config_id})
-        cmd.add_element('target', attrs={'id': target_id})
-        cmd.add_element('scanner', attrs={'id': scanner_id})
-
-        #if given the alert_id is wrapped and integrated suitably as xml
-        if len(alert_ids) > 0:
-            if isinstance(alert_ids, str):
-                #if a single id is given as a string wrap it into a list
-                alert_ids = [alert_ids]
-            if isinstance(alert_ids, list):
-                #parse all given alert id's
-                for alert in alert_ids:
-                    cmd.add_element('alert', attrs={'id': str(alert)})
-
-        return cmd.to_string()
-
     def create_user_command(self, name, password, copy='', hosts_allow='0',
                             ifaces_allow='0', role_ids=(), hosts=None,
                             ifaces=None):

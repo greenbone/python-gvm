@@ -1154,12 +1154,85 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_task(self, name, config_id, target_id, scanner_id,
-                    alert_ids=None, comment=''):
-        if alert_ids is None:
-            alert_ids = []
-        cmd = self._generator.create_task_command(
-            name, config_id, target_id, scanner_id, alert_ids, comment)
-        return self.send_command(cmd)
+                    alterable=None, hosts_ordering=None, schedule_id=None,
+                    alert_ids=None, comment=None, schedule_periods=None,
+                    observers=None):
+        """Create a new task
+
+        Arguments:
+            name (str): Name of the task
+            config_id (str): UUID of scan config to use by the task
+            target_id (str): UUID of target to be scanned
+            scanner_id (str): UUID of scanner to use for scanning the target
+            comment (str, optional): Comment for the task
+            alterable (boolean, optional): Wether the task should be alterable
+            alert_ids (list, optional): List of UUIDs for alerts to be applied
+                to the task
+            hosts_ordering (str, optional): The order hosts are scanned in
+            schedule_id (str, optional): UUID of a schedule when the task should
+                be run.
+            schedule_periods (int, optional): A limit to the number of times the
+                task will be scheduled, or 0 for no limit
+            observers (list, optional): List of user names which should be
+                allowed to observe this task
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_task requires a name argument')
+
+        if not config_id:
+            raise RequiredArgument('create_task requires a config_id argument')
+
+        if not target_id:
+            raise RequiredArgument('create_task requires a target_id argument')
+
+        if not scanner_id:
+            raise RequiredArgument('create_task requires a scanner_id argument')
+
+        cmd = XmlCommand('create_task')
+        cmd.add_element('name', name)
+        cmd.add_element('config', attrs={'id': config_id})
+        cmd.add_element('target', attrs={'id': target_id})
+        cmd.add_element('scanner', attrs={'id': scanner_id})
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if not alterable is None:
+            if alterable:
+                cmd.add_element('alterable', '1')
+            else:
+                cmd.add_element('alterable', '0')
+
+        if hosts_ordering:
+            cmd.add_element('hosts_ordering', hosts_ordering)
+
+        if alert_ids:
+            if isinstance(alert_ids, str):
+                logger.warning(
+                    'Please pass a list as alert_ids parameter to create_task. '
+                    'Passing a string is deprecated and will be removed in '
+                    'future.')
+
+                #if a single id is given as a string wrap it into a list
+                alert_ids = [alert_ids]
+            if isinstance(alert_ids, list):
+                #parse all given alert id's
+                for alert in alert_ids:
+                    cmd.add_element('alert', attrs={'id': str(alert)})
+
+        if schedule_id:
+            cmd.add_element('schedule', schedule_id)
+
+            if schedule_periods:
+                cmd.add_element('schedule_periods', str(schedule_periods))
+
+        if observers:
+            cmd.add_element('observers', ' '.join(observers))
+
+        return self._send_xml_command(cmd)
 
     def create_user(self, name, password, copy='', hosts_allow='0',
                     ifaces_allow='0', role_ids=(), hosts=None, ifaces=None):
