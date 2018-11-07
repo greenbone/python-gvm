@@ -503,7 +503,7 @@ class Gmp(GvmProtocol):
             _xmlspecial.add_element('full')
 
         if users:
-            cmd.add_element('users', ', '.join(users))
+            cmd.add_element('users', ','.join(users))
 
         return self._send_xml_command(cmd)
 
