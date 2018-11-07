@@ -1662,7 +1662,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_alert(self, alert_id, name=None, comment=None,
-                     filter_id=None, event= None, event_data=None,
+                     filter_id=None, event=None, event_data=None,
                      condition=None, condition_data=None, method=None,
                      method_data=None):
         """Generates xml string for modify alert on gvmd.
@@ -1670,8 +1670,8 @@ class Gmp(GvmProtocol):
         Arguments:
             alert_id (str) UUID of the alert to be modified.
             name (str, optional): Name of the Alert.
-            condition (str, optional): The condition that must be satisfied for the alert
-                to occur.
+            condition (str, optional): The condition that must be satisfied
+                for the alert to occur.
             condition_data (dict, optional): Data that defines the condition
             event (str, optional): The event that must happen for the alert
                to occur.
@@ -1774,8 +1774,8 @@ class Gmp(GvmProtocol):
         if selection not in ('nvt_pref', 'scan_pref',
                              'family_selection', 'nvt_selection'):
             raise InvalidArgument('selection must be one of nvt_pref, '
-                                   'sca_pref, family_selection or '
-                                   'nvt_selection')
+                                  'sca_pref, family_selection or '
+                                  'nvt_selection')
 
         cmd = XmlCommand('modify_config')
         cmd.set_attribute('config_id', str(config_id))
@@ -1890,10 +1890,10 @@ class Gmp(GvmProtocol):
             _xmlprivacy.add_element('algorithm', privacy_algorithm)
             _xmlprivacy.add_element('password', privacy_password)
 
-        if cred_type:
-            if cred_type not in ('cc', 'snmp', 'up', 'usk'):
+        if credential_type:
+            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
                 raise RequiredArgument('modify_credential requires type '
-                                 'to be either cc, snmp, up or usk')
+                                       'to be either cc, snmp, up or usk')
             cmd.add_element('type', credential_type)
 
         return self._send_xml_command(cmd)
@@ -2012,7 +2012,7 @@ class Gmp(GvmProtocol):
 
     def modify_override(self, override_id, text, active=None, hosts=None,
                         port=None, result_id=None, severity=None,
-                        new_severity=None, task_id=None, threat=None
+                        new_severity=None, task_id=None, threat=None,
                         new_threat=None):
         """Generates xml string for modify override on gvmd.
 
@@ -2087,7 +2087,7 @@ class Gmp(GvmProtocol):
         """
         if not permission_id:
             raise RequiredArgument('modify_permission requires '
-                             'a permission_id element')
+                                   'a permission_id element')
 
         cmd = XmlCommand('modify_permission')
         cmd.set_attribute('permission_id', permission_id)
@@ -2111,7 +2111,7 @@ class Gmp(GvmProtocol):
         if subject:
             subject_id = subject.get('id')
             subject_type = subject.get('type')
-            if not resource_id or not resource_type:
+            if not subject_id or not subject_type:
                 raise InvalidArgument('modify_permission requires a subject '
                                       'dict with id and type members')
             _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
@@ -2151,7 +2151,7 @@ class Gmp(GvmProtocol):
         if not report_id:
             raise RequiredArgument('modify_report requires '
                                    'a report_id attribute')
-        if not comment_id:
+        if not comment:
             raise RequiredArgument('modify_report requires '
                                    'a comment attribute')
         cmd = XmlCommand('modify_report')
