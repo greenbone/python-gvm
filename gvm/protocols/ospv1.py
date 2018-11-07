@@ -258,7 +258,8 @@ class Osp(GvmProtocol):
             str: Response from server.
         """
         if not scan_id:
-            raise ValueError('stop_scan requires a scan_id element')
+            raise RequiredArgument('stop_scan requires a scan_id argument')
+
         cmd = XmlCommand('stop_scan')
         cmd.set_attribute('scan_id', scan_id)
 
