@@ -1235,12 +1235,52 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_user(self, name, password, copy='', hosts_allow='0',
-                    ifaces_allow='0', role_ids=(), hosts=None, ifaces=None):
-        cmd = self._generator.create_user_command(
-            name, password, copy, hosts_allow, ifaces_allow, role_ids, hosts,
-            ifaces)
-        return self.send_command(cmd)
+    def create_user(self, name, password=None, copy=None, hosts=None,
+                    hosts_allow=False, ifaces=None, ifaces_allow=False,
+                    role_ids=None):
+        """Create a new user
+
+        Arguments:
+            name (str): Name of the user
+            password (str, optional): Password of the user
+            copy (str, optinal): UUID of existing user to clone from
+            hosts (list, optional): A list of host addresses (IPs, DNS names)
+            hosts_allow (boolean, optional): If True allow only access to passed
+                hosts otherwise deny access. Default is False for deny hosts.
+            ifaces (list, optional): A list of interface names
+            ifaces_allow (boolean, optional): If True allow only access to
+                passed interfaces otherwise deny access. Default is False for
+                deny interfaces.
+            role_ids (list, optional): A list of role UUIDs for the user
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_user requires a name argument')
+
+        cmd = XmlCommand('create_user')
+        cmd.add_element('name', name)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if password:
+            cmd.add_element('password', password)
+
+        if hosts:
+            cmd.add_element('hosts', ', '.join(hosts),
+                            attrs={'allow': '1' if hosts_allow else '0'})
+
+        if ifaces:
+            cmd.add_element('ifaces', ', '.join(ifaces),
+                            attrs={'allow': '1' if ifaces_allow else '0'})
+
+        if role_ids:
+            for role in role_ids:
+                cmd.add_element('role', attrs={'id': role})
+
+        return self._send_xml_command(cmd)
 
     def delete_agent(self, **kwargs):
         cmd = self._generator.delete_agent_command(kwargs)

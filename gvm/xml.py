@@ -65,32 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_user_command(self, name, password, copy='', hosts_allow='0',
-                            ifaces_allow='0', role_ids=(), hosts=None,
-                            ifaces=None):
-        """Generates xml string for create user on gvmd."""
-        cmd = XmlCommand('create_user')
-        cmd.add_element('name', name)
-
-        if copy:
-            cmd.add_element('copy', copy)
-
-        if password:
-            cmd.add_element('password', password)
-
-        if hosts is not None:
-            cmd.add_element('hosts', hosts, attrs={'allow': str(hosts_allow)})
-
-        if ifaces is not None:
-            cmd.add_element('ifaces', ifaces,
-                            attrs={'allow': str(ifaces_allow)})
-
-        if len(role_ids) > 0:
-            for role in role_ids:
-                cmd.add_element('role', attrs={'allow': str(role)})
-
-        return cmd.to_string()
-
     def modify_agent_command(self, agent_id, name='', comment=''):
         """Generates xml string for modify agent on gvmd."""
         if not agent_id:
