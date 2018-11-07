@@ -1560,8 +1560,22 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_asset(self, asset_id, comment):
-        cmd = self._generator.modify_asset_command(asset_id, comment)
-        return self.send_command(cmd)
+        """Generates xml string for modify asset on gvmd
+
+        Arguments:
+            asset_id (int) ID of the asset to be modified.
+            comment (str, optional): Comment for the asset.
+        """
+         if not asset_id:
+            raise RequiredArgument('modify_asset requires an asset_id argument')
+        if not alert_id:
+            raise RequiredArgument('modify_asset requires a comment argument')
+
+        cmd = XmlCommand('modify_asset')
+        cmd.set_attribute('asset_id', asset_id)
+        cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
 
     def modify_auth(self, group_name, auth_conf_settings):
         cmd = self._generator.modify_auth_command(group_name,

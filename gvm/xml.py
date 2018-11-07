@@ -79,13 +79,6 @@ class _GmpCommandFactory:
 
         return cmd.to_string()
 
-    def modify_asset_command(self, asset_id, comment):
-        """Generates xml string for modify asset on gvmd."""
-        cmd = XmlCommand('modify_asset')
-        cmd.set_attribute('asset_id', asset_id)
-        cmd.add_element('comment', comment)
-        return cmd.to_string()
-
     def modify_auth_command(self, group_name, auth_conf_settings):
         """Generates xml string for modify auth on gvmd."""
         if not group_name:
