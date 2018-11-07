@@ -79,39 +79,6 @@ class _GmpCommandFactory:
 
         return cmd.to_string()
 
-    def modify_filter_command(self, filter_id, kwargs):
-        """Generates xml string for modify filter on gvmd."""
-        if not filter_id:
-            raise ValueError('modify_filter requires a filter_id attribute')
-
-        cmd = XmlCommand('modify_filter')
-        cmd.set_attribute('filter_id', filter_id)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        term = kwargs.get('term', '')
-        if term:
-            cmd.add_element('term', term)
-
-        filter_type = kwargs.get('type', '')
-        if filter_type:
-            if filter_type not in ('cc', 'snmp', 'up', 'usk'):
-                raise ValueError('modify_filter requires type '
-                                 'to be either cc, snmp, up or usk')
-            cmd.add_element('type', filter_type)
-
-        return cmd.to_string()
-
     def modify_group_command(self, group_id, kwargs):
         """Generates xml string for modify group on gvmd."""
         if not group_id:

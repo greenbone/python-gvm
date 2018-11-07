@@ -1746,9 +1746,41 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_filter(self, filter_id, **kwargs):
-        cmd = self._generator.modify_filter_command(filter_id, kwargs)
-        return self.send_command(cmd)
+    def modify_filter(self, filter_id, comment=None, name=None, term=None,
+                      filter_type=None):
+        """Generates xml string for modify filter on gvmd.
+
+        Arguments:
+            comment (str, optional): Comment on filter.
+            name (str, optional): Name of filter.
+            term (str, optional): Filter term.
+            filter_type (str, optional): Resource type filter applies to.
+        """
+        if not filter_id:
+            raise RequiredArgument('modify_filter requires a filter_id '
+                                   'attribute')
+
+        cmd = XmlCommand('modify_filter')
+        cmd.set_attribute('filter_id', filter_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if term:
+            cmd.add_element('term', term)
+
+        if filter_type:
+            filter_type = filter_type.lower()
+            if filter_type not in FILTER_TYPES:
+                raise InvalidArgument(
+                    'modify_filter requires type to be one of {0} but '
+                    'was {1}'.format(', '.join(FILTER_TYPES), filter_type))
+            cmd.add_element('type', filter_type)
+
+        return self._send_xml_command(cmd)
 
     def modify_group(self, group_id, **kwargs):
         cmd = self._generator.modify_group_command(group_id, kwargs)
