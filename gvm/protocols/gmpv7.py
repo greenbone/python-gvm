@@ -1655,10 +1655,96 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_credential(self, credential_id, **kwargs):
-        cmd = self._generator.modify_credential_command(
-            credential_id, kwargs)
-        return self.send_command(cmd)
+    def modify_credential(self, credential_id, name=None, comment=None,
+                          allow_insecure=None, certificate=None,
+                          key_phrase=None, private_key=None, login=None,
+                          password=None, auth_algorithm=None, community=None,
+                          privacy_algorithm=None, privacy_password=None,
+                          credential_type=None):
+        """Generates xml string for modify credential on gvmd.
+
+        Arguments:
+            name (str): Name of the new credential
+            comment (str, optional): Comment for the credential
+            allow_insecure (boolean, optional): Whether to allow insecure use of
+                 the credential
+            certificate (str, optional): Certificate for the credential
+            key_phrase (str, optional): Key passphrase for the private key
+            private_key (str, optional): Private key to use for login
+            login (str, optional): Username for the credential
+            password (str, optional): Password for the credential
+            auth_algorithm (str, optional): The auth_algorithm,
+                either md5 or sha1.
+            community (str, optional): The SNMP community
+            privacy_algorithm (str, optional): The SNMP privacy algorithm,
+                either aes or des.
+            privacy_password (str, optional): The SNMP privacy password
+            credential_type (str, optionla): The credential type. One of 'cc',
+            'snmp', 'up', 'usk'
+        """
+        if not credential_id:
+            raise RequiredArgument('modify_credential requires '
+                             'a credential_id attribute')
+
+        cmd = XmlCommand('modify_credential')
+        cmd.set_attribute('credential_id', credential_id)
+
+        comment = kwargs.get('comment', '')
+        if comment:
+            cmd.add_element('comment', comment)
+
+        name = kwargs.get('name', '')
+        if name:
+            cmd.add_element('name', name)
+
+        allow_insecure = kwargs.get('allow_insecure', '')
+        if allow_insecure:
+            cmd.add_element('allow_insecure', allow_insecure)
+
+        certificate = kwargs.get('certificate', '')
+        if certificate:
+            cmd.add_element('certificate', certificate)
+
+        if key_phrase or private_key:
+            if not key_phrase or not private_key:
+                raise RequiredArgument('modify_credential requires '
+                                       'a key_phrase and private_key arguments')
+            _xmlkey = cmd.add_element('key')
+            _xmlkey.add_element('phrase', key_phrase)
+            _xmlkey.add_element('private', private_key)
+
+        if login:
+            cmd.add_element('login', login)
+
+        if password:
+            cmd.add_element('password', password)
+
+        if auth_algorithm:
+            if auth_algorithm not in ('md5', 'sha1'):
+                raise RequiredArgument('modify_credential requires '
+                                       'auth_algorithm to be either '
+                                       'md5 or sha1')
+            cmd.add_element('auth_algorithm', auth_algorithm)
+
+        if community:
+            cmd.add_element('community', community)
+
+        if privacy_algorithm:
+            if privacy_algorithm not in ('aes', 'des'):
+                raise RequiredArgument('modify_credential requires '
+                                       'privacy_algorithm to be either'
+                                       'aes or des')
+            _xmlprivacy = cmd.add_element('privacy')
+            _xmlprivacy.add_element('algorithm', privacy_algorithm)
+            _xmlprivacy.add_element('password', privacy_password)
+
+        if cred_type:
+            if cred_type not in ('cc', 'snmp', 'up', 'usk'):
+                raise RequiredArgument('modify_credential requires type '
+                                 'to be either cc, snmp, up or usk')
+            cmd.add_element('type', credential_type)
+
+        return self._send_xml_command(cmd)
 
     def modify_filter(self, filter_id, **kwargs):
         cmd = self._generator.modify_filter_command(filter_id, kwargs)
