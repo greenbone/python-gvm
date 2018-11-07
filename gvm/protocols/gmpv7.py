@@ -845,7 +845,7 @@ class Gmp(GvmProtocol):
 
     def create_scanner(self, name, host, port, scanner_type, ca_pub,
                        credential_id, copy=None, comment=None):
-        """Create a new role
+        """Create a new scanner
 
         Arguments:
             name (str): Name of the scanner
