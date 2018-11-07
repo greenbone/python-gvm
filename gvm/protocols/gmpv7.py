@@ -56,6 +56,17 @@ FILTER_TYPES = [
     'user',
 ]
 
+TIME_UNITS = [
+    'second',
+    'minute',
+    'hour',
+    'day',
+    'week',
+    'month',
+    'year',
+    'decade',
+]
+
 
 def _check_command_status(xml):
     """Check gmp response
