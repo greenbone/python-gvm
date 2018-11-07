@@ -1004,10 +1004,45 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_tag(self, name, resource_id, resource_type, **kwargs):
-        cmd = self._generator.create_tag_command(name, resource_id,
-                                                 resource_type, kwargs)
-        return self.send_command(cmd)
+    def create_tag(self, name, resource_id, resource_type, copy=None,
+                   value=None, comment=None, active=None):
+        """Create a new tag
+
+        Arguments:
+            name (str): Name of the tag. A full tag name consisting of namespace
+                and predicate e.g. `foo:bar`.
+            resource_id (str): ID of the resource  the tag is to be attached to.
+            resource_type (str): Entity type the tag is to be attached to
+            copy (str, optional): UUID of existing tag to clone from
+            value (str, optional): Value associated with the tag
+            comment (str, optional): Comment for the tag
+            active (boolean, optional): Whether the tag should be active
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_tag')
+        cmd.add_element('name', name)
+        _xmlresource = cmd.add_element('resource',
+                                       attrs={'id': str(resource_id)})
+        _xmlresource.add_element('type', resource_type)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if value:
+            cmd.add_element('value', value)
+
+        if not active is None:
+            if active:
+                cmd.add_element('active', '1')
+            else:
+                cmd.add_element('active', '0')
+
+        return self._send_xml_command(cmd)
 
     def create_target(self, name, make_unique=False, asset_hosts_filter=None,
                       hosts=None, comment=None, copy=None, exclude_hosts=None,

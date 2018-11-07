@@ -65,33 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_tag_command(self, name, resource_id, resource_type, kwargs):
-        """Generates xml string for create tag on gvmd."""
-
-        cmd = XmlCommand('create_tag')
-        cmd.add_element('name', name)
-        _xmlresource = cmd.add_element('resource',
-                                       attrs={'id': str(resource_id)})
-        _xmlresource.add_element('type', resource_type)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        value = kwargs.get('value', '')
-        if value:
-            cmd.add_element('value', value)
-
-        active = kwargs.get('active', '')
-        if active:
-            cmd.add_element('active', active)
-
-        return cmd.to_string()
-
     def create_task_command(self, name, config_id, target_id, scanner_id,
                             alert_ids=None, comment=''):
         """Generates xml string for create task on gvmd."""
