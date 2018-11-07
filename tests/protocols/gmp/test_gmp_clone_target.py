@@ -15,26 +15,30 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-"""Lastest supported protocols.
 
-This module exposes the lastest supported protocols of gvm.
+import unittest
 
-The provided Gmp class implements the latest `Greenbone Management
-Protocol`_.
-The provided Osp class implements the latest Open Scanner Protocol.
+from gvm.protocols.gmpv7 import Gmp
 
-For details about the possible supported protocol versions please take a look at
-:py:mod:`gvm.protocols`.
+from .. import MockConnection
 
-Exports:
-  - :py:class:`gvm.protocols.gmpv7.Gmp`
-  - :py:class:`gvm.protocols.ospv1.Osp`
+class GmpCloneTargetCommandTestCase(unittest.TestCase):
 
-.. _Greenbone Management Protocol:
-    https://docs.greenbone.net/API/GMP/gmp.html
-"""
+    TARGET_ID = '00000000-0000-0000-0000-000000000000'
 
-from .gmpv7 import Gmp
-from .ospv1 import Osp
+    def setUp(self):
+        self.connection = MockConnection()
+        self.gmp = Gmp(self.connection)
 
-__all__ = ['Gmp', 'Osp']
+    def test_clone(self):
+        self.gmp.clone_target(self.TARGET_ID)
+
+        self.connection.send.has_been_called_with(
+            '<create_target>'
+            '<copy>{copy}</copy>'
+            '</create_target>'.format(copy=self.TARGET_ID)
+        )
+
+
+if __name__ == '__main__':
+    unittest.main()
