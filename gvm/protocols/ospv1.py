@@ -78,20 +78,22 @@ class Osp(GvmProtocol):
     def get_version(self):
         """Get the version of the OSPD server which is connected to."""
         cmd = XmlCommand('get_version')
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def help(self):
         """Get the help text."""
         cmd = XmlCommand('help')
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def get_scans(self, scan_id=None, details=True, pop_results=False):
         """Get the stored scans.
 
-         Args:
-            scan_id (uuid): Identifier for a scan.
-            details (boolean): Whether to get full scan reports.
-            pop_results (boolean) Whether to remove the fetched results.
+        Arguments:
+            scan_id (str, optional): UUID identifier for a scan.
+            details (boolean, optional): Whether to get full scan reports.
+                Default: True
+            pop_results (boolean, optional) Whether to remove the fetched
+                results. Default: False
 
         Returns:
             str: Response from server.
@@ -109,12 +111,14 @@ class Osp(GvmProtocol):
         else:
             cmd.set_attribute('pop_results', '0')
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def delete_scan(self, scan_id=None):
         """Delete a finished scan.
-        Args:
-            scan_id (uuid): Identifier for a finished scan.
+
+        Arguments:
+            scan_id (str): UUID identifier for a finished scan.
+
         Returns:
             str: Response from server.
         """
@@ -123,19 +127,20 @@ class Osp(GvmProtocol):
         cmd = XmlCommand('delete_scan')
         cmd.set_attribute('scan_id', scan_id)
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def get_scanner_details(self):
         """Return scanner description and parameters."""
         cmd = XmlCommand('get_scanner_details')
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def get_vts(self, vt_id=None):
         """Return information about vulnerability tests,
         if offered by scanner.
 
-        Args:
-            vt_id (uuid): Identifier for a vulnerability test.
+        Arguments:
+            vt_id (str, optional): UUID identifier for a vulnerability test.
+
         Returns:
             str: Response from server.
         """
@@ -143,15 +148,15 @@ class Osp(GvmProtocol):
         if vt_id:
             cmd.set_attribute('vt_id', vt_id)
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def start_scan(self, scan_id=None, parallel=1, target=None,
                    ports=None, targets=None, scanner_params=None,
                    vt_selection=None):
         """Start a new scan.
 
-        Args:
-            scan_id (uuid, optional): Identifier for a running scan.
+        Arguments:
+            scan_id (str, optional): UUID identifier for a running scan.
             parallel (int, optional): Number of parallel scanned targets.
                 Default 1.
             target (dict, optional): Deprecated. Please use targets instead.
@@ -241,19 +246,21 @@ class Osp(GvmProtocol):
             _xmlvtselection = create_vt_selection_element(
                 _xmlvtselection, vt_selection)
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
-    def stop_scan(self, scan_id=None):
+    def stop_scan(self, scan_id):
         """Stop a currently running scan.
 
         Args:
-            scan_id (uuid): Identifier for a running scan.
+            scan_id (str): UUID identifier for a running scan.
+
         Returns:
             str: Response from server.
         """
         if not scan_id:
-            raise ValueError('stop_scan requires a scan_id element')
+            raise RequiredArgument('stop_scan requires a scan_id argument')
+
         cmd = XmlCommand('stop_scan')
         cmd.set_attribute('scan_id', scan_id)
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
