@@ -84,8 +84,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
 
     def test_comment_correct(self):
         self.gmp.create_target(self.TARGET_NAME, hosts=self.TARGET_HOSTS,
-                               comment=self.COMMENT
-        )
+                               comment=self.COMMENT)
 
         self.connection.send.has_been_called_with(
             '<create_target><name>{target}</name>'
@@ -121,7 +120,6 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
             '<exclude_hosts>{hosts}</exclude_hosts>'
             '</create_target>'.format(
                 target=self.TARGET_NAME, hosts=hosts(self.TARGET_HOSTS),
-                copy=self.UUID,
             )
         )
 
