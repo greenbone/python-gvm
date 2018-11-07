@@ -1609,9 +1609,51 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_config(self, selection, **kwargs):
-        cmd = self._generator.modify_config_command(selection, kwargs)
-        return self.send_command(cmd)
+    def modify_config(self, selection, config_id=None, nvt_oid=None, name=None,
+                      value=None, family=None):
+        """Generates xml string for modify config on gvmd.
+
+        Arguments:
+            group_name (str): Name of the group to be modified.
+            auth_conf_settings (dict): The new auth config.
+
+        """
+        if selection not in ('nvt_pref', 'scan_pref',
+                             'family_selection', 'nvt_selection'):
+            raise RequiredArgument('selection must be one of nvt_pref, '
+                                   'sca_pref, family_selection or '
+                                   'nvt_selection')
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        if selection in 'nvt_pref':
+            _xmlpref = cmd.add_element('preference')
+            _xmlpref.add_element('nvt', attrs={'oid': nvt_oid})
+            _xmlpref.add_element('name', name)
+            _xmlpref.add_element('value', value)
+
+        elif selection in 'nvt_selection':
+            _xmlnvtsel = cmd.add_element('nvt_selection')
+            _xmlnvtsel.add_element('family', family)
+
+            if isinstance(nvt_oid, list):
+                for nvt in nvt_oid:
+                    _xmlnvtsel.add_element('nvt', attrs={'oid': nvt})
+            else:
+                _xmlnvtsel.add_element('nvt', attrs={'oid': nvt_oid})
+
+        elif selection in 'family_selection':
+            _xmlfamsel = cmd.add_element('family_selection')
+            _xmlfamsel.add_element('growing', '1')
+            _xmlfamily = _xmlfamsel.add_element('family')
+            _xmlfamily.add_element('name', family)
+            _xmlfamily.add_element('all', '1')
+            _xmlfamily.add_element('growing', '1')
+        else:
+            raise NotImplementedError
+
+        return self._send_xml_command(cmd)
 
     def modify_credential(self, credential_id, **kwargs):
         cmd = self._generator.modify_credential_command(

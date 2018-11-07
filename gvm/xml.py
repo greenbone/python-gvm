@@ -79,51 +79,6 @@ class _GmpCommandFactory:
 
         return cmd.to_string()
 
-    def modify_config_command(self, selection, kwargs):
-        """Generates xml string for modify config on gvmd."""
-        if selection not in ('nvt_pref', 'sca_pref',
-                             'family_selection', 'nvt_selection'):
-            raise ValueError('selection must be one of nvt_pref, sca_pref, '
-                             'family_selection or nvt_selection')
-        config_id = kwargs.get('config_id')
-
-        cmd = XmlCommand('modify_config')
-        cmd.set_attribute('config_id', str(config_id))
-
-        if selection in 'nvt_pref':
-            nvt_oid = kwargs.get('nvt_oid')
-            name = kwargs.get('name')
-            value = kwargs.get('value')
-            _xmlpref = cmd.add_element('preference')
-            _xmlpref.add_element('nvt', attrs={'oid': nvt_oid})
-            _xmlpref.add_element('name', name)
-            _xmlpref.add_element('value', value)
-
-        elif selection in 'nvt_selection':
-            nvt_oid = kwargs.get('nvt_oid')
-            family = kwargs.get('family')
-            _xmlnvtsel = cmd.add_element('nvt_selection')
-            _xmlnvtsel.add_element('family', family)
-
-            if isinstance(nvt_oid, list):
-                for nvt in nvt_oid:
-                    _xmlnvtsel.add_element('nvt', attrs={'oid': nvt})
-            else:
-                _xmlnvtsel.add_element('nvt', attrs={'oid': nvt_oid})
-
-        elif selection in 'family_selection':
-            family = kwargs.get('family')
-            _xmlfamsel = cmd.add_element('family_selection')
-            _xmlfamsel.add_element('growing', '1')
-            _xmlfamily = _xmlfamsel.add_element('family')
-            _xmlfamily.add_element('name', family)
-            _xmlfamily.add_element('all', '1')
-            _xmlfamily.add_element('growing', '1')
-        else:
-            raise NotImplementedError
-
-        return cmd.to_string()
-
     def modify_credential_command(self, credential_id, kwargs):
         """Generates xml string for modify credential on gvmd."""
         if not credential_id:
