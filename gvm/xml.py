@@ -65,24 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_port_list_command(self, port_list_id, kwargs):
-        """Generates xml string for modify port list on gvmd."""
-        if not port_list_id:
-            raise ValueError('modify_port_list requires '
-                             'a port_list_id attribute')
-        cmd = XmlCommand('modify_port_list')
-        cmd.set_attribute('port_list_id', port_list_id)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        return cmd.to_string()
-
     def modify_report_command(self, report_id, comment):
         """Generates xml string for modify report on gvmd."""
         cmd = XmlCommand('modify_report')

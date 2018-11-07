@@ -2112,9 +2112,26 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_port_list(self, port_list_id, **kwargs):
-        cmd = self._generator.modify_port_list_command(port_list_id, kwargs)
-        return self.send_command(cmd)
+    def modify_port_list(self, port_list_id, comment=None, name=None, ):
+        """Generates xml string for modify port list on gvmd.
+        Arguments:
+            port_list_id (str): ID of port list to modify.
+            name (str, optional): Name of port list.
+            comment (str, optional): Comment on port list.
+        """
+        if not port_list_id:
+            raise RequiredArgument('modify_port_list requires '
+                                   'a port_list_id attribute')
+        cmd = XmlCommand('modify_port_list')
+        cmd.set_attribute('port_list_id', port_list_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        return self._send_xml_command(cmd)
 
     def modify_report(self, report_id, comment):
         cmd = self._generator.modify_report_format_command(report_id, comment)
