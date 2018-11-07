@@ -2152,10 +2152,39 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_report_format(self, report_format_id, **kwargs):
-        cmd = self._generator.modify_report_format_command(report_format_id,
-                                                           kwargs)
-        return self.send_command(cmd)
+    def modify_report_format(self, report_format_id, active=None, name=None,
+                             summary=None, param=None):
+        """Generates xml string for modify report format on gvmd.
+
+        Arguments:
+            report_format_id (str) ID of report format to modify.
+            active (boolean, optional): Whether the report format is active.
+            name (str, optional): The name of the report format.
+            summary (str, optional): A summary of the report format.
+            param (list, optional): List members: [name, value]]: The name of
+                the param and its new value for the param.
+        """
+        if not report_format_id:
+            raise RequiredArgument('modify_report requires '
+                                   'a report_format_id attribute')
+        cmd = XmlCommand('modify_report_format')
+        cmd.set_attribute('report_format_id', report_format_id)
+
+        if active:
+            cmd.add_element('active', active)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if summary:
+            cmd.add_element('summary', summary)
+
+        if param:
+            _xmlparam = cmd.add_element('param')
+            _xmlparam.add_element('name', param[0])
+            _xmlparam.add_element('value', param[1])
+
+        return self._send_xml_command(cmd)
 
     def modify_role(self, role_id, **kwargs):
         cmd = self._generator.modify_role_command(role_id, kwargs)

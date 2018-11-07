@@ -65,36 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_report_format_command(self, report_format_id, kwargs):
-        """Generates xml string for modify report format on gvmd."""
-        if len(kwargs) < 1:
-            raise Exception('modify_report_format: Missing parameter')
-
-        cmd = XmlCommand('modify_report_format')
-        cmd.set_attribute('report_format_id', report_format_id)
-
-        active = kwargs.get('active', '')
-        if active:
-            cmd.add_element('active', active)
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        summary = kwargs.get('summary', '')
-        if summary:
-            cmd.add_element('summary', summary)
-
-        param = kwargs.get('param', '')
-        if param:
-            p_name = param[0]
-            p_value = param[1]
-            _xmlparam = cmd.add_element('param')
-            _xmlparam.add_element('name', p_name)
-            _xmlparam.add_element('value', p_value)
-
-        return cmd.to_string()
-
     def modify_role_command(self, role_id, kwargs):
         """Generates xml string for modify role on gvmd."""
         if not role_id:
