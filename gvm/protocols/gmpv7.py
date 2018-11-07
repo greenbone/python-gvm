@@ -56,6 +56,17 @@ FILTER_TYPES = [
     'user',
 ]
 
+TIME_UNITS = [
+    'second',
+    'minute',
+    'hour',
+    'day',
+    'week',
+    'month',
+    'year',
+    'decade',
+]
+
 
 def _check_command_status(xml):
     """Check gmp response
@@ -183,7 +194,7 @@ class Gmp(GvmProtocol):
             copy (str, optional): UUID of an existing agent to clone from
             howto_install (str, optional): A file that describes how to install
                 the agent
-            howto_user (str, optional): A file that describes how to use the
+            howto_use (str, optional): A file that describes how to use the
                 agent
 
         Returns:
@@ -354,7 +365,7 @@ class Gmp(GvmProtocol):
             privacy_alogorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optionla): The credential type. One of 'cc',
+            credential_type (str, optional): The credential type. One of 'cc',
                 'snmp', 'up', 'usk'
 
         Returns:
@@ -492,7 +503,7 @@ class Gmp(GvmProtocol):
             _xmlspecial.add_element('full')
 
         if users:
-            cmd.add_element('users', ', '.join(users))
+            cmd.add_element('users', ','.join(users))
 
         return self._send_xml_command(cmd)
 
@@ -508,8 +519,8 @@ class Gmp(GvmProtocol):
                 always, 0 off
             comment (str, optional): Comment for the note
             copy (str, optional): UUID of existing note to clone from
-            hosts (str, optional): A textual list of hosts
-            port (str, optional): Port ot which the note applies
+            hosts (list, optional): A list of hosts addresses
+            port (str, optional): Port to which the note applies
             result_id (str, optional): UUID of a result to which note applies
             severity (decimal, optional): Severity to which note applies
             task_id (str, optional): UUID of task to which note applies
@@ -539,7 +550,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('copy', copy)
 
         if hosts:
-            cmd.add_element('hosts', hosts)
+            cmd.add_element('hosts', ', '.join(hosts))
 
         if port:
             cmd.add_element('port', port)
@@ -571,7 +582,7 @@ class Gmp(GvmProtocol):
                 always, 0 off
             comment (str, optional): Comment for the override
             copy (str, optional): UUID of existing override to clone from
-            hosts (str, optional): A textual list of hosts
+            hosts (list, optional): A list of host addresses
             port (str, optional): Port ot which the override applies
             result_id (str, optional): UUID of a result to which override
                 applies
@@ -607,7 +618,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('copy', copy)
 
         if hosts:
-            cmd.add_element('hosts', hosts)
+            cmd.add_element('hosts', ', '.join(hosts))
 
         if port:
             cmd.add_element('port', port)
@@ -682,39 +693,356 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_port_list(self, name, port_range, **kwargs):
-        cmd = self._generator.create_port_list_command(name, port_range, kwargs)
-        return self.send_command(cmd)
+    def create_port_list(self, name, port_range, comment=None, copy=None):
+        """Create a new port list
+
+        Arguments:
+            name (str): Name of the new port list
+            port_range (str): Port list ranges e.g. `"T: 1-1234"` for tcp port
+                1 - 1234
+            comment (str, optional): Comment for the port list
+            copy (str, optional): UUID of existing port list to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_port_list requires a name argument')
+
+        if not port_range:
+            raise RequiredArgument(
+                'create_port_list requires a port_range argument')
+
+        cmd = XmlCommand('create_port_list')
+        cmd.add_element('name', name)
+        cmd.add_element('port_range', port_range)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        return self._send_xml_command(cmd)
 
     def create_port_range(self, port_list_id, start, end, port_range_type,
-                          comment=''):
-        cmd = self._generator.create_port_range_command(
-            port_list_id, start, end, port_range_type, comment)
-        return self.send_command(cmd)
+                          comment=None):
+        """Create new port range
 
-    def create_report(self, report_xml_string, **kwargs):
-        cmd = self._generator.create_report_command(report_xml_string, kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            port_list_id (str): UUID of the port list to which to add the range
+            start (int): The first port in the range
+            end (int): The last port in the range
+            type (str): The type of the ports: TCP, UDP, ...
+            comment (str, optional): Comment for the port range
 
-    def create_role(self, name, **kwargs):
-        cmd = self._generator.create_role_command(name, kwargs)
-        return self.send_command(cmd)
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not port_list_id:
+            raise RequiredArgument('create_port_range requires '
+                                   'a port_list_id argument')
+
+        if not port_range_type:
+            raise RequiredArgument(
+                'create_port_range requires a port_range_type argument')
+
+        if not start:
+            raise RequiredArgument(
+                'create_port_range requires a start argument')
+
+        if not end:
+            raise RequiredArgument(
+                'create_port_range requires a end argument')
+
+        cmd = XmlCommand('create_port_range')
+        cmd.add_element('port_list', attrs={'id': port_list_id})
+        cmd.add_element('start', start)
+        cmd.add_element('end', end)
+        cmd.add_element('type', port_range_type)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
+
+    def import_report(self, report, task_id=None, task_name=None,
+                      task_comment=None, in_assets=None):
+        """Import a Report
+
+        Arguments:
+            report (str): Report XML as string to import
+            task_id (str, optional): UUID of task to import report to
+            task_name (str, optional): Name of task to be createed if task_id is
+                not present. Either task_id or task_name must be passed
+            task_comment (str, optional): Comment for task to be created if
+                task_id is not present
+            in_asset (boolean, optional): Whether to create or update assets
+                using the report
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not report:
+            raise RequiredArgument('create_report requires a report argument')
+
+        cmd = XmlCommand('create_report')
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+        elif task_name:
+            _xmltask = cmd.add_element('task')
+            _xmltask.add_element('name', task_name)
+
+            if task_comment:
+                _xmltask.add_element('comment', task_comment)
+        else:
+            raise RequiredArgument(
+                'import_report requires a task_id or task_name argument')
+
+        if not in_assets is None:
+            if in_assets:
+                cmd.add_element('in_assets', '1')
+            else:
+                cmd.add_element('in_assets', '0')
+        try:
+            cmd.append_xml_str(report)
+        except etree.XMLSyntaxError as e:
+            raise InvalidArgument(
+                'Invalid xml passed as report to import_report', e)
+
+        return self._send_xml_command(cmd)
+
+    def create_role(self, name, comment=None, copy=None, users=None):
+        """Create a new role
+
+        Arguments:
+            name (str): Name of the role
+            comment (str, optional): Comment for the role
+            copy (str, optional): UUID of existing role to clone from
+            users (list, optional): List of user names to add to the role
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+
+        if not name:
+            raise RequiredArgument('create_role requires a name argument')
+
+        cmd = XmlCommand('create_role')
+        cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if users:
+            cmd.add_element('users', ",".join(users))
+
+        return self._send_xml_command(cmd)
 
     def create_scanner(self, name, host, port, scanner_type, ca_pub,
-                       credential_id, **kwargs):
-        cmd = self._generator.create_scanner_command(name, host, port,
-                                                     scanner_type, ca_pub,
-                                                     credential_id, kwargs)
-        return self.send_command(cmd)
+                       credential_id, copy=None, comment=None):
+        """Create a new scanner
 
-    def create_schedule(self, name, **kwargs):
-        cmd = self._generator.create_schedule_command(name, kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            name (str): Name of the scanner
+            host (str): The host of the scanner
+            port (str): The port of the scanner
+            scanner_type (str): The type of the scanner
+            ca_pub (str): Certificate of CA to verify scanner certificate
+            credential_id (str): UUID of client certificate credential for the
+                scanner
+            copy (str, optional): UUID of existing scanner to clone from
+            comment (str, optional): Comment for the scanner
 
-    def create_tag(self, name, resource_id, resource_type, **kwargs):
-        cmd = self._generator.create_tag_command(name, resource_id,
-                                                 resource_type, kwargs)
-        return self.send_command(cmd)
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_scanner requires a name argument')
+
+        if not host:
+            raise RequiredArgument('create_scanner requires a host argument')
+
+        if not port:
+            raise RequiredArgument('create_scanner requires a port argument')
+
+        if not type:
+            raise RequiredArgument('create_scanner requires a scanner_type '
+                                   'argument')
+        if not ca_pub:
+            raise RequiredArgument('create_scanner requires a ca_pub argument')
+
+        if not credential_id:
+            raise RequiredArgument('create_scanner requires a credential_id '
+                                   'argument')
+
+        cmd = XmlCommand('create_scanner')
+        cmd.add_element('name', name)
+        cmd.add_element('host', host)
+        cmd.add_element('port', port)
+        cmd.add_element('type', scanner_type)
+        cmd.add_element('ca_pub', ca_pub)
+        cmd.add_element('credential', attrs={'id': str(credential_id)})
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        return self._send_xml_command(cmd)
+
+    def create_schedule(self, name, comment=None, copy=None,
+                        first_time_minute=None, first_time_hour=None,
+                        first_time_day_of_month=None, first_time_month=None,
+                        first_time_year=None, duration=None, duration_unit=None,
+                        period=None, period_unit=None, timezone=None):
+        """Create a new schedule
+
+        Arguments:
+            name (str): Name of the schedule
+            copy (str, optional): UUID of existing schedule to clone from
+            comment (str, optional): Comment for the schedule
+            first_time_minute (int, optional): First time minute the schedule
+                will run
+            first_time_hour (int, optional): First time hour the schedule
+                will run
+            first_time_day_of_month (int, optional): First time day of month the
+                schedule will run
+            first_time_month (int, optional): First time month the schedule
+                will run
+            first_time_year (int, optional): First time year the schedule
+                will run
+            duration (int, optional): How long the Manager will run the
+                scheduled task for until it gets paused if not finished yet.
+            duration_unit (str, optional): Unit of the duration. One of second,
+                minute, hour, day, week, month, year, decade. Required if
+                duration is set.
+            period (int, optional): How often the Manager will repeat the
+                scheduled task
+            period_unit (str, optional): Unit of the period. One of second,
+                minute, hour, day, week, month, year, decade. Required if
+                period is set.
+            timezone (str, optional): The timezone the schedule will follow
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_schedule requires a name argument')
+
+        cmd = XmlCommand('create_schedule')
+        cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if first_time_minute or first_time_hour or first_time_day_of_month or \
+            first_time_month or first_time_year:
+
+            if not first_time_minute:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_minute argument')
+            if not first_time_hour:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_hour argument')
+            if not first_time_day_of_month:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_day_of_month '
+                    'argument')
+            if not first_time_month:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_month argument')
+            if not first_time_year:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_year argument')
+
+            _xmlftime = cmd.add_element('first_time')
+            _xmlftime.add_element('minute', str(first_time_minute))
+            _xmlftime.add_element('hour', str(first_time_hour))
+            _xmlftime.add_element('day_of_month', str(first_time_day_of_month))
+            _xmlftime.add_element('month', str(first_time_month))
+            _xmlftime.add_element('year', str(first_time_year))
+
+        if duration:
+            if not duration_unit:
+                raise RequiredArgument(
+                    'Setting duration requires duration_unit argument')
+
+            if not duration_unit in TIME_UNITS:
+                raise InvalidArgument(
+                    'duration_unit must be one of {units} but {actual} has '
+                    'been passed'.format(
+                        units=', '.join(TIME_UNITS), actual=duration_unit))
+
+            _xmlduration = cmd.add_element('duration', str(duration))
+            _xmlduration.add_element('unit', duration_unit)
+
+        if period:
+            if not period_unit:
+                raise RequiredArgument(
+                    'Setting period requires period_unit argument')
+
+            if not period_unit in TIME_UNITS:
+                raise InvalidArgument(
+                    'period_unit must be one of {units} but {actual} has '
+                    'been passed'.format(
+                        units=', '.join(TIME_UNITS), actual=period_unit))
+
+            _xmlperiod = cmd.add_element('period', str(period))
+            _xmlperiod.add_element('unit', period_unit)
+
+        if timezone:
+            cmd.add_element('timezone', timezone)
+
+        return self._send_xml_command(cmd)
+
+    def create_tag(self, name, resource_id, resource_type, copy=None,
+                   value=None, comment=None, active=None):
+        """Create a new tag
+
+        Arguments:
+            name (str): Name of the tag. A full tag name consisting of namespace
+                and predicate e.g. `foo:bar`.
+            resource_id (str): ID of the resource  the tag is to be attached to.
+            resource_type (str): Entity type the tag is to be attached to
+            copy (str, optional): UUID of existing tag to clone from
+            value (str, optional): Value associated with the tag
+            comment (str, optional): Comment for the tag
+            active (boolean, optional): Whether the tag should be active
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_tag')
+        cmd.add_element('name', name)
+        _xmlresource = cmd.add_element('resource',
+                                       attrs={'id': str(resource_id)})
+        _xmlresource.add_element('type', resource_type)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if value:
+            cmd.add_element('value', value)
+
+        if not active is None:
+            if active:
+                cmd.add_element('active', '1')
+            else:
+                cmd.add_element('active', '0')
+
+        return self._send_xml_command(cmd)
 
     def create_target(self, name, make_unique=False, asset_hosts_filter=None,
                       hosts=None, comment=None, copy=None, exclude_hosts=None,
@@ -731,8 +1059,9 @@ class Gmp(GvmProtocol):
                 already exists
             asset_hosts_filter (str, optional): Filter to select target host
                 from assets hosts
-            hosts (str, optional): Hosts to scan
-            exclude_hosts (str, optional): Hosts to exclude from scan
+            hosts (list, optional): List of hosts addresses to scan
+            exclude_hosts (list, optional): List of hosts addresses to exclude
+                from scan
             comment (str, optional): Comment for the target
             copy (str, optional): UUID of an existing target to clone from
             ssh_credential_id (str, optional): UUID of a ssh credential to use
@@ -768,7 +1097,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('asset_hosts',
                             attrs={'filter': str(asset_hosts_filter)})
         elif hosts:
-            cmd.add_element('hosts', hosts)
+            cmd.add_element('hosts', ', '.join(hosts))
         else:
             raise RequiredArgument('create_target requires either a hosts or '
                                    'an asset_hosts_filter argument')
@@ -785,7 +1114,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('copy', copy)
 
         if exclude_hosts:
-            cmd.add_element('exclude_hosts', exclude_hosts)
+            cmd.add_element('exclude_hosts', ', '.join(exclude_hosts))
 
         if ssh_credential_id:
             _xmlssh = cmd.add_element('ssh_credential',
@@ -826,19 +1155,132 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_task(self, name, config_id, target_id, scanner_id,
-                    alert_ids=None, comment=''):
-        if alert_ids is None:
-            alert_ids = []
-        cmd = self._generator.create_task_command(
-            name, config_id, target_id, scanner_id, alert_ids, comment)
-        return self.send_command(cmd)
+                    alterable=None, hosts_ordering=None, schedule_id=None,
+                    alert_ids=None, comment=None, schedule_periods=None,
+                    observers=None):
+        """Create a new task
 
-    def create_user(self, name, password, copy='', hosts_allow='0',
-                    ifaces_allow='0', role_ids=(), hosts=None, ifaces=None):
-        cmd = self._generator.create_user_command(
-            name, password, copy, hosts_allow, ifaces_allow, role_ids, hosts,
-            ifaces)
-        return self.send_command(cmd)
+        Arguments:
+            name (str): Name of the task
+            config_id (str): UUID of scan config to use by the task
+            target_id (str): UUID of target to be scanned
+            scanner_id (str): UUID of scanner to use for scanning the target
+            comment (str, optional): Comment for the task
+            alterable (boolean, optional): Wether the task should be alterable
+            alert_ids (list, optional): List of UUIDs for alerts to be applied
+                to the task
+            hosts_ordering (str, optional): The order hosts are scanned in
+            schedule_id (str, optional): UUID of a schedule when the task should
+                be run.
+            schedule_periods (int, optional): A limit to the number of times the
+                task will be scheduled, or 0 for no limit
+            observers (list, optional): List of user names which should be
+                allowed to observe this task
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_task requires a name argument')
+
+        if not config_id:
+            raise RequiredArgument('create_task requires a config_id argument')
+
+        if not target_id:
+            raise RequiredArgument('create_task requires a target_id argument')
+
+        if not scanner_id:
+            raise RequiredArgument('create_task requires a scanner_id argument')
+
+        cmd = XmlCommand('create_task')
+        cmd.add_element('name', name)
+        cmd.add_element('config', attrs={'id': config_id})
+        cmd.add_element('target', attrs={'id': target_id})
+        cmd.add_element('scanner', attrs={'id': scanner_id})
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if not alterable is None:
+            if alterable:
+                cmd.add_element('alterable', '1')
+            else:
+                cmd.add_element('alterable', '0')
+
+        if hosts_ordering:
+            cmd.add_element('hosts_ordering', hosts_ordering)
+
+        if alert_ids:
+            if isinstance(alert_ids, str):
+                logger.warning(
+                    'Please pass a list as alert_ids parameter to create_task. '
+                    'Passing a string is deprecated and will be removed in '
+                    'future.')
+
+                #if a single id is given as a string wrap it into a list
+                alert_ids = [alert_ids]
+            if isinstance(alert_ids, list):
+                #parse all given alert id's
+                for alert in alert_ids:
+                    cmd.add_element('alert', attrs={'id': str(alert)})
+
+        if schedule_id:
+            cmd.add_element('schedule', schedule_id)
+
+            if schedule_periods:
+                cmd.add_element('schedule_periods', str(schedule_periods))
+
+        if observers:
+            cmd.add_element('observers', ' '.join(observers))
+
+        return self._send_xml_command(cmd)
+
+    def create_user(self, name, password=None, copy=None, hosts=None,
+                    hosts_allow=False, ifaces=None, ifaces_allow=False,
+                    role_ids=None):
+        """Create a new user
+
+        Arguments:
+            name (str): Name of the user
+            password (str, optional): Password of the user
+            copy (str, optinal): UUID of existing user to clone from
+            hosts (list, optional): A list of host addresses (IPs, DNS names)
+            hosts_allow (boolean, optional): If True allow only access to passed
+                hosts otherwise deny access. Default is False for deny hosts.
+            ifaces (list, optional): A list of interface names
+            ifaces_allow (boolean, optional): If True allow only access to
+                passed interfaces otherwise deny access. Default is False for
+                deny interfaces.
+            role_ids (list, optional): A list of role UUIDs for the user
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_user requires a name argument')
+
+        cmd = XmlCommand('create_user')
+        cmd.add_element('name', name)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if password:
+            cmd.add_element('password', password)
+
+        if hosts:
+            cmd.add_element('hosts', ', '.join(hosts),
+                            attrs={'allow': '1' if hosts_allow else '0'})
+
+        if ifaces:
+            cmd.add_element('ifaces', ', '.join(ifaces),
+                            attrs={'allow': '1' if ifaces_allow else '0'})
+
+        if role_ids:
+            for role in role_ids:
+                cmd.add_element('role', attrs={'id': role})
+
+        return self._send_xml_command(cmd)
 
     def delete_agent(self, **kwargs):
         cmd = self._generator.delete_agent_command(kwargs)

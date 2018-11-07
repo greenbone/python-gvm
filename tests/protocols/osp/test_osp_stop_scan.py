@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import InvalidArgument
+from gvm.errors import RequiredArgument
 from gvm.protocols.ospv1 import Osp
 
 from .. import MockConnection
@@ -36,8 +36,11 @@ class OSPStopScanTestCase(unittest.TestCase):
         )
 
     def test_stop_scan_without_id(self):
-        with self.assertRaises(ValueError):
-            self.osp.stop_scan()
+        with self.assertRaises(RequiredArgument):
+            self.osp.stop_scan(None)
+
+        with self.assertRaises(RequiredArgument):
+            self.osp.stop_scan('')
 
 
 if __name__ == '__main__':
