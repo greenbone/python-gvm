@@ -794,8 +794,11 @@ class Gmp(GvmProtocol):
                 cmd.add_element('in_assets', '1')
             else:
                 cmd.add_element('in_assets', '0')
-
-        cmd.append_xml_str(report)
+        try:
+            cmd.append_xml_str(report)
+        except etree.XMLSyntaxError as e:
+            raise InvalidArgument(
+                'Invalid xml passed as report to import_report', e)
 
         return self._send_xml_command(cmd)
 
