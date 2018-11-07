@@ -19,9 +19,9 @@
 
 This module exposes the lastest supported protocols of gvm.
 
-The provided Gmp class implements the lastest `Greenbone Management
+The provided Gmp class implements the latest `Greenbone Management
 Protocol`_.
-The provided Osp class implements the lastest Open Scanner Protocol.
+The provided Osp class implements the latest Open Scanner Protocol.
 
 For details about the possible supported protocol versions please take a look at
 :py:mod:`gvm.protocols`.
