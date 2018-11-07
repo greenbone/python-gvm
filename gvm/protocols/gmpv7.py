@@ -1615,49 +1615,56 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_config(self, selection, config_id=None, nvt_oid=None, name=None,
+    def modify_config(self, selection, config_id=None, nvt_oids=None, name=None,
                       value=None, family=None):
-        """Generates xml string for modify config on gvmd.
+        """Modifies an existing scan config on gvmd.
 
         Arguments:
-            group_name (str): Name of the group to be modified.
-            auth_conf_settings (dict): The new auth config.
-
+            selection (str): one of 'nvt_pref', nvt_selection or
+                family_selection'
+            config_id (str, optional): UUID of scan config to modify.
+            name (str, optional): New name for preference.
+            value(str, optional): New value for preference.
+            nvt_oids (list, optional): List of NVTs associated with preference
+                to modify.
+            family (str,optional): Name of family to modify.
         """
         if selection not in ('nvt_pref', 'scan_pref',
                              'family_selection', 'nvt_selection'):
-            raise RequiredArgument('selection must be one of nvt_pref, '
+            raise InvalidArgument('selection must be one of nvt_pref, '
                                    'sca_pref, family_selection or '
                                    'nvt_selection')
 
         cmd = XmlCommand('modify_config')
         cmd.set_attribute('config_id', str(config_id))
 
-        if selection in 'nvt_pref':
+        if selection == 'nvt_pref':
             _xmlpref = cmd.add_element('preference')
-            _xmlpref.add_element('nvt', attrs={'oid': nvt_oid})
+            if not nvt_oids:
+                raise InvalidArgument('modify_config requires a nvt_oids '
+                                      'argument')
+            _xmlpref.add_element('nvt', attrs={'oid': nvt_oids[0]})
             _xmlpref.add_element('name', name)
             _xmlpref.add_element('value', value)
 
-        elif selection in 'nvt_selection':
+        elif selection == 'nvt_selection':
             _xmlnvtsel = cmd.add_element('nvt_selection')
             _xmlnvtsel.add_element('family', family)
 
-            if isinstance(nvt_oid, list):
-                for nvt in nvt_oid:
+            if nvt_oids:
+                for nvt in nvt_oids:
                     _xmlnvtsel.add_element('nvt', attrs={'oid': nvt})
             else:
-                _xmlnvtsel.add_element('nvt', attrs={'oid': nvt_oid})
+                raise InvalidArgument('modify_config requires a nvt_oid '
+                                      'argument')
 
-        elif selection in 'family_selection':
+        elif selection == 'family_selection':
             _xmlfamsel = cmd.add_element('family_selection')
             _xmlfamsel.add_element('growing', '1')
             _xmlfamily = _xmlfamsel.add_element('family')
             _xmlfamily.add_element('name', family)
             _xmlfamily.add_element('all', '1')
             _xmlfamily.add_element('growing', '1')
-        else:
-            raise NotImplementedError
 
         return self._send_xml_command(cmd)
 
