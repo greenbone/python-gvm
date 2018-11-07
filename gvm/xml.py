@@ -65,53 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def create_schedule_command(self, name, kwargs):
-        """Generates xml string for create schedule on gvmd."""
-        if not name:
-            raise ValueError('create_schedule requires a name element')
-
-        cmd = XmlCommand('create_schedule')
-        cmd.add_element('name', name)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        first_time = kwargs.get('first_time', '')
-        if first_time:
-            first_time_minute = first_time['minute']
-            first_time_hour = first_time['hour']
-            first_time_day_of_month = first_time['day_of_month']
-            first_time_month = first_time['month']
-            first_time_year = first_time['year']
-
-            _xmlftime = cmd.add_element('first_time')
-            _xmlftime.add_element('minute', first_time_minute)
-            _xmlftime.add_element('hour', str(first_time_hour))
-            _xmlftime.add_element('day_of_month', str(first_time_day_of_month))
-            _xmlftime.add_element('month', str(first_time_month))
-            _xmlftime.add_element('year', str(first_time_year))
-
-        duration = kwargs.get('duration', '')
-        if len(duration) > 1:
-            _xmlduration = cmd.add_element('duration', str(duration[0]))
-            _xmlduration.add_element('unit', str(duration[1]))
-
-        period = kwargs.get('period', '')
-        if len(period) > 1:
-            _xmlperiod = cmd.add_element('period', str(period[0]))
-            _xmlperiod.add_element('unit', str(period[1]))
-
-        timezone = kwargs.get('timezone', '')
-        if timezone:
-            cmd.add_element('timezone', str(timezone))
-
-        return cmd.to_string()
-
     def create_tag_command(self, name, resource_id, resource_type, kwargs):
         """Generates xml string for create tag on gvmd."""
 

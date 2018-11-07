@@ -896,9 +896,113 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_schedule(self, name, **kwargs):
-        cmd = self._generator.create_schedule_command(name, kwargs)
-        return self.send_command(cmd)
+    def create_schedule(self, name, comment=None, copy=None,
+                        first_time_minute=None, first_time_hour=None,
+                        first_time_day_of_month=None, first_time_month=None,
+                        first_time_year=None, duration=None, duration_unit=None,
+                        period=None, period_unit=None, timezone=None):
+        """Create a new schedule
+
+        Arguments:
+            name (str): Name of the schedule
+            copy (str, optional): UUID of existing schedule to clone from
+            comment (str, optional): Comment for the schedule
+            first_time_minute (int, optional): First time minute the schedule
+                will run
+            first_time_hour (int, optional): First time hour the schedule
+                will run
+            first_time_day_of_month (int, optional): First time day of month the
+                schedule will run
+            first_time_month (int, optional): First time month the schedule
+                will run
+            first_time_year (int, optional): First time year the schedule
+                will run
+            duration (int, optional): How long the Manager will run the
+                scheduled task for until it gets paused if not finished yet.
+            duration_unit (str, optional): Unit of the duration. One of second,
+                minute, hour, day, week, month, year, decade. Required if
+                duration is set.
+            period (int, optional): How often the Manager will repeat the
+                scheduled task
+            period_unit (str, optional): Unit of the period. One of second,
+                minute, hour, day, week, month, year, decade. Required if
+                period is set.
+            timezone (str, optional): The timezone the schedule will follow
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_schedule requires a name argument')
+
+        cmd = XmlCommand('create_schedule')
+        cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if copy:
+            cmd.add_element('copy', copy)
+
+        if first_time_minute or first_time_hour or first_time_day_of_month or \
+            first_time_month or first_time_year:
+
+            if not first_time_minute:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_minute argument')
+            if not first_time_hour:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_hour argument')
+            if not first_time_day_of_month:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_day_of_month '
+                    'argument')
+            if not first_time_month:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_month argument')
+            if not first_time_year:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_year argument')
+
+            _xmlftime = cmd.add_element('first_time')
+            _xmlftime.add_element('minute', str(first_time_minute))
+            _xmlftime.add_element('hour', str(first_time_hour))
+            _xmlftime.add_element('day_of_month', str(first_time_day_of_month))
+            _xmlftime.add_element('month', str(first_time_month))
+            _xmlftime.add_element('year', str(first_time_year))
+
+        if duration:
+            if not duration_unit:
+                raise RequiredArgument(
+                    'Setting duration requires duration_unit argument')
+
+            if not duration_unit in TIME_UNITS:
+                raise InvalidArgument(
+                    'duration_unit must be one of {units} but {actual} has '
+                    'been passed'.format(
+                        units=', '.join(TIME_UNITS), actual=duration_unit))
+
+            _xmlduration = cmd.add_element('duration', str(duration))
+            _xmlduration.add_element('unit', duration_unit)
+
+        if period:
+            if not period_unit:
+                raise RequiredArgument(
+                    'Setting period requires period_unit argument')
+
+            if not period_unit in TIME_UNITS:
+                raise InvalidArgument(
+                    'period_unit must be one of {units} but {actual} has '
+                    'been passed'.format(
+                        units=', '.join(TIME_UNITS), actual=period_unit))
+
+            _xmlperiod = cmd.add_element('period', str(period))
+            _xmlperiod.add_element('unit', period_unit)
+
+        if timezone:
+            cmd.add_element('timezone', timezone)
+
+        return self._send_xml_command(cmd)
 
     def create_tag(self, name, resource_id, resource_type, **kwargs):
         cmd = self._generator.create_tag_command(name, resource_id,
