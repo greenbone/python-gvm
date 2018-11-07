@@ -65,28 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_group_command(self, group_id, kwargs):
-        """Generates xml string for modify group on gvmd."""
-        if not group_id:
-            raise ValueError('modify_group requires a group_id attribute')
-
-        cmd = XmlCommand('modify_group')
-        cmd.set_attribute('group_id', group_id)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        users = kwargs.get('users', '')
-        if users:
-            cmd.add_element('users', users)
-
-        return cmd.to_string()
-
     def modify_note_command(self, note_id, text, kwargs):
         """Generates xml string for modify note on gvmd."""
         if not note_id:

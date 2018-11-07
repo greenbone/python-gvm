@@ -1935,9 +1935,32 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_group(self, group_id, **kwargs):
-        cmd = self._generator.modify_group_command(group_id, kwargs)
-        return self.send_command(cmd)
+    def modify_group(self, group_id, comment=None, name=None,
+                     users=None):
+        """Generates xml string for modify group on gvmd.
+
+        Arguments:
+            group_id (str): ID of group to modify.
+            comment (str, optional): Comment on group.
+            name (str, optional): Name of group.
+            users (str, optional): Comma separated list of user names.
+        """
+        if not group_id:
+            raise RequiredArgument('modify_group requires a group_id argument')
+
+        cmd = XmlCommand('modify_group')
+        cmd.set_attribute('group_id', group_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if users:
+            cmd.add_element('users', users)
+
+        return self._send_xml_command(cmd)
 
     def modify_note(self, note_id, text, **kwargs):
         cmd = self._generator.modify_note_command(note_id, text, kwargs)
