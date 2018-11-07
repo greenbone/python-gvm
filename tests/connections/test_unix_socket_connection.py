@@ -29,7 +29,8 @@ from gvm.connections import UnixSocketConnection, DEFAULT_TIMEOUT
 
 class DummyRequestHandler(socketserver.BaseRequestHandler):
     def handle(self):
-        pass
+        response = bytes("<gmp_response status=\"200\" status_text=\"OK\"/>", 'utf-8')
+        self.request.sendall(response)
 
 
 class ThreadedUnixStreamServer(
@@ -54,6 +55,26 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
     def test_unix_socket_connection_connect(self):
         self.connection = UnixSocketConnection(self.socketname, DEFAULT_TIMEOUT)
         self.connection.connect()
+        self.connection.disconnect()
+
+    def test_unix_socket_connection_connect_read(self):
+        self.connection = UnixSocketConnection(self.socketname, DEFAULT_TIMEOUT)
+        self.connection.connect()
+        self.connection.read()
+        self.connection.disconnect()
+
+    def test_unix_socket_connection_connect_send_bytes_read(self):
+        self.connection = UnixSocketConnection(self.socketname, DEFAULT_TIMEOUT)
+        self.connection.connect()
+        self.connection.send(bytes("<gmp/>", 'utf-8'))
+        self.connection.read()
+        self.connection.disconnect()
+
+    def test_unix_socket_connection_connect_send_str_read(self):
+        self.connection = UnixSocketConnection(self.socketname, DEFAULT_TIMEOUT)
+        self.connection.connect()
+        self.connection.send("<gmp/>")
+        self.connection.read()
         self.connection.disconnect()
 
 
