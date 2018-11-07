@@ -78,12 +78,12 @@ class Osp(GvmProtocol):
     def get_version(self):
         """Get the version of the OSPD server which is connected to."""
         cmd = XmlCommand('get_version')
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def help(self):
         """Get the help text."""
         cmd = XmlCommand('help')
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def get_scans(self, scan_id=None, details=True, pop_results=False):
         """Get the stored scans.
@@ -111,7 +111,7 @@ class Osp(GvmProtocol):
         else:
             cmd.set_attribute('pop_results', '0')
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def delete_scan(self, scan_id=None):
         """Delete a finished scan.
@@ -127,12 +127,12 @@ class Osp(GvmProtocol):
         cmd = XmlCommand('delete_scan')
         cmd.set_attribute('scan_id', scan_id)
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def get_scanner_details(self):
         """Return scanner description and parameters."""
         cmd = XmlCommand('get_scanner_details')
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def get_vts(self, vt_id=None):
         """Return information about vulnerability tests,
@@ -148,7 +148,7 @@ class Osp(GvmProtocol):
         if vt_id:
             cmd.set_attribute('vt_id', vt_id)
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def start_scan(self, scan_id=None, parallel=1, target=None,
                    ports=None, targets=None, scanner_params=None,
@@ -246,7 +246,7 @@ class Osp(GvmProtocol):
             _xmlvtselection = create_vt_selection_element(
                 _xmlvtselection, vt_selection)
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
 
     def stop_scan(self, scan_id):
         """Stop a currently running scan.
@@ -263,4 +263,4 @@ class Osp(GvmProtocol):
         cmd = XmlCommand('stop_scan')
         cmd.set_attribute('scan_id', scan_id)
 
-        return self.send_command(cmd.to_string())
+        return self._send_xml_command(cmd)
