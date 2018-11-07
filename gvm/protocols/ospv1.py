@@ -248,11 +248,11 @@ class Osp(GvmProtocol):
 
         return self.send_command(cmd.to_string())
 
-    def stop_scan(self, scan_id=None):
+    def stop_scan(self, scan_id):
         """Stop a currently running scan.
 
         Args:
-            scan_id (str, optional): UUID identifier for a running scan.
+            scan_id (str): UUID identifier for a running scan.
 
         Returns:
             str: Response from server.
