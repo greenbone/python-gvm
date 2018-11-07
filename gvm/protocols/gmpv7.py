@@ -1577,7 +1577,7 @@ class Gmp(GvmProtocol):
             asset_id (int) ID of the asset to be modified.
             comment (str, optional): Comment for the asset.
         """
-         if not asset_id:
+        if not asset_id:
             raise RequiredArgument('modify_asset requires an asset_id argument')
         if not alert_id:
             raise RequiredArgument('modify_asset requires a comment argument')
