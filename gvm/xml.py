@@ -65,50 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_override_command(self, override_id, text, kwargs):
-        """Generates xml string for modify override on gvmd."""
-        cmd = XmlCommand('modify_override')
-        cmd.set_attribute('override_id', override_id)
-        cmd.add_element('text', text)
-
-        active = kwargs.get('active', '')
-        if active:
-            cmd.add_element('active', active)
-
-        hosts = kwargs.get('hosts', '')
-        if hosts:
-            cmd.add_element('hosts', hosts)
-
-        port = kwargs.get('port', '')
-        if port:
-            cmd.add_element('port', port)
-
-        result_id = kwargs.get('result_id', '')
-        if result_id:
-            cmd.add_element('result', attrs={'id': result_id})
-
-        severity = kwargs.get('severity', '')
-        if severity:
-            cmd.add_element('severity', severity)
-
-        new_severity = kwargs.get('new_severity', '')
-        if new_severity:
-            cmd.add_element('new_severity', new_severity)
-
-        task_id = kwargs.get('task_id', '')
-        if task_id:
-            cmd.add_element('task', attrs={'id': task_id})
-
-        threat = kwargs.get('threat', '')
-        if threat:
-            cmd.add_element('threat', threat)
-
-        new_threat = kwargs.get('new_threat', '')
-        if new_threat:
-            cmd.add_element('new_threat', new_threat)
-
-        return cmd.to_string()
-
     def modify_permission_command(self, permission_id, kwargs):
         """Generates xml string for modify permission on gvmd."""
         if not permission_id:

@@ -2010,10 +2010,64 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_override(self, override_id, text, **kwargs):
-        cmd = self._generator.modify_override_command(override_id, text,
-                                                      kwargs)
-        return self.send_command(cmd)
+    def modify_override(self, override_id, text, active=None, hosts=None,
+                        port=None, result_id=None, severity=None,
+                        new_severity=None, task_id=None, threat=None
+                        new_threat=None):
+        """Generates xml string for modify override on gvmd.
+
+        Arguments:
+            override_id (str): ID of override to modify.
+            text (str): The text of the override.
+            active (int, optional): Seconds override will be active.
+                -1 on always, 0 off.
+            hosts (str, optional): A textual list of hosts.
+            port (str, optional): Port to which override applies.
+            result_id (str, optional): Result to which override applies.
+            severity (str, optional): Severity to which override applies.
+            new_severity (str, optional): New severity score for result.
+            task_id (str, optional): Task to which override applies.
+            threat (str, optional): Threat level to which override applies.
+            new_threat (str, optional): New threat level for results.
+        """
+        if not override_id:
+            raise RequiredArgument('modify_override requires a override_id '
+                                   'argument')
+        if not text:
+            raise RequiredArgument('modify_override requires a text argument')
+
+        cmd = XmlCommand('modify_override')
+        cmd.set_attribute('override_id', override_id)
+        cmd.add_element('text', text)
+
+        if active:
+            cmd.add_element('active', active)
+
+        if hosts:
+            cmd.add_element('hosts', hosts)
+
+        if port:
+            cmd.add_element('port', port)
+
+        if result_id:
+            cmd.add_element('result', attrs={'id': result_id})
+
+        if severity:
+            cmd.add_element('severity', severity)
+
+        if new_severity:
+            cmd.add_element('new_severity', new_severity)
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+
+        if threat:
+            cmd.add_element('threat', threat)
+
+        if new_threat:
+            cmd.add_element('new_threat', new_threat)
+
+        return self._send_xml_command(cmd)
 
     def modify_permission(self, permission_id, **kwargs):
         cmd = self._generator.modify_permission_command(
