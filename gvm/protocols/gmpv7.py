@@ -1520,8 +1520,9 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_alert(self, alert_id, name=None, comment=None,
-                     filter_id=None, event= None, condition=None,
-                     method=None):
+                     filter_id=None, event= None, event_data=None,
+                     condition=None, condition_data=None, method=None,
+                     method_data=None):
         """Generates xml string for modify alert on gvmd.
 
         Arguments:
@@ -1529,8 +1530,12 @@ class Gmp(GvmProtocol):
             name (str, optional): Name of the Alert.
             condition (str): The condition that must be satisfied for the alert
                 to occur.
-            event (str, optional): The event that must happen for the alert to occur
+            condition_data (dict, optional): Data that defines the condition
+            event (str, optional): The event that must happen for the alert
+               to occur.
+            event_data (dict, optional): Data that defines the event
             method (str, optional): The method by which the user is alerted
+            method_data (dict, optional): Data that defines the method
             filter_id (str, optional): Filter to apply when executing alert
             comment (str, optional): Comment for the alert
         """
@@ -1550,23 +1555,26 @@ class Gmp(GvmProtocol):
         if filter_id:
             cmd.add_element('filter', attrs={'id': filter_id})
 
-        if len(event) > 1:
-            _xmlevent = cmd.add_element('event', event[0])
-            for value, key in event[1].items():
-                _xmldata = _xmlevent.add_element('data', value)
-                _xmldata.add_element('name', key)
+        conditions = cmd.add_element('condition', condition)
 
-        if len(condition) > 1:
-            _xmlcond = cmd.add_element('condition', condition[0])
-            for value, key in condition[1].items():
-                _xmldata = _xmlcond.add_element('data', value)
-                _xmldata.add_element('name', key)
+        if not condition_data is None:
+            for value, key in condition_data.items():
+                _data = conditions.add_element('data', value)
+                _data.add_element('name', key)
 
-        if len(method) > 1:
-            _xmlmethod = cmd.add_element('method', method[0])
-            for value, key in method[1].items():
-                _xmldata = _xmlmethod.add_element('data', value)
-                _xmldata.add_element('name', key)
+        events = cmd.add_element('event', event)
+
+        if not event_data is None:
+            for value, key in event_data.items():
+                _data = events.add_element('data', value)
+                _data.add_element('name', key)
+
+        methods = cmd.add_element('method', method)
+
+        if not method_data is None:
+            for value, key in method_data.items():
+                _data = methods.add_element('data', value)
+                _data.add_element('name', key)
 
         return self._send_xml_command(cmd)
 
