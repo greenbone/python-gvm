@@ -1670,7 +1670,7 @@ class Gmp(GvmProtocol):
         Arguments:
             alert_id (str) UUID of the alert to be modified.
             name (str, optional): Name of the Alert.
-            condition (str): The condition that must be satisfied for the alert
+            condition (str, optional): The condition that must be satisfied for the alert
                 to occur.
             condition_data (dict, optional): Data that defines the condition
             event (str, optional): The event that must happen for the alert
@@ -1940,7 +1940,7 @@ class Gmp(GvmProtocol):
         """Generates xml string for modify group on gvmd.
 
         Arguments:
-            group_id (str): ID of group to modify.
+            group_id (str): UUID of group to modify.
             comment (str, optional): Comment on group.
             name (str, optional): Name of group.
             users (str, optional): Comma separated list of user names.
@@ -1967,16 +1967,16 @@ class Gmp(GvmProtocol):
         """Generates xml string for modify note on gvmd.
 
         Arguments:
-        note_id (str): ID of note to modify.
-        text (str): The text of the note.
-        active (int, optional): Seconds note will be active.
-            -1 on always, 0 off.
-        hosts (str, optional): A textual list of hosts.
-        port (str, optional): Port to which note applies.
-        result_id (str, optional): Result to which note applies.
-        severity (str, optional): Severity to which note applies.
-        task_id (str, optional): Task to which note applies.
-        threat (str, optional): Threat level to which note applies.
+            note_id (str): UUID of note to modify.
+            text (str): The text of the note.
+            active (int, optional): Seconds note will be active.
+                -1 on always, 0 off.
+            hosts (str, optional): A textual list of hosts.
+            port (str, optional): Port to which note applies.
+            result_id (str, optional): Result to which note applies.
+            severity (str, optional): Severity to which note applies.
+            task_id (str, optional): Task to which note applies.
+            threat (str, optional): Threat level to which note applies.
         """
         if not note_id:
             raise RequiredArgument('modify_note requires a note_id attribute')
@@ -2017,7 +2017,7 @@ class Gmp(GvmProtocol):
         """Generates xml string for modify override on gvmd.
 
         Arguments:
-            override_id (str): ID of override to modify.
+            override_id (str): UUID of override to modify.
             text (str): The text of the override.
             active (int, optional): Seconds override will be active.
                 -1 on always, 0 off.
@@ -2074,15 +2074,16 @@ class Gmp(GvmProtocol):
         """Generates xml string for modify permission on gvmd.
 
         Arguments:
-        permission_id (str): Permission name, currently the name of a command.
-        comment (str, optional):
-        name (str, optional):
-        resource (dict, optional): A resource to which the permission applies.
-            It has id and type, for Super permissions: one of 'user',
-            'group' or 'role'.
-        subject (dict, optional): A subject to whom the permission is granted.
-            It has id and type of the subject: one of 'user', 'group' or 'role'.
-
+            permission_id (str): UUID of permission to be modified.
+            comment (str, optional): The comment on the permission.
+            name (str, optional): Permission name, currently the name of
+                a command.
+            resource (dict, optional): A resource to which the permission
+                applies. It has id and type, for Super permissions: one of
+                'user', 'group' or 'role'.
+            subject (dict, optional): A subject to whom the permission is
+                granted. It has id and type of the subject: one of 'user',
+                'group' or 'role'.
         """
         if not permission_id:
             raise RequiredArgument('modify_permission requires '
@@ -2098,15 +2099,21 @@ class Gmp(GvmProtocol):
             cmd.add_element('name', name)
 
         if resource:
-            resource_id = resource['id']
-            resource_type = resource['type']
+            resource_id = resource.get('id')
+            resource_type = resource.get('type')
+            if not resource_id or not resource_type:
+                raise InvalidArgument('modify_permission requires a resource '
+                                      'dict with id and type members')
             _xmlresource = cmd.add_element('resource',
                                            attrs={'id': resource_id})
             _xmlresource.add_element('type', resource_type)
 
         if subject:
-            subject_id = subject['id']
-            subject_type = subject['type']
+            subject_id = subject.get('id')
+            subject_type = subject.get('type')
+            if not resource_id or not resource_type:
+                raise InvalidArgument('modify_permission requires a subject '
+                                      'dict with id and type members')
             _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
             _xmlsubject.add_element('type', subject_type)
 
@@ -2114,8 +2121,9 @@ class Gmp(GvmProtocol):
 
     def modify_port_list(self, port_list_id, comment=None, name=None, ):
         """Generates xml string for modify port list on gvmd.
+
         Arguments:
-            port_list_id (str): ID of port list to modify.
+            port_list_id (str): UUID of port list to modify.
             name (str, optional): Name of port list.
             comment (str, optional): Comment on port list.
         """
@@ -2137,7 +2145,7 @@ class Gmp(GvmProtocol):
         """Generates xml string for modify report on gvmd.
 
         Arguments:
-            report_id (str): ID of report to modify.
+            report_id (str): UUID of report to modify.
             comment (str): The comment on the report.
         """
         if not report_id:
@@ -2157,12 +2165,12 @@ class Gmp(GvmProtocol):
         """Generates xml string for modify report format on gvmd.
 
         Arguments:
-            report_format_id (str) ID of report format to modify.
+            report_format_id (str) UUID of report format to modify.
             active (boolean, optional): Whether the report format is active.
             name (str, optional): The name of the report format.
             summary (str, optional): A summary of the report format.
             param (list, optional): List members: [name, value]]: The name of
-                the param and its new value for the param.
+                the param and its new value.
         """
         if not report_format_id:
             raise RequiredArgument('modify_report requires '
