@@ -2194,9 +2194,31 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_role(self, role_id, **kwargs):
-        cmd = self._generator.modify_role_command(role_id, kwargs)
-        return self.send_command(cmd)
+    def modify_role(self, role_id, comment=None, name=None, users=None):
+        """Generates xml string for modify role on gvmd.
+
+        Arguments:
+            role_id (str): UUID of role to modify.
+            comment (str, optional): Name of role.
+            name (str, optional): Comment on role.
+            users  (str, optional): Comma separated list of user names.
+        """
+        if not role_id:
+            raise RequiredArgument('modify_role requires a role_id argument')
+
+        cmd = XmlCommand('modify_role')
+        cmd.set_attribute('role_id', role_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if users:
+            cmd.add_element('users', users)
+
+        return self._send_xml_command(cmd)
 
     def modify_scanner(self, scanner_id, host, port, scanner_type, **kwargs):
         cmd = self._generator.modify_scanner_command(scanner_id, host, port,

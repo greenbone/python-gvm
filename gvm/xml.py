@@ -65,28 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_role_command(self, role_id, kwargs):
-        """Generates xml string for modify role on gvmd."""
-        if not role_id:
-            raise ValueError('modify_role requires a role_id element')
-
-        cmd = XmlCommand('modify_role')
-        cmd.set_attribute('role_id', role_id)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        users = kwargs.get('users', '')
-        if users:
-            cmd.add_element('users', users)
-
-        return cmd.to_string()
-
     def modify_scanner_command(self, scanner_id, host, port, scanner_type,
                                kwargs):
         """Generates xml string for modify scanner on gvmd."""
