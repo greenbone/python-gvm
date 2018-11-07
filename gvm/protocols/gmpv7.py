@@ -1677,7 +1677,8 @@ class Gmp(GvmProtocol):
         """Generates xml string for modify credential on gvmd.
 
         Arguments:
-            name (str): Name of the new credential
+            credential_id (str): UUID of the credential
+            name (str, optional): Name of the credential
             comment (str, optional): Comment for the credential
             allow_insecure (boolean, optional): Whether to allow insecure use of
                  the credential
@@ -1692,29 +1693,25 @@ class Gmp(GvmProtocol):
             privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optionla): The credential type. One of 'cc',
-            'snmp', 'up', 'usk'
+            credential_type (str, optional): The credential type. One of 'cc',
+                'snmp', 'up', 'usk'
         """
         if not credential_id:
             raise RequiredArgument('modify_credential requires '
-                             'a credential_id attribute')
+                                   'a credential_id attribute')
 
         cmd = XmlCommand('modify_credential')
         cmd.set_attribute('credential_id', credential_id)
 
-        comment = kwargs.get('comment', '')
         if comment:
             cmd.add_element('comment', comment)
 
-        name = kwargs.get('name', '')
         if name:
             cmd.add_element('name', name)
 
-        allow_insecure = kwargs.get('allow_insecure', '')
         if allow_insecure:
             cmd.add_element('allow_insecure', allow_insecure)
 
-        certificate = kwargs.get('certificate', '')
         if certificate:
             cmd.add_element('certificate', certificate)
 
