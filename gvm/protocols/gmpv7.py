@@ -1582,13 +1582,11 @@ class Gmp(GvmProtocol):
         """Generates xml string for modify asset on gvmd
 
         Arguments:
-            asset_id (int) ID of the asset to be modified.
+            asset_id (str) UUID of the asset to be modified.
             comment (str, optional): Comment for the asset.
         """
         if not asset_id:
             raise RequiredArgument('modify_asset requires an asset_id argument')
-        if not alert_id:
-            raise RequiredArgument('modify_asset requires a comment argument')
 
         cmd = XmlCommand('modify_asset')
         cmd.set_attribute('asset_id', asset_id)
