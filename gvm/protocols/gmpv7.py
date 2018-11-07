@@ -181,7 +181,7 @@ class Gmp(GvmProtocol):
 
         return self._transform(response)
 
-    def create_agent(self, installer, signature, name, comment=None, copy=None,
+    def create_agent(self, installer, signature, name, comment=None,
                      howto_install=None, howto_use=None):
         """Create a new agent
 
@@ -191,7 +191,6 @@ class Gmp(GvmProtocol):
             signature: (str): A detached OpenPGP signature of the installer
             name (str): A name for the agent
             comment (str, optional): A comment for the agent
-            copy (str, optional): UUID of an existing agent to clone from
             howto_install (str, optional): A file that describes how to install
                 the agent
             howto_use (str, optional): A file that describes how to use the
@@ -217,9 +216,6 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         if howto_install:
             cmd.add_element('howto_install', howto_install)
 
@@ -228,9 +224,22 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def clone_agent(self, agent_id):
+        """Clone an existing agent
+
+        Arguments:
+            copy (str): UUID of an existing agent to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_agent')
+        cmd.add_element('copy', agent_id)
+        return self._send_xml_command(cmd)
+
     def create_alert(self, name, condition, event, method, method_data=None,
                      event_data=None, condition_data=None, filter_id=None,
-                     copy=None, comment=None):
+                     comment=None):
         """Create a new alert
 
         Arguments:
@@ -243,7 +252,6 @@ class Gmp(GvmProtocol):
             event_data (dict, optional): Data that defines the event
             method_data (dict, optional): Data that defines the method
             filter_id (str, optional): Filter to apply when executing alert
-            copy (str, optional): UUID of the alert to clone from
             comment (str, optional): Comment for the alert
 
         Returns:
@@ -285,12 +293,22 @@ class Gmp(GvmProtocol):
         if filter_id:
             cmd.add_element('filter', attrs={'id': filter_id})
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         if comment:
             cmd.add_element('comment', comment)
 
+        return self._send_xml_command(cmd)
+
+    def clone_alert(self, alert_id):
+        """Clone an existing alert
+
+        Arguments:
+            copy (str): UUID of an existing alert to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_alert')
+        cmd.add_element('copy', alert_id)
         return self._send_xml_command(cmd)
 
     def create_asset(self, name, asset_type, comment=None):
@@ -342,18 +360,16 @@ class Gmp(GvmProtocol):
         cmd.add_element('name', name)
         return self._send_xml_command(cmd)
 
-    def create_credential(self, name, comment=None, copy=None,
-                          allow_insecure=False, certificate=None,
-                          key_phrase=None, private_key=None, login=None,
-                          password=None, auth_algorithm=None, community=None,
-                          privacy_algorithm=None, privacy_password=None,
-                          credential_type=None):
+    def create_credential(self, name, comment=None, allow_insecure=False,
+                          certificate=None, key_phrase=None, private_key=None,
+                          login=None, password=None, auth_algorithm=None,
+                          community=None, privacy_algorithm=None,
+                          privacy_password=None, credential_type=None):
         """Create a new credential
 
         Arguments:
             name (str): Name of the new credential
             comment (str, optional): Comment for the credential
-            copy (str, optional): UUID of credential to clone from
             allow_insecure (boolean, optional): Whether to allow insecure use of
                 the credential
             certificate (str, optional): Certificate for the credential
@@ -379,9 +395,6 @@ class Gmp(GvmProtocol):
 
         if comment:
             cmd.add_element('comment', comment)
-
-        if copy:
-            cmd.add_element('copy', copy)
 
         if allow_insecure:
             cmd.add_element('allow_insecure', '1')
@@ -428,8 +441,21 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def clone_credential(self, credential_id):
+        """Clone an existing credential
+
+        Arguments:
+            copy (str): UUID of an existing credential to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_credential')
+        cmd.add_element('copy', credential_id)
+        return self._send_xml_command(cmd)
+
     def create_filter(self, name, make_unique=False, filter_type=None,
-                      comment=None, term=None, copy=None):
+                      comment=None, term=None):
         """Create a new filter
 
         Arguments:
@@ -438,7 +464,6 @@ class Gmp(GvmProtocol):
             filter_type (str, optional): Filter for entity type
             comment (str, optional): Comment for the filter
             term (str, optional): Filter term e.g. 'name=foo'
-            copy (str, optional): UUID of an existing filter
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -454,10 +479,6 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        # TODO: Move copy into an extra method
-        if copy:
-            cmd.add_element('copy', copy)
-
         if term:
             cmd.add_element('term', term)
 
@@ -471,14 +492,25 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_group(self, name, comment=None, copy=None, special=False,
-                     users=None):
+    def clone_filter(self, filter_id):
+        """Clone an existing filter
+
+        Arguments:
+            copy (str): UUID of an existing filter to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_filter')
+        cmd.add_element('copy', filter_id)
+        return self._send_xml_command(cmd)
+
+    def create_group(self, name, comment=None, special=False, users=None):
         """Create a new group
 
         Arguments:
             name (str): Name of the new group
             comment (str, optional): Comment for the group
-            copy (str, optional): UUID of group to clone from
             special (boolean, optional): Create permission giving members full
                 access to each other's entities
             users (list, optional): List of user names to be in the group
@@ -495,9 +527,6 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         if special:
             _xmlspecial = cmd.add_element('specials')
             _xmlspecial.add_element('full')
@@ -507,9 +536,22 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_note(self, text, nvt_oid, active=None, comment=None, copy=None,
-                    hosts=None, result_id=None, severity=None, task_id=None,
-                    threat=None, port=None):
+    def clone_group(self, group_id):
+        """Clone an existing group
+
+        Arguments:
+            copy (str): UUID of an existing group to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_group')
+        cmd.add_element('copy', group_id)
+        return self._send_xml_command(cmd)
+
+    def create_note(self, text, nvt_oid, active=None, comment=None, hosts=None,
+                    result_id=None, severity=None, task_id=None, threat=None,
+                    port=None):
         """Create a new note
 
         Arguments:
@@ -518,7 +560,6 @@ class Gmp(GvmProtocol):
             active (int, optional): Seconds note will be active. -1 on
                 always, 0 off
             comment (str, optional): Comment for the note
-            copy (str, optional): UUID of existing note to clone from
             hosts (list, optional): A list of hosts addresses
             port (str, optional): Port to which the note applies
             result_id (str, optional): UUID of a result to which note applies
@@ -546,9 +587,6 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         if hosts:
             cmd.add_element('hosts', ', '.join(hosts))
 
@@ -569,7 +607,20 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_override(self, text, nvt_oid, active=None, copy=None, hosts=None,
+    def clone_note(self, note_id):
+        """Clone an existing note
+
+        Arguments:
+            copy (str): UUID of an existing note to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_note')
+        cmd.add_element('copy', note_id)
+        return self._send_xml_command(cmd)
+
+    def create_override(self, text, nvt_oid, active=None, hosts=None,
                         port=None, result_id=None, severity=None, comment=None,
                         new_severity=None, task_id=None, threat=None,
                         new_threat=None):
@@ -581,7 +632,6 @@ class Gmp(GvmProtocol):
             active (int, optional): Seconds override will be active. -1 on
                 always, 0 off
             comment (str, optional): Comment for the override
-            copy (str, optional): UUID of existing override to clone from
             hosts (list, optional): A list of host addresses
             port (str, optional): Port ot which the override applies
             result_id (str, optional): UUID of a result to which override
@@ -614,9 +664,6 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         if hosts:
             cmd.add_element('hosts', ', '.join(hosts))
 
@@ -643,8 +690,21 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def clone_override(self, override_id):
+        """Clone an existing override
+
+        Arguments:
+            copy (str): UUID of an existing override to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_override')
+        cmd.add_element('copy', override_id)
+        return self._send_xml_command(cmd)
+
     def create_permission(self, name, subject_id, subject_type,
-                          resource_id=None, resource_type=None, copy=None,
+                          resource_id=None, resource_type=None,
                           comment=None):
         """Create a new permission
 
@@ -682,9 +742,6 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         if resource_id and resource_type:
             _xmlresource = cmd.add_element('resource',
                                            attrs={'id': resource_id})
@@ -693,7 +750,20 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_port_list(self, name, port_range, comment=None, copy=None):
+    def clone_permission(self, permission_id):
+        """Clone an existing permission
+
+        Arguments:
+            copy (str): UUID of an existing permission to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_permission')
+        cmd.add_element('copy', permission_id)
+        return self._send_xml_command(cmd)
+
+    def create_port_list(self, name, port_range, comment=None):
         """Create a new port list
 
         Arguments:
@@ -701,7 +771,6 @@ class Gmp(GvmProtocol):
             port_range (str): Port list ranges e.g. `"T: 1-1234"` for tcp port
                 1 - 1234
             comment (str, optional): Comment for the port list
-            copy (str, optional): UUID of existing port list to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -720,9 +789,19 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            cmd.add_element('copy', copy)
+        return self._send_xml_command(cmd)
 
+    def clone_port_list(self, port_list_id):
+        """Clone an existing port list
+
+        Arguments:
+            copy (str): UUID of an existing port list to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_port_list')
+        cmd.add_element('copy', port_list_id)
         return self._send_xml_command(cmd)
 
     def create_port_range(self, port_list_id, start, end, port_range_type,
@@ -813,13 +892,12 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_role(self, name, comment=None, copy=None, users=None):
+    def create_role(self, name, comment=None, users=None):
         """Create a new role
 
         Arguments:
             name (str): Name of the role
             comment (str, optional): Comment for the role
-            copy (str, optional): UUID of existing role to clone from
             users (list, optional): List of user names to add to the role
 
         Returns:
@@ -835,16 +913,26 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         if users:
             cmd.add_element('users', ",".join(users))
 
         return self._send_xml_command(cmd)
 
+    def clone_role(self, role_id):
+        """Clone an existing role
+
+        Arguments:
+            copy (str): UUID of an existing role to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_role')
+        cmd.add_element('copy', role_id)
+        return self._send_xml_command(cmd)
+
     def create_scanner(self, name, host, port, scanner_type, ca_pub,
-                       credential_id, copy=None, comment=None):
+                       credential_id, comment=None):
         """Create a new scanner
 
         Arguments:
@@ -855,7 +943,6 @@ class Gmp(GvmProtocol):
             ca_pub (str): Certificate of CA to verify scanner certificate
             credential_id (str): UUID of client certificate credential for the
                 scanner
-            copy (str, optional): UUID of existing scanner to clone from
             comment (str, optional): Comment for the scanner
 
         Returns:
@@ -891,21 +978,30 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         return self._send_xml_command(cmd)
 
-    def create_schedule(self, name, comment=None, copy=None,
-                        first_time_minute=None, first_time_hour=None,
-                        first_time_day_of_month=None, first_time_month=None,
-                        first_time_year=None, duration=None, duration_unit=None,
-                        period=None, period_unit=None, timezone=None):
+    def clone_scanner(self, scanner_id):
+        """Clone an existing scanner
+
+        Arguments:
+            copy (str): UUID of an existing scanner to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_scanner')
+        cmd.add_element('copy', scanner_id)
+        return self._send_xml_command(cmd)
+
+    def create_schedule(self, name, comment=None, first_time_minute=None,
+                        first_time_hour=None, first_time_day_of_month=None,
+                        first_time_month=None, first_time_year=None,
+                        duration=None, duration_unit=None, period=None,
+                        period_unit=None, timezone=None):
         """Create a new schedule
 
         Arguments:
             name (str): Name of the schedule
-            copy (str, optional): UUID of existing schedule to clone from
             comment (str, optional): Comment for the schedule
             first_time_minute (int, optional): First time minute the schedule
                 will run
@@ -940,9 +1036,6 @@ class Gmp(GvmProtocol):
 
         if comment:
             cmd.add_element('comment', comment)
-
-        if copy:
-            cmd.add_element('copy', copy)
 
         if first_time_minute or first_time_hour or first_time_day_of_month or \
             first_time_month or first_time_year:
@@ -1004,8 +1097,21 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_tag(self, name, resource_id, resource_type, copy=None,
-                   value=None, comment=None, active=None):
+    def clone_schedule(self, schedule_id):
+        """Clone an existing schedule
+
+        Arguments:
+            copy (str): UUID of an existing schedule to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_schedule')
+        cmd.add_element('copy', schedule_id)
+        return self._send_xml_command(cmd)
+
+    def create_tag(self, name, resource_id, resource_type, value=None,
+                   comment=None, active=None):
         """Create a new tag
 
         Arguments:
@@ -1013,7 +1119,6 @@ class Gmp(GvmProtocol):
                 and predicate e.g. `foo:bar`.
             resource_id (str): ID of the resource  the tag is to be attached to.
             resource_type (str): Entity type the tag is to be attached to
-            copy (str, optional): UUID of existing tag to clone from
             value (str, optional): Value associated with the tag
             comment (str, optional): Comment for the tag
             active (boolean, optional): Whether the tag should be active
@@ -1030,9 +1135,6 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         if value:
             cmd.add_element('value', value)
 
@@ -1044,8 +1146,21 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def clone_tag(self, tag_id):
+        """Clone an existing tag
+
+        Arguments:
+            copy (str): UUID of an existing tag to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_tag')
+        cmd.add_element('copy', tag_id)
+        return self._send_xml_command(cmd)
+
     def create_target(self, name, make_unique=False, asset_hosts_filter=None,
-                      hosts=None, comment=None, copy=None, exclude_hosts=None,
+                      hosts=None, comment=None, exclude_hosts=None,
                       ssh_credential_id=None, ssh_credential_port=None,
                       smb_credential_id=None, esxi_credential_id=None,
                       snmp_credential_id=None, alive_tests=None,
@@ -1063,7 +1178,6 @@ class Gmp(GvmProtocol):
             exclude_hosts (list, optional): List of hosts addresses to exclude
                 from scan
             comment (str, optional): Comment for the target
-            copy (str, optional): UUID of an existing target to clone from
             ssh_credential_id (str, optional): UUID of a ssh credential to use
                 on target
             ssh_credential_port (str, optional): The port to use for ssh
@@ -1105,14 +1219,6 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if copy:
-            # TODO move copy case into clone_target method
-
-            # NOTE: It seems that hosts/asset_hosts is silently ignored by the
-            # server when copy is supplied. But for specification conformance
-            # we raise the ValueError above and consider copy optional.
-            cmd.add_element('copy', copy)
-
         if exclude_hosts:
             cmd.add_element('exclude_hosts', ', '.join(exclude_hosts))
 
@@ -1152,6 +1258,19 @@ class Gmp(GvmProtocol):
         if port_list_id:
             cmd.add_element('port_list', attrs={'id': port_list_id})
 
+        return self._send_xml_command(cmd)
+
+    def clone_target(self, target_id):
+        """Clone an existing target
+
+        Arguments:
+            copy (str): UUID of an existing target to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_target')
+        cmd.add_element('copy', target_id)
         return self._send_xml_command(cmd)
 
     def create_task(self, name, config_id, target_id, scanner_id,
@@ -1235,15 +1354,26 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_user(self, name, password=None, copy=None, hosts=None,
-                    hosts_allow=False, ifaces=None, ifaces_allow=False,
-                    role_ids=None):
+    def clone_task(self, task_id):
+        """Clone an existing task
+
+        Arguments:
+            task_id (str): UUID of existing task to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_task')
+        cmd.add_element('copy', task_id)
+        return self._send_xml_command(cmd)
+
+    def create_user(self, name, password=None, hosts=None, hosts_allow=False,
+                    ifaces=None, ifaces_allow=False, role_ids=None):
         """Create a new user
 
         Arguments:
             name (str): Name of the user
             password (str, optional): Password of the user
-            copy (str, optinal): UUID of existing user to clone from
             hosts (list, optional): A list of host addresses (IPs, DNS names)
             hosts_allow (boolean, optional): If True allow only access to passed
                 hosts otherwise deny access. Default is False for deny hosts.
@@ -1262,9 +1392,6 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand('create_user')
         cmd.add_element('name', name)
 
-        if copy:
-            cmd.add_element('copy', copy)
-
         if password:
             cmd.add_element('password', password)
 
@@ -1280,6 +1407,19 @@ class Gmp(GvmProtocol):
             for role in role_ids:
                 cmd.add_element('role', attrs={'id': role})
 
+        return self._send_xml_command(cmd)
+
+    def clone_user(self, user_id):
+        """Clone an existing user
+
+        Arguments:
+            user_id (str): UUID of existing user to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('create_user')
+        cmd.add_element('copy', user_id)
         return self._send_xml_command(cmd)
 
     def delete_agent(self, **kwargs):
