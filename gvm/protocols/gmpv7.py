@@ -1962,9 +1962,53 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_note(self, note_id, text, **kwargs):
-        cmd = self._generator.modify_note_command(note_id, text, kwargs)
-        return self.send_command(cmd)
+    def modify_note(self, note_id, text, active=None, hosts=None, port=None,
+                    result_id=None, severity=None, task_id=None, threat=None):
+        """Generates xml string for modify note on gvmd.
+
+        Arguments:
+        note_id (str): ID of note to modify.
+        text (str): The text of the note.
+        active (int, optional): Seconds note will be active.
+            -1 on always, 0 off.
+        hosts (str, optional): A textual list of hosts.
+        port (str, optional): Port to which note applies.
+        result_id (str, optional): Result to which note applies.
+        severity (str, optional): Severity to which note applies.
+        task_id (str, optional): Task to which note applies.
+        threat (str, optional): Threat level to which note applies.
+        """
+        if not note_id:
+            raise RequiredArgument('modify_note requires a note_id attribute')
+        if not text:
+            raise RequiredArgument('modify_note requires a text element')
+
+        cmd = XmlCommand('modify_note')
+        cmd.set_attribute('note_id', note_id)
+        cmd.add_element('text', text)
+
+        if active:
+            cmd.add_element('active', active)
+
+        if hosts:
+            cmd.add_element('hosts', hosts)
+
+        if port:
+            cmd.add_element('port', port)
+
+        if result_id:
+            cmd.add_element('result', attrs={'id': result_id})
+
+        if severity:
+            cmd.add_element('severity', severity)
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+
+        if threat:
+            cmd.add_element('threat', threat)
+
+        return self._send_xml_command(cmd)
 
     def modify_override(self, override_id, text, **kwargs):
         cmd = self._generator.modify_override_command(override_id, text,

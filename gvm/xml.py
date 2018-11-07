@@ -65,47 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_note_command(self, note_id, text, kwargs):
-        """Generates xml string for modify note on gvmd."""
-        if not note_id:
-            raise ValueError('modify_note requires a note_id attribute')
-        if not text:
-            raise ValueError('modify_note requires a text element')
-
-        cmd = XmlCommand('modify_note')
-        cmd.set_attribute('note_id', note_id)
-        cmd.add_element('text', text)
-
-        active = kwargs.get('active', '')
-        if active:
-            cmd.add_element('active', active)
-
-        hosts = kwargs.get('hosts', '')
-        if hosts:
-            cmd.add_element('hosts', hosts)
-
-        port = kwargs.get('port', '')
-        if port:
-            cmd.add_element('port', port)
-
-        result_id = kwargs.get('result_id', '')
-        if result_id:
-            cmd.add_element('result', attrs={'id': result_id})
-
-        severity = kwargs.get('severity', '')
-        if severity:
-            cmd.add_element('severity', severity)
-
-        task_id = kwargs.get('task_id', '')
-        if task_id:
-            cmd.add_element('task', attrs={'id': task_id})
-
-        threat = kwargs.get('threat', '')
-        if threat:
-            cmd.add_element('threat', threat)
-
-        return cmd.to_string()
-
     def modify_override_command(self, override_id, text, kwargs):
         """Generates xml string for modify override on gvmd."""
         cmd = XmlCommand('modify_override')
