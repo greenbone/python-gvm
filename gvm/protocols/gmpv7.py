@@ -1499,35 +1499,299 @@ class Gmp(GvmProtocol):
         cmd = self._generator.help_command(kwargs)
         return self.send_command(cmd)
 
-    def modify_agent(self, agent_id, name='', comment=''):
-        cmd = self._generator.modify_agent_command(agent_id, name, comment)
-        return self.send_command(cmd)
+    def modify_agent(self, agent_id, name=None, comment=None):
+        """Generates xml string for modify agent on gvmd
 
-    def modify_alert(self, alert_id, **kwargs):
-        cmd = self._generator.modify_alert_command(alert_id, kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            agent_id (str) UUID of the agent to be modified.
+            name (str, optional): Name of the new credential
+            comment (str, optional): Comment for the credential
+        """
+        if not agent_id:
+            raise RequiredArgument('modify_agent requires agent_id argument')
+
+        cmd = XmlCommand('modify_agent')
+        cmd.set_attribute('agent_id', str(agent_id))
+        if name:
+            cmd.add_element('name', name)
+        if comment:
+            cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
+
+    def modify_alert(self, alert_id, name=None, comment=None,
+                     filter_id=None, event= None, event_data=None,
+                     condition=None, condition_data=None, method=None,
+                     method_data=None):
+        """Generates xml string for modify alert on gvmd.
+
+        Arguments:
+            alert_id (str) UUID of the alert to be modified.
+            name (str, optional): Name of the Alert.
+            condition (str): The condition that must be satisfied for the alert
+                to occur.
+            condition_data (dict, optional): Data that defines the condition
+            event (str, optional): The event that must happen for the alert
+               to occur.
+            event_data (dict, optional): Data that defines the event
+            method (str, optional): The method by which the user is alerted
+            method_data (dict, optional): Data that defines the method
+            filter_id (str, optional): Filter to apply when executing alert
+            comment (str, optional): Comment for the alert
+        """
+
+        if not alert_id:
+            raise RequiredArgument('modify_alert requires an alert_id argument')
+
+        cmd = XmlCommand('modify_alert')
+        cmd.set_attribute('alert_id', str(alert_id))
+
+        if name:
+            cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if filter_id:
+            cmd.add_element('filter', attrs={'id': filter_id})
+
+        conditions = cmd.add_element('condition', condition)
+
+        if not condition_data is None:
+            for value, key in condition_data.items():
+                _data = conditions.add_element('data', value)
+                _data.add_element('name', key)
+
+        events = cmd.add_element('event', event)
+
+        if not event_data is None:
+            for value, key in event_data.items():
+                _data = events.add_element('data', value)
+                _data.add_element('name', key)
+
+        methods = cmd.add_element('method', method)
+
+        if not method_data is None:
+            for value, key in method_data.items():
+                _data = methods.add_element('data', value)
+                _data.add_element('name', key)
+
+        return self._send_xml_command(cmd)
 
     def modify_asset(self, asset_id, comment):
-        cmd = self._generator.modify_asset_command(asset_id, comment)
-        return self.send_command(cmd)
+        """Generates xml string for modify asset on gvmd
+
+        Arguments:
+            asset_id (str) UUID of the asset to be modified.
+            comment (str, optional): Comment for the asset.
+        """
+        if not asset_id:
+            raise RequiredArgument('modify_asset requires an asset_id argument')
+
+        cmd = XmlCommand('modify_asset')
+        cmd.set_attribute('asset_id', asset_id)
+        cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
 
     def modify_auth(self, group_name, auth_conf_settings):
-        cmd = self._generator.modify_auth_command(group_name,
-                                                  auth_conf_settings)
-        return self.send_command(cmd)
+        """Generates xml string for modify auth on gvmd.
+        Arguments:
+            group_name (str) Name of the group to be modified.
+            auth_conf_settings (dict): The new auth config.
+        """
+        if not group_name:
+            raise RequiredArgument('modify_auth requires a group_name argument')
+        if not auth_conf_settings:
+            raise RequiredArgument('modify_auth requires an '
+                                   'auth_conf_settings argument')
+        cmd = XmlCommand('modify_auth')
+        _xmlgroup = cmd.add_element('group', attrs={'name': str(group_name)})
 
-    def modify_config(self, selection, **kwargs):
-        cmd = self._generator.modify_config_command(selection, kwargs)
-        return self.send_command(cmd)
+        for key, value in auth_conf_settings.items():
+            _xmlauthconf = _xmlgroup.add_element('auth_conf_setting')
+            _xmlauthconf.add_element('key', key)
+            _xmlauthconf.add_element('value', value)
 
-    def modify_credential(self, credential_id, **kwargs):
-        cmd = self._generator.modify_credential_command(
-            credential_id, kwargs)
-        return self.send_command(cmd)
+        return self._send_xml_command(cmd)
 
-    def modify_filter(self, filter_id, **kwargs):
-        cmd = self._generator.modify_filter_command(filter_id, kwargs)
-        return self.send_command(cmd)
+    def modify_config(self, selection, config_id=None, nvt_oids=None, name=None,
+                      value=None, family=None):
+        """Modifies an existing scan config on gvmd.
+
+        Arguments:
+            selection (str): one of 'nvt_pref', nvt_selection or
+                family_selection'
+            config_id (str, optional): UUID of scan config to modify.
+            name (str, optional): New name for preference.
+            value(str, optional): New value for preference.
+            nvt_oids (list, optional): List of NVTs associated with preference
+                to modify.
+            family (str,optional): Name of family to modify.
+        """
+        if selection not in ('nvt_pref', 'scan_pref',
+                             'family_selection', 'nvt_selection'):
+            raise InvalidArgument('selection must be one of nvt_pref, '
+                                   'sca_pref, family_selection or '
+                                   'nvt_selection')
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        if selection == 'nvt_pref':
+            _xmlpref = cmd.add_element('preference')
+            if not nvt_oids:
+                raise InvalidArgument('modify_config requires a nvt_oids '
+                                      'argument')
+            _xmlpref.add_element('nvt', attrs={'oid': nvt_oids[0]})
+            _xmlpref.add_element('name', name)
+            _xmlpref.add_element('value', value)
+
+        elif selection == 'nvt_selection':
+            _xmlnvtsel = cmd.add_element('nvt_selection')
+            _xmlnvtsel.add_element('family', family)
+
+            if nvt_oids:
+                for nvt in nvt_oids:
+                    _xmlnvtsel.add_element('nvt', attrs={'oid': nvt})
+            else:
+                raise InvalidArgument('modify_config requires a nvt_oid '
+                                      'argument')
+
+        elif selection == 'family_selection':
+            _xmlfamsel = cmd.add_element('family_selection')
+            _xmlfamsel.add_element('growing', '1')
+            _xmlfamily = _xmlfamsel.add_element('family')
+            _xmlfamily.add_element('name', family)
+            _xmlfamily.add_element('all', '1')
+            _xmlfamily.add_element('growing', '1')
+
+        return self._send_xml_command(cmd)
+
+    def modify_credential(self, credential_id, name=None, comment=None,
+                          allow_insecure=None, certificate=None,
+                          key_phrase=None, private_key=None, login=None,
+                          password=None, auth_algorithm=None, community=None,
+                          privacy_algorithm=None, privacy_password=None,
+                          credential_type=None):
+        """Generates xml string for modify credential on gvmd.
+
+        Arguments:
+            credential_id (str): UUID of the credential
+            name (str, optional): Name of the credential
+            comment (str, optional): Comment for the credential
+            allow_insecure (boolean, optional): Whether to allow insecure use of
+                 the credential
+            certificate (str, optional): Certificate for the credential
+            key_phrase (str, optional): Key passphrase for the private key
+            private_key (str, optional): Private key to use for login
+            login (str, optional): Username for the credential
+            password (str, optional): Password for the credential
+            auth_algorithm (str, optional): The auth_algorithm,
+                either md5 or sha1.
+            community (str, optional): The SNMP community
+            privacy_algorithm (str, optional): The SNMP privacy algorithm,
+                either aes or des.
+            privacy_password (str, optional): The SNMP privacy password
+            credential_type (str, optional): The credential type. One of 'cc',
+                'snmp', 'up', 'usk'
+        """
+        if not credential_id:
+            raise RequiredArgument('modify_credential requires '
+                                   'a credential_id attribute')
+
+        cmd = XmlCommand('modify_credential')
+        cmd.set_attribute('credential_id', credential_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if allow_insecure:
+            cmd.add_element('allow_insecure', allow_insecure)
+
+        if certificate:
+            cmd.add_element('certificate', certificate)
+
+        if key_phrase or private_key:
+            if not key_phrase or not private_key:
+                raise RequiredArgument('modify_credential requires '
+                                       'a key_phrase and private_key arguments')
+            _xmlkey = cmd.add_element('key')
+            _xmlkey.add_element('phrase', key_phrase)
+            _xmlkey.add_element('private', private_key)
+
+        if login:
+            cmd.add_element('login', login)
+
+        if password:
+            cmd.add_element('password', password)
+
+        if auth_algorithm:
+            if auth_algorithm not in ('md5', 'sha1'):
+                raise RequiredArgument('modify_credential requires '
+                                       'auth_algorithm to be either '
+                                       'md5 or sha1')
+            cmd.add_element('auth_algorithm', auth_algorithm)
+
+        if community:
+            cmd.add_element('community', community)
+
+        if privacy_algorithm:
+            if privacy_algorithm not in ('aes', 'des'):
+                raise RequiredArgument('modify_credential requires '
+                                       'privacy_algorithm to be either'
+                                       'aes or des')
+            _xmlprivacy = cmd.add_element('privacy')
+            _xmlprivacy.add_element('algorithm', privacy_algorithm)
+            _xmlprivacy.add_element('password', privacy_password)
+
+        if cred_type:
+            if cred_type not in ('cc', 'snmp', 'up', 'usk'):
+                raise RequiredArgument('modify_credential requires type '
+                                 'to be either cc, snmp, up or usk')
+            cmd.add_element('type', credential_type)
+
+        return self._send_xml_command(cmd)
+
+    def modify_filter(self, filter_id, comment=None, name=None, term=None,
+                      filter_type=None):
+        """Generates xml string for modify filter on gvmd.
+
+        Arguments:
+            filter_id (str): UUID of the filter to be modified
+            comment (str, optional): Comment on filter.
+            name (str, optional): Name of filter.
+            term (str, optional): Filter term.
+            filter_type (str, optional): Resource type filter applies to.
+        """
+        if not filter_id:
+            raise RequiredArgument('modify_filter requires a filter_id '
+                                   'attribute')
+
+        cmd = XmlCommand('modify_filter')
+        cmd.set_attribute('filter_id', filter_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if term:
+            cmd.add_element('term', term)
+
+        if filter_type:
+            filter_type = filter_type.lower()
+            if filter_type not in FILTER_TYPES:
+                raise InvalidArgument(
+                    'modify_filter requires type to be one of {0} but '
+                    'was {1}'.format(', '.join(FILTER_TYPES), filter_type))
+            cmd.add_element('type', filter_type)
+
+        return self._send_xml_command(cmd)
 
     def modify_group(self, group_id, **kwargs):
         cmd = self._generator.modify_group_command(group_id, kwargs)
