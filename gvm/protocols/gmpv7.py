@@ -194,7 +194,7 @@ class Gmp(GvmProtocol):
             copy (str, optional): UUID of an existing agent to clone from
             howto_install (str, optional): A file that describes how to install
                 the agent
-            howto_user (str, optional): A file that describes how to use the
+            howto_use (str, optional): A file that describes how to use the
                 agent
 
         Returns:
