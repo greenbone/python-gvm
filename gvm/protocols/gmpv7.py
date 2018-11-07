@@ -1761,6 +1761,7 @@ class Gmp(GvmProtocol):
         """Generates xml string for modify filter on gvmd.
 
         Arguments:
+            filter_id (str): UUID of the filter to be modified
             comment (str, optional): Comment on filter.
             name (str, optional): Name of filter.
             term (str, optional): Filter term.
