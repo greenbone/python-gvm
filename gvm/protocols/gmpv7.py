@@ -2069,10 +2069,48 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_permission(self, permission_id, **kwargs):
-        cmd = self._generator.modify_permission_command(
-            permission_id, kwargs)
-        return self.send_command(cmd)
+    def modify_permission(self, permission_id, comment=None, name=None,
+                          resource=None, subject=None):
+        """Generates xml string for modify permission on gvmd.
+
+        Arguments:
+        permission_id (str): Permission name, currently the name of a command.
+        comment (str, optional):
+        name (str, optional):
+        resource (dict, optional): A resource to which the permission applies.
+            It has id and type, for Super permissions: one of 'user',
+            'group' or 'role'.
+        subject (dict, optional): A subject to whom the permission is granted.
+            It has id and type of the subject: one of 'user', 'group' or 'role'.
+
+        """
+        if not permission_id:
+            raise RequiredArgument('modify_permission requires '
+                             'a permission_id element')
+
+        cmd = XmlCommand('modify_permission')
+        cmd.set_attribute('permission_id', permission_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if resource:
+            resource_id = resource['id']
+            resource_type = resource['type']
+            _xmlresource = cmd.add_element('resource',
+                                           attrs={'id': resource_id})
+            _xmlresource.add_element('type', resource_type)
+
+        if subject:
+            subject_id = subject['id']
+            subject_type = subject['type']
+            _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
+            _xmlsubject.add_element('type', subject_type)
+
+        return self._send_xml_command(cmd)
 
     def modify_port_list(self, port_list_id, **kwargs):
         cmd = self._generator.modify_port_list_command(port_list_id, kwargs)
