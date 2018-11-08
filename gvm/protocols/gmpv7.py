@@ -2343,9 +2343,42 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('report_format_id', report_format_id)
         return self._send_xml_command(cmd)
 
-    def get_results(self, **kwargs):
-        cmd = self._generator.get_results_command(kwargs)
-        return self.send_command(cmd)
+    def get_results(self, filter=None, filter_id=None, task_id=None,
+                    note_details=None, override_details=None, details=None):
+        """Request a list of results
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            task_id (str, optional): UUID of task for note and override handling
+            note_details (boolean, optional): If notes are included, whether to
+                include note details
+            override_details (boolean, optional): If overrides are included,
+                whether to include override details
+            details (boolean, optional): Whether to include additional details
+                of the results
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_results')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if task_id:
+            cmd.set_attribute('task_id', task_id)
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if not note_details is None:
+            cmd.set_attribute('note_details', _to_bool(note_details))
+
+        if not override_details is None:
+            cmd.set_attribute('override_details', _to_bool(override_details))
+
+        return self._send_xml_command(cmd)
 
     def get_result(self, result_id):
         """Request a single result
