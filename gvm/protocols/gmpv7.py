@@ -2199,9 +2199,35 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('port_list_id', port_list_id)
         return self._send_xml_command(cmd)
 
-    def get_preferences(self, **kwargs):
-        cmd = self._generator.get_preferences_command(kwargs)
-        return self.send_command(cmd)
+    def get_preferences(self, nvt_oid=None, config_id=None, preference=None):
+        """Request a list of preferences
+
+        When the command includes a config_id attribute, the preference element
+        includes the preference name, type and value, and the NVT to which the
+        preference applies. Otherwise, the preference element includes just the
+        name and value, with the NVT and type built into the name.
+
+        Arguments:
+            nvt_oid (str, optional): OID of nvt
+            config_id (str, optional): UUID of scan config of which to show
+                preference values
+            preference (str, optional): name of a particular preference to get
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_preferences')
+
+        if nvt_oid:
+            cmd.set_attribute('nvt_oid', nvt_oid)
+
+        if config_id:
+            cmd.set_attribute('config_id', config_id)
+
+        if preference:
+            cmd.set_attribute('preference', preference)
+
+        return self._send_xml_command(cmd)
 
     def get_reports(self, **kwargs):
         cmd = self._generator.get_reports_command(kwargs)
