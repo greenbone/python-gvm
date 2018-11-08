@@ -3,7 +3,7 @@
 # Greenbone Vulnerability Management Python Library
 
 [![GitHub releases](https://img.shields.io/github/release/greenbone/python-gvm.svg)](https://github.com/greenbone/python-gvm/releases)
-[![PyPI release](https://img.shields.io/pypi/v/gvm.svg)](https://pypi.org/project/gvm/)
+[![PyPI release](https://img.shields.io/pypi/v/gvm.svg)](https://pypi.org/project/python-gvm/)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/greenbone/python-gvm/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/greenbone/python-gvm/?branch=master)
 [![code test coverage](https://codecov.io/gh/greenbone/python-gvm/branch/master/graph/badge.svg)](https://codecov.io/gh/greenbone/python-gvm)
 [![CircleCI](https://circleci.com/gh/greenbone/python-gvm/tree/master.svg?style=svg)](https://circleci.com/gh/greenbone/python-gvm/tree/master)
@@ -36,7 +36,7 @@ Python 3.5 and later is supported.
 You can install the latest stable release of python-gvm from the Python Package
 Index using [pip](https://pip.pypa.io/):
 
-    pip install gvm
+    pip install python-gvm
 
 alternatively download or clone this repository and install the latest
 development version:
