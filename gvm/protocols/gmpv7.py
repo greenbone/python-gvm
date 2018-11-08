@@ -2155,16 +2155,16 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_report_format(self, report_format_id, active=None, name=None,
-                             summary=None, param=None):
-        """Generates xml string for modify report format on gvmd.
+                             summary=None, param_name=None, param_value=None):
+        """Modify a report format on gvmd.
 
         Arguments:
             report_format_id (str) UUID of report format to modify.
             active (boolean, optional): Whether the report format is active.
             name (str, optional): The name of the report format.
             summary (str, optional): A summary of the report format.
-            param (list, optional): List members: [name, value]]: The name of
-                the param and its new value.
+            param_name (str, optional): The name of the param.
+            param_value (str, optional): The value of the param.
         """
         if not report_format_id:
             raise RequiredArgument('modify_report requires '
@@ -2172,8 +2172,8 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand('modify_report_format')
         cmd.set_attribute('report_format_id', report_format_id)
 
-        if active:
-            cmd.add_element('active', active)
+        if not active is None:
+            cmd.add_element('active', '1' if active else '0')
 
         if name:
             cmd.add_element('name', name)
@@ -2181,10 +2181,10 @@ class Gmp(GvmProtocol):
         if summary:
             cmd.add_element('summary', summary)
 
-        if param:
+        if param_name and param_value:
             _xmlparam = cmd.add_element('param')
-            _xmlparam.add_element('name', param[0])
-            _xmlparam.add_element('value', param[1])
+            _xmlparam.add_element('name', param_name)
+            _xmlparam.add_element('value', param_value)
 
         return self._send_xml_command(cmd)
 
