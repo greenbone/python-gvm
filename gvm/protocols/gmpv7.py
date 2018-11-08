@@ -1805,9 +1805,32 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_filters(self, **kwargs):
-        cmd = self._generator.get_filters_command(kwargs)
-        return self.send_command(cmd)
+    def get_filters(self, filter=None, filter_id=None, trash=None, alerts=None):
+        """Request a list of filters
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan filters
+                instead
+            alerts (boolean, optional): Whether to include list of alerts that
+                use the filter.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_filters')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not alerts is None:
+            cmd.set_attribute('alerts', _to_bool(alerts))
+
+        return self._send_xml_command(cmd)
 
     def get_filter(self, filter_id):
         """Request a single filter
