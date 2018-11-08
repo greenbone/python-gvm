@@ -9,7 +9,7 @@ Using pip
 You can install the latest stable release of python-gvm from the Python Package
 Index using `pip`_::
 
-    pip install gvm
+    pip install python-gvm
 
 
 Using pipenv
@@ -19,7 +19,7 @@ If you are developing an application or library that uses **python-gvm**
 internally it is often better to choose `pipenv`_ for handling your
 dependencies.::
 
-    pipenv install gvm
+    pipenv install python-gvm
 
 If you aren't using `pipenv`_ yet head over to the pipenv website for
 installation instructions.
