@@ -1581,9 +1581,48 @@ class Gmp(GvmProtocol):
         cmd.set_attributes(kwargs)
         return self._send_xml_command(cmd)
 
-    def get_alerts(self, **kwargs):
-        cmd = self._generator.get_alerts_command(kwargs)
-        return self.send_command(cmd)
+    def get_alerts(self, filter=None, filter_id=None, trash=None, tasks=None):
+        """Request a list of alerts
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): True to request the alerts in the
+                trashcan
+            tasks (boolean, optional): Whether to include the tasks using the
+                alerts
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_alerts')
+
+        if filter:
+            cmd.set_attribute('filter', filter)
+
+        if filter_id:
+            cmd.set_attribute('filt_id', filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not tasks is None:
+            cmd.set_attribute('tasks', _to_bool(tasks))
+
+        return self._send_xml_command(cmd)
+
+    def get_alert(self, alert_id):
+        """Request a single alert
+
+        Arguments:
+            alert_id (str): UUID of an existing alert
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_alerts')
+        cmd.set_attribute('alert_id', alert_id)
+        return self._send_xml_command(cmd)
 
     def get_assets(self, **kwargs):
         cmd = self._generator.get_assets_command(kwargs)
