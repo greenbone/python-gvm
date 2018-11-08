@@ -2901,10 +2901,57 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_scanner(self, scanner_id, host, port, scanner_type, **kwargs):
-        cmd = self._generator.modify_scanner_command(scanner_id, host, port,
-                                                     scanner_type, kwargs)
-        return self.send_command(cmd)
+    def modify_scanner(self, scanner_id, host, port, scanner_type,
+                       comment=None, name=None, ca_pub=None,
+                       credential_id=None):
+        """Generates xml string for modify scanner on gvmd.
+
+        Arguments:
+        scanner_id (str): UUID of scanner to modify.
+        host (str): Host of the scanner.
+        port (str): Port of the scanner.
+        scanner_type (str): Type of the scanner.
+            '1' for OSP, '2' for OpenVAS (classic) Scanner.
+        comment (str, optional): Comment on scanner.
+        name (str, optional): Name of scanner.
+        ca_pub (str, optional): Certificate of CA to verify scanner's
+            certificate.
+        credential_id (str, optional): UUID of the client certificate credential
+            for the Scanner.
+        """
+        if not scanner_id:
+            raise RequiredArgument('modify_scanner requires a scanner_id argument')
+        if not host:
+            raise RequiredArgument('modify_scanner requires a host argument')
+        if not port:
+            raise RequiredArgument('modify_scanner requires a port argument')
+        if not scanner_type:
+            raise RequiredArgument('modify_scanner requires a scanner_type '
+                                   'argument')
+
+        cmd = XmlCommand('modify_scanner')
+        cmd.set_attribute('scanner_id', scanner_id)
+        cmd.add_element('host', host)
+        cmd.add_element('port', port)
+        if scanner_type not in ('1', '2'):
+            raise InvalidArgument(' modify_scanner requires a scanner_type '
+                                  'argument which must be either "1" for OSP '
+                                  'or "2" OpenVAS (Classic).')
+        cmd.add_element('type', scanner_type)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if ca_pub:
+            cmd.add_element('ca_pub', ca_pub)
+
+        if credential_id:
+            cmd.add_element('credential', attrs={'id': str(credential_id)})
+
+        return self._send_xml_command(cmd)
 
     def modify_schedule(self, schedule_id, **kwargs):
         cmd = self._generator.modify_schedule_command(schedule_id, kwargs)
