@@ -102,6 +102,14 @@ def _to_bool(value):
     return '1' if value else '0'
 
 
+def _add_filter(cmd, filter, filter_id):
+    if filter:
+        cmd.set_attribute('filter', filter)
+
+    if filter_id:
+        cmd.set_attribute('filt_id', filter_id)
+
+
 class Gmp(GvmProtocol):
     """Python interface for Greenbone Management Protocol
 
@@ -1541,11 +1549,7 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_agents')
 
-        if filter:
-            cmd.set_attribute('filter', filter)
-
-        if filter_id:
-            cmd.set_attribute('filt_id', filter_id)
+        _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
             cmd.set_attribute('trash', _to_bool(trash))
@@ -1597,11 +1601,7 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_alerts')
 
-        if filter:
-            cmd.set_attribute('filter', filter)
-
-        if filter_id:
-            cmd.set_attribute('filt_id', filter_id)
+        _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
             cmd.set_attribute('trash', _to_bool(trash))
