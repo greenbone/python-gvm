@@ -2580,9 +2580,33 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_tags(self, **kwargs):
-        cmd = self._generator.get_tags_command(kwargs)
-        return self.send_command(cmd)
+    def get_tags(self, filter=None, filter_id=None, trash=None,
+                 names_only=None):
+        """Request a list of tags
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get tags from the trashcan
+                instead
+            names_only (boolean, optional): Whether to get only distinct tag
+                names
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_tags')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not names_only is None:
+            cmd.set_attribute('names_only', _to_bool(names_only))
+
+        return self._send_xml_command(cmd)
 
     def get_tag(self, tag_id):
         """Request a single tag
