@@ -1561,7 +1561,7 @@ class Gmp(GvmProtocol):
             filter (str, optional): Filter term to use for the query
             filter_id (str, optional): UUID of an existing filter to use for
                 the query
-            trash (boolean, optional): True to request the filters in the
+            trash (boolean, optional): True to request the agents in the
                 trashcan
             details (boolean, optional): Whether to include agents package
                 information when no format was provided
