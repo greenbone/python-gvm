@@ -1971,7 +1971,7 @@ class Gmp(GvmProtocol):
             text (str): The text of the note.
             active (int, optional): Seconds note will be active.
                 -1 on always, 0 off.
-            hosts (str, optional): A textual list of hosts.
+            hosts (list, optional): A list of hosts addresses
             port (str, optional): Port to which note applies.
             result_id (str, optional): Result to which note applies.
             severity (str, optional): Severity to which note applies.
@@ -1991,7 +1991,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', active)
 
         if hosts:
-            cmd.add_element('hosts', hosts)
+            cmd.add_element('hosts', ', '.join(hosts))
 
         if port:
             cmd.add_element('port', port)
