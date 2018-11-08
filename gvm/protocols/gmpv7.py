@@ -2153,9 +2153,38 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('permission_id', permission_id)
         return self._send_xml_command(cmd)
 
-    def get_port_lists(self, **kwargs):
-        cmd = self._generator.get_port_lists_command(kwargs)
-        return self.send_command(cmd)
+    def get_port_lists(self, filter=None, filter_id=None, details=none,
+                       targets=None, trash=None):
+        """Request a list of port lists
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            details (boolean, optional): Whether to include full port list
+                details
+            targets (boolean, optional): Whether to include targets using this
+                port list
+            trash (boolean, optional): Whether to get port lists in the
+                trashcan instead
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_port_lists')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if not targets is None:
+            cmd.set_attribute('targets', _to_bool(targets))
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        return self._send_xml_command(cmd)
 
     def get_port_list(self, port_list_id):
         """Request a single port list
