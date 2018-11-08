@@ -2843,7 +2843,7 @@ class Gmp(GvmProtocol):
 
     def modify_report_format(self, report_format_id, active=None, name=None,
                              summary=None, param_name=None, param_value=None):
-        """Modifies an existing report format on gvmd.
+        """Modifies an existing report format.
 
         Arguments:
             report_format_id (str) UUID of report format to modify.
