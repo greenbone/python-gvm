@@ -2011,16 +2011,16 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_override(self, override_id, text, active=None, hosts=None,
-                        port=None, result_id=None, severity=None,
+    def modify_override(self, override_id, text, seconds_active=None,
+                        hosts=None, port=None, result_id=None, severity=None,
                         new_severity=None, task_id=None, threat=None,
                         new_threat=None):
-        """Generates xml string for modify override on gvmd.
+        """Modifies an existing override.
 
         Arguments:
             override_id (str): UUID of override to modify.
             text (str): The text of the override.
-            active (int, optional): Seconds override will be active.
+            seconds_active (int, optional): Seconds override will be active.
                 -1 on always, 0 off.
             hosts (list, optional): A list of host addresses
             port (str, optional): Port to which override applies.
@@ -2041,8 +2041,8 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('override_id', override_id)
         cmd.add_element('text', text)
 
-        if not active is None:
-            cmd.add_element('active', '1' if active else '0')
+        if not seconds_active is None:
+            cmd.add_element('active', str(seconds_active))
 
         if hosts:
             cmd.add_element('hosts', ', '.join(hosts))
