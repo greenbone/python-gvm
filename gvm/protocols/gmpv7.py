@@ -2136,7 +2136,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_report(self, report_id, comment):
-        """Generates xml string for modify report on gvmd.
+        """Modify a report on gvmd.
 
         Arguments:
             report_id (str): UUID of report to modify.
