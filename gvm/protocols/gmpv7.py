@@ -2445,7 +2445,7 @@ class Gmp(GvmProtocol):
 
     def modify_config(self, selection, config_id=None, nvt_oids=None, name=None,
                       value=None, family=None):
-        """Modifies an existing existing scan config.
+        """Modifies an existing scan config.
 
         Arguments:
             selection (str): one of 'nvt_pref', nvt_selection or
@@ -2904,20 +2904,20 @@ class Gmp(GvmProtocol):
     def modify_scanner(self, scanner_id, host, port, scanner_type,
                        comment=None, name=None, ca_pub=None,
                        credential_id=None):
-        """Generates xml string for modify scanner on gvmd.
+        """Modifies an existing scanner.
 
         Arguments:
-        scanner_id (str): UUID of scanner to modify.
-        host (str): Host of the scanner.
-        port (str): Port of the scanner.
-        scanner_type (str): Type of the scanner.
-            '1' for OSP, '2' for OpenVAS (classic) Scanner.
-        comment (str, optional): Comment on scanner.
-        name (str, optional): Name of scanner.
-        ca_pub (str, optional): Certificate of CA to verify scanner's
-            certificate.
-        credential_id (str, optional): UUID of the client certificate credential
-            for the Scanner.
+            scanner_id (str): UUID of scanner to modify.
+            host (str): Host of the scanner.
+            port (str): Port of the scanner.
+            scanner_type (str): Type of the scanner.
+                '1' for OSP, '2' for OpenVAS (classic) Scanner.
+            comment (str, optional): Comment on scanner.
+            name (str, optional): Name of scanner.
+            ca_pub (str, optional): Certificate of CA to verify scanner's
+                certificate.
+            credential_id (str, optional): UUID of the client certificate credential
+                for the Scanner.
         """
         if not scanner_id:
             raise RequiredArgument('modify_scanner requires a scanner_id argument')
@@ -2958,7 +2958,7 @@ class Gmp(GvmProtocol):
                         first_time_day_of_month=None, first_time_month=None,
                         first_time_year=None, duration=None, duration_unit=None,
                         period=None, period_unit=None, timezone=None):
-        """Generates xml string for modify schedule on gvmd.
+        """Modifies an existing schedule.
 
         Arguments:
             schedule_id (str): UUID of schedule to modify.
@@ -3060,7 +3060,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_setting(self, setting_id, name, value):
-        """Generates xml string for modify setting format on gvmd.
+        """Modifies an existing setting.
 
         Arguments:
             setting_id (str): UUID of the setting to be changed.
