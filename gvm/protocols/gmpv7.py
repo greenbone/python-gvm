@@ -2070,7 +2070,8 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_permission(self, permission_id, comment=None, name=None,
-                          resource=None, subject=None):
+                          resource_id=None, resource_type=None,
+                          subject_id=None, subject_type=None):
         """Generates xml string for modify permission on gvmd.
 
         Arguments:
@@ -2078,12 +2079,14 @@ class Gmp(GvmProtocol):
             comment (str, optional): The comment on the permission.
             name (str, optional): Permission name, currently the name of
                 a command.
-            resource (dict, optional): A resource to which the permission
-                applies. It has id and type, for Super permissions: one of
-                'user', 'group' or 'role'.
-            subject (dict, optional): A subject to whom the permission is
-                granted. It has id and type of the subject: one of 'user',
-                'group' or 'role'.
+            subject_id (str, optional): UUID of subject to whom the permission
+                is granted
+            subject_type (str, optional): Type of the subject user, group or
+                role
+            resource_id (str, optional): UUID of entity to which the permission
+                applies
+            resource_type (str, optional): Type of the resource. For Super
+                permissions user, group or role
         """
         if not permission_id:
             raise RequiredArgument('modify_permission requires '
@@ -2098,23 +2101,14 @@ class Gmp(GvmProtocol):
         if name:
             cmd.add_element('name', name)
 
-        if resource:
-            resource_id = resource.get('id')
-            resource_type = resource.get('type')
-            if not resource_id or not resource_type:
-                raise InvalidArgument('modify_permission requires a resource '
-                                      'dict with id and type members')
+        if resource_id and resource_type:
             _xmlresource = cmd.add_element('resource',
                                            attrs={'id': resource_id})
             _xmlresource.add_element('type', resource_type)
 
-        if subject:
-            subject_id = subject.get('id')
-            subject_type = subject.get('type')
-            if not subject_id or not subject_type:
-                raise InvalidArgument('modify_permission requires a subject '
-                                      'dict with id and type members')
-            _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
+        if subject_id and subject_type:
+            _xmlsubject = cmd.add_element('subject',
+                                           attrs={'id': subject_id})
             _xmlsubject.add_element('type', subject_type)
 
         return self._send_xml_command(cmd)
