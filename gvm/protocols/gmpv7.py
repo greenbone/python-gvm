@@ -1628,13 +1628,52 @@ class Gmp(GvmProtocol):
         cmd = self._generator.get_assets_command(kwargs)
         return self.send_command(cmd)
 
+    def get_asset(self, asset_id):
+        """Request a single asset
+
+        Arguments:
+            asset_id (str): UUID of an existing asset
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_assets')
+        cmd.set_attribute('asset_id', asset_id)
+        return self._send_xml_command(cmd)
+
     def get_credentials(self, **kwargs):
         cmd = self._generator.get_credentials_command(kwargs)
         return self.send_command(cmd)
 
+    def get_credential(self, credential_id):
+        """Request a single credential
+
+        Arguments:
+            credential_id (str): UUID of an existing credential
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_credentials')
+        cmd.set_attribute('credential_id', credential_id)
+        return self._send_xml_command(cmd)
+
     def get_configs(self, **kwargs):
         cmd = self._generator.get_configs_command(kwargs)
         return self.send_command(cmd)
+
+    def get_config(self, config_id):
+        """Request a single scan config
+
+        Arguments:
+            config_id (str): UUID of an existing scan config
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_configs')
+        cmd.set_attribute('config_id', config_id)
+        return self._send_xml_command(cmd)
 
     def get_feeds(self, **kwargs):
         cmd = self._generator.get_feeds_command(kwargs)
@@ -1644,21 +1683,86 @@ class Gmp(GvmProtocol):
         cmd = self._generator.get_filters_command(kwargs)
         return self.send_command(cmd)
 
+    def get_filter(self, filter_id):
+        """Request a single filter
+
+        Arguments:
+            filter_id (str): UUID of an existing filter
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_filters')
+        cmd.set_attribute('filter_id', filter_id)
+        return self._send_xml_command(cmd)
+
     def get_groups(self, **kwargs):
         cmd = self._generator.get_groups_command(kwargs)
         return self.send_command(cmd)
 
-    def get_info(self, **kwargs):
+    def get_group(self, group_id):
+        """Request a single group
+
+        Arguments:
+            group_id (str): UUID of an existing group
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_groups')
+        cmd.set_attribute('group_id', group_id)
+        return self._send_xml_command(cmd)
+
+    def get_info_list(self, **kwargs):
         cmd = self._generator.get_info_command(kwargs)
         return self.send_command(cmd)
+
+    def get_info(self, info_id):
+        """Request a single secinfo
+
+        Arguments:
+            info_id (str): UUID of an existing secinfo
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_infos')
+        cmd.set_attribute('info_id', info_id)
+        return self._send_xml_command(cmd)
 
     def get_notes(self, **kwargs):
         cmd = self._generator.get_notes_command(kwargs)
         return self.send_command(cmd)
 
+    def get_note(self, note_id):
+        """Request a single note
+
+        Arguments:
+            note_id (str): UUID of an existing note
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_notes')
+        cmd.set_attribute('note_id', note_id)
+        return self._send_xml_command(cmd)
+
     def get_nvts(self, **kwargs):
         cmd = self._generator.get_nvts_command(kwargs)
         return self.send_command(cmd)
+
+    def get_nvt(self, nvt_id):
+        """Request a single nvt
+
+        Arguments:
+            nvt_id (str): UUID of an existing nvt
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_nvts')
+        cmd.set_attribute('nvt_id', nvt_id)
+        return self._send_xml_command(cmd)
 
     def get_nvt_families(self, **kwargs):
         cmd = self._generator.get_nvt_families_command(kwargs)
@@ -1668,13 +1772,52 @@ class Gmp(GvmProtocol):
         cmd = self._generator.get_overrides_command(kwargs)
         return self.send_command(cmd)
 
+    def get_override(self, override_id):
+        """Request a single override
+
+        Arguments:
+            override_id (str): UUID of an existing override
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_overrides')
+        cmd.set_attribute('override_id', override_id)
+        return self._send_xml_command(cmd)
+
     def get_permissions(self, **kwargs):
         cmd = self._generator.get_permissions_command(kwargs)
         return self.send_command(cmd)
 
+    def get_permission(self, permission_id):
+        """Request a single permission
+
+        Arguments:
+            permission_id (str): UUID of an existing permission
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_permissions')
+        cmd.set_attribute('permission_id', permission_id)
+        return self._send_xml_command(cmd)
+
     def get_port_lists(self, **kwargs):
         cmd = self._generator.get_port_lists_command(kwargs)
         return self.send_command(cmd)
+
+    def get_port_list(self, port_list_id):
+        """Request a single port list
+
+        Arguments:
+            port_list_id (str): UUID of an existing port list
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_port_lists')
+        cmd.set_attribute('port_list_id', port_list_id)
+        return self._send_xml_command(cmd)
 
     def get_preferences(self, **kwargs):
         cmd = self._generator.get_preferences_command(kwargs)
@@ -1684,29 +1827,120 @@ class Gmp(GvmProtocol):
         cmd = self._generator.get_reports_command(kwargs)
         return self.send_command(cmd)
 
+    def get_report(self, report_id):
+        """Request a single report
+
+        Arguments:
+            report_id (str): UUID of an existing report
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_reports')
+        cmd.set_attribute('report_id', report_id)
+        return self._send_xml_command(cmd)
+
     def get_report_formats(self, **kwargs):
         cmd = self._generator.get_report_formats_command(kwargs)
         return self.send_command(cmd)
+
+    def get_report_format(self, report_format_id):
+        """Request a single report format
+
+        Arguments:
+            report_format_id (str): UUID of an existing report format
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_report_formats')
+        cmd.set_attribute('report_format_id', report_format_id)
+        return self._send_xml_command(cmd)
 
     def get_results(self, **kwargs):
         cmd = self._generator.get_results_command(kwargs)
         return self.send_command(cmd)
 
+    def get_result(self, result_id):
+        """Request a single result
+
+        Arguments:
+            result_id (str): UUID of an existing result
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_results')
+        cmd.set_attribute('result_id', result_id)
+        return self._send_xml_command(cmd)
+
     def get_roles(self, **kwargs):
         cmd = self._generator.get_roles_command(kwargs)
         return self.send_command(cmd)
+
+    def get_role(self, role_id):
+        """Request a single role
+
+        Arguments:
+            role_id (str): UUID of an existing role
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_roles')
+        cmd.set_attribute('role_id', role_id)
+        return self._send_xml_command(cmd)
 
     def get_scanners(self, **kwargs):
         cmd = self._generator.get_scanners_command(kwargs)
         return self.send_command(cmd)
 
+    def get_scanner(self, scanner_id):
+        """Request a single scanner
+
+        Arguments:
+            scanner_id (str): UUID of an existing scanner
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_scanners')
+        cmd.set_attribute('scanner_id', scanner_id)
+        return self._send_xml_command(cmd)
+
     def get_schedules(self, **kwargs):
         cmd = self._generator.get_schedules_command(kwargs)
         return self.send_command(cmd)
 
+    def get_schedule(self, schedule_id):
+        """Request a single schedule
+
+        Arguments:
+            schedule_id (str): UUID of an existing schedule
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_schedules')
+        cmd.set_attribute('schedule_id', schedule_id)
+        return self._send_xml_command(cmd)
+
     def get_settings(self, **kwargs):
         cmd = self._generator.get_settings_command(kwargs)
         return self.send_command(cmd)
+
+    def get_setting(self, setting_id):
+        """Request a single setting
+
+        Arguments:
+            setting_id (str): UUID of an existing setting
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_settings')
+        cmd.set_attribute('setting_id', setting_id)
+        return self._send_xml_command(cmd)
 
     def get_system_reports(self, **kwargs):
         cmd = self._generator.get_system_reports_command(kwargs)
@@ -1716,17 +1950,69 @@ class Gmp(GvmProtocol):
         cmd = self._generator.get_tags_command(kwargs)
         return self.send_command(cmd)
 
+    def get_tag(self, tag_id):
+        """Request a single tag
+
+        Arguments:
+            tag_id (str): UUID of an existing tag
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_tags')
+        cmd.set_attribute('tag_id', tag_id)
+        return self._send_xml_command(cmd)
+
     def get_targets(self, **kwargs):
         cmd = self._generator.get_targets_command(kwargs)
         return self.send_command(cmd)
+
+    def get_target(self, target_id):
+        """Request a single target
+
+        Arguments:
+            target_id (str): UUID of an existing target
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_targets')
+        cmd.set_attribute('target_id', target_id)
+        return self._send_xml_command(cmd)
 
     def get_tasks(self, **kwargs):
         cmd = self._generator.get_tasks_command(kwargs)
         return self.send_command(cmd)
 
+    def get_task(self, task_id):
+        """Request a single task
+
+        Arguments:
+            task_id (str): UUID of an existing task
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_tasks')
+        cmd.set_attribute('task_id', task_id)
+        return self._send_xml_command(cmd)
+
     def get_users(self, **kwargs):
         cmd = self._generator.get_users_command(kwargs)
         return self.send_command(cmd)
+
+    def get_user(self, user_id):
+        """Request a single user
+
+        Arguments:
+            user_id (str): UUID of an existing user
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_users')
+        cmd.set_attribute('user_id', user_id)
+        return self._send_xml_command(cmd)
 
     def get_version(self):
         cmd = self._generator.get_version_command()
