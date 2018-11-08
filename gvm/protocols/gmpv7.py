@@ -1943,7 +1943,7 @@ class Gmp(GvmProtocol):
             group_id (str): UUID of group to modify.
             comment (str, optional): Comment on group.
             name (str, optional): Name of group.
-            users (str, optional): Comma separated list of user names.
+            users (list, optional): List of user names to be in the group
         """
         if not group_id:
             raise RequiredArgument('modify_group requires a group_id argument')
@@ -1958,7 +1958,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('name', name)
 
         if users:
-            cmd.add_element('users', users)
+            cmd.add_element('users', ','.join(users))
 
         return self._send_xml_command(cmd)
 
