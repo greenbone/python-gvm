@@ -1864,6 +1864,7 @@ class Gmp(GvmProtocol):
                 the query
             trash (boolean, optional): Whether to get the trashcan groups
                 instead
+
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
@@ -2153,7 +2154,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('permission_id', permission_id)
         return self._send_xml_command(cmd)
 
-    def get_port_lists(self, filter=None, filter_id=None, details=none,
+    def get_port_lists(self, filter=None, filter_id=None, details=None,
                        targets=None, trash=None):
         """Request a list of port lists
 
