@@ -2509,9 +2509,21 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('schedule_id', schedule_id)
         return self._send_xml_command(cmd)
 
-    def get_settings(self, **kwargs):
-        cmd = self._generator.get_settings_command(kwargs)
-        return self.send_command(cmd)
+    def get_settings(self, filter=None):
+        """Request a list of user settings
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_schedules')
+
+        if filter:
+            cmd.set_attribute('filter', filter)
+
+        return self._send_xml_command(cmd)
 
     def get_setting(self, setting_id):
         """Request a single setting
