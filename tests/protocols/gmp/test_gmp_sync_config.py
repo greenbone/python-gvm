@@ -18,20 +18,21 @@
 
 import unittest
 
-from gvm.xml import _GmpCommandFactory as GmpCommandFactory
+from gvm.protocols.gmpv7 import Gmp
+
+from .. import MockConnection
 
 
-class GMPSyncConfigCommandTestCase(unittest.TestCase):
+class GmpSyncConfigCommandTestCase(unittest.TestCase):
+
     def setUp(self):
-        self.gmp = GmpCommandFactory()
-
-    def tearDown(self):
-        pass
+        self.connection = MockConnection()
+        self.gmp = Gmp(self.connection)
 
     def test_sync_config(self):
-        cmd = self.gmp.sync_config_command()
+        self.gmp.sync_config()
 
-        self.assertEqual('<sync_config/>', cmd)
+        self.connection.send.has_been_called_with('<sync_config/>')
 
 
 if __name__ == '__main__':

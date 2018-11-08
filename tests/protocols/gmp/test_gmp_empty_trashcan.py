@@ -18,20 +18,21 @@
 
 import unittest
 
-from gvm.xml import _GmpCommandFactory as GmpCommandFactory
+from gvm.protocols.gmpv7 import Gmp
+
+from .. import MockConnection
 
 
-class GMPEmptyTrashcanCommandTestCase(unittest.TestCase):
+class GmpEmptyTrashcanCommandTestCase(unittest.TestCase):
+
     def setUp(self):
-        self.gmp = GmpCommandFactory()
-
-    def tearDown(self):
-        pass
+        self.connection = MockConnection()
+        self.gmp = Gmp(self.connection)
 
     def test_empty_trashcan(self):
-        cmd = self.gmp.empty_trashcan_command()
+        self.gmp.empty_trashcan()
 
-        self.assertEqual('<empty_trashcan/>', cmd)
+        self.connection.send.has_been_called_with('<empty_trashcan/>')
 
 
 if __name__ == '__main__':
