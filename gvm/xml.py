@@ -523,16 +523,6 @@ class _GmpCommandFactory:
 
         return cmd.to_string()
 
-    def describe_auth_command(self):
-        """Generates xml string for describe auth on gvmd"""
-        cmd = XmlCommand('describe_auth')
-        return cmd.to_string()
-
-    def empty_trashcan_command(self):
-        """Generates xml string for empty trashcan on gvmd"""
-        cmd = XmlCommand('empty_trashcan')
-        return cmd.to_string()
-
     def get_assets_command(self, kwargs):
         """Generates xml string for get assets on gvmd."""
         cmd = XmlCommand('get_assets')
@@ -689,17 +679,6 @@ class _GmpCommandFactory:
         cmd.set_attributes(kwargs)
         return cmd.to_string()
 
-    def get_version_command(self):
-        """Generates xml string for get version on gvmd."""
-        cmd = XmlCommand('get_version')
-        return cmd.to_string()
-
-    def help_command(self, kwargs):
-        """Generates xml string for help on gvmd."""
-        cmd = XmlCommand('help')
-        cmd.set_attributes(kwargs)
-        return cmd.to_string()
-
     def move_task_command(self, task_id, slave_id):
         """Generates xml string for move task on gvmd."""
         cmd = XmlCommand('move_task')
@@ -729,26 +708,6 @@ class _GmpCommandFactory:
         """Generates xml string for stop task on gvmd."""
         cmd = XmlCommand('stop_task')
         cmd.set_attribute('task_id', task_id)
-        return cmd.to_string()
-
-    def sync_cert_command(self):
-        """Generates xml string for sync cert on gvmd."""
-        cmd = XmlCommand('sync_cert')
-        return cmd.to_string()
-
-    def sync_config_command(self):
-        """Generates xml string for sync config on gvmd."""
-        cmd = XmlCommand('sync_config')
-        return cmd.to_string()
-
-    def sync_feed_command(self):
-        """Generates xml string for sync feed on gvmd."""
-        cmd = XmlCommand('sync_feed')
-        return cmd.to_string()
-
-    def sync_scap_command(self):
-        """Generates xml string for sync scap on gvmd."""
-        cmd = XmlCommand('sync_scap')
         return cmd.to_string()
 
     def test_alert_command(self, alert_id):

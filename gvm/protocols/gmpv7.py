@@ -1522,12 +1522,26 @@ class Gmp(GvmProtocol):
         return self.send_command(cmd)
 
     def describe_auth(self):
-        cmd = self._generator.describe_auth_command()
-        return self.send_command(cmd)
+        """Describe authentication methods
+
+        Returns a list of all used authentication methods if such a list is
+        available.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('describe_auth'))
 
     def empty_trashcan(self):
-        cmd = self._generator.empty_trashcan_command()
-        return self.send_command(cmd)
+        """Empty the trashcan
+
+        Remove all entities from the trashcan. **Attention:** this command can
+        not be reverted
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('empty_trashcan'))
 
     def get_agents(self, filter=None, filter_id=None, trash=None, details=None,
                    format=None):
@@ -2065,11 +2079,35 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_version(self):
-        cmd = self._generator.get_version_command()
-        return self.send_command(cmd)
+        """Get the Greenbone Manager Protocol version used by the remote gvmd
 
-    def help(self, **kwargs):
-        cmd = self._generator.help_command(kwargs)
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('get_version'))
+
+    def help(self, format=None, type=''):
+        """Get the help text
+
+        Arguments:
+            format (str, optional): One of "html", "rnc", "text" or "xml
+            type (str, optional): One of "brief" or "". Default ""
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('help')
+
+        cmd.set_attribute('type', type)
+
+        if format:
+            if not format.lower() in ('html', 'rnc', 'text', 'xml'):
+                raise InvalidArgument(
+                    'help format Argument must be one of html, rnc, text or '
+                    'xml')
+
+            cmd.set_attribute('format', format)
+
         return self.send_command(cmd)
 
     def modify_agent(self, agent_id, name=None, comment=None):
@@ -2696,20 +2734,36 @@ class Gmp(GvmProtocol):
         return self.send_command(cmd)
 
     def sync_cert(self):
-        cmd = self._generator.sync_cert_command()
-        return self.send_command(cmd)
+        """Request a synchronization with the CERT feed service
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('sync_cert'))
 
     def sync_config(self):
-        cmd = self._generator.sync_config_command()
-        return self.send_command(cmd)
+        """Request an OSP config synchronization with scanner
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('sync_config'))
 
     def sync_feed(self):
-        cmd = self._generator.sync_feed_command()
-        return self.send_command(cmd)
+        """Request a synchronization with the NVT feed service
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('sync_feed'))
 
     def sync_scap(self):
-        cmd = self._generator.sync_scap_command()
-        return self.send_command(cmd)
+        """Request a synchronization with the SCAP feed service
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('sync_scap'))
 
     def test_alert(self, alert_id):
         cmd = self._generator.test_alert_command(alert_id)
