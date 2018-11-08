@@ -1774,7 +1774,7 @@ class Gmp(GvmProtocol):
         if selection not in ('nvt_pref', 'scan_pref',
                              'family_selection', 'nvt_selection'):
             raise InvalidArgument('selection must be one of nvt_pref, '
-                                  'sca_pref, family_selection or '
+                                  'scan_pref, family_selection or '
                                   'nvt_selection')
 
         cmd = XmlCommand('modify_config')
