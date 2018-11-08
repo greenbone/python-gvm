@@ -1987,8 +1987,8 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('note_id', note_id)
         cmd.add_element('text', text)
 
-        if active:
-            cmd.add_element('active', active)
+        if not active is None:
+            cmd.add_element('active', '1' if active else '0')
 
         if hosts:
             cmd.add_element('hosts', ', '.join(hosts))
