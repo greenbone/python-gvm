@@ -1624,9 +1624,22 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('alert_id', alert_id)
         return self._send_xml_command(cmd)
 
-    def get_assets(self, **kwargs):
-        cmd = self._generator.get_assets_command(kwargs)
-        return self.send_command(cmd)
+    def get_assets(self, filter=None, filter_id=None):
+        """Request a list of assets
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_assets')
+
+        _add_filter(cmd, filter, filter_id)
+
+        return self._send_xml_command(cmd)
 
     def get_asset(self, asset_id):
         """Request a single asset
@@ -1641,8 +1654,45 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('asset_id', asset_id)
         return self._send_xml_command(cmd)
 
-    def get_credentials(self, **kwargs):
-        cmd = self._generator.get_credentials_command(kwargs)
+    def get_credentials(self, filter=None, filter_id=None, scanners=None,
+                        trash=None, targets=None, format=None):
+        """Request a list of credentials
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            scanners (boolean, optional): Whether to include a list of scanners
+                using the credentials
+            trash (boolean, optional): Whether to get the trashcan credentials
+                instead
+            targets (boolean, optional): Whether to include a list of targets
+                using the credentials
+            format (str, optional): One of "key", "rpm", "deb" or "exe"
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_credentials')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not scanners is None:
+            cmd.set_attribute('scanners', _to_bool(scanners))
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not targets is None:
+            cmd.set_attribute('targets', _to_bool(targets))
+
+        if format:
+            if not format in ('key', 'rpm', 'deb', 'exe'):
+                raise InvalidArgument(
+                    'format argument needs to one of key, rpm, deb or exe')
+
+            cmd.set_attribute('format', format)
+
         return self.send_command(cmd)
 
     def get_credential(self, credential_id):
