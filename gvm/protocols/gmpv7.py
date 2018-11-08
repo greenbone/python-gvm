@@ -1978,15 +1978,65 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('note_id', note_id)
         return self._send_xml_command(cmd)
 
-    def get_nvts(self, **kwargs):
-        cmd = self._generator.get_nvts_command(kwargs)
-        return self.send_command(cmd)
+    def get_nvts(self, details=None, preferences=None, preference_count=None,
+                 timeout=None, config_id=None, preferences_config_id=None,
+                 family=None, sort_order=None, sort_field=None):
+        """Request a list of nvts
+
+        Arguments:
+            details (boolean, optional): Whether to include full details
+            preferences (boolean, optional): Whether to include nvt preferences
+            preference_count (boolean, optional): Whether to include preference
+                count
+            timeout (boolean, optional):  Whether to include the special timeout
+                preference
+            config_id (str, optional): UUID of scan config to which to limit the
+                NVT listing
+            preferences_config_id (str, optional): UUID of scan config to use
+                for preference values
+            family (str, optional): Family to which to limit NVT listing
+            sort_order (str, optional): Sort order
+            sort_field (str, optional): Sort field
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_notes')
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if not preferences is None:
+            cmd.set_attribute('preferences', _to_bool(preferences))
+
+        if not preference_count is None:
+            cmd.set_attribute('preference_count', _to_bool(preference_count))
+
+        if not timeout is None:
+            cmd.set_attribute('timeout', _to_bool(timeout))
+
+        if config_id:
+            cmd.set_attribute('config_id', config_id)
+
+        if preferences_config_id:
+            cmd.set_attribute('preferences_config_id', preferences_config_id)
+
+        if family:
+            cmd.set_attribute('family', family)
+
+        if sort_order:
+            cmd.set_attribute('sort_order', sort_order)
+
+        if sort_field:
+            cmd.set_attribute('sort_field', sort_field)
+
+        return self._send_xml_command(cmd)
 
     def get_nvt(self, nvt_id):
         """Request a single nvt
 
         Arguments:
-            nvt_id (str): UUID of an existing nvt
+            nvt_id (str): OID of an existing nvt
 
         Returns:
             The response. See :py:meth:`send_command` for details.
