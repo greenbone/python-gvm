@@ -2662,9 +2662,36 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('target_id', target_id)
         return self._send_xml_command(cmd)
 
-    def get_tasks(self, **kwargs):
-        cmd = self._generator.get_tasks_command(kwargs)
-        return self.send_command(cmd)
+    def get_tasks(self, filter=None, filter_id=None, trash=None, details=None,
+                  schedules_only=None):
+        """Request a list of tasks
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan tasks instead
+            details (boolean, optional): Whether to include full task details
+            schedules_only (boolean, optional): Whether to only include id, name
+                and schedule details
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_tasks')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if not schedules_only is None:
+            cmd.set_attribute('schedules_only', _to_bool(schedules_only))
+
+        return self._send_xml_command(cmd)
 
     def get_task(self, task_id):
         """Request a single task
