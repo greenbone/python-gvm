@@ -69,6 +69,16 @@ TIME_UNITS = [
     'decade',
 ]
 
+ALIVE_TESTS = [
+    'ICMP, TCP Service & ARP Ping',
+    'TCP Service & ARP Ping',
+    'ICMP & ARP Ping',
+    'ICMP & TCP Service Ping',
+    'ARP Ping',
+    'TCP Service Ping',
+    'ICMP Ping',
+    'Scan Config Default',
+]
 
 def _check_command_status(xml):
     """Check gmp response
@@ -2445,7 +2455,7 @@ class Gmp(GvmProtocol):
 
     def modify_config(self, selection, config_id=None, nvt_oids=None, name=None,
                       value=None, family=None):
-        """Modifies an existing existing scan config.
+        """Modifies an existing scan config.
 
         Arguments:
             selection (str): one of 'nvt_pref', nvt_selection or
@@ -2795,7 +2805,7 @@ class Gmp(GvmProtocol):
 
         if subject_id and subject_type:
             _xmlsubject = cmd.add_element('subject',
-                                           attrs={'id': subject_id})
+                                          attrs={'id': subject_id})
             _xmlsubject.add_element('type', subject_type)
 
         return self._send_xml_command(cmd)
@@ -2843,7 +2853,7 @@ class Gmp(GvmProtocol):
 
     def modify_report_format(self, report_format_id, active=None, name=None,
                              summary=None, param_name=None, param_value=None):
-        """Modifies an existing report format on gvmd.
+        """Modifies an existing report format.
 
         Arguments:
             report_format_id (str) UUID of report format to modify.
@@ -2901,34 +2911,438 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_scanner(self, scanner_id, host, port, scanner_type, **kwargs):
-        cmd = self._generator.modify_scanner_command(scanner_id, host, port,
-                                                     scanner_type, kwargs)
-        return self.send_command(cmd)
+    def modify_scanner(self, scanner_id, host, port, scanner_type,
+                       comment=None, name=None, ca_pub=None,
+                       credential_id=None):
+        """Modifies an existing scanner.
 
-    def modify_schedule(self, schedule_id, **kwargs):
-        cmd = self._generator.modify_schedule_command(schedule_id, kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            scanner_id (str): UUID of scanner to modify.
+            host (str): Host of the scanner.
+            port (str): Port of the scanner.
+            scanner_type (str): Type of the scanner.
+                '1' for OSP, '2' for OpenVAS (classic) Scanner.
+            comment (str, optional): Comment on scanner.
+            name (str, optional): Name of scanner.
+            ca_pub (str, optional): Certificate of CA to verify scanner's
+                certificate.
+            credential_id (str, optional): UUID of the client certificate credential
+                for the Scanner.
+        """
+        if not scanner_id:
+            raise RequiredArgument('modify_scanner requires a scanner_id argument')
+        if not host:
+            raise RequiredArgument('modify_scanner requires a host argument')
+        if not port:
+            raise RequiredArgument('modify_scanner requires a port argument')
+        if not scanner_type:
+            raise RequiredArgument('modify_scanner requires a scanner_type '
+                                   'argument')
+
+        cmd = XmlCommand('modify_scanner')
+        cmd.set_attribute('scanner_id', scanner_id)
+        cmd.add_element('host', host)
+        cmd.add_element('port', port)
+        if scanner_type not in ('1', '2'):
+            raise InvalidArgument(' modify_scanner requires a scanner_type '
+                                  'argument which must be either "1" for OSP '
+                                  'or "2" OpenVAS (Classic).')
+        cmd.add_element('type', scanner_type)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if ca_pub:
+            cmd.add_element('ca_pub', ca_pub)
+
+        if credential_id:
+            cmd.add_element('credential', attrs={'id': str(credential_id)})
+
+        return self._send_xml_command(cmd)
+
+    def modify_schedule(self, schedule_id, comment=None, name=None,
+                        first_time_minute=None, first_time_hour=None,
+                        first_time_day_of_month=None, first_time_month=None,
+                        first_time_year=None, duration=None, duration_unit=None,
+                        period=None, period_unit=None, timezone=None):
+        """Modifies an existing schedule.
+
+        Arguments:
+            schedule_id (str): UUID of schedule to modify.
+            name (str): Name of the schedule
+            comment (str, optional): Comment for the schedule
+            first_time_minute (int, optional): First time minute the schedule
+                will run
+            first_time_hour (int, optional): First time hour the schedule
+                will run
+            first_time_day_of_month (int, optional): First time day of month the
+                schedule will run
+            first_time_month (int, optional): First time month the schedule
+                will run
+            first_time_year (int, optional): First time year the schedule
+                will run
+            duration (int, optional): How long the Manager will run the
+                scheduled task for until it gets paused if not finished yet.
+            duration_unit (str, optional): Unit of the duration. One of second,
+                minute, hour, day, week, month, year, decade. Required if
+                duration is set.
+            period (int, optional): How often the Manager will repeat the
+                scheduled task
+            period_unit (str, optional): Unit of the period. One of second,
+                minute, hour, day, week, month, year, decade. Required if
+                period is set.
+            timezone (str, optional): The timezone the schedule will follow
+        """
+        if not schedule_id:
+            raise RequiredArgument('modify_schedule requires a schedule_id'
+                                   'argument')
+
+        cmd = XmlCommand('modify_schedule')
+        cmd.set_attribute('schedule_id', schedule_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if first_time_minute or first_time_hour or first_time_day_of_month or \
+            first_time_month or first_time_year:
+
+            if not first_time_minute:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_minute argument')
+            if not first_time_hour:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_hour argument')
+            if not first_time_day_of_month:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_day_of_month '
+                    'argument')
+            if not first_time_month:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_month argument')
+            if not first_time_year:
+                raise RequiredArgument(
+                    'Setting first_time requires first_time_year argument')
+
+            _xmlftime = cmd.add_element('first_time')
+            _xmlftime.add_element('minute', str(first_time_minute))
+            _xmlftime.add_element('hour', str(first_time_hour))
+            _xmlftime.add_element('day_of_month', str(first_time_day_of_month))
+            _xmlftime.add_element('month', str(first_time_month))
+            _xmlftime.add_element('year', str(first_time_year))
+
+        if duration:
+            if not duration_unit:
+                raise RequiredArgument(
+                    'Setting duration requires duration_unit argument')
+
+            if not duration_unit in TIME_UNITS:
+                raise InvalidArgument(
+                    'duration_unit must be one of {units} but {actual} has '
+                    'been passed'.format(
+                        units=', '.join(TIME_UNITS), actual=duration_unit))
+
+            _xmlduration = cmd.add_element('duration', str(duration))
+            _xmlduration.add_element('unit', duration_unit)
+
+        if period:
+            if not period_unit:
+                raise RequiredArgument(
+                    'Setting period requires period_unit argument')
+
+            if not period_unit in TIME_UNITS:
+                raise InvalidArgument(
+                    'period_unit must be one of {units} but {actual} has '
+                    'been passed'.format(
+                        units=', '.join(TIME_UNITS), actual=period_unit))
+
+            _xmlperiod = cmd.add_element('period', str(period))
+            _xmlperiod.add_element('unit', period_unit)
+
+        if timezone:
+            cmd.add_element('timezone', str(timezone))
+
+        return self._send_xml_command(cmd)
 
     def modify_setting(self, setting_id, name, value):
-        cmd = self._generator.modify_setting_command(setting_id, name, value)
-        return self.send_command(cmd)
+        """Modifies an existing setting.
 
-    def modify_tag(self, tag_id, **kwargs):
-        cmd = self._generator.modify_tag_command(tag_id, kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            setting_id (str): UUID of the setting to be changed.
+            name (str): The name of the setting.
+            value (str): The value of the setting.
+        """
+        if not setting_id:
+            raise RequiredArgument('modify_setting requires a setting_id'
+                                   'argument')
+        if not name:
+            raise RequiredArgument('modify_setting requires a name argument')
+        if not value:
+            raise RequiredArgument('modify_setting requires a value argument')
 
-    def modify_target(self, target_id, **kwargs):
-        cmd = self._generator.modify_target_command(target_id, kwargs)
-        return self.send_command(cmd)
+        cmd = XmlCommand('modify_setting')
+        cmd.set_attribute('setting_id', setting_id)
+        cmd.add_element('name', name)
+        cmd.add_element('value', value)
 
-    def modify_task(self, task_id, **kwargs):
-        cmd = self._generator.modify_task_command(task_id, kwargs)
-        return self.send_command(cmd)
+        return self._send_xml_command(cmd)
 
-    def modify_user(self, **kwargs):
-        cmd = self._generator.modify_user_command(kwargs)
-        return self.send_command(cmd)
+    def modify_tag(self, tag_id, comment=None, name=None, value=None,
+                   active=None, resource_id=None, resource_type=None):
+        """Modifies an existing tag.
+
+        Arguments:
+            tag_id (str): UUID of the tag.
+            comment (str, optional): Comment to add to the tag.
+            name (str, optional): Name of the tag.
+            value (str, optional): Value of the tag.
+            active (boolean, optional): Whether the tag is active.
+            resource_id (str, optional): IDs of the resource to which to
+                attach the tag.
+            resource_type (str, optional): Type of the resource to which to
+                attach the tag.
+        """
+        if not tag_id:
+            raise RequiredArgument('modify_tag requires a tag_id element')
+
+        cmd = XmlCommand('modify_tag')
+        cmd.set_attribute('tag_id', str(tag_id))
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if value:
+            cmd.add_element('value', value)
+
+        if not active is None:
+            if active:
+                cmd.add_element('active', '1')
+            else:
+                cmd.add_element('active', '0')
+
+        if resource_id and resource_type:
+            _xmlresource = cmd.add_element('resource',
+                                           attrs={'resource_id': resource_id})
+            _xmlresource.add_element('type', resource_type)
+
+        return self._send_xml_command(cmd)
+
+    def modify_target(self, target_id, name=None, comment=None,
+                      hosts=None, hosts_ordering=None,
+                      exclude_hosts=None, ssh_credential_id=None,
+                      smb_credential_id=None, esxi_credential_id=None,
+                      snmp_credential_id=None, alive_tests=None,
+                      reverse_lookup_only=None, reverse_lookup_unify=None,
+                      port_list_id=None):
+        """Modifies an existing target.
+
+        Arguments:
+            target_id (uuid) ID of target to modify.
+            comment (str, optional): Comment on target.
+            name (str, optional): Name of target.
+            hosts (list, optional): List of target hosts.
+            hosts_ordering (str, optional): The order hosts are scanned in.
+            exclude_hosts (list, optional): A list of hosts to exclude.
+            ssh_credential (str, optional): UUID of SSH credential to
+                use on target.
+            smb_credential (str, optional): UUID of SMB credential to use
+                on target.
+            esxi_credential (str, optional): UUID of ESXi credential to use
+                on target.
+            snmp_credential (str, optional): UUID of SNMP credential to use
+                on target.
+            port_list (str, optional): UUID of port list describing ports to
+                scan.
+            alive_tests (str, optional): Which alive tests to use.
+            reverse_lookup_only (boolean, optional): Whether to scan only hosts
+                that have names.
+            reverse_lookup_unify (boolean, optional): Whether to scan only one
+                IP when multiple IPs have the same name.
+        """
+        if not target_id:
+            raise RequiredArgument('modify_target requires a '
+                                   'target_id argument')
+
+        cmd = XmlCommand('modify_target')
+        cmd.set_attribute('target_id', target_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if hosts:
+            cmd.add_element('hosts', ', '.join(hosts))
+
+        if hosts_ordering:
+            cmd.add_element('hosts_ordering', ', '.join(hosts_ordering))
+
+        if exclude_hosts:
+            cmd.add_element('exclude_hosts', ', '.join(exclude_hosts))
+
+        if alive_tests:
+            if not alive_tests in ALIVE_TESTS:
+                raise InvalidArgument(
+                    'alive_tests must be one of {tests} but '
+                    '{actual} has been passed'.format(
+                        tests='|'.join(ALIVE_TESTS), actual=alive_tests))
+            cmd.add_element('alive_tests', alive_tests)
+
+        if ssh_credential_id:
+            cmd.add_element('ssh_credential', attrs={'id': ssh_credential_id})
+
+        if smb_credential_id:
+            cmd.add_element('smb_credential', attrs={'id': smb_credential_id})
+
+        if esxi_credential_id:
+            cmd.add_element('esxi_credential', attrs={'id': esxi_credential_id})
+
+        if snmp_credential_id:
+            cmd.add_element('snmp_credential', attrs={'id': snmp_credential_id})
+
+        if not reverse_lookup_only is None:
+            if reverse_lookup_only:
+                cmd.add_element('reverse_lookup_only', '1')
+            else:
+                cmd.add_element('reverse_lookup_only', '0')
+
+        if not reverse_lookup_unify is None:
+            if reverse_lookup_unify:
+                cmd.add_element('reverse_lookup_unify', '1')
+            else:
+                cmd.add_element('reverse_lookup_unify', '0')
+
+        if port_list_id:
+            cmd.add_element('port_list', attrs={'id': port_list_id})
+
+        return self._send_xml_command(cmd)
+
+    def modify_task(self, task_id, name=None, comment=None, alert=None,
+                    observers=None, preferences=None, schedule=None,
+                    schedule_periods=None, scanner=None, file_name=None,
+                    file_action=None):
+        """Modifies an existing task.
+
+        Arguments:
+            task_id (str) UUID of task to modify.
+            comment  (str, optional):The comment on the task.
+            alert  (str, optional): UUID of Task alert.
+            name  (str, optional): The name of the task.
+            observers (list, optional): Users allowed to observe this task.
+            preferences (dict, optional): Compact name of preference, from
+                scanner and its value
+            schedule (str, optional): UUID of Task schedule.
+            schedule_periods (int, optional): A limit to the number of times
+                the task will be scheduled, or 0 for no limit.
+            scanner (str, optional): UUID of Task scanner.
+            file_name (str, optional): File to attach to task.
+            file_action (str, optional): Action for the file:
+                one of "update" or "remove"
+        """
+        if not task_id:
+            raise RequiredArgument('modify_task requires a task_id argument')
+
+        cmd = XmlCommand('modify_task')
+        cmd.set_attribute('task_id', task_id)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if scanner:
+            cmd.add_element('scanner', attrs={'id': scanner})
+
+        if schedule_periods:
+            cmd.add_element('schedule_periods', str(schedule_periods))
+
+        if schedule:
+            cmd.add_element('schedule', attrs={'id': schedule})
+
+        if alert:
+            cmd.add_element('alert', attrs={'id': alert})
+
+        if observers:
+            cmd.add_element('observers', ', '.join(observers))
+
+        if preferences:
+            _xmlprefs = cmd.add_element('preferences')
+            for pref_name, pref_value in preferences.items():
+                _xmlpref = _xmlprefs.add_element('preference')
+                _xmlpref.add_element('scanner_name', pref_name)
+                _xmlpref.add_element('value', pref_value)
+
+        if file_name and file_action:
+            if file_action not in ('update', 'remove'):
+                raise InvalidArgument('action can only be '
+                                      '"update" or "remove"!')
+            cmd.add_element('file', attrs={'name': file_name,
+                                           'action': file_action})
+
+        return self._send_xml_command(cmd)
+
+    def modify_user(self, user_id, name, new_name=None, password=None,
+                    role_ids=None, hosts=None, hosts_allow=None,
+                    ifaces=None, ifaces_allow=None, sources=None):
+        """Modifies an existing user.
+
+        Arguments:
+            user_id (str): UUID of the user to be modified. Overrides
+                NAME element.
+            name (str): The name of the user to be modified.
+            new_name (str, optional): The new name for the user.
+            password (str, optional): The password for the user.
+            roles_id (list, optional): List of roles UUIDs for the user.
+            hosts (list, optional): User access rules: List of hosts.
+            hosts_allow (boolean,optional): If True, allow only listed,
+                otherwise forbid listed.
+            ifaces (list, optional): User access rules: List
+                of ifaces.
+            ifaces_allow (boolean, optional): If True, allow only listed,
+                otherwise forbid listed.
+            sources (list, optional): List of authentication sources for
+                this user.
+        """
+        if not user_id:
+            raise RequiredArgument('modify_user requires a user_id argument')
+        if not name:
+            raise RequiredArgument('modify_user requires a name argument')
+
+        cmd = XmlCommand('modify_user')
+        cmd.set_attribute('user_id', user_id)
+
+        if new_name:
+            cmd.add_element('new_name', new_name)
+
+        if password:
+            cmd.add_element('password', password)
+
+        if role_ids:
+            for role in role_ids:
+                cmd.add_element('role', attrs={'id': role})
+
+        if hosts or hosts_allow:
+            cmd.add_element('hosts', ', '.join(hosts),
+                            attrs={'allow': '1' if hosts_allow else '0'})
+
+        if ifaces or ifaces_allow:
+            cmd.add_element('ifaces', ', '.join(ifaces),
+                            attrs={'allow': '1' if ifaces_allow else '0'})
+
+        if sources:
+            cmd.add_element('sources', ', '.join(sources))
+
+        return self._send_xml_command(cmd)
 
     def move_task(self, task_id, slave_id):
         cmd = self._generator.move_task_command(task_id, slave_id)
