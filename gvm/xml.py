@@ -65,67 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_task_command(self, task_id, kwargs):
-        """Generates xml string for modify task on gvmd."""
-        if not task_id:
-            raise ValueError('modify_task requires a task_id element')
-
-        cmd = XmlCommand('modify_task')
-        cmd.set_attribute('task_id', task_id)
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        target_id = kwargs.get('target_id', '')
-        if target_id:
-            cmd.add_element('target', attrs={'id': target_id})
-
-        scanner = kwargs.get('scanner', '')
-        if scanner:
-            cmd.add_element('scanner', attrs={'id': scanner})
-
-        schedule_periods = kwargs.get('schedule_periods', '')
-        if schedule_periods:
-            cmd.add_element('schedule_periods', str(schedule_periods))
-
-        schedule = kwargs.get('schedule', '')
-        if schedule:
-            cmd.add_element('schedule', attrs={'id': str(schedule)})
-
-        alert = kwargs.get('alert', '')
-        if alert:
-            cmd.add_element('alert', attrs={'id': str(alert)})
-
-        observers = kwargs.get('observers', '')
-        if observers:
-            cmd.add_element('observers', str(observers))
-
-        preferences = kwargs.get('preferences', '')
-        if preferences:
-            _xmlprefs = cmd.add_element('preferences')
-            for n in range(len(preferences["scanner_name"])):
-                preferences_scanner_name = preferences["scanner_name"][n]
-                preferences_value = preferences["value"][n]
-                _xmlpref = _xmlprefs.add_element('preference')
-                _xmlpref.add_element('scanner_name', preferences_scanner_name)
-                _xmlpref.add_element('value', preferences_value)
-
-        file = kwargs.get('file', '')
-        if file:
-            file_name = file['name']
-            file_action = file['action']
-            if file_action != "update" and file_action != "remove":
-                raise ValueError('action can only be "update" or "remove"!')
-            cmd.add_element('file', attrs={'name': file_name,
-                                           'action': file_action})
-
-        return cmd.to_string()
-
     def modify_user_command(self, kwargs):
         """Generates xml string for modify user on gvmd."""
         user_id = kwargs.get('user_id', '')

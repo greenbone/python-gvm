@@ -3226,9 +3226,70 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_task(self, task_id, **kwargs):
-        cmd = self._generator.modify_task_command(task_id, kwargs)
-        return self.send_command(cmd)
+    def modify_task(self, task_id, name=None, comment=None, alert=None,
+                    observers=None, preferences=None, schedule=None,
+                    schedule_periods=None, scanner=None, file_name=None,
+                    file_action=None):
+        """Modifies an existing task.
+
+        Arguments:
+            task_id (str) UUID of task to modify.
+            comment  (str, optional):The comment on the task.
+            alert  (str, optional): UUID of Task alert.
+            name  (str, optional): The name of the task.
+            observers (list, optional): Users allowed to observe this task.
+            preferences (dict, optional): Compact name of preference, from
+                scanner and its value
+            schedule (str, optional): UUID of Task schedule.
+            schedule_periods (int, optional): A limit to the number of times
+                the task will be scheduled, or 0 for no limit.
+            scanner (str, optional): UUID of Task scanner.
+            file_name (str, optional): File to attach to task.
+            file_action (str, optional): Action for the file:
+                one of "update" or "remove"
+        """
+        if not task_id:
+            raise RequiredArgument('modify_task requires a task_id argument')
+
+        cmd = XmlCommand('modify_task')
+        cmd.set_attribute('task_id', task_id)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if scanner:
+            cmd.add_element('scanner', attrs={'id': scanner})
+
+        if schedule_periods:
+            cmd.add_element('schedule_periods', str(schedule_periods))
+
+        if schedule:
+            cmd.add_element('schedule', attrs={'id': schedule})
+
+        if alert:
+            cmd.add_element('alert', attrs={'id': alert})
+
+        if observers:
+            cmd.add_element('observers', ', '.join(observers))
+
+        if preferences:
+            _xmlprefs = cmd.add_element('preferences')
+            for pref_name, pref_value in preferences.items():
+                _xmlpref = _xmlprefs.add_element('preference')
+                _xmlpref.add_element('scanner_name', pref_name)
+                _xmlpref.add_element('value', pref_value)
+
+        if file_name and file_action:
+            if file_action not in ('update', 'remove'):
+                raise InvalidArgument('action can only be '
+                                      '"update" or "remove"!')
+            cmd.add_element('file', attrs={'name': file_name,
+                                           'action': file_action})
+
+        return self._send_xml_command(cmd)
 
     def modify_user(self, **kwargs):
         cmd = self._generator.modify_user_command(kwargs)
