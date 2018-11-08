@@ -657,7 +657,7 @@ class Gmp(GvmProtocol):
                 -1 on always, 0 off
             comment (str, optional): Comment for the override
             hosts (list, optional): A list of host addresses
-            port (str, optional): Port ot which the override applies
+            port (str, optional): Port to which the override applies
             result_id (str, optional): UUID of a result to which override
                 applies
             severity (decimal, optional): Severity to which override applies
@@ -1309,7 +1309,7 @@ class Gmp(GvmProtocol):
             target_id (str): UUID of target to be scanned
             scanner_id (str): UUID of scanner to use for scanning the target
             comment (str, optional): Comment for the task
-            alterable (boolean, optional): Wether the task should be alterable
+            alterable (boolean, optional): Whether the task should be alterable
             alert_ids (list, optional): List of UUIDs for alerts to be applied
                 to the task
             hosts_ordering (str, optional): The order hosts are scanned in
