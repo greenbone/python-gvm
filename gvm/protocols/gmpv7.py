@@ -1879,9 +1879,44 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('group_id', group_id)
         return self._send_xml_command(cmd)
 
-    def get_info_list(self, **kwargs):
-        cmd = self._generator.get_info_command(kwargs)
-        return self.send_command(cmd)
+    def get_info_list(self, info_type, filter=None, filter_id=None,
+                      name=None, details=None):
+        """Request a list of security information
+
+        Arguments:
+            info_type (str): Type must be either CERT_BUND_ADV, CPE, CVE,
+                DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            name (str, optional): Name or identifier of the requested
+                information
+            details (boolean, optional): Whether to include information about
+                references to this information
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        info_type = info_type.upper()
+
+        if not info_type in (
+                'CERT_BUND_ADV', 'CPE', 'CVE', 'DFN_CERT_ADV', 'OVALDEF', 'NVT',
+                'ALLINFO'):
+            raise InvalidArgument(
+                'get_info_list info_type argument must be one of CERT_BUND_ADV'
+                ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
+
+        cmd = XmlCommand('get_groups')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if name:
+            cmd.set_attribute('name', name)
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        return self._send_xml_command(cmd)
 
     def get_info(self, info_id):
         """Request a single secinfo
