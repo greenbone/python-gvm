@@ -2621,9 +2621,33 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('tag_id', tag_id)
         return self._send_xml_command(cmd)
 
-    def get_targets(self, **kwargs):
-        cmd = self._generator.get_targets_command(kwargs)
-        return self.send_command(cmd)
+    def get_targets(self, filter=None, filter_id=None, trash=None,
+                    tasks=None):
+        """Request a list of targets
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan targets
+                instead
+            tasks (boolean, optional): Whether to include list of tasks that
+                use the target
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_targets')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not tasks is None:
+            cmd.set_attribute('tasks', _to_bool(tasks))
+
+        return self._send_xml_command(cmd)
 
     def get_target(self, target_id):
         """Request a single target
