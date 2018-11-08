@@ -2427,9 +2427,33 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('role_id', role_id)
         return self._send_xml_command(cmd)
 
-    def get_scanners(self, **kwargs):
-        cmd = self._generator.get_scanners_command(kwargs)
-        return self.send_command(cmd)
+    def get_scanners(self, filter=None, filter_id=None, trash=None,
+                     details=None):
+        """Request a list of scanners
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan scanners
+                instead
+            details (boolean, optional):  Whether to include extra details like
+                tasks using this scanner
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_scanners')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        return self._send_xml_command(cmd)
 
     def get_scanner(self, scanner_id):
         """Request a single scanner
