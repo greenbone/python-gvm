@@ -1642,7 +1642,7 @@ class Gmp(GvmProtocol):
         return self.send_command(cmd)
 
     def modify_agent(self, agent_id, name=None, comment=None):
-        """Generates xml string for modify agent on gvmd
+        """Modifies an existing agent
 
         Arguments:
             agent_id (str) UUID of the agent to be modified.
@@ -1662,16 +1662,16 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_alert(self, alert_id, name=None, comment=None,
-                     filter_id=None, event= None, event_data=None,
+                     filter_id=None, event=None, event_data=None,
                      condition=None, condition_data=None, method=None,
                      method_data=None):
-        """Generates xml string for modify alert on gvmd.
+        """Modifies an existing alert.
 
         Arguments:
             alert_id (str) UUID of the alert to be modified.
             name (str, optional): Name of the Alert.
-            condition (str): The condition that must be satisfied for the alert
-                to occur.
+            condition (str, optional): The condition that must be satisfied
+                for the alert to occur.
             condition_data (dict, optional): Data that defines the condition
             event (str, optional): The event that must happen for the alert
                to occur.
@@ -1721,7 +1721,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_asset(self, asset_id, comment):
-        """Generates xml string for modify asset on gvmd
+        """Modifies an existing asset.
 
         Arguments:
             asset_id (str) UUID of the asset to be modified.
@@ -1737,7 +1737,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_auth(self, group_name, auth_conf_settings):
-        """Generates xml string for modify auth on gvmd.
+        """Modifies an existing auth.
         Arguments:
             group_name (str) Name of the group to be modified.
             auth_conf_settings (dict): The new auth config.
@@ -1759,7 +1759,7 @@ class Gmp(GvmProtocol):
 
     def modify_config(self, selection, config_id=None, nvt_oids=None, name=None,
                       value=None, family=None):
-        """Modifies an existing scan config on gvmd.
+        """Modifies an existing existing scan config.
 
         Arguments:
             selection (str): one of 'nvt_pref', nvt_selection or
@@ -1774,8 +1774,8 @@ class Gmp(GvmProtocol):
         if selection not in ('nvt_pref', 'scan_pref',
                              'family_selection', 'nvt_selection'):
             raise InvalidArgument('selection must be one of nvt_pref, '
-                                   'sca_pref, family_selection or '
-                                   'nvt_selection')
+                                  'scan_pref, family_selection or '
+                                  'nvt_selection')
 
         cmd = XmlCommand('modify_config')
         cmd.set_attribute('config_id', str(config_id))
@@ -1816,7 +1816,7 @@ class Gmp(GvmProtocol):
                           password=None, auth_algorithm=None, community=None,
                           privacy_algorithm=None, privacy_password=None,
                           credential_type=None):
-        """Generates xml string for modify credential on gvmd.
+        """Modifies an existing credential.
 
         Arguments:
             credential_id (str): UUID of the credential
@@ -1890,17 +1890,17 @@ class Gmp(GvmProtocol):
             _xmlprivacy.add_element('algorithm', privacy_algorithm)
             _xmlprivacy.add_element('password', privacy_password)
 
-        if cred_type:
-            if cred_type not in ('cc', 'snmp', 'up', 'usk'):
+        if credential_type:
+            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
                 raise RequiredArgument('modify_credential requires type '
-                                 'to be either cc, snmp, up or usk')
+                                       'to be either cc, snmp, up or usk')
             cmd.add_element('type', credential_type)
 
         return self._send_xml_command(cmd)
 
     def modify_filter(self, filter_id, comment=None, name=None, term=None,
                       filter_type=None):
-        """Generates xml string for modify filter on gvmd.
+        """Modifies an existing filter.
 
         Arguments:
             filter_id (str): UUID of the filter to be modified
@@ -1935,40 +1935,285 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_group(self, group_id, **kwargs):
-        cmd = self._generator.modify_group_command(group_id, kwargs)
-        return self.send_command(cmd)
+    def modify_group(self, group_id, comment=None, name=None,
+                     users=None):
+        """Modifies an existing group.
 
-    def modify_note(self, note_id, text, **kwargs):
-        cmd = self._generator.modify_note_command(note_id, text, kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            group_id (str): UUID of group to modify.
+            comment (str, optional): Comment on group.
+            name (str, optional): Name of group.
+            users (list, optional): List of user names to be in the group
+        """
+        if not group_id:
+            raise RequiredArgument('modify_group requires a group_id argument')
 
-    def modify_override(self, override_id, text, **kwargs):
-        cmd = self._generator.modify_override_command(override_id, text,
-                                                      kwargs)
-        return self.send_command(cmd)
+        cmd = XmlCommand('modify_group')
+        cmd.set_attribute('group_id', group_id)
 
-    def modify_permission(self, permission_id, **kwargs):
-        cmd = self._generator.modify_permission_command(
-            permission_id, kwargs)
-        return self.send_command(cmd)
+        if comment:
+            cmd.add_element('comment', comment)
 
-    def modify_port_list(self, port_list_id, **kwargs):
-        cmd = self._generator.modify_port_list_command(port_list_id, kwargs)
-        return self.send_command(cmd)
+        if name:
+            cmd.add_element('name', name)
+
+        if users:
+            cmd.add_element('users', ','.join(users))
+
+        return self._send_xml_command(cmd)
+
+    def modify_note(self, note_id, text, seconds_active=None, hosts=None,
+                    port=None, result_id=None, severity=None, task_id=None,
+                    threat=None):
+        """Modifies an existing note.
+
+        Arguments:
+            note_id (str): UUID of note to modify.
+            text (str): The text of the note.
+            seconds_active (int, optional): Seconds note will be active.
+                -1 on always, 0 off.
+            hosts (list, optional): A list of hosts addresses
+            port (str, optional): Port to which note applies.
+            result_id (str, optional): Result to which note applies.
+            severity (str, optional): Severity to which note applies.
+            task_id (str, optional): Task to which note applies.
+            threat (str, optional): Threat level to which note applies.
+        """
+        if not note_id:
+            raise RequiredArgument('modify_note requires a note_id attribute')
+        if not text:
+            raise RequiredArgument('modify_note requires a text element')
+
+        cmd = XmlCommand('modify_note')
+        cmd.set_attribute('note_id', note_id)
+        cmd.add_element('text', text)
+
+        if not seconds_active is None:
+            cmd.add_element('active', str(seconds_active))
+
+        if hosts:
+            cmd.add_element('hosts', ', '.join(hosts))
+
+        if port:
+            cmd.add_element('port', port)
+
+        if result_id:
+            cmd.add_element('result', attrs={'id': result_id})
+
+        if severity:
+            cmd.add_element('severity', severity)
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+
+        if threat:
+            cmd.add_element('threat', threat)
+
+        return self._send_xml_command(cmd)
+
+    def modify_override(self, override_id, text, seconds_active=None,
+                        hosts=None, port=None, result_id=None, severity=None,
+                        new_severity=None, task_id=None, threat=None,
+                        new_threat=None):
+        """Modifies an existing override.
+
+        Arguments:
+            override_id (str): UUID of override to modify.
+            text (str): The text of the override.
+            seconds_active (int, optional): Seconds override will be active.
+                -1 on always, 0 off.
+            hosts (list, optional): A list of host addresses
+            port (str, optional): Port to which override applies.
+            result_id (str, optional): Result to which override applies.
+            severity (str, optional): Severity to which override applies.
+            new_severity (str, optional): New severity score for result.
+            task_id (str, optional): Task to which override applies.
+            threat (str, optional): Threat level to which override applies.
+            new_threat (str, optional): New threat level for results.
+        """
+        if not override_id:
+            raise RequiredArgument('modify_override requires a override_id '
+                                   'argument')
+        if not text:
+            raise RequiredArgument('modify_override requires a text argument')
+
+        cmd = XmlCommand('modify_override')
+        cmd.set_attribute('override_id', override_id)
+        cmd.add_element('text', text)
+
+        if not seconds_active is None:
+            cmd.add_element('active', str(seconds_active))
+
+        if hosts:
+            cmd.add_element('hosts', ', '.join(hosts))
+
+        if port:
+            cmd.add_element('port', port)
+
+        if result_id:
+            cmd.add_element('result', attrs={'id': result_id})
+
+        if severity:
+            cmd.add_element('severity', severity)
+
+        if new_severity:
+            cmd.add_element('new_severity', new_severity)
+
+        if task_id:
+            cmd.add_element('task', attrs={'id': task_id})
+
+        if threat:
+            cmd.add_element('threat', threat)
+
+        if new_threat:
+            cmd.add_element('new_threat', new_threat)
+
+        return self._send_xml_command(cmd)
+
+    def modify_permission(self, permission_id, comment=None, name=None,
+                          resource_id=None, resource_type=None,
+                          subject_id=None, subject_type=None):
+        """Modifies an existing permission.
+
+        Arguments:
+            permission_id (str): UUID of permission to be modified.
+            comment (str, optional): The comment on the permission.
+            name (str, optional): Permission name, currently the name of
+                a command.
+            subject_id (str, optional): UUID of subject to whom the permission
+                is granted
+            subject_type (str, optional): Type of the subject user, group or
+                role
+            resource_id (str, optional): UUID of entity to which the permission
+                applies
+            resource_type (str, optional): Type of the resource. For Super
+                permissions user, group or role
+        """
+        if not permission_id:
+            raise RequiredArgument('modify_permission requires '
+                                   'a permission_id element')
+
+        cmd = XmlCommand('modify_permission')
+        cmd.set_attribute('permission_id', permission_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if resource_id and resource_type:
+            _xmlresource = cmd.add_element('resource',
+                                           attrs={'id': resource_id})
+            _xmlresource.add_element('type', resource_type)
+
+        if subject_id and subject_type:
+            _xmlsubject = cmd.add_element('subject',
+                                           attrs={'id': subject_id})
+            _xmlsubject.add_element('type', subject_type)
+
+        return self._send_xml_command(cmd)
+
+    def modify_port_list(self, port_list_id, comment=None, name=None, ):
+        """Modifies an existing port list.
+
+        Arguments:
+            port_list_id (str): UUID of port list to modify.
+            name (str, optional): Name of port list.
+            comment (str, optional): Comment on port list.
+        """
+        if not port_list_id:
+            raise RequiredArgument('modify_port_list requires '
+                                   'a port_list_id attribute')
+        cmd = XmlCommand('modify_port_list')
+        cmd.set_attribute('port_list_id', port_list_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        return self._send_xml_command(cmd)
 
     def modify_report(self, report_id, comment):
-        cmd = self._generator.modify_report_format_command(report_id, comment)
-        return self.send_command(cmd)
+        """Modifies an existing report.
 
-    def modify_report_format(self, report_format_id, **kwargs):
-        cmd = self._generator.modify_report_format_command(report_format_id,
-                                                           kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            report_id (str): UUID of report to modify.
+            comment (str): The comment on the report.
+        """
+        if not report_id:
+            raise RequiredArgument('modify_report requires '
+                                   'a report_id attribute')
+        if not comment:
+            raise RequiredArgument('modify_report requires '
+                                   'a comment attribute')
+        cmd = XmlCommand('modify_report')
+        cmd.set_attribute('report_id', report_id)
+        cmd.add_element('comment', comment)
 
-    def modify_role(self, role_id, **kwargs):
-        cmd = self._generator.modify_role_command(role_id, kwargs)
-        return self.send_command(cmd)
+        return self._send_xml_command(cmd)
+
+    def modify_report_format(self, report_format_id, active=None, name=None,
+                             summary=None, param_name=None, param_value=None):
+        """Modifies an existing report format on gvmd.
+
+        Arguments:
+            report_format_id (str) UUID of report format to modify.
+            active (boolean, optional): Whether the report format is active.
+            name (str, optional): The name of the report format.
+            summary (str, optional): A summary of the report format.
+            param_name (str, optional): The name of the param.
+            param_value (str, optional): The value of the param.
+        """
+        if not report_format_id:
+            raise RequiredArgument('modify_report requires '
+                                   'a report_format_id attribute')
+        cmd = XmlCommand('modify_report_format')
+        cmd.set_attribute('report_format_id', report_format_id)
+
+        if not active is None:
+            cmd.add_element('active', '1' if active else '0')
+
+        if name:
+            cmd.add_element('name', name)
+
+        if summary:
+            cmd.add_element('summary', summary)
+
+        if param_name and param_value:
+            _xmlparam = cmd.add_element('param')
+            _xmlparam.add_element('name', param_name)
+            _xmlparam.add_element('value', param_value)
+
+        return self._send_xml_command(cmd)
+
+    def modify_role(self, role_id, comment=None, name=None, users=None):
+        """Modifies an existing role.
+
+        Arguments:
+            role_id (str): UUID of role to modify.
+            comment (str, optional): Name of role.
+            name (str, optional): Comment on role.
+            users  (list, optional): List of user names.
+        """
+        if not role_id:
+            raise RequiredArgument('modify_role requires a role_id argument')
+
+        cmd = XmlCommand('modify_role')
+        cmd.set_attribute('role_id', role_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if users:
+            cmd.add_element('users', ",".join(users))
+
+        return self._send_xml_command(cmd)
 
     def modify_scanner(self, scanner_id, host, port, scanner_type, **kwargs):
         cmd = self._generator.modify_scanner_command(scanner_id, host, port,
