@@ -1577,8 +1577,9 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_aggregates(self, **kwargs):
-        cmd = self._generator.get_aggregates_command(kwargs)
-        return self.send_command(cmd)
+        cmd = XmlCommand('get_aggregates')
+        cmd.set_attributes(kwargs)
+        return self._send_xml_command(cmd)
 
     def get_alerts(self, **kwargs):
         cmd = self._generator.get_alerts_command(kwargs)
