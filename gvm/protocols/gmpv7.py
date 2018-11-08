@@ -69,6 +69,16 @@ TIME_UNITS = [
     'decade',
 ]
 
+ALIVE_TESTS = [
+    'ICMP, TCP Service & ARP Ping',
+    'TCP Service & ARP Ping',
+    'ICMP & ARP Ping',
+    'ICMP & TCP Service Ping',
+    'ARP Ping',
+    'TCP Service Ping',
+    'ICMP Ping',
+    'Scan Config Default',
+]
 
 def _check_command_status(xml):
     """Check gmp response
@@ -3125,9 +3135,96 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_target(self, target_id, **kwargs):
-        cmd = self._generator.modify_target_command(target_id, kwargs)
-        return self.send_command(cmd)
+    def modify_target(self, target_id, name=None, comment=None,
+                      hosts=None, hosts_ordering=None,
+                      exclude_hosts=None, ssh_credential_id=None,
+                      smb_credential_id=None, esxi_credential_id=None,
+                      snmp_credential_id=None, alive_tests=None,
+                      reverse_lookup_only=None, reverse_lookup_unify=None,
+                      port_list_id=None):
+        """Modifies an existing target.
+
+        Arguments:
+            target_id (uuid) ID of target to modify.
+            comment (str, optional): Comment on target.
+            name (str, optional): Name of target.
+            hosts (list, optional): List of target hosts.
+            hosts_ordering (str, optional): The order hosts are scanned in.
+            exclude_hosts (list, optional): A list of hosts to exclude.
+            ssh_credential (str, optional): UUID of SSH credential to
+                use on target.
+            smb_credential (str, optional): UUID of SMB credential to use
+                on target.
+            esxi_credential (str, optional): UUID of ESXi credential to use
+                on target.
+            snmp_credential (str, optional): UUID of SNMP credential to use
+                on target.
+            port_list (str, optional): UUID of port list describing ports to
+                scan.
+            alive_tests (str, optional): Which alive tests to use.
+            reverse_lookup_only (boolean, optional): Whether to scan only hosts
+                that have names.
+            reverse_lookup_unify (boolean, optional): Whether to scan only one
+                IP when multiple IPs have the same name.
+        """
+        if not target_id:
+            raise RequiredArgument('modify_target requires a '
+                                   'target_id argument')
+
+        cmd = XmlCommand('modify_target')
+        cmd.set_attribute('target_id', target_id)
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if hosts:
+            cmd.add_element('hosts', ', '.join(hosts))
+
+        if hosts_ordering:
+            cmd.add_element('hosts_ordering', ', '.join(hosts_ordering))
+
+        if exclude_hosts:
+            cmd.add_element('exclude_hosts', ', '.join(exclude_hosts))
+
+        if alive_tests:
+            if not alive_tests in ALIVE_TESTS:
+                raise InvalidArgument(
+                    'alive_tests must be one of {tests} but '
+                    '{actual} has been passed'.format(
+                        tests='|'.join(ALIVE_TESTS), actual=alive_tests))
+            cmd.add_element('alive_tests', alive_tests)
+
+        if ssh_credential_id:
+            cmd.add_element('ssh_credential', attrs={'id': ssh_credential_id})
+
+        if smb_credential_id:
+            cmd.add_element('smb_credential', attrs={'id': smb_credential_id})
+
+        if esxi_credential_id:
+            cmd.add_element('esxi_credential', attrs={'id': esxi_credential_id})
+
+        if snmp_credential_id:
+            cmd.add_element('snmp_credential', attrs={'id': snmp_credential_id})
+
+        if not reverse_lookup_only is None:
+            if reverse_lookup_only:
+                cmd.add_element('reverse_lookup_only', '1')
+            else:
+                cmd.add_element('reverse_lookup_only', '0')
+
+        if not reverse_lookup_unify is None:
+            if reverse_lookup_unify:
+                cmd.add_element('reverse_lookup_unify', '1')
+            else:
+                cmd.add_element('reverse_lookup_unify', '0')
+
+        if port_list_id:
+            cmd.add_element('port_list', attrs={'id': port_list_id})
+
+        return self._send_xml_command(cmd)
 
     def modify_task(self, task_id, **kwargs):
         cmd = self._generator.modify_task_command(task_id, kwargs)

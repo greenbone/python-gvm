@@ -65,57 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-
-    def modify_target_command(self, target_id, kwargs):
-        """Generates xml string for modify target on gvmd."""
-        if not target_id:
-            raise ValueError('modify_target requires a target_id element')
-
-        cmd = XmlCommand('modify_target')
-        cmd.set_attribute('target_id', target_id)
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        hosts = kwargs.get('hosts', '')
-        if hosts:
-            cmd.add_element('hosts', hosts)
-
-        copy = kwargs.get('copy', '')
-        if copy:
-            cmd.add_element('copy', copy)
-
-        exclude_hosts = kwargs.get('exclude_hosts', '')
-        if exclude_hosts:
-            cmd.add_element('exclude_hosts', exclude_hosts)
-
-        alive_tests = kwargs.get('alive_tests', '')
-        if alive_tests:
-            cmd.add_element('alive_tests', alive_tests)
-
-        reverse_lookup_only = kwargs.get('reverse_lookup_only', '')
-        if reverse_lookup_only:
-            cmd.add_element('reverse_lookup_only', reverse_lookup_only)
-
-        reverse_lookup_unify = kwargs.get('reverse_lookup_unify', '')
-        if reverse_lookup_unify:
-            cmd.add_element('reverse_lookup_unify', reverse_lookup_unify)
-
-        port_range = kwargs.get('port_range', '')
-        if port_range:
-            cmd.add_element('port_range', port_range)
-
-        port_list = kwargs.get('port_list', '')
-        if port_list:
-            cmd.add_element('port_list', attrs={'id': str(port_list)})
-
-        return cmd.to_string()
-
     def modify_task_command(self, task_id, kwargs):
         """Generates xml string for modify task on gvmd."""
         if not task_id:
