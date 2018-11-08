@@ -1739,9 +1739,33 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('config_id', config_id)
         return self._send_xml_command(cmd)
 
-    def get_feeds(self, **kwargs):
-        cmd = self._generator.get_feeds_command(kwargs)
-        return self.send_command(cmd)
+    def get_feeds(self):
+        """Request the list of feeds
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('get_feeds'))
+
+    def get_feed(self, feed_type):
+        """Request a single feed
+
+        Arguments:
+            feed_type (str): Type of single feed to get: NVT, CERT or SCAP
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        feed_type = feed_type.upper()
+
+        if not feed_type in ('NVT', 'CERT', 'SCAP'):
+            raise InvalidArgument(
+                'get_feed type arguments must be one of NVT, CERT or SCAP')
+
+        cmd = XmlCommand('get_feeds')
+        cmd.set_attribute('type', feed_type)
+
+        return self._send_xml_command(cmd)
 
     def get_filters(self, **kwargs):
         cmd = self._generator.get_filters_command(kwargs)
