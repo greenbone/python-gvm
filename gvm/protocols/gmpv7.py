@@ -3060,8 +3060,27 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_setting(self, setting_id, name, value):
-        cmd = self._generator.modify_setting_command(setting_id, name, value)
-        return self.send_command(cmd)
+        """Generates xml string for modify setting format on gvmd.
+
+        Arguments:
+            setting_id (str): UUID of the setting to be changed.
+            name (str): The name of the setting.
+            value (str): The value of the setting.
+        """
+        if not setting_id:
+            raise RequiredArgument('modify_setting requires a setting_id'
+                                   'argument')
+        if not name:
+            raise RequiredArgument('modify_setting requires a name argument')
+        if not value:
+            raise RequiredArgument('modify_setting requires a value argument')
+
+        cmd = XmlCommand('modify_setting')
+        cmd.set_attribute('setting_id', setting_id)
+        cmd.add_element('name', name)
+        cmd.add_element('value', value)
+
+        return self._send_xml_command(cmd)
 
     def modify_tag(self, tag_id, **kwargs):
         cmd = self._generator.modify_tag_command(tag_id, kwargs)

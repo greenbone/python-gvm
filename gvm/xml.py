@@ -65,15 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_setting_command(self, setting_id, name, value):
-        """Generates xml string for modify setting format on gvmd."""
-        cmd = XmlCommand('modify_setting')
-        cmd.set_attribute('setting_id', setting_id)
-        cmd.add_element('name', name)
-        cmd.add_element('value', value)
-
-        return cmd.to_string()
-
     def modify_tag_command(self, tag_id, kwargs):
         """Generates xml string for modify tag on gvmd."""
         if not tag_id:
