@@ -2805,7 +2805,7 @@ class Gmp(GvmProtocol):
 
         if subject_id and subject_type:
             _xmlsubject = cmd.add_element('subject',
-                                           attrs={'id': subject_id})
+                                          attrs={'id': subject_id})
             _xmlsubject.add_element('type', subject_type)
 
         return self._send_xml_command(cmd)
