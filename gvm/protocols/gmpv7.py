@@ -2229,9 +2229,47 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_reports(self, **kwargs):
-        cmd = self._generator.get_reports_command(kwargs)
-        return self.send_command(cmd)
+    def get_reports(self, filter=None, filter_id=None, format_id=None,
+                    alert_id=None, note_details=None, override_details=None):
+        """Request a list of reports
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            format_id (str, optional): UUID of report format to use
+            alert_id (str, optional): UUID of alert to pass generated report to
+            note_details (boolean, optional): If notes are included, whether to
+                include note details
+            override_details (boolean, optional): If overrides are included,
+                whether to include override details
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_port_lists')
+
+        if filter:
+            cmd.set_attribute('report_filter', filter)
+
+        if filter_id:
+            cmd.set_attribute('report_filt_id', filter_id)
+
+        if format_id:
+            cmd.set_attribute('format_id', format_id)
+
+        if alert_id:
+            cmd.set_attribute('alert_id', alert_id)
+
+        if not note_details is None:
+            cmd.set_attribute('note_details', _to_bool(note_details))
+
+        if not override_details is None:
+            cmd.set_attribute('override_details', _to_bool(override_details))
+
+        cmd.set_attribute('ignore_pagination', '1')
+
+        return self._send_xml_command(cmd)
 
     def get_report(self, report_id):
         """Request a single report
