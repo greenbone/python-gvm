@@ -65,52 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_schedule_command(self, schedule_id, kwargs):
-        """Generates xml string for modify schedule on gvmd."""
-        if not schedule_id:
-            raise ValueError('modify_schedule requires a schedule_id element')
-
-        cmd = XmlCommand('modify_schedule')
-        cmd.set_attribute('schedule_id', schedule_id)
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        first_time = kwargs.get('first_time', '')
-        if first_time:
-            first_time_minute = first_time['minute']
-            first_time_hour = first_time['hour']
-            first_time_day_of_month = first_time['day_of_month']
-            first_time_month = first_time['month']
-            first_time_year = first_time['year']
-
-            _xmlftime = cmd.add_element('first_time')
-            _xmlftime.add_element('minute', str(first_time_minute))
-            _xmlftime.add_element('hour', str(first_time_hour))
-            _xmlftime.add_element('day_of_month', str(first_time_day_of_month))
-            _xmlftime.add_element('month', str(first_time_month))
-            _xmlftime.add_element('year', str(first_time_year))
-
-        duration = kwargs.get('duration', '')
-        if len(duration) > 1:
-            _xmlduration = cmd.add_element('duration', str(duration[0]))
-            _xmlduration.add_element('unit', str(duration[1]))
-
-        period = kwargs.get('period', '')
-        if len(period) > 1:
-            _xmlperiod = cmd.add_element('period', str(period[0]))
-            _xmlperiod.add_element('unit', str(period[1]))
-
-        timezone = kwargs.get('timezone', '')
-        if timezone:
-            cmd.add_element('timezone', str(timezone))
-
-        return cmd.to_string()
-
     def modify_setting_command(self, setting_id, name, value):
         """Generates xml string for modify setting format on gvmd."""
         cmd = XmlCommand('modify_setting')
