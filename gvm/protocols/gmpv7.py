@@ -2021,7 +2021,7 @@ class Gmp(GvmProtocol):
             text (str): The text of the override.
             active (int, optional): Seconds override will be active.
                 -1 on always, 0 off.
-            hosts (str, optional): A textual list of hosts.
+            hosts (list, optional): A list of host addresses
             port (str, optional): Port to which override applies.
             result_id (str, optional): Result to which override applies.
             severity (str, optional): Severity to which override applies.
@@ -2044,7 +2044,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', active)
 
         if hosts:
-            cmd.add_element('hosts', hosts)
+            cmd.add_element('hosts', ', '.join(hosts))
 
         if port:
             cmd.add_element('port', port)
