@@ -98,6 +98,10 @@ def _check_command_status(xml):
         return False
 
 
+def _to_bool(value):
+    return '1' if value else '0'
+
+
 class Gmp(GvmProtocol):
     """Python interface for Greenbone Management Protocol
 
@@ -1517,9 +1521,60 @@ class Gmp(GvmProtocol):
         cmd = self._generator.empty_trashcan_command()
         return self.send_command(cmd)
 
-    def get_agents(self, **kwargs):
-        cmd = self._generator.get_agents_command(kwargs)
-        return self.send_command(cmd)
+    def get_agents(self, filter=None, filter_id=None, trash=None, details=None,
+                   format=None):
+        """Request a list of agents
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): True to request the filters in the
+                trashcan
+            details (boolean, optional): Whether to include agents package
+                information when no format was provided
+            format (str, optional): One of "installer", "howto_install" or
+                "howto_use"
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_agents')
+
+        if filter:
+            cmd.set_attribute('filter', filter)
+
+        if filter_id:
+            cmd.set_attribute('filt_id', filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if format:
+            if not format in ('installer', 'howto_install', 'howto_use'):
+                raise InvalidArgument(
+                    'installer argument needs to be one of installer, '
+                    'howto_install or howto_use')
+
+            cmd.set_attribute('format', format)
+
+        return self._send_xml_command(cmd)
+
+    def get_agent(self, agent_id):
+        """Request a single agent
+
+        Arguments:
+            agent_id (str): UUID of an existing agent
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_agents')
+        cmd.set_attribute('agent_id', agent_id)
+        return self._send_xml_command(cmd)
 
     def get_aggregates(self, **kwargs):
         cmd = self._generator.get_aggregates_command(kwargs)

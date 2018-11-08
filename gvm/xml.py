@@ -533,12 +533,6 @@ class _GmpCommandFactory:
         cmd = XmlCommand('empty_trashcan')
         return cmd.to_string()
 
-    def get_agents_command(self, kwargs):
-        """Generates xml string for get agents on gvmd."""
-        cmd = XmlCommand('get_agents')
-        cmd.set_attributes(kwargs)
-        return cmd.to_string()
-
     def get_aggregates_command(self, kwargs):
         """Generates xml string for get aggregates on gvmd."""
         cmd = XmlCommand('get_aggregates')
