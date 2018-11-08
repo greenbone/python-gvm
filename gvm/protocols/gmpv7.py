@@ -2292,9 +2292,43 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_report_formats(self, **kwargs):
-        cmd = self._generator.get_report_formats_command(kwargs)
-        return self.send_command(cmd)
+    def get_report_formats(self, filter=None, filter_id=None, trash=None,
+                           alerts=None, params=None, details=None):
+        """Request a list of report formats
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan report
+                formats instead
+            alerts (boolean, optional): Whether to include alerts that use the
+                report format
+            params (boolean, optional): Whether to include report format
+                parameters
+            details (boolean, optional): Include report format file, signature
+                and parameters
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_report_formats')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if not alerts is None:
+            cmd.set_attribute('alerts', _to_bool(alerts))
+
+        if not params is None:
+            cmd.set_attribute('params', _to_bool(params))
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        return self._send_xml_command(cmd)
 
     def get_report_format(self, report_format_id):
         """Request a single report format
