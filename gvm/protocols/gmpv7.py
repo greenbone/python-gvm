@@ -1845,9 +1845,26 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('filter_id', filter_id)
         return self._send_xml_command(cmd)
 
-    def get_groups(self, **kwargs):
-        cmd = self._generator.get_groups_command(kwargs)
-        return self.send_command(cmd)
+    def get_groups(self, filter=None, filter_id=None, trash=None):
+        """Request a list of groups
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan groups
+                instead
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_groups')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        return self._send_xml_command(cmd)
 
     def get_group(self, group_id):
         """Request a single group
