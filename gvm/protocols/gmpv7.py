@@ -2706,9 +2706,22 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('task_id', task_id)
         return self._send_xml_command(cmd)
 
-    def get_users(self, **kwargs):
-        cmd = self._generator.get_users_command(kwargs)
-        return self.send_command(cmd)
+    def get_users(self, filter=None, filter_id=None):
+        """Request a list of users
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_users')
+
+        _add_filter(cmd, filter, filter_id)
+
+        return self._send_xml_command(cmd)
 
     def get_user(self, user_id):
         """Request a single user
