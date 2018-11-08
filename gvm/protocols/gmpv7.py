@@ -1962,14 +1962,15 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_note(self, note_id, text, active=None, hosts=None, port=None,
-                    result_id=None, severity=None, task_id=None, threat=None):
-        """Generates xml string for modify note on gvmd.
+    def modify_note(self, note_id, text, seconds_active=None, hosts=None,
+                    port=None, result_id=None, severity=None, task_id=None,
+                    threat=None):
+        """Modifies an existing note.
 
         Arguments:
             note_id (str): UUID of note to modify.
             text (str): The text of the note.
-            active (int, optional): Seconds note will be active.
+            seconds_active (int, optional): Seconds note will be active.
                 -1 on always, 0 off.
             hosts (list, optional): A list of hosts addresses
             port (str, optional): Port to which note applies.
@@ -1987,8 +1988,8 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('note_id', note_id)
         cmd.add_element('text', text)
 
-        if not active is None:
-            cmd.add_element('active', '1' if active else '0')
+        if not seconds_active is None:
+            cmd.add_element('active', str(seconds_active))
 
         if hosts:
             cmd.add_element('hosts', ', '.join(hosts))
