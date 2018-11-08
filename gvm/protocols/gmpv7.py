@@ -2195,7 +2195,7 @@ class Gmp(GvmProtocol):
             role_id (str): UUID of role to modify.
             comment (str, optional): Name of role.
             name (str, optional): Comment on role.
-            users  (str, optional): Comma separated list of user names.
+            users  (list, optional): List of user names.
         """
         if not role_id:
             raise RequiredArgument('modify_role requires a role_id argument')
@@ -2210,7 +2210,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('name', name)
 
         if users:
-            cmd.add_element('users', users)
+            cmd.add_element('users', ",".join(users))
 
         return self._send_xml_command(cmd)
 
