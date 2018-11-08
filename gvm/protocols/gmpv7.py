@@ -1642,7 +1642,7 @@ class Gmp(GvmProtocol):
         return self.send_command(cmd)
 
     def modify_agent(self, agent_id, name=None, comment=None):
-        """Generates xml string for modify agent on gvmd
+        """Modifies an existing agent
 
         Arguments:
             agent_id (str) UUID of the agent to be modified.
@@ -1665,7 +1665,7 @@ class Gmp(GvmProtocol):
                      filter_id=None, event=None, event_data=None,
                      condition=None, condition_data=None, method=None,
                      method_data=None):
-        """Generates xml string for modify alert on gvmd.
+        """Modifies an existing alert.
 
         Arguments:
             alert_id (str) UUID of the alert to be modified.
@@ -1721,7 +1721,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_asset(self, asset_id, comment):
-        """Generates xml string for modify asset on gvmd
+        """Modifies an existing asset.
 
         Arguments:
             asset_id (str) UUID of the asset to be modified.
@@ -1737,7 +1737,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_auth(self, group_name, auth_conf_settings):
-        """Generates xml string for modify auth on gvmd.
+        """Modifies an existing auth.
         Arguments:
             group_name (str) Name of the group to be modified.
             auth_conf_settings (dict): The new auth config.
@@ -1759,7 +1759,7 @@ class Gmp(GvmProtocol):
 
     def modify_config(self, selection, config_id=None, nvt_oids=None, name=None,
                       value=None, family=None):
-        """Modifies an existing scan config on gvmd.
+        """Modifies an existing existing scan config.
 
         Arguments:
             selection (str): one of 'nvt_pref', nvt_selection or
@@ -1816,7 +1816,7 @@ class Gmp(GvmProtocol):
                           password=None, auth_algorithm=None, community=None,
                           privacy_algorithm=None, privacy_password=None,
                           credential_type=None):
-        """Generates xml string for modify credential on gvmd.
+        """Modifies an existing credential.
 
         Arguments:
             credential_id (str): UUID of the credential
@@ -1900,7 +1900,7 @@ class Gmp(GvmProtocol):
 
     def modify_filter(self, filter_id, comment=None, name=None, term=None,
                       filter_type=None):
-        """Generates xml string for modify filter on gvmd.
+        """Modifies an existing filter.
 
         Arguments:
             filter_id (str): UUID of the filter to be modified
@@ -1937,7 +1937,7 @@ class Gmp(GvmProtocol):
 
     def modify_group(self, group_id, comment=None, name=None,
                      users=None):
-        """Generates xml string for modify group on gvmd.
+        """Modifies an existing group.
 
         Arguments:
             group_id (str): UUID of group to modify.
@@ -2072,7 +2072,7 @@ class Gmp(GvmProtocol):
     def modify_permission(self, permission_id, comment=None, name=None,
                           resource_id=None, resource_type=None,
                           subject_id=None, subject_type=None):
-        """Generates xml string for modify permission on gvmd.
+        """Modifies an existing permission.
 
         Arguments:
             permission_id (str): UUID of permission to be modified.
@@ -2114,7 +2114,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_port_list(self, port_list_id, comment=None, name=None, ):
-        """Generates xml string for modify port list on gvmd.
+        """Modifies an existing port list.
 
         Arguments:
             port_list_id (str): UUID of port list to modify.
@@ -2136,7 +2136,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_report(self, report_id, comment):
-        """Modify a report on gvmd.
+        """Modifies an existing report.
 
         Arguments:
             report_id (str): UUID of report to modify.
@@ -2156,7 +2156,7 @@ class Gmp(GvmProtocol):
 
     def modify_report_format(self, report_format_id, active=None, name=None,
                              summary=None, param_name=None, param_value=None):
-        """Modify a report format on gvmd.
+        """Modifies an existing report format on gvmd.
 
         Arguments:
             report_format_id (str) UUID of report format to modify.
@@ -2189,7 +2189,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_role(self, role_id, comment=None, name=None, users=None):
-        """Generates xml string for modify role on gvmd.
+        """Modifies an existing role.
 
         Arguments:
             role_id (str): UUID of role to modify.
