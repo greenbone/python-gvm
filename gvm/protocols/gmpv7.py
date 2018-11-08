@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=too-many-lines
+# pylint: disable=too-many-lines,redefined-builtin
 """
 Module for communication with gvmd in Greenbone Management Protocol version 7
 """
@@ -96,6 +96,18 @@ def _check_command_status(xml):
     except etree.Error as e:
         logger.error('etree.XML(xml): %s', e)
         return False
+
+
+def _to_bool(value):
+    return '1' if value else '0'
+
+
+def _add_filter(cmd, filter, filter_id):
+    if filter:
+        cmd.set_attribute('filter', filter)
+
+    if filter_id:
+        cmd.set_attribute('filt_id', filter_id)
 
 
 class Gmp(GvmProtocol):
@@ -551,15 +563,15 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', group_id)
         return self._send_xml_command(cmd)
 
-    def create_note(self, text, nvt_oid, active=None, comment=None, hosts=None,
-                    result_id=None, severity=None, task_id=None, threat=None,
-                    port=None):
+    def create_note(self, text, nvt_oid, seconds_active=None, comment=None,
+                    hosts=None, result_id=None, severity=None, task_id=None,
+                    threat=None, port=None):
         """Create a new note
 
         Arguments:
             text (str): Text of the new note
             nvt_id (str): OID of the nvt to which note applies
-            active (int, optional): Seconds note will be active. -1 on
+            seconds_active (int, optional): Seconds note will be active. -1 on
                 always, 0 off
             comment (str, optional): Comment for the note
             hosts (list, optional): A list of hosts addresses
@@ -583,8 +595,8 @@ class Gmp(GvmProtocol):
         cmd.add_element('text', text)
         cmd.add_element('nvt', attrs={"oid": nvt_oid})
 
-        if not active is None:
-            cmd.add_element('active', str(active))
+        if not seconds_active is None:
+            cmd.add_element('active', str(seconds_active))
 
         if comment:
             cmd.add_element('comment', comment)
@@ -622,7 +634,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', note_id)
         return self._send_xml_command(cmd)
 
-    def create_override(self, text, nvt_oid, active=None, hosts=None,
+    def create_override(self, text, nvt_oid, seconds_active=None, hosts=None,
                         port=None, result_id=None, severity=None, comment=None,
                         new_severity=None, task_id=None, threat=None,
                         new_threat=None):
@@ -631,8 +643,8 @@ class Gmp(GvmProtocol):
         Arguments:
             text (str): Text of the new override
             nvt_id (str): OID of the nvt to which override applies
-            active (int, optional): Seconds override will be active. -1 on
-                always, 0 off
+            seconds_active (int, optional): Seconds override will be active.
+                -1 on always, 0 off
             comment (str, optional): Comment for the override
             hosts (list, optional): A list of host addresses
             port (str, optional): Port ot which the override applies
@@ -660,8 +672,8 @@ class Gmp(GvmProtocol):
         cmd.add_element('text', text)
         cmd.add_element('nvt', attrs={'oid': nvt_oid})
 
-        if active:
-            cmd.add_element('active', active)
+        if not seconds_active is None:
+            cmd.add_element('active', str(seconds_active))
 
         if comment:
             cmd.add_element('comment', comment)
@@ -1510,60 +1522,528 @@ class Gmp(GvmProtocol):
         return self.send_command(cmd)
 
     def describe_auth(self):
-        cmd = self._generator.describe_auth_command()
-        return self.send_command(cmd)
+        """Describe authentication methods
+
+        Returns a list of all used authentication methods if such a list is
+        available.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('describe_auth'))
 
     def empty_trashcan(self):
-        cmd = self._generator.empty_trashcan_command()
-        return self.send_command(cmd)
+        """Empty the trashcan
 
-    def get_agents(self, **kwargs):
-        cmd = self._generator.get_agents_command(kwargs)
-        return self.send_command(cmd)
+        Remove all entities from the trashcan. **Attention:** this command can
+        not be reverted
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('empty_trashcan'))
+
+    def get_agents(self, filter=None, filter_id=None, trash=None, details=None,
+                   format=None):
+        """Request a list of agents
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): True to request the filters in the
+                trashcan
+            details (boolean, optional): Whether to include agents package
+                information when no format was provided
+            format (str, optional): One of "installer", "howto_install" or
+                "howto_use"
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_agents')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if format:
+            if not format in ('installer', 'howto_install', 'howto_use'):
+                raise InvalidArgument(
+                    'installer argument needs to be one of installer, '
+                    'howto_install or howto_use')
+
+            cmd.set_attribute('format', format)
+
+        return self._send_xml_command(cmd)
+
+    def get_agent(self, agent_id):
+        """Request a single agent
+
+        Arguments:
+            agent_id (str): UUID of an existing agent
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_agents')
+        cmd.set_attribute('agent_id', agent_id)
+        return self._send_xml_command(cmd)
 
     def get_aggregates(self, **kwargs):
-        cmd = self._generator.get_aggregates_command(kwargs)
+        cmd = XmlCommand('get_aggregates')
+        cmd.set_attributes(kwargs)
+        return self._send_xml_command(cmd)
+
+    def get_alerts(self, filter=None, filter_id=None, trash=None, tasks=None):
+        """Request a list of alerts
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): True to request the alerts in the
+                trashcan
+            tasks (boolean, optional): Whether to include the tasks using the
+                alerts
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_alerts')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not tasks is None:
+            cmd.set_attribute('tasks', _to_bool(tasks))
+
+        return self._send_xml_command(cmd)
+
+    def get_alert(self, alert_id):
+        """Request a single alert
+
+        Arguments:
+            alert_id (str): UUID of an existing alert
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_alerts')
+        cmd.set_attribute('alert_id', alert_id)
+        return self._send_xml_command(cmd)
+
+    def get_assets(self, filter=None, filter_id=None):
+        """Request a list of assets
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_assets')
+
+        _add_filter(cmd, filter, filter_id)
+
+        return self._send_xml_command(cmd)
+
+    def get_asset(self, asset_id):
+        """Request a single asset
+
+        Arguments:
+            asset_id (str): UUID of an existing asset
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_assets')
+        cmd.set_attribute('asset_id', asset_id)
+        return self._send_xml_command(cmd)
+
+    def get_credentials(self, filter=None, filter_id=None, scanners=None,
+                        trash=None, targets=None, format=None):
+        """Request a list of credentials
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            scanners (boolean, optional): Whether to include a list of scanners
+                using the credentials
+            trash (boolean, optional): Whether to get the trashcan credentials
+                instead
+            targets (boolean, optional): Whether to include a list of targets
+                using the credentials
+            format (str, optional): One of "key", "rpm", "deb" or "exe"
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_credentials')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not scanners is None:
+            cmd.set_attribute('scanners', _to_bool(scanners))
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not targets is None:
+            cmd.set_attribute('targets', _to_bool(targets))
+
+        if format:
+            if not format in ('key', 'rpm', 'deb', 'exe'):
+                raise InvalidArgument(
+                    'format argument needs to one of key, rpm, deb or exe')
+
+            cmd.set_attribute('format', format)
+
         return self.send_command(cmd)
 
-    def get_alerts(self, **kwargs):
-        cmd = self._generator.get_alerts_command(kwargs)
-        return self.send_command(cmd)
+    def get_credential(self, credential_id):
+        """Request a single credential
 
-    def get_assets(self, **kwargs):
-        cmd = self._generator.get_assets_command(kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            credential_id (str): UUID of an existing credential
 
-    def get_credentials(self, **kwargs):
-        cmd = self._generator.get_credentials_command(kwargs)
-        return self.send_command(cmd)
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_credentials')
+        cmd.set_attribute('credential_id', credential_id)
+        return self._send_xml_command(cmd)
 
-    def get_configs(self, **kwargs):
-        cmd = self._generator.get_configs_command(kwargs)
-        return self.send_command(cmd)
+    def get_configs(self, filter=None, filter_id=None, trash=None, details=None,
+                    families=None, preferences=None, tasks=None):
+        """Request a list of scan configs
 
-    def get_feeds(self, **kwargs):
-        cmd = self._generator.get_feeds_command(kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan scan configs
+                instead
+            details (boolean, optional): Whether to get config families,
+                preferences, nvt selectors and tasks.
+            families (boolean, optional): Whether to include the families if no
+                details are requested
+            preferences (boolean, optional): Whether to include the preferences
+                if no details are requested
+            tasks (boolean, optional): Whether to get tasks using this config
 
-    def get_filters(self, **kwargs):
-        cmd = self._generator.get_filters_command(kwargs)
-        return self.send_command(cmd)
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_credentials')
 
-    def get_groups(self, **kwargs):
-        cmd = self._generator.get_groups_command(kwargs)
-        return self.send_command(cmd)
+        _add_filter(cmd, filter, filter_id)
 
-    def get_info(self, **kwargs):
-        cmd = self._generator.get_info_command(kwargs)
-        return self.send_command(cmd)
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
 
-    def get_notes(self, **kwargs):
-        cmd = self._generator.get_notes_command(kwargs)
-        return self.send_command(cmd)
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
 
-    def get_nvts(self, **kwargs):
-        cmd = self._generator.get_nvts_command(kwargs)
-        return self.send_command(cmd)
+        if not families is None:
+            cmd.set_attribute('families', _to_bool(families))
+
+        if not preferences is None:
+            cmd.set_attribute('preferences', _to_bool(preferences))
+
+        if not tasks is None:
+            cmd.set_attribute('tasks', _to_bool(tasks))
+
+        return self._send_xml_command(cmd)
+
+    def get_config(self, config_id):
+        """Request a single scan config
+
+        Arguments:
+            config_id (str): UUID of an existing scan config
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_configs')
+        cmd.set_attribute('config_id', config_id)
+        return self._send_xml_command(cmd)
+
+    def get_feeds(self):
+        """Request the list of feeds
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('get_feeds'))
+
+    def get_feed(self, feed_type):
+        """Request a single feed
+
+        Arguments:
+            feed_type (str): Type of single feed to get: NVT, CERT or SCAP
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        feed_type = feed_type.upper()
+
+        if not feed_type in ('NVT', 'CERT', 'SCAP'):
+            raise InvalidArgument(
+                'get_feed type arguments must be one of NVT, CERT or SCAP')
+
+        cmd = XmlCommand('get_feeds')
+        cmd.set_attribute('type', feed_type)
+
+        return self._send_xml_command(cmd)
+
+    def get_filters(self, filter=None, filter_id=None, trash=None, alerts=None):
+        """Request a list of filters
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan filters
+                instead
+            alerts (boolean, optional): Whether to include list of alerts that
+                use the filter.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_filters')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not alerts is None:
+            cmd.set_attribute('alerts', _to_bool(alerts))
+
+        return self._send_xml_command(cmd)
+
+    def get_filter(self, filter_id):
+        """Request a single filter
+
+        Arguments:
+            filter_id (str): UUID of an existing filter
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_filters')
+        cmd.set_attribute('filter_id', filter_id)
+        return self._send_xml_command(cmd)
+
+    def get_groups(self, filter=None, filter_id=None, trash=None):
+        """Request a list of groups
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan groups
+                instead
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_groups')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        return self._send_xml_command(cmd)
+
+    def get_group(self, group_id):
+        """Request a single group
+
+        Arguments:
+            group_id (str): UUID of an existing group
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_groups')
+        cmd.set_attribute('group_id', group_id)
+        return self._send_xml_command(cmd)
+
+    def get_info_list(self, info_type, filter=None, filter_id=None,
+                      name=None, details=None):
+        """Request a list of security information
+
+        Arguments:
+            info_type (str): Type must be either CERT_BUND_ADV, CPE, CVE,
+                DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            name (str, optional): Name or identifier of the requested
+                information
+            details (boolean, optional): Whether to include information about
+                references to this information
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        info_type = info_type.upper()
+
+        if not info_type in (
+                'CERT_BUND_ADV', 'CPE', 'CVE', 'DFN_CERT_ADV', 'OVALDEF', 'NVT',
+                'ALLINFO'):
+            raise InvalidArgument(
+                'get_info_list info_type argument must be one of CERT_BUND_ADV'
+                ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
+
+        cmd = XmlCommand('get_groups')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if name:
+            cmd.set_attribute('name', name)
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        return self._send_xml_command(cmd)
+
+    def get_info(self, info_id):
+        """Request a single secinfo
+
+        Arguments:
+            info_id (str): UUID of an existing secinfo
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_infos')
+        cmd.set_attribute('info_id', info_id)
+        return self._send_xml_command(cmd)
+
+    def get_notes(self, filter=None, filter_id=None, nvt_oid=None,
+                  task_id=None, details=None, result=None):
+        """Request a list of notes
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            nvt_oid (str, optional): OID of a nvt
+            task_id (str, optional): UUID of a task
+            details (boolean, optional):
+            result (boolean, optional):
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_notes')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if nvt_oid:
+            cmd.set_attribute('nvt_oid', nvt_oid)
+
+        if task_id:
+            cmd.set_attribute('task_id', task_id)
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if not result is None:
+            cmd.set_attribute('result', _to_bool(result))
+
+        return self._send_xml_command(cmd)
+
+    def get_note(self, note_id):
+        """Request a single note
+
+        Arguments:
+            note_id (str): UUID of an existing note
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_notes')
+        cmd.set_attribute('note_id', note_id)
+        return self._send_xml_command(cmd)
+
+    def get_nvts(self, details=None, preferences=None, preference_count=None,
+                 timeout=None, config_id=None, preferences_config_id=None,
+                 family=None, sort_order=None, sort_field=None):
+        """Request a list of nvts
+
+        Arguments:
+            details (boolean, optional): Whether to include full details
+            preferences (boolean, optional): Whether to include nvt preferences
+            preference_count (boolean, optional): Whether to include preference
+                count
+            timeout (boolean, optional):  Whether to include the special timeout
+                preference
+            config_id (str, optional): UUID of scan config to which to limit the
+                NVT listing
+            preferences_config_id (str, optional): UUID of scan config to use
+                for preference values
+            family (str, optional): Family to which to limit NVT listing
+            sort_order (str, optional): Sort order
+            sort_field (str, optional): Sort field
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_notes')
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if not preferences is None:
+            cmd.set_attribute('preferences', _to_bool(preferences))
+
+        if not preference_count is None:
+            cmd.set_attribute('preference_count', _to_bool(preference_count))
+
+        if not timeout is None:
+            cmd.set_attribute('timeout', _to_bool(timeout))
+
+        if config_id:
+            cmd.set_attribute('config_id', config_id)
+
+        if preferences_config_id:
+            cmd.set_attribute('preferences_config_id', preferences_config_id)
+
+        if family:
+            cmd.set_attribute('family', family)
+
+        if sort_order:
+            cmd.set_attribute('sort_order', sort_order)
+
+        if sort_field:
+            cmd.set_attribute('sort_field', sort_field)
+
+        return self._send_xml_command(cmd)
+
+    def get_nvt(self, nvt_id):
+        """Request a single nvt
+
+        Arguments:
+            nvt_id (str): OID of an existing nvt
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_nvts')
+        cmd.set_attribute('nvt_id', nvt_id)
+        return self._send_xml_command(cmd)
 
     def get_nvt_families(self, **kwargs):
         cmd = self._generator.get_nvt_families_command(kwargs)
@@ -1573,13 +2053,52 @@ class Gmp(GvmProtocol):
         cmd = self._generator.get_overrides_command(kwargs)
         return self.send_command(cmd)
 
+    def get_override(self, override_id):
+        """Request a single override
+
+        Arguments:
+            override_id (str): UUID of an existing override
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_overrides')
+        cmd.set_attribute('override_id', override_id)
+        return self._send_xml_command(cmd)
+
     def get_permissions(self, **kwargs):
         cmd = self._generator.get_permissions_command(kwargs)
         return self.send_command(cmd)
 
+    def get_permission(self, permission_id):
+        """Request a single permission
+
+        Arguments:
+            permission_id (str): UUID of an existing permission
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_permissions')
+        cmd.set_attribute('permission_id', permission_id)
+        return self._send_xml_command(cmd)
+
     def get_port_lists(self, **kwargs):
         cmd = self._generator.get_port_lists_command(kwargs)
         return self.send_command(cmd)
+
+    def get_port_list(self, port_list_id):
+        """Request a single port list
+
+        Arguments:
+            port_list_id (str): UUID of an existing port list
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_port_lists')
+        cmd.set_attribute('port_list_id', port_list_id)
+        return self._send_xml_command(cmd)
 
     def get_preferences(self, **kwargs):
         cmd = self._generator.get_preferences_command(kwargs)
@@ -1589,29 +2108,120 @@ class Gmp(GvmProtocol):
         cmd = self._generator.get_reports_command(kwargs)
         return self.send_command(cmd)
 
+    def get_report(self, report_id):
+        """Request a single report
+
+        Arguments:
+            report_id (str): UUID of an existing report
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_reports')
+        cmd.set_attribute('report_id', report_id)
+        return self._send_xml_command(cmd)
+
     def get_report_formats(self, **kwargs):
         cmd = self._generator.get_report_formats_command(kwargs)
         return self.send_command(cmd)
+
+    def get_report_format(self, report_format_id):
+        """Request a single report format
+
+        Arguments:
+            report_format_id (str): UUID of an existing report format
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_report_formats')
+        cmd.set_attribute('report_format_id', report_format_id)
+        return self._send_xml_command(cmd)
 
     def get_results(self, **kwargs):
         cmd = self._generator.get_results_command(kwargs)
         return self.send_command(cmd)
 
+    def get_result(self, result_id):
+        """Request a single result
+
+        Arguments:
+            result_id (str): UUID of an existing result
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_results')
+        cmd.set_attribute('result_id', result_id)
+        return self._send_xml_command(cmd)
+
     def get_roles(self, **kwargs):
         cmd = self._generator.get_roles_command(kwargs)
         return self.send_command(cmd)
+
+    def get_role(self, role_id):
+        """Request a single role
+
+        Arguments:
+            role_id (str): UUID of an existing role
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_roles')
+        cmd.set_attribute('role_id', role_id)
+        return self._send_xml_command(cmd)
 
     def get_scanners(self, **kwargs):
         cmd = self._generator.get_scanners_command(kwargs)
         return self.send_command(cmd)
 
+    def get_scanner(self, scanner_id):
+        """Request a single scanner
+
+        Arguments:
+            scanner_id (str): UUID of an existing scanner
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_scanners')
+        cmd.set_attribute('scanner_id', scanner_id)
+        return self._send_xml_command(cmd)
+
     def get_schedules(self, **kwargs):
         cmd = self._generator.get_schedules_command(kwargs)
         return self.send_command(cmd)
 
+    def get_schedule(self, schedule_id):
+        """Request a single schedule
+
+        Arguments:
+            schedule_id (str): UUID of an existing schedule
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_schedules')
+        cmd.set_attribute('schedule_id', schedule_id)
+        return self._send_xml_command(cmd)
+
     def get_settings(self, **kwargs):
         cmd = self._generator.get_settings_command(kwargs)
         return self.send_command(cmd)
+
+    def get_setting(self, setting_id):
+        """Request a single setting
+
+        Arguments:
+            setting_id (str): UUID of an existing setting
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_settings')
+        cmd.set_attribute('setting_id', setting_id)
+        return self._send_xml_command(cmd)
 
     def get_system_reports(self, **kwargs):
         cmd = self._generator.get_system_reports_command(kwargs)
@@ -1621,24 +2231,100 @@ class Gmp(GvmProtocol):
         cmd = self._generator.get_tags_command(kwargs)
         return self.send_command(cmd)
 
+    def get_tag(self, tag_id):
+        """Request a single tag
+
+        Arguments:
+            tag_id (str): UUID of an existing tag
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_tags')
+        cmd.set_attribute('tag_id', tag_id)
+        return self._send_xml_command(cmd)
+
     def get_targets(self, **kwargs):
         cmd = self._generator.get_targets_command(kwargs)
         return self.send_command(cmd)
+
+    def get_target(self, target_id):
+        """Request a single target
+
+        Arguments:
+            target_id (str): UUID of an existing target
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_targets')
+        cmd.set_attribute('target_id', target_id)
+        return self._send_xml_command(cmd)
 
     def get_tasks(self, **kwargs):
         cmd = self._generator.get_tasks_command(kwargs)
         return self.send_command(cmd)
 
+    def get_task(self, task_id):
+        """Request a single task
+
+        Arguments:
+            task_id (str): UUID of an existing task
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_tasks')
+        cmd.set_attribute('task_id', task_id)
+        return self._send_xml_command(cmd)
+
     def get_users(self, **kwargs):
         cmd = self._generator.get_users_command(kwargs)
         return self.send_command(cmd)
 
-    def get_version(self):
-        cmd = self._generator.get_version_command()
-        return self.send_command(cmd)
+    def get_user(self, user_id):
+        """Request a single user
 
-    def help(self, **kwargs):
-        cmd = self._generator.help_command(kwargs)
+        Arguments:
+            user_id (str): UUID of an existing user
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_users')
+        cmd.set_attribute('user_id', user_id)
+        return self._send_xml_command(cmd)
+
+    def get_version(self):
+        """Get the Greenbone Manager Protocol version used by the remote gvmd
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('get_version'))
+
+    def help(self, format=None, type=''):
+        """Get the help text
+
+        Arguments:
+            format (str, optional): One of "html", "rnc", "text" or "xml
+            type (str, optional): One of "brief" or "". Default ""
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('help')
+
+        cmd.set_attribute('type', type)
+
+        if format:
+            if not format.lower() in ('html', 'rnc', 'text', 'xml'):
+                raise InvalidArgument(
+                    'help format Argument must be one of html, rnc, text or '
+                    'xml')
+
+            cmd.set_attribute('format', format)
+
         return self.send_command(cmd)
 
     def modify_agent(self, agent_id, name=None, comment=None):
@@ -2265,20 +2951,36 @@ class Gmp(GvmProtocol):
         return self.send_command(cmd)
 
     def sync_cert(self):
-        cmd = self._generator.sync_cert_command()
-        return self.send_command(cmd)
+        """Request a synchronization with the CERT feed service
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('sync_cert'))
 
     def sync_config(self):
-        cmd = self._generator.sync_config_command()
-        return self.send_command(cmd)
+        """Request an OSP config synchronization with scanner
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('sync_config'))
 
     def sync_feed(self):
-        cmd = self._generator.sync_feed_command()
-        return self.send_command(cmd)
+        """Request a synchronization with the NVT feed service
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('sync_feed'))
 
     def sync_scap(self):
-        cmd = self._generator.sync_scap_command()
-        return self.send_command(cmd)
+        """Request a synchronization with the SCAP feed service
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self._send_xml_command(XmlCommand('sync_scap'))
 
     def test_alert(self, alert_id):
         cmd = self._generator.test_alert_command(alert_id)

@@ -18,20 +18,21 @@
 
 import unittest
 
-from gvm.xml import _GmpCommandFactory as GmpCommandFactory
+from gvm.protocols.gmpv7 import Gmp
+
+from .. import MockConnection
 
 
-class GMPDescribeAuthCommandTestCase(unittest.TestCase):
+class GmpDescribeAuthCommandTestCase(unittest.TestCase):
+
     def setUp(self):
-        self.gmp = GmpCommandFactory()
-
-    def tearDown(self):
-        pass
+        self.connection = MockConnection()
+        self.gmp = Gmp(self.connection)
 
     def test_describe_auth(self):
-        cmd = self.gmp.describe_auth_command()
+        self.gmp.describe_auth()
 
-        self.assertEqual('<describe_auth/>', cmd)
+        self.connection.send.has_been_called_with('<describe_auth/>')
 
 
 if __name__ == '__main__':
