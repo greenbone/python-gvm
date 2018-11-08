@@ -1722,9 +1722,47 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('credential_id', credential_id)
         return self._send_xml_command(cmd)
 
-    def get_configs(self, **kwargs):
-        cmd = self._generator.get_configs_command(kwargs)
-        return self.send_command(cmd)
+    def get_configs(self, filter=None, filter_id=None, trash=None, details=None,
+                    families=None, preferences=None, tasks=None):
+        """Request a list of scan configs
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get the trashcan scan configs
+                instead
+            details (boolean, optional): Whether to get config families,
+                preferences, nvt selectors and tasks.
+            families (boolean, optional): Whether to include the families if no
+                details are requested
+            preferences (boolean, optional): Whether to include the preferences
+                if no details are requested
+            tasks (boolean, optional): Whether to get tasks using this config
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_credentials')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        if not details is None:
+            cmd.set_attribute('details', _to_bool(details))
+
+        if not families is None:
+            cmd.set_attribute('families', _to_bool(families))
+
+        if not preferences is None:
+            cmd.set_attribute('preferences', _to_bool(preferences))
+
+        if not tasks is None:
+            cmd.set_attribute('tasks', _to_bool(tasks))
+
+        return self._send_xml_command(cmd)
 
     def get_config(self, config_id):
         """Request a single scan config
