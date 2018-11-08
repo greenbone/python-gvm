@@ -2538,9 +2538,47 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('setting_id', setting_id)
         return self._send_xml_command(cmd)
 
-    def get_system_reports(self, **kwargs):
-        cmd = self._generator.get_system_reports_command(kwargs)
-        return self.send_command(cmd)
+    def get_system_reports(self, name=None, duration=None, start_time=None,
+                           end_time=None, brief=None, slave_id=None):
+        """Request a list of system reports
+
+        Arguments:
+            name (str, optional): A string describing the required system report
+            duration (int, optional): The number of seconds into the past that
+                the system report should include
+            start_time (str, optional): The start of the time interval the
+                system report should include in ISO time format
+            end_time (str, optional): The end of the time interval the system
+                report should include in ISO time format
+            brief (boolean, optional): Whether to include the actual system
+                reports
+            slave_id (str, optional): UUID of GMP scanner from which to get the
+                system reports
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_system_reports')
+
+        if name:
+            cmd.set_attribute('name', name)
+
+        if not duration is None:
+            cmd.set_attribute('duration', str(duration))
+
+        if start_time:
+            cmd.set_attribute('start_time', str(start_time))
+
+        if end_time:
+            cmd.set_attribute('end_time', str(end_time))
+
+        if not brief is None:
+            cmd.set_attribute('brief', _to_bool(brief))
+
+        if slave_id:
+            cmd.set_attribute('slave_id', slave_id)
+
+        return self._send_xml_command(cmd)
 
     def get_tags(self, **kwargs):
         cmd = self._generator.get_tags_command(kwargs)
