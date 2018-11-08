@@ -2055,9 +2055,21 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('nvt_id', nvt_id)
         return self._send_xml_command(cmd)
 
-    def get_nvt_families(self, **kwargs):
-        cmd = self._generator.get_nvt_families_command(kwargs)
-        return self.send_command(cmd)
+    def get_nvt_families(self, sort_order=None):
+        """Request a list of nvt families
+
+        Arguments:
+            sort_order (str, optional): Sort order
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_nvt_families')
+
+        if sort_order:
+            cmd.set_attribute('sort_order', sort_order)
+
+        return self._send_xml_command(cmd)
 
     def get_overrides(self, **kwargs):
         cmd = self._generator.get_overrides_command(kwargs)
