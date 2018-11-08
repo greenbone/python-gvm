@@ -65,48 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_user_command(self, kwargs):
-        """Generates xml string for modify user on gvmd."""
-        user_id = kwargs.get('user_id', '')
-        name = kwargs.get('name', '')
-
-        if not user_id and not name:
-            raise ValueError('modify_user requires '
-                             'either a user_id or a name element')
-
-        cmd = XmlCommand('modify_user')
-        cmd.set_attribute('user_id', str(user_id))
-
-        new_name = kwargs.get('new_name', '')
-        if new_name:
-            cmd.add_element('new_name', new_name)
-
-        password = kwargs.get('password', '')
-        if password:
-            cmd.add_element('password', password)
-
-        role_ids = kwargs.get('role_ids', '')
-        if len(role_ids) > 0:
-            for role in role_ids:
-                cmd.add_element('role', attrs={'id': str(role)})
-
-        hosts = kwargs.get('hosts', '')
-        hosts_allow = kwargs.get('hosts_allow', '')
-        if hosts or hosts_allow:
-            cmd.add_element('hosts', hosts, attrs={'allow': str(hosts_allow)})
-
-        ifaces = kwargs.get('ifaces', '')
-        ifaces_allow = kwargs.get('ifaces_allow', '')
-        if ifaces or ifaces_allow:
-            cmd.add_element('ifaces', ifaces,
-                            attrs={'allow': str(ifaces_allow)})
-
-        sources = kwargs.get('sources', '')
-        if sources:
-            cmd.add_element('sources', sources)
-
-        return cmd.to_string()
-
     def delete_agent_command(self, kwargs):
         """Generates xml string for delete agent on gvmd"""
         cmd = XmlCommand('delete_agent')

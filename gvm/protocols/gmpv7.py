@@ -3291,9 +3291,58 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_user(self, **kwargs):
-        cmd = self._generator.modify_user_command(kwargs)
-        return self.send_command(cmd)
+    def modify_user(self, user_id, name, new_name=None, password=None,
+                    role_ids=None, hosts=None, hosts_allow=None,
+                    ifaces=None, ifaces_allow=None, sources=None):
+        """Modifies an existing user.
+
+        Arguments:
+            user_id (str): UUID of the user to be modified. Overrides
+                NAME element.
+            name (str): The name of the user to be modified.
+            new_name (str, optional): The new name for the user.
+            password (str, optional): The password for the user.
+            roles_id (list, optional): List of roles UUIDs for the user.
+            hosts (list, optional): User access rules: List of hosts.
+            hosts_allow (boolean,optional): If True, allow only listed,
+                otherwise forbid listed.
+            ifaces (list, optional): User access rules: List
+                of ifaces.
+            ifaces_allow (boolean, optional): If True, allow only listed,
+                otherwise forbid listed.
+            sources (list, optional): List of authentication sources for
+                this user.
+        """
+        if not user_id:
+            raise RequiredArgument('modify_user requires a user_id argument')
+        if not name:
+            raise RequiredArgument('modify_user requires a name argument')
+
+        cmd = XmlCommand('modify_user')
+        cmd.set_attribute('user_id', user_id)
+
+        if new_name:
+            cmd.add_element('new_name', new_name)
+
+        if password:
+            cmd.add_element('password', password)
+
+        if role_ids:
+            for role in role_ids:
+                cmd.add_element('role', attrs={'id': role})
+
+        if hosts or hosts_allow:
+            cmd.add_element('hosts', ', '.join(hosts),
+                            attrs={'allow': '1' if hosts_allow else '0'})
+
+        if ifaces or ifaces_allow:
+            cmd.add_element('ifaces', ', '.join(ifaces),
+                            attrs={'allow': '1' if ifaces_allow else '0'})
+
+        if sources:
+            cmd.add_element('sources', ', '.join(sources))
+
+        return self._send_xml_command(cmd)
 
     def move_task(self, task_id, slave_id):
         cmd = self._generator.move_task_command(task_id, slave_id)
