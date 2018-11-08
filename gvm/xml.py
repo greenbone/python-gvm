@@ -65,39 +65,6 @@ class _GmpCommandFactory:
     """Factory to create gmp - Greenbone Management Protocol - commands
     """
 
-    def modify_tag_command(self, tag_id, kwargs):
-        """Generates xml string for modify tag on gvmd."""
-        if not tag_id:
-            raise ValueError('modify_tag requires a tag_id element')
-
-        cmd = XmlCommand('modify_tag')
-        cmd.set_attribute('tag_id', str(tag_id))
-
-        comment = kwargs.get('comment', '')
-        if comment:
-            cmd.add_element('comment', comment)
-
-        name = kwargs.get('name', '')
-        if name:
-            cmd.add_element('name', name)
-
-        value = kwargs.get('value', '')
-        if value:
-            cmd.add_element('value', value)
-
-        active = kwargs.get('active', '')
-        if active:
-            cmd.add_element('active', value)
-
-        resource = kwargs.get('resource', '')
-        if resource:
-            resource_id = resource['id']
-            resource_type = resource['type']
-            _xmlresource = cmd.add_element('resource',
-                                           attrs={'resource_id': resource_id})
-            _xmlresource.add_element('type', resource_type)
-
-        return cmd.to_string()
 
     def modify_target_command(self, target_id, kwargs):
         """Generates xml string for modify target on gvmd."""

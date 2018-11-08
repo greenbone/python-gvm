@@ -3082,9 +3082,48 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_tag(self, tag_id, **kwargs):
-        cmd = self._generator.modify_tag_command(tag_id, kwargs)
-        return self.send_command(cmd)
+    def modify_tag(self, tag_id, comment=None, name=None, value=None,
+                   active=None, resource_id=None, resource_type=None):
+        """Modifies an existing tag.
+
+        Arguments:
+            tag_id (str): UUID of the tag.
+            comment (str, optional): Comment to add to the tag.
+            name (str, optional): Name of the tag.
+            value (str, optional): Value of the tag.
+            active (boolean, optional): Whether the tag is active.
+            resource_id (str, optional): IDs of the resource to which to
+                attach the tag.
+            resource_type (str, optional): Type of the resource to which to
+                attach the tag.
+        """
+        if not tag_id:
+            raise RequiredArgument('modify_tag requires a tag_id element')
+
+        cmd = XmlCommand('modify_tag')
+        cmd.set_attribute('tag_id', str(tag_id))
+
+        if comment:
+            cmd.add_element('comment', comment)
+
+        if name:
+            cmd.add_element('name', name)
+
+        if value:
+            cmd.add_element('value', value)
+
+        if not active is None:
+            if active:
+                cmd.add_element('active', '1')
+            else:
+                cmd.add_element('active', '0')
+
+        if resource_id and resource_type:
+            _xmlresource = cmd.add_element('resource',
+                                           attrs={'resource_id': resource_id})
+            _xmlresource.add_element('type', resource_type)
+
+        return self._send_xml_command(cmd)
 
     def modify_target(self, target_id, **kwargs):
         cmd = self._generator.modify_target_command(target_id, kwargs)
