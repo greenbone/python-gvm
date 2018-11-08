@@ -2118,9 +2118,27 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('override_id', override_id)
         return self._send_xml_command(cmd)
 
-    def get_permissions(self, **kwargs):
-        cmd = self._generator.get_permissions_command(kwargs)
-        return self.send_command(cmd)
+    def get_permissions(self, filter=None, filter_id=None, trash=None):
+        """Request a list of permissions
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): Whether to get permissions in the
+                trashcan instead
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand('get_permissions')
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute('trash', _to_bool(trash))
+
+        return self._send_xml_command(cmd)
 
     def get_permission(self, permission_id):
         """Request a single permission
