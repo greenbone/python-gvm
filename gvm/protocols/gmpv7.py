@@ -3357,11 +3357,12 @@ class Gmp(GvmProtocol):
             name (str, optional): Name of scanner.
             ca_pub (str, optional): Certificate of CA to verify scanner's
                 certificate.
-            credential_id (str, optional): UUID of the client certificate credential
-                for the Scanner.
+            credential_id (str, optional): UUID of the client certificate
+                credential for the Scanner.
         """
         if not scanner_id:
-            raise RequiredArgument('modify_scanner requires a scanner_id argument')
+            raise RequiredArgument(
+                'modify_scanner requires a scanner_id argument')
         if not host:
             raise RequiredArgument('modify_scanner requires a host argument')
         if not port:
