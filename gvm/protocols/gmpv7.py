@@ -2218,7 +2218,7 @@ class Gmp(GvmProtocol):
                 'get_info_list info_type argument must be one of CERT_BUND_ADV'
                 ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
 
-        cmd = XmlCommand('get_groups')
+        cmd = XmlCommand('get_info')
 
         _add_filter(cmd, filter, filter_id)
 
@@ -2239,7 +2239,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_infos')
+        cmd = XmlCommand('get_info')
         cmd.set_attribute('info_id', info_id)
         return self._send_xml_command(cmd)
 
