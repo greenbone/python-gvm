@@ -1968,10 +1968,11 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('alert_id', alert_id)
         return self._send_xml_command(cmd)
 
-    def get_assets(self, filter=None, filter_id=None):
+    def get_assets(self, asset_type, filter=None, filter_id=None):
         """Request a list of assets
 
         Arguments:
+            asset_type (str): Either 'os' or 'host'
             filter (str, optional): Filter term to use for the query
             filter_id (str, optional): UUID of an existing filter to use for
                 the query
@@ -1979,23 +1980,34 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not asset_type in ('os', 'host'):
+            raise InvalidArgument('asset_type must be either os or host')
+
         cmd = XmlCommand('get_assets')
 
         _add_filter(cmd, filter, filter_id)
 
+        cmd.set_attribute('type', asset_type)
+
         return self._send_xml_command(cmd)
 
-    def get_asset(self, asset_id):
+    def get_asset(self, asset_id, asset_type):
         """Request a single asset
 
         Arguments:
+            asset_type (str): Either 'os' or 'host'
             asset_id (str): UUID of an existing asset
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not asset_type in ('os', 'host'):
+            raise InvalidArgument('asset_type must be either os or host')
+
         cmd = XmlCommand('get_assets')
         cmd.set_attribute('asset_id', asset_id)
+        cmd.set_attribute('type', asset_type)
+
         return self._send_xml_command(cmd)
 
     def get_credentials(self, filter=None, filter_id=None, scanners=None,
