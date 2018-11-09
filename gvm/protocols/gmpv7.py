@@ -381,6 +381,22 @@ class Gmp(GvmProtocol):
         cmd.add_element('name', name)
         return self._send_xml_command(cmd)
 
+    def clone_config(self, config_id):
+        """Clone a scan config from an existing one
+
+        Arguments:
+            config_id (str): UUID of the existing scan config
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not config_id:
+            raise RequiredArgument('clone_config requires config_id argument')
+
+        cmd = XmlCommand('create_config')
+        cmd.add_element('copy', config_id)
+        return self._send_xml_command(cmd)
+
     def create_credential(self, name, comment=None, allow_insecure=False,
                           certificate=None, key_phrase=None, private_key=None,
                           login=None, password=None, auth_algorithm=None,
