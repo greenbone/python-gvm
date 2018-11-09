@@ -177,7 +177,7 @@ class SSHConnection(GvmConnection, XmlReader):
 
             self._feed_xml(data)
 
-            response += data.decode('utf-8')
+            response += data.decode('utf-8', errors='ignore')
 
             if self._is_end_xml():
                 break
@@ -229,7 +229,7 @@ class TLSConnection(GvmConnection):
         while True:
             data = self._socket.read(BUF_SIZE)
 
-            response += data.decode(errors='ignore')
+            response += data.decode('utf-8', errors='ignore')
             if len(data) < BUF_SIZE:
                 break
 
@@ -280,7 +280,7 @@ class UnixSocketConnection(GvmConnection, XmlReader):
 
             self._feed_xml(data)
 
-            response += data.decode('utf-8')
+            response += data.decode('utf-8', errors='ignore')
 
             if len(data) < BUF_SIZE:
                 if self._is_end_xml():
