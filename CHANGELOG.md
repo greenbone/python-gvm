@@ -31,3 +31,5 @@ Some notable changes are:
   revised and split.
 * boolean parameters expect True and False and not 1, 0, '1' or '0' now.
 * **get_assets** type parameter got renamed to **asset_type**
+* Copying an entity via the **copy** argument has been removed and extracted to
+  own **clone** methods e.g. **clone_task**.
