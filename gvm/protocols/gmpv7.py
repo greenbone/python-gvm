@@ -3776,25 +3776,95 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def move_task(self, task_id, slave_id):
-        cmd = self._generator.move_task_command(task_id, slave_id)
-        return self.send_command(cmd)
+    def move_task(self, task_id, slave_id=None):
+        """Move an existing task to another GMP slave scanner or the master
+
+        Arguments:
+            task_id (str): UUID of the task to be moved
+            slave_id (str, optional): UUID of slave to reassign the task to,
+                empty for master.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not task_id:
+            raise InvalidArgument('move_task requires an task_id argument')
+
+        cmd = XmlCommand('move_task')
+        cmd.set_attribute('task_id', task_id)
+
+        if not slave_id is None:
+            cmd.set_attribute('slave_id', slave_id)
+
+        return self._send_xml_command(cmd)
 
     def restore(self, entity_id):
-        cmd = self._generator.restore_command(entity_id)
-        return self.send_command(cmd)
+        """Restore an entity from the trashcan
+
+        Arguments:
+            entity_id (str): ID of the entity to be restored from the trashcan
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not entity_id:
+            raise InvalidArgument('restore requires an entity_id argument')
+
+        cmd = XmlCommand('restore')
+        cmd.set_attribute('id', entity_id)
+
+        return self._send_xml_command(cmd)
 
     def resume_task(self, task_id):
-        cmd = self._generator.resume_task_command(task_id)
-        return self.send_command(cmd)
+        """Resume an existing stopped task
+
+        Arguments:
+            task_id (str): UUID of the task to be resumed
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not task_id:
+            raise InvalidArgument('resume_task requires an task_id argument')
+
+        cmd = XmlCommand('resume_task')
+        cmd.set_attribute('task_id', task_id)
+
+        return self._send_xml_command(cmd)
 
     def start_task(self, task_id):
-        cmd = self._generator.start_task_command(task_id)
-        return self.send_command(cmd)
+        """Start an existing task
+
+        Arguments:
+            task_id (str): UUID of the task to be started
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not task_id:
+            raise InvalidArgument('start_task requires an task_id argument')
+
+        cmd = XmlCommand('start_task')
+        cmd.set_attribute('task_id', task_id)
+
+        return self._send_xml_command(cmd)
 
     def stop_task(self, task_id):
-        cmd = self._generator.stop_task_command(task_id)
-        return self.send_command(cmd)
+        """Stop an existing running task
+
+        Arguments:
+            task_id (str): UUID of the task to be stopped
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not task_id:
+            raise InvalidArgument('stop_task requires an task_id argument')
+
+        cmd = XmlCommand('stop_task')
+        cmd.set_attribute('task_id', task_id)
+
+        return self._send_xml_command(cmd)
 
     def sync_cert(self):
         """Request a synchronization with the CERT feed service
@@ -3829,17 +3899,87 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(XmlCommand('sync_scap'))
 
     def test_alert(self, alert_id):
-        cmd = self._generator.test_alert_command(alert_id)
-        return self.send_command(cmd)
+        """Run an alert
+
+        Invoke a test run of an alert
+
+        Arguments:
+            alert_id (str): UUID of the alert to be tested
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not alert_id:
+            raise InvalidArgument('test_alert requires an alert_id argument')
+
+        cmd = XmlCommand('test_alert')
+        cmd.set_attribute('alert_id', alert_id)
+
+        return self._send_xml_command(cmd)
 
     def verify_agent(self, agent_id):
-        cmd = self._generator.verify_agent_command(agent_id)
-        return self.send_command(cmd)
+        """Verify an existing agent
+
+        Verifies the trust level of an existing agent. It will be checked
+        whether signature of the agent currently matches the agent. This
+        includes the agent installer file. It is *not* verified if the agend
+        works as expected by the user.
+
+        Arguments:
+            agent_id (str): UUID of the agent to be verified
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not agent_id:
+            raise InvalidArgument('verifiy_agent requires an agent_id argument')
+
+        cmd = XmlCommand('verify_agent')
+        cmd.set_attribute('agent_id', agent_id)
+
+        return self._send_xml_command(cmd)
 
     def verify_report_format(self, report_format_id):
-        cmd = self._generator.verify_report_format_command(report_format_id)
-        return self.send_command(cmd)
+        """Verify an existing report format
+
+        Verifies the trust level of an existing report format. It will be
+        checked whether the signature of the report format currently matches the
+        report format. This includes the script and files used to generate
+        reports of this format. It is *not* verified if the report format works
+        as expected by the user.
+
+        Arguments:
+            report_format_id (str): UUID of the report format to be verified
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not report_format_id:
+            raise InvalidArgument(
+                'verifiy_report_format requires a report_format_id argument')
+
+        cmd = XmlCommand('verify_report_format')
+        cmd.set_attribute('report_format_id', report_format_id)
+
+        return self._send_xml_command(cmd)
 
     def verify_scanner(self, scanner_id):
-        cmd = self._generator.verify_scanner_command(scanner_id)
-        return self.send_command(cmd)
+        """Verify an existing scanner
+
+        Verifies if it is possible to connect to an existing scanner. It is
+        *not* verified if the scanner works as expected by the user.
+
+        Arguments:
+            scanner_id (str): UUID of the scanner to be verified
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not scanner_id:
+            raise InvalidArgument(
+                'verifiy_scanner requires a scanner_id argument')
+
+        cmd = XmlCommand('verify_scanner')
+        cmd.set_attribute('scanner_id', scanner_id)
+
+        return self._send_xml_command(cmd)
