@@ -2635,7 +2635,8 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_report(self, report_id, filter=None, filter_id=None):
+    def get_report(self, report_id, filter=None, filter_id=None,
+                   delta_report_id=None, format_id=None):
         """Request a single report
 
         Arguments:
@@ -2644,6 +2645,9 @@ class Gmp(GvmProtocol):
                 report
             filter_id (str, optional): UUID of filter to use to filter results
                 in the report
+            delta_report_id (str, optional): UUID of an existing report to
+                compare report to.
+            format_id (str, optional): UUID of report format to use
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2652,6 +2656,12 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('report_id', report_id)
 
         _add_filter(cmd, filter, filter_id)
+
+        if delta_report_id:
+            cmd.set_attribute('delta_report_id', delta_report_id)
+
+        if format_id:
+            cmd.set_attribute('format_id', format_id)
 
         return self._send_xml_command(cmd)
 
