@@ -132,7 +132,7 @@ class Gmp(GvmProtocol):
         transform (`callable`_, optional): Optional transform callable to
             convert response data. After each request the callable gets passed
             the plain response data which can be used to check the data and/or
-            conversion into different representaitions like a xml dom.
+            conversion into different representations like a xml dom.
 
             See :mod:`gvm.transforms` for existing transforms.
 
@@ -163,7 +163,7 @@ class Gmp(GvmProtocol):
     def is_authenticated(self):
         """Checks if the user is authenticated
 
-        If the user is authenticated privilged GMP commands like get_tasks
+        If the user is authenticated privileged GMP commands like get_tasks
         may be send to gvmd.
 
         Returns:
@@ -402,7 +402,7 @@ class Gmp(GvmProtocol):
             login (str, optional): Username for the credential
             password (str, optional): Password for the credential
             community (str, optional): The SNMP community
-            privacy_alogorithm (str, optional): The SNMP privacy algorithm,
+            privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
             credential_type (str, optional): The credential type. One of 'cc',
@@ -876,7 +876,7 @@ class Gmp(GvmProtocol):
         Arguments:
             report (str): Report XML as string to import
             task_id (str, optional): UUID of task to import report to
-            task_name (str, optional): Name of task to be createed if task_id is
+            task_name (str, optional): Name of task to be created if task_id is
                 not present. Either task_id or task_name must be passed
             task_comment (str, optional): Comment for task to be created if
                 task_id is not present
@@ -3922,7 +3922,7 @@ class Gmp(GvmProtocol):
 
         Verifies the trust level of an existing agent. It will be checked
         whether signature of the agent currently matches the agent. This
-        includes the agent installer file. It is *not* verified if the agend
+        includes the agent installer file. It is *not* verified if the agent
         works as expected by the user.
 
         Arguments:
@@ -3932,7 +3932,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
-            raise InvalidArgument('verifiy_agent requires an agent_id argument')
+            raise InvalidArgument('verify_agent requires an agent_id argument')
 
         cmd = XmlCommand('verify_agent')
         cmd.set_attribute('agent_id', agent_id)
@@ -3956,7 +3956,7 @@ class Gmp(GvmProtocol):
         """
         if not report_format_id:
             raise InvalidArgument(
-                'verifiy_report_format requires a report_format_id argument')
+                'verify_report_format requires a report_format_id argument')
 
         cmd = XmlCommand('verify_report_format')
         cmd.set_attribute('report_format_id', report_format_id)
@@ -3977,7 +3977,7 @@ class Gmp(GvmProtocol):
         """
         if not scanner_id:
             raise InvalidArgument(
-                'verifiy_scanner requires a scanner_id argument')
+                'verify_scanner requires a scanner_id argument')
 
         cmd = XmlCommand('verify_scanner')
         cmd.set_attribute('scanner_id', scanner_id)
