@@ -2244,6 +2244,8 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
+        cmd.set_attribute('type', info_type)
+
         if name:
             cmd.set_attribute('name', name)
 
