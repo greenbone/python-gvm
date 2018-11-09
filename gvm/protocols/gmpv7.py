@@ -1903,6 +1903,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_agents')
         cmd.set_attribute('agent_id', agent_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_aggregates(self, **kwargs):
@@ -2086,6 +2089,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_configs')
         cmd.set_attribute('config_id', config_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_feeds(self):
@@ -2241,6 +2247,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_info')
         cmd.set_attribute('info_id', info_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_notes(self, filter=None, filter_id=None, nvt_oid=None,
@@ -2288,6 +2297,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_notes')
         cmd.set_attribute('note_id', note_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_nvts(self, details=None, preferences=None, preference_count=None,
@@ -2355,6 +2367,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_nvts')
         cmd.set_attribute('nvt_id', nvt_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_nvt_families(self, sort_order=None):
@@ -2418,6 +2433,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_overrides')
         cmd.set_attribute('override_id', override_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_permissions(self, filter=None, filter_id=None, trash=None):
@@ -2499,6 +2517,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_port_lists')
         cmd.set_attribute('port_list_id', port_list_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_preferences(self, nvt_oid=None, config_id=None, preference=None):
@@ -2642,6 +2663,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_report_formats')
         cmd.set_attribute('report_format_id', report_format_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_results(self, filter=None, filter_id=None, task_id=None,
@@ -2692,6 +2716,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_results')
         cmd.set_attribute('result_id', result_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_roles(self, filter=None, filter_id=None, trash=None):
@@ -2767,6 +2794,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_scanners')
         cmd.set_attribute('scanner_id', scanner_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_schedules(self, filter=None, filter_id=None, trash=None,
@@ -3005,6 +3035,9 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('get_tasks')
         cmd.set_attribute('task_id', task_id)
+
+        # for single entity always request all details
+        cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
     def get_users(self, filter=None, filter_id=None):
