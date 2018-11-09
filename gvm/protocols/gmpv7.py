@@ -3790,7 +3790,7 @@ class Gmp(GvmProtocol):
 
         Arguments:
             schedule_id (str): UUID of schedule to modify.
-            name (str): Name of the schedule
+            name (str, optional): Name of the schedule
             comment (str, optional): Comment for the schedule
             first_time_minute (int, optional): First time minute the schedule
                 will run
