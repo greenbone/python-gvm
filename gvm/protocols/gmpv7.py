@@ -2254,17 +2254,28 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_info(self, info_id):
+    def get_info(self, info_id, info_type):
         """Request a single secinfo
 
         Arguments:
             info_id (str): UUID of an existing secinfo
+            info_type (str): Type must be either CERT_BUND_ADV, CPE, CVE,
+                DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not info_type in (
+                'CERT_BUND_ADV', 'CPE', 'CVE', 'DFN_CERT_ADV', 'OVALDEF', 'NVT',
+                'ALLINFO'):
+            raise InvalidArgument(
+                'get_info_list info_type argument must be one of CERT_BUND_ADV'
+                ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
+
         cmd = XmlCommand('get_info')
         cmd.set_attribute('info_id', info_id)
+
+        cmd.set_attribute('type', info_type)
 
         # for single entity always request all details
         cmd.set_attribute('details', '1')
