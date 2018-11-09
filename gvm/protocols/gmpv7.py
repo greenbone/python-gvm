@@ -3076,6 +3076,9 @@ class Gmp(GvmProtocol):
             agent_id (str) UUID of the agent to be modified.
             name (str, optional): Name of the new credential
             comment (str, optional): Comment for the credential
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
             raise RequiredArgument('modify_agent requires agent_id argument')
@@ -3108,6 +3111,9 @@ class Gmp(GvmProtocol):
             method_data (dict, optional): Data that defines the method
             filter_id (str, optional): Filter to apply when executing alert
             comment (str, optional): Comment for the alert
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
 
         if not alert_id:
@@ -3154,6 +3160,9 @@ class Gmp(GvmProtocol):
         Arguments:
             asset_id (str) UUID of the asset to be modified.
             comment (str, optional): Comment for the asset.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not asset_id:
             raise RequiredArgument('modify_asset requires an asset_id argument')
@@ -3166,9 +3175,13 @@ class Gmp(GvmProtocol):
 
     def modify_auth(self, group_name, auth_conf_settings):
         """Modifies an existing auth.
+
         Arguments:
             group_name (str) Name of the group to be modified.
             auth_conf_settings (dict): The new auth config.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not group_name:
             raise RequiredArgument('modify_auth requires a group_name argument')
@@ -3198,6 +3211,9 @@ class Gmp(GvmProtocol):
             nvt_oids (list, optional): List of NVTs associated with preference
                 to modify.
             family (str,optional): Name of family to modify.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if selection not in ('nvt_pref', 'scan_pref',
                              'family_selection', 'nvt_selection'):
@@ -3265,6 +3281,9 @@ class Gmp(GvmProtocol):
             privacy_password (str, optional): The SNMP privacy password
             credential_type (str, optional): The credential type. One of 'cc',
                 'snmp', 'up', 'usk'
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not credential_id:
             raise RequiredArgument('modify_credential requires '
@@ -3336,6 +3355,9 @@ class Gmp(GvmProtocol):
             name (str, optional): Name of filter.
             term (str, optional): Filter term.
             filter_type (str, optional): Resource type filter applies to.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not filter_id:
             raise RequiredArgument('modify_filter requires a filter_id '
@@ -3372,6 +3394,9 @@ class Gmp(GvmProtocol):
             comment (str, optional): Comment on group.
             name (str, optional): Name of group.
             users (list, optional): List of user names to be in the group
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not group_id:
             raise RequiredArgument('modify_group requires a group_id argument')
@@ -3406,6 +3431,9 @@ class Gmp(GvmProtocol):
             severity (str, optional): Severity to which note applies.
             task_id (str, optional): Task to which note applies.
             threat (str, optional): Threat level to which note applies.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not note_id:
             raise RequiredArgument('modify_note requires a note_id attribute')
@@ -3458,6 +3486,9 @@ class Gmp(GvmProtocol):
             task_id (str, optional): Task to which override applies.
             threat (str, optional): Threat level to which override applies.
             new_threat (str, optional): New threat level for results.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not override_id:
             raise RequiredArgument('modify_override requires a override_id '
@@ -3516,6 +3547,9 @@ class Gmp(GvmProtocol):
                 applies
             resource_type (str, optional): Type of the resource. For Super
                 permissions user, group or role
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not permission_id:
             raise RequiredArgument('modify_permission requires '
@@ -3549,6 +3583,9 @@ class Gmp(GvmProtocol):
             port_list_id (str): UUID of port list to modify.
             name (str, optional): Name of port list.
             comment (str, optional): Comment on port list.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not port_list_id:
             raise RequiredArgument('modify_port_list requires '
@@ -3570,6 +3607,9 @@ class Gmp(GvmProtocol):
         Arguments:
             report_id (str): UUID of report to modify.
             comment (str): The comment on the report.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not report_id:
             raise RequiredArgument('modify_report requires '
@@ -3594,6 +3634,9 @@ class Gmp(GvmProtocol):
             summary (str, optional): A summary of the report format.
             param_name (str, optional): The name of the param.
             param_value (str, optional): The value of the param.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not report_format_id:
             raise RequiredArgument('modify_report requires '
@@ -3625,6 +3668,9 @@ class Gmp(GvmProtocol):
             comment (str, optional): Name of role.
             name (str, optional): Comment on role.
             users  (list, optional): List of user names.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not role_id:
             raise RequiredArgument('modify_role requires a role_id argument')
@@ -3660,6 +3706,9 @@ class Gmp(GvmProtocol):
                 certificate.
             credential_id (str, optional): UUID of the client certificate
                 credential for the Scanner.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not scanner_id:
             raise RequiredArgument(
@@ -3728,6 +3777,9 @@ class Gmp(GvmProtocol):
                 minute, hour, day, week, month, year, decade. Required if
                 period is set.
             timezone (str, optional): The timezone the schedule will follow
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not schedule_id:
             raise RequiredArgument('modify_schedule requires a schedule_id'
@@ -3809,12 +3861,16 @@ class Gmp(GvmProtocol):
             setting_id (str): UUID of the setting to be changed.
             name (str): The name of the setting.
             value (str): The value of the setting.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not setting_id:
             raise RequiredArgument('modify_setting requires a setting_id'
                                    'argument')
         if not name:
             raise RequiredArgument('modify_setting requires a name argument')
+
         if not value:
             raise RequiredArgument('modify_setting requires a value argument')
 
@@ -3839,6 +3895,9 @@ class Gmp(GvmProtocol):
                 attach the tag.
             resource_type (str, optional): Type of the resource to which to
                 attach the tag.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not tag_id:
             raise RequiredArgument('modify_tag requires a tag_id element')
@@ -3899,6 +3958,9 @@ class Gmp(GvmProtocol):
                 that have names.
             reverse_lookup_unify (boolean, optional): Whether to scan only one
                 IP when multiple IPs have the same name.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not target_id:
             raise RequiredArgument('modify_target requires a '
@@ -3980,6 +4042,9 @@ class Gmp(GvmProtocol):
             file_name (str, optional): File to attach to task.
             file_action (str, optional): Action for the file:
                 one of "update" or "remove"
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
             raise RequiredArgument('modify_task requires a task_id argument')
@@ -4045,9 +4110,13 @@ class Gmp(GvmProtocol):
                 otherwise forbid listed.
             sources (list, optional): List of authentication sources for
                 this user.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         if not user_id:
             raise RequiredArgument('modify_user requires a user_id argument')
+
         if not name:
             raise RequiredArgument('modify_user requires a name argument')
 
