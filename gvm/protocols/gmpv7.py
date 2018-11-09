@@ -360,12 +360,12 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_config(self, name, copy):
+    def create_config(self, config_id, name):
         """Create a new scan config from an existing one
 
         Arguments:
+            config_id (str): UUID of the existing scan config
             name (str): Name of the new scan config
-            copy (str): UUID of the existing scan config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -373,11 +373,11 @@ class Gmp(GvmProtocol):
         if not name:
             raise RequiredArgument('create_config requires name argument')
 
-        if not copy:
-            raise RequiredArgument('create_config requires copy argument')
+        if not config_id:
+            raise RequiredArgument('create_config requires config_id argument')
 
         cmd = XmlCommand('create_config')
-        cmd.add_element('copy', copy)
+        cmd.add_element('copy', config_id)
         cmd.add_element('name', name)
         return self._send_xml_command(cmd)
 
