@@ -30,7 +30,7 @@ setup(
     version=version,
     author='Greenbone Networks GmbH',
     author_email='info@greenbone.net',
-    description='Library to communicatie with remote servers over GMP or OSP',
+    description='Library to communicate with remote servers over GMP or OSP',
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/greenbone/python-gvm',
