@@ -2385,17 +2385,17 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_nvt(self, nvt_id):
+    def get_nvt(self, nvt_oid):
         """Request a single nvt
 
         Arguments:
-            nvt_id (str): OID of an existing nvt
+            nvt_oid (str): OID of an existing nvt
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
         cmd = XmlCommand('get_nvts')
-        cmd.set_attribute('nvt_id', nvt_id)
+        cmd.set_attribute('nvt_oid', nvt_oid)
 
         # for single entity always request all details
         cmd.set_attribute('details', '1')
