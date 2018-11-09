@@ -26,7 +26,7 @@ from lxml import etree
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
-from gvm.xml import _GmpCommandFactory as GmpCommandFactory, XmlCommand
+from gvm.xml import XmlCommand
 
 from .base import GvmProtocol
 
@@ -147,9 +147,6 @@ class Gmp(GvmProtocol):
 
         # Is authenticated on gvmd
         self._authenticated = False
-
-        # GMP Message Creator
-        self._generator = GmpCommandFactory()
 
     @staticmethod
     def get_protocol_version():
