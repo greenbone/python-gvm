@@ -1477,24 +1477,23 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_asset(self, asset_or_report_id, is_asset_id=True):
+    def delete_asset(self, asset_id=None, report_id=None):
         """Deletes an existing asset
 
         Arguments:
-            asset_or_report_id (str) UUID of the single asset to delete or the
-                UUID of report from which to get all assets to delete.
-            is_asset_id (boolean,optional): Whether to remove an asset or a
-                report.
+            asset_id (str, optional): UUID of the single asset to delete.
+            report_id (str,optional): UUID of report from which to get all
+                assets to delete.
         """
-        if not asset_or_report_id:
-            raise RequiredArgument('delete_asset requires an asset_or_report_id'
-                                   ' argument')
+        if not asset_id and not report_id:
+            raise RequiredArgument('delete_asset requires an asset_id or '
+                                   'a report_id argument')
 
         cmd = XmlCommand('delete_asset')
-        if is_asset_id:
-            cmd.set_attribute('asset_id', asset_or_report_id)
+        if asset_id:
+            cmd.set_attribute('asset_id', asset_id)
         else:
-            cmd.set_attribute('report_id', asset_or_report_id)
+            cmd.set_attribute('report_id', report_id)
 
         return self._send_xml_command(cmd)
 
