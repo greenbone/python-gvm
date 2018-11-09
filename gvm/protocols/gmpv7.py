@@ -3198,14 +3198,14 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_config(self, selection, config_id=None, nvt_oids=None, name=None,
+    def modify_config(self, config_id, selection, nvt_oids=None, name=None,
                       value=None, family=None):
         """Modifies an existing scan config.
 
         Arguments:
+            config_id (str): UUID of scan config to modify.
             selection (str): one of 'nvt_pref', nvt_selection or
                 family_selection'
-            config_id (str, optional): UUID of scan config to modify.
             name (str, optional): New name for preference.
             value(str, optional): New value for preference.
             nvt_oids (list, optional): List of NVTs associated with preference
@@ -3215,6 +3215,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not config_id:
+            raise RequiredArgument('modify_config required config_id argument')
+
         if selection not in ('nvt_pref', 'scan_pref',
                              'family_selection', 'nvt_selection'):
             raise InvalidArgument('selection must be one of nvt_pref, '
