@@ -245,61 +245,6 @@ class _GmpCommandFactory:
 
         return cmd.to_string()
 
-    def move_task_command(self, task_id, slave_id):
-        """Generates xml string for move task on gvmd."""
-        cmd = XmlCommand('move_task')
-        cmd.set_attribute('task_id', task_id)
-        cmd.set_attribute('slave_id', slave_id)
-        return cmd.to_string()
-
-    def restore_command(self, entity_id):
-        """Generates xml string for restore on gvmd."""
-        cmd = XmlCommand('restore')
-        cmd.set_attribute('id', entity_id)
-        return cmd.to_string()
-
-    def resume_task_command(self, task_id):
-        """Generates xml string for resume task on gvmd."""
-        cmd = XmlCommand('resume_task')
-        cmd.set_attribute('task_id', task_id)
-        return cmd.to_string()
-
-    def start_task_command(self, task_id):
-        """Generates xml string for start task on gvmd."""
-        cmd = XmlCommand('start_task')
-        cmd.set_attribute('task_id', task_id)
-        return cmd.to_string()
-
-    def stop_task_command(self, task_id):
-        """Generates xml string for stop task on gvmd."""
-        cmd = XmlCommand('stop_task')
-        cmd.set_attribute('task_id', task_id)
-        return cmd.to_string()
-
-    def test_alert_command(self, alert_id):
-        """Generates xml string for test alert on gvmd."""
-        cmd = XmlCommand('test_alert')
-        cmd.set_attribute('alert_id', alert_id)
-        return cmd.to_string()
-
-    def verify_agent_command(self, agent_id):
-        """Generates xml string for verify agent on gvmd."""
-        cmd = XmlCommand('verify_agent')
-        cmd.set_attribute('agent_id', agent_id)
-        return cmd.to_string()
-
-    def verify_report_format_command(self, report_format_id):
-        """Generates xml string for verify report format on gvmd."""
-        cmd = XmlCommand('verify_report_format')
-        cmd.set_attribute('report_format_id', report_format_id)
-        return cmd.to_string()
-
-    def verify_scanner_command(self, scanner_id):
-        """Generates xml string for verify scanner on gvmd."""
-        cmd = XmlCommand('verify_scanner')
-        cmd.set_attribute('scanner_id', scanner_id)
-        return cmd.to_string()
-
 
 def pretty_print(xml):
     """Prints beautiful XML-Code
