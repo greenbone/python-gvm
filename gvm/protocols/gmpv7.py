@@ -26,7 +26,7 @@ from lxml import etree
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
-from gvm.xml import _GmpCommandFactory as GmpCommandFactory, XmlCommand
+from gvm.xml import XmlCommand
 
 from .base import GvmProtocol
 
@@ -147,9 +147,6 @@ class Gmp(GvmProtocol):
 
         # Is authenticated on gvmd
         self._authenticated = False
-
-        # GMP Message Creator
-        self._generator = GmpCommandFactory()
 
     @staticmethod
     def get_protocol_version():
@@ -1446,90 +1443,394 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', user_id)
         return self._send_xml_command(cmd)
 
-    def delete_agent(self, **kwargs):
-        cmd = self._generator.delete_agent_command(kwargs)
-        return self.send_command(cmd)
+    def delete_agent(self, agent_id, ultimate=False):
+        """Deletes an existing agent
 
-    def delete_alert(self, **kwargs):
-        cmd = self._generator.delete_alert_command(kwargs)
-        return self.send_command(cmd)
+        Arguments:
+            agent_id (str) UUID of the agent to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not agent_id:
+            raise RequiredArgument('delete_agent requires an agent_id argument')
 
-    def delete_asset(self, asset_id, ultimate=0):
-        cmd = self._generator.delete_asset_command(asset_id, ultimate)
-        return self.send_command(cmd)
+        cmd = XmlCommand('delete_agent')
+        cmd.set_attribute('agent_id', agent_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
 
-    def delete_config(self, config_id, ultimate=0):
-        cmd = self._generator.delete_config_command(config_id, ultimate)
-        return self.send_command(cmd)
+        return self._send_xml_command(cmd)
 
-    def delete_credential(self, credential_id, ultimate=0):
-        cmd = self._generator.delete_credential_command(credential_id, ultimate)
-        return self.send_command(cmd)
+    def delete_alert(self, alert_id, ultimate=False):
+        """Deletes an existing alert
 
-    def delete_filter(self, filter_id, ultimate=0):
-        cmd = self._generator.delete_filter_command(filter_id, ultimate)
-        return self.send_command(cmd)
+        Arguments:
+            alert_id (str) UUID of the alert to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not alert_id:
+            raise RequiredArgument('delete_alert requires an alert_id argument')
 
-    def delete_group(self, group_id, ultimate=0):
-        cmd = self._generator.delete_group_command(group_id, ultimate)
-        return self.send_command(cmd)
+        cmd = XmlCommand('delete_alert')
+        cmd.set_attribute('alert_id', alert_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
 
-    def delete_note(self, note_id, ultimate=0):
-        cmd = self._generator.delete_note_command(note_id, ultimate)
-        return self.send_command(cmd)
+        return self._send_xml_command(cmd)
 
-    def delete_override(self, override_id, ultimate=0):
-        cmd = self._generator.delete_override_command(override_id, ultimate)
-        return self.send_command(cmd)
+    def delete_asset(self, asset_id=None, report_id=None):
+        """Deletes an existing asset
 
-    def delete_permission(self, permission_id, ultimate=0):
-        cmd = self._generator.delete_permission_command(permission_id, ultimate)
-        return self.send_command(cmd)
+        Arguments:
+            asset_id (str, optional): UUID of the single asset to delete.
+            report_id (str,optional): UUID of report from which to get all
+                assets to delete.
+        """
+        if not asset_id and not report_id:
+            raise RequiredArgument('delete_asset requires an asset_id or '
+                                   'a report_id argument')
 
-    def delete_port_list(self, port_list_id, ultimate=0):
-        cmd = self._generator.delete_port_list_command(port_list_id, ultimate)
-        return self.send_command(cmd)
+        cmd = XmlCommand('delete_asset')
+        if asset_id:
+            cmd.set_attribute('asset_id', asset_id)
+        else:
+            cmd.set_attribute('report_id', report_id)
+
+        return self._send_xml_command(cmd)
+
+    def delete_config(self, config_id, ultimate=False):
+        """Deletes an existing config
+
+        Arguments:
+            config_id (str) UUID of the config to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not config_id:
+            raise RequiredArgument('delete_config requires a '
+                                   'config_id argument')
+
+        cmd = XmlCommand('delete_config')
+        cmd.set_attribute('config_id', config_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_credential(self, credential_id, ultimate=False):
+        """Deletes an existing credential
+
+        Arguments:
+            credential_id (str) UUID of the credential to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not credential_id:
+            raise RequiredArgument('delete_credential requires a '
+                                   'credential_id argument')
+
+        cmd = XmlCommand('delete_credential')
+        cmd.set_attribute('credential_id', credential_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_filter(self, filter_id, ultimate=False):
+        """Deletes an existing filter
+
+        Arguments:
+            filter_id (str) UUID of the filter to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not filter_id:
+            raise RequiredArgument('delete_filter requires a '
+                                   'filter_id argument')
+
+        cmd = XmlCommand('delete_filter')
+        cmd.set_attribute('filter_id', filter_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_group(self, group_id, ultimate=False):
+        """Deletes an existing group
+
+        Arguments:
+            group_id (str) UUID of the group to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not group_id:
+            raise RequiredArgument('delete_group requires a '
+                                   'group_id argument')
+
+        cmd = XmlCommand('delete_group')
+        cmd.set_attribute('group_id', group_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_note(self, note_id, ultimate=False):
+        """Deletes an existing note
+
+        Arguments:
+            note_id (str) UUID of the note to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not note_id:
+            raise RequiredArgument('delete_note requires a '
+                                   'note_id argument')
+
+        cmd = XmlCommand('delete_note')
+        cmd.set_attribute('note_id', note_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_override(self, override_id, ultimate=False):
+        """Deletes an existing override
+
+        Arguments:
+            override_id (str) UUID of the override to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not override_id:
+            raise RequiredArgument('delete_override requires a '
+                                   'override_id argument')
+
+        cmd = XmlCommand('delete_override')
+        cmd.set_attribute('override_id', override_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_permission(self, permission_id, ultimate=False):
+        """Deletes an existing permission
+
+        Arguments:
+            permission_id (str) UUID of the permission to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not permission_id:
+            raise RequiredArgument('delete_permission requires a '
+                                   'permission_id argument')
+
+        cmd = XmlCommand('delete_permission')
+        cmd.set_attribute('permission_id', permission_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_port_list(self, port_list_id, ultimate=False):
+        """Deletes an existing port list
+
+        Arguments:
+            port_list_id (str) UUID of the port list to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not port_list_id:
+            raise RequiredArgument('delete_port_list requires a '
+                                   'port_list_id argument')
+
+        cmd = XmlCommand('delete_port_list')
+        cmd.set_attribute('port_list_id', port_list_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
 
     def delete_port_range(self, port_range_id):
-        cmd = self._generator.delete_port_range_command(port_range_id)
-        return self.send_command(cmd)
+        """Deletes an existing port range
+
+        Arguments:
+            port_range_id (str) UUID of the port range to be deleted.
+        """
+        if not port_range_id:
+            raise RequiredArgument('delete_port_range requires a '
+                                   'port_range_id argument')
+
+        cmd = XmlCommand('delete_port_range')
+        cmd.set_attribute('port_range_id', port_range_id)
+
+        return self._send_xml_command(cmd)
 
     def delete_report(self, report_id):
-        cmd = self._generator.delete_report_command(report_id)
-        return self.send_command(cmd)
+        """Deletes an existing report
 
-    def delete_report_format(self, report_format_id, ultimate=0):
-        cmd = self._generator.delete_report_format_command(
-            report_format_id, ultimate)
-        return self.send_command(cmd)
+        Arguments:
+            report_id (str) UUID of the report to be deleted.
+        """
+        if not report_id:
+            raise RequiredArgument('delete_report requires a '
+                                   'report_id argument')
 
-    def delete_role(self, role_id, ultimate=0):
-        cmd = self._generator.delete_role_command(role_id, ultimate)
-        return self.send_command(cmd)
+        cmd = XmlCommand('delete_report')
+        cmd.set_attribute('report_id', report_id)
 
-    def delete_scanner(self, scanner_id, ultimate=0):
-        cmd = self._generator.delete_scanner_command(scanner_id, ultimate)
-        return self.send_command(cmd)
+        return self._send_xml_command(cmd)
 
-    def delete_schedule(self, schedule_id, ultimate=0):
-        cmd = self._generator.delete_schedule_command(schedule_id, ultimate)
-        return self.send_command(cmd)
 
-    def delete_tag(self, tag_id, ultimate=0):
-        cmd = self._generator.delete_tag_command(tag_id, ultimate)
-        return self.send_command(cmd)
+    def delete_report_format(self, report_format_id, ultimate=False):
+        """Deletes an existing report format
 
-    def delete_target(self, target_id, ultimate=0):
-        cmd = self._generator.delete_target_command(target_id, ultimate)
-        return self.send_command(cmd)
+        Arguments:
+            report_format_id (str) UUID of the report format to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not report_format_id:
+            raise RequiredArgument('delete_report_format requires a '
+                                   'report_format_id argument')
 
-    def delete_task(self, task_id, ultimate=0):
-        cmd = self._generator.delete_task_command(task_id, ultimate)
-        return self.send_command(cmd)
+        cmd = XmlCommand('delete_report_format')
+        cmd.set_attribute('report_format_id', report_format_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
 
-    def delete_user(self, **kwargs):
-        cmd = self._generator.delete_user_command(kwargs)
-        return self.send_command(cmd)
+        return self._send_xml_command(cmd)
+
+
+    def delete_role(self, role_id, ultimate=False):
+        """Deletes an existing role
+
+        Arguments:
+            role_id (str) UUID of the role to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not role_id:
+            raise RequiredArgument('delete_role requires a '
+                                   'role_id argument')
+
+        cmd = XmlCommand('delete_role')
+        cmd.set_attribute('role_id', role_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_scanner(self, scanner_id, ultimate=False):
+        """Deletes an existing scanner
+
+        Arguments:
+            scanner_id (str) UUID of the scanner to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not scanner_id:
+            raise RequiredArgument('delete_scanner requires a '
+                                   'scanner_id argument')
+
+        cmd = XmlCommand('delete_scanner')
+        cmd.set_attribute('scanner_id', scanner_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_schedule(self, schedule_id, ultimate=False):
+        """Deletes an existing schedule
+
+        Arguments:
+            schedule_id (str) UUID of the schedule to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not schedule_id:
+            raise RequiredArgument('delete_schedule requires a '
+                                   'schedule_id argument')
+
+        cmd = XmlCommand('delete_schedule')
+        cmd.set_attribute('schedule_id', schedule_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_tag(self, tag_id, ultimate=False):
+        """Deletes an existing tag
+
+        Arguments:
+            tag_id (str) UUID of the tag to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not tag_id:
+            raise RequiredArgument('delete_tag requires a '
+                                   'tag_id argument')
+
+        cmd = XmlCommand('delete_tag')
+        cmd.set_attribute('tag_id', tag_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_target(self, target_id, ultimate=False):
+        """Deletes an existing target
+
+        Arguments:
+            target_id (str) UUID of the target to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not target_id:
+            raise RequiredArgument('delete_target requires a '
+                                   'target_id argument')
+
+        cmd = XmlCommand('delete_target')
+        cmd.set_attribute('target_id', target_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_task(self, task_id, ultimate=False):
+        """Deletes an existing task
+
+        Arguments:
+            task_id (str) UUID of the task to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not task_id:
+            raise RequiredArgument('delete_task requires a '
+                                   'task_id argument')
+
+        cmd = XmlCommand('delete_task')
+        cmd.set_attribute('task_id', task_id)
+        cmd.set_attribute('ultimate', _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_user(self, user_id, name=None, inheritor_id =None,
+                    inheritor_name=None):
+        """Deletes an existing user
+
+        Arguments:
+            user_id (str): UUID of the task to be deleted.
+            name (str, optional): The name of the user to be deleted.
+            inheritor_id (str, optional): The ID of the inheriting user
+                or "self". Overrides inheritor_name.
+            inheritor_name (str, optional): The name of the inheriting user.
+
+        """
+        if not user_id:
+            raise RequiredArgument('delete_user requires a '
+                                   'user_id argument')
+
+        cmd = XmlCommand('delete_user')
+        cmd.set_attribute('user_id', user_id)
+
+        if name:
+            cmd.set_attribute('name', name)
+
+        if not inheritor_id and not inheritor_name:
+            raise RequiredArgument('delete_user requires a '
+                                   'inheritor_id or inheritor_name argument')
+        if inheritor_id:
+            cmd.set_attribute('inheritor_id', inheritor_id)
+
+        if inheritor_name:
+            cmd.set_attribute('inheritor_name', inheritor_name)
+
+        return self._send_xml_command(cmd)
 
     def describe_auth(self):
         """Describe authentication methods
