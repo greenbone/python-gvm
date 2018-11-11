@@ -75,6 +75,13 @@ class Osp(GvmProtocol):
         """
         return get_version_string(PROTOCOL_VERSION)
 
+    def _read(self):
+        # OSP is stateless. Therefore the connection is closed after each
+        # response and we must reset the connection
+        data = super()._read()
+        self.disconnect()
+        return data
+
     def get_version(self):
         """Get the version of the OSPD server which is connected to."""
         cmd = XmlCommand('get_version')
