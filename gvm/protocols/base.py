@@ -16,13 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-
-from gvm.errors import GvmError
-
-logger = logging.getLogger(__name__)
-
-
 class GvmProtocol:
     """Base class for different GVM protocols
 
@@ -58,14 +51,7 @@ class GvmProtocol:
         Returns:
             str: Response from server.
         """
-        response = self._connection.read()
-
-        logger.debug('read() %i Bytes response: %s', len(response), response)
-
-        if response is None or len(str(response)) == 0:
-            raise GvmError('Connection was closed by remote server')
-
-        return response
+        return self._connection.read()
 
     def _send(self, data):
         """Send a command to the server
