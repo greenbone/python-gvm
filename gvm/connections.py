@@ -71,12 +71,12 @@ class GvmConnection:
     Base class for establishing a connection to a remote server daemon.
     """
 
-    def __init__(self, socket, timeout=DEFAULT_TIMEOUT):
+    def __init__(self, timeout=DEFAULT_TIMEOUT):
         """
           Arguments:
             socket -- A socket
         """
-        self._socket = socket
+        self._socket = None
         self._timeout = timeout
 
     def connect(self):
@@ -114,10 +114,7 @@ class SSHConnection(GvmConnection, XmlReader):
 
     def __init__(self, timeout=DEFAULT_TIMEOUT, hostname='127.0.0.1', port=22,
                  username='gmp', password=''):
-        socket = paramiko.SSHClient()
-        socket.set_missing_host_key_policy(paramiko.AutoAddPolicy())
-
-        super().__init__(socket, timeout=timeout)
+        super().__init__(timeout=timeout)
 
         self.hostname = hostname
         self.port = int(port)
@@ -146,6 +143,9 @@ class SSHConnection(GvmConnection, XmlReader):
         return sent_bytes
 
     def connect(self):
+        self._socket = paramiko.SSHClient()
+        self._socket.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
         try:
             self._socket.connect(
                 hostname=self.hostname,
@@ -202,24 +202,32 @@ class TLSConnection(GvmConnection):
     def __init__(self, certfile=None, cafile=None, keyfile=None,
                  hostname='127.0.0.1', port=DEFAULT_GVM_PORT,
                  timeout=DEFAULT_TIMEOUT):
-        if certfile and cafile and keyfile:
+        super().__init__(timeout=timeout)
+
+        self.hostname = hostname
+        self.port = port
+        self.certfile = certfile
+        self.cafile = cafile
+        self.keyfile = keyfile
+
+    def _new_socket(self):
+        if self.certfile and self.cafile and self.keyfile:
             context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH,
-                                                 cafile=cafile)
+                                                 cafile=self.cafile)
             context.check_hostname = False
-            context.load_cert_chain(certfile=certfile, keyfile=keyfile)
+            context.load_cert_chain(
+                certfile=self.certfile, keyfile=self.keyfile)
             new_socket = socketlib.socket(socketlib.AF_INET,
                                           socketlib.SOCK_STREAM)
             sock = context.wrap_socket(new_socket, server_side=False)
         else:
             context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
             sock = context.wrap_socket(socketlib.socket(socketlib.AF_INET))
+        return sock
 
-        super().__init__(sock, timeout=timeout)
-
-        self.hostname = hostname
-        self.port = port
 
     def connect(self):
+        self._socket = self._new_socket()
         self._socket.settimeout(self._timeout)
         self._socket.connect((self.hostname, int(self.port)))
 
@@ -244,9 +252,7 @@ class UnixSocketConnection(GvmConnection, XmlReader):
 
     def __init__(self, path=DEFAULT_UNIX_SOCKET_PATH, timeout=DEFAULT_TIMEOUT,
                  read_timeout=DEFAULT_READ_TIMEOUT):
-        socket = socketlib.socket(socketlib.AF_UNIX, socketlib.SOCK_STREAM)
-
-        super().__init__(socket, timeout=timeout)
+        super().__init__(timeout=timeout)
 
         self.read_timeout = read_timeout
         self.path = path
@@ -254,6 +260,8 @@ class UnixSocketConnection(GvmConnection, XmlReader):
     def connect(self):
         """Connect to the UNIX socket
         """
+        self._socket = socketlib.socket(
+            socketlib.AF_UNIX, socketlib.SOCK_STREAM)
         self._socket.settimeout(self._timeout)
         self._socket.connect(self.path)
 
