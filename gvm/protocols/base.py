@@ -39,7 +39,7 @@ class GvmProtocol:
         self._transform_callable = transform
 
     def __enter__(self):
-        self._connect()
+        self.connect()
         return self
 
     def __exit__(self, exc_type, exc_value, traceback):
@@ -59,13 +59,8 @@ class GvmProtocol:
         Args:
             data (str): Data to be send over the connection to the server
         """
-        self._connect()
+        self.connect()
         self._connection.send(data)
-
-    def _connect(self):
-        if not self.is_connected():
-            self._connection.connect()
-            self._connected = True
 
     def _transform(self, data):
         transform = self._transform_callable
@@ -89,6 +84,19 @@ class GvmProtocol:
                   established.
         """
         return self._connected
+
+    def connect(self):
+        """Initiates a protocol connection
+
+        Normally connect isn't called directly. Either it's called automatically
+        when sending a protocol command or when using a `with statement`_.
+
+        .. _with statement:
+            https://docs.python.org/3.5/reference/datamodel.html#with-statement-context-managers
+        """
+        if not self.is_connected():
+            self._connection.connect()
+            self._connected = True
 
     def disconnect(self):
         """Disconnect the connection
