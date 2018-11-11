@@ -115,6 +115,10 @@ class GvmProtocol:
             Per default - if no transform is set explicitly - the response is
             returned as string.
         """
-        self._send(cmd)
-        response = self._read()
+        try:
+            self._send(cmd)
+            response = self._read()
+        finally:
+            self.disconnect()
+
         return self._transform(response)
