@@ -45,6 +45,13 @@ class GvmProtocol:
 
         self._transform_callable = transform
 
+    def __enter__(self):
+        self._connect()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.disconnect()
+
     def _read(self):
         """Read a command response from gvmd
 
