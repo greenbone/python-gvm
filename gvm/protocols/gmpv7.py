@@ -1815,7 +1815,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_user(self, user_id, name=None, inheritor_id =None,
+    def delete_user(self, user_id, name=None, inheritor_id=None,
                     inheritor_name=None):
         """Deletes an existing user
 
