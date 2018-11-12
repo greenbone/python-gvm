@@ -260,12 +260,13 @@ class TLSConnection(GvmConnection):
             context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
             sock = context.wrap_socket(transport_socket)
 
+        sock.settimeout(self._timeout)
+
         return sock
 
 
     def connect(self):
         self._socket = self._new_socket()
-        self._socket.settimeout(self._timeout)
         self._socket.connect((self.hostname, int(self.port)))
 
     def read(self):
