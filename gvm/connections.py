@@ -224,13 +224,16 @@ class TLSConnection(GvmConnection):
             `python certificates`_ for details.
         keyfile (str, optional): Path to PEM encoded private key. See
             `python certificates`_ for details.
+        password (str, optional): Password for the private key. If the password
+            argument is not specified and a password is required it will be
+            interactively prompt the user for a password.
 
     .. _python certificates:
         https://docs.python.org/3.5/library/ssl.html#certificates
     """
 
     def __init__(self, certfile=None, cafile=None, keyfile=None,
-                 hostname='127.0.0.1', port=DEFAULT_GVM_PORT,
+                 hostname='127.0.0.1', port=DEFAULT_GVM_PORT, password=None,
                  timeout=DEFAULT_TIMEOUT):
         super().__init__(timeout=timeout)
 
@@ -239,20 +242,24 @@ class TLSConnection(GvmConnection):
         self.certfile = certfile
         self.cafile = cafile
         self.keyfile = keyfile
+        self.password = password
 
     def _new_socket(self):
+        transport_socket = socketlib.socket(socketlib.AF_INET,
+                                            socketlib.SOCK_STREAM)
+
         if self.certfile and self.cafile and self.keyfile:
             context = ssl.create_default_context(ssl.Purpose.SERVER_AUTH,
                                                  cafile=self.cafile)
             context.check_hostname = False
             context.load_cert_chain(
-                certfile=self.certfile, keyfile=self.keyfile)
-            new_socket = socketlib.socket(socketlib.AF_INET,
-                                          socketlib.SOCK_STREAM)
-            sock = context.wrap_socket(new_socket, server_side=False)
+                certfile=self.certfile, keyfile=self.keyfile,
+                password=self.password)
+            sock = context.wrap_socket(transport_socket, server_side=False)
         else:
             context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
-            sock = context.wrap_socket(socketlib.socket(socketlib.AF_INET))
+            sock = context.wrap_socket(transport_socket)
+
         return sock
 
 
