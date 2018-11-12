@@ -66,7 +66,7 @@ class XmlReader:
                            "read {0}".format(data), e)
 
 
-class GvmConnection:
+class GvmConnection(XmlReader):
     """
     Base class for establishing a connection to a remote server daemon.
 
@@ -77,6 +77,9 @@ class GvmConnection:
     def __init__(self, timeout=DEFAULT_TIMEOUT):
         self._socket = None
         self._timeout = timeout
+
+    def _read(self):
+        return self._socket.recv(BUF_SIZE)
 
     def connect(self):
         """Establish a connection to a remote server
@@ -101,7 +104,25 @@ class GvmConnection:
         Returns:
             str: data as utf-8 encoded string
         """
-        raise NotImplementedError
+        response = ''
+
+        self._start_xml()
+
+        while True:
+            data = self._read()
+
+            if not data:
+                # Connection was closed by server
+                raise GvmError('Remote closed the connection')
+
+            self._feed_xml(data)
+
+            response += data.decode('utf-8', errors='ignore')
+
+            if self._is_end_xml():
+                break
+
+        return response
 
     def disconnect(self):
         """Disconnect and close the connection to the remote server
@@ -113,7 +134,7 @@ class GvmConnection:
             logger.debug('Connection closing error: %s', e)
 
 
-class SSHConnection(GvmConnection, XmlReader):
+class SSHConnection(GvmConnection):
     """
     SSH Class to connect, read and write from GVM via SSH
 
@@ -181,25 +202,8 @@ class SSHConnection(GvmConnection, XmlReader):
                 ) as e:
             raise GvmError('SSH Connection failed', e)
 
-    def read(self):
-        response = ''
-
-        self._start_xml()
-
-        while True:
-            data = self._stdout.channel.recv(BUF_SIZE)
-            # Connection was closed by server
-            if not data:
-                break
-
-            self._feed_xml(data)
-
-            response += data.decode('utf-8', errors='ignore')
-
-            if self._is_end_xml():
-                break
-
-        return response
+    def _read(self):
+        return self._stdout.channel.recv(BUF_SIZE)
 
     def send(self, data):
         if len(data) > MAX_SSH_DATA_LENGTH:
@@ -264,25 +268,12 @@ class TLSConnection(GvmConnection):
 
         return sock
 
-
     def connect(self):
         self._socket = self._new_socket()
         self._socket.connect((self.hostname, int(self.port)))
 
-    def read(self):
-        response = ''
 
-        while True:
-            data = self._socket.read(BUF_SIZE)
-
-            response += data.decode('utf-8', errors='ignore')
-            if len(data) < BUF_SIZE:
-                break
-
-        return response
-
-
-class UnixSocketConnection(GvmConnection, XmlReader):
+class UnixSocketConnection(GvmConnection):
     """
     UNIX-Socket class to connect, read, write from a GVM server daemon via
     direct communicating UNIX-Socket
@@ -325,7 +316,7 @@ class UnixSocketConnection(GvmConnection, XmlReader):
             data = b''
 
             try:
-                data = self._socket.recv(BUF_SIZE)
+                data = self._read()
             except (socketlib.timeout) as exception:
                 logger.debug('Warning: No data received '
                              'from server: %s', exception)
