@@ -31,15 +31,13 @@
   ```sh
   mkdir python-gvm-install-test
   cd python-gvm-install-test
-  pipenv install --index-url https://test.pypi.org/simple/ python-gvm
+  pipenv run pip install --extra-index-url https://test.pypi.org/simple/ python-gvm
   ```
 
-* Check install version with at python script
+* Check install version with a python script
 
-  ```python3
-  from gvm import get_version
-
-  print(get_version())
+  ```sh
+  pipenv run python -c "from gvm import get_version; print(get_version())"
   ```
 
 * Remove test environment
