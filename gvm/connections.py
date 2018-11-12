@@ -177,9 +177,9 @@ class SSHConnection(GvmConnection, XmlReader):
 
         except (paramiko.BadHostKeyException,
                 paramiko.AuthenticationException,
-                paramiko.SSHException, OSError) as e:
-            logger.debug('SSH Connection failed: %s', e)
-            raise
+                paramiko.SSHException,
+                ) as e:
+            raise GvmError('SSH Connection failed', e)
 
     def read(self):
         response = ''
