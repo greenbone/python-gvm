@@ -69,23 +69,26 @@ class XmlReader:
 class GvmConnection:
     """
     Base class for establishing a connection to a remote server daemon.
+
+    Arguments:
+        timeout (int, optional): Timeout in seconds for the connection.
     """
 
     def __init__(self, timeout=DEFAULT_TIMEOUT):
-        """
-          Arguments:
-            socket -- A socket
-        """
         self._socket = None
         self._timeout = timeout
 
     def connect(self):
-        """Establish a connection to gvmd
+        """Establish a connection to a remote server
         """
         raise NotImplementedError
 
     def send(self, data):
-        """Send data to gvmd
+        """Send data to the connected remote server
+
+        Arguments:
+            data (str or bytes): Data to be send to the server. Either utf-8
+                encoded string or bytes.
         """
         if isinstance(data, str):
             self._socket.send(data.encode())
@@ -93,12 +96,15 @@ class GvmConnection:
             self._socket.send(data)
 
     def read(self):
-        """Read data from gvmd
+        """Read data from the remote server
+
+        Returns:
+            str: data as utf-8 encoded string
         """
         raise NotImplementedError
 
     def disconnect(self):
-        """Close the connection to gvmd
+        """Disconnect and close the connection to the remote server
         """
         try:
             if self._socket is not None:
@@ -110,6 +116,14 @@ class GvmConnection:
 class SSHConnection(GvmConnection, XmlReader):
     """
     SSH Class to connect, read and write from GVM via SSH
+
+    Arguments:
+        timeout (int, optional): Timeout in seconds for the connection.
+        hostname (str, optional): DNS name or IP address of the remote server.
+            Default is 127.0.0.1.
+        port (int, optional): Port of the remote SSH server.
+        username (str, optional): Username to use for SSH login.
+        password (str, optional): Passwort to use for SSH login.
     """
 
     def __init__(self, timeout=DEFAULT_TIMEOUT, hostname='127.0.0.1', port=22,
@@ -143,6 +157,9 @@ class SSHConnection(GvmConnection, XmlReader):
         return sent_bytes
 
     def connect(self):
+        """
+        Connect to the SSH server and authenticate to it
+        """
         self._socket = paramiko.SSHClient()
         self._socket.set_missing_host_key_policy(paramiko.AutoAddPolicy())
 
@@ -197,6 +214,21 @@ class TLSConnection(GvmConnection):
     """
     TLS class to connect, read and write from a remote GVM daemon via TLS
     secured socket.
+
+    Arguments:
+        timeout (int, optional): Timeout in seconds for the connection.
+        hostname (str, optional): DNS name or IP address of the remote TLS
+            server.
+        port (str, optional): Port for the TLS connection. Default is 9390.
+        certfile (str, optional): Path to PEM encoded certificate file. See
+            `python certificates`_ for details.
+        cafile (str, optional): Path to PEM encoded CA file. See
+            `python certificates`_ for details.
+        keyfile (str, optional): Path to PEM encoded private key. See
+            `python certificates`_ for details.
+
+    .. _python certificates:
+        https://docs.python.org/3.5/library/ssl.html#certificates
     """
 
     def __init__(self, certfile=None, cafile=None, keyfile=None,
@@ -248,6 +280,10 @@ class UnixSocketConnection(GvmConnection, XmlReader):
     """
     UNIX-Socket class to connect, read, write from a GVM server daemon via
     direct communicating UNIX-Socket
+
+    Arguments:
+        path (str, optional): Path to the socket.
+        timeout (int, optional): Timeout in seconds for the connection.
     """
 
     def __init__(self, path=DEFAULT_UNIX_SOCKET_PATH, timeout=DEFAULT_TIMEOUT,
@@ -267,6 +303,9 @@ class UnixSocketConnection(GvmConnection, XmlReader):
 
     def read(self):
         """Read from the UNIX socket
+
+        Returns:
+            str: data as utf-8 encoded string
         """
         response = ''
 
