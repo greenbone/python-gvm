@@ -306,3 +306,34 @@ class UnixSocketConnection(GvmConnection):
             socketlib.AF_UNIX, socketlib.SOCK_STREAM)
         self._socket.settimeout(self._timeout)
         self._socket.connect(self.path)
+
+
+class DebugConnection:
+
+    def __init__(self, connection):
+        self._connection = connection
+
+    def read(self):
+        data = self._connection.read()
+
+        logger.debug('Read %s characters. Data %s', len(data), data)
+
+        self.last_read_data = data
+        return data
+
+    def send(self, data):
+        self.last_send_data = data
+
+        logger.debug('Sending %s characters. Data %s', len(data), data)
+
+        return self._connection.send(data)
+
+    def connect(self):
+        logger.debug('Connecting')
+
+        return self._connection.connect()
+
+    def disconnect(self):
+        logger.debug('Disconnecting')
+
+        return self._connection.disconnect()
