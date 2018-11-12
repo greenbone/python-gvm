@@ -6,6 +6,8 @@ Usage
 Introduction
 ------------
 
+To communicate with a remote server speaking one the 
+
 GMP
 ---
 
