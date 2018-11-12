@@ -202,10 +202,8 @@ class SSHConnection(GvmConnection, XmlReader):
         return response
 
     def send(self, data):
-        logger.debug('SSH:send(): %s', data)
         if len(data) > MAX_SSH_DATA_LENGTH:
-            sent_bytes = self._send_in_chunks(data, MAX_SSH_DATA_LENGTH)
-            logger.debug("SSH: %s bytes sent.", sent_bytes)
+            self._send_in_chunks(data, MAX_SSH_DATA_LENGTH)
         else:
             self._stdin.channel.send(data)
 
