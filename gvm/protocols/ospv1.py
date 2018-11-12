@@ -16,7 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-Module for communication to a daemon speaking Open Scanner Protocol version 1
+Module for communication to a daemon speaking `Open Scanner Protocol version 1`_
+
+.. _Open Scanner Protocol version 1:
+    https://docs.greenbone.net/API/GMP/gmp-7.0.html
 """
 import logging
 
