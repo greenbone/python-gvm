@@ -10,7 +10,7 @@ Some notable changes are:
   having to select the connection when creating the gmp object.
 * Support for different protocols and versions has been added. Currently
   supported protocols are OSP v1 and GMP v7.
-* Full API documentation is available.
+* Full API documentation is available at https://python-gvm.readthedocs.io/en/latest/.
 * Possible arguments to protocol methods are documented.
 * Arguments should be passed as keywords
 
