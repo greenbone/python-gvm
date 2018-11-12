@@ -56,26 +56,45 @@
   twine upload dist/*
   ```
 
-  * Check if new version is available at https://pypi.org/project/python-gvm
+* Check if new version is available at https://pypi.org/project/python-gvm
 
-  * Create a git tag
+* Create a git tag
 
-    ```sh
-    git tag v<version>
-    ```
+  ```sh
+  git tag v<version>
+  ```
 
-    or even signed with your gpg key
+  or even signed with your gpg key
 
-    ```sh
-    git tag -s v<version>
-    ```
+  ```sh
+  git tag -s v<version>
+  ```
 
-  * Push the tag to Github
+* Push the tag to Github
 
-    ```sh
-    git push --tags upstream
-    ```
+  ```sh
+  git push --tags upstream
+  ```
 
-  * Create a github release
+* Create a github release
 
-    See https://help.github.com/articles/creating-releases/
+  See https://help.github.com/articles/creating-releases/
+
+* Update version in [gvm/__init__.py](https://github.com/greenbone/python-gvm/blob/master/gvm/__init__.py)
+
+  Use a development version like `(1, 0, 0, 'beta', 1, 'dev', 1)` or
+  `(1, 1, 0, 'dev', 1)`
+
+* Create a commit
+
+  ```sh
+  git push commit -m "Update version after <version> release"
+  ```
+
+* Push commit to your fork on github
+
+  ```sh
+  git push origin
+  ```
+
+* Create a PR on Github
