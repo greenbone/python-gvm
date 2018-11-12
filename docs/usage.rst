@@ -7,6 +7,8 @@ Introduction
 ------------
 
 To communicate with a remote server speaking one the 
+:ref:`GVM Protocols <protocols>` it is required to decide which transport
+protocol to use for the :ref:`connection <connections>`.
 
 GMP
 ---
