@@ -16,13 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import logging
-
-from gvm.errors import GvmError
-
-logger = logging.getLogger(__name__)
-
-
 class GvmProtocol:
     """Base class for different GVM protocols
 
@@ -45,20 +38,20 @@ class GvmProtocol:
 
         self._transform_callable = transform
 
+    def __enter__(self):
+        self.connect()
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.disconnect()
+
     def _read(self):
         """Read a command response from gvmd
 
         Returns:
             str: Response from server.
         """
-        response = self._connection.read()
-
-        logger.debug('read() %i Bytes response: %s', len(response), response)
-
-        if response is None or len(str(response)) == 0:
-            raise GvmError('Connection was closed by remote server')
-
-        return response
+        return self._connection.read()
 
     def _send(self, data):
         """Send a command to the server
@@ -66,13 +59,8 @@ class GvmProtocol:
         Args:
             data (str): Data to be send over the connection to the server
         """
-        self._connect()
+        self.connect()
         self._connection.send(data)
-
-    def _connect(self):
-        if not self.is_connected():
-            self._connection.connect()
-            self._connected = True
 
     def _transform(self, data):
         transform = self._transform_callable
@@ -96,6 +84,19 @@ class GvmProtocol:
                   established.
         """
         return self._connected
+
+    def connect(self):
+        """Initiates a protocol connection
+
+        Normally connect isn't called directly. Either it's called automatically
+        when sending a protocol command or when using a `with statement`_.
+
+        .. _with statement:
+            https://docs.python.org/3.5/reference/datamodel.html#with-statement-context-managers
+        """
+        if not self.is_connected():
+            self._connection.connect()
+            self._connected = True
 
     def disconnect(self):
         """Disconnect the connection
@@ -122,6 +123,10 @@ class GvmProtocol:
             Per default - if no transform is set explicitly - the response is
             returned as string.
         """
-        self._send(cmd)
-        response = self._read()
+        try:
+            self._send(cmd)
+            response = self._read()
+        finally:
+            self.disconnect()
+
         return self._transform(response)
