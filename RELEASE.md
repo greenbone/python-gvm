@@ -78,4 +78,4 @@
 
   * Create a github release
 
-    *TODO*
+    See https://help.github.com/articles/creating-releases/
