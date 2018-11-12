@@ -91,9 +91,9 @@ class GvmConnection:
                 encoded string or bytes.
         """
         if isinstance(data, str):
-            self._socket.send(data.encode())
+            self._socket.sendall(data.encode())
         else:
-            self._socket.send(data)
+            self._socket.sendall(data)
 
     def read(self):
         """Read data from the remote server
