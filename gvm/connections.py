@@ -108,6 +108,10 @@ class GvmConnection(XmlReader):
 
         self._start_xml()
 
+        now = time.time()
+
+        break_timeout = now + self._timeout
+
         while True:
             data = self._read()
 
@@ -121,6 +125,11 @@ class GvmConnection(XmlReader):
 
             if self._is_end_xml():
                 break
+
+            now = time.time()
+
+            if now > break_timeout:
+                raise GvmError('Timeout while reading the response')
 
         return response
 
@@ -297,38 +306,3 @@ class UnixSocketConnection(GvmConnection):
             socketlib.AF_UNIX, socketlib.SOCK_STREAM)
         self._socket.settimeout(self._timeout)
         self._socket.connect(self.path)
-
-    def read(self):
-        """Read from the UNIX socket
-
-        Returns:
-            str: data as utf-8 encoded string
-        """
-        response = ''
-
-        break_timeout = time.time() + self.read_timeout
-        old_timeout = self._socket.gettimeout()
-        self._socket.settimeout(5)  # in seconds
-
-        self._start_xml()
-
-        while time.time() < break_timeout:
-            data = b''
-
-            try:
-                data = self._read()
-            except (socketlib.timeout) as exception:
-                logger.debug('Warning: No data received '
-                             'from server: %s', exception)
-                continue
-
-            self._feed_xml(data)
-
-            response += data.decode('utf-8', errors='ignore')
-
-            if len(data) < BUF_SIZE:
-                if self._is_end_xml():
-                    break
-
-        self._socket.settimeout(old_timeout)
-        return response
