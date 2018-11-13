@@ -51,7 +51,7 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   ```sh
   mkdir python-gvm-install-test
   cd python-gvm-install-test
-  pipenv run pip install --extra-index-url https://test.pypi.org/simple/ python-gvm
+  pipenv run pip install --pre -I --extra-index-url https://test.pypi.org/simple/ python-gvm
   ```
 
 * Check install version with a python script
