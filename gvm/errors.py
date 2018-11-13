@@ -22,14 +22,20 @@ Module for GVM errors
 
 class GvmError(Exception):
     """An exception for gvm errors
+
+    Base class for all exceptions orginating in python-gvm.
     """
     pass
 
 
 class InvalidArgument(GvmError):
     """Raised if an invalid argument/parameter is passed
+
+    Derives from :py:class:`GvmError`
     """
 
 class RequiredArgument(GvmError):
     """Raised if a required argument/parameter is missing
+
+    Derives from :py:class:`GvmError`
     """

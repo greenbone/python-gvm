@@ -1,19 +1,39 @@
 # Release instructions
 
+Before creating a new release please do a careful consideration about the
+version number for the new release. We are following [Semantic Versioning](https://semver.org/)
+and [PEP440](https://www.python.org/dev/peps/pep-0440/).
+
 * Install twine for pypi package uploads and update setuptools, pipenv and wheel packages
 
   ```sh
   python3 -m pip install --user --upgrade twine setuptools wheel pipenv
   ```
 
+* Fetch upstream changes and create release branch
+
+  ```sh
+  git fetch upstream
+  git checkout -b create-new-release upstream/master
+  ```
+
 * Open [gvm/__init__.py](https://github.com/greenbone/python-gvm/blob/master/gvm/__init__.py)
   and increment the version number.
+
+* Update [CHANGELOG.md](https://github.com/greenbone/python-gvm/blob/master/CHANGELOG.md)
 
 * Create a source and wheel distribution
 
   ```sh
-  rm -rf dist build
+  rm -rf dist build python_gvm.egg-info
   python3 setup.py sdist bdist_wheel
+  ```
+
+* Create a git commit
+
+  ```sh
+  git add .
+  git commit -m "Prepare release <version>"
   ```
 
 * Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/)
@@ -31,7 +51,7 @@
   ```sh
   mkdir python-gvm-install-test
   cd python-gvm-install-test
-  pipenv run pip install --extra-index-url https://test.pypi.org/simple/ python-gvm
+  pipenv run pip install --pre -I --extra-index-url https://test.pypi.org/simple/ python-gvm
   ```
 
 * Check install version with a python script
@@ -56,26 +76,37 @@
   twine upload dist/*
   ```
 
-  * Check if new version is available at https://pypi.org/project/python-gvm
+* Check if new version is available at https://pypi.org/project/python-gvm
 
-  * Create a git tag
+* Create a git tag
 
-    ```sh
-    git tag v<version>
-    ```
+  ```sh
+  git tag v<version>
+  ```
 
-    or even signed with your gpg key
+  or even signed with your gpg key
 
-    ```sh
-    git tag -s v<version>
-    ```
+  ```sh
+  git tag -s v<version>
+  ```
 
-  * Push the tag to Github
+* Update version in [gvm/__init__.py](https://github.com/greenbone/python-gvm/blob/master/gvm/__init__.py)
 
-    ```sh
-    git push --tags upstream
-    ```
+  Use a development version like `(1, 0, 0, 'beta', 1, 'dev', 1)` or
+  `(1, 1, 0, 'dev', 1)`
 
-  * Create a github release
+* Create a commit
 
-    See https://help.github.com/articles/creating-releases/
+  ```sh
+  git commit -m "Update version after <version> release"
+  ```
+
+* Push changes and tag to Github
+
+  ```sh
+  git push --tags upstream master
+  ```
+
+* Create a Github release
+
+  See https://help.github.com/articles/creating-releases/
