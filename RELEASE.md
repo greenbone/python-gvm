@@ -6,14 +6,30 @@
   python3 -m pip install --user --upgrade twine setuptools wheel pipenv
   ```
 
+* Fetch upstream changes and create release branch
+
+  ```sh
+  git fetch upstream
+  git checkout -b create-new-release upstream/master
+  ```
+
 * Open [gvm/__init__.py](https://github.com/greenbone/python-gvm/blob/master/gvm/__init__.py)
   and increment the version number.
+
+* Update [CHANGELOG.md](https://github.com/greenbone/python-gvm/blob/master/CHANGELOG.md)
 
 * Create a source and wheel distribution
 
   ```sh
   rm -rf dist build
-  python3 setup.py sdist bdist_wheel
+  python3 setup.py sdist bdist_wheel python_gvm.egg-info
+  ```
+
+* Create a git commit
+
+  ```sh
+  git add .
+  git commit -m "Prepare release <version>"
   ```
 
 * Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/)
@@ -70,16 +86,6 @@
   git tag -s v<version>
   ```
 
-* Push the tag to Github
-
-  ```sh
-  git push --tags upstream
-  ```
-
-* Create a github release
-
-  See https://help.github.com/articles/creating-releases/
-
 * Update version in [gvm/__init__.py](https://github.com/greenbone/python-gvm/blob/master/gvm/__init__.py)
 
   Use a development version like `(1, 0, 0, 'beta', 1, 'dev', 1)` or
@@ -88,13 +94,15 @@
 * Create a commit
 
   ```sh
-  git push commit -m "Update version after <version> release"
+  git commit -m "Update version after <version> release"
   ```
 
-* Push commit to your fork on github
+* Push changes and tag to Github
 
   ```sh
-  git push origin
+  git push --tags upstream master
   ```
 
-* Create a PR on Github
+* Create a Github release
+
+  See https://help.github.com/articles/creating-releases/
