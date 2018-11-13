@@ -6,11 +6,16 @@ Usage
 Introduction
 ------------
 
-To communicate with a remote server speaking one the
+To communicate with a remote server speaking one of the
 :ref:`GVM Protocols <protocols>` it is required to decide which transport
 protocol to use for the :ref:`connection <connections>`. Currently two protocols
-- namely GMP and OSP - and three connection types - namely TLS, SSH and UNIX
-Socket - are available.
+- namely
+:py:class:`GMP <gvm.protocols.gmpv7.Gmp>` and
+:py:class:`OSP <gvm.protocols.ospv1.Osp>` - and three connection types - namely
+:py:class:`TLS <gvm.connections.TLSConnection>`,
+:py:class:`SSH <gvm.connections.SSHConnection>` and
+:py:class:`Unix domain socket <gvm.connections.UnixSocketConnection>` -
+are available.
 
 GMP
 ---
