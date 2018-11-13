@@ -25,8 +25,8 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
 * Create a source and wheel distribution
 
   ```sh
-  rm -rf dist build
-  python3 setup.py sdist bdist_wheel python_gvm.egg-info
+  rm -rf dist build python_gvm.egg-info
+  python3 setup.py sdist bdist_wheel
   ```
 
 * Create a git commit
