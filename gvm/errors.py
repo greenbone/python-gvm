@@ -23,7 +23,7 @@ Module for GVM errors
 class GvmError(Exception):
     """An exception for gvm errors
 
-    Base class for all exceptions orginating in python-gvm.
+    Base class for all exceptions originating in python-gvm.
     """
     pass
 
