@@ -1,4 +1,4 @@
-# python-gvm 1.0.0 (unreleased)
+# python-gvm 1.0.0.beta1 (13.11.2018)
 
 python-gvm was a part of [gvm-tools](https://github.com/greenbone/gvm-tools)
 prior version 2.0. It got extracted from gvm-tools and completely overhauled.
