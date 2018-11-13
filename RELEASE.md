@@ -1,5 +1,9 @@
 # Release instructions
 
+Before creating a new release please do a careful consideration about the
+version number for the new release. We are following [Semantic Versioning](https://semver.org/)
+and [PEP440](https://www.python.org/dev/peps/pep-0440/).
+
 * Install twine for pypi package uploads and update setuptools, pipenv and wheel packages
 
   ```sh
