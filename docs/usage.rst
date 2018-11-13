@@ -3,6 +3,11 @@
 Usage
 =====
 
+.. contents::
+    :local:
+    :class: toc
+    :backlinks: none
+
 Introduction
 ------------
 

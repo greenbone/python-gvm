@@ -1,3 +1,8 @@
 div.sphinxsidebarwrapper p.description {
   font-size: 12px;
 }
+
+#contents.toc {
+    background-color: #ffffff;
+    border: none;
+}
