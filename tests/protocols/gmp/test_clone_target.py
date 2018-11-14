@@ -18,6 +18,7 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
@@ -38,6 +39,13 @@ class GmpCloneTargetCommandTestCase(unittest.TestCase):
             '<copy>{copy}</copy>'
             '</create_target>'.format(copy=self.TARGET_ID)
         )
+
+    def test_missing_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_target('')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_target(None)
 
 
 if __name__ == '__main__':
