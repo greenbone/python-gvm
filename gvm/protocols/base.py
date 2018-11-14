@@ -26,7 +26,7 @@ class GvmProtocol:
         transform (`callable`_, optional): Optional transform callable to
             convert response data. After each request the callable gets passed
             the plain response data which can be used to check the data and/or
-            conversion into different representaitions like a xml dom.
+            conversion into different representations like a xml dom.
 
             See :mod:`gvm.transforms` for existing transforms.
     """
