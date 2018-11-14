@@ -63,12 +63,14 @@ class XmlCommand(XmlCommandElement):
 def pretty_print(xml):
     """Prints beautiful XML-Code
 
-    This function gets an object of list<lxml.etree._Element>
-    or directly a lxml element.
+    This function gets a string containing the xml, an object of
+    list<lxml.etree._Element> or directly a lxml element.
+
     Print it with good readable format.
 
     Arguments:
-        xml: List<lxml.etree.Element> or directly a lxml element
+        xml (str, list or lxml.etree.Element): xml as string,
+            List<lxml.etree.Element> or directly a lxml element
     """
     if isinstance(xml, list):
         for item in xml:
@@ -78,3 +80,6 @@ def pretty_print(xml):
                 print(item)
     elif etree.iselement(xml):
         print(etree.tostring(xml, pretty_print=True).decode('utf-8'))
+    elif isinstance(xml, str):
+        tree = secET.fromstring(xml)
+        print(etree.tostring(tree, pretty_print=True).decode('utf-8'))
