@@ -293,6 +293,9 @@ class Gmp(GvmProtocol):
         if not event:
             raise RequiredArgument('create_alert requires event argument')
 
+        if not method:
+            raise RequiredArgument('create_alert requires method argument')
+
         cmd = XmlCommand('create_alert')
         cmd.add_element('name', name)
 
