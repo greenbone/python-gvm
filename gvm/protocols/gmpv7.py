@@ -3087,6 +3087,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not task_id:
+            raise RequiredArgument('get_task requires task_id argument')
+
         cmd = XmlCommand('get_tasks')
         cmd.set_attribute('task_id', task_id)
 
