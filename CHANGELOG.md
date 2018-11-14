@@ -5,6 +5,8 @@
 * Fixed generating XML for help command
 * **help** method **type** argument got renamed to **help_type**
 * **help** method **help_type** argument will be checked for invalid values
+* Fixed wrong order of key and value for condition_data, event_data and
+  method_data dict parameters of **create_alert** method.
 
 ## gvm.xml
 
