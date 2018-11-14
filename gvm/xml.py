@@ -18,7 +18,11 @@
 
 import defusedxml.lxml as secET
 
+from defusedxml import DefusedXmlException
 from lxml import etree
+
+from gvm.errors import GvmError
+
 
 class XmlCommandElement:
 
@@ -83,3 +87,19 @@ def pretty_print(xml):
     elif isinstance(xml, str):
         tree = secET.fromstring(xml)
         print(etree.tostring(tree, pretty_print=True).decode('utf-8'))
+
+
+def validate_xml_string(xml_string):
+    """Checks if the passed string contains valid XML
+
+    Raises a GvmError if the XML is invalid. Otherwise the function just
+    returns.
+
+    Raises:
+        GvmError: The xml string did contain invalid XML
+
+    """
+    try:
+        secET.fromstring(xml_string)
+    except (DefusedXmlException, etree.LxmlError) as e:
+        raise GvmError('Invalid XML', e) from e
