@@ -287,10 +287,10 @@ class Gmp(GvmProtocol):
         if not name:
             raise RequiredArgument('create_alert requires name argument')
 
-        if condition is None or len(condition) == 0:
+        if not condition:
             raise RequiredArgument('create_alert requires condition argument')
 
-        if event is None or len(event) == 0:
+        if not event:
             raise RequiredArgument('create_alert requires event argument')
 
         cmd = XmlCommand('create_alert')
