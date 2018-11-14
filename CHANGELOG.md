@@ -1,6 +1,12 @@
 # python-gvm 1.0.0 (unreleased)
 
-## xml
+## gvm.protocols.gmpv1
+
+* Fixed generating XML for help command
+* **help** method **type** argument got renamed to **help_type**
+* **help** method **help_type** argument will be checked for invalid values
+
+## gvm.xml
 
 * Added helper function to validate xml input **gvm.xml.validate_xml_string**
 * **pretty_print** accepts a xml string as input too
