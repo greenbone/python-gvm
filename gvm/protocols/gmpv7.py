@@ -3161,7 +3161,7 @@ class Gmp(GvmProtocol):
 
             cmd.set_attribute('format', format)
 
-        return self.send_command(cmd)
+        return self._send_xml_command(cmd)
 
     def modify_agent(self, agent_id, name=None, comment=None):
         """Modifies an existing agent
