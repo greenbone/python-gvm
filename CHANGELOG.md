@@ -1,3 +1,10 @@
+# python-gvm 1.0.0 (unreleased)
+
+## xml
+
+* Added helper function to validate xml input **gvm.xml.validate_xml_string**
+* **pretty_print** accepts a xml string as input too
+
 # python-gvm 1.0.0.beta1 (13.11.2018)
 
 python-gvm was a part of [gvm-tools](https://github.com/greenbone/gvm-tools)
