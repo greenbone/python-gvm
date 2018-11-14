@@ -3135,7 +3135,7 @@ class Gmp(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand('get_version'))
 
-    def help(self, format=None, type=''):
+    def help(self, format=None, help_type=''):
         """Get the help text
 
         Arguments:
@@ -3147,7 +3147,7 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('help')
 
-        cmd.set_attribute('type', type)
+        cmd.set_attribute('type', help_type)
 
         if format:
             if not format.lower() in ('html', 'rnc', 'text', 'xml'):
