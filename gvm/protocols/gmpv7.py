@@ -3147,6 +3147,10 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('help')
 
+        if not help_type in ('', 'brief'):
+            raise InvalidArgument(
+                'help_type argument must be an empty string or "brief"')
+
         cmd.set_attribute('type', help_type)
 
         if format:
