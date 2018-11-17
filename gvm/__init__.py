@@ -16,20 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 """
-Main module of gvm.
+Main module of python-gvm.
 """
 from .utils import get_version_string
 
 VERSION = (1, 0, 0, 'beta', 1, 'dev', 1)
 """
-Current Version of gvm as a tuple
+Current Version of python-gvm as a tuple
 """
 
 def get_version():
-    """Returns the version of gvm as a string in `PEP440`_ compliant format.
+    """Returns the version of python-gvm as a string in `PEP440`_ compliant format.
 
     Returns:
-        str: Current version of gvm
+        str: Current version of python-gvm
 
     .. _PEP440:
        https://www.python.org/dev/peps/pep-0440
