@@ -18,26 +18,29 @@
 
 import unittest
 
+from gvm.errors import GvmError
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpCloneTargetCommandTestCase(unittest.TestCase):
-
-    TARGET_ID = '00000000-0000-0000-0000-000000000000'
+class GmpStartTaskTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_clone(self):
-        self.gmp.clone_target(self.TARGET_ID)
+    def test_start_task(self):
+        self.gmp.start_task('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_target>'
-            '<copy>{copy}</copy>'
-            '</create_target>'.format(copy=self.TARGET_ID)
-        )
+            '<start_task task_id="a1"/>')
+
+    def test_missing_id(self):
+        with self.assertRaises(GvmError):
+            self.gmp.start_task(None)
+
+        with self.assertRaises(GvmError):
+            self.gmp.start_task('')
 
 
 if __name__ == '__main__':

@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import InvalidArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv7 import Gmp, FILTER_TYPES
 
 from .. import MockConnection
@@ -74,6 +74,13 @@ class GMPCreateFilterCommandTestCase(unittest.TestCase):
             '<type>task</type>'
             '</create_filter>'.format(self.FILTER_NAME),
         )
+
+    def test_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_filter('')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_filter(None)
 
 
 if __name__ == '__main__':
