@@ -218,11 +218,88 @@ Full example
 OSP
 ---
 
-The **Open Scanner Protocol - OSP** is a stateless protocol implemented by
-several daemons derived from `ospd`_.
+The **Open Scanner Protocol - OSP** is a communication protocol implemented by
+a base class for scanner wrappers `Open Scanner Protocol Daemon- ospd <https://github.com/greenbone/ospd>`_.
+**OSP** creates a unified interface for different security scanners and makes
+their control flow and scan results consistently available under the
+`Greenbone Vulnerability Manager Daemon - gvmd <https://github.com/greenbone/gvmd>`_.
+**OSP** is similar in many ways to **Greenbone Management Protocol -GMP** :
+XML-based, stateless and non-permanent connection.
 
 Make a simple request
 ^^^^^^^^^^^^^^^^^^^^^
 
-.. _ospd:
-    https://github.com/greenbone/ospd
+To create a request you have to choose a :ref:`connection <connections>` type.
+The decision depends on the location and configuration of the remote
+**ospd-wrapper** server. For local communication :py:class:`Unix domain socket <gvm.connections.UnixSocketConnection>`
+fits best, but also a :py:class:`secure TLS connection <gvm.connections.TLSConnection>`
+is possible.
+The simplest command is to request the server version.
+
+Step by Step
+""""""""""""
+
+Beginning by importing the necessary classes
+
+.. code-block:: python
+
+    from gvm.connections import UnixSocketConnection
+    from gvm.protocols.latest import Osp
+
+Afterwards we have to specify the path to the Unix domain socket in the
+filesystem. This is the path given during the start of the ospd-wrapper.
+
+.. code-block:: python
+
+    path = '/tmp/ospd-wrapper.sock'
+
+Now we can create a connection and a osp object:
+
+.. code-block:: python
+
+    connection = UnixSocketConnection(path=path)
+    osp = Osp(connection=connection)
+
+To be able to make a request on **ospd-wrapper** a connection must be
+established. To automatically connect and disconnect, a Python
+`with statement <https://docs.python.org/3.5/reference/datamodel.html#with-statement-context-managers>`_
+should be used.
+
+By default all request methods of the :py:class:`osp <osp.protocols.ospv1.Osp>`
+object return the response as utf-8 encoded string.
+
+It is possible to get the **OSP** protocol version, the
+**ospd** base implementation class and the **ospd-wrapper** server version,
+printting the response of the *get_version* command.
+
+.. code-block:: python
+
+    with osp:
+        print(osp.get_version())
+
+Full example
+""""""""""""
+
+.. code-block:: python
+
+    from osp.connections import UnixSocketConnection
+    from osp.protocols.latest import Osp
+
+    # path to unix socket
+    path = '/var/run/ospd-wrapper.sock'
+    connection = UnixSocketConnection(path=path)
+    osp = Osp(connection=connection)
+
+    # using the with statement to automatically connect and disconnect to ospd
+    with osp:
+        # get the response message returned as a utf-8 encoded string
+        response = osp.get_version()
+
+        # print the response message
+        print(response)
+
+On success the response will look like:
+
+.. code-block:: xml
+
+    <get_version_response status="200" status_text="OK"><protocol><name>OSP</name><version>1.2</version></protocol><daemon><name>OSPd</name><version>1.4b1</version></daemon><scanner><name>some-wrapper</name><version>Wrapper 6.0beta+2</version></scanner></get_version_response>
