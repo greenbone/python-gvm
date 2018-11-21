@@ -270,7 +270,7 @@ object return the response as utf-8 encoded string.
 
 It is possible to get the **OSP** protocol version, the
 **ospd** base implementation class and the **ospd-wrapper** server version,
-printting the response of the *get_version* command.
+printing the response of the *get_version* command.
 
 .. code-block:: python
 
