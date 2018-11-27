@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 PROTOCOL_VERSION = (7,)
 
-FILTER_TYPES = [
+FILTER_TYPES = (
     'agent',
     'alert',
     'asset',
@@ -59,9 +59,9 @@ FILTER_TYPES = [
     'target',
     'task',
     'user',
-]
+)
 
-TIME_UNITS = [
+TIME_UNITS = (
     'second',
     'minute',
     'hour',
@@ -70,9 +70,9 @@ TIME_UNITS = [
     'month',
     'year',
     'decade',
-]
+)
 
-ALIVE_TESTS = [
+ALIVE_TESTS = (
     'ICMP, TCP Service & ARP Ping',
     'TCP Service & ARP Ping',
     'ICMP & ARP Ping',
@@ -81,7 +81,7 @@ ALIVE_TESTS = [
     'TCP Service Ping',
     'ICMP Ping',
     'Scan Config Default',
-]
+)
 
 def _check_command_status(xml):
     """Check gmp response
