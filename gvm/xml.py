@@ -29,7 +29,7 @@ class XmlCommandElement:
     def __init__(self, element):
         self._element = element
 
-    def add_element(self, name, text=None, attrs=None):
+    def add_element(self, name, text=None, *, attrs=None):
         node = etree.SubElement(self._element, name, attrib=attrs)
         node.text = text
         return XmlCommandElement(node)

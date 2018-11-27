@@ -56,7 +56,7 @@ class Gmp(Gmpv7):
         """
         return get_version_string(PROTOCOL_VERSION)
 
-    def create_credential(self, name, credential_type, comment=None,
+    def create_credential(self, name, credential_type, *, comment=None,
                           allow_insecure=False, certificate=None,
                           key_phrase=None, private_key=None,
                           login=None, password=None, auth_algorithm=None,

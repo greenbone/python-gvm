@@ -31,7 +31,7 @@ class GvmProtocol:
             See :mod:`gvm.transforms` for existing transforms.
     """
 
-    def __init__(self, connection, transform=None):
+    def __init__(self, connection, *, transform=None):
         self._connection = connection
 
         self._connected = False
