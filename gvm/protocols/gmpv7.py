@@ -3918,10 +3918,12 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('scanner_id', scanner_id)
         cmd.add_element('host', host)
         cmd.add_element('port', port)
+
         if scanner_type not in ('1', '2'):
             raise InvalidArgument(' modify_scanner requires a scanner_type '
                                   'argument which must be either "1" for OSP '
                                   'or "2" OpenVAS (Classic).')
+
         cmd.add_element('type', scanner_type)
 
         if comment:
