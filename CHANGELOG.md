@@ -8,11 +8,17 @@
 * Fixed wrong order of key and value for condition_data, event_data and
   method_data dict parameters of **create_alert** method.
 * **create_credential** requires a credential_type argument now.
+* Optional parameters are required to be passed as keyword arguments.
 
 ## gvm.xml
 
 * Added helper function to validate xml input **gvm.xml.validate_xml_string**
 * **pretty_print** accepts a xml string as input too
+
+## gvm.connections
+
+* Optional arguments for connection class constructors must be passed as
+  keyword arguments.
 
 # python-gvm 1.0.0.beta1 (13.11.2018)
 
