@@ -56,16 +56,18 @@ class Gmp(Gmpv7):
         """
         return get_version_string(PROTOCOL_VERSION)
 
-    def create_credential(self, name, comment=None, allow_insecure=False,
-                          certificate=None, key_phrase=None, private_key=None,
+    def create_credential(self, name, credential_type, comment=None,
+                          allow_insecure=False, certificate=None,
+                          key_phrase=None, private_key=None,
                           login=None, password=None, auth_algorithm=None,
                           community=None, privacy_algorithm=None,
-                          privacy_password=None, credential_type=None,
-                          public_key=None):
+                          privacy_password=None, public_key=None):
         """Create a new credential
 
         Arguments:
             name (str): Name of the new credential
+            credential_type (str): The credential type. One of 'cc', 'snmp',
+                'up', 'usk', 'smime', 'pgp'
             comment (str, optional): Comment for the credential
             allow_insecure (boolean, optional): Whether to allow insecure use of
                 the credential
@@ -78,8 +80,6 @@ class Gmp(Gmpv7):
             privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optional): The credential type. One of 'cc',
-                'snmp', 'up', 'usk', 'smime', 'pgp'
             public_key: (str, optional): PGP public key in *armor* plain text
                 format
 
