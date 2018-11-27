@@ -56,7 +56,7 @@ class GmpCreateCredentialTestCase(unittest.TestCase):
             '</create_credential>'
         )
 
-    def test_missing_certificate(self):
+    def test_cc_credential_missing_certificate(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(
                 name='foo', credential_type='cc')
