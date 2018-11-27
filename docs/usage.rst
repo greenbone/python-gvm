@@ -188,6 +188,8 @@ Full example
 
 .. code-block:: python
 
+    import sys
+
     from gvm.connections import UnixSocketConnection
     from gvm.errors import GvmError
     from gvm.protocols.latest import Gmp
@@ -213,7 +215,7 @@ Full example
                 print(task.find('name').text)
 
     except GvmError as e:
-        print('An error occurred', str(e))
+        print('An error occurred', e, file=sys.stderr)
 
 OSP
 ---
