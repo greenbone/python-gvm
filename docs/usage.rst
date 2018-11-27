@@ -178,7 +178,7 @@ with 'weekly' in their name and list their full names.
                 print(task.find('name').text)
 
     except GvmError as e:
-        print('An error occurred', str(e))
+        print('An error occurred', e)
 
 .. _Etree Element:
     https://docs.python.org/3.4/library/xml.etree.elementtree.html#element-objects
