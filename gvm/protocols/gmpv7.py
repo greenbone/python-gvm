@@ -3444,16 +3444,18 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_credential(self, credential_id, name=None, comment=None,
-                          allow_insecure=None, certificate=None,
+    def modify_credential(self, credential_id, credential_type=None, name=None,
+                          comment=None, allow_insecure=None, certificate=None,
                           key_phrase=None, private_key=None, login=None,
                           password=None, auth_algorithm=None, community=None,
                           privacy_algorithm=None, privacy_password=None,
-                          credential_type=None):
+                          ):
         """Modifies an existing credential.
 
         Arguments:
             credential_id (str): UUID of the credential
+            credential_type (str, optional): The credential type. One of 'cc',
+                'snmp', 'up', 'usk'
             name (str, optional): Name of the credential
             comment (str, optional): Comment for the credential
             allow_insecure (boolean, optional): Whether to allow insecure use of
@@ -3469,8 +3471,6 @@ class Gmp(GvmProtocol):
             privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optional): The credential type. One of 'cc',
-                'snmp', 'up', 'usk'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3481,6 +3481,13 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('modify_credential')
         cmd.set_attribute('credential_id', credential_id)
+
+        if credential_type:
+            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
+                raise RequiredArgument('modify_credential requires type '
+                                       'to be either cc, snmp, up or usk')
+
+            cmd.add_element('type', credential_type)
 
         if comment:
             cmd.add_element('comment', comment)
@@ -3526,12 +3533,6 @@ class Gmp(GvmProtocol):
             _xmlprivacy = cmd.add_element('privacy')
             _xmlprivacy.add_element('algorithm', privacy_algorithm)
             _xmlprivacy.add_element('password', privacy_password)
-
-        if credential_type:
-            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
-                raise RequiredArgument('modify_credential requires type '
-                                       'to be either cc, snmp, up or usk')
-            cmd.add_element('type', credential_type)
 
         return self._send_xml_command(cmd)
 
