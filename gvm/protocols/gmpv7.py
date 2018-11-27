@@ -83,6 +83,13 @@ ALIVE_TESTS = (
     'Scan Config Default',
 )
 
+CREDENTIAL_TYPES = (
+    'cc',
+    'snmp',
+    'up',
+    'usk',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
