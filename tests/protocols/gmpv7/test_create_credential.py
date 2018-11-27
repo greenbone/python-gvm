@@ -252,3 +252,7 @@ class GmpCreateCredentialTestCase(unittest.TestCase):
             '</privacy>'
             '</create_credential>'
         )
+
+
+if __name__ == '__main__':
+    unittest.main()
