@@ -416,15 +416,18 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', config_id)
         return self._send_xml_command(cmd)
 
-    def create_credential(self, name, comment=None, allow_insecure=False,
-                          certificate=None, key_phrase=None, private_key=None,
+    def create_credential(self, name, credential_type, comment=None,
+                          allow_insecure=False, certificate=None,
+                          key_phrase=None, private_key=None,
                           login=None, password=None, auth_algorithm=None,
                           community=None, privacy_algorithm=None,
-                          privacy_password=None, credential_type=None):
+                          privacy_password=None):
         """Create a new credential
 
         Arguments:
             name (str): Name of the new credential
+            credential_type (str): The credential type. One of 'cc', 'snmp',
+                'up', 'usk'
             comment (str, optional): Comment for the credential
             allow_insecure (boolean, optional): Whether to allow insecure use of
                 the credential
@@ -437,8 +440,6 @@ class Gmp(GvmProtocol):
             privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optional): The credential type. One of 'cc',
-                'snmp', 'up', 'usk'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -446,8 +447,15 @@ class Gmp(GvmProtocol):
         if not name:
             raise RequiredArgument('create_credential requires name argument')
 
+        if credential_type not in CREDENTIAL_TYPES:
+            raise InvalidArgument(
+                'create_credential requires type to be either cc, snmp, up '
+                ' or usk')
+
         cmd = XmlCommand('create_credential')
         cmd.add_element('name', name)
+
+        cmd.add_element('type', credential_type)
 
         if comment:
             cmd.add_element('comment', comment)
@@ -455,45 +463,66 @@ class Gmp(GvmProtocol):
         if allow_insecure:
             cmd.add_element('allow_insecure', '1')
 
-        if certificate:
+        if credential_type == 'cc':
+            if not certificate:
+                raise RequiredArgument(
+                    'create_credential requires certificate argument for '
+                    'credential_type {0}'.format(credential_type))
+
             cmd.add_element('certificate', certificate)
 
-        if not key_phrase is None and private_key:
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('phrase', key_phrase)
-            _xmlkey.add_element('private', private_key)
+        if (credential_type == 'up' or credential_type == 'usk' or \
+                credential_type == 'snmp'):
+            if not login:
+                raise RequiredArgument(
+                    'create_credential requires login argument for '
+                    'credential_type {0}'.format(credential_type))
 
-        if login:
             cmd.add_element('login', login)
 
-        if password:
+        if (credential_type == 'up' or credential_type == 'snmp') and password:
             cmd.add_element('password', password)
 
-        if auth_algorithm:
+        if credential_type == 'usk':
+            if not private_key:
+                raise RequiredArgument(
+                    'create_credential requires certificate argument for '
+                    'credential_type usk')
+
+            _xmlkey = cmd.add_element('key')
+            _xmlkey.add_element('private', private_key)
+
+            if key_phrase:
+                _xmlkey.add_element('phrase', key_phrase)
+
+        if credential_type == 'cc' and private_key:
+            _xmlkey = cmd.add_element('key')
+            _xmlkey.add_element('private', private_key)
+
+        if credential_type == 'snmp':
             if auth_algorithm not in ('md5', 'sha1'):
                 raise InvalidArgument(
                     'create_credential requires auth_algorithm to be either '
                     'md5 or sha1')
+
             cmd.add_element('auth_algorithm', auth_algorithm)
 
-        if community:
-            cmd.add_element('community', community)
+            if community:
+                cmd.add_element('community', community)
 
-        if privacy_algorithm and privacy_password:
-            if privacy_algorithm not in ('aes', 'des'):
-                raise InvalidArgument(
-                    'create_credential requires algorithm to be either aes or '
-                    'des')
-            _xmlprivacy = cmd.add_element('privacy')
-            _xmlprivacy.add_element('algorithm', privacy_algorithm)
-            _xmlprivacy.add_element('password', privacy_password)
+            if privacy_algorithm is not None or privacy_password:
+                _xmlprivacy = cmd.add_element('privacy')
 
-        if credential_type:
-            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
-                raise InvalidArgument(
-                    'create_credential requires type to be either cc, snmp, up '
-                    ' or usk')
-            cmd.add_element('type', credential_type)
+                if privacy_algorithm is not None:
+                    if privacy_algorithm not in ('aes', 'des'):
+                        raise InvalidArgument(
+                            'create_credential requires algorithm to be either '
+                            'aes or des')
+
+                    _xmlprivacy.add_element('algorithm', privacy_algorithm)
+
+                if privacy_password:
+                    _xmlprivacy.add_element('password', privacy_password)
 
         return self._send_xml_command(cmd)
 
@@ -3211,7 +3240,7 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('help')
 
-        if not help_type in ('', 'brief'):
+        if help_type not in ('', 'brief'):
             raise InvalidArgument(
                 'help_type argument must be an empty string or "brief"')
 
