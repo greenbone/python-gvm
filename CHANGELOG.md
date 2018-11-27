@@ -1,6 +1,6 @@
 # python-gvm 1.0.0 (unreleased)
 
-## gvm.protocols.gmpv1
+## gvm.protocols.gmpv7
 
 * Fixed generating XML for help command
 * **help** method **type** argument got renamed to **help_type**
