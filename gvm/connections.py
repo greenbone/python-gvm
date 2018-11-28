@@ -181,7 +181,11 @@ class SSHConnection(GvmConnection):
         while sent_bytes < length:
             time.sleep(0.01)
 
-            self._stdin.channel.send(data[i_start:i_end])
+            sent = self._stdin.channel.send(data[i_start:i_end])
+
+            if not sent:
+                # Connection was closed by server
+                raise GvmError('Remote closed the connection')
 
             i_start = i_end
             if i_end > length:
