@@ -142,6 +142,12 @@ class GvmConnection(XmlReader):
         except OSError as e:
             logger.debug('Connection closing error: %s', e)
 
+    def finish_send(self):
+        """Indicate to the remote server you are done with sending data
+        """
+        # shutdown socket for sending. only allow reading data afterwards
+        self._socket.shutdown(socketlib.SHUT_WR)
+
 
 class SSHConnection(GvmConnection):
     """
@@ -219,6 +225,10 @@ class SSHConnection(GvmConnection):
             self._send_in_chunks(data, MAX_SSH_DATA_LENGTH)
         else:
             self._stdin.channel.send(data)
+
+    def finish_send(self):
+        # shutdown socket for sending. only allow reading data afterwards
+        self._stdout.channel.shutdown(socketlib.SHUT_WR)
 
 
 class TLSConnection(GvmConnection):
@@ -337,3 +347,8 @@ class DebugConnection:
         logger.debug('Disconnecting')
 
         return self._connection.disconnect()
+
+    def finish_send(self):
+        logger.debug('Finish send')
+
+        self._connection.finish_send()
