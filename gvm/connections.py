@@ -228,7 +228,7 @@ class SSHConnection(GvmConnection):
 
     def finish_send(self):
         # shutdown socket for sending. only allow reading data afterwards
-        return self._stdout.channel.shutdown(socketlib.SHUT_WR)
+        self._stdout.channel.shutdown(socketlib.SHUT_WR)
 
 
 class TLSConnection(GvmConnection):
@@ -351,4 +351,4 @@ class DebugConnection:
     def finish_send(self):
         logger.debug('Finish send')
 
-        return self._connection.finish_send()
+        self._connection.finish_send()
