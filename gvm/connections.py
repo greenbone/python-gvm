@@ -145,7 +145,8 @@ class GvmConnection(XmlReader):
     def finish_send(self):
         """Indicate to the remote server you are done with sending data
         """
-        self._socket.shutdown(1)
+        # shutdown socket for sending. only allow reading data afterwards
+        self._socket.shutdown(socketlib.SHUT_WR)
 
 
 class SSHConnection(GvmConnection):
@@ -226,7 +227,8 @@ class SSHConnection(GvmConnection):
             self._stdin.channel.send(data)
 
     def finish_send(self):
-        return self._stdout.channel.shutdown(1)
+        # shutdown socket for sending. only allow reading data afterwards
+        return self._stdout.channel.shutdown(socketlib.SHUT_WR)
 
 
 class TLSConnection(GvmConnection):
