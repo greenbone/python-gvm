@@ -171,7 +171,7 @@ class SSHConnection(GvmConnection):
         self.username = username
         self.password = password
 
-    def _send_in_chunks(self, data):
+    def _send_all(self, data):
         chunk_size = MAX_SSH_DATA_LENGTH
         i_start = 0
         i_end = chunk_size
@@ -221,7 +221,7 @@ class SSHConnection(GvmConnection):
 
     def send(self, data):
         if len(data) > MAX_SSH_DATA_LENGTH:
-            self._send_in_chunks(data)
+            self._send_all(data)
         else:
             self._stdin.channel.send(data)
 
