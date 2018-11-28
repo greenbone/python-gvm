@@ -173,10 +173,10 @@ class SSHConnection(GvmConnection):
 
     def _send_all(self, data):
         chunk_size = MAX_SSH_DATA_LENGTH
-        i_start = 0
-        i_end = chunk_size
-        sent_bytes = 0
         length = len(data)
+        i_start = 0
+        i_end = min(length, MAX_SSH_DATA_LENGTH)
+        sent_bytes = 0
 
         while sent_bytes < length:
             time.sleep(0.01)
@@ -220,10 +220,7 @@ class SSHConnection(GvmConnection):
         return self._stdout.channel.recv(BUF_SIZE)
 
     def send(self, data):
-        if len(data) > MAX_SSH_DATA_LENGTH:
-            self._send_all(data)
-        else:
-            self._stdin.channel.send(data)
+        self._send_all(data)
 
     def finish_send(self):
         # shutdown socket for sending. only allow reading data afterwards
