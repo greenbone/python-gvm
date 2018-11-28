@@ -156,8 +156,8 @@ class SSHConnection(GvmConnection):
         password (str, optional): Passwort to use for SSH login.
     """
 
-    def __init__(self, timeout=DEFAULT_TIMEOUT, hostname='127.0.0.1', port=22,
-                 username='gmp', password=''):
+    def __init__(self, *, timeout=DEFAULT_TIMEOUT, hostname='127.0.0.1',
+                 port=22, username='gmp', password=''):
         super().__init__(timeout=timeout)
 
         self.hostname = hostname
@@ -245,7 +245,7 @@ class TLSConnection(GvmConnection):
         https://docs.python.org/3.5/library/ssl.html#certificates
     """
 
-    def __init__(self, certfile=None, cafile=None, keyfile=None,
+    def __init__(self, *, certfile=None, cafile=None, keyfile=None,
                  hostname='127.0.0.1', port=DEFAULT_GVM_PORT, password=None,
                  timeout=DEFAULT_TIMEOUT):
         super().__init__(timeout=timeout)
@@ -292,8 +292,8 @@ class UnixSocketConnection(GvmConnection):
         timeout (int, optional): Timeout in seconds for the connection.
     """
 
-    def __init__(self, path=DEFAULT_UNIX_SOCKET_PATH, timeout=DEFAULT_TIMEOUT,
-                 read_timeout=DEFAULT_READ_TIMEOUT):
+    def __init__(self, *, path=DEFAULT_UNIX_SOCKET_PATH,
+                 timeout=DEFAULT_TIMEOUT, read_timeout=DEFAULT_READ_TIMEOUT):
         super().__init__(timeout=timeout)
 
         self.read_timeout = read_timeout

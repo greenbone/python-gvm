@@ -37,7 +37,7 @@ logger = logging.getLogger(__name__)
 
 PROTOCOL_VERSION = (7,)
 
-FILTER_TYPES = [
+FILTER_TYPES = (
     'agent',
     'alert',
     'asset',
@@ -59,9 +59,9 @@ FILTER_TYPES = [
     'target',
     'task',
     'user',
-]
+)
 
-TIME_UNITS = [
+TIME_UNITS = (
     'second',
     'minute',
     'hour',
@@ -70,9 +70,9 @@ TIME_UNITS = [
     'month',
     'year',
     'decade',
-]
+)
 
-ALIVE_TESTS = [
+ALIVE_TESTS = (
     'ICMP, TCP Service & ARP Ping',
     'TCP Service & ARP Ping',
     'ICMP & ARP Ping',
@@ -81,7 +81,14 @@ ALIVE_TESTS = [
     'TCP Service Ping',
     'ICMP Ping',
     'Scan Config Default',
-]
+)
+
+CREDENTIAL_TYPES = (
+    'cc',
+    'snmp',
+    'up',
+    'usk',
+)
 
 def _check_command_status(xml):
     """Check gmp response
@@ -145,8 +152,8 @@ class Gmp(GvmProtocol):
         https://docs.python.org/3.6/library/functions.html#callable
     """
 
-    def __init__(self, connection, transform=None):
-        super().__init__(connection, transform)
+    def __init__(self, connection, *, transform=None):
+        super().__init__(connection, transform=transform)
 
         # Is authenticated on gvmd
         self._authenticated = False
@@ -205,7 +212,7 @@ class Gmp(GvmProtocol):
 
         return self._transform(response)
 
-    def create_agent(self, installer, signature, name, comment=None,
+    def create_agent(self, installer, signature, name, *, comment=None,
                      howto_install=None, howto_use=None):
         """Create a new agent
 
@@ -264,7 +271,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', agent_id)
         return self._send_xml_command(cmd)
 
-    def create_alert(self, name, condition, event, method, method_data=None,
+    def create_alert(self, name, condition, event, method, *, method_data=None,
                      event_data=None, condition_data=None, filter_id=None,
                      comment=None):
         """Create a new alert
@@ -344,7 +351,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', alert_id)
         return self._send_xml_command(cmd)
 
-    def create_asset(self, name, asset_type, comment=None):
+    def create_asset(self, name, asset_type, *, comment=None):
         """Create a new asset
 
         Arguments:
@@ -409,15 +416,18 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', config_id)
         return self._send_xml_command(cmd)
 
-    def create_credential(self, name, comment=None, allow_insecure=False,
-                          certificate=None, key_phrase=None, private_key=None,
+    def create_credential(self, name, credential_type, *, comment=None,
+                          allow_insecure=False, certificate=None,
+                          key_phrase=None, private_key=None,
                           login=None, password=None, auth_algorithm=None,
                           community=None, privacy_algorithm=None,
-                          privacy_password=None, credential_type=None):
+                          privacy_password=None):
         """Create a new credential
 
         Arguments:
             name (str): Name of the new credential
+            credential_type (str): The credential type. One of 'cc', 'snmp',
+                'up', 'usk'
             comment (str, optional): Comment for the credential
             allow_insecure (boolean, optional): Whether to allow insecure use of
                 the credential
@@ -430,8 +440,6 @@ class Gmp(GvmProtocol):
             privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optional): The credential type. One of 'cc',
-                'snmp', 'up', 'usk'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -439,8 +447,15 @@ class Gmp(GvmProtocol):
         if not name:
             raise RequiredArgument('create_credential requires name argument')
 
+        if credential_type not in CREDENTIAL_TYPES:
+            raise InvalidArgument(
+                'create_credential requires type to be either cc, snmp, up '
+                ' or usk')
+
         cmd = XmlCommand('create_credential')
         cmd.add_element('name', name)
+
+        cmd.add_element('type', credential_type)
 
         if comment:
             cmd.add_element('comment', comment)
@@ -448,45 +463,66 @@ class Gmp(GvmProtocol):
         if allow_insecure:
             cmd.add_element('allow_insecure', '1')
 
-        if certificate:
+        if credential_type == 'cc':
+            if not certificate:
+                raise RequiredArgument(
+                    'create_credential requires certificate argument for '
+                    'credential_type {0}'.format(credential_type))
+
             cmd.add_element('certificate', certificate)
 
-        if not key_phrase is None and private_key:
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('phrase', key_phrase)
-            _xmlkey.add_element('private', private_key)
+        if (credential_type == 'up' or credential_type == 'usk' or \
+                credential_type == 'snmp'):
+            if not login:
+                raise RequiredArgument(
+                    'create_credential requires login argument for '
+                    'credential_type {0}'.format(credential_type))
 
-        if login:
             cmd.add_element('login', login)
 
-        if password:
+        if (credential_type == 'up' or credential_type == 'snmp') and password:
             cmd.add_element('password', password)
 
-        if auth_algorithm:
+        if credential_type == 'usk':
+            if not private_key:
+                raise RequiredArgument(
+                    'create_credential requires certificate argument for '
+                    'credential_type usk')
+
+            _xmlkey = cmd.add_element('key')
+            _xmlkey.add_element('private', private_key)
+
+            if key_phrase:
+                _xmlkey.add_element('phrase', key_phrase)
+
+        if credential_type == 'cc' and private_key:
+            _xmlkey = cmd.add_element('key')
+            _xmlkey.add_element('private', private_key)
+
+        if credential_type == 'snmp':
             if auth_algorithm not in ('md5', 'sha1'):
                 raise InvalidArgument(
                     'create_credential requires auth_algorithm to be either '
                     'md5 or sha1')
+
             cmd.add_element('auth_algorithm', auth_algorithm)
 
-        if community:
-            cmd.add_element('community', community)
+            if community:
+                cmd.add_element('community', community)
 
-        if privacy_algorithm and privacy_password:
-            if privacy_algorithm not in ('aes', 'des'):
-                raise InvalidArgument(
-                    'create_credential requires algorithm to be either aes or '
-                    'des')
-            _xmlprivacy = cmd.add_element('privacy')
-            _xmlprivacy.add_element('algorithm', privacy_algorithm)
-            _xmlprivacy.add_element('password', privacy_password)
+            if privacy_algorithm is not None or privacy_password:
+                _xmlprivacy = cmd.add_element('privacy')
 
-        if credential_type:
-            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
-                raise InvalidArgument(
-                    'create_credential requires type to be either cc, snmp, up '
-                    ' or usk')
-            cmd.add_element('type', credential_type)
+                if privacy_algorithm is not None:
+                    if privacy_algorithm not in ('aes', 'des'):
+                        raise InvalidArgument(
+                            'create_credential requires algorithm to be either '
+                            'aes or des')
+
+                    _xmlprivacy.add_element('algorithm', privacy_algorithm)
+
+                if privacy_password:
+                    _xmlprivacy.add_element('password', privacy_password)
 
         return self._send_xml_command(cmd)
 
@@ -507,7 +543,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', credential_id)
         return self._send_xml_command(cmd)
 
-    def create_filter(self, name, make_unique=False, filter_type=None,
+    def create_filter(self, name, *, make_unique=False, filter_type=None,
                       comment=None, term=None):
         """Create a new filter
 
@@ -561,7 +597,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', filter_id)
         return self._send_xml_command(cmd)
 
-    def create_group(self, name, comment=None, special=False, users=None):
+    def create_group(self, name, *, comment=None, special=False, users=None):
         """Create a new group
 
         Arguments:
@@ -608,7 +644,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', group_id)
         return self._send_xml_command(cmd)
 
-    def create_note(self, text, nvt_oid, seconds_active=None, comment=None,
+    def create_note(self, text, nvt_oid, *, seconds_active=None, comment=None,
                     hosts=None, result_id=None, severity=None, task_id=None,
                     threat=None, port=None):
         """Create a new note
@@ -682,7 +718,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', note_id)
         return self._send_xml_command(cmd)
 
-    def create_override(self, text, nvt_oid, seconds_active=None, hosts=None,
+    def create_override(self, text, nvt_oid, *, seconds_active=None, hosts=None,
                         port=None, result_id=None, severity=None, comment=None,
                         new_severity=None, task_id=None, threat=None,
                         new_threat=None):
@@ -769,7 +805,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', override_id)
         return self._send_xml_command(cmd)
 
-    def create_permission(self, name, subject_id, subject_type,
+    def create_permission(self, name, subject_id, subject_type, *,
                           resource_id=None, resource_type=None,
                           comment=None):
         """Create a new permission
@@ -833,7 +869,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', permission_id)
         return self._send_xml_command(cmd)
 
-    def create_port_list(self, name, port_range, comment=None):
+    def create_port_list(self, name, port_range, *, comment=None):
         """Create a new port list
 
         Arguments:
@@ -879,7 +915,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_port_range(self, port_list_id, start, end, port_range_type,
-                          comment=None):
+                          *, comment=None):
         """Create new port range
 
         Arguments:
@@ -919,7 +955,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def import_report(self, report, task_id=None, task_name=None,
+    def import_report(self, report, *, task_id=None, task_name=None,
                       task_comment=None, in_assets=None):
         """Import a Report
 
@@ -966,7 +1002,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_role(self, name, comment=None, users=None):
+    def create_role(self, name, *, comment=None, users=None):
         """Create a new role
 
         Arguments:
@@ -1009,7 +1045,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_scanner(self, name, host, port, scanner_type, ca_pub,
-                       credential_id, comment=None):
+                       credential_id, *, comment=None):
         """Create a new scanner
 
         Arguments:
@@ -1074,7 +1110,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', scanner_id)
         return self._send_xml_command(cmd)
 
-    def create_schedule(self, name, comment=None, first_time_minute=None,
+    def create_schedule(self, name, *, comment=None, first_time_minute=None,
                         first_time_hour=None, first_time_day_of_month=None,
                         first_time_month=None, first_time_year=None,
                         duration=None, duration_unit=None, period=None,
@@ -1195,7 +1231,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', schedule_id)
         return self._send_xml_command(cmd)
 
-    def create_tag(self, name, resource_id, resource_type, value=None,
+    def create_tag(self, name, resource_id, resource_type, *, value=None,
                    comment=None, active=None):
         """Create a new tag
 
@@ -1247,7 +1283,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', tag_id)
         return self._send_xml_command(cmd)
 
-    def create_target(self, name, make_unique=False, asset_hosts_filter=None,
+    def create_target(self, name, *, make_unique=False, asset_hosts_filter=None,
                       hosts=None, comment=None, exclude_hosts=None,
                       ssh_credential_id=None, ssh_credential_port=None,
                       smb_credential_id=None, esxi_credential_id=None,
@@ -1364,7 +1400,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', target_id)
         return self._send_xml_command(cmd)
 
-    def create_task(self, name, config_id, target_id, scanner_id,
+    def create_task(self, name, config_id, target_id, scanner_id, *,
                     alterable=None, hosts_ordering=None, schedule_id=None,
                     alert_ids=None, comment=None, schedule_periods=None,
                     observers=None):
@@ -1461,7 +1497,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', task_id)
         return self._send_xml_command(cmd)
 
-    def create_user(self, name, password=None, hosts=None, hosts_allow=False,
+    def create_user(self, name, *, password=None, hosts=None, hosts_allow=False,
                     ifaces=None, ifaces_allow=False, role_ids=None):
         """Create a new user
 
@@ -1519,7 +1555,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', user_id)
         return self._send_xml_command(cmd)
 
-    def delete_agent(self, agent_id, ultimate=False):
+    def delete_agent(self, agent_id, *, ultimate=False):
         """Deletes an existing agent
 
         Arguments:
@@ -1536,7 +1572,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_alert(self, alert_id, ultimate=False):
+    def delete_alert(self, alert_id, *, ultimate=False):
         """Deletes an existing alert
 
         Arguments:
@@ -1553,7 +1589,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_asset(self, asset_id=None, report_id=None):
+    def delete_asset(self, *, asset_id=None, report_id=None):
         """Deletes an existing asset
 
         Arguments:
@@ -1573,7 +1609,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_config(self, config_id, ultimate=False):
+    def delete_config(self, config_id, *, ultimate=False):
         """Deletes an existing config
 
         Arguments:
@@ -1591,7 +1627,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_credential(self, credential_id, ultimate=False):
+    def delete_credential(self, credential_id, *, ultimate=False):
         """Deletes an existing credential
 
         Arguments:
@@ -1609,7 +1645,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_filter(self, filter_id, ultimate=False):
+    def delete_filter(self, filter_id, *, ultimate=False):
         """Deletes an existing filter
 
         Arguments:
@@ -1627,7 +1663,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_group(self, group_id, ultimate=False):
+    def delete_group(self, group_id, *, ultimate=False):
         """Deletes an existing group
 
         Arguments:
@@ -1645,7 +1681,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_note(self, note_id, ultimate=False):
+    def delete_note(self, note_id, *, ultimate=False):
         """Deletes an existing note
 
         Arguments:
@@ -1663,7 +1699,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_override(self, override_id, ultimate=False):
+    def delete_override(self, override_id, *, ultimate=False):
         """Deletes an existing override
 
         Arguments:
@@ -1681,7 +1717,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_permission(self, permission_id, ultimate=False):
+    def delete_permission(self, permission_id, *, ultimate=False):
         """Deletes an existing permission
 
         Arguments:
@@ -1699,7 +1735,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_port_list(self, port_list_id, ultimate=False):
+    def delete_port_list(self, port_list_id, *, ultimate=False):
         """Deletes an existing port list
 
         Arguments:
@@ -1748,7 +1784,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
 
-    def delete_report_format(self, report_format_id, ultimate=False):
+    def delete_report_format(self, report_format_id, *, ultimate=False):
         """Deletes an existing report format
 
         Arguments:
@@ -1767,7 +1803,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
 
-    def delete_role(self, role_id, ultimate=False):
+    def delete_role(self, role_id, *, ultimate=False):
         """Deletes an existing role
 
         Arguments:
@@ -1785,7 +1821,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_scanner(self, scanner_id, ultimate=False):
+    def delete_scanner(self, scanner_id, *, ultimate=False):
         """Deletes an existing scanner
 
         Arguments:
@@ -1803,7 +1839,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_schedule(self, schedule_id, ultimate=False):
+    def delete_schedule(self, schedule_id, *, ultimate=False):
         """Deletes an existing schedule
 
         Arguments:
@@ -1821,7 +1857,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_tag(self, tag_id, ultimate=False):
+    def delete_tag(self, tag_id, *, ultimate=False):
         """Deletes an existing tag
 
         Arguments:
@@ -1839,7 +1875,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_target(self, target_id, ultimate=False):
+    def delete_target(self, target_id, *, ultimate=False):
         """Deletes an existing target
 
         Arguments:
@@ -1857,7 +1893,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_task(self, task_id, ultimate=False):
+    def delete_task(self, task_id, *, ultimate=False):
         """Deletes an existing task
 
         Arguments:
@@ -1875,7 +1911,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_user(self, user_id, name=None, inheritor_id=None,
+    def delete_user(self, user_id, *, name=None, inheritor_id=None,
                     inheritor_name=None):
         """Deletes an existing user
 
@@ -1930,8 +1966,8 @@ class Gmp(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand('empty_trashcan'))
 
-    def get_agents(self, filter=None, filter_id=None, trash=None, details=None,
-                   format=None):
+    def get_agents(self, *, filter=None, filter_id=None, trash=None,
+                   details=None, format=None):
         """Request a list of agents
 
         Arguments:
@@ -1989,7 +2025,8 @@ class Gmp(GvmProtocol):
         cmd.set_attributes(kwargs)
         return self._send_xml_command(cmd)
 
-    def get_alerts(self, filter=None, filter_id=None, trash=None, tasks=None):
+    def get_alerts(self, *, filter=None, filter_id=None, trash=None,
+                   tasks=None):
         """Request a list of alerts
 
         Arguments:
@@ -2028,7 +2065,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('alert_id', alert_id)
         return self._send_xml_command(cmd)
 
-    def get_assets(self, asset_type, filter=None, filter_id=None):
+    def get_assets(self, asset_type, *, filter=None, filter_id=None):
         """Request a list of assets
 
         Arguments:
@@ -2070,7 +2107,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_credentials(self, filter=None, filter_id=None, scanners=None,
+    def get_credentials(self, *, filter=None, filter_id=None, scanners=None,
                         trash=None, targets=None, format=None):
         """Request a list of credentials
 
@@ -2124,8 +2161,8 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('credential_id', credential_id)
         return self._send_xml_command(cmd)
 
-    def get_configs(self, filter=None, filter_id=None, trash=None, details=None,
-                    families=None, preferences=None, tasks=None):
+    def get_configs(self, *, filter=None, filter_id=None, trash=None,
+                    details=None, families=None, preferences=None, tasks=None):
         """Request a list of scan configs
 
         Arguments:
@@ -2210,7 +2247,8 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_filters(self, filter=None, filter_id=None, trash=None, alerts=None):
+    def get_filters(self, *, filter=None, filter_id=None, trash=None,
+                    alerts=None):
         """Request a list of filters
 
         Arguments:
@@ -2250,7 +2288,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('filter_id', filter_id)
         return self._send_xml_command(cmd)
 
-    def get_groups(self, filter=None, filter_id=None, trash=None):
+    def get_groups(self, *, filter=None, filter_id=None, trash=None):
         """Request a list of groups
 
         Arguments:
@@ -2285,7 +2323,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('group_id', group_id)
         return self._send_xml_command(cmd)
 
-    def get_info_list(self, info_type, filter=None, filter_id=None,
+    def get_info_list(self, info_type, *, filter=None, filter_id=None,
                       name=None, details=None):
         """Request a list of security information
 
@@ -2353,7 +2391,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_notes(self, filter=None, filter_id=None, nvt_oid=None,
+    def get_notes(self, *, filter=None, filter_id=None, nvt_oid=None,
                   task_id=None, details=None, result=None):
         """Request a list of notes
 
@@ -2403,7 +2441,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_nvts(self, details=None, preferences=None, preference_count=None,
+    def get_nvts(self, *, details=None, preferences=None, preference_count=None,
                  timeout=None, config_id=None, preferences_config_id=None,
                  family=None, sort_order=None, sort_field=None):
         """Request a list of nvts
@@ -2473,7 +2511,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_nvt_families(self, sort_order=None):
+    def get_nvt_families(self, *, sort_order=None):
         """Request a list of nvt families
 
         Arguments:
@@ -2489,7 +2527,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_overrides(self, filter=None, filter_id=None, nvt_oid=None,
+    def get_overrides(self, *, filter=None, filter_id=None, nvt_oid=None,
                       task_id=None, details=None, result=None):
         """Request a list of overrides
 
@@ -2539,7 +2577,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_permissions(self, filter=None, filter_id=None, trash=None):
+    def get_permissions(self, *, filter=None, filter_id=None, trash=None):
         """Request a list of permissions
 
         Arguments:
@@ -2574,7 +2612,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('permission_id', permission_id)
         return self._send_xml_command(cmd)
 
-    def get_port_lists(self, filter=None, filter_id=None, details=None,
+    def get_port_lists(self, *, filter=None, filter_id=None, details=None,
                        targets=None, trash=None):
         """Request a list of port lists
 
@@ -2623,7 +2661,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_preferences(self, nvt_oid=None, config_id=None, preference=None):
+    def get_preferences(self, *, nvt_oid=None, config_id=None, preference=None):
         """Request a list of preferences
 
         When the command includes a config_id attribute, the preference element
@@ -2653,7 +2691,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_reports(self, filter=None, filter_id=None, format_id=None,
+    def get_reports(self, *, filter=None, filter_id=None, format_id=None,
                     alert_id=None, note_details=None, override_details=None):
         """Request a list of reports
 
@@ -2695,7 +2733,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_report(self, report_id, filter=None, filter_id=None,
+    def get_report(self, report_id, *, filter=None, filter_id=None,
                    delta_report_id=None, format_id=None):
         """Request a single report
 
@@ -2725,7 +2763,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_report_formats(self, filter=None, filter_id=None, trash=None,
+    def get_report_formats(self, *, filter=None, filter_id=None, trash=None,
                            alerts=None, params=None, details=None):
         """Request a list of report formats
 
@@ -2779,7 +2817,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_results(self, filter=None, filter_id=None, task_id=None,
+    def get_results(self, *, filter=None, filter_id=None, task_id=None,
                     note_details=None, override_details=None, details=None):
         """Request a list of results
 
@@ -2832,7 +2870,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_roles(self, filter=None, filter_id=None, trash=None):
+    def get_roles(self, *, filter=None, filter_id=None, trash=None):
         """Request a list of roles
 
         Arguments:
@@ -2866,7 +2904,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('role_id', role_id)
         return self._send_xml_command(cmd)
 
-    def get_scanners(self, filter=None, filter_id=None, trash=None,
+    def get_scanners(self, *, filter=None, filter_id=None, trash=None,
                      details=None):
         """Request a list of scanners
 
@@ -2910,7 +2948,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_schedules(self, filter=None, filter_id=None, trash=None,
+    def get_schedules(self, *, filter=None, filter_id=None, trash=None,
                       tasks=None):
         """Request a list of schedules
 
@@ -2951,7 +2989,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('schedule_id', schedule_id)
         return self._send_xml_command(cmd)
 
-    def get_settings(self, filter=None):
+    def get_settings(self, *, filter=None):
         """Request a list of user settings
 
         Arguments:
@@ -2980,7 +3018,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('setting_id', setting_id)
         return self._send_xml_command(cmd)
 
-    def get_system_reports(self, name=None, duration=None, start_time=None,
+    def get_system_reports(self, *, name=None, duration=None, start_time=None,
                            end_time=None, brief=None, slave_id=None):
         """Request a list of system reports
 
@@ -3022,7 +3060,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_tags(self, filter=None, filter_id=None, trash=None,
+    def get_tags(self, *, filter=None, filter_id=None, trash=None,
                  names_only=None):
         """Request a list of tags
 
@@ -3063,7 +3101,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('tag_id', tag_id)
         return self._send_xml_command(cmd)
 
-    def get_targets(self, filter=None, filter_id=None, trash=None,
+    def get_targets(self, *, filter=None, filter_id=None, trash=None,
                     tasks=None):
         """Request a list of targets
 
@@ -3104,8 +3142,8 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('target_id', target_id)
         return self._send_xml_command(cmd)
 
-    def get_tasks(self, filter=None, filter_id=None, trash=None, details=None,
-                  schedules_only=None):
+    def get_tasks(self, *, filter=None, filter_id=None, trash=None,
+                  details=None, schedules_only=None):
         """Request a list of tasks
 
         Arguments:
@@ -3154,7 +3192,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_users(self, filter=None, filter_id=None):
+    def get_users(self, *, filter=None, filter_id=None):
         """Request a list of users
 
         Arguments:
@@ -3192,7 +3230,7 @@ class Gmp(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand('get_version'))
 
-    def help(self, format=None, help_type=''):
+    def help(self, *, format=None, help_type=''):
         """Get the help text
 
         Arguments:
@@ -3204,7 +3242,7 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand('help')
 
-        if not help_type in ('', 'brief'):
+        if help_type not in ('', 'brief'):
             raise InvalidArgument(
                 'help_type argument must be an empty string or "brief"')
 
@@ -3220,7 +3258,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_agent(self, agent_id, name=None, comment=None):
+    def modify_agent(self, agent_id, *, name=None, comment=None):
         """Modifies an existing agent
 
         Arguments:
@@ -3243,7 +3281,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_alert(self, alert_id, name=None, comment=None,
+    def modify_alert(self, alert_id, *, name=None, comment=None,
                      filter_id=None, event=None, event_data=None,
                      condition=None, condition_data=None, method=None,
                      method_data=None):
@@ -3349,7 +3387,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_config(self, config_id, selection, nvt_oids=None, name=None,
+    def modify_config(self, config_id, selection, *, nvt_oids=None, name=None,
                       value=None, family=None):
         """Modifies an existing scan config.
 
@@ -3408,16 +3446,18 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_credential(self, credential_id, name=None, comment=None,
-                          allow_insecure=None, certificate=None,
-                          key_phrase=None, private_key=None, login=None,
-                          password=None, auth_algorithm=None, community=None,
-                          privacy_algorithm=None, privacy_password=None,
-                          credential_type=None):
+    def modify_credential(self, credential_id, credential_type=None, *,
+                          name=None, comment=None, allow_insecure=None,
+                          certificate=None, key_phrase=None, private_key=None,
+                          login=None, password=None, auth_algorithm=None,
+                          community=None, privacy_algorithm=None,
+                          privacy_password=None):
         """Modifies an existing credential.
 
         Arguments:
             credential_id (str): UUID of the credential
+            credential_type (str, optional): The credential type. One of 'cc',
+                'snmp', 'up', 'usk'
             name (str, optional): Name of the credential
             comment (str, optional): Comment for the credential
             allow_insecure (boolean, optional): Whether to allow insecure use of
@@ -3433,8 +3473,6 @@ class Gmp(GvmProtocol):
             privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optional): The credential type. One of 'cc',
-                'snmp', 'up', 'usk'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3445,6 +3483,13 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('modify_credential')
         cmd.set_attribute('credential_id', credential_id)
+
+        if credential_type:
+            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
+                raise RequiredArgument('modify_credential requires type '
+                                       'to be either cc, snmp, up or usk')
+
+            cmd.add_element('type', credential_type)
 
         if comment:
             cmd.add_element('comment', comment)
@@ -3491,15 +3536,9 @@ class Gmp(GvmProtocol):
             _xmlprivacy.add_element('algorithm', privacy_algorithm)
             _xmlprivacy.add_element('password', privacy_password)
 
-        if credential_type:
-            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
-                raise RequiredArgument('modify_credential requires type '
-                                       'to be either cc, snmp, up or usk')
-            cmd.add_element('type', credential_type)
-
         return self._send_xml_command(cmd)
 
-    def modify_filter(self, filter_id, comment=None, name=None, term=None,
+    def modify_filter(self, filter_id, *, comment=None, name=None, term=None,
                       filter_type=None):
         """Modifies an existing filter.
 
@@ -3539,7 +3578,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_group(self, group_id, comment=None, name=None,
+    def modify_group(self, group_id, *, comment=None, name=None,
                      users=None):
         """Modifies an existing group.
 
@@ -3569,7 +3608,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_note(self, note_id, text, seconds_active=None, hosts=None,
+    def modify_note(self, note_id, text, *, seconds_active=None, hosts=None,
                     port=None, result_id=None, severity=None, task_id=None,
                     threat=None):
         """Modifies an existing note.
@@ -3621,7 +3660,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_override(self, override_id, text, seconds_active=None,
+    def modify_override(self, override_id, text, *, seconds_active=None,
                         hosts=None, port=None, result_id=None, severity=None,
                         new_severity=None, task_id=None, threat=None,
                         new_threat=None):
@@ -3683,7 +3722,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_permission(self, permission_id, comment=None, name=None,
+    def modify_permission(self, permission_id, *, comment=None, name=None,
                           resource_id=None, resource_type=None,
                           subject_id=None, subject_type=None):
         """Modifies an existing permission.
@@ -3730,7 +3769,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_port_list(self, port_list_id, comment=None, name=None, ):
+    def modify_port_list(self, port_list_id, *, comment=None, name=None, ):
         """Modifies an existing port list.
 
         Arguments:
@@ -3777,7 +3816,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_report_format(self, report_format_id, active=None, name=None,
+    def modify_report_format(self, report_format_id, *, active=None, name=None,
                              summary=None, param_name=None, param_value=None):
         """Modifies an existing report format.
 
@@ -3814,7 +3853,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_role(self, role_id, comment=None, name=None, users=None):
+    def modify_role(self, role_id, *, comment=None, name=None, users=None):
         """Modifies an existing role.
 
         Arguments:
@@ -3843,7 +3882,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_scanner(self, scanner_id, host, port, scanner_type,
+    def modify_scanner(self, scanner_id, host, port, scanner_type, *,
                        comment=None, name=None, ca_pub=None,
                        credential_id=None):
         """Modifies an existing scanner.
@@ -3879,10 +3918,12 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('scanner_id', scanner_id)
         cmd.add_element('host', host)
         cmd.add_element('port', port)
+
         if scanner_type not in ('1', '2'):
             raise InvalidArgument(' modify_scanner requires a scanner_type '
                                   'argument which must be either "1" for OSP '
                                   'or "2" OpenVAS (Classic).')
+
         cmd.add_element('type', scanner_type)
 
         if comment:
@@ -3899,7 +3940,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_schedule(self, schedule_id, comment=None, name=None,
+    def modify_schedule(self, schedule_id, *, comment=None, name=None,
                         first_time_minute=None, first_time_hour=None,
                         first_time_day_of_month=None, first_time_month=None,
                         first_time_year=None, duration=None, duration_unit=None,
@@ -4035,7 +4076,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_tag(self, tag_id, comment=None, name=None, value=None,
+    def modify_tag(self, tag_id, *, comment=None, name=None, value=None,
                    active=None, resource_id=None, resource_type=None):
         """Modifies an existing tag.
 
@@ -4081,7 +4122,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_target(self, target_id, name=None, comment=None,
+    def modify_target(self, target_id, *, name=None, comment=None,
                       hosts=None, hosts_ordering=None,
                       exclude_hosts=None, ssh_credential_id=None,
                       smb_credential_id=None, esxi_credential_id=None,
@@ -4175,7 +4216,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_task(self, task_id, name=None, comment=None, alert=None,
+    def modify_task(self, task_id, *, name=None, comment=None, alert=None,
                     observers=None, preferences=None, schedule=None,
                     schedule_periods=None, scanner=None, file_name=None,
                     file_action=None):
@@ -4243,7 +4284,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_user(self, user_id, name, new_name=None, password=None,
+    def modify_user(self, user_id, name, *, new_name=None, password=None,
                     role_ids=None, hosts=None, hosts_allow=None,
                     ifaces=None, ifaces_allow=None, sources=None):
         """Modifies an existing user.
@@ -4300,7 +4341,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def move_task(self, task_id, slave_id=None):
+    def move_task(self, task_id, *, slave_id=None):
         """Move an existing task to another GMP slave scanner or the master
 
         Arguments:
