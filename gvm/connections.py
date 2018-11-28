@@ -172,28 +172,16 @@ class SSHConnection(GvmConnection):
         self.password = password
 
     def _send_all(self, data):
-        chunk_size = MAX_SSH_DATA_LENGTH
-        length = len(data)
-        i_start = 0
-        i_end = min(length, MAX_SSH_DATA_LENGTH)
-        sent_bytes = 0
-
-        while sent_bytes < length:
+        while data:
             time.sleep(0.01)
 
-            sent = self._stdin.channel.send(data[i_start:i_end])
+            sent = self._stdin.channel.send(data)
 
             if not sent:
                 # Connection was closed by server
                 raise GvmError('Remote closed the connection')
 
-            i_start = i_end
-            if i_end > length:
-                i_end = length
-            else:
-                i_end = i_end + chunk_size
-
-            sent_bytes += (i_end - i_start)
+            data = data[sent:]
 
     def connect(self):
         """
