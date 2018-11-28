@@ -191,8 +191,6 @@ class SSHConnection(GvmConnection):
 
             sent_bytes += (i_end - i_start)
 
-        return sent_bytes
-
     def connect(self):
         """
         Connect to the SSH server and authenticate to it
