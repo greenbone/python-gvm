@@ -19,6 +19,8 @@
 
 * Optional arguments for connection class constructors must be passed as
   keyword arguments.
+* Add **finish_send** method to connections. The method allows to indicate to
+  the server sending data is finished and no additional data has to be received.
 
 # python-gvm 1.0.0.beta1 (13.11.2018)
 
