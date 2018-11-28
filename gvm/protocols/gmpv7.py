@@ -3769,7 +3769,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_port_list(self, port_list_id, *, comment=None, name=None, ):
+    def modify_port_list(self, port_list_id, *, comment=None, name=None):
         """Modifies an existing port list.
 
         Arguments:
