@@ -2691,15 +2691,14 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_reports(self, *, filter=None, filter_id=None, alert_id=None,
-                    note_details=None, override_details=None):
+    def get_reports(self, *, filter=None, filter_id=None, note_details=None,
+                    override_details=None):
         """Request a list of reports
 
         Arguments:
             filter (str, optional): Filter term to use for the query
             filter_id (str, optional): UUID of an existing filter to use for
                 the query
-            alert_id (str, optional): UUID of alert to pass generated report to
             note_details (boolean, optional): If notes are included, whether to
                 include note details
             override_details (boolean, optional): If overrides are included,
@@ -2715,9 +2714,6 @@ class Gmp(GvmProtocol):
 
         if filter_id:
             cmd.set_attribute('report_filt_id', filter_id)
-
-        if alert_id:
-            cmd.set_attribute('alert_id', alert_id)
 
         if not note_details is None:
             cmd.set_attribute('note_details', _to_bool(note_details))
