@@ -90,6 +90,11 @@ CREDENTIAL_TYPES = (
     'usk',
 )
 
+SCANNER_TYPES = (
+    '1',
+    '2',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
@@ -3920,8 +3925,8 @@ class Gmp(GvmProtocol):
         cmd.add_element('host', host)
         cmd.add_element('port', port)
 
-        if scanner_type not in ('1', '2'):
-            raise InvalidArgument(' modify_scanner requires a scanner_type '
+        if scanner_type not in SCANNER_TYPES:
+            raise InvalidArgument('modify_scanner requires a scanner_type '
                                   'argument which must be either "1" for OSP '
                                   'or "2" OpenVAS (Classic).')
 
