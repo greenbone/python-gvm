@@ -19,3 +19,6 @@ Connections
 .. autoclass:: UnixSocketConnection
    :members:
    :inherited-members:
+
+.. autoclass:: DebugConnection
+   :members:
