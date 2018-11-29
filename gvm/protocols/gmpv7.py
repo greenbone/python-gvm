@@ -2709,7 +2709,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_port_lists')
+        cmd = XmlCommand('get_reports')
 
         if filter:
             cmd.set_attribute('report_filter', filter)
