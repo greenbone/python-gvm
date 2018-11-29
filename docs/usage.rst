@@ -67,7 +67,7 @@ Now we can create a connection and a gmp object:
 
 To be able to make a request on **gvmd** a connection must be established. To
 automatically connect and disconnect a Python
-`with statement <https://docs.python.org/3.5/reference/datamodel.html#with-statement-context-managers>`_
+`with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_
 should be used.
 
 By default all request methods of the :py:class:`gmp <gvm.protocols.gmpv7.Gmp>`
@@ -181,7 +181,7 @@ with 'weekly' in their name and list their full names.
         print('An error occurred', e)
 
 .. _Etree Element:
-    https://docs.python.org/3.4/library/xml.etree.elementtree.html#element-objects
+    https://docs.python.org/3/library/xml.etree.elementtree.html#element-objects
 
 Full example
 """"""""""""
@@ -264,7 +264,7 @@ Now we can create a connection and a osp object:
 
 To be able to make a request on **ospd-wrapper** a connection must be
 established. To automatically connect and disconnect, a Python
-`with statement <https://docs.python.org/3.5/reference/datamodel.html#with-statement-context-managers>`_
+`with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_
 should be used.
 
 By default all request methods of the :py:class:`osp <gvm.protocols.ospv1.Osp>`
@@ -349,4 +349,4 @@ With this change your *debug.log* file will contain something like::
     DEBUG:gvm.connections:Read 97 characters. Data <get_version_response status="200" status_text="OK"><version>7.0</version></get_version_response>
 
 .. _logging:
-    https://docs.python.org/3.5/library/logging.html
+    https://docs.python.org/3/library/logging.html

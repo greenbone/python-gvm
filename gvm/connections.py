@@ -238,7 +238,7 @@ class TLSConnection(GvmConnection):
             interactively prompt the user for a password.
 
     .. _python certificates:
-        https://docs.python.org/3.5/library/ssl.html#certificates
+        https://docs.python.org/3/library/ssl.html#certificates
     """
 
     def __init__(self, *, certfile=None, cafile=None, keyfile=None,
@@ -309,7 +309,7 @@ class DebugConnection:
 
     Allows to debug the connection flow including send and read data. Internally
     it uses the python `logging`_ framework to create debug messages. Please
-    take a look at `the logging tutorial <https://docs.python.org/3.5/howto/logging.html#logging-basic-tutorial>`_
+    take a look at `the logging tutorial <https://docs.python.org/3/howto/logging.html#logging-basic-tutorial>`_
     for further details.
 
     Usage example:
@@ -328,7 +328,7 @@ class DebugConnection:
         connection (GvmConnection): GvmConnection to observe
 
     .. _logging:
-        https://docs.python.org/3.5/library/logging.html
+        https://docs.python.org/3/library/logging.html
     """
 
     def __init__(self, connection):
