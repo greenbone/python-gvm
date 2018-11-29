@@ -309,10 +309,10 @@ On success the response will look like:
 Debugging
 ---------
 
-Sometimes networking setups can be a complex and hard to follow. Connections may
-be aborted randomly or an invalid command may have been arrived at the server
-side. Therefore it may be necessary to debug the connection handling and
-especially the protocol commands.
+Sometimes networking setups can be complex and hard to follow. Connections may
+be aborted randomly or an invalid command may have arrived at the server side.
+Therefore it may be necessary to debug the connection handling and especially
+the protocol commands.
 
 **python-gvm** uses the `logging`_ package internally. Therefore to enable
 simple debug output appended to a *debug.log* file the following code can be
@@ -327,7 +327,7 @@ used:
 
 With this simple addition you will be able to debug ssh connection problems
 already. But what if a response didn't contain the expected data and you need to
-know which command has been send to the server in detail. In this case it is
+know which command has been send to the server in detail? In this case it is
 necessary to wrap the actual connection in a
 :py:class:`DebugConnection <gvm.connections.DebugConnection>` class.
 
