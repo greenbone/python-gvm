@@ -2691,7 +2691,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_reports(self, *, filter=None, filter_id=None, format_id=None,
+    def get_reports(self, *, filter=None, filter_id=None, report_format_id=None,
                     alert_id=None, note_details=None, override_details=None):
         """Request a list of reports
 
@@ -2699,7 +2699,7 @@ class Gmp(GvmProtocol):
             filter (str, optional): Filter term to use for the query
             filter_id (str, optional): UUID of an existing filter to use for
                 the query
-            format_id (str, optional): UUID of report format to use
+            report_format_id (str, optional): UUID of report format to use
             alert_id (str, optional): UUID of alert to pass generated report to
             note_details (boolean, optional): If notes are included, whether to
                 include note details
@@ -2717,8 +2717,8 @@ class Gmp(GvmProtocol):
         if filter_id:
             cmd.set_attribute('report_filt_id', filter_id)
 
-        if format_id:
-            cmd.set_attribute('format_id', format_id)
+        if report_format_id:
+            cmd.set_attribute('format_id', report_format_id)
 
         if alert_id:
             cmd.set_attribute('alert_id', alert_id)
@@ -2734,7 +2734,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_report(self, report_id, *, filter=None, filter_id=None,
-                   delta_report_id=None, format_id=None):
+                   delta_report_id=None, report_format_id=None):
         """Request a single report
 
         Arguments:
@@ -2758,8 +2758,8 @@ class Gmp(GvmProtocol):
         if delta_report_id:
             cmd.set_attribute('delta_report_id', delta_report_id)
 
-        if format_id:
-            cmd.set_attribute('format_id', format_id)
+        if report_format_id:
+            cmd.set_attribute('format_id', report_format_id)
 
         return self._send_xml_command(cmd)
 

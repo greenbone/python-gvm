@@ -46,8 +46,8 @@ class GmpGetReportsTestCase(unittest.TestCase):
         self.connection.send.has_been_called_with(
             '<get_reports report_filt_id="f1" ignore_pagination="1"/>')
 
-    def test_get_reports_with_format_id(self):
-        self.gmp.get_reports(format_id='bar')
+    def test_get_reports_with_report_format_id(self):
+        self.gmp.get_reports(report_format_id='bar')
 
         self.connection.send.has_been_called_with(
             '<get_reports format_id="bar" ignore_pagination="1"/>')
