@@ -140,6 +140,17 @@ class GmpCreateNoteTestCase(unittest.TestCase):
             '</create_note>'
         )
 
+    def test_create_note_with_seconds_active(self):
+        self.gmp.create_note('foo', nvt_oid='oid1', seconds_active=3600)
+
+        self.connection.send.has_been_called_with(
+            '<create_note>'
+            '<text>foo</text>'
+            '<nvt oid="oid1"/>'
+            '<active>3600</active>'
+            '</create_note>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
