@@ -22,6 +22,7 @@
 * Removed **alert_id** argument from **get_reports**
 * Added new **run_alert** method for running an alert method on a specific
   report.
+* Fixed **create_permission** method
 
 ## gvm.xml
 

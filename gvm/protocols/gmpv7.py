@@ -839,7 +839,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('name', name)
 
         _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
-        _xmlsubject.add_element('type', type)
+        _xmlsubject.add_element('type', subject_type)
 
         if comment:
             cmd.add_element('comment', comment)
