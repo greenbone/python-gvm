@@ -57,7 +57,7 @@ class GmpCreateReportCommandTestCase(unittest.TestCase):
                 task=self.TASK_ID, report=self.REPORT_XML_STRING)
         )
 
-    def test_import_teport_with_task_name(self):
+    def test_import_report_with_task_name(self):
         self.gmp.import_report(
             self.REPORT_XML_STRING,
             task_name=self.TASK_NAME,
