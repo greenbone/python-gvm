@@ -28,11 +28,11 @@ class GmpGetReportsTestCase(unittest.TestCase):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_reports_simple(self):
+    def test_get_reports(self):
         self.gmp.get_reports()
 
         self.connection.send.has_been_called_with(
-            '<get_reports ignore_pagination="1" />')
+            '<get_reports ignore_pagination="1"/>')
 
     def test_get_reports_with_filter(self):
         self.gmp.get_reports(filter='name=foo')
