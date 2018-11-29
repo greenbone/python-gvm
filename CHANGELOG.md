@@ -13,6 +13,9 @@
 * Removed **format_id** argument from get_reports
 * **get_report** method **format_id** argument got renamed to
   **report_format_id**
+* Removed **alert_id** argument from **get_reports**
+* Added new **run_alert** method for running an alert method on a specific
+  report.
 
 ## gvm.xml
 
