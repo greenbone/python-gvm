@@ -1063,7 +1063,8 @@ class Gmp(GvmProtocol):
             name (str): Name of the scanner
             host (str): The host of the scanner
             port (str): The port of the scanner
-            scanner_type (str): The type of the scanner
+            scanner_type (str): Type of the scanner.
+                '1' for OSP, '2' for OpenVAS (classic) Scanner.
             ca_pub (str): Certificate of CA to verify scanner certificate
             credential_id (str): UUID of client certificate credential for the
                 scanner
