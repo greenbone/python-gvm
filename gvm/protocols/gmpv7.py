@@ -1082,7 +1082,7 @@ class Gmp(GvmProtocol):
         if not port:
             raise RequiredArgument('create_scanner requires a port argument')
 
-        if not type:
+        if not scanner_type:
             raise RequiredArgument('create_scanner requires a scanner_type '
                                    'argument')
         if not ca_pub:
