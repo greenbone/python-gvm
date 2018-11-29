@@ -1092,6 +1092,11 @@ class Gmp(GvmProtocol):
             raise RequiredArgument('create_scanner requires a credential_id '
                                    'argument')
 
+        if scanner_type not in SCANNER_TYPES:
+            raise InvalidArgument('create_scanner requires a scanner_type '
+                                  'argument which must be either "1" for OSP '
+                                  'or "2" OpenVAS (Classic).')
+
         cmd = XmlCommand('create_scanner')
         cmd.add_element('name', name)
         cmd.add_element('host', host)
