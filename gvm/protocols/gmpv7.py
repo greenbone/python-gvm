@@ -930,7 +930,7 @@ class Gmp(GvmProtocol):
             port_list_id (str): UUID of the port list to which to add the range
             start (int): The first port in the range
             end (int): The last port in the range
-            type (str): The type of the ports: TCP, UDP, ...
+            port_range_type (str): The type of the ports: TCP, UDP, ...
             comment (str, optional): Comment for the port range
 
         Returns:
