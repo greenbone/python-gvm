@@ -10,6 +10,8 @@
 * **create_credential** requires a credential_type argument now.
 * Optional parameters are required to be passed as keyword arguments.
 * Fixed **get_reports** sending the wrong protocol command
+* **get_reports** and **get_report** methods **format_id** argument got renamed
+  to **report_format_id**
 
 ## gvm.xml
 

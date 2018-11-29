@@ -2745,7 +2745,7 @@ class Gmp(GvmProtocol):
                 in the report
             delta_report_id (str, optional): UUID of an existing report to
                 compare report to.
-            format_id (str, optional): UUID of report format to use
+            report_format_id (str, optional): UUID of report format to use
 
         Returns:
             The response. See :py:meth:`send_command` for details.
