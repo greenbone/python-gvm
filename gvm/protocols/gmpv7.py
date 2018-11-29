@@ -844,7 +844,15 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if resource_id and resource_type:
+        if resource_id or resource_type:
+            if not resource_id:
+                raise RequiredArgument(
+                    'create_permission requires resource_id for resource_type')
+
+            if not resource_type:
+                raise RequiredArgument(
+                    'create_permission requires resource_type for resource_id')
+
             _xmlresource = cmd.add_element('resource',
                                            attrs={'id': resource_id})
             _xmlresource.add_element('type', resource_type)
