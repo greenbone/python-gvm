@@ -126,7 +126,8 @@ class GvmProtocol:
         try:
             self._send(cmd)
             response = self._read()
-        finally:
+        except Exception as e:
             self.disconnect()
+            raise e
 
         return self._transform(response)
