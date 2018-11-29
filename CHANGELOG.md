@@ -1,5 +1,11 @@
 # python-gvm 1.0.0 (unreleased)
 
+## gvm.protocols.base
+
+* Fix: Don't close the connection after each send/read command sequence
+  automatically. This fixes sending more then one privileged gmp command after
+  authentication.
+
 ## gvm.protocols.gmpv7
 
 * Fixed generating XML for help command
