@@ -267,7 +267,7 @@ established. To automatically connect and disconnect, a Python
 `with statement <https://docs.python.org/3.5/reference/datamodel.html#with-statement-context-managers>`_
 should be used.
 
-By default all request methods of the :py:class:`osp <osp.protocols.ospv1.Osp>`
+By default all request methods of the :py:class:`osp <gvm.protocols.ospv1.Osp>`
 object return the response as utf-8 encoded string.
 
 It is possible to get the **OSP** protocol version, the
