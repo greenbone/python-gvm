@@ -2691,16 +2691,14 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_reports(self, *, filter=None, filter_id=None, format_id=None,
-                    alert_id=None, note_details=None, override_details=None):
+    def get_reports(self, *, filter=None, filter_id=None, note_details=None,
+                    override_details=None):
         """Request a list of reports
 
         Arguments:
             filter (str, optional): Filter term to use for the query
             filter_id (str, optional): UUID of an existing filter to use for
                 the query
-            format_id (str, optional): UUID of report format to use
-            alert_id (str, optional): UUID of alert to pass generated report to
             note_details (boolean, optional): If notes are included, whether to
                 include note details
             override_details (boolean, optional): If overrides are included,
@@ -2709,19 +2707,13 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_port_lists')
+        cmd = XmlCommand('get_reports')
 
         if filter:
             cmd.set_attribute('report_filter', filter)
 
         if filter_id:
             cmd.set_attribute('report_filt_id', filter_id)
-
-        if format_id:
-            cmd.set_attribute('format_id', format_id)
-
-        if alert_id:
-            cmd.set_attribute('alert_id', alert_id)
 
         if not note_details is None:
             cmd.set_attribute('note_details', _to_bool(note_details))
@@ -2734,7 +2726,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_report(self, report_id, *, filter=None, filter_id=None,
-                   delta_report_id=None, format_id=None):
+                   delta_report_id=None, report_format_id=None):
         """Request a single report
 
         Arguments:
@@ -2745,11 +2737,14 @@ class Gmp(GvmProtocol):
                 in the report
             delta_report_id (str, optional): UUID of an existing report to
                 compare report to.
-            format_id (str, optional): UUID of report format to use
+            report_format_id (str, optional): UUID of report format to use
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not report_id:
+            raise RequiredArgument('get_report requires a report_id argument')
+
         cmd = XmlCommand('get_reports')
         cmd.set_attribute('report_id', report_id)
 
@@ -2758,8 +2753,8 @@ class Gmp(GvmProtocol):
         if delta_report_id:
             cmd.set_attribute('delta_report_id', delta_report_id)
 
-        if format_id:
-            cmd.set_attribute('format_id', format_id)
+        if report_format_id:
+            cmd.set_attribute('format_id', report_format_id)
 
         return self._send_xml_command(cmd)
 
@@ -4479,6 +4474,51 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('test_alert')
         cmd.set_attribute('alert_id', alert_id)
+
+        return self._send_xml_command(cmd)
+
+    def run_alert(self, alert_id, report_id, *, filter=None, filter_id=None,
+                  report_format_id=None, delta_report_id=None):
+        """Run an alert by ignoring its event and conditions
+
+        The alert is run immediately with the provided filtered report by
+        ignoring the even and condition settings.
+
+        Arguments:
+            alert_id (str): UUID of the alert to be run
+            report_id (str): UUID of the report to be provided to the alert
+            filter (str, optional): Filter term to use to filter results in the
+                report
+            filter_id (str, optional): UUID of filter to use to filter results
+                in the report
+            report_format_id (str, optional): UUID of report format to use
+            delta_report_id (str, optional): UUID of an existing report to
+                compare report to.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not alert_id:
+            raise RequiredArgument('run_alert requires a alert_id argument')
+
+        if not report_id:
+            raise RequiredArgument('run_alert requires a report_id argument')
+
+        cmd = XmlCommand('get_reports')
+        cmd.set_attribute('report_id', report_id)
+        cmd.set_attribute('alert_id', alert_id)
+
+        if filter:
+            cmd.set_attribute('filter', filter)
+
+        if filter_id:
+            cmd.set_attribute('filt_id', filter_id)
+
+        if report_format_id:
+            cmd.set_attribute('format_id', report_format_id)
+
+        if delta_report_id:
+            cmd.set_attribute('delta_report_id', delta_report_id)
 
         return self._send_xml_command(cmd)
 
