@@ -998,10 +998,8 @@ class Gmp(GvmProtocol):
                 'import_report requires a task_id or task_name argument')
 
         if not in_assets is None:
-            if in_assets:
-                cmd.add_element('in_assets', '1')
-            else:
-                cmd.add_element('in_assets', '0')
+            cmd.add_element('in_assets', _to_bool(in_assets))
+
         try:
             cmd.append_xml_str(report)
         except etree.XMLSyntaxError as e:
