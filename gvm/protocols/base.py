@@ -92,7 +92,7 @@ class GvmProtocol:
         when sending a protocol command or when using a `with statement`_.
 
         .. _with statement:
-            https://docs.python.org/3.5/reference/datamodel.html#with-statement-context-managers
+            https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers
         """
         if not self.is_connected():
             self._connection.connect()

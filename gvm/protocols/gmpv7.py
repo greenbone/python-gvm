@@ -149,7 +149,7 @@ class Gmp(GvmProtocol):
     .. _Greenbone Management Protocol version 7:
         https://docs.greenbone.net/API/GMP/gmp-7.0.html
     .. _callable:
-        https://docs.python.org/3.6/library/functions.html#callable
+        https://docs.python.org/3/library/functions.html#callable
     """
 
     def __init__(self, connection, *, transform=None):

@@ -67,7 +67,7 @@ Now we can create a connection and a gmp object:
 
 To be able to make a request on **gvmd** a connection must be established. To
 automatically connect and disconnect a Python
-`with statement <https://docs.python.org/3.5/reference/datamodel.html#with-statement-context-managers>`_
+`with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_
 should be used.
 
 By default all request methods of the :py:class:`gmp <gvm.protocols.gmpv7.Gmp>`
@@ -181,7 +181,7 @@ with 'weekly' in their name and list their full names.
         print('An error occurred', e)
 
 .. _Etree Element:
-    https://docs.python.org/3.4/library/xml.etree.elementtree.html#element-objects
+    https://docs.python.org/3/library/xml.etree.elementtree.html#element-objects
 
 Full example
 """"""""""""
@@ -264,10 +264,10 @@ Now we can create a connection and a osp object:
 
 To be able to make a request on **ospd-wrapper** a connection must be
 established. To automatically connect and disconnect, a Python
-`with statement <https://docs.python.org/3.5/reference/datamodel.html#with-statement-context-managers>`_
+`with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_
 should be used.
 
-By default all request methods of the :py:class:`osp <osp.protocols.ospv1.Osp>`
+By default all request methods of the :py:class:`osp <gvm.protocols.ospv1.Osp>`
 object return the response as utf-8 encoded string.
 
 It is possible to get the **OSP** protocol version, the
@@ -305,3 +305,48 @@ On success the response will look like:
 .. code-block:: xml
 
     <get_version_response status="200" status_text="OK"><protocol><name>OSP</name><version>1.2</version></protocol><daemon><name>OSPd</name><version>1.4b1</version></daemon><scanner><name>some-wrapper</name><version>Wrapper 6.0beta+2</version></scanner></get_version_response>
+
+Debugging
+---------
+
+Sometimes networking setups can be complex and hard to follow. Connections may
+be aborted randomly or an invalid command may have arrived at the server side.
+Therefore it may be necessary to debug the connection handling and especially
+the protocol commands.
+
+**python-gvm** uses the `logging`_ package internally. Therefore to enable
+simple debug output appended to a *debug.log* file the following code can be
+used:
+
+.. code-block:: python
+
+    import logging
+
+    logging.basicConfig(filename='debug.log', level=logging.DEBUG)
+
+
+With this simple addition you will be able to debug ssh connection problems
+already. But what if a response didn't contain the expected data and you need to
+know which command has been send to the server in detail? In this case it is
+necessary to wrap the actual connection in a
+:py:class:`DebugConnection <gvm.connections.DebugConnection>` class.
+
+Example using the GMP protocol:
+
+.. code-block:: python
+
+    from gvm.connections import UnixSocketConnection, DebugConnection
+    from gvm.protocols.latest import Gmp
+
+    path = '/var/run/gvmd.sock'
+    socketconnection = UnixSocketConnection(path=path)
+    connection = DebugConnection(socketconnection)
+    gmp = Gmp(connection=connection)
+
+With this change your *debug.log* file will contain something like::
+
+    DEBUG:gvm.connections:Sending 14 characters. Data <get_version/>
+    DEBUG:gvm.connections:Read 97 characters. Data <get_version_response status="200" status_text="OK"><version>7.0</version></get_version_response>
+
+.. _logging:
+    https://docs.python.org/3/library/logging.html
