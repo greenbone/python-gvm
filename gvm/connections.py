@@ -173,8 +173,6 @@ class SSHConnection(GvmConnection):
 
     def _send_all(self, data):
         while data:
-            time.sleep(0.01)
-
             sent = self._stdin.channel.send(data)
 
             if not sent:
