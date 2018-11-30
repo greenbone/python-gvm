@@ -29,7 +29,7 @@ from lxml import etree
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
-from gvm.xml import XmlCommand
+from gvm.xml import XmlCommand, create_parser
 
 from .base import GvmProtocol
 
@@ -112,9 +112,7 @@ def _check_command_status(xml):
         return False
 
     try:
-        parser = etree.XMLParser(encoding='utf-8', recover=True)
-
-        root = etree.XML(xml, parser=parser)
+        root = etree.XML(xml, parser=create_parser())
         status = root.attrib['status']
         return status is not None and status[0] == '2'
 
