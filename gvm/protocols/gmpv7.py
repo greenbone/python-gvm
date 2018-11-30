@@ -4494,12 +4494,12 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def run_alert(self, alert_id, report_id, *, filter=None, filter_id=None,
-                  report_format_id=None, delta_report_id=None):
+    def trigger_alert(self, alert_id, report_id, *, filter=None, filter_id=None,
+                      report_format_id=None, delta_report_id=None):
         """Run an alert by ignoring its event and conditions
 
-        The alert is run immediately with the provided filtered report by
-        ignoring the even and condition settings.
+        The alert is triggered to run immediately with the provided filtered
+        report by ignoring the even and condition settings.
 
         Arguments:
             alert_id (str): UUID of the alert to be run
