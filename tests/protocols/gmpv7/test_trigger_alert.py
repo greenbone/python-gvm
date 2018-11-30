@@ -23,46 +23,47 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpRunAlertTestCase(unittest.TestCase):
+class GmpTriggerAlertTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_run_alert_without_alert_id(self):
+    def test_trigger_alert_without_alert_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.run_alert(alert_id=None, report_id='r1')
+            self.gmp.trigger_alert(alert_id=None, report_id='r1')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.run_alert(alert_id='', report_id='r1')
+            self.gmp.trigger_alert(alert_id='', report_id='r1')
 
-    def test_run_alert(self):
-        self.gmp.run_alert(alert_id='a1', report_id='r1')
+    def test_trigger_alert(self):
+        self.gmp.trigger_alert(alert_id='a1', report_id='r1')
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1"/>')
 
-    def test_run_alert_with_filter(self):
-        self.gmp.run_alert(alert_id='a1', report_id='r1', filter='name=foo')
+    def test_trigger_alert_with_filter(self):
+        self.gmp.trigger_alert(alert_id='a1', report_id='r1', filter='name=foo')
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1" filter="name=foo"/>')
 
-    def test_run_alert_with_filter_id(self):
-        self.gmp.run_alert(alert_id="a1", report_id='r1', filter_id='f1')
+    def test_trigger_alert_with_filter_id(self):
+        self.gmp.trigger_alert(alert_id="a1", report_id='r1', filter_id='f1')
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1" filt_id="f1"/>')
 
-    def test_run_alert_with_report_format_id(self):
-        self.gmp.run_alert(alert_id="a1", report_id='r1',
-                           report_format_id='bar')
+    def test_trigger_alert_with_report_format_id(self):
+        self.gmp.trigger_alert(alert_id="a1", report_id='r1',
+                               report_format_id='bar')
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1" format_id="bar"/>')
 
-    def test_run_alert_with_delta_report_id(self):
-        self.gmp.run_alert(alert_id='a1', report_id='r1', delta_report_id='r2')
+    def test_trigger_alert_with_delta_report_id(self):
+        self.gmp.trigger_alert(
+            alert_id='a1', report_id='r1', delta_report_id='r2')
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1" delta_report_id="r2"/>')
