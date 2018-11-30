@@ -46,7 +46,10 @@ class XmlReader:
 
     def _start_xml(self):
         self._first_element = None
-        self._parser = etree.XMLPullParser(('start', 'end'))
+        # act on start and end element events and
+        # allow huge text data (for report content)
+        self._parser = etree.XMLPullParser(
+            events=('start', 'end'), huge_tree=True)
 
     def _is_end_xml(self):
         for action, obj in self._parser.read_events():
