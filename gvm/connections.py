@@ -71,7 +71,8 @@ class GvmConnection(XmlReader):
     Base class for establishing a connection to a remote server daemon.
 
     Arguments:
-        timeout (int, optional): Timeout in seconds for the connection.
+        timeout (int, optional): Timeout in seconds for the connection. None to
+            wait indefinitely
     """
 
     def __init__(self, timeout=DEFAULT_TIMEOUT):
@@ -108,9 +109,11 @@ class GvmConnection(XmlReader):
 
         self._start_xml()
 
-        now = time.time()
 
-        break_timeout = now + self._timeout
+        if self._timeout is not None:
+            now = time.time()
+
+            break_timeout = now + self._timeout
 
         while True:
             data = self._read()
@@ -126,10 +129,11 @@ class GvmConnection(XmlReader):
             if self._is_end_xml():
                 break
 
-            now = time.time()
+            if self._timeout is not None:
+                now = time.time()
 
-            if now > break_timeout:
-                raise GvmError('Timeout while reading the response')
+                if now > break_timeout:
+                    raise GvmError('Timeout while reading the response')
 
         return response
 
