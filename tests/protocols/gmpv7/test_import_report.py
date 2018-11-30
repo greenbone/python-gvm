@@ -57,7 +57,7 @@ class GmpCreateReportCommandTestCase(unittest.TestCase):
                 task=self.TASK_ID, report=self.REPORT_XML_STRING)
         )
 
-    def test_import_teport_with_task_name(self):
+    def test_import_report_with_task_name(self):
         self.gmp.import_report(
             self.REPORT_XML_STRING,
             task_name=self.TASK_NAME,
@@ -111,6 +111,43 @@ class GmpCreateReportCommandTestCase(unittest.TestCase):
                 task_name=self.TASK_NAME,
                 task_comment=self.COMMENT,
             )
+
+    def test_import_report_with_in_assets(self):
+        self.gmp.import_report(
+            self.REPORT_XML_STRING,
+            task_name=self.TASK_NAME,
+            in_assets=False,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_report>'
+            '<task>'
+            '<name>{task}</name>'
+            '</task>'
+            '<in_assets>0</in_assets>'
+            '{report}'
+            '</create_report>'.format(
+                task=self.TASK_NAME,
+                report=self.REPORT_XML_STRING)
+        )
+
+        self.gmp.import_report(
+            self.REPORT_XML_STRING,
+            task_name=self.TASK_NAME,
+            in_assets=True,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_report>'
+            '<task>'
+            '<name>{task}</name>'
+            '</task>'
+            '<in_assets>1</in_assets>'
+            '{report}'
+            '</create_report>'.format(
+                task=self.TASK_NAME,
+                report=self.REPORT_XML_STRING)
+        )
 
 
 if __name__ == '__main__':

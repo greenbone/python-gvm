@@ -22,6 +22,9 @@
 * Removed **alert_id** argument from **get_reports**
 * Added new **run_alert** method for running an alert method on a specific
   report.
+* Fixed **create_permission** method
+* Check if scanner_type is one of '1' (OSP Scanner) or '2' (OpenVAS Scanner) in
+  **create_scanner** method.
 
 ## gvm.xml
 

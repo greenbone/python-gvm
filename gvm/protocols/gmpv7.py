@@ -90,6 +90,11 @@ CREDENTIAL_TYPES = (
     'usk',
 )
 
+SCANNER_TYPES = (
+    '1',
+    '2',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
@@ -839,12 +844,20 @@ class Gmp(GvmProtocol):
         cmd.add_element('name', name)
 
         _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
-        _xmlsubject.add_element('type', type)
+        _xmlsubject.add_element('type', subject_type)
 
         if comment:
             cmd.add_element('comment', comment)
 
-        if resource_id and resource_type:
+        if resource_id or resource_type:
+            if not resource_id:
+                raise RequiredArgument(
+                    'create_permission requires resource_id for resource_type')
+
+            if not resource_type:
+                raise RequiredArgument(
+                    'create_permission requires resource_type for resource_id')
+
             _xmlresource = cmd.add_element('resource',
                                            attrs={'id': resource_id})
             _xmlresource.add_element('type', resource_type)
@@ -922,7 +935,7 @@ class Gmp(GvmProtocol):
             port_list_id (str): UUID of the port list to which to add the range
             start (int): The first port in the range
             end (int): The last port in the range
-            type (str): The type of the ports: TCP, UDP, ...
+            port_range_type (str): The type of the ports: TCP, UDP, ...
             comment (str, optional): Comment for the port range
 
         Returns:
@@ -990,10 +1003,8 @@ class Gmp(GvmProtocol):
                 'import_report requires a task_id or task_name argument')
 
         if not in_assets is None:
-            if in_assets:
-                cmd.add_element('in_assets', '1')
-            else:
-                cmd.add_element('in_assets', '0')
+            cmd.add_element('in_assets', _to_bool(in_assets))
+
         try:
             cmd.append_xml_str(report)
         except etree.XMLSyntaxError as e:
@@ -1052,7 +1063,8 @@ class Gmp(GvmProtocol):
             name (str): Name of the scanner
             host (str): The host of the scanner
             port (str): The port of the scanner
-            scanner_type (str): The type of the scanner
+            scanner_type (str): Type of the scanner.
+                '1' for OSP, '2' for OpenVAS (classic) Scanner.
             ca_pub (str): Certificate of CA to verify scanner certificate
             credential_id (str): UUID of client certificate credential for the
                 scanner
@@ -1070,7 +1082,7 @@ class Gmp(GvmProtocol):
         if not port:
             raise RequiredArgument('create_scanner requires a port argument')
 
-        if not type:
+        if not scanner_type:
             raise RequiredArgument('create_scanner requires a scanner_type '
                                    'argument')
         if not ca_pub:
@@ -1079,6 +1091,11 @@ class Gmp(GvmProtocol):
         if not credential_id:
             raise RequiredArgument('create_scanner requires a credential_id '
                                    'argument')
+
+        if scanner_type not in SCANNER_TYPES:
+            raise InvalidArgument('create_scanner requires a scanner_type '
+                                  'argument which must be either "1" for OSP '
+                                  'or "2" OpenVAS (Classic).')
 
         cmd = XmlCommand('create_scanner')
         cmd.add_element('name', name)
@@ -3914,8 +3931,8 @@ class Gmp(GvmProtocol):
         cmd.add_element('host', host)
         cmd.add_element('port', port)
 
-        if scanner_type not in ('1', '2'):
-            raise InvalidArgument(' modify_scanner requires a scanner_type '
+        if scanner_type not in SCANNER_TYPES:
+            raise InvalidArgument('modify_scanner requires a scanner_type '
                                   'argument which must be either "1" for OSP '
                                   'or "2" OpenVAS (Classic).')
 
