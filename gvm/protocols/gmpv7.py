@@ -2199,7 +2199,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_credentials')
+        cmd = XmlCommand('get_configs')
 
         _add_filter(cmd, filter, filter_id)
 
