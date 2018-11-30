@@ -25,6 +25,7 @@
 * Fixed **create_permission** method
 * Check if scanner_type is one of '1' (OSP Scanner) or '2' (OpenVAS Scanner) in
   **create_scanner** method.
+* Fixed **get_config** sending the correct protocol command.
 
 ## gvm.xml
 
