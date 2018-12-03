@@ -20,12 +20,13 @@
 * **get_report** method **format_id** argument got renamed to
   **report_format_id**
 * Removed **alert_id** argument from **get_reports**
-* Added new **run_alert** method for running an alert method on a specific
-  report.
+* Added new **trigger_alert** method for triggering an alert method on a
+  specific report.
 * Fixed **create_permission** method
 * Check if scanner_type is one of '1' (OSP Scanner) or '2' (OpenVAS Scanner) in
   **create_scanner** method.
 * Fixed **get_config** sending the correct protocol command.
+* Added **import_config** method to import a scan config from xml.
 
 ## gvm.xml
 
@@ -40,6 +41,9 @@
   the server sending data is finished and no additional data has to be received.
 * Don't crash if huge content is returned in a xml response. This fixes e.g.
   **get_reports** for bigger report data.
+* It's possible to wait indefinitely by deactivating the timeouts via passing
+  None as timeout argument to the connection class constructors now.
+* Removed unused **read_timeout** argument from **UnixSocketConnection**
 
 # python-gvm 1.0.0.beta1 (13.11.2018)
 

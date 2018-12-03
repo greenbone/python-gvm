@@ -419,6 +419,29 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', config_id)
         return self._send_xml_command(cmd)
 
+    def import_config(self, config):
+        """Import a scan config from XML
+
+        Arguments:
+            config (str): Scan Config XML as string to import. This XML must
+                contain a :code:`<get_configs_response>` root element.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not config:
+            raise RequiredArgument('import_config requires config argument')
+
+        cmd = XmlCommand('create_config')
+
+        try:
+            cmd.append_xml_str(config)
+        except etree.XMLSyntaxError as e:
+            raise InvalidArgument(
+                'Invalid xml passed as config to import_config', e)
+
+        return self._send_xml_command(cmd)
+
     def create_credential(self, name, credential_type, *, comment=None,
                           allow_insecure=False, certificate=None,
                           key_phrase=None, private_key=None,
@@ -968,10 +991,11 @@ class Gmp(GvmProtocol):
 
     def import_report(self, report, *, task_id=None, task_name=None,
                       task_comment=None, in_assets=None):
-        """Import a Report
+        """Import a Report from XML
 
         Arguments:
-            report (str): Report XML as string to import
+            report (str): Report XML as string to import. This XML must contain
+                a :code:`<report>` root element.
             task_id (str, optional): UUID of task to import report to
             task_name (str, optional): Name of task to be created if task_id is
                 not present. Either task_id or task_name must be passed
@@ -2227,6 +2251,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not config_id:
+            raise RequiredArgument('get_config requires config_id argument')
+
         cmd = XmlCommand('get_configs')
         cmd.set_attribute('config_id', config_id)
 
@@ -4492,12 +4519,12 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def run_alert(self, alert_id, report_id, *, filter=None, filter_id=None,
-                  report_format_id=None, delta_report_id=None):
+    def trigger_alert(self, alert_id, report_id, *, filter=None, filter_id=None,
+                      report_format_id=None, delta_report_id=None):
         """Run an alert by ignoring its event and conditions
 
-        The alert is run immediately with the provided filtered report by
-        ignoring the even and condition settings.
+        The alert is triggered to run immediately with the provided filtered
+        report by ignoring the even and condition settings.
 
         Arguments:
             alert_id (str): UUID of the alert to be run
