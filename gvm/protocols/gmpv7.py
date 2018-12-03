@@ -993,10 +993,11 @@ class Gmp(GvmProtocol):
 
     def import_report(self, report, *, task_id=None, task_name=None,
                       task_comment=None, in_assets=None):
-        """Import a Report
+        """Import a Report from XML
 
         Arguments:
-            report (str): Report XML as string to import
+            report (str): Report XML as string to import. This XML must contain
+                a :code:`<report>` root element.
             task_id (str, optional): UUID of task to import report to
             task_name (str, optional): Name of task to be created if task_id is
                 not present. Either task_id or task_name must be passed
