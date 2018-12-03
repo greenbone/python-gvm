@@ -24,7 +24,7 @@ from gvm.protocols.gmpv7 import Gmp
 from .. import MockConnection
 
 
-class GmpCreateReportCommandTestCase(unittest.TestCase):
+class GmpImportReportTestCase(unittest.TestCase):
 
     TASK_ID = '00000000-0000-0000-0000-000000000001'
     TASK_NAME = 'unit test task'
