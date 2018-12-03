@@ -293,10 +293,9 @@ class UnixSocketConnection(GvmConnection):
     """
 
     def __init__(self, *, path=DEFAULT_UNIX_SOCKET_PATH,
-                 timeout=DEFAULT_TIMEOUT, read_timeout=DEFAULT_READ_TIMEOUT):
+                 timeout=DEFAULT_TIMEOUT):
         super().__init__(timeout=timeout)
 
-        self.read_timeout = read_timeout
         self.path = path
 
     def connect(self):

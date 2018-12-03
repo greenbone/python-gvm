@@ -2253,6 +2253,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not config_id:
+            raise RequiredArgument('get_config requires config_id argument')
+
         cmd = XmlCommand('get_configs')
         cmd.set_attribute('config_id', config_id)
 

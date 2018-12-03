@@ -41,6 +41,7 @@
   the server sending data is finished and no additional data has to be received.
 * It's possible to wait indefinitely by deactivating the timeouts via passing
   None as timeout argument to the connection class constructors now.
+* Removed unused **read_timeout** argument from **UnixSocketConnection**
 
 # python-gvm 1.0.0.beta1 (13.11.2018)
 
