@@ -39,6 +39,8 @@
   keyword arguments.
 * Add **finish_send** method to connections. The method allows to indicate to
   the server sending data is finished and no additional data has to be received.
+* Don't crash if huge content is returned in a xml response. This fixes e.g.
+  **get_reports** for bigger report data.
 * It's possible to wait indefinitely by deactivating the timeouts via passing
   None as timeout argument to the connection class constructors now.
 * Removed unused **read_timeout** argument from **UnixSocketConnection**

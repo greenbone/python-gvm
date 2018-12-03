@@ -21,6 +21,7 @@ Module for transforming responses
 from lxml import etree
 
 from .errors import GvmError
+from .xml import create_parser
 
 
 class EtreeTransform:
@@ -29,7 +30,7 @@ class EtreeTransform:
     """
 
     def __init__(self):
-        self._parser = etree.XMLParser(encoding='utf-8', recover=True)
+        self._parser = create_parser()
 
     def _convert_response(self, response):
         return etree.XML(response, parser=self._parser)
