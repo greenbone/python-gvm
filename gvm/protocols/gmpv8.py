@@ -205,7 +205,7 @@ class Gmp(Gmpv7):
             credential_type (str, optional): The credential type. One of 'cc',
                 'snmp', 'up', 'usk', 'smime', 'pgp'
             public_key: (str, optional): PGP public key in *armor* plain text
-                fromat
+                format
 
         Returns:
             The response. See :py:meth:`send_command` for details.
