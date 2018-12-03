@@ -26,6 +26,7 @@
 * Check if scanner_type is one of '1' (OSP Scanner) or '2' (OpenVAS Scanner) in
   **create_scanner** method.
 * Fixed **get_config** sending the correct protocol command.
+* Added **import_config** method to import a scan config from xml.
 
 ## gvm.xml
 
