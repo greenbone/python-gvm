@@ -421,6 +421,29 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', config_id)
         return self._send_xml_command(cmd)
 
+    def import_config(self, config):
+        """Import a scan config from XML
+
+        Arguments:
+            config (str): Scan Config XML as string to import. This XML must
+                contain a :code:`<get_configs_response>` root element.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not config:
+            raise RequiredArgument('import_config requires config argument')
+
+        cmd = XmlCommand('create_config')
+
+        try:
+            cmd.append_xml_str(config)
+        except etree.XMLSyntaxError as e:
+            raise InvalidArgument(
+                'Invalid xml passed as config to import_config', e)
+
+        return self._send_xml_command(cmd)
+
     def create_credential(self, name, credential_type, *, comment=None,
                           allow_insecure=False, certificate=None,
                           key_phrase=None, private_key=None,
