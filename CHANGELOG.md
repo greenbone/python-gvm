@@ -26,6 +26,7 @@
 * Check if scanner_type is one of '1' (OSP Scanner) or '2' (OpenVAS Scanner) in
   **create_scanner** method.
 * Fixed **get_config** sending the correct protocol command.
+* Added **import_config** method to import a scan config from xml.
 
 ## gvm.xml
 
@@ -40,6 +41,7 @@
   the server sending data is finished and no additional data has to be received.
 * It's possible to wait indefinitely by deactivating the timeouts via passing
   None as timeout argument to the connection class constructors now.
+* Removed unused **read_timeout** argument from **UnixSocketConnection**
 
 # python-gvm 1.0.0.beta1 (13.11.2018)
 
