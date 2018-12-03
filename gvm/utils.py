@@ -26,9 +26,13 @@ def get_version_string(version):
     Returns:
         str: The version tuple converted into a string representation
     """
-    if len(version) > 4:
-        ver = '.'.join(str(x) for x in version[:4])
-        ver += str(version[4])
+    if len(version) > 3:
+        ver = '.'.join(str(x) for x in version[:3])
+
+        if version[3] not in ('beta', 'alpha', 'rc', 'b', 'a', 'pre'):
+            ver += '.'
+
+        ver += '{0}{1}'.format(str(version[3]), str(version[4]))
 
         if len(version) > 5:
             # support (1, 2, 3, 'beta', 2, 'dev', 1)

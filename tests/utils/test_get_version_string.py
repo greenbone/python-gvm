@@ -33,8 +33,26 @@ class TestGetVersionString(unittest.TestCase):
 
     def test_beta_version(self):
         self.assertEqual(
-            get_version_string((1, 0, 1, 'beta', 1)), '1.0.1.beta1')
+            get_version_string((1, 0, 1, 'beta', 1)), '1.0.1beta1')
 
     def test_dev_after_beta_version(self):
         self.assertEqual(get_version_string((1, 0, 1, 'beta', 2, 'dev', 1)),
-                         '1.0.1.beta2.dev1')
+                         '1.0.1beta2.dev1')
+
+    def test_pep440_pre_release_versions(self):
+        self.assertEqual(
+            get_version_string((1, 0, 1, 'beta', 1)), '1.0.1beta1')
+        self.assertEqual(
+            get_version_string((1, 0, 1, 'b', 1)), '1.0.1b1')
+        self.assertEqual(
+            get_version_string((1, 0, 1, 'alpha', 1)), '1.0.1alpha1')
+        self.assertEqual(
+            get_version_string((1, 0, 1, 'a', 1)), '1.0.1a1')
+        self.assertEqual(
+            get_version_string((1, 0, 1, 'pre', 1)), '1.0.1pre1')
+        self.assertEqual(
+            get_version_string((1, 0, 1, 'rc', 1)), '1.0.1rc1')
+
+
+if __name__ == '__main__':
+    unittest.main()
