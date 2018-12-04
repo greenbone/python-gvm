@@ -54,16 +54,20 @@ def create_credentials_element(_xmlcredentials, credentials):
 def create_vt_selection_element(_xmlvtselection, vt_selection):
     """Generates an xml element with a selection of Vulnerability tests."""
     for vt_id, vt_values in vt_selection.items():
-        if vt_id != 'vt_groups':
+        if vt_id != 'vt_groups' and isinstance(vt_values, dict):
             _xmlvt = _xmlvtselection.add_element('vt_single',
                                                  attrs={'id': vt_id})
             if vt_values:
                 for key, value in vt_values.items():
                     _xmlvt.add_element('vt_value', value, attrs={'id': key})
-        else:
+        elif vt_id == 'vt_groups' and isinstance(vt_values, list):
             for group in vt_values:
                 _xmlvt = _xmlvtselection.add_element(
                     'vt_group', attrs={'filter': group})
+        else:
+            raise InvalidArgument(
+                'It was not possible to add {} to the VTs '
+                'selection.'.format(vt_id))
 
     return _xmlvtselection
 
