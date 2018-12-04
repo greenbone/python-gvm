@@ -20,7 +20,7 @@ Main module of python-gvm.
 """
 from .utils import get_version_string
 
-VERSION = (1, 0, 0, 'beta', 2)
+VERSION = (1, 0, 0, 'beta', 2, 'dev', 1)
 """
 Current Version of python-gvm as a tuple
 """

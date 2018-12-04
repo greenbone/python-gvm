@@ -1,3 +1,5 @@
+# python-gvm 1.0.0 (unreleased)
+
 # python-gvm 1.0.0.beta2 (04.12.2018)
 
 ## gvm.protocols.base
