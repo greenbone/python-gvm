@@ -1,5 +1,9 @@
 # python-gvm 1.0.0 (unreleased)
 
+## gvm.protocols.gmpv7
+
+* Fixed generating XML for `get_credentials` command
+
 # python-gvm 1.0.0.beta2 (04.12.2018)
 
 ## gvm.protocols.base

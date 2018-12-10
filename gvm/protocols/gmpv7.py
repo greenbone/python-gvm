@@ -2185,7 +2185,7 @@ class Gmp(GvmProtocol):
 
             cmd.set_attribute('format', format)
 
-        return self.send_command(cmd)
+        return self._send_xml_command(cmd)
 
     def get_credential(self, credential_id):
         """Request a single credential
