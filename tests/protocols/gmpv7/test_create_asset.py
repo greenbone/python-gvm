@@ -31,28 +31,25 @@ class GmpCreateAssetTestCase(unittest.TestCase):
 
     def test_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_asset(name=None, asset_type='os')
+            self.gmp.create_asset(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_asset(name='', asset_type='os')
+            self.gmp.create_asset(name='')
+
+    def test_invalid_asset_type_os(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_asset(name='foo', asset_type='os')
 
     def test_invalid_asset_type(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_asset(name='foo', asset_type=None)
-
-        with self.assertRaises(InvalidArgument):
-            self.gmp.create_asset(name='foo', asset_type='')
-
-        with self.assertRaises(InvalidArgument):
             self.gmp.create_asset(name='foo', asset_type='foo')
 
-    def test_create_os_asset(self):
-        self.gmp.create_asset(name='ipsum', asset_type='os')
+    def test_create_asset(self):
+        self.gmp.create_asset(name='ipsum')
 
         self.connection.send.has_been_called_with(
             '<create_asset>'
             '<asset>'
-            '<type>os</type>'
             '<name>ipsum</name>'
             '</asset>'
             '</create_asset>'
@@ -64,20 +61,20 @@ class GmpCreateAssetTestCase(unittest.TestCase):
         self.connection.send.has_been_called_with(
             '<create_asset>'
             '<asset>'
-            '<type>host</type>'
             '<name>ipsum</name>'
+            '<type>host</type>'
             '</asset>'
             '</create_asset>'
         )
 
     def test_create_asset_with_comment(self):
-        self.gmp.create_asset(name='ipsum', asset_type='os', comment='lorem')
+        self.gmp.create_asset(name='ipsum', asset_type='host', comment='lorem')
 
         self.connection.send.has_been_called_with(
             '<create_asset>'
             '<asset>'
-            '<type>os</type>'
             '<name>ipsum</name>'
+            '<type>host</type>'
             '<comment>lorem</comment>'
             '</asset>'
             '</create_asset>'
