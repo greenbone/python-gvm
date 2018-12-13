@@ -23,7 +23,7 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpCreateAssetTestCase(unittest.TestCase):
+class GmpCreateHostTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
@@ -31,35 +31,13 @@ class GmpCreateAssetTestCase(unittest.TestCase):
 
     def test_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_asset(name=None, asset_type='os')
+            self.gmp.create_host(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_asset(name='', asset_type='os')
-
-    def test_invalid_asset_type(self):
-        with self.assertRaises(InvalidArgument):
-            self.gmp.create_asset(name='foo', asset_type=None)
-
-        with self.assertRaises(InvalidArgument):
-            self.gmp.create_asset(name='foo', asset_type='')
-
-        with self.assertRaises(InvalidArgument):
-            self.gmp.create_asset(name='foo', asset_type='foo')
-
-    def test_create_os_asset(self):
-        self.gmp.create_asset(name='ipsum', asset_type='os')
-
-        self.connection.send.has_been_called_with(
-            '<create_asset>'
-            '<asset>'
-            '<type>os</type>'
-            '<name>ipsum</name>'
-            '</asset>'
-            '</create_asset>'
-        )
+            self.gmp.create_host(name='')
 
     def test_create_host_asset(self):
-        self.gmp.create_asset(name='ipsum', asset_type='host')
+        self.gmp.create_host(name='ipsum')
 
         self.connection.send.has_been_called_with(
             '<create_asset>'
@@ -71,12 +49,12 @@ class GmpCreateAssetTestCase(unittest.TestCase):
         )
 
     def test_create_asset_with_comment(self):
-        self.gmp.create_asset(name='ipsum', asset_type='os', comment='lorem')
+        self.gmp.create_host(name='ipsum', comment='lorem')
 
         self.connection.send.has_been_called_with(
             '<create_asset>'
             '<asset>'
-            '<type>os</type>'
+            '<type>host</type>'
             '<name>ipsum</name>'
             '<comment>lorem</comment>'
             '</asset>'
