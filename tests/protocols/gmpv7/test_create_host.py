@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
