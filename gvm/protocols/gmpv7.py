@@ -354,28 +354,30 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', alert_id)
         return self._send_xml_command(cmd)
 
-    def create_asset(self, name, asset_type, *, comment=None):
+    def create_asset(self, name, asset_type=None, *, comment=None):
         """Create a new asset
 
         Arguments:
             name (str): Name for the new asset
-            asset_type (str): Either 'os' or 'host'
+            asset_type (str, optional): Must be 'host' if set
             comment (str, optional): Comment for the new asset
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if asset_type not in ('host', 'os'):
-            raise InvalidArgument(
-                'create_asset requires asset_type to be either host or os')
-
         if not name:
             raise RequiredArgument('create_asset requires name argument')
 
+        if asset_type and asset_type != 'host':
+            raise InvalidArgument(
+                'create_asset requires asset_type to be host')
+
         cmd = XmlCommand('create_asset')
         asset = cmd.add_element('asset')
-        asset.add_element('type', asset_type)
         asset.add_element('name', name)
+
+        if asset_type:
+            asset.add_element('type', asset_type)
 
         if comment:
             asset.add_element('comment', comment)
