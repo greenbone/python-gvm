@@ -83,32 +83,6 @@ class GmpCreateAssetTestCase(unittest.TestCase):
             '</create_asset>'
         )
 
-    def test_create_agent_with_howto_install(self):
-        self.gmp.create_agent(installer='foo', signature='bar', name='ipsum',
-                              howto_install='lorem')
-
-        self.connection.send.has_been_called_with(
-            '<create_agent>'
-            '<installer>foo</installer>'
-            '<signature>bar</signature>'
-            '<name>ipsum</name>'
-            '<howto_install>lorem</howto_install>'
-            '</create_agent>'
-        )
-
-    def test_create_agent_with_howto_use(self):
-        self.gmp.create_agent(installer='foo', signature='bar', name='ipsum',
-                              howto_use='lorem')
-
-        self.connection.send.has_been_called_with(
-            '<create_agent>'
-            '<installer>foo</installer>'
-            '<signature>bar</signature>'
-            '<name>ipsum</name>'
-            '<howto_use>lorem</howto_use>'
-            '</create_agent>'
-        )
-
 
 if __name__ == '__main__':
     unittest.main()
