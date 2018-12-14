@@ -307,7 +307,11 @@ class UnixSocketConnection(GvmConnection):
         self._socket = socketlib.socket(
             socketlib.AF_UNIX, socketlib.SOCK_STREAM)
         self._socket.settimeout(self._timeout)
-        self._socket.connect(self.path)
+        try:
+            self._socket.connect(self.path)
+        except FileNotFoundError:
+            raise GvmError('Socket {path} does not exist'.format(
+                path=self.path)) from None
 
 
 class DebugConnection:
