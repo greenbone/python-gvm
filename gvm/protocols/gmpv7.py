@@ -2182,17 +2182,30 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_credential(self, credential_id):
+    def get_credential(self, credential_id, credential_format=None):
         """Request a single credential
 
         Arguments:
             credential_id (str): UUID of an existing credential
+            credential_format (str, optional): One of "key", "rpm", "deb",
+                "exe" or "pem"
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not credential_id:
+            raise RequiredArgument(
+                'get_credential requires credential_id argument')
+
         cmd = XmlCommand('get_credentials')
         cmd.set_attribute('credential_id', credential_id)
+        if credential_format:
+            if not credential_format in ('key', 'rpm', 'deb', 'exe', 'pem'):
+                raise InvalidArgument(
+                    'credential_format argument needs to one of '
+                    'key, rpm, deb, exe or pem')
+
+            cmd.set_attribute('format', credential_format)
         return self._send_xml_command(cmd)
 
     def get_configs(self, *, filter=None, filter_id=None, trash=None,
