@@ -657,7 +657,7 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('create_asset')
         asset = cmd.add_element('asset')
-        asset.add_element('type', 'host') # ignored for gmp7, requried for gmp8
+        asset.add_element('type', 'host') # ignored for gmp7, required for gmp8
         asset.add_element('name', name)
 
         if comment:
