@@ -354,34 +354,6 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', alert_id)
         return self._send_xml_command(cmd)
 
-    def create_asset(self, name, asset_type, *, comment=None):
-        """Create a new asset
-
-        Arguments:
-            name (str): Name for the new asset
-            asset_type (str): Either 'os' or 'host'
-            comment (str, optional): Comment for the new asset
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if asset_type not in ('host', 'os'):
-            raise InvalidArgument(
-                'create_asset requires asset_type to be either host or os')
-
-        if not name:
-            raise RequiredArgument('create_asset requires name argument')
-
-        cmd = XmlCommand('create_asset')
-        asset = cmd.add_element('asset')
-        asset.add_element('type', asset_type)
-        asset.add_element('name', name)
-
-        if comment:
-            asset.add_element('comment', comment)
-
-        return self._send_xml_command(cmd)
-
     def create_config(self, config_id, name):
         """Create a new scan config from an existing one
 
@@ -668,6 +640,29 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('create_group')
         cmd.add_element('copy', group_id)
+        return self._send_xml_command(cmd)
+
+    def create_host(self, name, *, comment=None):
+        """Create a new host asset
+
+        Arguments:
+            name (str): Name for the new host asset
+            comment (str, optional): Comment for the new host asset
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument('create_host requires name argument')
+
+        cmd = XmlCommand('create_asset')
+        asset = cmd.add_element('asset')
+        asset.add_element('type', 'host') # ignored for gmp7, required for gmp8
+        asset.add_element('name', name)
+
+        if comment:
+            asset.add_element('comment', comment)
+
         return self._send_xml_command(cmd)
 
     def create_note(self, text, nvt_oid, *, seconds_active=None, comment=None,

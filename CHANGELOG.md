@@ -3,6 +3,8 @@
 ## gvm.protocols.gmpv7
 
 * Fixed generating XML for `get_credentials` command
+* Renamed create_asset method to create_host and dropped asset_type parameter. It is
+  only possible to create host assets.
 
 # python-gvm 1.0.0.beta2 (04.12.2018)
 
