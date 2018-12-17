@@ -36,7 +36,7 @@ setup(
     url='https://github.com/greenbone/python-gvm',
     packages=find_packages(),
     install_requires=['paramiko', 'lxml', 'defusedxml'],
-    python_requires='>=3',
+    python_requires='>=3.5',
     classifiers=[
         # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 5 - Production/Stable',
