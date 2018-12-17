@@ -3043,7 +3043,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_schedules')
+        cmd = XmlCommand('get_settings')
 
         if filter:
             cmd.set_attribute('filter', filter)
