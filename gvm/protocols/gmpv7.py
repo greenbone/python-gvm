@@ -2202,7 +2202,7 @@ class Gmp(GvmProtocol):
         if credential_format:
             if not credential_format in ('key', 'rpm', 'deb', 'exe', 'pem'):
                 raise InvalidArgument(
-                    'credential_format argument needs to one of '
+                    'credential_format argument needs to be one of '
                     'key, rpm, deb, exe or pem')
 
             cmd.set_attribute('format', credential_format)
