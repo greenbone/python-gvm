@@ -88,6 +88,8 @@ class Gmp(Gmpv7):
                 Used for the usk credential type.
             private_key (str, optional): Private key to use for login. Required
                 for usk credential type. Also used for the cc credential type.
+                The supported key types (dsa, rsa, ecdsa, ...) and formats (PEM,
+                PKC#12, OpenSSL, ...) depend on your installed GnuTLS version.
             login (str, optional): Username for the credential. Required for
                 up, usk and snmp credential type.
             password (str, optional): Password for the credential. Used for
