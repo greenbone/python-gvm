@@ -2231,6 +2231,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not agent_id:
+            raise RequiredArgument(
+                'get_agent requires an agent_id argument'
+            )
+
         cmd = XmlCommand('get_agents')
         cmd.set_attribute('agent_id', agent_id)
 
