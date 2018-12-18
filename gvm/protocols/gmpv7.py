@@ -1626,8 +1626,8 @@ class Gmp(GvmProtocol):
                 be run.
             schedule_periods (int, optional): A limit to the number of times the
                 task will be scheduled, or 0 for no limit
-            observers (list, optional): List of user names which should be
-                allowed to observe this task
+            observers (list, optional): List of user names or user ids which
+                should be allowed to observe this task
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1683,7 +1683,10 @@ class Gmp(GvmProtocol):
                 cmd.add_element('schedule_periods', str(schedule_periods))
 
         if observers:
-            cmd.add_element('observers', ' '.join(observers))
+            # gvmd splits by command and space
+            # gvmd tries to lookup each value as user name and afterwards as
+            # user id. So both user name and user id are possible
+            cmd.add_element('observers', ','.join(observers))
 
         return self._send_xml_command(cmd)
 
