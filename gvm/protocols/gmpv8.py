@@ -64,6 +64,17 @@ class Gmp(Gmpv7):
                           privacy_password=None, public_key=None):
         """Create a new credential
 
+        Create a new credential e.g. to be used in the method of an alert.
+
+        Currently the following credential types are supported:
+
+            - 'up'    - Username + Password
+            - 'usk'   - Username + private SSH-Key
+            - 'cc'    - Client Certificates
+            - 'snmp'  - SNMPv1 or SNMPv2c protocol
+            - 'smime' - S/MIME Certificate
+            - 'pgp'   - OpenPGP Key
+
         Arguments:
             name (str): Name of the new credential
             credential_type (str): The credential type. One of 'cc', 'snmp',
@@ -71,17 +82,86 @@ class Gmp(Gmpv7):
             comment (str, optional): Comment for the credential
             allow_insecure (boolean, optional): Whether to allow insecure use of
                 the credential
-            certificate (str, optional): Certificate for the credential
-            key_phrase (str, optional): Key passphrase for the private key
-            private_key (str, optional): Private key to use for login
-            login (str, optional): Username for the credential
-            password (str, optional): Password for the credential
+            certificate (str, optional): Certificate for the credential.
+                Required for cc and smime credential types.
+            key_phrase (str, optional): Key passphrase for the private key.
+                Used for the usk credential type.
+            private_key (str, optional): Private key to use for login. Required
+                for usk credential type. Also used for the cc credential type.
+                The supported key types (dsa, rsa, ecdsa, ...) and formats (PEM,
+                PKC#12, OpenSSL, ...) depend on your installed GnuTLS version.
+            login (str, optional): Username for the credential. Required for
+                up, usk and snmp credential type.
+            password (str, optional): Password for the credential. Used for
+                up and snmp credential types.
             community (str, optional): The SNMP community
+            auth_algorithm (str, optional): The SNMP authentication algorithm.
+                Either 'md5' or 'sha1'. Required for snmp credential type.
             privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
             public_key: (str, optional): PGP public key in *armor* plain text
-                format
+                format. Required for pgp credential type.
+
+        Examples:
+            Creating a Username + Password credential
+
+            .. code-block:: python
+
+                gmp.create_credential(
+                    name='UP Credential',
+                    credential_type='up',
+                    login='foo',
+                    password='bar',
+                );
+
+            Creating a Username + SSH Key credential
+
+            .. code-block:: python
+
+                with open('path/to/private-ssh-key') as f:
+                    key = f.read()
+
+                gmp.create_credential(
+                    name='USK Credential',
+                    credential_type='usk',
+                    login='foo',
+                    key_phrase='foobar',
+                    private_key=key,
+                )
+
+            Creating a PGP credential
+
+            .. note::
+
+                A compatible public pgp key file can be exported with GnuPG via
+                ::
+
+                    $ gpg --armor --export alice@cyb.org > alice.asc
+
+            .. code-block:: python
+
+                with open('path/to/pgp.key.asc') as f:
+                    key = f.read()
+
+                gmp.create_credential(
+                    name='PGP Credential',
+                    credential_type='pgp',
+                    public_key=key,
+                )
+
+            Creating a S/MIME credential
+
+            .. code-block:: python
+
+                with open('path/to/smime-cert') as f:
+                    cert = f.read()
+
+                gmp.create_credential(
+                    name='SMIME Credential',
+                    credential_type='smime',
+                    certificate=cert,
+                )
 
         Returns:
             The response. See :py:meth:`send_command` for details.
