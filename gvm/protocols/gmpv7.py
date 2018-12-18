@@ -1680,9 +1680,15 @@ class Gmp(GvmProtocol):
                     cmd.add_element('alert', attrs={'id': str(alert)})
 
         if schedule_id:
-            cmd.add_element('schedule', schedule_id)
+            cmd.add_element('schedule', attrs={'id': schedule_id})
 
-            if schedule_periods:
+            if schedule_periods is not None:
+                if not isinstance(schedule_periods, numbers.Integral) or \
+                    schedule_periods < 0:
+                    raise InvalidArgument(
+                        'schedule_periods must be an integer greater or equal '
+                        'then 0'
+                    )
                 cmd.add_element('schedule_periods', str(schedule_periods))
 
         if observers:
