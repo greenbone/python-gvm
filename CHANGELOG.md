@@ -5,8 +5,8 @@
 * Fixed generating XML for `get_nvts` command
 * Fixed generating XML for `get_settings` command
 * Fixed generating XML for `get_credentials` command
-* Renamed create_asset method to create_host and dropped asset_type parameter. It is
-  only possible to create host assets.
+* Renamed create_asset method to create_host and dropped asset_type parameter.
+  It is only possible to create host assets.
 
 # python-gvm 1.0.0.beta2 (04.12.2018)
 
