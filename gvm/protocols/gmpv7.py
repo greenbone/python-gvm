@@ -1437,6 +1437,22 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not name:
+            raise RequiredArgument(
+                'create_tag requires name argument'
+            )
+
+        if not resource_id:
+            raise RequiredArgument(
+                'create_tag requires resource_id argument'
+            )
+
+        if not resource_type:
+            raise RequiredArgument(
+                'create_tag requires resource_type argument'
+            )
+
+
         cmd = XmlCommand('create_tag')
         cmd.add_element('name', name)
         _xmlresource = cmd.add_element('resource',
