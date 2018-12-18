@@ -2559,7 +2559,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_notes')
+        cmd = XmlCommand('get_nvts')
 
         if not details is None:
             cmd.set_attribute('details', _to_bool(details))
