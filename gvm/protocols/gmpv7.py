@@ -24,6 +24,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 7`_
     https://docs.greenbone.net/API/GMP/gmp-7.0.html
 """
 import logging
+import numbers
 
 from lxml import etree
 
@@ -1265,22 +1266,23 @@ class Gmp(GvmProtocol):
             name (str): Name of the schedule
             comment (str, optional): Comment for the schedule
             first_time_minute (int, optional): First time minute the schedule
-                will run
+                will run. Must be an integer >= 0.
             first_time_hour (int, optional): First time hour the schedule
-                will run
+                will run. Must be an integer >= 0.
             first_time_day_of_month (int, optional): First time day of month the
-                schedule will run
+                schedule will run. Must be an integer > 0 <= 31.
             first_time_month (int, optional): First time month the schedule
-                will run
+                will run. Must be an integer >= 1 <= 12.
             first_time_year (int, optional): First time year the schedule
-                will run
+                will run. Must be an integer >= 1970.
             duration (int, optional): How long the Manager will run the
                 scheduled task for until it gets paused if not finished yet.
+                Must be an integer > 0.
             duration_unit (str, optional): Unit of the duration. One of second,
                 minute, hour, day, week, month, year, decade. Required if
                 duration is set.
             period (int, optional): How often the Manager will repeat the
-                scheduled task
+                scheduled task. Must be an integer > 0.
             period_unit (str, optional): Unit of the period. One of second,
                 minute, hour, day, week, month, year, decade. Required if
                 period is set.
@@ -1301,22 +1303,56 @@ class Gmp(GvmProtocol):
         if first_time_minute or first_time_hour or first_time_day_of_month or \
             first_time_month or first_time_year:
 
-            if not first_time_minute:
+            if first_time_minute is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_minute argument')
-            if not first_time_hour:
+            elif not isinstance(first_time_minute, numbers.Integral) or \
+                first_time_minute < 0:
+                raise InvalidArgument(
+                    'first_time_minute argument of create_schedule needs to be '
+                    'an integer greater or equal 0'
+                )
+
+            if first_time_hour is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_hour argument')
-            if not first_time_day_of_month:
+            elif not isinstance(first_time_hour, numbers.Integral) or \
+                first_time_hour < 0:
+                raise InvalidArgument(
+                    'first_time_hour argument of create_schedule needs to be '
+                    'an integer greater or equal 0'
+                )
+
+            if first_time_day_of_month is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_day_of_month '
                     'argument')
-            if not first_time_month:
+            elif not isinstance(first_time_day_of_month, numbers.Integral) or \
+                first_time_day_of_month < 1 or first_time_day_of_month > 31:
+                raise InvalidArgument(
+                    'first_time_day_of_month argument of create_schedule needs '
+                    'to be an integer between 1 and 31'
+                )
+
+            if first_time_month is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_month argument')
-            if not first_time_year:
+            elif not isinstance(first_time_month, numbers.Integral) or \
+                first_time_month < 1 or first_time_month > 12:
+                raise InvalidArgument(
+                    'first_time_month argument of create_schedule needs '
+                    'to be an integer between 1 and 12'
+                )
+
+            if first_time_year is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_year argument')
+            elif not isinstance(first_time_year, numbers.Integral) or \
+                first_time_year < 1970:
+                raise InvalidArgument(
+                    'first_time_year argument of create_schedule needs '
+                    'to be an integer greater or equal 1970'
+                )
 
             _xmlftime = cmd.add_element('first_time')
             _xmlftime.add_element('minute', str(first_time_minute))
@@ -1325,21 +1361,26 @@ class Gmp(GvmProtocol):
             _xmlftime.add_element('month', str(first_time_month))
             _xmlftime.add_element('year', str(first_time_year))
 
-        if duration:
+        if duration is not None:
             if not duration_unit:
                 raise RequiredArgument(
                     'Setting duration requires duration_unit argument')
 
             if not duration_unit in TIME_UNITS:
                 raise InvalidArgument(
-                    'duration_unit must be one of {units} but {actual} has '
+                    'duration_unit must be one of {units}. But {actual} has '
                     'been passed'.format(
                         units=', '.join(TIME_UNITS), actual=duration_unit))
+
+            if not isinstance(duration, numbers.Integral) or duration < 1:
+                raise InvalidArgument(
+                    'duration argument must be an integer greater then 0',
+                )
 
             _xmlduration = cmd.add_element('duration', str(duration))
             _xmlduration.add_element('unit', duration_unit)
 
-        if period:
+        if period is not None:
             if not period_unit:
                 raise RequiredArgument(
                     'Setting period requires period_unit argument')
@@ -1349,6 +1390,11 @@ class Gmp(GvmProtocol):
                     'period_unit must be one of {units} but {actual} has '
                     'been passed'.format(
                         units=', '.join(TIME_UNITS), actual=period_unit))
+
+            if not isinstance(period, numbers.Integral) or period < 1:
+                raise InvalidArgument(
+                    'period argument must be an integer greater then 0',
+                )
 
             _xmlperiod = cmd.add_element('period', str(period))
             _xmlperiod.add_element('unit', period_unit)
