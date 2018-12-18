@@ -1744,11 +1744,11 @@ class Gmp(GvmProtocol):
             cmd.add_element('password', password)
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts),
+            cmd.add_element('hosts', ','.join(hosts),
                             attrs={'allow': '1' if hosts_allow else '0'})
 
         if ifaces:
-            cmd.add_element('ifaces', ', '.join(ifaces),
+            cmd.add_element('ifaces', ','.join(ifaces),
                             attrs={'allow': '1' if ifaces_allow else '0'})
 
         if role_ids:
