@@ -2,6 +2,7 @@
 
 ## gvm.protocols.gmpv7
 
+* Fixed generating XML for `get_nvts` command
 * Fixed generating XML for `get_settings` command
 * Fixed generating XML for `get_credentials` command
 * Renamed create_asset method to create_host and dropped asset_type parameter. It is
