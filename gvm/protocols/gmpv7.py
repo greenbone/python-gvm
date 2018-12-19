@@ -95,6 +95,48 @@ SCANNER_TYPES = (
     '2',
 )
 
+ALERT_EVENTS = (
+    'Task run status changed',
+)
+
+ALERT_EVENTS_SECINFO = (
+    'Updated SecInfo arrived',
+    'New SecInfo arrived'
+)
+
+ALERT_CONDITIONS = (
+    'Always',
+    'Severity at least',
+    'Filter count changed',
+    'Filter count at least',
+)
+
+ALERT_CONDITIONS_SECINFO = (
+    'Always',
+)
+
+ALERT_METHODS = (
+    'SCP',
+    'Send',
+    'SMB',
+    'SNMP',
+    'Syslog',
+    'Email',
+    'Start Task',
+    'HTTP Get',
+    'Sourcefire Connector',
+    'verinice Connector',
+)
+
+ALERT_METHODS_SECINFO = (
+    'SCP',
+    'Send',
+    'SMB',
+    'SNMP',
+    'Syslog',
+    'Email',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
@@ -282,9 +324,18 @@ class Gmp(GvmProtocol):
         Arguments:
             name (str): Name of the new Alert
             condition (str): The condition that must be satisfied for the alert
-                to occur.
-            event (str): The event that must happen for the alert to occur
-            method (str): The method by which the user is alerted
+                to occur; if the event is either 'Updated SecInfo arrived' or
+                'New SecInfo arrived', condition must be 'Always'. Otherwise,
+                condition can also be on of 'Severity at least', 'Filter count
+                changed' or 'Filter count at least'.
+            event (str): The event that must happen for the alert to occur, one
+                of 'Task run status changed', 'Updated SecInfo arrived' or 'New
+                SecInfo arrived'
+            method (str): The method by which the user is alerted, one of 'SCP',
+                'Send', 'SMB', 'SNMP', 'Syslog' or 'Email'; if the event is
+                neither 'Updated SecInfo arrived' nor 'New SecInfo arrived',
+                method can also be one of 'Start Task', 'HTTP Get', 'Sourcefire
+                Connector' or 'verinice Connector'.
             condition_data (dict, optional): Data that defines the condition
             event_data (dict, optional): Data that defines the event
             method_data (dict, optional): Data that defines the method
@@ -305,6 +356,20 @@ class Gmp(GvmProtocol):
 
         if not method:
             raise RequiredArgument('create_alert requires method argument')
+
+        if event in ALERT_EVENTS:
+            if condition not in ALERT_CONDITIONS:
+                raise InvalidArgument('Invalid condition for event')
+            if method not in ALERT_METHODS:
+                raise InvalidArgument('Invalid method for event')
+        elif event in ALERT_EVENTS_SECINFO:
+            if condition not in ALERT_CONDITIONS_SECINFO:
+                raise InvalidArgument('Invalid condition for event')
+            if method not in ALERT_METHODS_SECINFO:
+                raise InvalidArgument('Invalid method for event')
+        else:
+            raise InvalidArgument('Invalid event')
+
 
         cmd = XmlCommand('create_alert')
         cmd.add_element('name', name)
