@@ -138,6 +138,11 @@ ALERT_METHODS_SECINFO = (
     'Email',
 )
 
+ASSET_TYPES = (
+    'host',
+    'os',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
@@ -2303,7 +2308,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not asset_type in ('os', 'host'):
+        if not asset_type in ASSET_TYPES:
             raise InvalidArgument('asset_type must be either os or host')
 
         cmd = XmlCommand('get_assets')
@@ -2324,7 +2329,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not asset_type in ('os', 'host'):
+        if not asset_type in ASSET_TYPES:
             raise InvalidArgument('asset_type must be either os or host')
 
         cmd = XmlCommand('get_assets')
