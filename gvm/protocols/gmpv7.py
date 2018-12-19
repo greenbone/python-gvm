@@ -2478,6 +2478,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not feed_type:
+            raise RequiredArgument('get_feed requires a feed_type argument')
+
         feed_type = feed_type.upper()
 
         if not feed_type in ('NVT', 'CERT', 'SCAP'):
