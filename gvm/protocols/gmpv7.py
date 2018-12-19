@@ -2529,6 +2529,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not filter_id:
+            raise RequiredArgument('get_filter requires a filter_id argument')
+
         cmd = XmlCommand('get_filters')
         cmd.set_attribute('filter_id', filter_id)
         return self._send_xml_command(cmd)
