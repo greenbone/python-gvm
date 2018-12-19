@@ -2774,6 +2774,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not nvt_oid:
+            raise RequiredArgument('get_nvt requires nvt_oid argument')
+
         cmd = XmlCommand('get_nvts')
         cmd.set_attribute('nvt_oid', nvt_oid)
 
