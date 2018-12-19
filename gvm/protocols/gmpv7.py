@@ -2835,6 +2835,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not override_id:
+            raise RequiredArgument(
+                'get_override requires a override_id argument'
+            )
+
         cmd = XmlCommand('get_overrides')
         cmd.set_attribute('override_id', override_id)
 
