@@ -3203,6 +3203,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not role_id:
+            raise RequiredArgument(
+                'get_role requires a role_id argument'
+            )
+
         cmd = XmlCommand('get_roles')
         cmd.set_attribute('role_id', role_id)
         return self._send_xml_command(cmd)
