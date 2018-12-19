@@ -2615,9 +2615,9 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('get_info')
 
-        _add_filter(cmd, filter, filter_id)
-
         cmd.set_attribute('type', info_type)
+
+        _add_filter(cmd, filter, filter_id)
 
         if name:
             cmd.set_attribute('name', name)
