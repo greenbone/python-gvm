@@ -2800,16 +2800,14 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_overrides(self, *, filter=None, filter_id=None, nvt_oid=None,
-                      task_id=None, details=None, result=None):
+    def get_overrides(self, *, filter=None, filter_id=None, details=None,
+                      result=None):
         """Request a list of overrides
 
         Arguments:
             filter (str, optional): Filter term to use for the query
             filter_id (str, optional): UUID of an existing filter to use for
                 the query
-            nvt_oid (str, optional): OID of a nvt
-            task_id (str, optional): UUID of a task
             details (boolean, optional):
             result (boolean, optional):
 
@@ -2819,12 +2817,6 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand('get_overrides')
 
         _add_filter(cmd, filter, filter_id)
-
-        if nvt_oid:
-            cmd.set_attribute('nvt_oid', nvt_oid)
-
-        if task_id:
-            cmd.set_attribute('task_id', task_id)
 
         if not details is None:
             cmd.set_attribute('details', _to_bool(details))
