@@ -2602,6 +2602,10 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not info_type:
+            raise RequiredArgument(
+                'get_info_list requires an info_type argument')
+
         info_type = info_type.upper()
 
         if not info_type in INFO_TYPES:
