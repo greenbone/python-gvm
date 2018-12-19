@@ -11,6 +11,8 @@
 * Removed the format parameter from `get_credentials` method
 * Removed the task_id and nvt_oid parameters from `get_notes` and
   `get_overrides` methods
+* Split getting a single preference by name from `get_preferences` method into
+  `get_preference`
 
 # python-gvm 1.0.0.beta2 (04.12.2018)
 

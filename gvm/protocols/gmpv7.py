@@ -2941,7 +2941,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_preferences(self, *, nvt_oid=None, config_id=None, preference=None):
+    def get_preferences(self, *, nvt_oid=None, config_id=None):
         """Request a list of preferences
 
         When the command includes a config_id attribute, the preference element
@@ -2966,8 +2966,26 @@ class Gmp(GvmProtocol):
         if config_id:
             cmd.set_attribute('config_id', config_id)
 
-        if preference:
-            cmd.set_attribute('preference', preference)
+        return self._send_xml_command(cmd)
+
+    def get_preference(self, name):
+        """Request a nvt preference
+
+
+        Arguments:
+            preference (str): name of a particular preference
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument(
+                'get_preference requires a name argument'
+            )
+
+        cmd = XmlCommand('get_preferences')
+
+        cmd.set_attribute('preference', name)
 
         return self._send_xml_command(cmd)
 
