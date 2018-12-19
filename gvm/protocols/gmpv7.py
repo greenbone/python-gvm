@@ -3103,6 +3103,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not report_format_id:
+            raise RequiredArgument(
+                'get_report_format requires report_format_id argument'
+            )
+
         cmd = XmlCommand('get_report_formats')
         cmd.set_attribute('report_format_id', report_format_id)
 
