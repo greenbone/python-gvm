@@ -9,6 +9,7 @@
   It is only possible to create host assets.
 * Updated and improved validation of `create_schedule` arguments
 * Removed the format parameter from `get_credentials` method
+* Removed the task_id and nvt_oid parameter from `get_notes` method
 
 # python-gvm 1.0.0.beta2 (04.12.2018)
 
