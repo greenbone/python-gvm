@@ -2929,6 +2929,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not port_list_id:
+            raise RequiredArgument(
+                'get_port_list requires a port_list_id argument'
+            )
+
         cmd = XmlCommand('get_port_lists')
         cmd.set_attribute('port_list_id', port_list_id)
 
