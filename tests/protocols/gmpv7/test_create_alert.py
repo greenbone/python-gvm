@@ -19,7 +19,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument
+from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
@@ -66,88 +66,113 @@ class GmpCreateAlertTestCase(unittest.TestCase):
             self.gmp.create_alert(
                 name='foo', condition='bar', event='lorem', method=None)
 
+    def test_invalid_condition(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo', condition='bar', event='Task run status changed', method='Email')
+
+    def test_invalid_event(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo', condition='Always', event='lorem', method='Email')
+
+    def test_invalid_method(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo', condition='Always', event='Task run status changed', method='ipsum')
+
+    def test_invalid_condition_for_secinfo(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo', condition='Severity at least', event='Updated SecInfo arrived', method='Email')
+
+    def test_invalid_method_for_secinfo(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo', condition='Always', event='Updated SecInfo arrived', method='HTTP Get')
+
     def test_create_alert(self):
         self.gmp.create_alert(
-            name='foo', condition='bar', event='lorem', method='ipsum')
+            name='foo', condition='Always', event='Task run status changed', method='Email')
 
         self.connection.send.has_been_called_with(
             '<create_alert>'
             '<name>foo</name>'
-            '<condition>bar</condition>'
-            '<event>lorem</event>'
-            '<method>ipsum</method>'
+            '<condition>Always</condition>'
+            '<event>Task run status changed</event>'
+            '<method>Email</method>'
             '</create_alert>'
         )
 
     def test_create_alert_with_filter_id(self):
         self.gmp.create_alert(
-            name='foo', condition='bar', event='lorem', method='ipsum',
+            name='foo', condition='Always', event='Task run status changed', method='Email',
             filter_id='f1')
 
         self.connection.send.has_been_called_with(
             '<create_alert>'
             '<name>foo</name>'
-            '<condition>bar</condition>'
-            '<event>lorem</event>'
-            '<method>ipsum</method>'
+            '<condition>Always</condition>'
+            '<event>Task run status changed</event>'
+            '<method>Email</method>'
             '<filter id="f1"/>'
             '</create_alert>'
         )
 
     def test_create_alert_with_comment(self):
         self.gmp.create_alert(
-            name='foo', condition='bar', event='lorem', method='ipsum',
+            name='foo', condition='Always', event='Task run status changed', method='Email',
             comment='hello')
 
         self.connection.send.has_been_called_with(
             '<create_alert>'
             '<name>foo</name>'
-            '<condition>bar</condition>'
-            '<event>lorem</event>'
-            '<method>ipsum</method>'
+            '<condition>Always</condition>'
+            '<event>Task run status changed</event>'
+            '<method>Email</method>'
             '<comment>hello</comment>'
             '</create_alert>'
         )
 
     def test_create_alert_with_condition_data(self):
         self.gmp.create_alert(
-            name='foo', condition='bar', event='lorem', method='ipsum',
+            name='foo', condition='Always', event='Task run status changed', method='Email',
             condition_data={'foo': 'bar'})
 
         self.connection.send.has_been_called_with(
             '<create_alert>'
             '<name>foo</name>'
-            '<condition>bar<data>bar<name>foo</name></data></condition>'
-            '<event>lorem</event>'
-            '<method>ipsum</method>'
+            '<condition>Always<data>bar<name>foo</name></data></condition>'
+            '<event>Task run status changed</event>'
+            '<method>Email</method>'
             '</create_alert>'
         )
 
     def test_create_alert_with_event_data(self):
         self.gmp.create_alert(
-            name='foo', condition='bar', event='lorem', method='ipsum',
+            name='foo', condition='Always', event='Task run status changed', method='Email',
             event_data={'foo': 'bar'})
 
         self.connection.send.has_been_called_with(
             '<create_alert>'
             '<name>foo</name>'
-            '<condition>bar</condition>'
-            '<event>lorem<data>bar<name>foo</name></data></event>'
-            '<method>ipsum</method>'
+            '<condition>Always</condition>'
+            '<event>Task run status changed<data>bar<name>foo</name></data></event>'
+            '<method>Email</method>'
             '</create_alert>'
         )
 
     def test_create_alert_with_method_data(self):
         self.gmp.create_alert(
-            name='foo', condition='bar', event='lorem', method='ipsum',
+            name='foo', condition='Always', event='Task run status changed', method='Email',
             method_data={'foo': 'bar'})
 
         self.connection.send.has_been_called_with(
             '<create_alert>'
             '<name>foo</name>'
-            '<condition>bar</condition>'
-            '<event>lorem</event>'
-            '<method>ipsum<data>bar<name>foo</name></data></method>'
+            '<condition>Always</condition>'
+            '<event>Task run status changed</event>'
+            '<method>Email<data>bar<name>foo</name></data></method>'
             '</create_alert>'
         )
 
