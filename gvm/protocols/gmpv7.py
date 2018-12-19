@@ -2342,7 +2342,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_credentials(self, *, filter=None, filter_id=None, scanners=None,
-                        trash=None, targets=None, format=None):
+                        trash=None, targets=None):
         """Request a list of credentials
 
         Arguments:
@@ -2355,7 +2355,6 @@ class Gmp(GvmProtocol):
                 instead
             targets (boolean, optional): Whether to include a list of targets
                 using the credentials
-            format (str, optional): One of "key", "rpm", "deb" or "exe"
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2372,13 +2371,6 @@ class Gmp(GvmProtocol):
 
         if not targets is None:
             cmd.set_attribute('targets', _to_bool(targets))
-
-        if format:
-            if not format in ('key', 'rpm', 'deb', 'exe'):
-                raise InvalidArgument(
-                    'format argument needs to one of key, rpm, deb or exe')
-
-            cmd.set_attribute('format', format)
 
         return self._send_xml_command(cmd)
 
