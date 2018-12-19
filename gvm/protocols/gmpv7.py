@@ -2332,6 +2332,9 @@ class Gmp(GvmProtocol):
         if not asset_type in ASSET_TYPES:
             raise InvalidArgument('asset_type must be either os or host')
 
+        if not asset_id:
+            raise RequiredArgument('get_asset requires an asset_type argument')
+
         cmd = XmlCommand('get_assets')
         cmd.set_attribute('asset_id', asset_id)
         cmd.set_attribute('type', asset_type)
