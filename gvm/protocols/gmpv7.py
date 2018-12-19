@@ -2699,6 +2699,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not note_id:
+            raise RequiredArgument(
+                'get_note requires a note_id argument'
+            )
+
         cmd = XmlCommand('get_notes')
         cmd.set_attribute('note_id', note_id)
 
