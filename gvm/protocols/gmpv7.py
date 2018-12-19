@@ -2670,8 +2670,10 @@ class Gmp(GvmProtocol):
             filter (str, optional): Filter term to use for the query
             filter_id (str, optional): UUID of an existing filter to use for
                 the query
-            details (boolean, optional):
-            result (boolean, optional):
+            details (boolean, optional): Add info about connected results and
+                tasks
+            result (boolean, optional): Return the details of possible connected
+                results.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
