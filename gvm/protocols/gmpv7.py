@@ -2284,6 +2284,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not alert_id:
+            raise RequiredArgument('get_alert requires an alert_id argument')
+
         cmd = XmlCommand('get_alerts')
         cmd.set_attribute('alert_id', alert_id)
         return self._send_xml_command(cmd)
