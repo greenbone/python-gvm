@@ -2308,9 +2308,9 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('get_assets')
 
-        _add_filter(cmd, filter, filter_id)
-
         cmd.set_attribute('type', asset_type)
+
+        _add_filter(cmd, filter, filter_id)
 
         return self._send_xml_command(cmd)
 
