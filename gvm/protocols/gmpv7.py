@@ -143,6 +143,16 @@ ASSET_TYPES = (
     'os',
 )
 
+INFO_TYPES = (
+    'CERT_BUND_ADV',
+    'CPE',
+    'CVE',
+    'DFN_CERT_ADV',
+    'OVALDEF',
+    'NVT',
+    'ALLINFO',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
@@ -2594,9 +2604,7 @@ class Gmp(GvmProtocol):
         """
         info_type = info_type.upper()
 
-        if not info_type in (
-                'CERT_BUND_ADV', 'CPE', 'CVE', 'DFN_CERT_ADV', 'OVALDEF', 'NVT',
-                'ALLINFO'):
+        if not info_type in INFO_TYPES:
             raise InvalidArgument(
                 'get_info_list info_type argument must be one of CERT_BUND_ADV'
                 ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
@@ -2626,9 +2634,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not info_type in (
-                'CERT_BUND_ADV', 'CPE', 'CVE', 'DFN_CERT_ADV', 'OVALDEF', 'NVT',
-                'ALLINFO'):
+        if not info_type in INFO_TYPES:
             raise InvalidArgument(
                 'get_info_list info_type argument must be one of CERT_BUND_ADV'
                 ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
