@@ -2567,6 +2567,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not group_id:
+            raise RequiredArgument('get_group requires a group_id argument')
+
         cmd = XmlCommand('get_groups')
         cmd.set_attribute('group_id', group_id)
         return self._send_xml_command(cmd)
