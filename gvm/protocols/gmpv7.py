@@ -2878,6 +2878,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not permission_id:
+            raise RequiredArgument(
+                'get_permission requires a permission_id argument'
+            )
+
         cmd = XmlCommand('get_permissions')
         cmd.set_attribute('permission_id', permission_id)
         return self._send_xml_command(cmd)
