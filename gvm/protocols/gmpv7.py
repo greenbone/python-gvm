@@ -3705,7 +3705,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_asset(self, asset_id, comment):
+    def modify_asset(self, asset_id, comment=''):
         """Modifies an existing asset.
 
         Arguments:
