@@ -13,6 +13,8 @@
   `get_overrides` methods
 * Split getting a single preference by name from `get_preferences` method into
   `get_preference`
+* Fixed wrong order of key and value for condition_data, event_data and
+  method_data dict parameters of `modify_alert` method.
 
 # python-gvm 1.0.0.beta2 (04.12.2018)
 

@@ -3671,7 +3671,7 @@ class Gmp(GvmProtocol):
             conditions = cmd.add_element('condition', condition)
 
             if not condition_data is None:
-                for value, key in condition_data.items():
+                for key, value in condition_data.items():
                     _data = conditions.add_element('data', value)
                     _data.add_element('name', key)
 
@@ -3679,7 +3679,7 @@ class Gmp(GvmProtocol):
             events = cmd.add_element('event', event)
 
             if not event_data is None:
-                for value, key in event_data.items():
+                for key, value in event_data.items():
                     _data = events.add_element('data', value)
                     _data.add_element('name', key)
 
@@ -3687,7 +3687,7 @@ class Gmp(GvmProtocol):
             methods = cmd.add_element('method', method)
 
             if not method_data is None:
-                for value, key in method_data.items():
+                for key, value in method_data.items():
                     _data = methods.add_element('data', value)
                     _data.add_element('name', key)
 
