@@ -1389,7 +1389,7 @@ class Gmp(GvmProtocol):
 
             if not isinstance(duration, numbers.Integral) or duration < 1:
                 raise InvalidArgument(
-                    'duration argument must be an integer greater then 0',
+                    'duration argument must be an integer greater than 0',
                 )
 
             _xmlduration = cmd.add_element('duration', str(duration))
@@ -1408,7 +1408,7 @@ class Gmp(GvmProtocol):
 
             if not isinstance(period, numbers.Integral) or period < 1:
                 raise InvalidArgument(
-                    'period argument must be an integer greater then 0',
+                    'period argument must be an integer greater than 0',
                 )
 
             _xmlperiod = cmd.add_element('period', str(period))
@@ -1641,7 +1641,7 @@ class Gmp(GvmProtocol):
                 be run.
             schedule_periods (int, optional): A limit to the number of times the
                 task will be scheduled, or 0 for no limit
-            observers (list, optional): List of user names or user ids which
+            observers (list, optional): List of names or ids of users which
                 should be allowed to observe this task
 
         Returns:
@@ -1702,7 +1702,7 @@ class Gmp(GvmProtocol):
                     schedule_periods < 0:
                     raise InvalidArgument(
                         'schedule_periods must be an integer greater or equal '
-                        'then 0'
+                        'than 0'
                     )
                 cmd.add_element('schedule_periods', str(schedule_periods))
 
@@ -2837,7 +2837,7 @@ class Gmp(GvmProtocol):
         """
         if not override_id:
             raise RequiredArgument(
-                'get_override requires a override_id argument'
+                'get_override requires an override_id argument'
             )
 
         cmd = XmlCommand('get_overrides')

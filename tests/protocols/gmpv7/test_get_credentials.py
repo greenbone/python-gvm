@@ -28,7 +28,7 @@ class GmpGetCredentialsTestCase(unittest.TestCase):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_credential(self):
+    def test_get_credentials(self):
         self.gmp.get_credentials()
 
         self.connection.send.has_been_called_with(
