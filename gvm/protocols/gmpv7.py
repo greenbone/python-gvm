@@ -3619,8 +3619,10 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('modify_agent')
         cmd.set_attribute('agent_id', str(agent_id))
+
         if name:
             cmd.add_element('name', name)
+
         if comment:
             cmd.add_element('comment', comment)
 
