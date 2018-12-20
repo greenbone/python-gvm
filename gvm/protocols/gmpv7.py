@@ -190,6 +190,20 @@ def _add_filter(cmd, filter, filter_id):
     if filter_id:
         cmd.set_attribute('filt_id', filter_id)
 
+def _check_event(event, condition, method):
+    if event in ALERT_EVENTS:
+        if condition not in ALERT_CONDITIONS:
+            raise InvalidArgument('Invalid condition for event')
+        if method not in ALERT_METHODS:
+            raise InvalidArgument('Invalid method for event')
+    elif event in ALERT_EVENTS_SECINFO:
+        if condition not in ALERT_CONDITIONS_SECINFO:
+            raise InvalidArgument('Invalid condition for event')
+        if method not in ALERT_METHODS_SECINFO:
+            raise InvalidArgument('Invalid method for event')
+    elif event is not None:
+        raise InvalidArgument('Invalid event "{0}"'.format(event))
+
 
 class Gmp(GvmProtocol):
     """Python interface for Greenbone Management Protocol
@@ -373,19 +387,7 @@ class Gmp(GvmProtocol):
         if not method:
             raise RequiredArgument('create_alert requires method argument')
 
-        if event in ALERT_EVENTS:
-            if condition not in ALERT_CONDITIONS:
-                raise InvalidArgument('Invalid condition for event')
-            if method not in ALERT_METHODS:
-                raise InvalidArgument('Invalid method for event')
-        elif event in ALERT_EVENTS_SECINFO:
-            if condition not in ALERT_CONDITIONS_SECINFO:
-                raise InvalidArgument('Invalid condition for event')
-            if method not in ALERT_METHODS_SECINFO:
-                raise InvalidArgument('Invalid method for event')
-        else:
-            raise InvalidArgument('Invalid event')
-
+        _check_event(event, condition, method)
 
         cmd = XmlCommand('create_alert')
         cmd.add_element('name', name)
