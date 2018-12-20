@@ -3655,6 +3655,8 @@ class Gmp(GvmProtocol):
         if not alert_id:
             raise RequiredArgument('modify_alert requires an alert_id argument')
 
+        _check_event(event, condition, method)
+
         cmd = XmlCommand('modify_alert')
         cmd.set_attribute('alert_id', str(alert_id))
 
