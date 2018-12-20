@@ -3249,6 +3249,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not scanner_id:
+            raise RequiredArgument(
+                'get_scanner requires a scanner_id argument'
+            )
+
         cmd = XmlCommand('get_scanners')
         cmd.set_attribute('scanner_id', scanner_id)
 
