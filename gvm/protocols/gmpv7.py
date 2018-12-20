@@ -3639,11 +3639,21 @@ class Gmp(GvmProtocol):
             name (str, optional): Name of the Alert.
             condition (str, optional): The condition that must be satisfied
                 for the alert to occur.
+            condition (str, optional): The condition that must be satisfied for
+                the alert to occur; if the event is either 'Updated SecInfo
+                arrived' or 'New SecInfo arrived', condition must be 'Always'.
+                Otherwise, condition can also be on of 'Severity at least',
+                'Filter count changed' or 'Filter count at least'.
             condition_data (dict, optional): Data that defines the condition
-            event (str, optional): The event that must happen for the alert
-               to occur.
+            event (str, optional): The event that must happen for the alert to
+                occur, one of 'Task run status changed',
+                'Updated SecInfo arrived' or 'New SecInfo arrived'
             event_data (dict, optional): Data that defines the event
-            method (str, optional): The method by which the user is alerted
+            method (str, optional): The method by which the user is alerted,
+                one of 'SCP', 'Send', 'SMB', 'SNMP', 'Syslog' or 'Email';
+                if the event is neither 'Updated SecInfo arrived' nor
+                'New SecInfo arrived', method can also be one of 'Start Task',
+                'HTTP Get', 'Sourcefire Connector' or 'verinice Connector'.
             method_data (dict, optional): Data that defines the method
             filter_id (str, optional): Filter to apply when executing alert
             comment (str, optional): Comment for the alert
