@@ -3471,6 +3471,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not target_id:
+            raise RequiredArgument(
+                'get_target requires a target_id argument'
+            )
+
         cmd = XmlCommand('get_targets')
         cmd.set_attribute('target_id', target_id)
         return self._send_xml_command(cmd)
