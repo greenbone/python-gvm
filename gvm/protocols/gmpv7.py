@@ -3667,26 +3667,29 @@ class Gmp(GvmProtocol):
         if filter_id:
             cmd.add_element('filter', attrs={'id': filter_id})
 
-        conditions = cmd.add_element('condition', condition)
+        if condition:
+            conditions = cmd.add_element('condition', condition)
 
-        if not condition_data is None:
-            for value, key in condition_data.items():
-                _data = conditions.add_element('data', value)
-                _data.add_element('name', key)
+            if not condition_data is None:
+                for value, key in condition_data.items():
+                    _data = conditions.add_element('data', value)
+                    _data.add_element('name', key)
 
-        events = cmd.add_element('event', event)
+        if event:
+            events = cmd.add_element('event', event)
 
-        if not event_data is None:
-            for value, key in event_data.items():
-                _data = events.add_element('data', value)
-                _data.add_element('name', key)
+            if not event_data is None:
+                for value, key in event_data.items():
+                    _data = events.add_element('data', value)
+                    _data.add_element('name', key)
 
-        methods = cmd.add_element('method', method)
+        if method:
+            methods = cmd.add_element('method', method)
 
-        if not method_data is None:
-            for value, key in method_data.items():
-                _data = methods.add_element('data', value)
-                _data.add_element('name', key)
+            if not method_data is None:
+                for value, key in method_data.items():
+                    _data = methods.add_element('data', value)
+                    _data.add_element('name', key)
 
         return self._send_xml_command(cmd)
 
