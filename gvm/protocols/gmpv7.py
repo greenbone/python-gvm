@@ -3298,6 +3298,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not schedule_id:
+            raise RequiredArgument(
+                'get_schedule requires a schedule_id argument'
+            )
+
         cmd = XmlCommand('get_schedules')
         cmd.set_attribute('schedule_id', schedule_id)
         return self._send_xml_command(cmd)
