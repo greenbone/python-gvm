@@ -3425,6 +3425,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not tag_id:
+            raise RequiredArgument(
+                'get_tag requires a tag_id argument'
+            )
+
         cmd = XmlCommand('get_tags')
         cmd.set_attribute('tag_id', tag_id)
         return self._send_xml_command(cmd)
