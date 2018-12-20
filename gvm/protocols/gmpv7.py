@@ -3362,6 +3362,11 @@ class Gmp(GvmProtocol):
             cmd.set_attribute('name', name)
 
         if not duration is None:
+            if not isinstance(duration, numbers.Integral):
+                raise InvalidArgument(
+                    'duration needs to be an integer number'
+                )
+
             cmd.set_attribute('duration', str(duration))
 
         if start_time:
