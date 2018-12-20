@@ -36,6 +36,13 @@ class GmpTriggerAlertTestCase(unittest.TestCase):
         with self.assertRaises(RequiredArgument):
             self.gmp.trigger_alert(alert_id='', report_id='r1')
 
+    def test_trigger_alert_without_report_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.trigger_alert(alert_id='a1', report_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.trigger_alert(alert_id='a1', report_id='')
+
     def test_trigger_alert(self):
         self.gmp.trigger_alert(alert_id='a1', report_id='r1')
 
