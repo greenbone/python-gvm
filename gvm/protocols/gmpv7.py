@@ -3332,6 +3332,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not setting_id:
+            raise RequiredArgument(
+                'get_setting requires a setting_id argument'
+            )
+
         cmd = XmlCommand('get_settings')
         cmd.set_attribute('setting_id', setting_id)
         return self._send_xml_command(cmd)
