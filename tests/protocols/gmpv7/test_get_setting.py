@@ -35,6 +35,13 @@ class GmpGetSettingTestCase(unittest.TestCase):
         self.connection.send.has_been_called_with(
             '<get_settings setting_id="id"/>')
 
+    def test_get_setting_missing_setting_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_setting(setting_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_setting('')
+
 
 if __name__ == '__main__':
     unittest.main()

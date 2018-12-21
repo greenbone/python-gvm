@@ -22,23 +22,46 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetRolesTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_roles(self):
+        self.gmp.get_roles()
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_roles/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+    def test_get_roles_with_filter(self):
+        self.gmp.get_roles(filter='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<get_roles filter="foo=bar"/>'
+        )
+
+    def test_get_roles_with_filter_id(self):
+        self.gmp.get_roles(filter_id='f1')
+
+        self.connection.send.has_been_called_with(
+            '<get_roles filt_id="f1"/>'
+        )
+
+    def test_get_roles_with_trash(self):
+        self.gmp.get_roles(trash=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_roles trash="1"/>'
+        )
+
+        self.gmp.get_roles(trash=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_roles trash="0"/>'
+        )
 
 
 if __name__ == '__main__':

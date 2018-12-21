@@ -18,27 +18,37 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetTagTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_tag(self):
+        self.gmp.get_tag('t1')
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_tags tag_id="t1"/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+        self.gmp.get_tag(tag_id='t1')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<get_tags tag_id="t1"/>'
+        )
+
+    def test_get_tag_missing_tag_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_tag(tag_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_tag('')
 
 
 if __name__ == '__main__':

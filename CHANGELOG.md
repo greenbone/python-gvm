@@ -5,8 +5,16 @@
 * Fixed generating XML for `get_nvts` command
 * Fixed generating XML for `get_settings` command
 * Fixed generating XML for `get_credentials` command
-* Renamed create_asset method to create_host and dropped asset_type parameter. It is
-  only possible to create host assets.
+* Renamed create_asset method to create_host and dropped asset_type parameter.
+  It is only possible to create host assets.
+* Updated and improved validation of `create_schedule` arguments
+* Removed the format parameter from `get_credentials` method
+* Removed the task_id and nvt_oid parameters from `get_notes` and
+  `get_overrides` methods
+* Split getting a single preference by name from `get_preferences` method into
+  `get_preference`
+* Fixed wrong order of key and value for condition_data, event_data and
+  method_data dict parameters of `modify_alert` method.
 
 # python-gvm 1.0.0.beta2 (04.12.2018)
 

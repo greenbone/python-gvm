@@ -22,71 +22,59 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetCredentialsTestCase(unittest.TestCase):
+
+class GmpGetAlertsTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_credentials(self):
-        self.gmp.get_credentials()
+    def test_get_alerts(self):
+        self.gmp.get_alerts()
 
         self.connection.send.has_been_called_with(
-            '<get_credentials/>')
-
-    def test_get_credentials_with_filter(self):
-        self.gmp.get_credentials(filter='foo=bar')
-
-        self.connection.send.has_been_called_with(
-            '<get_credentials filter="foo=bar"/>'
+            '<get_alerts/>'
         )
 
-    def test_get_credentials_with_filter_id(self):
-        self.gmp.get_credentials(filter_id='f1')
+    def test_get_alerts_with_trash(self):
+        self.gmp.get_alerts(trash=True)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials filt_id="f1"/>'
+            '<get_alerts trash="1"/>'
         )
 
-    def test_get_credentials_with_scanners(self):
-        self.gmp.get_credentials(scanners=True)
+        self.gmp.get_alerts(trash=False)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials scanners="1"/>'
+            '<get_alerts trash="0"/>'
         )
 
-        self.gmp.get_credentials(scanners=False)
+    def test_get_alerts_with_filter(self):
+        self.gmp.get_alerts(filter="foo=bar")
 
         self.connection.send.has_been_called_with(
-            '<get_credentials scanners="0"/>'
+            '<get_alerts filter="foo=bar"/>'
         )
 
-    def test_get_credentials_with_trash(self):
-        self.gmp.get_credentials(trash=True)
+    def test_get_alerts_with_filter_id(self):
+        self.gmp.get_alerts(filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials trash="1"/>'
+            '<get_alerts filt_id="f1"/>'
         )
 
-        self.gmp.get_credentials(trash=False)
+    def test_get_alerts_with_tasks(self):
+        self.gmp.get_alerts(tasks=True)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials trash="0"/>'
+            '<get_alerts tasks="1"/>'
         )
 
-    def test_get_credentials_with_targets(self):
-        self.gmp.get_credentials(targets=True)
+        self.gmp.get_alerts(tasks=False)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials targets="1"/>'
+            '<get_alerts tasks="0"/>'
         )
-
-        self.gmp.get_credentials(targets=False)
-
-        self.connection.send.has_been_called_with(
-            '<get_credentials targets="0"/>'
-        )
-
 
 
 if __name__ == '__main__':

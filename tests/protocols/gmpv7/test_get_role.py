@@ -18,27 +18,37 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetRoleTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_role(self):
+        self.gmp.get_role('r1')
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_roles role_id="r1"/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+        self.gmp.get_role(role_id='r1')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<get_roles role_id="r1"/>'
+        )
+
+    def test_get_role_missing_role_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_role(role_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_role('')
 
 
 if __name__ == '__main__':

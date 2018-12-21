@@ -18,75 +18,73 @@
 
 import unittest
 
+from gvm.errors import InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetCredentialsTestCase(unittest.TestCase):
+
+class GmpGetAgentsTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_credentials(self):
-        self.gmp.get_credentials()
+    def test_get_agents(self):
+        self.gmp.get_agents()
 
         self.connection.send.has_been_called_with(
-            '<get_credentials/>')
-
-    def test_get_credentials_with_filter(self):
-        self.gmp.get_credentials(filter='foo=bar')
-
-        self.connection.send.has_been_called_with(
-            '<get_credentials filter="foo=bar"/>'
+            '<get_agents/>'
         )
 
-    def test_get_credentials_with_filter_id(self):
-        self.gmp.get_credentials(filter_id='f1')
+    def test_get_agents_with_trash(self):
+        self.gmp.get_agents(trash=True)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials filt_id="f1"/>'
+            '<get_agents trash="1"/>'
         )
 
-    def test_get_credentials_with_scanners(self):
-        self.gmp.get_credentials(scanners=True)
+        self.gmp.get_agents(trash=False)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials scanners="1"/>'
+            '<get_agents trash="0"/>'
         )
 
-        self.gmp.get_credentials(scanners=False)
+    def test_get_agents_with_details(self):
+        self.gmp.get_agents(details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials scanners="0"/>'
+            '<get_agents details="1"/>'
         )
 
-    def test_get_credentials_with_trash(self):
-        self.gmp.get_credentials(trash=True)
+        self.gmp.get_agents(details=False)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials trash="1"/>'
+            '<get_agents details="0"/>'
         )
 
-        self.gmp.get_credentials(trash=False)
+    def test_get_agents_with_format(self):
+        self.gmp.get_agents(format='installer')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials trash="0"/>'
+            '<get_agents format="installer"/>'
         )
 
-    def test_get_credentials_with_targets(self):
-        self.gmp.get_credentials(targets=True)
+        self.gmp.get_agents(format='howto_install')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials targets="1"/>'
+            '<get_agents format="howto_install"/>'
         )
 
-        self.gmp.get_credentials(targets=False)
+        self.gmp.get_agents(format='howto_use')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials targets="0"/>'
+            '<get_agents format="howto_use"/>'
         )
 
+    def test_get_agents_invalid_format(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.get_agents(format='foo')
 
 
 if __name__ == '__main__':

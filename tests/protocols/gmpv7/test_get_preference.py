@@ -18,27 +18,34 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetPreferenceTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_preference(self):
+        self.gmp.get_preference(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_preferences preference="foo"/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+    def test_get_preference_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_preference(name=None)
 
-        self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_preference(name='')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_preference('')
 
 
 if __name__ == '__main__':

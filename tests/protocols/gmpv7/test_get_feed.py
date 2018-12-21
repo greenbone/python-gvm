@@ -18,27 +18,52 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+class GmpGetFeedTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_feed(self):
+        self.gmp.get_feed('nvt')
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_feeds type="NVT"/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+        self.gmp.get_feed(feed_type='nvt')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<get_feeds type="NVT"/>'
+        )
+
+        self.gmp.get_feed('cert')
+
+        self.connection.send.has_been_called_with(
+            '<get_feeds type="CERT"/>'
+        )
+
+        self.gmp.get_feed('scap')
+
+        self.connection.send.has_been_called_with(
+            '<get_feeds type="SCAP"/>'
+        )
+
+    def test_get_feed_missing_feed_type(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_feed(feed_type=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_feed('')
+
+    def test_get_feed_invalid_feed_type(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.get_feed(feed_type='foo')
 
 
 if __name__ == '__main__':

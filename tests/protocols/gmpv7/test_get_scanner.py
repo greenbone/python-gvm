@@ -18,27 +18,37 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetScannerTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_scanner(self):
+        self.gmp.get_scanner('s1')
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_scanners scanner_id="s1" details="1"/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+        self.gmp.get_scanner(scanner_id='s1')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<get_scanners scanner_id="s1" details="1"/>'
+        )
+
+    def test_get_scanner_missing_scanner_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_scanner(scanner_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_scanner('')
 
 
 if __name__ == '__main__':

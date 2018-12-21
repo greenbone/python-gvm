@@ -22,71 +22,79 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetCredentialsTestCase(unittest.TestCase):
+
+class GmpGetResultsTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_credentials(self):
-        self.gmp.get_credentials()
+    def test_get_results(self):
+        self.gmp.get_results()
 
         self.connection.send.has_been_called_with(
-            '<get_credentials/>')
-
-    def test_get_credentials_with_filter(self):
-        self.gmp.get_credentials(filter='foo=bar')
-
-        self.connection.send.has_been_called_with(
-            '<get_credentials filter="foo=bar"/>'
+            '<get_results/>'
         )
 
-    def test_get_credentials_with_filter_id(self):
-        self.gmp.get_credentials(filter_id='f1')
+    def test_get_results_with_filter(self):
+        self.gmp.get_results(filter='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials filt_id="f1"/>'
+            '<get_results filter="foo=bar"/>'
         )
 
-    def test_get_credentials_with_scanners(self):
-        self.gmp.get_credentials(scanners=True)
+    def test_get_results_with_filter_id(self):
+        self.gmp.get_results(filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials scanners="1"/>'
+            '<get_results filt_id="f1"/>'
         )
 
-        self.gmp.get_credentials(scanners=False)
+    def test_get_results_with_note_details(self):
+        self.gmp.get_results(note_details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials scanners="0"/>'
+            '<get_results note_details="1"/>'
         )
 
-    def test_get_credentials_with_trash(self):
-        self.gmp.get_credentials(trash=True)
+        self.gmp.get_results(note_details=False)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials trash="1"/>'
+            '<get_results note_details="0"/>'
         )
 
-        self.gmp.get_credentials(trash=False)
+    def test_get_results_with_override_details(self):
+        self.gmp.get_results(override_details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials trash="0"/>'
+            '<get_results override_details="1"/>'
         )
 
-    def test_get_credentials_with_targets(self):
-        self.gmp.get_credentials(targets=True)
+        self.gmp.get_results(override_details=False)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials targets="1"/>'
+            '<get_results override_details="0"/>'
         )
 
-        self.gmp.get_credentials(targets=False)
+    def test_get_results_with_details(self):
+        self.gmp.get_results(details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials targets="0"/>'
+            '<get_results details="1"/>'
         )
 
+        self.gmp.get_results(details=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_results details="0"/>'
+        )
+
+    def test_get_results_with_task_id(self):
+        self.gmp.get_results(task_id='t1')
+
+        self.connection.send.has_been_called_with(
+            '<get_results task_id="t1"/>'
+        )
 
 
 if __name__ == '__main__':

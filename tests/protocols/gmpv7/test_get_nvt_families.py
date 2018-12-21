@@ -22,23 +22,25 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetNvtFamiliesTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_nvt_families(self):
+        self.gmp.get_nvt_families()
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_nvt_families/>')
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+    def test_get_nvt_families_with_sort_order(self):
+        self.gmp.get_nvt_families(sort_order='foo')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<get_nvt_families sort_order="foo"/>'
+        )
 
 
 if __name__ == '__main__':

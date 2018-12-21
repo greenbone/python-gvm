@@ -29,27 +29,50 @@ class GmpGetCredentialTestCase(unittest.TestCase):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_credential_simple(self):
+    def test_get_credential(self):
         self.gmp.get_credential('id')
 
         self.connection.send.has_been_called_with(
             '<get_credentials credential_id="id"/>')
 
-    def test_fail_without_credential_id(self):
+    def test_get_credentials_missing_credential_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.get_credential(None)
 
-    def test_fail_with_empty_credential_id(self):
+    def test_get_credentials_invalid_credential_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_credential(credential_id=None)
+
         with self.assertRaises(RequiredArgument):
             self.gmp.get_credential('')
 
-    def test_get_credential_with_valid_format(self):
+    def test_get_credential_with_credential_format(self):
         self.gmp.get_credential('id', credential_format='key')
 
         self.connection.send.has_been_called_with(
             '<get_credentials credential_id="id" format="key"/>')
 
-    def test_get_credential_with_invalid_format(self):
+        self.gmp.get_credential('id', credential_format='rpm')
+
+        self.connection.send.has_been_called_with(
+            '<get_credentials credential_id="id" format="rpm"/>')
+
+        self.gmp.get_credential('id', credential_format='deb')
+
+        self.connection.send.has_been_called_with(
+            '<get_credentials credential_id="id" format="deb"/>')
+
+        self.gmp.get_credential('id', credential_format='exe')
+
+        self.connection.send.has_been_called_with(
+            '<get_credentials credential_id="id" format="exe"/>')
+
+        self.gmp.get_credential('id', credential_format='pem')
+
+        self.connection.send.has_been_called_with(
+            '<get_credentials credential_id="id" format="pem"/>')
+
+    def test_get_credential_with_invalid_credential_format(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.get_credential('id', credential_format='foo')
 

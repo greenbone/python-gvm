@@ -18,27 +18,37 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetNoteTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_note(self):
+        self.gmp.get_note('n1')
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_notes note_id="n1" details="1"/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+        self.gmp.get_note(note_id='n1')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<get_notes note_id="n1" details="1"/>'
+        )
+
+    def test_get_note_missing_note_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_note(note_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_note('')
 
 
 if __name__ == '__main__':

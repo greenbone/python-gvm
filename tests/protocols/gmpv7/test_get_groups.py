@@ -22,23 +22,46 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetGroupsTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_groups(self):
+        self.gmp.get_groups()
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_groups/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+    def test_get_groups_with_filter(self):
+        self.gmp.get_groups(filter='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<get_groups filter="foo=bar"/>'
+        )
+
+    def test_get_groups_with_filter_id(self):
+        self.gmp.get_groups(filter_id='f1')
+
+        self.connection.send.has_been_called_with(
+            '<get_groups filt_id="f1"/>'
+        )
+
+    def test_get_groups_with_trash(self):
+        self.gmp.get_groups(trash=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_groups trash="1"/>'
+        )
+
+        self.gmp.get_groups(trash=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_groups trash="0"/>'
+        )
 
 
 if __name__ == '__main__':

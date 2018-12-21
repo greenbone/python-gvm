@@ -18,27 +18,51 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+class GmpModifyAgentTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_modify_agent(self):
+        self.gmp.modify_agent(agent_id='a1')
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<modify_agent agent_id="a1"/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+    def test_modify_agent_without_agent_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agent(agent_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agent(agent_id='')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agent('')
+
+    def test_modify_agent_with_comment(self):
+        self.gmp.modify_agent(agent_id='a1', comment='lorem')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<modify_agent agent_id="a1">'
+            '<comment>lorem</comment>'
+            '</modify_agent>'
+        )
+
+    def test_modify_agent_with_name(self):
+        self.gmp.modify_agent(agent_id='a1', name='lorem')
+
+        self.connection.send.has_been_called_with(
+            '<modify_agent agent_id="a1">'
+            '<name>lorem</name>'
+            '</modify_agent>'
+        )
 
 
 if __name__ == '__main__':

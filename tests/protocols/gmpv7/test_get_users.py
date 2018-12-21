@@ -22,23 +22,33 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetUserTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_users(self):
+        self.gmp.get_users()
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_users/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+    def test_get_users_with_filter(self):
+        self.gmp.get_users(filter='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+            '<get_users filter="foo=bar"/>'
+        )
+
+    def test_get_users_with_filter_id(self):
+        self.gmp.get_users(filter_id='f1')
+
+        self.connection.send.has_been_called_with(
+            '<get_users filt_id="f1"/>'
+        )
 
 
 if __name__ == '__main__':

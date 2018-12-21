@@ -24,6 +24,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 7`_
     https://docs.greenbone.net/API/GMP/gmp-7.0.html
 """
 import logging
+import numbers
 
 from lxml import etree
 
@@ -137,6 +138,21 @@ ALERT_METHODS_SECINFO = (
     'Email',
 )
 
+ASSET_TYPES = (
+    'host',
+    'os',
+)
+
+INFO_TYPES = (
+    'CERT_BUND_ADV',
+    'CPE',
+    'CVE',
+    'DFN_CERT_ADV',
+    'OVALDEF',
+    'NVT',
+    'ALLINFO',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
@@ -173,6 +189,20 @@ def _add_filter(cmd, filter, filter_id):
 
     if filter_id:
         cmd.set_attribute('filt_id', filter_id)
+
+def _check_event(event, condition, method):
+    if event in ALERT_EVENTS:
+        if condition not in ALERT_CONDITIONS:
+            raise InvalidArgument('Invalid condition for event')
+        if method not in ALERT_METHODS:
+            raise InvalidArgument('Invalid method for event')
+    elif event in ALERT_EVENTS_SECINFO:
+        if condition not in ALERT_CONDITIONS_SECINFO:
+            raise InvalidArgument('Invalid condition for event')
+        if method not in ALERT_METHODS_SECINFO:
+            raise InvalidArgument('Invalid method for event')
+    elif event is not None:
+        raise InvalidArgument('Invalid event "{0}"'.format(event))
 
 
 class Gmp(GvmProtocol):
@@ -357,19 +387,7 @@ class Gmp(GvmProtocol):
         if not method:
             raise RequiredArgument('create_alert requires method argument')
 
-        if event in ALERT_EVENTS:
-            if condition not in ALERT_CONDITIONS:
-                raise InvalidArgument('Invalid condition for event')
-            if method not in ALERT_METHODS:
-                raise InvalidArgument('Invalid method for event')
-        elif event in ALERT_EVENTS_SECINFO:
-            if condition not in ALERT_CONDITIONS_SECINFO:
-                raise InvalidArgument('Invalid condition for event')
-            if method not in ALERT_METHODS_SECINFO:
-                raise InvalidArgument('Invalid method for event')
-        else:
-            raise InvalidArgument('Invalid event')
-
+        _check_event(event, condition, method)
 
         cmd = XmlCommand('create_alert')
         cmd.add_element('name', name)
@@ -1265,22 +1283,23 @@ class Gmp(GvmProtocol):
             name (str): Name of the schedule
             comment (str, optional): Comment for the schedule
             first_time_minute (int, optional): First time minute the schedule
-                will run
+                will run. Must be an integer >= 0.
             first_time_hour (int, optional): First time hour the schedule
-                will run
+                will run. Must be an integer >= 0.
             first_time_day_of_month (int, optional): First time day of month the
-                schedule will run
+                schedule will run. Must be an integer > 0 <= 31.
             first_time_month (int, optional): First time month the schedule
-                will run
+                will run. Must be an integer >= 1 <= 12.
             first_time_year (int, optional): First time year the schedule
-                will run
+                will run. Must be an integer >= 1970.
             duration (int, optional): How long the Manager will run the
                 scheduled task for until it gets paused if not finished yet.
+                Must be an integer > 0.
             duration_unit (str, optional): Unit of the duration. One of second,
                 minute, hour, day, week, month, year, decade. Required if
                 duration is set.
             period (int, optional): How often the Manager will repeat the
-                scheduled task
+                scheduled task. Must be an integer > 0.
             period_unit (str, optional): Unit of the period. One of second,
                 minute, hour, day, week, month, year, decade. Required if
                 period is set.
@@ -1301,22 +1320,56 @@ class Gmp(GvmProtocol):
         if first_time_minute or first_time_hour or first_time_day_of_month or \
             first_time_month or first_time_year:
 
-            if not first_time_minute:
+            if first_time_minute is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_minute argument')
-            if not first_time_hour:
+            elif not isinstance(first_time_minute, numbers.Integral) or \
+                first_time_minute < 0:
+                raise InvalidArgument(
+                    'first_time_minute argument of create_schedule needs to be '
+                    'an integer greater or equal 0'
+                )
+
+            if first_time_hour is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_hour argument')
-            if not first_time_day_of_month:
+            elif not isinstance(first_time_hour, numbers.Integral) or \
+                first_time_hour < 0:
+                raise InvalidArgument(
+                    'first_time_hour argument of create_schedule needs to be '
+                    'an integer greater or equal 0'
+                )
+
+            if first_time_day_of_month is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_day_of_month '
                     'argument')
-            if not first_time_month:
+            elif not isinstance(first_time_day_of_month, numbers.Integral) or \
+                first_time_day_of_month < 1 or first_time_day_of_month > 31:
+                raise InvalidArgument(
+                    'first_time_day_of_month argument of create_schedule needs '
+                    'to be an integer between 1 and 31'
+                )
+
+            if first_time_month is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_month argument')
-            if not first_time_year:
+            elif not isinstance(first_time_month, numbers.Integral) or \
+                first_time_month < 1 or first_time_month > 12:
+                raise InvalidArgument(
+                    'first_time_month argument of create_schedule needs '
+                    'to be an integer between 1 and 12'
+                )
+
+            if first_time_year is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_year argument')
+            elif not isinstance(first_time_year, numbers.Integral) or \
+                first_time_year < 1970:
+                raise InvalidArgument(
+                    'first_time_year argument of create_schedule needs '
+                    'to be an integer greater or equal 1970'
+                )
 
             _xmlftime = cmd.add_element('first_time')
             _xmlftime.add_element('minute', str(first_time_minute))
@@ -1325,21 +1378,26 @@ class Gmp(GvmProtocol):
             _xmlftime.add_element('month', str(first_time_month))
             _xmlftime.add_element('year', str(first_time_year))
 
-        if duration:
+        if duration is not None:
             if not duration_unit:
                 raise RequiredArgument(
                     'Setting duration requires duration_unit argument')
 
             if not duration_unit in TIME_UNITS:
                 raise InvalidArgument(
-                    'duration_unit must be one of {units} but {actual} has '
+                    'duration_unit must be one of {units}. But {actual} has '
                     'been passed'.format(
                         units=', '.join(TIME_UNITS), actual=duration_unit))
+
+            if not isinstance(duration, numbers.Integral) or duration < 1:
+                raise InvalidArgument(
+                    'duration argument must be an integer greater than 0',
+                )
 
             _xmlduration = cmd.add_element('duration', str(duration))
             _xmlduration.add_element('unit', duration_unit)
 
-        if period:
+        if period is not None:
             if not period_unit:
                 raise RequiredArgument(
                     'Setting period requires period_unit argument')
@@ -1349,6 +1407,11 @@ class Gmp(GvmProtocol):
                     'period_unit must be one of {units} but {actual} has '
                     'been passed'.format(
                         units=', '.join(TIME_UNITS), actual=period_unit))
+
+            if not isinstance(period, numbers.Integral) or period < 1:
+                raise InvalidArgument(
+                    'period argument must be an integer greater than 0',
+                )
 
             _xmlperiod = cmd.add_element('period', str(period))
             _xmlperiod.add_element('unit', period_unit)
@@ -1391,6 +1454,22 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not name:
+            raise RequiredArgument(
+                'create_tag requires name argument'
+            )
+
+        if not resource_id:
+            raise RequiredArgument(
+                'create_tag requires resource_id argument'
+            )
+
+        if not resource_type:
+            raise RequiredArgument(
+                'create_tag requires resource_type argument'
+            )
+
+
         cmd = XmlCommand('create_tag')
         cmd.add_element('name', name)
         _xmlresource = cmd.add_element('resource',
@@ -1564,8 +1643,8 @@ class Gmp(GvmProtocol):
                 be run.
             schedule_periods (int, optional): A limit to the number of times the
                 task will be scheduled, or 0 for no limit
-            observers (list, optional): List of user names which should be
-                allowed to observe this task
+            observers (list, optional): List of names or ids of users which
+                should be allowed to observe this task
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1598,6 +1677,9 @@ class Gmp(GvmProtocol):
                 cmd.add_element('alterable', '0')
 
         if hosts_ordering:
+            # not sure about the possible values for hosts_orderning
+            # it seems gvmd doesn't check the param
+            # gsa allows to select 'sequential', 'random' or 'reverse'
             cmd.add_element('hosts_ordering', hosts_ordering)
 
         if alert_ids:
@@ -1615,13 +1697,22 @@ class Gmp(GvmProtocol):
                     cmd.add_element('alert', attrs={'id': str(alert)})
 
         if schedule_id:
-            cmd.add_element('schedule', schedule_id)
+            cmd.add_element('schedule', attrs={'id': schedule_id})
 
-            if schedule_periods:
+            if schedule_periods is not None:
+                if not isinstance(schedule_periods, numbers.Integral) or \
+                    schedule_periods < 0:
+                    raise InvalidArgument(
+                        'schedule_periods must be an integer greater or equal '
+                        'than 0'
+                    )
                 cmd.add_element('schedule_periods', str(schedule_periods))
 
         if observers:
-            cmd.add_element('observers', ' '.join(observers))
+            # gvmd splits by command and space
+            # gvmd tries to lookup each value as user name and afterwards as
+            # user id. So both user name and user id are possible
+            cmd.add_element('observers', ','.join(observers))
 
         return self._send_xml_command(cmd)
 
@@ -1670,11 +1761,11 @@ class Gmp(GvmProtocol):
             cmd.add_element('password', password)
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts),
+            cmd.add_element('hosts', ','.join(hosts),
                             attrs={'allow': '1' if hosts_allow else '0'})
 
         if ifaces:
-            cmd.add_element('ifaces', ', '.join(ifaces),
+            cmd.add_element('ifaces', ','.join(ifaces),
                             attrs={'allow': '1' if ifaces_allow else '0'})
 
         if role_ids:
@@ -2157,6 +2248,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not agent_id:
+            raise RequiredArgument(
+                'get_agent requires an agent_id argument'
+            )
+
         cmd = XmlCommand('get_agents')
         cmd.set_attribute('agent_id', agent_id)
 
@@ -2205,6 +2301,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not alert_id:
+            raise RequiredArgument('get_alert requires an alert_id argument')
+
         cmd = XmlCommand('get_alerts')
         cmd.set_attribute('alert_id', alert_id)
         return self._send_xml_command(cmd)
@@ -2221,14 +2320,14 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not asset_type in ('os', 'host'):
+        if not asset_type in ASSET_TYPES:
             raise InvalidArgument('asset_type must be either os or host')
 
         cmd = XmlCommand('get_assets')
 
-        _add_filter(cmd, filter, filter_id)
-
         cmd.set_attribute('type', asset_type)
+
+        _add_filter(cmd, filter, filter_id)
 
         return self._send_xml_command(cmd)
 
@@ -2242,8 +2341,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not asset_type in ('os', 'host'):
+        if not asset_type in ASSET_TYPES:
             raise InvalidArgument('asset_type must be either os or host')
+
+        if not asset_id:
+            raise RequiredArgument('get_asset requires an asset_type argument')
 
         cmd = XmlCommand('get_assets')
         cmd.set_attribute('asset_id', asset_id)
@@ -2252,7 +2354,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_credentials(self, *, filter=None, filter_id=None, scanners=None,
-                        trash=None, targets=None, format=None):
+                        trash=None, targets=None):
         """Request a list of credentials
 
         Arguments:
@@ -2265,7 +2367,6 @@ class Gmp(GvmProtocol):
                 instead
             targets (boolean, optional): Whether to include a list of targets
                 using the credentials
-            format (str, optional): One of "key", "rpm", "deb" or "exe"
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2282,13 +2383,6 @@ class Gmp(GvmProtocol):
 
         if not targets is None:
             cmd.set_attribute('targets', _to_bool(targets))
-
-        if format:
-            if not format in ('key', 'rpm', 'deb', 'exe'):
-                raise InvalidArgument(
-                    'format argument needs to one of key, rpm, deb or exe')
-
-            cmd.set_attribute('format', format)
 
         return self._send_xml_command(cmd)
 
@@ -2396,6 +2490,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not feed_type:
+            raise RequiredArgument('get_feed requires a feed_type argument')
+
         feed_type = feed_type.upper()
 
         if not feed_type in ('NVT', 'CERT', 'SCAP'):
@@ -2444,6 +2541,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not filter_id:
+            raise RequiredArgument('get_filter requires a filter_id argument')
+
         cmd = XmlCommand('get_filters')
         cmd.set_attribute('filter_id', filter_id)
         return self._send_xml_command(cmd)
@@ -2479,6 +2579,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not group_id:
+            raise RequiredArgument('get_group requires a group_id argument')
+
         cmd = XmlCommand('get_groups')
         cmd.set_attribute('group_id', group_id)
         return self._send_xml_command(cmd)
@@ -2501,20 +2604,22 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not info_type:
+            raise RequiredArgument(
+                'get_info_list requires an info_type argument')
+
         info_type = info_type.upper()
 
-        if not info_type in (
-                'CERT_BUND_ADV', 'CPE', 'CVE', 'DFN_CERT_ADV', 'OVALDEF', 'NVT',
-                'ALLINFO'):
+        if not info_type in INFO_TYPES:
             raise InvalidArgument(
                 'get_info_list info_type argument must be one of CERT_BUND_ADV'
                 ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
 
         cmd = XmlCommand('get_info')
 
-        _add_filter(cmd, filter, filter_id)
-
         cmd.set_attribute('type', info_type)
+
+        _add_filter(cmd, filter, filter_id)
 
         if name:
             cmd.set_attribute('name', name)
@@ -2535,12 +2640,20 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not info_type in (
-                'CERT_BUND_ADV', 'CPE', 'CVE', 'DFN_CERT_ADV', 'OVALDEF', 'NVT',
-                'ALLINFO'):
+        if not info_type:
+            raise RequiredArgument(
+                'get_info requires an info_type argument')
+
+        info_type = info_type.upper()
+
+        if not info_type in INFO_TYPES:
             raise InvalidArgument(
-                'get_info_list info_type argument must be one of CERT_BUND_ADV'
+                'get_info info_type argument must be one of CERT_BUND_ADV'
                 ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
+
+        if not info_id:
+            raise RequiredArgument(
+                'get_info requires an info_id argument')
 
         cmd = XmlCommand('get_info')
         cmd.set_attribute('info_id', info_id)
@@ -2551,18 +2664,18 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_notes(self, *, filter=None, filter_id=None, nvt_oid=None,
-                  task_id=None, details=None, result=None):
+    def get_notes(self, *, filter=None, filter_id=None, details=None,
+                  result=None):
         """Request a list of notes
 
         Arguments:
             filter (str, optional): Filter term to use for the query
             filter_id (str, optional): UUID of an existing filter to use for
                 the query
-            nvt_oid (str, optional): OID of a nvt
-            task_id (str, optional): UUID of a task
-            details (boolean, optional):
-            result (boolean, optional):
+            details (boolean, optional): Add info about connected results and
+                tasks
+            result (boolean, optional): Return the details of possible connected
+                results.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2570,12 +2683,6 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand('get_notes')
 
         _add_filter(cmd, filter, filter_id)
-
-        if nvt_oid:
-            cmd.set_attribute('nvt_oid', nvt_oid)
-
-        if task_id:
-            cmd.set_attribute('task_id', task_id)
 
         if not details is None:
             cmd.set_attribute('details', _to_bool(details))
@@ -2594,6 +2701,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not note_id:
+            raise RequiredArgument(
+                'get_note requires a note_id argument'
+            )
+
         cmd = XmlCommand('get_notes')
         cmd.set_attribute('note_id', note_id)
 
@@ -2664,6 +2776,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not nvt_oid:
+            raise RequiredArgument('get_nvt requires nvt_oid argument')
+
         cmd = XmlCommand('get_nvts')
         cmd.set_attribute('nvt_oid', nvt_oid)
 
@@ -2687,16 +2802,14 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_overrides(self, *, filter=None, filter_id=None, nvt_oid=None,
-                      task_id=None, details=None, result=None):
+    def get_overrides(self, *, filter=None, filter_id=None, details=None,
+                      result=None):
         """Request a list of overrides
 
         Arguments:
             filter (str, optional): Filter term to use for the query
             filter_id (str, optional): UUID of an existing filter to use for
                 the query
-            nvt_oid (str, optional): OID of a nvt
-            task_id (str, optional): UUID of a task
             details (boolean, optional):
             result (boolean, optional):
 
@@ -2706,12 +2819,6 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand('get_overrides')
 
         _add_filter(cmd, filter, filter_id)
-
-        if nvt_oid:
-            cmd.set_attribute('nvt_oid', nvt_oid)
-
-        if task_id:
-            cmd.set_attribute('task_id', task_id)
 
         if not details is None:
             cmd.set_attribute('details', _to_bool(details))
@@ -2730,6 +2837,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not override_id:
+            raise RequiredArgument(
+                'get_override requires an override_id argument'
+            )
+
         cmd = XmlCommand('get_overrides')
         cmd.set_attribute('override_id', override_id)
 
@@ -2768,6 +2880,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not permission_id:
+            raise RequiredArgument(
+                'get_permission requires a permission_id argument'
+            )
+
         cmd = XmlCommand('get_permissions')
         cmd.set_attribute('permission_id', permission_id)
         return self._send_xml_command(cmd)
@@ -2814,6 +2931,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not port_list_id:
+            raise RequiredArgument(
+                'get_port_list requires a port_list_id argument'
+            )
+
         cmd = XmlCommand('get_port_lists')
         cmd.set_attribute('port_list_id', port_list_id)
 
@@ -2821,7 +2943,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('details', '1')
         return self._send_xml_command(cmd)
 
-    def get_preferences(self, *, nvt_oid=None, config_id=None, preference=None):
+    def get_preferences(self, *, nvt_oid=None, config_id=None):
         """Request a list of preferences
 
         When the command includes a config_id attribute, the preference element
@@ -2846,8 +2968,26 @@ class Gmp(GvmProtocol):
         if config_id:
             cmd.set_attribute('config_id', config_id)
 
-        if preference:
-            cmd.set_attribute('preference', preference)
+        return self._send_xml_command(cmd)
+
+    def get_preference(self, name):
+        """Request a nvt preference
+
+
+        Arguments:
+            preference (str): name of a particular preference
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument(
+                'get_preference requires a name argument'
+            )
+
+        cmd = XmlCommand('get_preferences')
+
+        cmd.set_attribute('preference', name)
 
         return self._send_xml_command(cmd)
 
@@ -2965,6 +3105,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not report_format_id:
+            raise RequiredArgument(
+                'get_report_format requires report_format_id argument'
+            )
+
         cmd = XmlCommand('get_report_formats')
         cmd.set_attribute('report_format_id', report_format_id)
 
@@ -3018,6 +3163,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not result_id:
+            raise RequiredArgument(
+                'get_result requires a result_id argument'
+            )
+
         cmd = XmlCommand('get_results')
         cmd.set_attribute('result_id', result_id)
 
@@ -3055,6 +3205,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not role_id:
+            raise RequiredArgument(
+                'get_role requires a role_id argument'
+            )
+
         cmd = XmlCommand('get_roles')
         cmd.set_attribute('role_id', role_id)
         return self._send_xml_command(cmd)
@@ -3096,6 +3251,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not scanner_id:
+            raise RequiredArgument(
+                'get_scanner requires a scanner_id argument'
+            )
+
         cmd = XmlCommand('get_scanners')
         cmd.set_attribute('scanner_id', scanner_id)
 
@@ -3140,6 +3300,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not schedule_id:
+            raise RequiredArgument(
+                'get_schedule requires a schedule_id argument'
+            )
+
         cmd = XmlCommand('get_schedules')
         cmd.set_attribute('schedule_id', schedule_id)
         return self._send_xml_command(cmd)
@@ -3169,6 +3334,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not setting_id:
+            raise RequiredArgument(
+                'get_setting requires a setting_id argument'
+            )
+
         cmd = XmlCommand('get_settings')
         cmd.set_attribute('setting_id', setting_id)
         return self._send_xml_command(cmd)
@@ -3199,6 +3369,11 @@ class Gmp(GvmProtocol):
             cmd.set_attribute('name', name)
 
         if not duration is None:
+            if not isinstance(duration, numbers.Integral):
+                raise InvalidArgument(
+                    'duration needs to be an integer number'
+                )
+
             cmd.set_attribute('duration', str(duration))
 
         if start_time:
@@ -3252,6 +3427,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not tag_id:
+            raise RequiredArgument(
+                'get_tag requires a tag_id argument'
+            )
+
         cmd = XmlCommand('get_tags')
         cmd.set_attribute('tag_id', tag_id)
         return self._send_xml_command(cmd)
@@ -3293,6 +3473,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not target_id:
+            raise RequiredArgument(
+                'get_target requires a target_id argument'
+            )
+
         cmd = XmlCommand('get_targets')
         cmd.set_attribute('target_id', target_id)
         return self._send_xml_command(cmd)
@@ -3373,6 +3558,11 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if not user_id:
+            raise RequiredArgument(
+                'get_user requires a user_id argument'
+            )
+
         cmd = XmlCommand('get_users')
         cmd.set_attribute('user_id', user_id)
         return self._send_xml_command(cmd)
@@ -3429,8 +3619,10 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('modify_agent')
         cmd.set_attribute('agent_id', str(agent_id))
+
         if name:
             cmd.add_element('name', name)
+
         if comment:
             cmd.add_element('comment', comment)
 
@@ -3447,11 +3639,21 @@ class Gmp(GvmProtocol):
             name (str, optional): Name of the Alert.
             condition (str, optional): The condition that must be satisfied
                 for the alert to occur.
+            condition (str, optional): The condition that must be satisfied for
+                the alert to occur; if the event is either 'Updated SecInfo
+                arrived' or 'New SecInfo arrived', condition must be 'Always'.
+                Otherwise, condition can also be on of 'Severity at least',
+                'Filter count changed' or 'Filter count at least'.
             condition_data (dict, optional): Data that defines the condition
-            event (str, optional): The event that must happen for the alert
-               to occur.
+            event (str, optional): The event that must happen for the alert to
+                occur, one of 'Task run status changed',
+                'Updated SecInfo arrived' or 'New SecInfo arrived'
             event_data (dict, optional): Data that defines the event
-            method (str, optional): The method by which the user is alerted
+            method (str, optional): The method by which the user is alerted,
+                one of 'SCP', 'Send', 'SMB', 'SNMP', 'Syslog' or 'Email';
+                if the event is neither 'Updated SecInfo arrived' nor
+                'New SecInfo arrived', method can also be one of 'Start Task',
+                'HTTP Get', 'Sourcefire Connector' or 'verinice Connector'.
             method_data (dict, optional): Data that defines the method
             filter_id (str, optional): Filter to apply when executing alert
             comment (str, optional): Comment for the alert
@@ -3462,6 +3664,8 @@ class Gmp(GvmProtocol):
 
         if not alert_id:
             raise RequiredArgument('modify_alert requires an alert_id argument')
+
+        _check_event(event, condition, method)
 
         cmd = XmlCommand('modify_alert')
         cmd.set_attribute('alert_id', str(alert_id))
@@ -3475,30 +3679,33 @@ class Gmp(GvmProtocol):
         if filter_id:
             cmd.add_element('filter', attrs={'id': filter_id})
 
-        conditions = cmd.add_element('condition', condition)
+        if condition:
+            conditions = cmd.add_element('condition', condition)
 
-        if not condition_data is None:
-            for value, key in condition_data.items():
-                _data = conditions.add_element('data', value)
-                _data.add_element('name', key)
+            if not condition_data is None:
+                for key, value in condition_data.items():
+                    _data = conditions.add_element('data', value)
+                    _data.add_element('name', key)
 
-        events = cmd.add_element('event', event)
+        if event:
+            events = cmd.add_element('event', event)
 
-        if not event_data is None:
-            for value, key in event_data.items():
-                _data = events.add_element('data', value)
-                _data.add_element('name', key)
+            if not event_data is None:
+                for key, value in event_data.items():
+                    _data = events.add_element('data', value)
+                    _data.add_element('name', key)
 
-        methods = cmd.add_element('method', method)
+        if method:
+            methods = cmd.add_element('method', method)
 
-        if not method_data is None:
-            for value, key in method_data.items():
-                _data = methods.add_element('data', value)
-                _data.add_element('name', key)
+            if not method_data is None:
+                for key, value in method_data.items():
+                    _data = methods.add_element('data', value)
+                    _data.add_element('name', key)
 
         return self._send_xml_command(cmd)
 
-    def modify_asset(self, asset_id, comment):
+    def modify_asset(self, asset_id, comment=''):
         """Modifies an existing asset.
 
         Arguments:

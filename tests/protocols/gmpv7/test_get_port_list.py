@@ -18,27 +18,34 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingsTestCase(unittest.TestCase):
+
+class GmpGetPortListTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_settings(self):
-        self.gmp.get_settings()
+    def test_get_port_list(self):
+        self.gmp.get_port_list(port_list_id='port_list_id')
 
         self.connection.send.has_been_called_with(
-            '<get_settings/>')
+            '<get_port_lists port_list_id="port_list_id" details="1"/>'
+        )
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+    def test_get_port_list_missing_port_list_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_port_list(port_list_id=None)
 
-        self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_port_list(port_list_id='')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_port_list('')
 
 
 if __name__ == '__main__':

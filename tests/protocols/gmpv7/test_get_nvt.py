@@ -18,6 +18,7 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
@@ -35,6 +36,16 @@ class GmpGetNvtTestCase(unittest.TestCase):
         self.connection.send.has_been_called_with(
             '<get_nvts nvt_oid="nvt_oid" details="1"/>'
         )
+
+    def test_get_nvt_missing_nvt_oid(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_nvt(nvt_oid=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_nvt(nvt_oid='')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_nvt('')
 
 
 if __name__ == '__main__':

@@ -18,74 +18,78 @@
 
 import unittest
 
+from gvm.errors import InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetCredentialsTestCase(unittest.TestCase):
+
+class GmpGetSystemReportsTestCase(unittest.TestCase):
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_get_credentials(self):
-        self.gmp.get_credentials()
+    def test_get_system_reports(self):
+        self.gmp.get_system_reports()
 
         self.connection.send.has_been_called_with(
-            '<get_credentials/>')
-
-    def test_get_credentials_with_filter(self):
-        self.gmp.get_credentials(filter='foo=bar')
-
-        self.connection.send.has_been_called_with(
-            '<get_credentials filter="foo=bar"/>'
+            '<get_system_reports/>'
         )
 
-    def test_get_credentials_with_filter_id(self):
-        self.gmp.get_credentials(filter_id='f1')
+    def test_get_system_reports_with_name(self):
+        self.gmp.get_system_reports(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials filt_id="f1"/>'
+            '<get_system_reports name="foo"/>'
         )
 
-    def test_get_credentials_with_scanners(self):
-        self.gmp.get_credentials(scanners=True)
+    def test_get_system_reports_with_slave_id(self):
+        self.gmp.get_system_reports(slave_id='s1')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials scanners="1"/>'
+            '<get_system_reports slave_id="s1"/>'
         )
 
-        self.gmp.get_credentials(scanners=False)
+    def test_get_system_reports_with_brief(self):
+        self.gmp.get_system_reports(brief=True)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials scanners="0"/>'
+            '<get_system_reports brief="1"/>'
         )
 
-    def test_get_credentials_with_trash(self):
-        self.gmp.get_credentials(trash=True)
+        self.gmp.get_system_reports(brief=False)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials trash="1"/>'
+            '<get_system_reports brief="0"/>'
         )
 
-        self.gmp.get_credentials(trash=False)
+    def test_get_system_reports_with_duration(self):
+        self.gmp.get_system_reports(duration=3600)
 
         self.connection.send.has_been_called_with(
-            '<get_credentials trash="0"/>'
+            '<get_system_reports duration="3600"/>'
         )
 
-    def test_get_credentials_with_targets(self):
-        self.gmp.get_credentials(targets=True)
+    def test_get_system_reports_with_invalid_duration(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.get_system_reports(duration='')
+
+    def test_get_system_reports_with_start_time(self):
+        self.gmp.get_system_reports(start_time='01-01-2019')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials targets="1"/>'
+            '<get_system_reports start_time="01-01-2019"/>'
         )
 
-        self.gmp.get_credentials(targets=False)
+    def test_get_system_reports_with_end_time(self):
+        self.gmp.get_system_reports(end_time='01-01-2019')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials targets="0"/>'
+            '<get_system_reports end_time="01-01-2019"/>'
         )
+
+
 
 
 

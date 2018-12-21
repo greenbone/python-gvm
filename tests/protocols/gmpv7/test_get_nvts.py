@@ -42,11 +42,23 @@ class GmpGetNvtsTestCase(unittest.TestCase):
             '<get_nvts details="1"/>'
         )
 
+        self.gmp.get_nvts(details=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_nvts details="0"/>'
+        )
+
     def test_get_nvts_with_preferences(self):
         self.gmp.get_nvts(preferences=True)
 
         self.connection.send.has_been_called_with(
             '<get_nvts preferences="1"/>'
+        )
+
+        self.gmp.get_nvts(preferences=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_nvts preferences="0"/>'
         )
 
     def test_get_nvts_with_preference_count(self):
@@ -61,6 +73,12 @@ class GmpGetNvtsTestCase(unittest.TestCase):
 
         self.connection.send.has_been_called_with(
             '<get_nvts timeout="1"/>'
+        )
+
+        self.gmp.get_nvts(timeout=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_nvts timeout="0"/>'
         )
 
     def test_get_nvts_with_config_id(self):

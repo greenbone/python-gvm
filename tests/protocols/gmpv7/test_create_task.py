@@ -18,6 +18,7 @@
 
 import unittest
 
+from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
@@ -25,75 +26,326 @@ from .. import MockConnection
 
 class GMPCreateTaskCommandTestCase(unittest.TestCase):
 
-    TASK_NAME = "important task"
-    CONFIG_ID = "cd0641e7-40b8-4e2c-811e-6b39d6d4b904"
-    TARGET_ID = '267a3405-e84a-47da-97b2-5fa0d2e8995e'
-    SCANNER_ID = 'b64c81b2-b9de-11e3-a2e9-406186ea4fc5'
-    ALERT_IDS = ['3ab38c6a-30ac-407a-98db-ad6e74c98b9a',]
-    COMMENT = 'this task has been created for test purposes'
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_without_alert_correct_cmd(self):
+    def test_create_task(self):
         self.gmp.create_task(
-            self.TASK_NAME, self.CONFIG_ID, self.TARGET_ID, self.SCANNER_ID,
-            comment=self.COMMENT)
-
-        self.connection.send.has_been_called_with(
-            '<create_task>'
-            '<name>{0}</name>'
-            '<config id="{2}"/><target id="{3}"/><scanner id="{4}"/>'
-            '<comment>{1}</comment>'
-            '</create_task>'.format(self.TASK_NAME, self.COMMENT,
-                                    self.CONFIG_ID, self.TARGET_ID,
-                                    self.SCANNER_ID)
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
         )
 
-    def test_single_alert(self):
-        self.gmp.create_task(
-            self.TASK_NAME, self.CONFIG_ID, self.TARGET_ID, self.SCANNER_ID,
-            alert_ids=self.ALERT_IDS)
-
         self.connection.send.has_been_called_with(
             '<create_task>'
-            '<name>{task}</name>'
-            '<config id="{config}"/>'
-            '<target id="{target}"/>'
-            '<scanner id="{scanner}"/>'
-            '<alert id="{alert}"/>'
-            '</create_task>'.format(
-                task=self.TASK_NAME, config=self.CONFIG_ID,
-                target=self.TARGET_ID, scanner=self.SCANNER_ID,
-                alert=self.ALERT_IDS[0])
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '</create_task>'
         )
 
-    def test_multiple_alerts(self):
-        alert_id2 = 'fb3d6f82-d706-4f99-9e53-d7d85257e25f'
-        alert_id3 = 'a33864a9-d3fd-44b3-8717-972bfb01dfcf'
-        alert_ids = self.ALERT_IDS[:]
-        alert_ids.extend([alert_id2, alert_id3])
+    def test_create_task_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_task(
+                name=None,
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+            )
 
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_task(
+                name='',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+            )
+
+    def test_create_task_missing_config_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id=None,
+                target_id='t1',
+                scanner_id='s1',
+            )
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='',
+                target_id='t1',
+                scanner_id='s1',
+            )
+
+    def test_create_task_missing_target_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id=None,
+                scanner_id='s1',
+            )
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='',
+                scanner_id='s1',
+            )
+
+    def test_create_task_missing_scanner_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id=None,
+            )
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='',
+            )
+
+    def test_create_task_with_comment(self):
         self.gmp.create_task(
-            self.TASK_NAME, self.CONFIG_ID, self.TARGET_ID, self.SCANNER_ID,
-            alert_ids=alert_ids)
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            comment='bar',
+        )
 
         self.connection.send.has_been_called_with(
             '<create_task>'
-            '<name>{task}</name>'
-            '<config id="{config}"/>'
-            '<target id="{target}"/>'
-            '<scanner id="{scanner}"/>'
-            '<alert id="{alert1}"/>'
-            '<alert id="{alert2}"/>'
-            '<alert id="{alert3}"/>'
-            '</create_task>'.format(
-                task=self.TASK_NAME, config=self.CONFIG_ID,
-                target=self.TARGET_ID, scanner=self.SCANNER_ID,
-                alert1=alert_ids[0],
-                alert2=alert_ids[1],
-                alert3=alert_ids[2])
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<comment>bar</comment>'
+            '</create_task>'
+        )
+
+    def test_create_task_single_alert(self):
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            alert_ids='a1', # will be removed in future
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<alert id="a1"/>'
+            '</create_task>'
+        )
+
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            alert_ids=['a1'],
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<alert id="a1"/>'
+            '</create_task>'
+        )
+
+    def test_create_task_multiple_alerts(self):
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            alert_ids=['a1', 'a2', 'a3'],
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<alert id="a1"/>'
+            '<alert id="a2"/>'
+            '<alert id="a3"/>'
+            '</create_task>'
+        )
+
+    def test_create_task_with_alterable(self):
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            alterable=True,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<alterable>1</alterable>'
+            '</create_task>'
+        )
+
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            alterable=False,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<alterable>0</alterable>'
+            '</create_task>'
+        )
+
+    def test_create_task_with_hosts_ordering(self):
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            hosts_ordering='foo',
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<hosts_ordering>foo</hosts_ordering>'
+            '</create_task>'
+        )
+
+    def test_create_task_with_schedule(self):
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            schedule_id='s1',
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<schedule id="s1"/>'
+            '</create_task>'
+        )
+
+    def test_create_task_with_schedule_and_schedule_periods(self):
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            schedule_id='s1',
+            schedule_periods=0,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<schedule id="s1"/>'
+            '<schedule_periods>0</schedule_periods>'
+            '</create_task>'
+        )
+
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            schedule_id='s1',
+            schedule_periods=5,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<schedule id="s1"/>'
+            '<schedule_periods>5</schedule_periods>'
+            '</create_task>'
+        )
+
+    def test_create_task_with_schedule_and_invalid_schedule_periods(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+                schedule_id='s1',
+                schedule_periods='foo',
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+                schedule_id='s1',
+                schedule_periods=-1,
+            )
+
+    def test_create_task_with_observers(self):
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            observers=['u1', 'u2'],
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<observers>u1,u2</observers>'
+            '</create_task>'
         )
 
 
