@@ -29,7 +29,7 @@ import numbers
 from lxml import etree
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.utils import get_version_string
+from gvm.utils import get_version_string, deprecation
 from gvm.xml import XmlCommand, create_parser
 
 from .base import GvmProtocol
@@ -1684,7 +1684,7 @@ class Gmp(GvmProtocol):
 
         if alert_ids:
             if isinstance(alert_ids, str):
-                logger.warning(
+                deprecation(
                     'Please pass a list as alert_ids parameter to create_task. '
                     'Passing a string is deprecated and will be removed in '
                     'future.')
