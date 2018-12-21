@@ -23,6 +23,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 7`_
 .. _Greenbone Management Protocol version 7:
     https://docs.greenbone.net/API/GMP/gmp-7.0.html
 """
+import base64
 import logging
 import numbers
 
@@ -183,6 +184,10 @@ def _to_bool(value):
     return '1' if value else '0'
 
 
+def _to_base64(value):
+    return base64.b64encode(value.encode('utf-8'))
+
+
 def _add_filter(cmd, filter, filter_id):
     if filter:
         cmd.set_attribute('filter', filter)
@@ -203,6 +208,10 @@ def _check_event(event, condition, method):
             raise InvalidArgument('Invalid method for event')
     elif event is not None:
         raise InvalidArgument('Invalid event "{0}"'.format(event))
+
+
+def _is_list_like(value):
+    return isinstance(value, (list, tuple))
 
 
 class Gmp(GvmProtocol):
@@ -3749,14 +3758,189 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_config(self, config_id, selection, *, nvt_oids=None, name=None,
-                      value=None, family=None):
-        """Modifies an existing scan config.
+    def modify_config_set_nvt_preference(self, config_id, name, nvt_oid, *,
+                                         value=None):
+        """Modifies the nvt preferences of an existing scan config.
 
         Arguments:
             config_id (str): UUID of scan config to modify.
-            selection (str): one of 'nvt_pref', nvt_selection or
-                family_selection'
+            name (str): Name for preference to change.
+            nvt_oid (str): OID of the NVT associated with preference to modify
+            value (str, optional): New value for the preference. None to delete
+                the preference and to use the default instead.
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_nvt_preference requires config_id argument'
+            )
+
+        if not nvt_oid:
+            raise RequiredArgument(
+                'modify_config_set_nvt_preference requires a nvt_oid argument'
+            )
+
+        if not name:
+            raise RequiredArgument(
+                'modify_config_set_nvt_preference requires a name argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        _xmlpref = cmd.add_element('preference')
+
+        _xmlpref.add_element('nvt', attrs={'oid': nvt_oid})
+        _xmlpref.add_element('name', name)
+
+        if value:
+            _xmlpref.add_element('value', _to_base64(value))
+
+        return self._send_xml_command(cmd)
+
+    def modify_config_set_comment(self, config_id, comment=''):
+        """Modifies the comment of an existing scan config
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            comment (str, optional): Comment to set on a config. Default: ''
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_comment requires a config_id argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
+
+    def modify_config_set_scanner_preference(self, config_id, name, *,
+                                             value=None):
+        """Modifies the scanner preferences of an existing scan config
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            name (str): Name of the scanner preference to change
+            value (str, optional): New value for the preference. None to delete
+                the preference and to use the default instead.
+
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_scanner_preference requires a config_id '
+                'argument'
+            )
+
+        if not name:
+            raise RequiredArgument(
+                'modify_config_set_scanner_preference requires a name argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        _xmlpref = cmd.add_element('preference')
+
+        _xmlpref.add_element('name', name)
+
+        if value:
+            _xmlpref.add_element('value', _to_base64(value))
+
+        return self._send_xml_command(cmd)
+
+    def modify_config_set_nvt_selection(self, config_id, family, nvt_oids):
+        """Modifies the selected nvts of an existing scan config
+
+        The manager updates the given family in the config to include only the
+        given NVTs.
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            family (str): Name of the NVT family to include NVTs from
+            nvt_oids (list): List of NVTs to select for the family.
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_nvt_selection requires a config_id '
+                'argument'
+            )
+
+        if not family:
+            raise RequiredArgument(
+                'modify_config_set_nvt_selection requires a family argument'
+            )
+
+        if not _is_list_like(nvt_oids):
+            raise InvalidArgument(
+                'modify_config_set_nvt_selection requires an iterable as '
+                'nvt_oids argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        _xmlnvtsel = cmd.add_element('nvt_selection')
+        _xmlnvtsel.add_element('family', family)
+
+        for nvt in nvt_oids:
+            _xmlnvtsel.add_element('nvt', attrs={'oid': nvt})
+
+        return self._send_xml_command(cmd)
+
+    def modify_config_set_family_selection(
+            self, config_id, families, *, auto_add_new_families=True,
+            auto_add_new_nvts=True):
+        """
+        Selected the NVTs of a scan config at a family level.
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            families (list): List of NVT family names to select.
+            auto_add_new_families (boolean, optional): Whether new families
+                should be added to the scan config automatically. Default: True.
+            auto_add_new_nvts (boolean, optional): Whether new NVTs in the
+                selected families should be added to the scan config
+                automatically. Default: True.
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_family_selection requires a config_id '
+                'argument'
+            )
+
+        if not _is_list_like(families):
+            raise InvalidArgument(
+                'modify_config_set_family_selection requires a list as '
+                'families argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        _xmlfamsel = cmd.add_element('family_selection')
+        _xmlfamsel.add_element('growing', _to_bool(auto_add_new_families))
+
+        for family in families:
+            _xmlfamily = _xmlfamsel.add_element('family')
+            _xmlfamily.add_element('name', family)
+            _xmlfamily.add_element('all', '1')
+            _xmlfamily.add_element('growing', _to_bool(auto_add_new_nvts))
+
+        return self._send_xml_command(cmd)
+
+    def modify_config(self, config_id, selection=None, **kwargs):
+        """Modifies an existing scan config.
+
+        DEPREACTED. Please use modify_config_set_ methods instead.
+
+        modify_config has four modes to operate depending on the selection.
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            selection (str): one of 'scan_pref', 'nvt_pref', 'nvt_selection' or
+                'family_selection'
             name (str, optional): New name for preference.
             value(str, optional): New value for preference.
             nvt_oids (list, optional): List of NVTs associated with preference
@@ -3769,44 +3953,57 @@ class Gmp(GvmProtocol):
         if not config_id:
             raise RequiredArgument('modify_config required config_id argument')
 
+        if selection is None:
+            deprecation(
+                'Using modify_config to update the comment of a scan config is'
+                'deprecated. Please use modify_config_set_comment instead.'
+            )
+            return self.modify_config_set_comment(
+                config_id, kwargs.get('comment'))
+
         if selection not in ('nvt_pref', 'scan_pref',
                              'family_selection', 'nvt_selection'):
             raise InvalidArgument('selection must be one of nvt_pref, '
                                   'scan_pref, family_selection or '
                                   'nvt_selection')
 
-        cmd = XmlCommand('modify_config')
-        cmd.set_attribute('config_id', str(config_id))
 
         if selection == 'nvt_pref':
-            _xmlpref = cmd.add_element('preference')
-            if not nvt_oids:
-                raise InvalidArgument('modify_config requires a nvt_oids '
-                                      'argument')
-            _xmlpref.add_element('nvt', attrs={'oid': nvt_oids[0]})
-            _xmlpref.add_element('name', name)
-            _xmlpref.add_element('value', value)
+            deprecation(
+                'Using modify_config to update a nvt preference of a scan '
+                'config is deprecated. Please use '
+                'modify_config_set_nvt_preference instead.'
+            )
+            return self.modify_config_set_nvt_preference(
+                config_id, **kwargs)
 
-        elif selection == 'nvt_selection':
-            _xmlnvtsel = cmd.add_element('nvt_selection')
-            _xmlnvtsel.add_element('family', family)
+        if selection == 'scan_pref':
+            deprecation(
+                'Using modify_config to update a scanner preference of a '
+                'scan config is deprecated. Please use '
+                'modify_config_set_scanner_preference instead.'
+            )
+            return self.modify_config_set_scanner_preference(
+                config_id, **kwargs,
+            )
 
-            if nvt_oids:
-                for nvt in nvt_oids:
-                    _xmlnvtsel.add_element('nvt', attrs={'oid': nvt})
-            else:
-                raise InvalidArgument('modify_config requires a nvt_oid '
-                                      'argument')
+        if selection == 'nvt_selection':
+            deprecation(
+                'Using modify_config to update a nvt selection of a '
+                'scan config is deprecated. Please use '
+                'modify_config_set_nvt_selection instead.'
+            )
+            return self.modify_config_set_nvt_selection(
+                config_id, **kwargs,
+            )
 
-        elif selection == 'family_selection':
-            _xmlfamsel = cmd.add_element('family_selection')
-            _xmlfamsel.add_element('growing', '1')
-            _xmlfamily = _xmlfamsel.add_element('family')
-            _xmlfamily.add_element('name', family)
-            _xmlfamily.add_element('all', '1')
-            _xmlfamily.add_element('growing', '1')
-
-        return self._send_xml_command(cmd)
+        deprecation(
+            'Using modify_config to update a family selection of a '
+            'scan config is deprecated. Please use '
+            'modify_config_set_family_selection instead.'
+        )
+        return self.modify_config_set_family_selection(
+            config_id, **kwargs)
 
     def modify_credential(self, credential_id, credential_type=None, *,
                           name=None, comment=None, allow_insecure=None,
