@@ -16,6 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import warnings
+
+
+def deprecation(message):
+    warnings.warn(message, DeprecationWarning, stacklevel=2)
+
 
 def get_version_string(version):
     """Create a version string from a version tuple
