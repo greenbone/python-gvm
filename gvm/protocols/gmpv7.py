@@ -3933,7 +3933,7 @@ class Gmp(GvmProtocol):
     def modify_config(self, config_id, selection=None, **kwargs):
         """Modifies an existing scan config.
 
-        DEPREACTED. Please use modify_config_set_ methods instead.
+        DEPRECATED. Please use *modify_config_set_* methods instead.
 
         modify_config has four modes to operate depending on the selection.
 
