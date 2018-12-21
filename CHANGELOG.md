@@ -2,6 +2,8 @@
 
 ## gvm.protocols.gmpv7
 
+* `modify_config` is marked as deprecated and will be removed in future. One of
+  the more specific `modify_config_set_` method should be used instead.
 * Fixed generating XML for `get_nvts` command
 * Fixed generating XML for `get_settings` command
 * Fixed generating XML for `get_credentials` command
