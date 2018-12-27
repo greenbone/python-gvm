@@ -163,6 +163,12 @@ THREAD_TYPES = (
     'Debug',
 )
 
+SUBJECT_TYPES = (
+    'user',
+    'group',
+    'role',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
@@ -1013,7 +1019,7 @@ class Gmp(GvmProtocol):
             raise RequiredArgument(
                 'create_permission requires a subject_id argument')
 
-        if subject_type not in ('user', 'group', 'role'):
+        if subject_type not in SUBJECT_TYPES:
             raise InvalidArgument(
                 'create_permission requires subject_type to be either user, '
                 'group or role')
