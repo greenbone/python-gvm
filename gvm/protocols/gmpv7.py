@@ -4378,12 +4378,33 @@ class Gmp(GvmProtocol):
         if name:
             cmd.add_element('name', name)
 
-        if resource_id and resource_type:
+        if resource_id or resource_type:
+            if not resource_id:
+                raise RequiredArgument(
+                    'modify_permission requires resource_id for resource_type'
+                )
+
+            if not resource_type:
+                raise RequiredArgument(
+                    'modify_permission requires resource_type for resource_id'
+                )
+
             _xmlresource = cmd.add_element('resource',
                                            attrs={'id': resource_id})
             _xmlresource.add_element('type', resource_type)
 
-        if subject_id and subject_type:
+        if subject_id or subject_type:
+            if not subject_id:
+                raise RequiredArgument(
+                    'modify_permission requires a subject_id for subject_type'
+                )
+
+            if subject_type not in SUBJECT_TYPES:
+                raise InvalidArgument(
+                    'modify_permission requires subject_type to be either '
+                    'user, group or role'
+                )
+
             _xmlsubject = cmd.add_element('subject',
                                           attrs={'id': subject_id})
             _xmlsubject.add_element('type', subject_type)
