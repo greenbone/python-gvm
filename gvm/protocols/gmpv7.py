@@ -4060,13 +4060,16 @@ class Gmp(GvmProtocol):
         if certificate:
             cmd.add_element('certificate', certificate)
 
-        if key_phrase or private_key:
-            if not key_phrase or not private_key:
+        if key_phrase is not None or private_key:
+            if key_phrase is not None and not private_key:
                 raise RequiredArgument('modify_credential requires '
-                                       'a key_phrase and private_key arguments')
+                                       'key_phrase and private_key arguments')
+
             _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('phrase', key_phrase)
             _xmlkey.add_element('private', private_key)
+
+            if key_phrase is not None:
+                _xmlkey.add_element('phrase', key_phrase)
 
         if login:
             cmd.add_element('login', login)
@@ -4074,24 +4077,27 @@ class Gmp(GvmProtocol):
         if password:
             cmd.add_element('password', password)
 
-        if auth_algorithm:
+        if auth_algorithm is not None:
             if auth_algorithm not in ('md5', 'sha1'):
-                raise RequiredArgument('modify_credential requires '
-                                       'auth_algorithm to be either '
-                                       'md5 or sha1')
+                raise InvalidArgument('modify_credential requires '
+                                      'auth_algorithm to be either '
+                                      'md5 or sha1')
             cmd.add_element('auth_algorithm', auth_algorithm)
 
         if community:
             cmd.add_element('community', community)
 
-        if privacy_algorithm:
+        if privacy_algorithm is not None:
             if privacy_algorithm not in ('aes', 'des'):
-                raise RequiredArgument('modify_credential requires '
-                                       'privacy_algorithm to be either'
-                                       'aes or des')
+                raise InvalidArgument('modify_credential requires '
+                                      'privacy_algorithm to be either'
+                                      'aes or des')
+
             _xmlprivacy = cmd.add_element('privacy')
             _xmlprivacy.add_element('algorithm', privacy_algorithm)
-            _xmlprivacy.add_element('password', privacy_password)
+
+            if privacy_password is not None:
+                _xmlprivacy.add_element('password', privacy_password)
 
         return self._send_xml_command(cmd)
 
