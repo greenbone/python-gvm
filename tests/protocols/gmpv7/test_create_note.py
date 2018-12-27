@@ -56,17 +56,6 @@ class GmpCreateNoteTestCase(unittest.TestCase):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_note('foo', '')
 
-    def test_create_note_with_comment(self):
-        self.gmp.create_note('foo', nvt_oid='oid1', comment='bar')
-
-        self.connection.send.has_been_called_with(
-            '<create_note>'
-            '<text>foo</text>'
-            '<nvt oid="oid1"/>'
-            '<comment>bar</comment>'
-            '</create_note>'
-        )
-
     def test_create_note_with_hosts(self):
         self.gmp.create_note('foo', nvt_oid='oid1', hosts=[])
 

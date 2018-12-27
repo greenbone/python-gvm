@@ -811,9 +811,9 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_note(self, text, nvt_oid, *, seconds_active=None, comment=None,
-                    hosts=None, result_id=None, severity=None, task_id=None,
-                    threat=None, port=None):
+    def create_note(self, text, nvt_oid, *, seconds_active=None, hosts=None,
+                    result_id=None, severity=None, task_id=None, threat=None,
+                    port=None):
         """Create a new note
 
         Arguments:
@@ -821,7 +821,6 @@ class Gmp(GvmProtocol):
             nvt_id (str): OID of the nvt to which note applies
             seconds_active (int, optional): Seconds note will be active. -1 on
                 always, 0 off
-            comment (str, optional): Comment for the note
             hosts (list, optional): A list of hosts addresses
             port (int, optional): Port to which the note applies
             result_id (str, optional): UUID of a result to which note applies
@@ -846,9 +845,6 @@ class Gmp(GvmProtocol):
 
         if not seconds_active is None:
             cmd.add_element('active', str(seconds_active))
-
-        if comment:
-            cmd.add_element('comment', comment)
 
         if hosts:
             cmd.add_element('hosts', ','.join(hosts))
@@ -893,7 +889,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_override(self, text, nvt_oid, *, seconds_active=None, hosts=None,
-                        port=None, result_id=None, severity=None, comment=None,
+                        port=None, result_id=None, severity=None,
                         new_severity=None, task_id=None, threat=None,
                         new_threat=None):
         """Create a new override
@@ -903,7 +899,6 @@ class Gmp(GvmProtocol):
             nvt_id (str): OID of the nvt to which override applies
             seconds_active (int, optional): Seconds override will be active.
                 -1 on always, 0 off
-            comment (str, optional): Comment for the override
             hosts (list, optional): A list of host addresses
             port (int, optional): Port to which the override applies
             result_id (str, optional): UUID of a result to which override
@@ -934,9 +929,6 @@ class Gmp(GvmProtocol):
 
         if not seconds_active is None:
             cmd.add_element('active', str(seconds_active))
-
-        if comment:
-            cmd.add_element('comment', comment)
 
         if hosts:
             cmd.add_element('hosts', ','.join(hosts))

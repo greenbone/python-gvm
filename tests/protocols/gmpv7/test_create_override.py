@@ -56,17 +56,6 @@ class GmpCreateOverrideTestCase(unittest.TestCase):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_override('foo', '')
 
-    def test_create_override_with_comment(self):
-        self.gmp.create_override('foo', nvt_oid='oid1', comment='bar')
-
-        self.connection.send.has_been_called_with(
-            '<create_override>'
-            '<text>foo</text>'
-            '<nvt oid="oid1"/>'
-            '<comment>bar</comment>'
-            '</create_override>'
-        )
-
     def test_create_override_with_hosts(self):
         self.gmp.create_override('foo', nvt_oid='oid1', hosts=[])
 
