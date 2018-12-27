@@ -4054,8 +4054,8 @@ class Gmp(GvmProtocol):
         if name:
             cmd.add_element('name', name)
 
-        if allow_insecure:
-            cmd.add_element('allow_insecure', allow_insecure)
+        if allow_insecure is not None:
+            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
 
         if certificate:
             cmd.add_element('certificate', certificate)
