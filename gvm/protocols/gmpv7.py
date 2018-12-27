@@ -154,6 +154,15 @@ INFO_TYPES = (
     'ALLINFO',
 )
 
+THREAD_TYPES = (
+    'High',
+    'Medium',
+    'Low',
+    'Alarm',
+    'Log',
+    'Debug',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
@@ -814,12 +823,13 @@ class Gmp(GvmProtocol):
                 always, 0 off
             comment (str, optional): Comment for the note
             hosts (list, optional): A list of hosts addresses
-            port (str, optional): Port to which the note applies
+            port (int, optional): Port to which the note applies
             result_id (str, optional): UUID of a result to which note applies
             severity (decimal, optional): Severity to which note applies
             task_id (str, optional): UUID of task to which note applies
-            threat (str, optional): Threat level to which note applies. Will be
-                converted to severity
+            threat (str, optional): Threat level to which note applies. One of
+                High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                severity.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -841,21 +851,27 @@ class Gmp(GvmProtocol):
             cmd.add_element('comment', comment)
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', ','.join(hosts))
 
         if port:
-            cmd.add_element('port', port)
+            cmd.add_element('port', str(port))
 
         if result_id:
             cmd.add_element('result', attrs={'id': result_id})
 
         if severity:
-            cmd.add_element('severity', severity)
+            cmd.add_element('severity', str(severity))
 
         if task_id:
             cmd.add_element('task', attrs={'id': task_id})
 
-        if threat:
+        if threat is not None:
+            if threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'create_note threat argument {0} is invalid. threat must '
+                    'be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                )
+
             cmd.add_element('threat', threat)
 
         return self._send_xml_command(cmd)
@@ -889,16 +905,18 @@ class Gmp(GvmProtocol):
                 -1 on always, 0 off
             comment (str, optional): Comment for the override
             hosts (list, optional): A list of host addresses
-            port (str, optional): Port to which the override applies
+            port (int, optional): Port to which the override applies
             result_id (str, optional): UUID of a result to which override
                 applies
             severity (decimal, optional): Severity to which override applies
             new_severity (decimal, optional): New severity for result
             task_id (str, optional): UUID of task to which override applies
-            threat (str, optional): Threat level to which override applies. Will
-                be converted to severity
-            new_threat (str, optional): New threat level for result, will be
-                converted to a new_severity
+            threat (str, optional): Threat level to which override applies. One
+                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                severity.
+            new_threat (str, optional): New threat level for results. One
+                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                new_severity.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -921,27 +939,42 @@ class Gmp(GvmProtocol):
             cmd.add_element('comment', comment)
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', ','.join(hosts))
 
         if port:
-            cmd.add_element('port', port)
+            cmd.add_element('port', str(port))
 
         if result_id:
             cmd.add_element('result', attrs={'id': result_id})
 
         if severity:
-            cmd.add_element('severity', severity)
+            cmd.add_element('severity', str(severity))
 
         if new_severity:
-            cmd.add_element('new_severity', new_severity)
+            cmd.add_element('new_severity', str(new_severity))
 
         if task_id:
             cmd.add_element('task', attrs={'id': task_id})
 
-        if threat:
+        if threat is not None:
+            if threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'create_override threat argument {0} is invalid. threat'
+                    'must be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                )
+
             cmd.add_element('threat', threat)
 
-        if new_threat:
+        if new_threat is not None:
+            if new_threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'create_override new_threat argument {0} is invalid. '
+                    'new_threat must be one of {1}'.format(
+                        new_threat,
+                        ', '.join(THREAD_TYPES),
+                    )
+                )
+
             cmd.add_element('new_threat', new_threat)
 
         return self._send_xml_command(cmd)
@@ -4182,17 +4215,20 @@ class Gmp(GvmProtocol):
             seconds_active (int, optional): Seconds note will be active.
                 -1 on always, 0 off.
             hosts (list, optional): A list of hosts addresses
-            port (str, optional): Port to which note applies.
+            port (int, optional): Port to which note applies.
             result_id (str, optional): Result to which note applies.
-            severity (str, optional): Severity to which note applies.
+            severity (descimal, optional): Severity to which note applies.
             task_id (str, optional): Task to which note applies.
-            threat (str, optional): Threat level to which note applies.
+            threat (str, optional): Threat level to which note applies. One of
+                High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                severity.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
         if not note_id:
             raise RequiredArgument('modify_note requires a note_id attribute')
+
         if not text:
             raise RequiredArgument('modify_note requires a text element')
 
@@ -4204,22 +4240,28 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', ','.join(hosts))
 
         if port:
-            cmd.add_element('port', port)
+            cmd.add_element('port', str(port))
 
         if result_id:
             cmd.add_element('result', attrs={'id': result_id})
 
         if severity:
-            cmd.add_element('severity', severity)
+            cmd.add_element('severity', str(severity))
 
         if task_id:
             cmd.add_element('task', attrs={'id': task_id})
 
-        if threat:
+        if threat is not None:
             cmd.add_element('threat', threat)
+
+            if threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'modify_note threat argument {0} is invalid. threat must '
+                    'be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                )
 
         return self._send_xml_command(cmd)
 
@@ -4235,13 +4277,17 @@ class Gmp(GvmProtocol):
             seconds_active (int, optional): Seconds override will be active.
                 -1 on always, 0 off.
             hosts (list, optional): A list of host addresses
-            port (str, optional): Port to which override applies.
+            port (int, optional): Port to which override applies.
             result_id (str, optional): Result to which override applies.
-            severity (str, optional): Severity to which override applies.
-            new_severity (str, optional): New severity score for result.
+            severity (decimal, optional): Severity to which override applies.
+            new_severity (decimal, optional): New severity score for result.
             task_id (str, optional): Task to which override applies.
-            threat (str, optional): Threat level to which override applies.
-            new_threat (str, optional): New threat level for results.
+            threat (str, optional): Threat level to which override applies. One
+                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                severity.
+            new_threat (str, optional): New threat level for results. One
+                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                new_severity.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4260,27 +4306,41 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', ','.join(hosts))
 
         if port:
-            cmd.add_element('port', port)
+            cmd.add_element('port', str(port))
 
         if result_id:
             cmd.add_element('result', attrs={'id': result_id})
 
         if severity:
-            cmd.add_element('severity', severity)
+            cmd.add_element('severity', str(severity))
 
         if new_severity:
-            cmd.add_element('new_severity', new_severity)
+            cmd.add_element('new_severity', str(new_severity))
 
         if task_id:
             cmd.add_element('task', attrs={'id': task_id})
 
-        if threat:
+        if threat is not None:
+            if threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'modify_override threat argument {0} is invalid. threat'
+                    'must be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                )
             cmd.add_element('threat', threat)
 
-        if new_threat:
+        if new_threat is not None:
+            if new_threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'modify_override new_threat argument {0} is invalid. '
+                    'new_threat must be one of {1}'.format(
+                        new_threat,
+                        ', '.join(THREAD_TYPES),
+                    )
+                )
+
             cmd.add_element('new_threat', new_threat)
 
         return self._send_xml_command(cmd)
