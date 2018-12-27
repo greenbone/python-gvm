@@ -4436,28 +4436,6 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_report(self, report_id, comment):
-        """Modifies an existing report.
-
-        Arguments:
-            report_id (str): UUID of report to modify.
-            comment (str): The comment on the report.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not report_id:
-            raise RequiredArgument('modify_report requires '
-                                   'a report_id attribute')
-        if not comment:
-            raise RequiredArgument('modify_report requires '
-                                   'a comment attribute')
-        cmd = XmlCommand('modify_report')
-        cmd.set_attribute('report_id', report_id)
-        cmd.add_element('comment', comment)
-
-        return self._send_xml_command(cmd)
-
     def modify_report_format(self, report_format_id, *, active=None, name=None,
                              summary=None, param_name=None, param_value=None):
         """Modifies an existing report format.

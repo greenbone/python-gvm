@@ -2,6 +2,7 @@
 
 ## gvm.protocols.gmpv7
 
+* Removed `modify_report` method
 * Removed unused comment argument from `create_note` and `create_override`
 * Updated argument types for `create_note`, `create_override`, `modify_note`
   and `modify_override`
