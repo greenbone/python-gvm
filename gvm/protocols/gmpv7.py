@@ -4467,10 +4467,12 @@ class Gmp(GvmProtocol):
         if summary:
             cmd.add_element('summary', summary)
 
-        if param_name and param_value:
+        if param_name:
             _xmlparam = cmd.add_element('param')
             _xmlparam.add_element('name', param_name)
-            _xmlparam.add_element('value', param_value)
+
+            if param_value is not None:
+                _xmlparam.add_element('value', param_value)
 
         return self._send_xml_command(cmd)
 
