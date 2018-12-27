@@ -4044,11 +4044,9 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('credential_id', credential_id)
 
         if credential_type:
-            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
-                raise RequiredArgument('modify_credential requires type '
-                                       'to be either cc, snmp, up or usk')
-
-            cmd.add_element('type', credential_type)
+            if credential_type not in CREDENTIAL_TYPES:
+                raise InvalidArgument('modify_credential requires type '
+                                      'to be either cc, snmp, up or usk')
 
         if comment:
             cmd.add_element('comment', comment)
