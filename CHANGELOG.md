@@ -2,6 +2,12 @@
 
 ## gvm.protocols.gmpv7
 
+* Removed unused comment argument from `create_note` and `create_override`
+* Updated argument types for `create_note`, `create_override`, `modify_note`
+  and `modify_override`
+* The arguments threat (and new_threat) for `create_note`, `modify_note`,
+  `create_override` and `modify_override` must be one of 'High', 'Medium',
+  'Low', 'Alarm', 'Log' or 'Debug' now
 * `modify_config` is marked as deprecated and will be removed in future. One of
   the more specific `modify_config_set_` method should be used instead.
 * Fixed generating XML for `get_nvts` command
