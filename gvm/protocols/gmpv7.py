@@ -4672,29 +4672,33 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_setting(self, setting_id, name, value):
+    def modify_setting(self, setting_id=None, name=None, value=None):
         """Modifies an existing setting.
 
         Arguments:
-            setting_id (str): UUID of the setting to be changed.
-            name (str): The name of the setting.
+            setting_id (str, optional): UUID of the setting to be changed.
+            name (str, optional): The name of the setting. Either setting_id or
+                name must be passed.
             value (str): The value of the setting.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not setting_id:
-            raise RequiredArgument('modify_setting requires a setting_id'
-                                   'argument')
-        if not name:
-            raise RequiredArgument('modify_setting requires a name argument')
+        if not setting_id and not name:
+            raise RequiredArgument(
+                'modify_setting requires a setting_id or name argument'
+            )
 
-        if not value:
+        if value is None:
             raise RequiredArgument('modify_setting requires a value argument')
 
         cmd = XmlCommand('modify_setting')
-        cmd.set_attribute('setting_id', setting_id)
-        cmd.add_element('name', name)
+
+        if setting_id:
+            cmd.set_attribute('setting_id', setting_id)
+        else:
+            cmd.add_element('name', name)
+
         cmd.add_element('value', value)
 
         return self._send_xml_command(cmd)

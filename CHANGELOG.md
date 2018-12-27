@@ -2,6 +2,8 @@
 
 ## gvm.protocols.gmpv7
 
+* Require either setting_id or name for `modify_setting` not both arguments
+* Allow empty string a value argument for `modify_setting`
 * Require either user_id or name for `modify_user` not both arguments
 * Removed sources argument from `modify_user` method
 * Removed `modify_report` method
