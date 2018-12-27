@@ -4953,14 +4953,13 @@ class Gmp(GvmProtocol):
             for role in role_ids:
                 cmd.add_element('role', attrs={'id': role})
 
-        if hosts or hosts_allow:
-            cmd.add_element('hosts', ', '.join(hosts),
-                            attrs={'allow': '1' if hosts_allow else '0'})
+        if hosts:
+            cmd.add_element('hosts', ','.join(hosts),
+                            attrs={'allow': _to_bool(hosts_allow)})
 
-        if ifaces or ifaces_allow:
-            cmd.add_element('ifaces', ', '.join(ifaces),
-                            attrs={'allow': '1' if ifaces_allow else '0'})
-
+        if ifaces:
+            cmd.add_element('ifaces', ','.join(ifaces),
+                            attrs={'allow': _to_bool(ifaces_allow)})
 
         return self._send_xml_command(cmd)
 
