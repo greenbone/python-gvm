@@ -1171,7 +1171,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not report:
-            raise RequiredArgument('create_report requires a report argument')
+            raise RequiredArgument('import_report requires a report argument')
 
         cmd = XmlCommand('create_report')
 
