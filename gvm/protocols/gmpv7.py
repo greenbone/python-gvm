@@ -4931,14 +4931,17 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not user_id:
-            raise RequiredArgument('modify_user requires a user_id argument')
-
-        if not name:
-            raise RequiredArgument('modify_user requires a name argument')
+        if not user_id and not name:
+            raise RequiredArgument(
+                'modify_user requires an user_id or name argument'
+            )
 
         cmd = XmlCommand('modify_user')
-        cmd.set_attribute('user_id', user_id)
+
+        if user_id:
+            cmd.set_attribute('user_id', user_id)
+        else:
+            cmd.add_element('name', name)
 
         if new_name:
             cmd.add_element('new_name', new_name)
