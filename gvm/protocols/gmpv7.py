@@ -4907,15 +4907,16 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_user(self, user_id, name, *, new_name=None, password=None,
-                    role_ids=None, hosts=None, hosts_allow=None,
-                    ifaces=None, ifaces_allow=None, sources=None):
+    def modify_user(self, user_id=None, name=None, *, new_name=None,
+                    password=None, role_ids=None, hosts=None, hosts_allow=False,
+                    ifaces=None, ifaces_allow=False):
         """Modifies an existing user.
 
         Arguments:
-            user_id (str): UUID of the user to be modified. Overrides
-                NAME element.
-            name (str): The name of the user to be modified.
+            user_id (str, optional): UUID of the user to be modified. Overrides
+                name element argument.
+            name (str, optional): The name of the user to be modified. Either
+                user_id or name must be passed.
             new_name (str, optional): The new name for the user.
             password (str, optional): The password for the user.
             roles_id (list, optional): List of roles UUIDs for the user.
@@ -4926,8 +4927,6 @@ class Gmp(GvmProtocol):
                 of ifaces.
             ifaces_allow (boolean, optional): If True, allow only listed,
                 otherwise forbid listed.
-            sources (list, optional): List of authentication sources for
-                this user.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4959,8 +4958,6 @@ class Gmp(GvmProtocol):
             cmd.add_element('ifaces', ', '.join(ifaces),
                             attrs={'allow': '1' if ifaces_allow else '0'})
 
-        if sources:
-            cmd.add_element('sources', ', '.join(sources))
 
         return self._send_xml_command(cmd)
 
