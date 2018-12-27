@@ -4454,11 +4454,12 @@ class Gmp(GvmProtocol):
         if not report_format_id:
             raise RequiredArgument('modify_report requires '
                                    'a report_format_id attribute')
+
         cmd = XmlCommand('modify_report_format')
         cmd.set_attribute('report_format_id', report_format_id)
 
-        if not active is None:
-            cmd.add_element('active', '1' if active else '0')
+        if active is not None:
+            cmd.add_element('active', _to_bool(active))
 
         if name:
             cmd.add_element('name', name)
