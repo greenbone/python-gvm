@@ -1802,11 +1802,11 @@ class Gmp(GvmProtocol):
 
         if hosts:
             cmd.add_element('hosts', ','.join(hosts),
-                            attrs={'allow': '1' if hosts_allow else '0'})
+                            attrs={'allow': _to_bool(hosts_allow)})
 
         if ifaces:
             cmd.add_element('ifaces', ','.join(ifaces),
-                            attrs={'allow': '1' if ifaces_allow else '0'})
+                            attrs={'allow': _to_bool(ifaces_allow)})
 
         if role_ids:
             for role in role_ids:
