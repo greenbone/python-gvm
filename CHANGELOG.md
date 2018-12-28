@@ -2,6 +2,7 @@
 
 ## gvm.protocols.gmpv7
 
+* Fixed sending resource id in `modify_tag`
 * Don't require ca_pub for `create_scanner`
 * Change port argument for `create_scanner` to be an integer
 * Refactor `modify_scanner` method: Adjust argument types corresponding to

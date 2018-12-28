@@ -4725,9 +4725,9 @@ class Gmp(GvmProtocol):
             value (str, optional): Value of the tag.
             active (boolean, optional): Whether the tag is active.
             resource_id (str, optional): IDs of the resource to which to
-                attach the tag.
+                attach the tag. Required if resoure_type is set.
             resource_type (str, optional): Type of the resource to which to
-                attach the tag.
+                attach the tag. Required if resource_id is set.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4753,9 +4753,21 @@ class Gmp(GvmProtocol):
             else:
                 cmd.add_element('active', '0')
 
-        if resource_id and resource_type:
+        if resource_id or resource_type:
+            if not resource_id:
+                raise RequiredArgument(
+                    'modify_tag requires resource_id argument when '
+                    'resource_type is set'
+                )
+
+            if not resource_type:
+                raise RequiredArgument(
+                    'modify_tag requires resource_type argument when '
+                    'resource_id is set'
+                )
+
             _xmlresource = cmd.add_element('resource',
-                                           attrs={'resource_id': resource_id})
+                                           attrs={'id': resource_id})
             _xmlresource.add_element('type', resource_type)
 
         return self._send_xml_command(cmd)
