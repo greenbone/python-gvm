@@ -92,9 +92,16 @@ CREDENTIAL_TYPES = (
     'usk',
 )
 
+OSP_SCANNER_TYPE = '1'
+OPENVAS_SCANNER_TYPE = '2'
+CVE_SCANNER_TYPE = '3'
+GMP_SCANNER_TYPE = '4' # formerly slave scanner
+
 SCANNER_TYPES = (
-    '1',
-    '2',
+    OSP_SCANNER_TYPE,
+    OPENVAS_SCANNER_TYPE,
+    CVE_SCANNER_TYPE,
+    GMP_SCANNER_TYPE,
 )
 
 ALERT_EVENTS = (
@@ -1279,8 +1286,9 @@ class Gmp(GvmProtocol):
 
         if scanner_type not in SCANNER_TYPES:
             raise InvalidArgument('create_scanner requires a scanner_type '
-                                  'argument which must be either "1" for OSP '
-                                  'or "2" OpenVAS (Classic).')
+                                  'argument which must be either "1" for OSP, '
+                                  '"2" for OpenVAS (Classic), "3" for CVE or '
+                                  '"4" for GMP Scanner.')
 
         cmd = XmlCommand('create_scanner')
         cmd.add_element('name', name)
@@ -4515,7 +4523,9 @@ class Gmp(GvmProtocol):
             host (str): Host of the scanner.
             port (str): Port of the scanner.
             scanner_type (str): Type of the scanner.
-                '1' for OSP, '2' for OpenVAS (classic) Scanner.
+            scanner_type (str, optional): New type of the Scanner. Must be one
+                of '1' (OSP Scanner), '2' (OpenVAS Scanner), '3' CVE Scanner or
+                '4' (GMP Scanner).
             comment (str, optional): Comment on scanner.
             name (str, optional): Name of scanner.
             ca_pub (str, optional): Certificate of CA to verify scanner's
@@ -4533,9 +4543,12 @@ class Gmp(GvmProtocol):
             raise RequiredArgument('modify_scanner requires a host argument')
         if not port:
             raise RequiredArgument('modify_scanner requires a port argument')
-        if not scanner_type:
-            raise RequiredArgument('modify_scanner requires a scanner_type '
-                                   'argument')
+
+        if scanner_type is not None and scanner_type not in SCANNER_TYPES:
+            raise InvalidArgument('modify_scanner requires a scanner_type '
+                                  'argument which must be either "1" for OSP, '
+                                  '"2" for OpenVAS (Classic), "3" for CVE or '
+                                  '"4" for GMP Scanner.')
 
         cmd = XmlCommand('modify_scanner')
         cmd.set_attribute('scanner_id', scanner_id)
