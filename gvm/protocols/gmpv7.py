@@ -4747,11 +4747,8 @@ class Gmp(GvmProtocol):
         if value:
             cmd.add_element('value', value)
 
-        if not active is None:
-            if active:
-                cmd.add_element('active', '1')
-            else:
-                cmd.add_element('active', '0')
+        if active is not None:
+            cmd.add_element('active', _to_bool(active))
 
         if resource_id or resource_type:
             if not resource_id:
