@@ -2,6 +2,7 @@
 
 ## gvm.protocols.gmpv7
 
+* Don't require ca_pub for `create_scanner`
 * Require either setting_id or name for `modify_setting` not both arguments
 * Allow empty string a value argument for `modify_setting`
 * Require either user_id or name for `modify_user` not both arguments

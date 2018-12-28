@@ -1247,8 +1247,8 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', role_id)
         return self._send_xml_command(cmd)
 
-    def create_scanner(self, name, host, port, scanner_type, ca_pub,
-                       credential_id, *, comment=None):
+    def create_scanner(self, name, host, port, scanner_type, credential_id, *,
+                       ca_pub=None, comment=None):
         """Create a new scanner
 
         Arguments:
@@ -1257,9 +1257,10 @@ class Gmp(GvmProtocol):
             port (str): The port of the scanner
             scanner_type (str): Type of the scanner.
                 '1' for OSP, '2' for OpenVAS (classic) Scanner.
-            ca_pub (str): Certificate of CA to verify scanner certificate
             credential_id (str): UUID of client certificate credential for the
                 scanner
+            ca_pub (str, optional): Certificate of CA to verify scanner
+                certificate
             comment (str, optional): Comment for the scanner
 
         Returns:
@@ -1277,8 +1278,6 @@ class Gmp(GvmProtocol):
         if not scanner_type:
             raise RequiredArgument('create_scanner requires a scanner_type '
                                    'argument')
-        if not ca_pub:
-            raise RequiredArgument('create_scanner requires a ca_pub argument')
 
         if not credential_id:
             raise RequiredArgument('create_scanner requires a credential_id '
@@ -1295,7 +1294,10 @@ class Gmp(GvmProtocol):
         cmd.add_element('host', host)
         cmd.add_element('port', port)
         cmd.add_element('type', scanner_type)
-        cmd.add_element('ca_pub', ca_pub)
+
+        if ca_pub:
+            cmd.add_element('ca_pub', ca_pub)
+
         cmd.add_element('credential', attrs={'id': str(credential_id)})
 
         if comment:
