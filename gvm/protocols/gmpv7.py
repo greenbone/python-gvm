@@ -1254,7 +1254,7 @@ class Gmp(GvmProtocol):
         Arguments:
             name (str): Name of the scanner
             host (str): The host of the scanner
-            port (str): The port of the scanner
+            port (int): The port of the scanner
             scanner_type (str): Type of the scanner.
                 '1' for OSP, '2' for OpenVAS (classic) Scanner.
             credential_id (str): UUID of client certificate credential for the
@@ -1292,7 +1292,7 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand('create_scanner')
         cmd.add_element('name', name)
         cmd.add_element('host', host)
-        cmd.add_element('port', port)
+        cmd.add_element('port', str(port))
         cmd.add_element('type', scanner_type)
 
         if ca_pub:
