@@ -4771,7 +4771,7 @@ class Gmp(GvmProtocol):
 
     def modify_target(self, target_id, *, name=None, comment=None,
                       hosts=None, exclude_hosts=None, ssh_credential_id=None,
-                      smb_credential_id=None,
+                      ssh_credential_port=None, smb_credential_id=None,
                       esxi_credential_id=None, snmp_credential_id=None,
                       alive_tests=None, reverse_lookup_only=None,
                       reverse_lookup_unify=None, port_list_id=None):
@@ -4785,6 +4785,8 @@ class Gmp(GvmProtocol):
             exclude_hosts (list, optional): A list of hosts to exclude.
             ssh_credential (str, optional): UUID of SSH credential to
                 use on target.
+            ssh_credential_port (int, optional): The port to use for ssh
+                credential
             smb_credential (str, optional): UUID of SMB credential to use
                 on target.
             esxi_credential (str, optional): UUID of ESXi credential to use
@@ -4830,7 +4832,11 @@ class Gmp(GvmProtocol):
             cmd.add_element('alive_tests', alive_tests)
 
         if ssh_credential_id:
-            cmd.add_element('ssh_credential', attrs={'id': ssh_credential_id})
+            _xmlssh = cmd.add_element('ssh_credential',
+                                      attrs={'id': ssh_credential_id})
+
+            if ssh_credential_port:
+                _xmlssh.add_element('port', str(ssh_credential_port))
 
         if smb_credential_id:
             cmd.add_element('smb_credential', attrs={'id': smb_credential_id})
