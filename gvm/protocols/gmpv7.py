@@ -1556,7 +1556,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', tag_id)
         return self._send_xml_command(cmd)
 
-    def create_target(self, name, *, make_unique=False, asset_hosts_filter=None,
+    def create_target(self, name, *, make_unique=None, asset_hosts_filter=None,
                       hosts=None, comment=None, exclude_hosts=None,
                       ssh_credential_id=None, ssh_credential_port=None,
                       smb_credential_id=None, esxi_credential_id=None,
@@ -1601,8 +1601,9 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('create_target')
         _xmlname = cmd.add_element('name', name)
-        if make_unique:
-            _xmlname.add_element('make_unique', '1')
+
+        if make_unique is not None:
+            _xmlname.add_element('make_unique', _to_bool(make_unique))
 
         if asset_hosts_filter:
             cmd.add_element('asset_hosts',
