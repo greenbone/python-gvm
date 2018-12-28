@@ -209,6 +209,9 @@ def _to_bool(value):
 def _to_base64(value):
     return base64.b64encode(value.encode('utf-8'))
 
+def _to_comma_list(value):
+    return ','.join(value)
+
 
 def _add_filter(cmd, filter, filter_id):
     if filter:
@@ -781,7 +784,7 @@ class Gmp(GvmProtocol):
             _xmlspecial.add_element('full')
 
         if users:
-            cmd.add_element('users', ','.join(users))
+            cmd.add_element('users', _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -860,7 +863,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if port:
             cmd.add_element('port', str(port))
@@ -944,7 +947,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if port:
             cmd.add_element('port', str(port))
@@ -1227,7 +1230,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('comment', comment)
 
         if users:
-            cmd.add_element('users', ",".join(users))
+            cmd.add_element('users', _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -1609,7 +1612,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('asset_hosts',
                             attrs={'filter': str(asset_hosts_filter)})
         elif hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
         else:
             raise RequiredArgument('create_target requires either a hosts or '
                                    'an asset_hosts_filter argument')
@@ -1618,7 +1621,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('comment', comment)
 
         if exclude_hosts:
-            cmd.add_element('exclude_hosts', ', '.join(exclude_hosts))
+            cmd.add_element('exclude_hosts', _to_comma_list(exclude_hosts))
 
         if ssh_credential_id:
             _xmlssh = cmd.add_element('ssh_credential',
@@ -1759,7 +1762,7 @@ class Gmp(GvmProtocol):
             # gvmd splits by command and space
             # gvmd tries to lookup each value as user name and afterwards as
             # user id. So both user name and user id are possible
-            cmd.add_element('observers', ','.join(observers))
+            cmd.add_element('observers', _to_comma_list(observers))
 
         return self._send_xml_command(cmd)
 
@@ -1808,11 +1811,11 @@ class Gmp(GvmProtocol):
             cmd.add_element('password', password)
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts),
+            cmd.add_element('hosts', _to_comma_list(hosts),
                             attrs={'allow': _to_bool(hosts_allow)})
 
         if ifaces:
-            cmd.add_element('ifaces', ','.join(ifaces),
+            cmd.add_element('ifaces', _to_comma_list(ifaces),
                             attrs={'allow': _to_bool(ifaces_allow)})
 
         if role_ids:
@@ -4205,7 +4208,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('name', name)
 
         if users:
-            cmd.add_element('users', ','.join(users))
+            cmd.add_element('users', _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -4245,7 +4248,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if port:
             cmd.add_element('port', str(port))
@@ -4311,7 +4314,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if port:
             cmd.add_element('port', str(port))
@@ -4508,7 +4511,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('name', name)
 
         if users:
-            cmd.add_element('users', ",".join(users))
+            cmd.add_element('users', _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -4815,13 +4818,13 @@ class Gmp(GvmProtocol):
             cmd.add_element('name', name)
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if hosts_ordering:
-            cmd.add_element('hosts_ordering', ', '.join(hosts_ordering))
+            cmd.add_element('hosts_ordering', _to_comma_list(hosts_ordering))
 
         if exclude_hosts:
-            cmd.add_element('exclude_hosts', ', '.join(exclude_hosts))
+            cmd.add_element('exclude_hosts', _to_comma_list(exclude_hosts))
 
         if alive_tests:
             if not alive_tests in ALIVE_TESTS:
@@ -4910,7 +4913,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('alert', attrs={'id': alert})
 
         if observers:
-            cmd.add_element('observers', ', '.join(observers))
+            cmd.add_element('observers', _to_comma_list(observers))
 
         if preferences:
             _xmlprefs = cmd.add_element('preferences')
@@ -4975,11 +4978,11 @@ class Gmp(GvmProtocol):
                 cmd.add_element('role', attrs={'id': role})
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts),
+            cmd.add_element('hosts', _to_comma_list(hosts),
                             attrs={'allow': _to_bool(hosts_allow)})
 
         if ifaces:
-            cmd.add_element('ifaces', ','.join(ifaces),
+            cmd.add_element('ifaces', _to_comma_list(ifaces),
                             attrs={'allow': _to_bool(ifaces_allow)})
 
         return self._send_xml_command(cmd)
