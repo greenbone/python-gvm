@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument
+from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
@@ -207,16 +207,24 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
         self.gmp.create_target(
             'foo',
             hosts=['foo'],
-            alive_tests='foo',
+            alive_tests='ICMP Ping',
         )
 
         self.connection.send.has_been_called_with(
             '<create_target>'
             '<name>foo</name>'
             '<hosts>foo</hosts>'
-            '<alive_tests>foo</alive_tests>'
+            '<alive_tests>ICMP Ping</alive_tests>'
             '</create_target>'
         )
+
+    def test_create_target_invalid_alive_tests(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_target(
+                'foo',
+                hosts=['foo'],
+                alive_tests='foo',
+            )
 
     def test_create_target_with_reverse_lookup_only(self):
         self.gmp.create_target(

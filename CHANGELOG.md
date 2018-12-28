@@ -2,6 +2,7 @@
 
 ## gvm.protocols.gmpv7
 
+* Added validation of alive_tests argument to `create_target` method
 * Removed hosts_ordering argument from `modify_target`
 * Added ssh_credential_port argument to `modify_target`
 * Fixed sending resource id in `modify_tag`

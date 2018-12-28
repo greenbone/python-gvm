@@ -1639,6 +1639,12 @@ class Gmp(GvmProtocol):
             cmd.add_element('snmp_credential', attrs={'id': snmp_credential_id})
 
         if alive_tests:
+            if not alive_tests in ALIVE_TESTS:
+                raise InvalidArgument(
+                    'alive_tests must be one of {tests} but '
+                    '{actual} has been passed'.format(
+                        tests='|'.join(ALIVE_TESTS), actual=alive_tests))
+
             cmd.add_element('alive_tests', alive_tests)
 
         if not reverse_lookup_only is None:
