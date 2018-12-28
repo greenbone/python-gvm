@@ -1153,8 +1153,8 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('create_port_range')
         cmd.add_element('port_list', attrs={'id': port_list_id})
-        cmd.add_element('start', start)
-        cmd.add_element('end', end)
+        cmd.add_element('start', str(start))
+        cmd.add_element('end', str(end))
         cmd.add_element('type', port_range_type)
 
         if comment:
