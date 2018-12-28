@@ -4515,19 +4515,18 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_scanner(self, scanner_id, host, port, scanner_type, *,
-                       comment=None, name=None, ca_pub=None,
+    def modify_scanner(self, scanner_id, *, scanner_type=None, host=None,
+                       port=None, comment=None, name=None, ca_pub=None,
                        credential_id=None):
         """Modifies an existing scanner.
 
         Arguments:
             scanner_id (str): UUID of scanner to modify.
-            host (str): Host of the scanner.
-            port (str): Port of the scanner.
-            scanner_type (str): Type of the scanner.
             scanner_type (str, optional): New type of the Scanner. Must be one
                 of '1' (OSP Scanner), '2' (OpenVAS Scanner), '3' CVE Scanner or
                 '4' (GMP Scanner).
+            host (str, optional): Host of the scanner.
+            port (int, optional): Port of the scanner.
             comment (str, optional): Comment on scanner.
             name (str, optional): Name of scanner.
             ca_pub (str, optional): Certificate of CA to verify scanner's
@@ -4540,11 +4539,8 @@ class Gmp(GvmProtocol):
         """
         if not scanner_id:
             raise RequiredArgument(
-                'modify_scanner requires a scanner_id argument')
-        if not host:
-            raise RequiredArgument('modify_scanner requires a host argument')
-        if not port:
-            raise RequiredArgument('modify_scanner requires a port argument')
+                'modify_scanner requires a scanner_id argument'
+            )
 
         if scanner_type is not None and scanner_type not in SCANNER_TYPES:
             raise InvalidArgument('modify_scanner requires a scanner_type '
@@ -4554,15 +4550,15 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('modify_scanner')
         cmd.set_attribute('scanner_id', scanner_id)
-        cmd.add_element('host', host)
-        cmd.add_element('port', port)
 
-        if scanner_type not in SCANNER_TYPES:
-            raise InvalidArgument('modify_scanner requires a scanner_type '
-                                  'argument which must be either "1" for OSP '
-                                  'or "2" OpenVAS (Classic).')
+        if scanner_type:
+            cmd.add_element('type', scanner_type)
 
-        cmd.add_element('type', scanner_type)
+        if host:
+            cmd.add_element('host', host)
+
+        if port:
+            cmd.add_element('port', str(port))
 
         if comment:
             cmd.add_element('comment', comment)
