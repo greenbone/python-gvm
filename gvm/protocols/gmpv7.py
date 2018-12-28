@@ -1577,7 +1577,7 @@ class Gmp(GvmProtocol):
             comment (str, optional): Comment for the target
             ssh_credential_id (str, optional): UUID of a ssh credential to use
                 on target
-            ssh_credential_port (str, optional): The port to use for ssh
+            ssh_credential_port (int, optional): The port to use for ssh
                 credential
             smb_credential_id (str, optional): UUID of a smb credential to use
                 on target
@@ -1624,7 +1624,7 @@ class Gmp(GvmProtocol):
             _xmlssh = cmd.add_element('ssh_credential',
                                       attrs={'id': ssh_credential_id})
             if ssh_credential_port:
-                _xmlssh.add_element('port', ssh_credential_port)
+                _xmlssh.add_element('port', str(ssh_credential_port))
 
         if smb_credential_id:
             cmd.add_element('smb_credential', attrs={'id': smb_credential_id})
