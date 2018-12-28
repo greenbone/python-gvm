@@ -16,30 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import unittest
 import warnings
 
-
-def deprecation(message):
-    warnings.warn(message, DeprecationWarning, stacklevel=2)
+from gvm.utils import deprecation
 
 
-def get_version_string(version):
-    """Create a version string from a version tuple
+class TestDeprecation(unittest.TestCase):
 
-    Arguments:
-        version (tuple): version as tuple e.g. (1, 2, 0, dev, 5)
+    def test_deprecation(self):
+        with warnings.catch_warnings(record=True) as w:
+            self.assertEqual(len(w), 0)
 
-    Returns:
-        str: The version tuple converted into a string representation
-    """
-    if len(version) > 4:
-        ver = '.'.join(str(x) for x in version[:4])
-        ver += str(version[4])
+            warnings.simplefilter("always")
 
-        if len(version) > 5:
-            # support (1, 2, 3, 'beta', 2, 'dev', 1)
-            ver += '.{0}{1}'.format(str(version[5]), str(version[6]))
+            deprecation('I am deprecated')
 
-        return ver
-    else:
-        return '.'.join(str(x) for x in version)
+            self.assertEqual(len(w), 1)
+            self.assertTrue(issubclass(w[0].category, DeprecationWarning))
+            self.assertIn(str(w[0].message), 'I am deprecated')
+
+
+if __name__ == '__main__':
+    unittest.main()

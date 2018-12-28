@@ -2,6 +2,19 @@
 
 ## gvm.protocols.gmpv7
 
+* Require either setting_id or name for `modify_setting` not both arguments
+* Allow empty string a value argument for `modify_setting`
+* Require either user_id or name for `modify_user` not both arguments
+* Removed sources argument from `modify_user` method
+* Removed `modify_report` method
+* Removed unused comment argument from `create_note` and `create_override`
+* Updated argument types for `create_note`, `create_override`, `modify_note`
+  and `modify_override`
+* The arguments threat (and new_threat) for `create_note`, `modify_note`,
+  `create_override` and `modify_override` must be one of 'High', 'Medium',
+  'Low', 'Alarm', 'Log' or 'Debug' now
+* `modify_config` is marked as deprecated and will be removed in future. One of
+  the more specific `modify_config_set_` method should be used instead.
 * Fixed generating XML for `get_nvts` command
 * Fixed generating XML for `get_settings` command
 * Fixed generating XML for `get_credentials` command

@@ -23,13 +23,14 @@ Module for communication with gvmd in `Greenbone Management Protocol version 7`_
 .. _Greenbone Management Protocol version 7:
     https://docs.greenbone.net/API/GMP/gmp-7.0.html
 """
+import base64
 import logging
 import numbers
 
 from lxml import etree
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.utils import get_version_string
+from gvm.utils import get_version_string, deprecation
 from gvm.xml import XmlCommand, create_parser
 
 from .base import GvmProtocol
@@ -153,6 +154,21 @@ INFO_TYPES = (
     'ALLINFO',
 )
 
+THREAD_TYPES = (
+    'High',
+    'Medium',
+    'Low',
+    'Alarm',
+    'Log',
+    'Debug',
+)
+
+SUBJECT_TYPES = (
+    'user',
+    'group',
+    'role',
+)
+
 def _check_command_status(xml):
     """Check gmp response
 
@@ -183,6 +199,10 @@ def _to_bool(value):
     return '1' if value else '0'
 
 
+def _to_base64(value):
+    return base64.b64encode(value.encode('utf-8'))
+
+
 def _add_filter(cmd, filter, filter_id):
     if filter:
         cmd.set_attribute('filter', filter)
@@ -203,6 +223,10 @@ def _check_event(event, condition, method):
             raise InvalidArgument('Invalid method for event')
     elif event is not None:
         raise InvalidArgument('Invalid event "{0}"'.format(event))
+
+
+def _is_list_like(value):
+    return isinstance(value, (list, tuple))
 
 
 class Gmp(GvmProtocol):
@@ -793,9 +817,9 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_note(self, text, nvt_oid, *, seconds_active=None, comment=None,
-                    hosts=None, result_id=None, severity=None, task_id=None,
-                    threat=None, port=None):
+    def create_note(self, text, nvt_oid, *, seconds_active=None, hosts=None,
+                    result_id=None, severity=None, task_id=None, threat=None,
+                    port=None):
         """Create a new note
 
         Arguments:
@@ -803,14 +827,14 @@ class Gmp(GvmProtocol):
             nvt_id (str): OID of the nvt to which note applies
             seconds_active (int, optional): Seconds note will be active. -1 on
                 always, 0 off
-            comment (str, optional): Comment for the note
             hosts (list, optional): A list of hosts addresses
-            port (str, optional): Port to which the note applies
+            port (int, optional): Port to which the note applies
             result_id (str, optional): UUID of a result to which note applies
             severity (decimal, optional): Severity to which note applies
             task_id (str, optional): UUID of task to which note applies
-            threat (str, optional): Threat level to which note applies. Will be
-                converted to severity
+            threat (str, optional): Threat level to which note applies. One of
+                High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                severity.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -828,25 +852,28 @@ class Gmp(GvmProtocol):
         if not seconds_active is None:
             cmd.add_element('active', str(seconds_active))
 
-        if comment:
-            cmd.add_element('comment', comment)
-
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', ','.join(hosts))
 
         if port:
-            cmd.add_element('port', port)
+            cmd.add_element('port', str(port))
 
         if result_id:
             cmd.add_element('result', attrs={'id': result_id})
 
         if severity:
-            cmd.add_element('severity', severity)
+            cmd.add_element('severity', str(severity))
 
         if task_id:
             cmd.add_element('task', attrs={'id': task_id})
 
-        if threat:
+        if threat is not None:
+            if threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'create_note threat argument {0} is invalid. threat must '
+                    'be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                )
+
             cmd.add_element('threat', threat)
 
         return self._send_xml_command(cmd)
@@ -868,7 +895,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_override(self, text, nvt_oid, *, seconds_active=None, hosts=None,
-                        port=None, result_id=None, severity=None, comment=None,
+                        port=None, result_id=None, severity=None,
                         new_severity=None, task_id=None, threat=None,
                         new_threat=None):
         """Create a new override
@@ -878,18 +905,19 @@ class Gmp(GvmProtocol):
             nvt_id (str): OID of the nvt to which override applies
             seconds_active (int, optional): Seconds override will be active.
                 -1 on always, 0 off
-            comment (str, optional): Comment for the override
             hosts (list, optional): A list of host addresses
-            port (str, optional): Port to which the override applies
+            port (int, optional): Port to which the override applies
             result_id (str, optional): UUID of a result to which override
                 applies
             severity (decimal, optional): Severity to which override applies
             new_severity (decimal, optional): New severity for result
             task_id (str, optional): UUID of task to which override applies
-            threat (str, optional): Threat level to which override applies. Will
-                be converted to severity
-            new_threat (str, optional): New threat level for result, will be
-                converted to a new_severity
+            threat (str, optional): Threat level to which override applies. One
+                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                severity.
+            new_threat (str, optional): New threat level for results. One
+                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                new_severity.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -908,31 +936,43 @@ class Gmp(GvmProtocol):
         if not seconds_active is None:
             cmd.add_element('active', str(seconds_active))
 
-        if comment:
-            cmd.add_element('comment', comment)
-
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', ','.join(hosts))
 
         if port:
-            cmd.add_element('port', port)
+            cmd.add_element('port', str(port))
 
         if result_id:
             cmd.add_element('result', attrs={'id': result_id})
 
         if severity:
-            cmd.add_element('severity', severity)
+            cmd.add_element('severity', str(severity))
 
         if new_severity:
-            cmd.add_element('new_severity', new_severity)
+            cmd.add_element('new_severity', str(new_severity))
 
         if task_id:
             cmd.add_element('task', attrs={'id': task_id})
 
-        if threat:
+        if threat is not None:
+            if threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'create_override threat argument {0} is invalid. threat'
+                    'must be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                )
+
             cmd.add_element('threat', threat)
 
-        if new_threat:
+        if new_threat is not None:
+            if new_threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'create_override new_threat argument {0} is invalid. '
+                    'new_threat must be one of {1}'.format(
+                        new_threat,
+                        ', '.join(THREAD_TYPES),
+                    )
+                )
+
             cmd.add_element('new_threat', new_threat)
 
         return self._send_xml_command(cmd)
@@ -979,7 +1019,7 @@ class Gmp(GvmProtocol):
             raise RequiredArgument(
                 'create_permission requires a subject_id argument')
 
-        if subject_type not in ('user', 'group', 'role'):
+        if subject_type not in SUBJECT_TYPES:
             raise InvalidArgument(
                 'create_permission requires subject_type to be either user, '
                 'group or role')
@@ -1131,7 +1171,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not report:
-            raise RequiredArgument('create_report requires a report argument')
+            raise RequiredArgument('import_report requires a report argument')
 
         cmd = XmlCommand('create_report')
 
@@ -1684,7 +1724,7 @@ class Gmp(GvmProtocol):
 
         if alert_ids:
             if isinstance(alert_ids, str):
-                logger.warning(
+                deprecation(
                     'Please pass a list as alert_ids parameter to create_task. '
                     'Passing a string is deprecated and will be removed in '
                     'future.')
@@ -1762,11 +1802,11 @@ class Gmp(GvmProtocol):
 
         if hosts:
             cmd.add_element('hosts', ','.join(hosts),
-                            attrs={'allow': '1' if hosts_allow else '0'})
+                            attrs={'allow': _to_bool(hosts_allow)})
 
         if ifaces:
             cmd.add_element('ifaces', ','.join(ifaces),
-                            attrs={'allow': '1' if ifaces_allow else '0'})
+                            attrs={'allow': _to_bool(ifaces_allow)})
 
         if role_ids:
             for role in role_ids:
@@ -3749,14 +3789,189 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_config(self, config_id, selection, *, nvt_oids=None, name=None,
-                      value=None, family=None):
-        """Modifies an existing scan config.
+    def modify_config_set_nvt_preference(self, config_id, name, nvt_oid, *,
+                                         value=None):
+        """Modifies the nvt preferences of an existing scan config.
 
         Arguments:
             config_id (str): UUID of scan config to modify.
-            selection (str): one of 'nvt_pref', nvt_selection or
-                family_selection'
+            name (str): Name for preference to change.
+            nvt_oid (str): OID of the NVT associated with preference to modify
+            value (str, optional): New value for the preference. None to delete
+                the preference and to use the default instead.
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_nvt_preference requires config_id argument'
+            )
+
+        if not nvt_oid:
+            raise RequiredArgument(
+                'modify_config_set_nvt_preference requires a nvt_oid argument'
+            )
+
+        if not name:
+            raise RequiredArgument(
+                'modify_config_set_nvt_preference requires a name argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        _xmlpref = cmd.add_element('preference')
+
+        _xmlpref.add_element('nvt', attrs={'oid': nvt_oid})
+        _xmlpref.add_element('name', name)
+
+        if value:
+            _xmlpref.add_element('value', _to_base64(value))
+
+        return self._send_xml_command(cmd)
+
+    def modify_config_set_comment(self, config_id, comment=''):
+        """Modifies the comment of an existing scan config
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            comment (str, optional): Comment to set on a config. Default: ''
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_comment requires a config_id argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        cmd.add_element('comment', comment)
+
+        return self._send_xml_command(cmd)
+
+    def modify_config_set_scanner_preference(self, config_id, name, *,
+                                             value=None):
+        """Modifies the scanner preferences of an existing scan config
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            name (str): Name of the scanner preference to change
+            value (str, optional): New value for the preference. None to delete
+                the preference and to use the default instead.
+
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_scanner_preference requires a config_id '
+                'argument'
+            )
+
+        if not name:
+            raise RequiredArgument(
+                'modify_config_set_scanner_preference requires a name argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        _xmlpref = cmd.add_element('preference')
+
+        _xmlpref.add_element('name', name)
+
+        if value:
+            _xmlpref.add_element('value', _to_base64(value))
+
+        return self._send_xml_command(cmd)
+
+    def modify_config_set_nvt_selection(self, config_id, family, nvt_oids):
+        """Modifies the selected nvts of an existing scan config
+
+        The manager updates the given family in the config to include only the
+        given NVTs.
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            family (str): Name of the NVT family to include NVTs from
+            nvt_oids (list): List of NVTs to select for the family.
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_nvt_selection requires a config_id '
+                'argument'
+            )
+
+        if not family:
+            raise RequiredArgument(
+                'modify_config_set_nvt_selection requires a family argument'
+            )
+
+        if not _is_list_like(nvt_oids):
+            raise InvalidArgument(
+                'modify_config_set_nvt_selection requires an iterable as '
+                'nvt_oids argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        _xmlnvtsel = cmd.add_element('nvt_selection')
+        _xmlnvtsel.add_element('family', family)
+
+        for nvt in nvt_oids:
+            _xmlnvtsel.add_element('nvt', attrs={'oid': nvt})
+
+        return self._send_xml_command(cmd)
+
+    def modify_config_set_family_selection(
+            self, config_id, families, *, auto_add_new_families=True,
+            auto_add_new_nvts=True):
+        """
+        Selected the NVTs of a scan config at a family level.
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            families (list): List of NVT family names to select.
+            auto_add_new_families (boolean, optional): Whether new families
+                should be added to the scan config automatically. Default: True.
+            auto_add_new_nvts (boolean, optional): Whether new NVTs in the
+                selected families should be added to the scan config
+                automatically. Default: True.
+        """
+        if not config_id:
+            raise RequiredArgument(
+                'modify_config_set_family_selection requires a config_id '
+                'argument'
+            )
+
+        if not _is_list_like(families):
+            raise InvalidArgument(
+                'modify_config_set_family_selection requires a list as '
+                'families argument'
+            )
+
+        cmd = XmlCommand('modify_config')
+        cmd.set_attribute('config_id', str(config_id))
+
+        _xmlfamsel = cmd.add_element('family_selection')
+        _xmlfamsel.add_element('growing', _to_bool(auto_add_new_families))
+
+        for family in families:
+            _xmlfamily = _xmlfamsel.add_element('family')
+            _xmlfamily.add_element('name', family)
+            _xmlfamily.add_element('all', '1')
+            _xmlfamily.add_element('growing', _to_bool(auto_add_new_nvts))
+
+        return self._send_xml_command(cmd)
+
+    def modify_config(self, config_id, selection=None, **kwargs):
+        """Modifies an existing scan config.
+
+        DEPRECATED. Please use *modify_config_set_* methods instead.
+
+        modify_config has four modes to operate depending on the selection.
+
+        Arguments:
+            config_id (str): UUID of scan config to modify.
+            selection (str): one of 'scan_pref', 'nvt_pref', 'nvt_selection' or
+                'family_selection'
             name (str, optional): New name for preference.
             value(str, optional): New value for preference.
             nvt_oids (list, optional): List of NVTs associated with preference
@@ -3769,44 +3984,57 @@ class Gmp(GvmProtocol):
         if not config_id:
             raise RequiredArgument('modify_config required config_id argument')
 
+        if selection is None:
+            deprecation(
+                'Using modify_config to update the comment of a scan config is'
+                'deprecated. Please use modify_config_set_comment instead.'
+            )
+            return self.modify_config_set_comment(
+                config_id, kwargs.get('comment'))
+
         if selection not in ('nvt_pref', 'scan_pref',
                              'family_selection', 'nvt_selection'):
             raise InvalidArgument('selection must be one of nvt_pref, '
                                   'scan_pref, family_selection or '
                                   'nvt_selection')
 
-        cmd = XmlCommand('modify_config')
-        cmd.set_attribute('config_id', str(config_id))
 
         if selection == 'nvt_pref':
-            _xmlpref = cmd.add_element('preference')
-            if not nvt_oids:
-                raise InvalidArgument('modify_config requires a nvt_oids '
-                                      'argument')
-            _xmlpref.add_element('nvt', attrs={'oid': nvt_oids[0]})
-            _xmlpref.add_element('name', name)
-            _xmlpref.add_element('value', value)
+            deprecation(
+                'Using modify_config to update a nvt preference of a scan '
+                'config is deprecated. Please use '
+                'modify_config_set_nvt_preference instead.'
+            )
+            return self.modify_config_set_nvt_preference(
+                config_id, **kwargs)
 
-        elif selection == 'nvt_selection':
-            _xmlnvtsel = cmd.add_element('nvt_selection')
-            _xmlnvtsel.add_element('family', family)
+        if selection == 'scan_pref':
+            deprecation(
+                'Using modify_config to update a scanner preference of a '
+                'scan config is deprecated. Please use '
+                'modify_config_set_scanner_preference instead.'
+            )
+            return self.modify_config_set_scanner_preference(
+                config_id, **kwargs,
+            )
 
-            if nvt_oids:
-                for nvt in nvt_oids:
-                    _xmlnvtsel.add_element('nvt', attrs={'oid': nvt})
-            else:
-                raise InvalidArgument('modify_config requires a nvt_oid '
-                                      'argument')
+        if selection == 'nvt_selection':
+            deprecation(
+                'Using modify_config to update a nvt selection of a '
+                'scan config is deprecated. Please use '
+                'modify_config_set_nvt_selection instead.'
+            )
+            return self.modify_config_set_nvt_selection(
+                config_id, **kwargs,
+            )
 
-        elif selection == 'family_selection':
-            _xmlfamsel = cmd.add_element('family_selection')
-            _xmlfamsel.add_element('growing', '1')
-            _xmlfamily = _xmlfamsel.add_element('family')
-            _xmlfamily.add_element('name', family)
-            _xmlfamily.add_element('all', '1')
-            _xmlfamily.add_element('growing', '1')
-
-        return self._send_xml_command(cmd)
+        deprecation(
+            'Using modify_config to update a family selection of a '
+            'scan config is deprecated. Please use '
+            'modify_config_set_family_selection instead.'
+        )
+        return self.modify_config_set_family_selection(
+            config_id, **kwargs)
 
     def modify_credential(self, credential_id, credential_type=None, *,
                           name=None, comment=None, allow_insecure=None,
@@ -3847,11 +4075,9 @@ class Gmp(GvmProtocol):
         cmd.set_attribute('credential_id', credential_id)
 
         if credential_type:
-            if credential_type not in ('cc', 'snmp', 'up', 'usk'):
-                raise RequiredArgument('modify_credential requires type '
-                                       'to be either cc, snmp, up or usk')
-
-            cmd.add_element('type', credential_type)
+            if credential_type not in CREDENTIAL_TYPES:
+                raise InvalidArgument('modify_credential requires type '
+                                      'to be either cc, snmp, up or usk')
 
         if comment:
             cmd.add_element('comment', comment)
@@ -3859,19 +4085,22 @@ class Gmp(GvmProtocol):
         if name:
             cmd.add_element('name', name)
 
-        if allow_insecure:
-            cmd.add_element('allow_insecure', allow_insecure)
+        if allow_insecure is not None:
+            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
 
         if certificate:
             cmd.add_element('certificate', certificate)
 
-        if key_phrase or private_key:
-            if not key_phrase or not private_key:
+        if key_phrase is not None or private_key:
+            if key_phrase is not None and not private_key:
                 raise RequiredArgument('modify_credential requires '
-                                       'a key_phrase and private_key arguments')
+                                       'key_phrase and private_key arguments')
+
             _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('phrase', key_phrase)
             _xmlkey.add_element('private', private_key)
+
+            if key_phrase is not None:
+                _xmlkey.add_element('phrase', key_phrase)
 
         if login:
             cmd.add_element('login', login)
@@ -3879,24 +4108,27 @@ class Gmp(GvmProtocol):
         if password:
             cmd.add_element('password', password)
 
-        if auth_algorithm:
+        if auth_algorithm is not None:
             if auth_algorithm not in ('md5', 'sha1'):
-                raise RequiredArgument('modify_credential requires '
-                                       'auth_algorithm to be either '
-                                       'md5 or sha1')
+                raise InvalidArgument('modify_credential requires '
+                                      'auth_algorithm to be either '
+                                      'md5 or sha1')
             cmd.add_element('auth_algorithm', auth_algorithm)
 
         if community:
             cmd.add_element('community', community)
 
-        if privacy_algorithm:
+        if privacy_algorithm is not None:
             if privacy_algorithm not in ('aes', 'des'):
-                raise RequiredArgument('modify_credential requires '
-                                       'privacy_algorithm to be either'
-                                       'aes or des')
+                raise InvalidArgument('modify_credential requires '
+                                      'privacy_algorithm to be either'
+                                      'aes or des')
+
             _xmlprivacy = cmd.add_element('privacy')
             _xmlprivacy.add_element('algorithm', privacy_algorithm)
-            _xmlprivacy.add_element('password', privacy_password)
+
+            if privacy_password is not None:
+                _xmlprivacy.add_element('password', privacy_password)
 
         return self._send_xml_command(cmd)
 
@@ -3981,17 +4213,20 @@ class Gmp(GvmProtocol):
             seconds_active (int, optional): Seconds note will be active.
                 -1 on always, 0 off.
             hosts (list, optional): A list of hosts addresses
-            port (str, optional): Port to which note applies.
+            port (int, optional): Port to which note applies.
             result_id (str, optional): Result to which note applies.
-            severity (str, optional): Severity to which note applies.
+            severity (descimal, optional): Severity to which note applies.
             task_id (str, optional): Task to which note applies.
-            threat (str, optional): Threat level to which note applies.
+            threat (str, optional): Threat level to which note applies. One of
+                High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                severity.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
         if not note_id:
             raise RequiredArgument('modify_note requires a note_id attribute')
+
         if not text:
             raise RequiredArgument('modify_note requires a text element')
 
@@ -4003,22 +4238,28 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', ','.join(hosts))
 
         if port:
-            cmd.add_element('port', port)
+            cmd.add_element('port', str(port))
 
         if result_id:
             cmd.add_element('result', attrs={'id': result_id})
 
         if severity:
-            cmd.add_element('severity', severity)
+            cmd.add_element('severity', str(severity))
 
         if task_id:
             cmd.add_element('task', attrs={'id': task_id})
 
-        if threat:
+        if threat is not None:
             cmd.add_element('threat', threat)
+
+            if threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'modify_note threat argument {0} is invalid. threat must '
+                    'be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                )
 
         return self._send_xml_command(cmd)
 
@@ -4034,13 +4275,17 @@ class Gmp(GvmProtocol):
             seconds_active (int, optional): Seconds override will be active.
                 -1 on always, 0 off.
             hosts (list, optional): A list of host addresses
-            port (str, optional): Port to which override applies.
+            port (int, optional): Port to which override applies.
             result_id (str, optional): Result to which override applies.
-            severity (str, optional): Severity to which override applies.
-            new_severity (str, optional): New severity score for result.
+            severity (decimal, optional): Severity to which override applies.
+            new_severity (decimal, optional): New severity score for result.
             task_id (str, optional): Task to which override applies.
-            threat (str, optional): Threat level to which override applies.
-            new_threat (str, optional): New threat level for results.
+            threat (str, optional): Threat level to which override applies. One
+                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                severity.
+            new_threat (str, optional): New threat level for results. One
+                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+                new_severity.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4059,27 +4304,41 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', ','.join(hosts))
 
         if port:
-            cmd.add_element('port', port)
+            cmd.add_element('port', str(port))
 
         if result_id:
             cmd.add_element('result', attrs={'id': result_id})
 
         if severity:
-            cmd.add_element('severity', severity)
+            cmd.add_element('severity', str(severity))
 
         if new_severity:
-            cmd.add_element('new_severity', new_severity)
+            cmd.add_element('new_severity', str(new_severity))
 
         if task_id:
             cmd.add_element('task', attrs={'id': task_id})
 
-        if threat:
+        if threat is not None:
+            if threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'modify_override threat argument {0} is invalid. threat'
+                    'must be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                )
             cmd.add_element('threat', threat)
 
-        if new_threat:
+        if new_threat is not None:
+            if new_threat not in THREAD_TYPES:
+                raise InvalidArgument(
+                    'modify_override new_threat argument {0} is invalid. '
+                    'new_threat must be one of {1}'.format(
+                        new_threat,
+                        ', '.join(THREAD_TYPES),
+                    )
+                )
+
             cmd.add_element('new_threat', new_threat)
 
         return self._send_xml_command(cmd)
@@ -4119,12 +4378,33 @@ class Gmp(GvmProtocol):
         if name:
             cmd.add_element('name', name)
 
-        if resource_id and resource_type:
+        if resource_id or resource_type:
+            if not resource_id:
+                raise RequiredArgument(
+                    'modify_permission requires resource_id for resource_type'
+                )
+
+            if not resource_type:
+                raise RequiredArgument(
+                    'modify_permission requires resource_type for resource_id'
+                )
+
             _xmlresource = cmd.add_element('resource',
                                            attrs={'id': resource_id})
             _xmlresource.add_element('type', resource_type)
 
-        if subject_id and subject_type:
+        if subject_id or subject_type:
+            if not subject_id:
+                raise RequiredArgument(
+                    'modify_permission requires a subject_id for subject_type'
+                )
+
+            if subject_type not in SUBJECT_TYPES:
+                raise InvalidArgument(
+                    'modify_permission requires subject_type to be either '
+                    'user, group or role'
+                )
+
             _xmlsubject = cmd.add_element('subject',
                                           attrs={'id': subject_id})
             _xmlsubject.add_element('type', subject_type)
@@ -4156,28 +4436,6 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_report(self, report_id, comment):
-        """Modifies an existing report.
-
-        Arguments:
-            report_id (str): UUID of report to modify.
-            comment (str): The comment on the report.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not report_id:
-            raise RequiredArgument('modify_report requires '
-                                   'a report_id attribute')
-        if not comment:
-            raise RequiredArgument('modify_report requires '
-                                   'a comment attribute')
-        cmd = XmlCommand('modify_report')
-        cmd.set_attribute('report_id', report_id)
-        cmd.add_element('comment', comment)
-
-        return self._send_xml_command(cmd)
-
     def modify_report_format(self, report_format_id, *, active=None, name=None,
                              summary=None, param_name=None, param_value=None):
         """Modifies an existing report format.
@@ -4196,11 +4454,12 @@ class Gmp(GvmProtocol):
         if not report_format_id:
             raise RequiredArgument('modify_report requires '
                                    'a report_format_id attribute')
+
         cmd = XmlCommand('modify_report_format')
         cmd.set_attribute('report_format_id', report_format_id)
 
-        if not active is None:
-            cmd.add_element('active', '1' if active else '0')
+        if active is not None:
+            cmd.add_element('active', _to_bool(active))
 
         if name:
             cmd.add_element('name', name)
@@ -4208,10 +4467,12 @@ class Gmp(GvmProtocol):
         if summary:
             cmd.add_element('summary', summary)
 
-        if param_name and param_value:
+        if param_name:
             _xmlparam = cmd.add_element('param')
             _xmlparam.add_element('name', param_name)
-            _xmlparam.add_element('value', param_value)
+
+            if param_value is not None:
+                _xmlparam.add_element('value', param_value)
 
         return self._send_xml_command(cmd)
 
@@ -4411,29 +4672,33 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_setting(self, setting_id, name, value):
+    def modify_setting(self, setting_id=None, name=None, value=None):
         """Modifies an existing setting.
 
         Arguments:
-            setting_id (str): UUID of the setting to be changed.
-            name (str): The name of the setting.
+            setting_id (str, optional): UUID of the setting to be changed.
+            name (str, optional): The name of the setting. Either setting_id or
+                name must be passed.
             value (str): The value of the setting.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not setting_id:
-            raise RequiredArgument('modify_setting requires a setting_id'
-                                   'argument')
-        if not name:
-            raise RequiredArgument('modify_setting requires a name argument')
+        if not setting_id and not name:
+            raise RequiredArgument(
+                'modify_setting requires a setting_id or name argument'
+            )
 
-        if not value:
+        if value is None:
             raise RequiredArgument('modify_setting requires a value argument')
 
         cmd = XmlCommand('modify_setting')
-        cmd.set_attribute('setting_id', setting_id)
-        cmd.add_element('name', name)
+
+        if setting_id:
+            cmd.set_attribute('setting_id', setting_id)
+        else:
+            cmd.add_element('name', name)
+
         cmd.add_element('value', value)
 
         return self._send_xml_command(cmd)
@@ -4646,15 +4911,16 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_user(self, user_id, name, *, new_name=None, password=None,
-                    role_ids=None, hosts=None, hosts_allow=None,
-                    ifaces=None, ifaces_allow=None, sources=None):
+    def modify_user(self, user_id=None, name=None, *, new_name=None,
+                    password=None, role_ids=None, hosts=None, hosts_allow=False,
+                    ifaces=None, ifaces_allow=False):
         """Modifies an existing user.
 
         Arguments:
-            user_id (str): UUID of the user to be modified. Overrides
-                NAME element.
-            name (str): The name of the user to be modified.
+            user_id (str, optional): UUID of the user to be modified. Overrides
+                name element argument.
+            name (str, optional): The name of the user to be modified. Either
+                user_id or name must be passed.
             new_name (str, optional): The new name for the user.
             password (str, optional): The password for the user.
             roles_id (list, optional): List of roles UUIDs for the user.
@@ -4665,20 +4931,21 @@ class Gmp(GvmProtocol):
                 of ifaces.
             ifaces_allow (boolean, optional): If True, allow only listed,
                 otherwise forbid listed.
-            sources (list, optional): List of authentication sources for
-                this user.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not user_id:
-            raise RequiredArgument('modify_user requires a user_id argument')
-
-        if not name:
-            raise RequiredArgument('modify_user requires a name argument')
+        if not user_id and not name:
+            raise RequiredArgument(
+                'modify_user requires an user_id or name argument'
+            )
 
         cmd = XmlCommand('modify_user')
-        cmd.set_attribute('user_id', user_id)
+
+        if user_id:
+            cmd.set_attribute('user_id', user_id)
+        else:
+            cmd.add_element('name', name)
 
         if new_name:
             cmd.add_element('new_name', new_name)
@@ -4690,16 +4957,13 @@ class Gmp(GvmProtocol):
             for role in role_ids:
                 cmd.add_element('role', attrs={'id': role})
 
-        if hosts or hosts_allow:
-            cmd.add_element('hosts', ', '.join(hosts),
-                            attrs={'allow': '1' if hosts_allow else '0'})
+        if hosts:
+            cmd.add_element('hosts', ','.join(hosts),
+                            attrs={'allow': _to_bool(hosts_allow)})
 
-        if ifaces or ifaces_allow:
-            cmd.add_element('ifaces', ', '.join(ifaces),
-                            attrs={'allow': '1' if ifaces_allow else '0'})
-
-        if sources:
-            cmd.add_element('sources', ', '.join(sources))
+        if ifaces:
+            cmd.add_element('ifaces', ','.join(ifaces),
+                            attrs={'allow': _to_bool(ifaces_allow)})
 
         return self._send_xml_command(cmd)
 

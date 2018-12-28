@@ -18,7 +18,9 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument
+from decimal import Decimal
+
+from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
@@ -54,17 +56,6 @@ class GmpCreateOverrideTestCase(unittest.TestCase):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_override('foo', '')
 
-    def test_create_override_with_comment(self):
-        self.gmp.create_override('foo', nvt_oid='oid1', comment='bar')
-
-        self.connection.send.has_been_called_with(
-            '<create_override>'
-            '<text>foo</text>'
-            '<nvt oid="oid1"/>'
-            '<comment>bar</comment>'
-            '</create_override>'
-        )
-
     def test_create_override_with_hosts(self):
         self.gmp.create_override('foo', nvt_oid='oid1', hosts=[])
 
@@ -81,12 +72,22 @@ class GmpCreateOverrideTestCase(unittest.TestCase):
             '<create_override>'
             '<text>foo</text>'
             '<nvt oid="oid1"/>'
-            '<hosts>h1, h2</hosts>'
+            '<hosts>h1,h2</hosts>'
             '</create_override>'
         )
 
     def test_create_override_with_port(self):
         self.gmp.create_override('foo', nvt_oid='oid1', port='666')
+
+        self.connection.send.has_been_called_with(
+            '<create_override>'
+            '<text>foo</text>'
+            '<nvt oid="oid1"/>'
+            '<port>666</port>'
+            '</create_override>'
+        )
+
+        self.gmp.create_override('foo', nvt_oid='oid1', port=666)
 
         self.connection.send.has_been_called_with(
             '<create_override>'
@@ -119,50 +120,148 @@ class GmpCreateOverrideTestCase(unittest.TestCase):
         )
 
     def test_create_override_with_severity(self):
-        self.gmp.create_override('foo', nvt_oid='oid1', severity='5.0')
+        self.gmp.create_override('foo', nvt_oid='oid1', severity='5.5')
 
         self.connection.send.has_been_called_with(
             '<create_override>'
             '<text>foo</text>'
             '<nvt oid="oid1"/>'
-            '<severity>5.0</severity>'
+            '<severity>5.5</severity>'
+            '</create_override>'
+        )
+
+        self.gmp.create_override('foo', nvt_oid='oid1', severity=5.5)
+
+        self.connection.send.has_been_called_with(
+            '<create_override>'
+            '<text>foo</text>'
+            '<nvt oid="oid1"/>'
+            '<severity>5.5</severity>'
+            '</create_override>'
+        )
+
+        self.gmp.create_override('foo', nvt_oid='oid1', severity=Decimal(5.5))
+
+        self.connection.send.has_been_called_with(
+            '<create_override>'
+            '<text>foo</text>'
+            '<nvt oid="oid1"/>'
+            '<severity>5.5</severity>'
             '</create_override>'
         )
 
     def test_create_override_with_new_severity(self):
-        self.gmp.create_override('foo', nvt_oid='oid1', new_severity='5.0')
+        self.gmp.create_override('foo', nvt_oid='oid1', new_severity='5.5')
 
         self.connection.send.has_been_called_with(
             '<create_override>'
             '<text>foo</text>'
             '<nvt oid="oid1"/>'
-            '<new_severity>5.0</new_severity>'
+            '<new_severity>5.5</new_severity>'
+            '</create_override>'
+        )
+
+        self.gmp.create_override('foo', nvt_oid='oid1', new_severity=5.5)
+
+        self.connection.send.has_been_called_with(
+            '<create_override>'
+            '<text>foo</text>'
+            '<nvt oid="oid1"/>'
+            '<new_severity>5.5</new_severity>'
+            '</create_override>'
+        )
+
+        self.gmp.create_override(
+            'foo',
+            nvt_oid='oid1',
+            new_severity=Decimal(5.5),
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_override>'
+            '<text>foo</text>'
+            '<nvt oid="oid1"/>'
+            '<new_severity>5.5</new_severity>'
             '</create_override>'
         )
 
     def test_create_override_with_threat(self):
-        self.gmp.create_override('foo', nvt_oid='oid1', threat='high')
+        self.gmp.create_override('foo', nvt_oid='oid1', threat='High')
 
         self.connection.send.has_been_called_with(
             '<create_override>'
             '<text>foo</text>'
             '<nvt oid="oid1"/>'
-            '<threat>high</threat>'
+            '<threat>High</threat>'
             '</create_override>'
         )
+
+    def test_create_override_invalid_threat(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_override(
+                'foo',
+                nvt_oid='oid1',
+                threat='',
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_override(
+                'foo',
+                nvt_oid='oid1',
+                threat='foo',
+            )
 
     def test_create_override_with_new_threat(self):
-        self.gmp.create_override('foo', nvt_oid='oid1', new_threat='high')
+        self.gmp.create_override(
+            'foo',
+            nvt_oid='oid1',
+            new_threat='High',
+        )
 
         self.connection.send.has_been_called_with(
             '<create_override>'
             '<text>foo</text>'
             '<nvt oid="oid1"/>'
-            '<new_threat>high</new_threat>'
+            '<new_threat>High</new_threat>'
             '</create_override>'
         )
 
+    def test_create_override_invalid_new_threat(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_override(
+                'foo',
+                nvt_oid='oid1',
+                new_threat='',
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_override(
+                'foo',
+                nvt_oid='oid1',
+                new_threat='foo',
+            )
+
     def test_create_override_with_seconds_active(self):
+        self.gmp.create_override('foo', nvt_oid='oid1', seconds_active=0)
+
+        self.connection.send.has_been_called_with(
+            '<create_override>'
+            '<text>foo</text>'
+            '<nvt oid="oid1"/>'
+            '<active>0</active>'
+            '</create_override>'
+        )
+
+        self.gmp.create_override('foo', nvt_oid='oid1', seconds_active=-1)
+
+        self.connection.send.has_been_called_with(
+            '<create_override>'
+            '<text>foo</text>'
+            '<nvt oid="oid1"/>'
+            '<active>-1</active>'
+            '</create_override>'
+        )
+
         self.gmp.create_override('foo', nvt_oid='oid1', seconds_active=3600)
 
         self.connection.send.has_been_called_with(

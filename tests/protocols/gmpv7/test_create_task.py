@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
+import warnings
 
 from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
@@ -135,13 +136,20 @@ class GMPCreateTaskCommandTestCase(unittest.TestCase):
         )
 
     def test_create_task_single_alert(self):
-        self.gmp.create_task(
-            name='foo',
-            config_id='c1',
-            target_id='t1',
-            scanner_id='s1',
-            alert_ids='a1', # will be removed in future
-        )
+
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+                alert_ids='a1', # will be removed in future
+            )
+
+            self.assertEqual(len(w), 1)
+            self.assertTrue(issubclass(w[0].category, DeprecationWarning))
 
         self.connection.send.has_been_called_with(
             '<create_task>'
