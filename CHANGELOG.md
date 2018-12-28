@@ -2,6 +2,7 @@
 
 ## gvm.protocols.gmpv7
 
+* Removed hosts_ordering argument from `modify_target`
 * Fixed sending resource id in `modify_tag`
 * Don't require ca_pub for `create_scanner`
 * Change port argument for `create_scanner` to be an integer

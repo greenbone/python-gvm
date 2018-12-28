@@ -4770,12 +4770,11 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_target(self, target_id, *, name=None, comment=None,
-                      hosts=None, hosts_ordering=None,
-                      exclude_hosts=None, ssh_credential_id=None,
-                      smb_credential_id=None, esxi_credential_id=None,
-                      snmp_credential_id=None, alive_tests=None,
-                      reverse_lookup_only=None, reverse_lookup_unify=None,
-                      port_list_id=None):
+                      hosts=None, exclude_hosts=None, ssh_credential_id=None,
+                      smb_credential_id=None,
+                      esxi_credential_id=None, snmp_credential_id=None,
+                      alive_tests=None, reverse_lookup_only=None,
+                      reverse_lookup_unify=None, port_list_id=None):
         """Modifies an existing target.
 
         Arguments:
@@ -4783,7 +4782,6 @@ class Gmp(GvmProtocol):
             comment (str, optional): Comment on target.
             name (str, optional): Name of target.
             hosts (list, optional): List of target hosts.
-            hosts_ordering (str, optional): The order hosts are scanned in.
             exclude_hosts (list, optional): A list of hosts to exclude.
             ssh_credential (str, optional): UUID of SSH credential to
                 use on target.
@@ -4819,9 +4817,6 @@ class Gmp(GvmProtocol):
 
         if hosts:
             cmd.add_element('hosts', _to_comma_list(hosts))
-
-        if hosts_ordering:
-            cmd.add_element('hosts_ordering', _to_comma_list(hosts_ordering))
 
         if exclude_hosts:
             cmd.add_element('exclude_hosts', _to_comma_list(exclude_hosts))
