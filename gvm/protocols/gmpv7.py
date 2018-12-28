@@ -4847,16 +4847,12 @@ class Gmp(GvmProtocol):
             cmd.add_element('snmp_credential', attrs={'id': snmp_credential_id})
 
         if not reverse_lookup_only is None:
-            if reverse_lookup_only:
-                cmd.add_element('reverse_lookup_only', '1')
-            else:
-                cmd.add_element('reverse_lookup_only', '0')
+            cmd.add_element('reverse_lookup_only',
+                            _to_bool(reverse_lookup_only))
 
         if not reverse_lookup_unify is None:
-            if reverse_lookup_unify:
-                cmd.add_element('reverse_lookup_unify', '1')
-            else:
-                cmd.add_element('reverse_lookup_unify', '0')
+            cmd.add_element('reverse_lookup_unify',
+                            _to_bool(reverse_lookup_unify))
 
         if port_list_id:
             cmd.add_element('port_list', attrs={'id': port_list_id})
