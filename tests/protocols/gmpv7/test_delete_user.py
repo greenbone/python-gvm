@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import GvmError
+from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
@@ -30,34 +30,46 @@ class GmpDeleteUserTestCase(unittest.TestCase):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
-    def test_delete(self):
+    def test_delete_user_with_user_id(self):
+        self.gmp.delete_user('a1')
+
+        self.connection.send.has_been_called_with(
+            '<delete_user user_id="a1"/>'
+        )
+
+        self.gmp.delete_user(user_id='a1')
+
+        self.connection.send.has_been_called_with(
+            '<delete_user user_id="a1"/>'
+        )
+
+    def test_delete_user_with_inheritor_id(self):
         self.gmp.delete_user('a1', inheritor_id='u1')
 
         self.connection.send.has_been_called_with(
             '<delete_user user_id="a1" inheritor_id="u1"/>')
 
-    def test_delete_with_name(self):
-        self.gmp.delete_user('a1', name='foo', inheritor_id='u1')
+    def test_delete_user_with_name(self):
+        self.gmp.delete_user(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<delete_user user_id="a1" name="foo" inheritor_id="u1"/>')
+            '<delete_user name="foo"/>')
 
-    def test_delete_with_inheritor_name(self):
+    def test_delete_user_with_inheritor_name(self):
         self.gmp.delete_user('a1', inheritor_name='foo')
 
         self.connection.send.has_been_called_with(
             '<delete_user user_id="a1" inheritor_name="foo"/>')
 
-    def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_user(None, inheritor_id='u1')
+    def test_delete_user_missing_user_id_and_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.delete_user(None)
 
-        with self.assertRaises(GvmError):
-            self.gmp.delete_user('', inheritor_id='u1')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.delete_user('')
 
-    def test_missing_inheritor(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_user('u1')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.delete_user(user_id='', name='')
 
 
 if __name__ == '__main__':

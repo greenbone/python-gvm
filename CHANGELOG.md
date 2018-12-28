@@ -2,6 +2,8 @@
 
 ## gvm.protocols.gmpv7
 
+* Allow to pass either user_id or name to `delete_user`
+* Don't require inheritor_id or inheritor_name for `delete_user`
 * Added validation of alive_tests argument to `create_target` method
 * Removed hosts_ordering argument from `modify_target`
 * Added ssh_credential_port argument to `modify_target`

@@ -2202,31 +2202,32 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_user(self, user_id, *, name=None, inheritor_id=None,
+    def delete_user(self, user_id=None, *, name=None, inheritor_id=None,
                     inheritor_name=None):
         """Deletes an existing user
 
+        Either user_id or name must be passed.
+
         Arguments:
-            user_id (str): UUID of the task to be deleted.
+            user_id (str, optional): UUID of the task to be deleted.
             name (str, optional): The name of the user to be deleted.
             inheritor_id (str, optional): The ID of the inheriting user
                 or "self". Overrides inheritor_name.
             inheritor_name (str, optional): The name of the inheriting user.
 
         """
-        if not user_id:
-            raise RequiredArgument('delete_user requires a '
-                                   'user_id argument')
+        if not user_id and not name:
+            raise RequiredArgument(
+                'delete_user requires a user_id or name argument')
 
         cmd = XmlCommand('delete_user')
-        cmd.set_attribute('user_id', user_id)
+
+        if user_id:
+            cmd.set_attribute('user_id', user_id)
 
         if name:
             cmd.set_attribute('name', name)
 
-        if not inheritor_id and not inheritor_name:
-            raise RequiredArgument('delete_user requires a '
-                                   'inheritor_id or inheritor_name argument')
         if inheritor_id:
             cmd.set_attribute('inheritor_id', inheritor_id)
 
