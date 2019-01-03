@@ -2,6 +2,16 @@
 
 ## gvm.protocols.gmpv7
 
+* Allow to pass either user_id or name to `delete_user`
+* Don't require inheritor_id or inheritor_name for `delete_user`
+* Added validation of alive_tests argument to `create_target` method
+* Removed hosts_ordering argument from `modify_target`
+* Added ssh_credential_port argument to `modify_target`
+* Fixed sending resource id in `modify_tag`
+* Don't require ca_pub for `create_scanner`
+* Change port argument for `create_scanner` to be an integer
+* Refactor `modify_scanner` method: Adjust argument types corresponding to
+ `create_scanner` and only require scanner_id
 * Require either setting_id or name for `modify_setting` not both arguments
 * Allow empty string a value argument for `modify_setting`
 * Require either user_id or name for `modify_user` not both arguments

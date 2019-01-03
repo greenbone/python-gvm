@@ -92,9 +92,16 @@ CREDENTIAL_TYPES = (
     'usk',
 )
 
+OSP_SCANNER_TYPE = '1'
+OPENVAS_SCANNER_TYPE = '2'
+CVE_SCANNER_TYPE = '3'
+GMP_SCANNER_TYPE = '4' # formerly slave scanner
+
 SCANNER_TYPES = (
-    '1',
-    '2',
+    OSP_SCANNER_TYPE,
+    OPENVAS_SCANNER_TYPE,
+    CVE_SCANNER_TYPE,
+    GMP_SCANNER_TYPE,
 )
 
 ALERT_EVENTS = (
@@ -201,6 +208,9 @@ def _to_bool(value):
 
 def _to_base64(value):
     return base64.b64encode(value.encode('utf-8'))
+
+def _to_comma_list(value):
+    return ','.join(value)
 
 
 def _add_filter(cmd, filter, filter_id):
@@ -774,7 +784,7 @@ class Gmp(GvmProtocol):
             _xmlspecial.add_element('full')
 
         if users:
-            cmd.add_element('users', ','.join(users))
+            cmd.add_element('users', _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -853,7 +863,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if port:
             cmd.add_element('port', str(port))
@@ -937,7 +947,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if port:
             cmd.add_element('port', str(port))
@@ -1143,8 +1153,8 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('create_port_range')
         cmd.add_element('port_list', attrs={'id': port_list_id})
-        cmd.add_element('start', start)
-        cmd.add_element('end', end)
+        cmd.add_element('start', str(start))
+        cmd.add_element('end', str(end))
         cmd.add_element('type', port_range_type)
 
         if comment:
@@ -1220,7 +1230,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('comment', comment)
 
         if users:
-            cmd.add_element('users', ",".join(users))
+            cmd.add_element('users', _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -1240,19 +1250,20 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', role_id)
         return self._send_xml_command(cmd)
 
-    def create_scanner(self, name, host, port, scanner_type, ca_pub,
-                       credential_id, *, comment=None):
+    def create_scanner(self, name, host, port, scanner_type, credential_id, *,
+                       ca_pub=None, comment=None):
         """Create a new scanner
 
         Arguments:
             name (str): Name of the scanner
             host (str): The host of the scanner
-            port (str): The port of the scanner
+            port (int): The port of the scanner
             scanner_type (str): Type of the scanner.
                 '1' for OSP, '2' for OpenVAS (classic) Scanner.
-            ca_pub (str): Certificate of CA to verify scanner certificate
             credential_id (str): UUID of client certificate credential for the
                 scanner
+            ca_pub (str, optional): Certificate of CA to verify scanner
+                certificate
             comment (str, optional): Comment for the scanner
 
         Returns:
@@ -1270,8 +1281,6 @@ class Gmp(GvmProtocol):
         if not scanner_type:
             raise RequiredArgument('create_scanner requires a scanner_type '
                                    'argument')
-        if not ca_pub:
-            raise RequiredArgument('create_scanner requires a ca_pub argument')
 
         if not credential_id:
             raise RequiredArgument('create_scanner requires a credential_id '
@@ -1279,15 +1288,19 @@ class Gmp(GvmProtocol):
 
         if scanner_type not in SCANNER_TYPES:
             raise InvalidArgument('create_scanner requires a scanner_type '
-                                  'argument which must be either "1" for OSP '
-                                  'or "2" OpenVAS (Classic).')
+                                  'argument which must be either "1" for OSP, '
+                                  '"2" for OpenVAS (Classic), "3" for CVE or '
+                                  '"4" for GMP Scanner.')
 
         cmd = XmlCommand('create_scanner')
         cmd.add_element('name', name)
         cmd.add_element('host', host)
-        cmd.add_element('port', port)
+        cmd.add_element('port', str(port))
         cmd.add_element('type', scanner_type)
-        cmd.add_element('ca_pub', ca_pub)
+
+        if ca_pub:
+            cmd.add_element('ca_pub', ca_pub)
+
         cmd.add_element('credential', attrs={'id': str(credential_id)})
 
         if comment:
@@ -1546,7 +1559,7 @@ class Gmp(GvmProtocol):
         cmd.add_element('copy', tag_id)
         return self._send_xml_command(cmd)
 
-    def create_target(self, name, *, make_unique=False, asset_hosts_filter=None,
+    def create_target(self, name, *, make_unique=None, asset_hosts_filter=None,
                       hosts=None, comment=None, exclude_hosts=None,
                       ssh_credential_id=None, ssh_credential_port=None,
                       smb_credential_id=None, esxi_credential_id=None,
@@ -1567,7 +1580,7 @@ class Gmp(GvmProtocol):
             comment (str, optional): Comment for the target
             ssh_credential_id (str, optional): UUID of a ssh credential to use
                 on target
-            ssh_credential_port (str, optional): The port to use for ssh
+            ssh_credential_port (int, optional): The port to use for ssh
                 credential
             smb_credential_id (str, optional): UUID of a smb credential to use
                 on target
@@ -1591,14 +1604,15 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand('create_target')
         _xmlname = cmd.add_element('name', name)
-        if make_unique:
-            _xmlname.add_element('make_unique', '1')
+
+        if make_unique is not None:
+            _xmlname.add_element('make_unique', _to_bool(make_unique))
 
         if asset_hosts_filter:
             cmd.add_element('asset_hosts',
                             attrs={'filter': str(asset_hosts_filter)})
         elif hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
         else:
             raise RequiredArgument('create_target requires either a hosts or '
                                    'an asset_hosts_filter argument')
@@ -1607,13 +1621,13 @@ class Gmp(GvmProtocol):
             cmd.add_element('comment', comment)
 
         if exclude_hosts:
-            cmd.add_element('exclude_hosts', ', '.join(exclude_hosts))
+            cmd.add_element('exclude_hosts', _to_comma_list(exclude_hosts))
 
         if ssh_credential_id:
             _xmlssh = cmd.add_element('ssh_credential',
                                       attrs={'id': ssh_credential_id})
             if ssh_credential_port:
-                _xmlssh.add_element('port', ssh_credential_port)
+                _xmlssh.add_element('port', str(ssh_credential_port))
 
         if smb_credential_id:
             cmd.add_element('smb_credential', attrs={'id': smb_credential_id})
@@ -1625,19 +1639,21 @@ class Gmp(GvmProtocol):
             cmd.add_element('snmp_credential', attrs={'id': snmp_credential_id})
 
         if alive_tests:
+            if not alive_tests in ALIVE_TESTS:
+                raise InvalidArgument(
+                    'alive_tests must be one of {tests} but '
+                    '{actual} has been passed'.format(
+                        tests='|'.join(ALIVE_TESTS), actual=alive_tests))
+
             cmd.add_element('alive_tests', alive_tests)
 
         if not reverse_lookup_only is None:
-            if reverse_lookup_only:
-                cmd.add_element('reverse_lookup_only', '1')
-            else:
-                cmd.add_element('reverse_lookup_only', '0')
+            cmd.add_element('reverse_lookup_only',
+                            _to_bool(reverse_lookup_only))
 
         if not reverse_lookup_unify is None:
-            if reverse_lookup_unify:
-                cmd.add_element('reverse_lookup_unify', '1')
-            else:
-                cmd.add_element('reverse_lookup_unify', '0')
+            cmd.add_element('reverse_lookup_unify',
+                            _to_bool(reverse_lookup_unify))
 
         if port_range:
             cmd.add_element('port_range', port_range)
@@ -1752,7 +1768,7 @@ class Gmp(GvmProtocol):
             # gvmd splits by command and space
             # gvmd tries to lookup each value as user name and afterwards as
             # user id. So both user name and user id are possible
-            cmd.add_element('observers', ','.join(observers))
+            cmd.add_element('observers', _to_comma_list(observers))
 
         return self._send_xml_command(cmd)
 
@@ -1801,11 +1817,11 @@ class Gmp(GvmProtocol):
             cmd.add_element('password', password)
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts),
+            cmd.add_element('hosts', _to_comma_list(hosts),
                             attrs={'allow': _to_bool(hosts_allow)})
 
         if ifaces:
-            cmd.add_element('ifaces', ','.join(ifaces),
+            cmd.add_element('ifaces', _to_comma_list(ifaces),
                             attrs={'allow': _to_bool(ifaces_allow)})
 
         if role_ids:
@@ -2186,31 +2202,32 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_user(self, user_id, *, name=None, inheritor_id=None,
+    def delete_user(self, user_id=None, *, name=None, inheritor_id=None,
                     inheritor_name=None):
         """Deletes an existing user
 
+        Either user_id or name must be passed.
+
         Arguments:
-            user_id (str): UUID of the task to be deleted.
+            user_id (str, optional): UUID of the task to be deleted.
             name (str, optional): The name of the user to be deleted.
             inheritor_id (str, optional): The ID of the inheriting user
                 or "self". Overrides inheritor_name.
             inheritor_name (str, optional): The name of the inheriting user.
 
         """
-        if not user_id:
-            raise RequiredArgument('delete_user requires a '
-                                   'user_id argument')
+        if not user_id and not name:
+            raise RequiredArgument(
+                'delete_user requires a user_id or name argument')
 
         cmd = XmlCommand('delete_user')
-        cmd.set_attribute('user_id', user_id)
+
+        if user_id:
+            cmd.set_attribute('user_id', user_id)
 
         if name:
             cmd.set_attribute('name', name)
 
-        if not inheritor_id and not inheritor_name:
-            raise RequiredArgument('delete_user requires a '
-                                   'inheritor_id or inheritor_name argument')
         if inheritor_id:
             cmd.set_attribute('inheritor_id', inheritor_id)
 
@@ -4198,7 +4215,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('name', name)
 
         if users:
-            cmd.add_element('users', ','.join(users))
+            cmd.add_element('users', _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -4238,7 +4255,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if port:
             cmd.add_element('port', str(port))
@@ -4304,7 +4321,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('active', str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if port:
             cmd.add_element('port', str(port))
@@ -4501,21 +4518,22 @@ class Gmp(GvmProtocol):
             cmd.add_element('name', name)
 
         if users:
-            cmd.add_element('users', ",".join(users))
+            cmd.add_element('users', _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
-    def modify_scanner(self, scanner_id, host, port, scanner_type, *,
-                       comment=None, name=None, ca_pub=None,
+    def modify_scanner(self, scanner_id, *, scanner_type=None, host=None,
+                       port=None, comment=None, name=None, ca_pub=None,
                        credential_id=None):
         """Modifies an existing scanner.
 
         Arguments:
             scanner_id (str): UUID of scanner to modify.
-            host (str): Host of the scanner.
-            port (str): Port of the scanner.
-            scanner_type (str): Type of the scanner.
-                '1' for OSP, '2' for OpenVAS (classic) Scanner.
+            scanner_type (str, optional): New type of the Scanner. Must be one
+                of '1' (OSP Scanner), '2' (OpenVAS Scanner), '3' CVE Scanner or
+                '4' (GMP Scanner).
+            host (str, optional): Host of the scanner.
+            port (int, optional): Port of the scanner.
             comment (str, optional): Comment on scanner.
             name (str, optional): Name of scanner.
             ca_pub (str, optional): Certificate of CA to verify scanner's
@@ -4528,26 +4546,26 @@ class Gmp(GvmProtocol):
         """
         if not scanner_id:
             raise RequiredArgument(
-                'modify_scanner requires a scanner_id argument')
-        if not host:
-            raise RequiredArgument('modify_scanner requires a host argument')
-        if not port:
-            raise RequiredArgument('modify_scanner requires a port argument')
-        if not scanner_type:
-            raise RequiredArgument('modify_scanner requires a scanner_type '
-                                   'argument')
+                'modify_scanner requires a scanner_id argument'
+            )
+
+        if scanner_type is not None and scanner_type not in SCANNER_TYPES:
+            raise InvalidArgument('modify_scanner requires a scanner_type '
+                                  'argument which must be either "1" for OSP, '
+                                  '"2" for OpenVAS (Classic), "3" for CVE or '
+                                  '"4" for GMP Scanner.')
 
         cmd = XmlCommand('modify_scanner')
         cmd.set_attribute('scanner_id', scanner_id)
-        cmd.add_element('host', host)
-        cmd.add_element('port', port)
 
-        if scanner_type not in SCANNER_TYPES:
-            raise InvalidArgument('modify_scanner requires a scanner_type '
-                                  'argument which must be either "1" for OSP '
-                                  'or "2" OpenVAS (Classic).')
+        if scanner_type:
+            cmd.add_element('type', scanner_type)
 
-        cmd.add_element('type', scanner_type)
+        if host:
+            cmd.add_element('host', host)
+
+        if port:
+            cmd.add_element('port', str(port))
 
         if comment:
             cmd.add_element('comment', comment)
@@ -4714,9 +4732,9 @@ class Gmp(GvmProtocol):
             value (str, optional): Value of the tag.
             active (boolean, optional): Whether the tag is active.
             resource_id (str, optional): IDs of the resource to which to
-                attach the tag.
+                attach the tag. Required if resource_type is set.
             resource_type (str, optional): Type of the resource to which to
-                attach the tag.
+                attach the tag. Required if resource_id is set.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4736,26 +4754,34 @@ class Gmp(GvmProtocol):
         if value:
             cmd.add_element('value', value)
 
-        if not active is None:
-            if active:
-                cmd.add_element('active', '1')
-            else:
-                cmd.add_element('active', '0')
+        if active is not None:
+            cmd.add_element('active', _to_bool(active))
 
-        if resource_id and resource_type:
+        if resource_id or resource_type:
+            if not resource_id:
+                raise RequiredArgument(
+                    'modify_tag requires resource_id argument when '
+                    'resource_type is set'
+                )
+
+            if not resource_type:
+                raise RequiredArgument(
+                    'modify_tag requires resource_type argument when '
+                    'resource_id is set'
+                )
+
             _xmlresource = cmd.add_element('resource',
-                                           attrs={'resource_id': resource_id})
+                                           attrs={'id': resource_id})
             _xmlresource.add_element('type', resource_type)
 
         return self._send_xml_command(cmd)
 
     def modify_target(self, target_id, *, name=None, comment=None,
-                      hosts=None, hosts_ordering=None,
-                      exclude_hosts=None, ssh_credential_id=None,
-                      smb_credential_id=None, esxi_credential_id=None,
-                      snmp_credential_id=None, alive_tests=None,
-                      reverse_lookup_only=None, reverse_lookup_unify=None,
-                      port_list_id=None):
+                      hosts=None, exclude_hosts=None, ssh_credential_id=None,
+                      ssh_credential_port=None, smb_credential_id=None,
+                      esxi_credential_id=None, snmp_credential_id=None,
+                      alive_tests=None, reverse_lookup_only=None,
+                      reverse_lookup_unify=None, port_list_id=None):
         """Modifies an existing target.
 
         Arguments:
@@ -4763,10 +4789,11 @@ class Gmp(GvmProtocol):
             comment (str, optional): Comment on target.
             name (str, optional): Name of target.
             hosts (list, optional): List of target hosts.
-            hosts_ordering (str, optional): The order hosts are scanned in.
             exclude_hosts (list, optional): A list of hosts to exclude.
             ssh_credential (str, optional): UUID of SSH credential to
                 use on target.
+            ssh_credential_port (int, optional): The port to use for ssh
+                credential
             smb_credential (str, optional): UUID of SMB credential to use
                 on target.
             esxi_credential (str, optional): UUID of ESXi credential to use
@@ -4798,13 +4825,10 @@ class Gmp(GvmProtocol):
             cmd.add_element('name', name)
 
         if hosts:
-            cmd.add_element('hosts', ', '.join(hosts))
-
-        if hosts_ordering:
-            cmd.add_element('hosts_ordering', ', '.join(hosts_ordering))
+            cmd.add_element('hosts', _to_comma_list(hosts))
 
         if exclude_hosts:
-            cmd.add_element('exclude_hosts', ', '.join(exclude_hosts))
+            cmd.add_element('exclude_hosts', _to_comma_list(exclude_hosts))
 
         if alive_tests:
             if not alive_tests in ALIVE_TESTS:
@@ -4815,7 +4839,11 @@ class Gmp(GvmProtocol):
             cmd.add_element('alive_tests', alive_tests)
 
         if ssh_credential_id:
-            cmd.add_element('ssh_credential', attrs={'id': ssh_credential_id})
+            _xmlssh = cmd.add_element('ssh_credential',
+                                      attrs={'id': ssh_credential_id})
+
+            if ssh_credential_port:
+                _xmlssh.add_element('port', str(ssh_credential_port))
 
         if smb_credential_id:
             cmd.add_element('smb_credential', attrs={'id': smb_credential_id})
@@ -4827,16 +4855,12 @@ class Gmp(GvmProtocol):
             cmd.add_element('snmp_credential', attrs={'id': snmp_credential_id})
 
         if not reverse_lookup_only is None:
-            if reverse_lookup_only:
-                cmd.add_element('reverse_lookup_only', '1')
-            else:
-                cmd.add_element('reverse_lookup_only', '0')
+            cmd.add_element('reverse_lookup_only',
+                            _to_bool(reverse_lookup_only))
 
         if not reverse_lookup_unify is None:
-            if reverse_lookup_unify:
-                cmd.add_element('reverse_lookup_unify', '1')
-            else:
-                cmd.add_element('reverse_lookup_unify', '0')
+            cmd.add_element('reverse_lookup_unify',
+                            _to_bool(reverse_lookup_unify))
 
         if port_list_id:
             cmd.add_element('port_list', attrs={'id': port_list_id})
@@ -4893,7 +4917,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('alert', attrs={'id': alert})
 
         if observers:
-            cmd.add_element('observers', ', '.join(observers))
+            cmd.add_element('observers', _to_comma_list(observers))
 
         if preferences:
             _xmlprefs = cmd.add_element('preferences')
@@ -4958,11 +4982,11 @@ class Gmp(GvmProtocol):
                 cmd.add_element('role', attrs={'id': role})
 
         if hosts:
-            cmd.add_element('hosts', ','.join(hosts),
+            cmd.add_element('hosts', _to_comma_list(hosts),
                             attrs={'allow': _to_bool(hosts_allow)})
 
         if ifaces:
-            cmd.add_element('ifaces', ','.join(ifaces),
+            cmd.add_element('ifaces', _to_comma_list(ifaces),
                             attrs={'allow': _to_bool(ifaces_allow)})
 
         return self._send_xml_command(cmd)
