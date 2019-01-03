@@ -4732,7 +4732,7 @@ class Gmp(GvmProtocol):
             value (str, optional): Value of the tag.
             active (boolean, optional): Whether the tag is active.
             resource_id (str, optional): IDs of the resource to which to
-                attach the tag. Required if resoure_type is set.
+                attach the tag. Required if resource_type is set.
             resource_type (str, optional): Type of the resource to which to
                 attach the tag. Required if resource_id is set.
 
