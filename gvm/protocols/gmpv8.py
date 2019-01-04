@@ -341,14 +341,20 @@ class Gmp(Gmpv7):
         if community:
             cmd.add_element('community', community)
 
-        if privacy_algorithm:
-            if privacy_algorithm not in ('aes', 'des'):
-                raise RequiredArgument('modify_credential requires '
-                                       'privacy_algorithm to be either'
-                                       'aes or des')
+        if privacy_algorithm is not None or privacy_password is not None:
             _xmlprivacy = cmd.add_element('privacy')
-            _xmlprivacy.add_element('algorithm', privacy_algorithm)
-            _xmlprivacy.add_element('password', privacy_password)
+
+            if privacy_algorithm is not None:
+                if privacy_algorithm not in ('aes', 'des'):
+                    raise InvalidArgument(
+                        'modify_credential requires privacy_algorithm to be '
+                        'either aes or des'
+                    )
+
+                _xmlprivacy.add_element('algorithm', privacy_algorithm)
+
+            if privacy_password is not None:
+                _xmlprivacy.add_element('password', privacy_password)
 
         if public_key:
             _xmlkey = cmd.add_element('key')
