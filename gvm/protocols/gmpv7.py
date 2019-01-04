@@ -1731,10 +1731,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('comment', comment)
 
         if not alterable is None:
-            if alterable:
-                cmd.add_element('alterable', '1')
-            else:
-                cmd.add_element('alterable', '0')
+            cmd.add_element('alterable', _to_bool(alterable))
 
         if hosts_ordering:
             # not sure about the possible values for hosts_orderning
