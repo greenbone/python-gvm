@@ -1370,8 +1370,9 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if first_time_minute or first_time_hour or first_time_day_of_month or \
-            first_time_month or first_time_year:
+        if first_time_minute is not None or first_time_hour is not None or \
+            first_time_day_of_month is not None or \
+            first_time_month is not None or first_time_year is not None:
 
             if first_time_minute is None:
                 raise RequiredArgument(
