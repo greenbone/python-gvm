@@ -1748,7 +1748,7 @@ class Gmp(GvmProtocol):
 
                 #if a single id is given as a string wrap it into a list
                 alert_ids = [alert_ids]
-            if isinstance(alert_ids, list):
+            if _is_list_like(alert_ids):
                 #parse all given alert id's
                 for alert in alert_ids:
                     cmd.add_element('alert', attrs={'id': str(alert)})
