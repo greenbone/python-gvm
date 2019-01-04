@@ -31,7 +31,7 @@ from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
-from .gmpv7 import Gmp as Gmpv7
+from .gmpv7 import Gmp as Gmpv7, _to_bool
 
 CREDENTIAL_TYPES = (
     'cc',
@@ -57,7 +57,7 @@ class Gmp(Gmpv7):
         return get_version_string(PROTOCOL_VERSION)
 
     def create_credential(self, name, credential_type, *, comment=None,
-                          allow_insecure=False, certificate=None,
+                          allow_insecure=None, certificate=None,
                           key_phrase=None, private_key=None,
                           login=None, password=None, auth_algorithm=None,
                           community=None, privacy_algorithm=None,
@@ -182,8 +182,8 @@ class Gmp(Gmpv7):
         if comment:
             cmd.add_element('comment', comment)
 
-        if allow_insecure:
-            cmd.add_element('allow_insecure', '1')
+        if allow_insecure is not None:
+            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
 
 
         if credential_type == 'cc' or credential_type == 'smime':
@@ -310,8 +310,8 @@ class Gmp(Gmpv7):
         if name:
             cmd.add_element('name', name)
 
-        if allow_insecure:
-            cmd.add_element('allow_insecure', allow_insecure)
+        if allow_insecure is not None:
+            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
 
         if certificate:
             cmd.add_element('certificate', certificate)

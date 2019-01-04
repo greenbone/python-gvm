@@ -533,7 +533,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_credential(self, name, credential_type, *, comment=None,
-                          allow_insecure=False, certificate=None,
+                          allow_insecure=None, certificate=None,
                           key_phrase=None, private_key=None,
                           login=None, password=None, auth_algorithm=None,
                           community=None, privacy_algorithm=None,
@@ -621,8 +621,8 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if allow_insecure:
-            cmd.add_element('allow_insecure', '1')
+        if allow_insecure is not None:
+            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
 
         if credential_type == 'cc':
             if not certificate:

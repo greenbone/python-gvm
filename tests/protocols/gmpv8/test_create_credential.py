@@ -42,8 +42,32 @@ class GmpCreateCredentialTestCase(unittest.TestCase):
 
     def test_create_up_credential(self):
         self.gmp.create_credential(
-            name='foo', credential_type='up', comment='bar',
-            allow_insecure=True, login='Max', password='123')
+            name='foo',
+            credential_type='up',
+            comment='bar',
+            login='Max',
+            password='123',
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_credential>'
+            '<name>foo</name>'
+            '<type>up</type>'
+            '<comment>bar</comment>'
+            '<login>Max</login>'
+            '<password>123</password>'
+            '</create_credential>'
+        )
+
+    def test_create_up_credential_with_allow_insecure(self):
+        self.gmp.create_credential(
+            name='foo',
+            credential_type='up',
+            comment='bar',
+            login='Max',
+            password='123',
+            allow_insecure=True,
+        )
 
         self.connection.send.has_been_called_with(
             '<create_credential>'
@@ -55,6 +79,27 @@ class GmpCreateCredentialTestCase(unittest.TestCase):
             '<password>123</password>'
             '</create_credential>'
         )
+
+        self.gmp.create_credential(
+            name='foo',
+            credential_type='up',
+            comment='bar',
+            login='Max',
+            password='123',
+            allow_insecure=False,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_credential>'
+            '<name>foo</name>'
+            '<type>up</type>'
+            '<comment>bar</comment>'
+            '<allow_insecure>0</allow_insecure>'
+            '<login>Max</login>'
+            '<password>123</password>'
+            '</create_credential>'
+        )
+
 
     def test_create_cc_credential_missing_certificate(self):
         with self.assertRaises(RequiredArgument):
