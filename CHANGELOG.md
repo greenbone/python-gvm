@@ -2,6 +2,7 @@
 
 ## gvm.protocols.gmpv7
 
+* Added preferences argument to `create_task` method
 * Allow to pass either user_id or name to `delete_user`
 * Don't require inheritor_id or inheritor_name for `delete_user`
 * Added validation of alive_tests argument to `create_target` method

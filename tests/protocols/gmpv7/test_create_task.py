@@ -356,6 +356,56 @@ class GMPCreateTaskCommandTestCase(unittest.TestCase):
             '</create_task>'
         )
 
+    def test_create_task_with_preferences(self):
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            preferences={
+                'foo': 'bar',
+                'lorem': 'ipsum',
+            },
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '<preferences>'
+            '<preference>'
+            '<scanner_name>foo</scanner_name>'
+            '<value>bar</value>'
+            '</preference>'
+            '<preference>'
+            '<scanner_name>lorem</scanner_name>'
+            '<value>ipsum</value>'
+            '</preference>'
+            '</preferences>'
+            '</create_task>'
+        )
+
+    def test_create_task_invalid_preferences(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+                preferences='',
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+                preferences=['foo', 'bar'],
+            )
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -24,6 +24,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 7`_
     https://docs.greenbone.net/API/GMP/gmp-7.0.html
 """
 import base64
+import collections
 import logging
 import numbers
 
@@ -1683,7 +1684,7 @@ class Gmp(GvmProtocol):
     def create_task(self, name, config_id, target_id, scanner_id, *,
                     alterable=None, hosts_ordering=None, schedule_id=None,
                     alert_ids=None, comment=None, schedule_periods=None,
-                    observers=None):
+                    observers=None, preferences=None):
         """Create a new task
 
         Arguments:
@@ -1702,6 +1703,8 @@ class Gmp(GvmProtocol):
                 task will be scheduled, or 0 for no limit
             observers (list, optional): List of names or ids of users which
                 should be allowed to observe this task
+            preferences (dict, optional): Name/Value pairs of scanner
+                preferences.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1766,10 +1769,22 @@ class Gmp(GvmProtocol):
                 cmd.add_element('schedule_periods', str(schedule_periods))
 
         if observers:
-            # gvmd splits by command and space
+            # gvmd splits by comma and space
             # gvmd tries to lookup each value as user name and afterwards as
             # user id. So both user name and user id are possible
             cmd.add_element('observers', _to_comma_list(observers))
+
+        if preferences is not None:
+            if not isinstance(preferences, collections.Mapping):
+                raise InvalidArgument(
+                    'preferences argument must be a dict'
+                )
+
+            _xmlprefs = cmd.add_element('preferences')
+            for pref_name, pref_value in preferences.items():
+                _xmlpref = _xmlprefs.add_element('preference')
+                _xmlpref.add_element('scanner_name', pref_name)
+                _xmlpref.add_element('value', str(pref_value))
 
         return self._send_xml_command(cmd)
 
