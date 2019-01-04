@@ -299,9 +299,10 @@ class Gmp(Gmpv7):
 
         if credential_type:
             if credential_type not in CREDENTIAL_TYPES:
-                raise RequiredArgument(
+                raise InvalidArgument(
                     'modify_credential requires type to be either cc, snmp, up '
-                    'smime, pgp or usk')
+                    'smime, pgp or usk'
+                )
             cmd.add_element('type', credential_type)
 
         if comment:

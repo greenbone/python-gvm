@@ -334,6 +334,16 @@ class GmpCreateCredentialTestCase(unittest.TestCase):
             self.gmp.create_credential(
                 name='foo', credential_type='pgp')
 
+    def test_create_credential_invalid_credential_type(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_credential(name='foo', credential_type=None)
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_credential(name='foo', credential_type='')
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_credential(name='foo', credential_type='bar')
+
 
 if __name__ == '__main__':
     unittest.main()
