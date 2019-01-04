@@ -4930,27 +4930,31 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_task(self, task_id, *, name=None, comment=None, alert=None,
-                    observers=None, preferences=None, schedule=None,
-                    schedule_periods=None, scanner=None, file_name=None,
-                    file_action=None):
+    def modify_task(self, task_id, *, name=None, config_id=None, target_id=None,
+                    scanner_id=None, alterable=None, hosts_ordering=None,
+                    schedule_id=None, schedule_periods=None, comment=None,
+                    alert_ids=None, observers=None, preferences=None):
         """Modifies an existing task.
 
         Arguments:
             task_id (str) UUID of task to modify.
-            comment  (str, optional):The comment on the task.
-            alert  (str, optional): UUID of Task alert.
             name  (str, optional): The name of the task.
-            observers (list, optional): Users allowed to observe this task.
-            preferences (dict, optional): Compact name of preference, from
-                scanner and its value
-            schedule (str, optional): UUID of Task schedule.
+            config_id (str, optional): UUID of scan config to use by the task
+            target_id (str, optional): UUID of target to be scanned
+            scanner_id (str, optional): UUID of scanner to use for scanning the
+                target
+            comment  (str, optional):The comment on the task.
+            alert_ids (list, optional): List of UUIDs for alerts to be applied
+                to the task
+            hosts_ordering (str, optional): The order hosts are scanned in
+            schedule_id (str, optional): UUID of a schedule when the task should
+                be run.
             schedule_periods (int, optional): A limit to the number of times
                 the task will be scheduled, or 0 for no limit.
-            scanner (str, optional): UUID of Task scanner.
-            file_name (str, optional): File to attach to task.
-            file_action (str, optional): Action for the file:
-                one of "update" or "remove"
+            observers (list, optional): List of names or ids of users which
+                should be allowed to observe this task
+            preferences (dict, optional): Name/Value pairs of scanner
+                preferences.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4967,34 +4971,64 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if scanner:
-            cmd.add_element('scanner', attrs={'id': scanner})
+        if config_id:
+            cmd.add_element('config', attrs={'id': config_id})
 
-        if schedule_periods:
+        if target_id:
+            cmd.add_element('target', attrs={'id': target_id})
+
+        if not alterable is None:
+            cmd.add_element('alterable', _to_bool(alterable))
+
+        if hosts_ordering:
+            # not sure about the possible values for hosts_orderning
+            # it seems gvmd doesn't check the param
+            # gsa allows to select 'sequential', 'random' or 'reverse'
+            cmd.add_element('hosts_ordering', hosts_ordering)
+
+        if scanner_id:
+            cmd.add_element('scanner', attrs={'id': scanner_id})
+
+        if schedule_id:
+            cmd.add_element('schedule', attrs={'id': schedule_id})
+
+        if schedule_periods is not None:
+            if not isinstance(schedule_periods, numbers.Integral) or \
+                schedule_periods < 0:
+                raise InvalidArgument(
+                    'schedule_periods must be an integer greater or equal '
+                    'than 0'
+                )
             cmd.add_element('schedule_periods', str(schedule_periods))
 
-        if schedule:
-            cmd.add_element('schedule', attrs={'id': schedule})
+        if alert_ids is not None:
+            if not _is_list_like(alert_ids):
+                raise InvalidArgument(
+                    'alert_ids argument must be a list'
+                )
 
-        if alert:
-            cmd.add_element('alert', attrs={'id': alert})
+            for alert in alert_ids:
+                cmd.add_element('alert', attrs={'id': str(alert)})
 
-        if observers:
+        if observers is not None:
+            if not _is_list_like(observers):
+                raise InvalidArgument(
+                    'obeservers argument must be a list'
+                )
+
             cmd.add_element('observers', _to_comma_list(observers))
 
-        if preferences:
+        if preferences is not None:
+            if not isinstance(preferences, collections.Mapping):
+                raise InvalidArgument(
+                    'preferences argument must be a dict'
+                )
+
             _xmlprefs = cmd.add_element('preferences')
             for pref_name, pref_value in preferences.items():
                 _xmlpref = _xmlprefs.add_element('preference')
                 _xmlpref.add_element('scanner_name', pref_name)
-                _xmlpref.add_element('value', pref_value)
-
-        if file_name and file_action:
-            if file_action not in ('update', 'remove'):
-                raise InvalidArgument('action can only be '
-                                      '"update" or "remove"!')
-            cmd.add_element('file', attrs={'name': file_name,
-                                           'action': file_action})
+                _xmlpref.add_element('value', str(pref_value))
 
         return self._send_xml_command(cmd)
 

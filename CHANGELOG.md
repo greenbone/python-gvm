@@ -2,6 +2,7 @@
 
 ## gvm.protocols.gmpv7
 
+* Refactor `modify_task` to use same arguments as `create_task`
 * Added preferences argument to `create_task` method
 * Allow to pass either user_id or name to `delete_user`
 * Don't require inheritor_id or inheritor_name for `delete_user`
