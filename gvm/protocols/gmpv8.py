@@ -333,9 +333,9 @@ class Gmp(Gmpv7):
 
         if auth_algorithm:
             if auth_algorithm not in ('md5', 'sha1'):
-                raise RequiredArgument('modify_credential requires '
-                                       'auth_algorithm to be either '
-                                       'md5 or sha1')
+                raise InvalidArgument('modify_credential requires '
+                                      'auth_algorithm to be either '
+                                      'md5 or sha1')
             cmd.add_element('auth_algorithm', auth_algorithm)
 
         if community:
