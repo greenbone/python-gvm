@@ -1765,7 +1765,12 @@ class Gmp(GvmProtocol):
                     )
                 cmd.add_element('schedule_periods', str(schedule_periods))
 
-        if observers:
+        if observers is not None:
+            if not _is_list_like(observers):
+                raise InvalidArgument(
+                    'obeservers argument must be a list'
+                )
+
             # gvmd splits by comma and space
             # gvmd tries to lookup each value as user name and afterwards as
             # user id. So both user name and user id are possible

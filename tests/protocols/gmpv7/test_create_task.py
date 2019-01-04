@@ -356,6 +356,25 @@ class GMPCreateTaskCommandTestCase(unittest.TestCase):
             '</create_task>'
         )
 
+    def test_create_task_invalid_observers(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+                observers='',
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+                observers='foo',
+            )
+
     def test_create_task_with_preferences(self):
         self.gmp.create_task(
             name='foo',
