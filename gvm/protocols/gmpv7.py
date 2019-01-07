@@ -24,6 +24,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 7`_
     https://docs.greenbone.net/API/GMP/gmp-7.0.html
 """
 import base64
+import collections
 import logging
 import numbers
 
@@ -532,7 +533,7 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_credential(self, name, credential_type, *, comment=None,
-                          allow_insecure=False, certificate=None,
+                          allow_insecure=None, certificate=None,
                           key_phrase=None, private_key=None,
                           login=None, password=None, auth_algorithm=None,
                           community=None, privacy_algorithm=None,
@@ -620,8 +621,8 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if allow_insecure:
-            cmd.add_element('allow_insecure', '1')
+        if allow_insecure is not None:
+            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
 
         if credential_type == 'cc':
             if not certificate:
@@ -1370,8 +1371,9 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if first_time_minute or first_time_hour or first_time_day_of_month or \
-            first_time_month or first_time_year:
+        if first_time_minute is not None or first_time_hour is not None or \
+            first_time_day_of_month is not None or \
+            first_time_month is not None or first_time_year is not None:
 
             if first_time_minute is None:
                 raise RequiredArgument(
@@ -1682,7 +1684,7 @@ class Gmp(GvmProtocol):
     def create_task(self, name, config_id, target_id, scanner_id, *,
                     alterable=None, hosts_ordering=None, schedule_id=None,
                     alert_ids=None, comment=None, schedule_periods=None,
-                    observers=None):
+                    observers=None, preferences=None):
         """Create a new task
 
         Arguments:
@@ -1701,6 +1703,8 @@ class Gmp(GvmProtocol):
                 task will be scheduled, or 0 for no limit
             observers (list, optional): List of names or ids of users which
                 should be allowed to observe this task
+            preferences (dict, optional): Name/Value pairs of scanner
+                preferences.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1727,10 +1731,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('comment', comment)
 
         if not alterable is None:
-            if alterable:
-                cmd.add_element('alterable', '1')
-            else:
-                cmd.add_element('alterable', '0')
+            cmd.add_element('alterable', _to_bool(alterable))
 
         if hosts_ordering:
             # not sure about the possible values for hosts_orderning
@@ -1747,7 +1748,7 @@ class Gmp(GvmProtocol):
 
                 #if a single id is given as a string wrap it into a list
                 alert_ids = [alert_ids]
-            if isinstance(alert_ids, list):
+            if _is_list_like(alert_ids):
                 #parse all given alert id's
                 for alert in alert_ids:
                     cmd.add_element('alert', attrs={'id': str(alert)})
@@ -1764,11 +1765,28 @@ class Gmp(GvmProtocol):
                     )
                 cmd.add_element('schedule_periods', str(schedule_periods))
 
-        if observers:
-            # gvmd splits by command and space
+        if observers is not None:
+            if not _is_list_like(observers):
+                raise InvalidArgument(
+                    'obeservers argument must be a list'
+                )
+
+            # gvmd splits by comma and space
             # gvmd tries to lookup each value as user name and afterwards as
             # user id. So both user name and user id are possible
             cmd.add_element('observers', _to_comma_list(observers))
+
+        if preferences is not None:
+            if not isinstance(preferences, collections.Mapping):
+                raise InvalidArgument(
+                    'preferences argument must be a dict'
+                )
+
+            _xmlprefs = cmd.add_element('preferences')
+            for pref_name, pref_value in preferences.items():
+                _xmlpref = _xmlprefs.add_element('preference')
+                _xmlpref.add_element('scanner_name', pref_name)
+                _xmlpref.add_element('value', str(pref_value))
 
         return self._send_xml_command(cmd)
 
@@ -4593,13 +4611,13 @@ class Gmp(GvmProtocol):
             name (str, optional): Name of the schedule
             comment (str, optional): Comment for the schedule
             first_time_minute (int, optional): First time minute the schedule
-                will run
+                will run. Must be an integer >= 0.
             first_time_hour (int, optional): First time hour the schedule
-                will run
+                will run. Must be an integer >= 0.
             first_time_day_of_month (int, optional): First time day of month the
-                schedule will run
+                schedule will run. Must be an integer > 0 <= 31.
             first_time_month (int, optional): First time month the schedule
-                will run
+                will run. Must be an integer >= 1 <= 12.
             first_time_year (int, optional): First time year the schedule
                 will run
             duration (int, optional): How long the Manager will run the
@@ -4608,7 +4626,7 @@ class Gmp(GvmProtocol):
                 minute, hour, day, week, month, year, decade. Required if
                 duration is set.
             period (int, optional): How often the Manager will repeat the
-                scheduled task
+                scheduled task. Must be an integer > 0.
             period_unit (str, optional): Unit of the period. One of second,
                 minute, hour, day, week, month, year, decade. Required if
                 period is set.
@@ -4630,25 +4648,60 @@ class Gmp(GvmProtocol):
         if name:
             cmd.add_element('name', name)
 
-        if first_time_minute or first_time_hour or first_time_day_of_month or \
-            first_time_month or first_time_year:
+        if first_time_minute is not None or first_time_hour is not None or \
+            first_time_day_of_month is not None or \
+            first_time_month is not None or first_time_year is not None:
 
-            if not first_time_minute:
+            if first_time_minute is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_minute argument')
-            if not first_time_hour:
+            elif not isinstance(first_time_minute, numbers.Integral) or \
+                first_time_minute < 0:
+                raise InvalidArgument(
+                    'first_time_minute argument of modify_schedule needs to be '
+                    'an integer greater or equal 0'
+                )
+
+            if first_time_hour is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_hour argument')
-            if not first_time_day_of_month:
+            elif not isinstance(first_time_hour, numbers.Integral) or \
+                first_time_hour < 0:
+                raise InvalidArgument(
+                    'first_time_hour argument of modify_schedule needs to be '
+                    'an integer greater or equal 0'
+                )
+
+            if first_time_day_of_month is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_day_of_month '
                     'argument')
-            if not first_time_month:
+            elif not isinstance(first_time_day_of_month, numbers.Integral) or \
+                first_time_day_of_month < 1 or first_time_day_of_month > 31:
+                raise InvalidArgument(
+                    'first_time_day_of_month argument of modify_schedule needs '
+                    'to be an integer between 1 and 31'
+                )
+
+            if first_time_month is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_month argument')
-            if not first_time_year:
+            elif not isinstance(first_time_month, numbers.Integral) or \
+                first_time_month < 1 or first_time_month > 12:
+                raise InvalidArgument(
+                    'first_time_month argument of modify_schedule needs '
+                    'to be an integer between 1 and 12'
+                )
+
+            if first_time_year is None:
                 raise RequiredArgument(
                     'Setting first_time requires first_time_year argument')
+            elif not isinstance(first_time_year, numbers.Integral) or \
+                first_time_year < 1970:
+                raise InvalidArgument(
+                    'first_time_year argument of create_schedule needs '
+                    'to be an integer greater or equal 1970'
+                )
 
             _xmlftime = cmd.add_element('first_time')
             _xmlftime.add_element('minute', str(first_time_minute))
@@ -4657,7 +4710,7 @@ class Gmp(GvmProtocol):
             _xmlftime.add_element('month', str(first_time_month))
             _xmlftime.add_element('year', str(first_time_year))
 
-        if duration:
+        if duration is not None:
             if not duration_unit:
                 raise RequiredArgument(
                     'Setting duration requires duration_unit argument')
@@ -4668,10 +4721,15 @@ class Gmp(GvmProtocol):
                     'been passed'.format(
                         units=', '.join(TIME_UNITS), actual=duration_unit))
 
+            if not isinstance(duration, numbers.Integral) or duration < 1:
+                raise InvalidArgument(
+                    'duration argument must be an integer greater than 0',
+                )
+
             _xmlduration = cmd.add_element('duration', str(duration))
             _xmlduration.add_element('unit', duration_unit)
 
-        if period:
+        if period is not None:
             if not period_unit:
                 raise RequiredArgument(
                     'Setting period requires period_unit argument')
@@ -4682,11 +4740,16 @@ class Gmp(GvmProtocol):
                     'been passed'.format(
                         units=', '.join(TIME_UNITS), actual=period_unit))
 
+            if not isinstance(period, numbers.Integral) or period < 1:
+                raise InvalidArgument(
+                    'period argument must be an integer greater than 0',
+                )
+
             _xmlperiod = cmd.add_element('period', str(period))
             _xmlperiod.add_element('unit', period_unit)
 
         if timezone:
-            cmd.add_element('timezone', str(timezone))
+            cmd.add_element('timezone', timezone)
 
         return self._send_xml_command(cmd)
 
@@ -4867,27 +4930,31 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_task(self, task_id, *, name=None, comment=None, alert=None,
-                    observers=None, preferences=None, schedule=None,
-                    schedule_periods=None, scanner=None, file_name=None,
-                    file_action=None):
+    def modify_task(self, task_id, *, name=None, config_id=None, target_id=None,
+                    scanner_id=None, alterable=None, hosts_ordering=None,
+                    schedule_id=None, schedule_periods=None, comment=None,
+                    alert_ids=None, observers=None, preferences=None):
         """Modifies an existing task.
 
         Arguments:
             task_id (str) UUID of task to modify.
-            comment  (str, optional):The comment on the task.
-            alert  (str, optional): UUID of Task alert.
             name  (str, optional): The name of the task.
-            observers (list, optional): Users allowed to observe this task.
-            preferences (dict, optional): Compact name of preference, from
-                scanner and its value
-            schedule (str, optional): UUID of Task schedule.
+            config_id (str, optional): UUID of scan config to use by the task
+            target_id (str, optional): UUID of target to be scanned
+            scanner_id (str, optional): UUID of scanner to use for scanning the
+                target
+            comment  (str, optional):The comment on the task.
+            alert_ids (list, optional): List of UUIDs for alerts to be applied
+                to the task
+            hosts_ordering (str, optional): The order hosts are scanned in
+            schedule_id (str, optional): UUID of a schedule when the task should
+                be run.
             schedule_periods (int, optional): A limit to the number of times
                 the task will be scheduled, or 0 for no limit.
-            scanner (str, optional): UUID of Task scanner.
-            file_name (str, optional): File to attach to task.
-            file_action (str, optional): Action for the file:
-                one of "update" or "remove"
+            observers (list, optional): List of names or ids of users which
+                should be allowed to observe this task
+            preferences (dict, optional): Name/Value pairs of scanner
+                preferences.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4904,34 +4971,64 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element('comment', comment)
 
-        if scanner:
-            cmd.add_element('scanner', attrs={'id': scanner})
+        if config_id:
+            cmd.add_element('config', attrs={'id': config_id})
 
-        if schedule_periods:
+        if target_id:
+            cmd.add_element('target', attrs={'id': target_id})
+
+        if not alterable is None:
+            cmd.add_element('alterable', _to_bool(alterable))
+
+        if hosts_ordering:
+            # not sure about the possible values for hosts_orderning
+            # it seems gvmd doesn't check the param
+            # gsa allows to select 'sequential', 'random' or 'reverse'
+            cmd.add_element('hosts_ordering', hosts_ordering)
+
+        if scanner_id:
+            cmd.add_element('scanner', attrs={'id': scanner_id})
+
+        if schedule_id:
+            cmd.add_element('schedule', attrs={'id': schedule_id})
+
+        if schedule_periods is not None:
+            if not isinstance(schedule_periods, numbers.Integral) or \
+                schedule_periods < 0:
+                raise InvalidArgument(
+                    'schedule_periods must be an integer greater or equal '
+                    'than 0'
+                )
             cmd.add_element('schedule_periods', str(schedule_periods))
 
-        if schedule:
-            cmd.add_element('schedule', attrs={'id': schedule})
+        if alert_ids is not None:
+            if not _is_list_like(alert_ids):
+                raise InvalidArgument(
+                    'alert_ids argument must be a list'
+                )
 
-        if alert:
-            cmd.add_element('alert', attrs={'id': alert})
+            for alert in alert_ids:
+                cmd.add_element('alert', attrs={'id': str(alert)})
 
-        if observers:
+        if observers is not None:
+            if not _is_list_like(observers):
+                raise InvalidArgument(
+                    'obeservers argument must be a list'
+                )
+
             cmd.add_element('observers', _to_comma_list(observers))
 
-        if preferences:
+        if preferences is not None:
+            if not isinstance(preferences, collections.Mapping):
+                raise InvalidArgument(
+                    'preferences argument must be a dict'
+                )
+
             _xmlprefs = cmd.add_element('preferences')
             for pref_name, pref_value in preferences.items():
                 _xmlpref = _xmlprefs.add_element('preference')
                 _xmlpref.add_element('scanner_name', pref_name)
-                _xmlpref.add_element('value', pref_value)
-
-        if file_name and file_action:
-            if file_action not in ('update', 'remove'):
-                raise InvalidArgument('action can only be '
-                                      '"update" or "remove"!')
-            cmd.add_element('file', attrs={'name': file_name,
-                                           'action': file_action})
+                _xmlpref.add_element('value', str(pref_value))
 
         return self._send_xml_command(cmd)
 
