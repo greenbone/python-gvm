@@ -65,7 +65,7 @@ class XmlReader:
         try:
             self._parser.feed(data)
         except etree.ParseError as e:
-            raise GvmError("Can't parse xml response. Response data "
+            raise GvmError("Cannot parse XML response. Response data "
                            "read {0}".format(data), e)
 
 

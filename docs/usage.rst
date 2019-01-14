@@ -27,7 +27,7 @@ GMP
 
 The **Greenbone Management Protocol - GMP** is the protocol implemented by the
 `Greenbone Vulnerability Manager Daemon - gvmd <https://github.com/greenbone/gvmd>`_.
-Therefore it's also used by the `Greenbone Security Assistant Daemon <https://github.com/greenbone/gsa>`_
+It is also used by the `Greenbone Security Assistant Daemon <https://github.com/greenbone/gsa>`_
 to request all of its information from **gvmd**.
 
 Make a simple request
@@ -51,7 +51,7 @@ Beginning by importing the necessary classes
 
 Afterwards we have to specify the path to the Unix domain socket in the
 filesystem. If **gvmd** is provided by a package of your distribution it should
-be ``/var/run/gvmd.sock``. If you did build **gvmd** from source and didn't set
+be ``/var/run/gvmd.sock``. If you did build **gvmd** from source and did not set
 a prefix you can use the default path by setting ``path = None``.
 
 .. code-block:: python
@@ -326,7 +326,7 @@ used:
 
 
 With this simple addition you will be able to debug ssh connection problems
-already. But what if a response didn't contain the expected data and you need to
+already. But what if a response did not contain the expected data and you need to
 know which command has been send to the server in detail? In this case it is
 necessary to wrap the actual connection in a
 :py:class:`DebugConnection <gvm.connections.DebugConnection>` class.

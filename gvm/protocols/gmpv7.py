@@ -1735,7 +1735,7 @@ class Gmp(GvmProtocol):
 
         if hosts_ordering:
             # not sure about the possible values for hosts_orderning
-            # it seems gvmd doesn't check the param
+            # it seems gvmd does not check the param
             # gsa allows to select 'sequential', 'random' or 'reverse'
             cmd.add_element('hosts_ordering', hosts_ordering)
 
@@ -4982,7 +4982,7 @@ class Gmp(GvmProtocol):
 
         if hosts_ordering:
             # not sure about the possible values for hosts_orderning
-            # it seems gvmd doesn't check the param
+            # it seems gvmd does not check the param
             # gsa allows to select 'sequential', 'random' or 'reverse'
             cmd.add_element('hosts_ordering', hosts_ordering)
 
