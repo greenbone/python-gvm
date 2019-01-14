@@ -16,12 +16,12 @@ Using pipenv
 ------------
 
 If you are developing an application or library that uses **python-gvm**
-internally it is often better to choose `pipenv`_ for handling your
+internally, it is often better to choose `pipenv`_ for handling your
 dependencies.::
 
     pipenv install python-gvm
 
-If you aren't using `pipenv`_ yet head over to the pipenv website for
+If you are not using `pipenv`_ yet, head over to the pipenv website for
 installation instructions.
 
 Getting the Source
