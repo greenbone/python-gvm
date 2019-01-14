@@ -88,8 +88,9 @@ class GvmProtocol:
     def connect(self):
         """Initiates a protocol connection
 
-        Normally connect is not called directly. Either it is called automatically
-        when sending a protocol command or when using a `with statement`_.
+        Normally connect is not called directly. Either it is called
+        automatically when sending a protocol command or when using a
+        `with statement`_.
 
         .. _with statement:
             https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers
