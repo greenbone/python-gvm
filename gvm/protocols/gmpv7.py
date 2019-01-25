@@ -76,12 +76,14 @@ TIME_UNITS = (
 )
 
 ALIVE_TESTS = (
-    'ICMP, TCP Service & ARP Ping',
-    'TCP Service & ARP Ping',
+		'Consider Alive',
+    'ICMP, TCP-ACK Service & ARP Ping',
+    'TCP-ACK Service & ARP Ping',
     'ICMP & ARP Ping',
-    'ICMP & TCP Service Ping',
+    'ICMP & TCP-ACK Service Ping',
     'ARP Ping',
-    'TCP Service Ping',
+    'TCP-ACK Service Ping',
+		'TCP-SYN Service Ping',
     'ICMP Ping',
     'Scan Config Default',
 )
