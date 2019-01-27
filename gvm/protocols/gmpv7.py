@@ -76,16 +76,16 @@ TIME_UNITS = (
 )
 
 ALIVE_TESTS = (
-		'Consider Alive',
-		'ICMP, TCP-ACK Service & ARP Ping',
-		'TCP-ACK Service & ARP Ping',
-		'ICMP & ARP Ping',
-		'ICMP & TCP-ACK Service Ping',
-		'ARP Ping',
-		'TCP-ACK Service Ping',
-		'TCP-SYN Service Ping',
-		'ICMP Ping',
-		'Scan Config Default',
+    'Consider Alive',
+    'ICMP, TCP-ACK Service & ARP Ping',
+    'TCP-ACK Service & ARP Ping',
+    'ICMP & ARP Ping',
+    'ICMP & TCP-ACK Service Ping',
+    'ARP Ping',
+    'TCP-ACK Service Ping',
+    'TCP-SYN Service Ping',
+    'ICMP Ping',
+    'Scan Config Default',
 )
 
 CREDENTIAL_TYPES = (
