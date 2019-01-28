@@ -2,6 +2,7 @@
 
 ## gvm.protocols.gmpv7
 
+* Aligned ALIVE_TESTS declaration with gsa list
 * Refactor `modify_task` to use same arguments as `create_task`
 * Added preferences argument to `create_task` method
 * Allow to pass either user_id or name to `delete_user`
