@@ -16,18 +16,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=invalid-name
+# pylint: disable=invalid-name,wrong-import-position
+
+import sys
+
+from pathlib import Path
 
 from setuptools import setup, find_packages
 
-version = __import__('gvm').get_version()
+__here__ = Path(__file__).parent.resolve()
 
-with open('README.md', 'r') as f:
+sys.path.insert(0, str(__here__))
+
+from gvm import get_version
+
+
+with (__here__ / "README.md").open("r") as f:
     long_description = f.read()
 
 setup(
     name='python-gvm',
-    version=version,
+    version=get_version(),
     author='Greenbone Networks GmbH',
     author_email='info@greenbone.net',
     description='Library to communicate with remote servers over GMP or OSP',
