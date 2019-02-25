@@ -33,20 +33,12 @@ from gvm.xml import XmlCommand
 
 from .gmpv7 import Gmp as Gmpv7, _to_bool
 
-CREDENTIAL_TYPES = (
-    'cc',
-    'snmp',
-    'up',
-    'usk',
-    'smime',
-    'pgp',
-)
+CREDENTIAL_TYPES = ("cc", "snmp", "up", "usk", "smime", "pgp")
 
 PROTOCOL_VERSION = (8,)
 
 
 class Gmp(Gmpv7):
-
     @staticmethod
     def get_protocol_version():
         """Allow to determine the Greenbone Management Protocol version.
@@ -56,12 +48,24 @@ class Gmp(Gmpv7):
         """
         return get_version_string(PROTOCOL_VERSION)
 
-    def create_credential(self, name, credential_type, *, comment=None,
-                          allow_insecure=None, certificate=None,
-                          key_phrase=None, private_key=None,
-                          login=None, password=None, auth_algorithm=None,
-                          community=None, privacy_algorithm=None,
-                          privacy_password=None, public_key=None):
+    def create_credential(
+        self,
+        name,
+        credential_type,
+        *,
+        comment=None,
+        allow_insecure=None,
+        certificate=None,
+        key_phrase=None,
+        private_key=None,
+        login=None,
+        password=None,
+        auth_algorithm=None,
+        community=None,
+        privacy_algorithm=None,
+        privacy_password=None,
+        public_key=None
+    ):
         """Create a new credential
 
         Create a new credential e.g. to be used in the method of an alert.
@@ -167,102 +171,123 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_credential requires name argument')
+            raise RequiredArgument("create_credential requires name argument")
 
         if credential_type not in CREDENTIAL_TYPES:
             raise InvalidArgument(
-                'create_credential requires type to be either cc, snmp, up,'
-                'smime, pgp or usk')
+                "create_credential requires type to be either cc, snmp, up,"
+                "smime, pgp or usk"
+            )
 
-        cmd = XmlCommand('create_credential')
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_credential")
+        cmd.add_element("name", name)
 
-        cmd.add_element('type', credential_type)
+        cmd.add_element("type", credential_type)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if allow_insecure is not None:
-            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
+            cmd.add_element("allow_insecure", _to_bool(allow_insecure))
 
-
-        if credential_type == 'cc' or credential_type == 'smime':
+        if credential_type == "cc" or credential_type == "smime":
             if not certificate:
                 raise RequiredArgument(
-                    'create_credential requires certificate argument for '
-                    'credential_type {0}'.format(credential_type))
+                    "create_credential requires certificate argument for "
+                    "credential_type {0}".format(credential_type)
+                )
 
-            cmd.add_element('certificate', certificate)
+            cmd.add_element("certificate", certificate)
 
-        if (credential_type == 'up' or credential_type == 'usk' or \
-                credential_type == 'snmp'):
+        if (
+            credential_type == "up"
+            or credential_type == "usk"
+            or credential_type == "snmp"
+        ):
             if not login:
                 raise RequiredArgument(
-                    'create_credential requires login argument for '
-                    'credential_type {0}'.format(credential_type))
+                    "create_credential requires login argument for "
+                    "credential_type {0}".format(credential_type)
+                )
 
-            cmd.add_element('login', login)
+            cmd.add_element("login", login)
 
-        if (credential_type == 'up' or credential_type == 'snmp') and password:
-            cmd.add_element('password', password)
+        if (credential_type == "up" or credential_type == "snmp") and password:
+            cmd.add_element("password", password)
 
-        if credential_type == 'usk':
+        if credential_type == "usk":
             if not private_key:
                 raise RequiredArgument(
-                    'create_credential requires certificate argument for '
-                    'credential_type usk')
+                    "create_credential requires certificate argument for "
+                    "credential_type usk"
+                )
 
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('private', private_key)
+            _xmlkey = cmd.add_element("key")
+            _xmlkey.add_element("private", private_key)
 
             if key_phrase:
-                _xmlkey.add_element('phrase', key_phrase)
+                _xmlkey.add_element("phrase", key_phrase)
 
-        if credential_type == 'cc' and private_key:
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('private', private_key)
+        if credential_type == "cc" and private_key:
+            _xmlkey = cmd.add_element("key")
+            _xmlkey.add_element("private", private_key)
 
-        if credential_type == 'snmp':
-            if auth_algorithm not in ('md5', 'sha1'):
+        if credential_type == "snmp":
+            if auth_algorithm not in ("md5", "sha1"):
                 raise InvalidArgument(
-                    'create_credential requires auth_algorithm to be either '
-                    'md5 or sha1')
+                    "create_credential requires auth_algorithm to be either "
+                    "md5 or sha1"
+                )
 
-            cmd.add_element('auth_algorithm', auth_algorithm)
+            cmd.add_element("auth_algorithm", auth_algorithm)
 
             if community:
-                cmd.add_element('community', community)
+                cmd.add_element("community", community)
 
             if privacy_algorithm is not None or privacy_password:
-                _xmlprivacy = cmd.add_element('privacy')
+                _xmlprivacy = cmd.add_element("privacy")
 
                 if privacy_algorithm is not None:
-                    if privacy_algorithm not in ('aes', 'des'):
+                    if privacy_algorithm not in ("aes", "des"):
                         raise InvalidArgument(
-                            'create_credential requires algorithm to be either '
-                            'aes or des')
+                            "create_credential requires algorithm to be either "
+                            "aes or des"
+                        )
 
-                    _xmlprivacy.add_element('algorithm', privacy_algorithm)
+                    _xmlprivacy.add_element("algorithm", privacy_algorithm)
 
                 if privacy_password:
-                    _xmlprivacy.add_element('password', privacy_password)
+                    _xmlprivacy.add_element("password", privacy_password)
 
-        if credential_type == 'pgp':
+        if credential_type == "pgp":
             if not public_key:
                 raise RequiredArgument(
-                    'Creating a pgp credential requires a public_key argument')
+                    "Creating a pgp credential requires a public_key argument"
+                )
 
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('public', public_key)
+            _xmlkey = cmd.add_element("key")
+            _xmlkey.add_element("public", public_key)
 
         return self._send_xml_command(cmd)
 
-    def modify_credential(self, credential_id, name=None, comment=None,
-                          allow_insecure=None, certificate=None,
-                          key_phrase=None, private_key=None, login=None,
-                          password=None, auth_algorithm=None, community=None,
-                          privacy_algorithm=None, privacy_password=None,
-                          credential_type=None, public_key=None):
+    def modify_credential(
+        self,
+        credential_id,
+        name=None,
+        comment=None,
+        allow_insecure=None,
+        certificate=None,
+        key_phrase=None,
+        private_key=None,
+        login=None,
+        password=None,
+        auth_algorithm=None,
+        community=None,
+        privacy_algorithm=None,
+        privacy_password=None,
+        credential_type=None,
+        public_key=None,
+    ):
         """Modifies an existing credential.
 
         Arguments:
@@ -291,73 +316,78 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not credential_id:
-            raise RequiredArgument('modify_credential requires '
-                                   'a credential_id attribute')
+            raise RequiredArgument(
+                "modify_credential requires " "a credential_id attribute"
+            )
 
-        cmd = XmlCommand('modify_credential')
-        cmd.set_attribute('credential_id', credential_id)
+        cmd = XmlCommand("modify_credential")
+        cmd.set_attribute("credential_id", credential_id)
 
         if credential_type:
             if credential_type not in CREDENTIAL_TYPES:
                 raise InvalidArgument(
-                    'modify_credential requires type to be either cc, snmp, up '
-                    'smime, pgp or usk'
+                    "modify_credential requires type to be either cc, snmp, up "
+                    "smime, pgp or usk"
                 )
-            cmd.add_element('type', credential_type)
+            cmd.add_element("type", credential_type)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if allow_insecure is not None:
-            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
+            cmd.add_element("allow_insecure", _to_bool(allow_insecure))
 
         if certificate:
-            cmd.add_element('certificate', certificate)
+            cmd.add_element("certificate", certificate)
 
         if key_phrase or private_key:
             if not key_phrase or not private_key:
-                raise RequiredArgument('modify_credential requires '
-                                       'a key_phrase and private_key arguments')
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('phrase', key_phrase)
-            _xmlkey.add_element('private', private_key)
+                raise RequiredArgument(
+                    "modify_credential requires "
+                    "a key_phrase and private_key arguments"
+                )
+            _xmlkey = cmd.add_element("key")
+            _xmlkey.add_element("phrase", key_phrase)
+            _xmlkey.add_element("private", private_key)
 
         if login:
-            cmd.add_element('login', login)
+            cmd.add_element("login", login)
 
         if password:
-            cmd.add_element('password', password)
+            cmd.add_element("password", password)
 
         if auth_algorithm:
-            if auth_algorithm not in ('md5', 'sha1'):
-                raise InvalidArgument('modify_credential requires '
-                                      'auth_algorithm to be either '
-                                      'md5 or sha1')
-            cmd.add_element('auth_algorithm', auth_algorithm)
+            if auth_algorithm not in ("md5", "sha1"):
+                raise InvalidArgument(
+                    "modify_credential requires "
+                    "auth_algorithm to be either "
+                    "md5 or sha1"
+                )
+            cmd.add_element("auth_algorithm", auth_algorithm)
 
         if community:
-            cmd.add_element('community', community)
+            cmd.add_element("community", community)
 
         if privacy_algorithm is not None or privacy_password is not None:
-            _xmlprivacy = cmd.add_element('privacy')
+            _xmlprivacy = cmd.add_element("privacy")
 
             if privacy_algorithm is not None:
-                if privacy_algorithm not in ('aes', 'des'):
+                if privacy_algorithm not in ("aes", "des"):
                     raise InvalidArgument(
-                        'modify_credential requires privacy_algorithm to be '
-                        'either aes or des'
+                        "modify_credential requires privacy_algorithm to be "
+                        "either aes or des"
                     )
 
-                _xmlprivacy.add_element('algorithm', privacy_algorithm)
+                _xmlprivacy.add_element("algorithm", privacy_algorithm)
 
             if privacy_password is not None:
-                _xmlprivacy.add_element('password', privacy_password)
+                _xmlprivacy.add_element("password", privacy_password)
 
         if public_key:
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('public', public_key)
+            _xmlkey = cmd.add_element("key")
+            _xmlkey.add_element("public", public_key)
 
         return self._send_xml_command(cmd)

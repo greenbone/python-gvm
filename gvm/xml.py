@@ -28,11 +28,10 @@ def create_parser():
     # recover => try hard to parse through broken XML
     # huge_tree => disable security restrictions and support very deep trees and
     #              very long text content (for get_reports)
-    return etree.XMLParser(encoding='utf-8', recover=True, huge_tree=True)
+    return etree.XMLParser(encoding="utf-8", recover=True, huge_tree=True)
 
 
 class XmlCommandElement:
-
     def __init__(self, element):
         self._element = element
 
@@ -59,14 +58,13 @@ class XmlCommandElement:
         self._element.append(node)
 
     def to_string(self):
-        return etree.tostring(self._element).decode('utf-8')
+        return etree.tostring(self._element).decode("utf-8")
 
     def __str__(self):
         return self.to_string()
 
 
 class XmlCommand(XmlCommandElement):
-
     def __init__(self, name):
         super().__init__(etree.Element(name))
 
@@ -86,14 +84,14 @@ def pretty_print(xml):
     if isinstance(xml, list):
         for item in xml:
             if etree.iselement(item):
-                print(etree.tostring(item, pretty_print=True).decode('utf-8'))
+                print(etree.tostring(item, pretty_print=True).decode("utf-8"))
             else:
                 print(item)
     elif etree.iselement(xml):
-        print(etree.tostring(xml, pretty_print=True).decode('utf-8'))
+        print(etree.tostring(xml, pretty_print=True).decode("utf-8"))
     elif isinstance(xml, str):
         tree = secET.fromstring(xml)
-        print(etree.tostring(tree, pretty_print=True).decode('utf-8'))
+        print(etree.tostring(tree, pretty_print=True).decode("utf-8"))
 
 
 def validate_xml_string(xml_string):
@@ -109,4 +107,4 @@ def validate_xml_string(xml_string):
     try:
         secET.fromstring(xml_string)
     except (DefusedXmlException, etree.LxmlError) as e:
-        raise GvmError('Invalid XML', e) from e
+        raise GvmError("Invalid XML", e) from e
