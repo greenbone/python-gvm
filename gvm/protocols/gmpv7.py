@@ -1779,7 +1779,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('observers', _to_comma_list(observers))
 
         if preferences is not None:
-            if not isinstance(preferences, collections.Mapping):
+            if not isinstance(preferences, collections.abc.Mapping):
                 raise InvalidArgument(
                     'preferences argument must be a dict'
                 )
@@ -5021,7 +5021,7 @@ class Gmp(GvmProtocol):
             cmd.add_element('observers', _to_comma_list(observers))
 
         if preferences is not None:
-            if not isinstance(preferences, collections.Mapping):
+            if not isinstance(preferences, collections.abc.Mapping):
                 raise InvalidArgument(
                     'preferences argument must be a dict'
                 )
