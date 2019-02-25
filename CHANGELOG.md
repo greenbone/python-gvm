@@ -42,7 +42,9 @@
   `get_preference`
 * Fixed wrong order of key and value for condition_data, event_data and
   method_data dict parameters of `modify_alert` method.
+* Ensure `modify_setting` value is Base64-encoded
 * Address DeprecationWarning regarding `collections` module
+
 
 # python-gvm 1.0.0.beta2 (04.12.2018)
 
