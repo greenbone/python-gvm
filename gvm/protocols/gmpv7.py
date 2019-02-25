@@ -4782,7 +4782,7 @@ class Gmp(GvmProtocol):
         else:
             cmd.add_element('name', name)
 
-        cmd.add_element('value', value)
+        cmd.add_element('value', _to_base64(value))
 
         return self._send_xml_command(cmd)
 
