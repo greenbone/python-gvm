@@ -49,7 +49,7 @@ setup(
     classifiers=[
         # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 5 - Production/Stable',
-        'License :: OSI Approved :: GNU General Public License v3 (GPLv3)',
+        'License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)',
         'Environment :: Console',
         'Intended Audience :: Developers',
         'Programming Language :: Python :: 3.5',
