@@ -38,7 +38,7 @@ class GmpModifySettingTestCase(unittest.TestCase):
 
         self.connection.send.has_been_called_with(
             '<modify_setting setting_id="s1">'
-            '<value>bar</value>'
+            '<value>YmFy</value>'
             '</modify_setting>'
         )
 
@@ -50,7 +50,7 @@ class GmpModifySettingTestCase(unittest.TestCase):
         self.connection.send.has_been_called_with(
             '<modify_setting>'
             '<name>s1</name>'
-            '<value>bar</value>'
+            '<value>YmFy</value>'
             '</modify_setting>'
         )
 
