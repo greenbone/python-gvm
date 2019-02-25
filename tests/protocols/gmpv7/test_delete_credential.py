@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpDeleteCredentialTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,13 +33,15 @@ class GmpDeleteCredentialTestCase(unittest.TestCase):
         self.gmp.delete_credential('a1')
 
         self.connection.send.has_been_called_with(
-            '<delete_credential credential_id="a1" ultimate="0"/>')
+            '<delete_credential credential_id="a1" ultimate="0"/>'
+        )
 
     def test_delete_ultimate(self):
         self.gmp.delete_credential('a1', ultimate=True)
 
         self.connection.send.has_been_called_with(
-            '<delete_credential credential_id="a1" ultimate="1"/>')
+            '<delete_credential credential_id="a1" ultimate="1"/>'
+        )
 
     def test_missing_credential_id(self):
         with self.assertRaises(GvmError):
@@ -52,4 +53,3 @@ class GmpDeleteCredentialTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

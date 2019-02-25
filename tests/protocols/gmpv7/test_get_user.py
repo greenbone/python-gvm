@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetTargetTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,15 +32,11 @@ class GmpGetTargetTestCase(unittest.TestCase):
     def test_get_user(self):
         self.gmp.get_user('u1')
 
-        self.connection.send.has_been_called_with(
-            '<get_users user_id="u1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_users user_id="u1"/>')
 
         self.gmp.get_user(user_id='u1')
 
-        self.connection.send.has_been_called_with(
-            '<get_users user_id="u1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_users user_id="u1"/>')
 
     def test_get_user_missing_user_id(self):
         with self.assertRaises(RequiredArgument):

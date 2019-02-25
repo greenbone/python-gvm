@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpHelpTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,8 +32,7 @@ class GmpHelpTestCase(unittest.TestCase):
     def test_help(self):
         self.gmp.help()
 
-        self.connection.send.has_been_called_with(
-            '<help type=""/>')
+        self.connection.send.has_been_called_with('<help type=""/>')
 
     def test_invalid_help_type(self):
         with self.assertRaises(InvalidArgument):
@@ -43,8 +41,7 @@ class GmpHelpTestCase(unittest.TestCase):
     def test_help_type_brief(self):
         self.gmp.help(help_type='brief')
 
-        self.connection.send.has_been_called_with(
-            '<help type="brief"/>')
+        self.connection.send.has_been_called_with('<help type="brief"/>')
 
     def test_invalid_format(self):
         with self.assertRaises(InvalidArgument):
@@ -54,7 +51,8 @@ class GmpHelpTestCase(unittest.TestCase):
         self.gmp.help(format='html')
 
         self.connection.send.has_been_called_with(
-            '<help type="" format="html"/>')
+            '<help type="" format="html"/>'
+        )
 
 
 if __name__ == '__main__':

@@ -25,15 +25,12 @@ from .. import MockConnection
 
 
 class GmpModifyGroupTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_modify_group(self):
-        self.gmp.modify_group(
-            group_id='f1',
-        )
+        self.gmp.modify_group(group_id='f1')
 
         self.connection.send.has_been_called_with(
             '<modify_group group_id="f1"/>'
@@ -41,25 +38,16 @@ class GmpModifyGroupTestCase(unittest.TestCase):
 
     def test_modify_group_missing_group_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_group(
-                group_id=None,
-            )
+            self.gmp.modify_group(group_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_group(
-                group_id='',
-            )
+            self.gmp.modify_group(group_id='')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_group(
-                '',
-            )
+            self.gmp.modify_group('')
 
     def test_modify_group_with_comment(self):
-        self.gmp.modify_group(
-            group_id='f1',
-            comment='foo'
-        )
+        self.gmp.modify_group(group_id='f1', comment='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_group group_id="f1">'
@@ -68,22 +56,14 @@ class GmpModifyGroupTestCase(unittest.TestCase):
         )
 
     def test_modify_group_with_name(self):
-        self.gmp.modify_group(
-            group_id='f1',
-            name='foo'
-        )
+        self.gmp.modify_group(group_id='f1', name='foo')
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1">'
-            '<name>foo</name>'
-            '</modify_group>'
+            '<modify_group group_id="f1">' '<name>foo</name>' '</modify_group>'
         )
 
     def test_modify_group_with_users(self):
-        self.gmp.modify_group(
-            group_id='f1',
-            users=['foo'],
-        )
+        self.gmp.modify_group(group_id='f1', users=['foo'])
 
         self.connection.send.has_been_called_with(
             '<modify_group group_id="f1">'
@@ -91,10 +71,7 @@ class GmpModifyGroupTestCase(unittest.TestCase):
             '</modify_group>'
         )
 
-        self.gmp.modify_group(
-            group_id='f1',
-            users=['foo', 'bar'],
-        )
+        self.gmp.modify_group(group_id='f1', users=['foo', 'bar'])
 
         self.connection.send.has_been_called_with(
             '<modify_group group_id="f1">'

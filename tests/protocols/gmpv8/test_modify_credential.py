@@ -1,4 +1,3 @@
-
 # -*- coding: utf-8 -*-
 # Copyright (C) 2018 Greenbone Networks GmbH
 #
@@ -26,15 +25,12 @@ from .. import MockConnection
 
 
 class GmpModifyTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_modify_credential(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-        )
+        self.gmp.modify_credential(credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1"/>'
@@ -51,10 +47,7 @@ class GmpModifyTestCase(unittest.TestCase):
             self.gmp.modify_credential(credential_id='')
 
     def test_modify_credential_with_name(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            name='foo',
-        )
+        self.gmp.modify_credential(credential_id='c1', name='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -63,10 +56,7 @@ class GmpModifyTestCase(unittest.TestCase):
         )
 
     def test_modify_credential_with_comment(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            comment='foo',
-        )
+        self.gmp.modify_credential(credential_id='c1', comment='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -75,10 +65,7 @@ class GmpModifyTestCase(unittest.TestCase):
         )
 
     def test_modify_credential_with_certificate(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            certificate='abcdef',
-        )
+        self.gmp.modify_credential(credential_id='c1', certificate='abcdef')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -88,9 +75,7 @@ class GmpModifyTestCase(unittest.TestCase):
 
     def test_modify_credential_with_private_key_and_key_phrase(self):
         self.gmp.modify_credential(
-            credential_id='c1',
-            private_key='123456',
-            key_phrase='foo'
+            credential_id='c1', private_key='123456', key_phrase='foo'
         )
 
         self.connection.send.has_been_called_with(
@@ -104,23 +89,14 @@ class GmpModifyTestCase(unittest.TestCase):
 
     def test_modify_credential_missing_private_key(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_credential(
-                credential_id='c1',
-                key_phrase='foo',
-            )
+            self.gmp.modify_credential(credential_id='c1', key_phrase='foo')
 
     def test_modify_credential_missing_key_phrase(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_credential(
-                credential_id='c1',
-                private_key='123456',
-            )
+            self.gmp.modify_credential(credential_id='c1', private_key='123456')
 
     def test_modify_credential_with_allow_insecure(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            allow_insecure=True,
-        )
+        self.gmp.modify_credential(credential_id='c1', allow_insecure=True)
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -128,10 +104,7 @@ class GmpModifyTestCase(unittest.TestCase):
             '</modify_credential>'
         )
 
-        self.gmp.modify_credential(
-            credential_id='c1',
-            allow_insecure=False,
-        )
+        self.gmp.modify_credential(credential_id='c1', allow_insecure=False)
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -140,10 +113,7 @@ class GmpModifyTestCase(unittest.TestCase):
         )
 
     def test_modify_credential_with_login(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            login='foo',
-        )
+        self.gmp.modify_credential(credential_id='c1', login='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -152,10 +122,7 @@ class GmpModifyTestCase(unittest.TestCase):
         )
 
     def test_modify_credential_with_password(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            password='foo',
-        )
+        self.gmp.modify_credential(credential_id='c1', password='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -164,10 +131,7 @@ class GmpModifyTestCase(unittest.TestCase):
         )
 
     def test_modify_credential_with_auth_algorithm(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            auth_algorithm='md5',
-        )
+        self.gmp.modify_credential(credential_id='c1', auth_algorithm='md5')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -175,10 +139,7 @@ class GmpModifyTestCase(unittest.TestCase):
             '</modify_credential>'
         )
 
-        self.gmp.modify_credential(
-            credential_id='c1',
-            auth_algorithm='sha1',
-        )
+        self.gmp.modify_credential(credential_id='c1', auth_algorithm='sha1')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -188,16 +149,10 @@ class GmpModifyTestCase(unittest.TestCase):
 
     def test_modify_credential_invalid_auth_algorithm(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.modify_credential(
-                credential_id='c1',
-                auth_algorithm='foo',
-            )
+            self.gmp.modify_credential(credential_id='c1', auth_algorithm='foo')
 
     def test_modify_credential_with_community(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            community='foo',
-        )
+        self.gmp.modify_credential(credential_id='c1', community='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -206,10 +161,7 @@ class GmpModifyTestCase(unittest.TestCase):
         )
 
     def test_modify_credential_with_privacy_algorithm(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            privacy_algorithm='aes',
-        )
+        self.gmp.modify_credential(credential_id='c1', privacy_algorithm='aes')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -219,10 +171,7 @@ class GmpModifyTestCase(unittest.TestCase):
             '</modify_credential>'
         )
 
-        self.gmp.modify_credential(
-            credential_id='c1',
-            privacy_algorithm='des',
-        )
+        self.gmp.modify_credential(credential_id='c1', privacy_algorithm='des')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -234,22 +183,15 @@ class GmpModifyTestCase(unittest.TestCase):
 
     def test_modify_credential_invalid_privacy_algorithm(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.modify_credential(
-                credential_id='c1',
-                privacy_algorithm='',
-            )
+            self.gmp.modify_credential(credential_id='c1', privacy_algorithm='')
 
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_credential(
-                credential_id='c1',
-                privacy_algorithm='foo',
+                credential_id='c1', privacy_algorithm='foo'
             )
 
     def test_modify_credential_with_privacy_password(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            privacy_password='foo',
-        )
+        self.gmp.modify_credential(credential_id='c1', privacy_password='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -260,10 +202,7 @@ class GmpModifyTestCase(unittest.TestCase):
         )
 
     def test_modify_credential_with_public_key(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            public_key='foo',
-        )
+        self.gmp.modify_credential(credential_id='c1', public_key='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -274,10 +213,7 @@ class GmpModifyTestCase(unittest.TestCase):
         )
 
     def test_modify_credential_with_credential_type(self):
-        self.gmp.modify_credential(
-            credential_id='c1',
-            credential_type='up',
-        )
+        self.gmp.modify_credential(credential_id='c1', credential_type='up')
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -288,8 +224,7 @@ class GmpModifyTestCase(unittest.TestCase):
     def test_modify_credential_invalid_credential_type(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_credential(
-                credential_id='c1',
-                credential_type='foo',
+                credential_id='c1', credential_type='foo'
             )
 
 

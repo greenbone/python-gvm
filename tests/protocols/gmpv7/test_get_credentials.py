@@ -22,8 +22,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetCredentialsTestCase(unittest.TestCase):
 
+class GmpGetCredentialsTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -31,8 +31,7 @@ class GmpGetCredentialsTestCase(unittest.TestCase):
     def test_get_credentials(self):
         self.gmp.get_credentials()
 
-        self.connection.send.has_been_called_with(
-            '<get_credentials/>')
+        self.connection.send.has_been_called_with('<get_credentials/>')
 
     def test_get_credentials_with_filter(self):
         self.gmp.get_credentials(filter='foo=bar')
@@ -86,7 +85,6 @@ class GmpGetCredentialsTestCase(unittest.TestCase):
         self.connection.send.has_been_called_with(
             '<get_credentials targets="0"/>'
         )
-
 
 
 if __name__ == '__main__':

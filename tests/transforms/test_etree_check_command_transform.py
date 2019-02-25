@@ -25,7 +25,6 @@ from gvm.transforms import EtreeCheckCommandTransform
 
 
 class EtreeCheckCommandTransformTestCase(unittest.TestCase):
-
     def test_no_status_transform(self):
         transform = EtreeCheckCommandTransform()
 

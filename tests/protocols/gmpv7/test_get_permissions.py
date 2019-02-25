@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetPermissionsTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,9 +31,7 @@ class GmpGetPermissionsTestCase(unittest.TestCase):
     def test_get_permissions(self):
         self.gmp.get_permissions()
 
-        self.connection.send.has_been_called_with(
-            '<get_permissions/>'
-        )
+        self.connection.send.has_been_called_with('<get_permissions/>')
 
     def test_get_permissions_with_filter(self):
         self.gmp.get_permissions(filter='foo=bar')

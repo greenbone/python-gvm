@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetAgentsTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,35 +32,25 @@ class GmpGetAgentsTestCase(unittest.TestCase):
     def test_get_agents(self):
         self.gmp.get_agents()
 
-        self.connection.send.has_been_called_with(
-            '<get_agents/>'
-        )
+        self.connection.send.has_been_called_with('<get_agents/>')
 
     def test_get_agents_with_trash(self):
         self.gmp.get_agents(trash=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_agents trash="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_agents trash="1"/>')
 
         self.gmp.get_agents(trash=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_agents trash="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_agents trash="0"/>')
 
     def test_get_agents_with_details(self):
         self.gmp.get_agents(details=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_agents details="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_agents details="1"/>')
 
         self.gmp.get_agents(details=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_agents details="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_agents details="0"/>')
 
     def test_get_agents_with_format(self):
         self.gmp.get_agents(format='installer')

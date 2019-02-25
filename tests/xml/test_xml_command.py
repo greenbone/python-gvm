@@ -22,7 +22,6 @@ from gvm.xml import XmlCommand
 
 
 class XmlCommandTestCase(unittest.TestCase):
-
     def test_should_create_command(self):
         cmd = XmlCommand('foo')
 

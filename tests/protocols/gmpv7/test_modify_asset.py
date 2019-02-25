@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpModifyAssetTestCase(unittest.TestCase):
 
+class GmpModifyAssetTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -76,9 +76,7 @@ class GmpModifyAssetTestCase(unittest.TestCase):
         self.gmp.modify_asset('a1', None)
 
         self.connection.send.has_been_called_with(
-            '<modify_asset asset_id="a1">'
-            '<comment/>'
-            '</modify_asset>'
+            '<modify_asset asset_id="a1">' '<comment/>' '</modify_asset>'
         )
 
 

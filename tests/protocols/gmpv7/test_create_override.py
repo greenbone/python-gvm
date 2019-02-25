@@ -27,7 +27,6 @@ from .. import MockConnection
 
 
 class GmpCreateOverrideTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -172,9 +171,7 @@ class GmpCreateOverrideTestCase(unittest.TestCase):
         )
 
         self.gmp.create_override(
-            'foo',
-            nvt_oid='oid1',
-            new_severity=Decimal(5.5),
+            'foo', nvt_oid='oid1', new_severity=Decimal(5.5)
         )
 
         self.connection.send.has_been_called_with(
@@ -198,25 +195,13 @@ class GmpCreateOverrideTestCase(unittest.TestCase):
 
     def test_create_override_invalid_threat(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_override(
-                'foo',
-                nvt_oid='oid1',
-                threat='',
-            )
+            self.gmp.create_override('foo', nvt_oid='oid1', threat='')
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_override(
-                'foo',
-                nvt_oid='oid1',
-                threat='foo',
-            )
+            self.gmp.create_override('foo', nvt_oid='oid1', threat='foo')
 
     def test_create_override_with_new_threat(self):
-        self.gmp.create_override(
-            'foo',
-            nvt_oid='oid1',
-            new_threat='High',
-        )
+        self.gmp.create_override('foo', nvt_oid='oid1', new_threat='High')
 
         self.connection.send.has_been_called_with(
             '<create_override>'
@@ -228,18 +213,10 @@ class GmpCreateOverrideTestCase(unittest.TestCase):
 
     def test_create_override_invalid_new_threat(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_override(
-                'foo',
-                nvt_oid='oid1',
-                new_threat='',
-            )
+            self.gmp.create_override('foo', nvt_oid='oid1', new_threat='')
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_override(
-                'foo',
-                nvt_oid='oid1',
-                new_threat='foo',
-            )
+            self.gmp.create_override('foo', nvt_oid='oid1', new_threat='foo')
 
     def test_create_override_with_seconds_active(self):
         self.gmp.create_override('foo', nvt_oid='oid1', seconds_active=0)

@@ -25,7 +25,6 @@ from gvm.transforms import CheckCommandTransform
 
 
 class CheckCommandTransformTestCase(unittest.TestCase):
-
     def test_no_status_transform(self):
         transform = CheckCommandTransform()
 

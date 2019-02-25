@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpCreatePortListTestCase(unittest.TestCase):
 
+class GmpCreatePortListTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -54,8 +54,9 @@ class GmpCreatePortListTestCase(unittest.TestCase):
         )
 
     def test_create_port_list_with_comment(self):
-        self.gmp.create_port_list(name='foo', port_range='T:1-1234',
-                                  comment='lorem')
+        self.gmp.create_port_list(
+            name='foo', port_range='T:1-1234', comment='lorem'
+        )
 
         self.connection.send.has_been_called_with(
             '<create_port_list>'

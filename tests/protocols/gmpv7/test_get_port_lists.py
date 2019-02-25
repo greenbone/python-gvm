@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetPortListsTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,9 +31,7 @@ class GmpGetPortListsTestCase(unittest.TestCase):
     def test_get_port_lists(self):
         self.gmp.get_port_lists()
 
-        self.connection.send.has_been_called_with(
-            '<get_port_lists/>'
-        )
+        self.connection.send.has_been_called_with('<get_port_lists/>')
 
     def test_get_port_lists_with_filter(self):
         self.gmp.get_port_lists(filter='foo=bar')
@@ -53,15 +50,11 @@ class GmpGetPortListsTestCase(unittest.TestCase):
     def test_get_port_lists_with_trash(self):
         self.gmp.get_port_lists(trash=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_port_lists trash="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_port_lists trash="1"/>')
 
         self.gmp.get_port_lists(trash=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_port_lists trash="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_port_lists trash="0"/>')
 
     def test_get_port_lists_with_details(self):
         self.gmp.get_port_lists(details=True)

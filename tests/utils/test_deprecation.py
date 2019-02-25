@@ -23,7 +23,6 @@ from gvm.utils import deprecation
 
 
 class TestDeprecation(unittest.TestCase):
-
     def test_deprecation(self):
         with warnings.catch_warnings(record=True) as w:
             self.assertEqual(len(w), 0)

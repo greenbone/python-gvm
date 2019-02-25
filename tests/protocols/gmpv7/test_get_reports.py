@@ -22,8 +22,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetReportsTestCase(unittest.TestCase):
 
+class GmpGetReportsTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,43 +32,50 @@ class GmpGetReportsTestCase(unittest.TestCase):
         self.gmp.get_reports()
 
         self.connection.send.has_been_called_with(
-            '<get_reports ignore_pagination="1"/>')
+            '<get_reports ignore_pagination="1"/>'
+        )
 
     def test_get_reports_with_filter(self):
         self.gmp.get_reports(filter='name=foo')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_filter="name=foo" ignore_pagination="1"/>')
+            '<get_reports report_filter="name=foo" ignore_pagination="1"/>'
+        )
 
     def test_get_reports_with_filter_id(self):
         self.gmp.get_reports(filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_filt_id="f1" ignore_pagination="1"/>')
+            '<get_reports report_filt_id="f1" ignore_pagination="1"/>'
+        )
 
     def test_get_reports_without_note_details(self):
         self.gmp.get_reports(note_details=False)
 
         self.connection.send.has_been_called_with(
-            '<get_reports note_details="0" ignore_pagination="1"/>')
+            '<get_reports note_details="0" ignore_pagination="1"/>'
+        )
 
     def test_get_reports_with_note_details(self):
         self.gmp.get_reports(note_details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_reports note_details="1" ignore_pagination="1"/>')
+            '<get_reports note_details="1" ignore_pagination="1"/>'
+        )
 
     def test_get_reports_without_override_details(self):
         self.gmp.get_reports(override_details=False)
 
         self.connection.send.has_been_called_with(
-            '<get_reports override_details="0" ignore_pagination="1"/>')
+            '<get_reports override_details="0" ignore_pagination="1"/>'
+        )
 
     def test_get_reports_with_override_details(self):
         self.gmp.get_reports(override_details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_reports override_details="1" ignore_pagination="1"/>')
+            '<get_reports override_details="1" ignore_pagination="1"/>'
+        )
 
 
 if __name__ == '__main__':

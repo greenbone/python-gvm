@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpWithStatementTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)

@@ -23,6 +23,7 @@ from gvm.protocols.ospv1 import Osp
 
 from .. import MockConnection
 
+
 class OSPGetVtsTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
@@ -38,9 +39,7 @@ class OSPGetVtsTestCase(unittest.TestCase):
     def test_get_vts(self):
         self.osp.get_vts()
 
-        self.connection.send.has_been_called_with(
-            '<get_vts/>'
-        )
+        self.connection.send.has_been_called_with('<get_vts/>')
 
 
 if __name__ == '__main__':
