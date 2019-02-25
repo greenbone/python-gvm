@@ -1,50 +1,62 @@
-# python-gvm 1.0.0 (unreleased)
+# Changelog
+All notable changes to this project will be documented in this file.
 
-## gvm.protocols.gmpv7
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-* Aligned ALIVE_TESTS declaration with gsa list
-* Refactor `modify_task` to use same arguments as `create_task`
-* Added preferences argument to `create_task` method
-* Allow to pass either user_id or name to `delete_user`
-* Don't require inheritor_id or inheritor_name for `delete_user`
+## [unreleased]
+
+### Added
+* Added preferences argument to `create_task` method [PR 89](https://github.com/greenbone/python-gvm/pull/89)
 * Added validation of alive_tests argument to `create_target` method
-* Removed hosts_ordering argument from `modify_target`
 * Added ssh_credential_port argument to `modify_target`
-* Fixed sending resource id in `modify_tag`
+* Split getting a single preference by name from `get_preferences` method into
+  `get_preference`
+
+### Changed
+* Aligned ALIVE_TESTS declaration with gsa list [PR 93](https://github.com/greenbone/python-gvm/pull/93)
+* Refactor `modify_task` to use same arguments as `create_task` [PR 89](https://github.com/greenbone/python-gvm/pull/89)
+* Allow to pass either user_id or name to `delete_user` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
+* Don't require inheritor_id or inheritor_name for `delete_user`
 * Don't require ca_pub for `create_scanner`
 * Change port argument for `create_scanner` to be an integer
 * Refactor `modify_scanner` method: Adjust argument types corresponding to
  `create_scanner` and only require scanner_id
 * Require either setting_id or name for `modify_setting` not both arguments
-* Allow empty string a value argument for `modify_setting`
+* Allow empty string as value argument for `modify_setting`
 * Require either user_id or name for `modify_user` not both arguments
-* Removed sources argument from `modify_user` method
-* Removed `modify_report` method
-* Removed unused comment argument from `create_note` and `create_override`
 * Updated argument types for `create_note`, `create_override`, `modify_note`
   and `modify_override`
 * The arguments threat (and new_threat) for `create_note`, `modify_note`,
   `create_override` and `modify_override` must be one of 'High', 'Medium',
   'Low', 'Alarm', 'Log' or 'Debug' now
-* `modify_config` is marked as deprecated and will be removed in future. One of
-  the more specific `modify_config_set_` method should be used instead.
-* Fixed generating XML for `get_nvts` command
-* Fixed generating XML for `get_settings` command
-* Fixed generating XML for `get_credentials` command
-* Renamed create_asset method to create_host and dropped asset_type parameter.
-  It is only possible to create host assets.
+* Renamed `create_asset` method to `create_host` and dropped asset_type
+  argument. It is only possible to create host assets.
 * Updated and improved validation of `create_schedule` and
   `modify_schedule` arguments
+* Address DeprecationWarning regarding `collections` module
+
+### Removed
+* Removed hosts_ordering argument from `modify_target`
+* Removed sources argument from `modify_user` method
+* Removed `modify_report` method
+* Removed unused comment argument from `create_note` and `create_override`
 * Removed the format parameter from `get_credentials` method
 * Removed the task_id and nvt_oid parameters from `get_notes` and
   `get_overrides` methods
-* Split getting a single preference by name from `get_preferences` method into
-  `get_preference`
+
+### Fixed
+* Fixed sending resource id in `modify_tag`
+* Fixed generating XML for `get_nvts` command
+* Fixed generating XML for `get_settings` command
+* Fixed generating XML for `get_credentials` command
 * Fixed wrong order of key and value for condition_data, event_data and
   method_data dict parameters of `modify_alert` method.
-* Ensure `modify_setting` value is Base64-encoded
-* Address DeprecationWarning regarding `collections` module
+* Ensure `modify_setting` value is send as Base64-encoded
 
+### Deprecated
+* `modify_config` is marked as deprecated and will be removed in future. One of
+  the more specific `modify_config_set_` method should be used instead.
 
 # python-gvm 1.0.0.beta2 (04.12.2018)
 
