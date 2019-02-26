@@ -23,6 +23,7 @@ from gvm.protocols.ospv1 import Osp
 
 from .. import MockConnection
 
+
 class OSPGetVersionTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
@@ -32,6 +33,7 @@ class OSPGetVersionTestCase(unittest.TestCase):
         self.osp.get_version()
 
         self.connection.send.has_been_called_with('<get_version/>')
+
 
 if __name__ == '__main__':
     unittest.main()

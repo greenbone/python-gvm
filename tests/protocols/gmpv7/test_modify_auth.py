@@ -23,17 +23,14 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpModifyAuthTestCase(unittest.TestCase):
 
+class GmpModifyAuthTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_modify_auth(self):
-        self.gmp.modify_auth('foo', {
-            'foo': 'bar',
-            'lorem': 'ipsum',
-        })
+        self.gmp.modify_auth('foo', {'foo': 'bar', 'lorem': 'ipsum'})
 
         self.connection.send.has_been_called_with(
             '<modify_auth>'
@@ -53,24 +50,23 @@ class GmpModifyAuthTestCase(unittest.TestCase):
     def test_modify_auth_missing_group_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_auth(
-                group_name=None, auth_conf_settings={'foo': 'bar'})
+                group_name=None, auth_conf_settings={'foo': 'bar'}
+            )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_auth(
-                group_name='', auth_conf_settings={'foo': 'bar'})
+                group_name='', auth_conf_settings={'foo': 'bar'}
+            )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_auth(
-                '', auth_conf_settings={'foo': 'bar'})
+            self.gmp.modify_auth('', auth_conf_settings={'foo': 'bar'})
 
     def test_modify_auth_auth_conf_settings(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_auth(
-                group_name='foo', auth_conf_settings=None)
+            self.gmp.modify_auth(group_name='foo', auth_conf_settings=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_auth(
-                group_name='foo', auth_conf_settings='')
+            self.gmp.modify_auth(group_name='foo', auth_conf_settings='')
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_auth('foo', '')

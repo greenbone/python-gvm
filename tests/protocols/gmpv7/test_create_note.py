@@ -27,7 +27,6 @@ from .. import MockConnection
 
 
 class GmpCreateNoteTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -163,18 +162,10 @@ class GmpCreateNoteTestCase(unittest.TestCase):
 
     def test_create_note_invalid_threat(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_note(
-                'foo',
-                nvt_oid='oid1',
-                threat='',
-            )
+            self.gmp.create_note('foo', nvt_oid='oid1', threat='')
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_note(
-                'foo',
-                nvt_oid='oid1',
-                threat='foo',
-            )
+            self.gmp.create_note('foo', nvt_oid='oid1', threat='foo')
 
     def test_create_note_with_seconds_active(self):
         self.gmp.create_note('foo', nvt_oid='oid1', seconds_active=0)

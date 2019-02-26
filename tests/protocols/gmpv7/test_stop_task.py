@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpStopTaskTestCase(unittest.TestCase):
 
+class GmpStopTaskTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,8 +32,7 @@ class GmpStopTaskTestCase(unittest.TestCase):
     def test_stop_task(self):
         self.gmp.stop_task('a1')
 
-        self.connection.send.has_been_called_with(
-            '<stop_task task_id="a1"/>')
+        self.connection.send.has_been_called_with('<stop_task task_id="a1"/>')
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

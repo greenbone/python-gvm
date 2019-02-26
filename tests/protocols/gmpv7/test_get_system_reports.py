@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetSystemReportsTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,9 +32,7 @@ class GmpGetSystemReportsTestCase(unittest.TestCase):
     def test_get_system_reports(self):
         self.gmp.get_system_reports()
 
-        self.connection.send.has_been_called_with(
-            '<get_system_reports/>'
-        )
+        self.connection.send.has_been_called_with('<get_system_reports/>')
 
     def test_get_system_reports_with_name(self):
         self.gmp.get_system_reports(name='foo')
@@ -88,9 +85,6 @@ class GmpGetSystemReportsTestCase(unittest.TestCase):
         self.connection.send.has_been_called_with(
             '<get_system_reports end_time="01-01-2019"/>'
         )
-
-
-
 
 
 if __name__ == '__main__':

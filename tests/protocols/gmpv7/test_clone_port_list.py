@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpClonePortListTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,9 +33,7 @@ class GmpClonePortListTestCase(unittest.TestCase):
         self.gmp.clone_port_list('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_port_list>'
-            '<copy>a1</copy>'
-            '</create_port_list>'
+            '<create_port_list>' '<copy>a1</copy>' '</create_port_list>'
         )
 
     def test_missing_id(self):

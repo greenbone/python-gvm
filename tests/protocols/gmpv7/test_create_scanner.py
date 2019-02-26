@@ -25,15 +25,18 @@ from .. import MockConnection
 
 
 class GmpCreateScannerTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_create_scanner(self):
         self.gmp.create_scanner(
-            name='foo', host='localhost', port=1234,
-            scanner_type='1', credential_id='c1')
+            name='foo',
+            host='localhost',
+            port=1234,
+            scanner_type='1',
+            credential_id='c1',
+        )
 
         self.connection.send.has_been_called_with(
             '<create_scanner>'
@@ -48,68 +51,116 @@ class GmpCreateScannerTestCase(unittest.TestCase):
     def test_create_scanner_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name=None, host='localhost', port=1234,
-                scanner_type='1', credential_id='c1')
+                name=None,
+                host='localhost',
+                port=1234,
+                scanner_type='1',
+                credential_id='c1',
+            )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name='', host='localhost', port=1234,
-                scanner_type='1', credential_id='c1')
+                name='',
+                host='localhost',
+                port=1234,
+                scanner_type='1',
+                credential_id='c1',
+            )
 
     def test_create_scanner_missing_host(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name='foo', host=None, port=1234,
-                scanner_type='1', credential_id='c1')
+                name='foo',
+                host=None,
+                port=1234,
+                scanner_type='1',
+                credential_id='c1',
+            )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name='foo', host='', port=1234,
-                scanner_type='1', credential_id='c1')
+                name='foo',
+                host='',
+                port=1234,
+                scanner_type='1',
+                credential_id='c1',
+            )
 
     def test_create_scanner_missing_port(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name='foo', host='localhost', port=None,
-                scanner_type='1', credential_id='c1')
+                name='foo',
+                host='localhost',
+                port=None,
+                scanner_type='1',
+                credential_id='c1',
+            )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name='foo', host='localhost', port='',
-                scanner_type='1', credential_id='c1')
+                name='foo',
+                host='localhost',
+                port='',
+                scanner_type='1',
+                credential_id='c1',
+            )
 
     def test_create_scanner_missing_scanner_type(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name='foo', host='localhost', port=1234,
-                scanner_type=None, credential_id='c1')
+                name='foo',
+                host='localhost',
+                port=1234,
+                scanner_type=None,
+                credential_id='c1',
+            )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name='foo', host='localhost', port=1234,
-                scanner_type='', credential_id='c1')
+                name='foo',
+                host='localhost',
+                port=1234,
+                scanner_type='',
+                credential_id='c1',
+            )
 
     def test_create_scanner_missing_credential_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name='foo', host='localhost', port=1234,
-                scanner_type='1', credential_id=None)
+                name='foo',
+                host='localhost',
+                port=1234,
+                scanner_type='1',
+                credential_id=None,
+            )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_scanner(
-                name='foo', host='localhost', port=1234,
-                scanner_type='1', credential_id='')
+                name='foo',
+                host='localhost',
+                port=1234,
+                scanner_type='1',
+                credential_id='',
+            )
 
     def test_create_scanner_invalid_scanner_type(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_scanner(
-                name='foo', host='localhost', port=1234,
-                scanner_type='bar', credential_id='c1')
+                name='foo',
+                host='localhost',
+                port=1234,
+                scanner_type='bar',
+                credential_id='c1',
+            )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.create_scanner(
-                name='foo', host='localhost', port=1234,
-                scanner_type='55', credential_id='c1')
+                name='foo',
+                host='localhost',
+                port=1234,
+                scanner_type='55',
+                credential_id='c1',
+            )
 
     def test_create_scanner_with_ca_pub(self):
         self.gmp.create_scanner(
@@ -134,8 +185,13 @@ class GmpCreateScannerTestCase(unittest.TestCase):
 
     def test_create_scanner_with_comment(self):
         self.gmp.create_scanner(
-            name='foo', host='localhost', port=1234,
-            scanner_type='1', credential_id='c1', comment='bar')
+            name='foo',
+            host='localhost',
+            port=1234,
+            scanner_type='1',
+            credential_id='c1',
+            comment='bar',
+        )
 
         self.connection.send.has_been_called_with(
             '<create_scanner>'

@@ -25,15 +25,12 @@ from .. import MockConnection
 
 
 class GmpModifyScheduleTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_modify_schedule(self):
-        self.gmp.modify_schedule(
-            schedule_id='s1',
-        )
+        self.gmp.modify_schedule(schedule_id='s1')
 
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1"/>'
@@ -41,20 +38,13 @@ class GmpModifyScheduleTestCase(unittest.TestCase):
 
     def test_modify_schedule_missing_schedule_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_schedule(
-                schedule_id=None,
-            )
+            self.gmp.modify_schedule(schedule_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_schedule(
-                schedule_id='',
-            )
+            self.gmp.modify_schedule(schedule_id='')
 
     def test_modify_schedule_with_comment(self):
-        self.gmp.modify_schedule(
-            schedule_id='s1',
-            comment='foo',
-        )
+        self.gmp.modify_schedule(schedule_id='s1', comment='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1">'
@@ -279,10 +269,7 @@ class GmpModifyScheduleTestCase(unittest.TestCase):
             )
 
     def test_modify_schedule_with_name(self):
-        self.gmp.modify_schedule(
-            schedule_id='s1',
-            name='foo',
-        )
+        self.gmp.modify_schedule(schedule_id='s1', name='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1">'
@@ -293,45 +280,32 @@ class GmpModifyScheduleTestCase(unittest.TestCase):
     def test_modify_schedule_invalid_duration(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_schedule(
-                schedule_id='s1',
-                duration='bar',
-                duration_unit='day',
+                schedule_id='s1', duration='bar', duration_unit='day'
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_schedule(
-                schedule_id='s1',
-                duration=0,
-                duration_unit='day',
+                schedule_id='s1', duration=0, duration_unit='day'
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_schedule(
-                schedule_id='s1',
-                duration=-1,
-                duration_unit='day',
+                schedule_id='s1', duration=-1, duration_unit='day'
             )
 
     def test_modify_schedule_with_duration_missing_unit(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_schedule(
-                schedule_id='s1',
-                duration=1,
-            )
+            self.gmp.modify_schedule(schedule_id='s1', duration=1)
 
     def test_modify_schedule_with_duration_invalid_unit(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_schedule(
-                schedule_id='s1',
-                duration=1,
-                duration_unit='foo'
+                schedule_id='s1', duration=1, duration_unit='foo'
             )
 
     def test_modify_schedule_with_duration(self):
         self.gmp.modify_schedule(
-            schedule_id='s1',
-            duration=1,
-            duration_unit='day',
+            schedule_id='s1', duration=1, duration_unit='day'
         )
 
         self.connection.send.has_been_called_with(
@@ -344,48 +318,32 @@ class GmpModifyScheduleTestCase(unittest.TestCase):
 
     def test_modify_schedule_with_period_missing_unit(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_schedule(
-                schedule_id='s1',
-                period=1,
-            )
+            self.gmp.modify_schedule(schedule_id='s1', period=1)
 
     def test_modify_schedule_with_period_invalid_unit(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_schedule(
-                schedule_id='s1',
-                period=1,
-                period_unit='foo'
+                schedule_id='s1', period=1, period_unit='foo'
             )
 
     def test_modify_schedule_invalid_period(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_schedule(
-                schedule_id='s1',
-                period='foo',
-                period_unit='day'
+                schedule_id='s1', period='foo', period_unit='day'
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_schedule(
-                schedule_id='s1',
-                period=0,
-                period_unit='day'
+                schedule_id='s1', period=0, period_unit='day'
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_schedule(
-                schedule_id='s1',
-                period=-1,
-                period_unit='day'
+                schedule_id='s1', period=-1, period_unit='day'
             )
-
 
     def test_modify_schedule_with_period(self):
-        self.gmp.modify_schedule(
-            schedule_id='s1',
-            period=1,
-            period_unit='day',
-        )
+        self.gmp.modify_schedule(schedule_id='s1', period=1, period_unit='day')
 
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1">'
@@ -396,10 +354,7 @@ class GmpModifyScheduleTestCase(unittest.TestCase):
         )
 
     def test_modify_schedule_with_timezone(self):
-        self.gmp.modify_schedule(
-            schedule_id='s1',
-            timezone='foo',
-        )
+        self.gmp.modify_schedule(schedule_id='s1', timezone='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1">'

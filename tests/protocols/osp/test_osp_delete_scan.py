@@ -23,6 +23,7 @@ from gvm.protocols.ospv1 import Osp
 
 from .. import MockConnection
 
+
 class OSPDeleteScanTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()

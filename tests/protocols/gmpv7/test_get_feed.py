@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetFeedTestCase(unittest.TestCase):
 
+class GmpGetFeedTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,27 +32,19 @@ class GmpGetFeedTestCase(unittest.TestCase):
     def test_get_feed(self):
         self.gmp.get_feed('nvt')
 
-        self.connection.send.has_been_called_with(
-            '<get_feeds type="NVT"/>'
-        )
+        self.connection.send.has_been_called_with('<get_feeds type="NVT"/>')
 
         self.gmp.get_feed(feed_type='nvt')
 
-        self.connection.send.has_been_called_with(
-            '<get_feeds type="NVT"/>'
-        )
+        self.connection.send.has_been_called_with('<get_feeds type="NVT"/>')
 
         self.gmp.get_feed('cert')
 
-        self.connection.send.has_been_called_with(
-            '<get_feeds type="CERT"/>'
-        )
+        self.connection.send.has_been_called_with('<get_feeds type="CERT"/>')
 
         self.gmp.get_feed('scap')
 
-        self.connection.send.has_been_called_with(
-            '<get_feeds type="SCAP"/>'
-        )
+        self.connection.send.has_been_called_with('<get_feeds type="SCAP"/>')
 
     def test_get_feed_missing_feed_type(self):
         with self.assertRaises(RequiredArgument):

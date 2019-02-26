@@ -25,15 +25,12 @@ from .. import MockConnection
 
 
 class GmpModifyPermissionTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_modify_permission(self):
-        self.gmp.modify_permission(
-            permission_id='p1',
-        )
+        self.gmp.modify_permission(permission_id='p1')
 
         self.connection.send.has_been_called_with(
             '<modify_permission permission_id="p1"/>'
@@ -41,25 +38,16 @@ class GmpModifyPermissionTestCase(unittest.TestCase):
 
     def test_modify_permission_missing_permission_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_permission(
-                permission_id=None,
-            )
+            self.gmp.modify_permission(permission_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_permission(
-                permission_id='',
-            )
+            self.gmp.modify_permission(permission_id='')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_permission(
-                '',
-            )
+            self.gmp.modify_permission('')
 
     def test_modify_permission_with_comment(self):
-        self.gmp.modify_permission(
-            permission_id='p1',
-            comment='foo',
-        )
+        self.gmp.modify_permission(permission_id='p1', comment='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_permission permission_id="p1">'
@@ -69,9 +57,7 @@ class GmpModifyPermissionTestCase(unittest.TestCase):
 
     def test_modify_permission_with_resource_id_and_type(self):
         self.gmp.modify_permission(
-            permission_id='p1',
-            resource_id='r1',
-            resource_type='foo',
+            permission_id='p1', resource_id='r1', resource_type='foo'
         )
 
         self.connection.send.has_been_called_with(
@@ -85,51 +71,34 @@ class GmpModifyPermissionTestCase(unittest.TestCase):
     def test_modify_permission_with_missing_resource_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1',
-                resource_id='',
-                resource_type='foo',
+                permission_id='p1', resource_id='', resource_type='foo'
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_permission(
-                permission_id='p1',
-                resource_type='foo',
-            )
+            self.gmp.modify_permission(permission_id='p1', resource_type='foo')
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1',
-                resource_id=None,
-                resource_type='foo',
+                permission_id='p1', resource_id=None, resource_type='foo'
             )
 
     def test_modify_permission_with_missing_resource_type(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1',
-                resource_id='r1',
-                resource_type='',
+                permission_id='p1', resource_id='r1', resource_type=''
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_permission(
-                permission_id='p1',
-                resource_id='r1',
-            )
+            self.gmp.modify_permission(permission_id='p1', resource_id='r1')
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1',
-                resource_id='r1',
-                resource_type=None,
+                permission_id='p1', resource_id='r1', resource_type=None
             )
-
 
     def test_modify_permission_with_subject_id_and_type(self):
         self.gmp.modify_permission(
-            permission_id='p1',
-            subject_id='s1',
-            subject_type='role',
+            permission_id='p1', subject_id='s1', subject_type='role'
         )
 
         self.connection.send.has_been_called_with(
@@ -142,52 +111,36 @@ class GmpModifyPermissionTestCase(unittest.TestCase):
 
     def test_modify_permission_missing_subject_id(self):
         with self.assertRaises(RequiredArgument):
+            self.gmp.modify_permission(permission_id='p1', subject_type='role')
+
+        with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1',
-                subject_type='role',
+                permission_id='p1', subject_type='role', subject_id=''
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1',
-                subject_type='role',
-                subject_id='',
-            )
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.modify_permission(
-                permission_id='p1',
-                subject_type='role',
-                subject_id=None,
+                permission_id='p1', subject_type='role', subject_id=None
             )
 
     def test_modify_permission_invalid_subject_type(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_permission(
-                permission_id='p1',
-                subject_id='s1',
-                subject_type='foo',
+                permission_id='p1', subject_id='s1', subject_type='foo'
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_permission(
-                permission_id='p1',
-                subject_id='s1',
-                subject_type='',
+                permission_id='p1', subject_id='s1', subject_type=''
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_permission(
-                permission_id='p1',
-                subject_id='s1',
-                subject_type=None,
+                permission_id='p1', subject_id='s1', subject_type=None
             )
 
     def test_modify_permission_with_name(self):
-        self.gmp.modify_permission(
-            permission_id='p1',
-            name='foo',
-        )
+        self.gmp.modify_permission(permission_id='p1', name='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_permission permission_id="p1">'

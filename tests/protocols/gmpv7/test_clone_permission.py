@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpClonePermissionTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,9 +33,7 @@ class GmpClonePermissionTestCase(unittest.TestCase):
         self.gmp.clone_permission('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_permission>'
-            '<copy>a1</copy>'
-            '</create_permission>'
+            '<create_permission>' '<copy>a1</copy>' '</create_permission>'
         )
 
     def test_missing_id(self):

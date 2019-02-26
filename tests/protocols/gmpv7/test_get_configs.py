@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetConfigsTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,74 +31,68 @@ class GmpGetConfigsTestCase(unittest.TestCase):
     def test_get_configs_simple(self):
         self.gmp.get_configs()
 
-        self.connection.send.has_been_called_with(
-            '<get_configs/>')
+        self.connection.send.has_been_called_with('<get_configs/>')
 
     def test_get_configs_with_filter(self):
         self.gmp.get_configs(filter='name=foo')
 
         self.connection.send.has_been_called_with(
-            '<get_configs filter="name=foo"/>')
+            '<get_configs filter="name=foo"/>'
+        )
 
     def test_get_configs_with_filter_id(self):
         self.gmp.get_configs(filter_id='f1')
 
-        self.connection.send.has_been_called_with(
-            '<get_configs filt_id="f1"/>')
+        self.connection.send.has_been_called_with('<get_configs filt_id="f1"/>')
 
     def test_get_configs_from_trash(self):
         self.gmp.get_configs(trash=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_configs trash="1"/>')
+        self.connection.send.has_been_called_with('<get_configs trash="1"/>')
 
     def test_get_configs_with_details(self):
         self.gmp.get_configs(details=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_configs details="1"/>')
+        self.connection.send.has_been_called_with('<get_configs details="1"/>')
 
     def test_get_configs_without_details(self):
         self.gmp.get_configs(details=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_configs details="0"/>')
+        self.connection.send.has_been_called_with('<get_configs details="0"/>')
 
     def test_get_configs_with_families(self):
         self.gmp.get_configs(families=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_configs families="1"/>')
+        self.connection.send.has_been_called_with('<get_configs families="1"/>')
 
     def test_get_configs_without_families(self):
         self.gmp.get_configs(families=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_configs families="0"/>')
+        self.connection.send.has_been_called_with('<get_configs families="0"/>')
 
     def test_get_configs_with_preferences(self):
         self.gmp.get_configs(preferences=True)
 
         self.connection.send.has_been_called_with(
-            '<get_configs preferences="1"/>')
+            '<get_configs preferences="1"/>'
+        )
 
     def test_get_configs_without_preferences(self):
         self.gmp.get_configs(preferences=False)
 
         self.connection.send.has_been_called_with(
-            '<get_configs preferences="0"/>')
+            '<get_configs preferences="0"/>'
+        )
 
     def test_get_configs_with_tasks(self):
         self.gmp.get_configs(tasks=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_configs tasks="1"/>')
+        self.connection.send.has_been_called_with('<get_configs tasks="1"/>')
 
     def test_get_configs_without_tasks(self):
         self.gmp.get_configs(tasks=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_configs tasks="0"/>')
+        self.connection.send.has_been_called_with('<get_configs tasks="0"/>')
 
 
 if __name__ == '__main__':

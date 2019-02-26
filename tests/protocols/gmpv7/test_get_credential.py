@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetCredentialTestCase(unittest.TestCase):
 
+class GmpGetCredentialTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,7 +33,8 @@ class GmpGetCredentialTestCase(unittest.TestCase):
         self.gmp.get_credential('id')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials credential_id="id"/>')
+            '<get_credentials credential_id="id"/>'
+        )
 
     def test_get_credentials_missing_credential_id(self):
         with self.assertRaises(RequiredArgument):
@@ -50,27 +51,32 @@ class GmpGetCredentialTestCase(unittest.TestCase):
         self.gmp.get_credential('id', credential_format='key')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials credential_id="id" format="key"/>')
+            '<get_credentials credential_id="id" format="key"/>'
+        )
 
         self.gmp.get_credential('id', credential_format='rpm')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials credential_id="id" format="rpm"/>')
+            '<get_credentials credential_id="id" format="rpm"/>'
+        )
 
         self.gmp.get_credential('id', credential_format='deb')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials credential_id="id" format="deb"/>')
+            '<get_credentials credential_id="id" format="deb"/>'
+        )
 
         self.gmp.get_credential('id', credential_format='exe')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials credential_id="id" format="exe"/>')
+            '<get_credentials credential_id="id" format="exe"/>'
+        )
 
         self.gmp.get_credential('id', credential_format='pem')
 
         self.connection.send.has_been_called_with(
-            '<get_credentials credential_id="id" format="pem"/>')
+            '<get_credentials credential_id="id" format="pem"/>'
+        )
 
     def test_get_credential_with_invalid_credential_format(self):
         with self.assertRaises(InvalidArgument):

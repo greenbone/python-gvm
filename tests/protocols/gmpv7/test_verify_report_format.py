@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpVerifyReportFormatTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,7 +33,8 @@ class GmpVerifyReportFormatTestCase(unittest.TestCase):
         self.gmp.verify_report_format('a1')
 
         self.connection.send.has_been_called_with(
-            '<verify_report_format report_format_id="a1"/>')
+            '<verify_report_format report_format_id="a1"/>'
+        )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

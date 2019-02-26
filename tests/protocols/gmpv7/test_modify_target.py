@@ -25,15 +25,12 @@ from .. import MockConnection
 
 
 class GmpModifyTargetTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_modify_target(self):
-        self.gmp.modify_target(
-            target_id='t1',
-        )
+        self.gmp.modify_target(target_id='t1')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1"/>'
@@ -41,20 +38,13 @@ class GmpModifyTargetTestCase(unittest.TestCase):
 
     def test_modify_target_missing_target_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_target(
-                target_id=None,
-            )
+            self.gmp.modify_target(target_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_target(
-                target_id='',
-            )
+            self.gmp.modify_target(target_id='')
 
     def test_modify_target_with_comment(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            comment='foo',
-        )
+        self.gmp.modify_target(target_id='t1', comment='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -63,10 +53,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_hosts(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            hosts=['foo'],
-        )
+        self.gmp.modify_target(target_id='t1', hosts=['foo'])
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -74,10 +61,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
             '</modify_target>'
         )
 
-        self.gmp.modify_target(
-            target_id='t1',
-            hosts=['foo', 'bar'],
-        )
+        self.gmp.modify_target(target_id='t1', hosts=['foo', 'bar'])
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -86,10 +70,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_name(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            name='foo',
-        )
+        self.gmp.modify_target(target_id='t1', name='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -98,10 +79,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_exclude_hosts(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            exclude_hosts=['foo'],
-        )
+        self.gmp.modify_target(target_id='t1', exclude_hosts=['foo'])
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -109,10 +87,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
             '</modify_target>'
         )
 
-        self.gmp.modify_target(
-            target_id='t1',
-            exclude_hosts=['foo', 'bar'],
-        )
+        self.gmp.modify_target(target_id='t1', exclude_hosts=['foo', 'bar'])
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -121,10 +96,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_ssh_credential(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            ssh_credential_id='c1',
-        )
+        self.gmp.modify_target(target_id='t1', ssh_credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -134,9 +106,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
 
     def test_modify_target_with_ssh_credential_port(self):
         self.gmp.modify_target(
-            target_id='t1',
-            ssh_credential_id='c1',
-            ssh_credential_port=123,
+            target_id='t1', ssh_credential_id='c1', ssh_credential_port=123
         )
 
         self.connection.send.has_been_called_with(
@@ -148,10 +118,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_smb_credential_id(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            smb_credential_id='c1',
-        )
+        self.gmp.modify_target(target_id='t1', smb_credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -160,10 +127,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_esxi_credential_id(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            esxi_credential_id='c1',
-        )
+        self.gmp.modify_target(target_id='t1', esxi_credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -172,10 +136,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_snmp_credential_id(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            snmp_credential_id='c1',
-        )
+        self.gmp.modify_target(target_id='t1', snmp_credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -184,10 +145,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_alive_tests(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            alive_tests='ICMP Ping',
-        )
+        self.gmp.modify_target(target_id='t1', alive_tests='ICMP Ping')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -197,16 +155,10 @@ class GmpModifyTargetTestCase(unittest.TestCase):
 
     def test_modify_target_invalid_alive_tests(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.modify_target(
-                target_id='t1',
-                alive_tests='foo',
-            )
+            self.gmp.modify_target(target_id='t1', alive_tests='foo')
 
     def test_modify_target_with_reverse_lookup_only(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            reverse_lookup_only=True,
-        )
+        self.gmp.modify_target(target_id='t1', reverse_lookup_only=True)
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -214,10 +166,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
             '</modify_target>'
         )
 
-        self.gmp.modify_target(
-            target_id='t1',
-            reverse_lookup_only=False,
-        )
+        self.gmp.modify_target(target_id='t1', reverse_lookup_only=False)
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -226,10 +175,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_reverse_lookup_unify(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            reverse_lookup_unify=True,
-        )
+        self.gmp.modify_target(target_id='t1', reverse_lookup_unify=True)
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -237,10 +183,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
             '</modify_target>'
         )
 
-        self.gmp.modify_target(
-            target_id='t1',
-            reverse_lookup_unify=False,
-        )
+        self.gmp.modify_target(target_id='t1', reverse_lookup_unify=False)
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -249,10 +192,7 @@ class GmpModifyTargetTestCase(unittest.TestCase):
         )
 
     def test_modify_target_with_port_list_id(self):
-        self.gmp.modify_target(
-            target_id='t1',
-            port_list_id='pl1',
-        )
+        self.gmp.modify_target(target_id='t1', port_list_id='pl1')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'

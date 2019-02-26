@@ -24,7 +24,6 @@ from gvm.transforms import EtreeTransform
 
 
 class EtreeTransformTestCase(unittest.TestCase):
-
     def test_transform_response(self):
         transform = EtreeTransform()
         result = transform('<foo/')

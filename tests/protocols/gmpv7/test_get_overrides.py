@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetOverridesTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,9 +31,7 @@ class GmpGetOverridesTestCase(unittest.TestCase):
     def test_get_overrides(self):
         self.gmp.get_overrides()
 
-        self.connection.send.has_been_called_with(
-            '<get_overrides/>'
-        )
+        self.connection.send.has_been_called_with('<get_overrides/>')
 
     def test_get_overrides_with_filter(self):
         self.gmp.get_overrides(filter='foo=bar')
@@ -66,15 +63,11 @@ class GmpGetOverridesTestCase(unittest.TestCase):
     def test_get_overrides_with_result(self):
         self.gmp.get_overrides(result=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_overrides result="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_overrides result="1"/>')
 
         self.gmp.get_overrides(result=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_overrides result="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_overrides result="0"/>')
 
 
 if __name__ == '__main__':

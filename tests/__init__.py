@@ -18,7 +18,6 @@
 
 
 class CallableMock:
-
     def __init__(self, name):
         self.name = name
         self.calls = []
@@ -39,8 +38,10 @@ class CallableMock:
         assert len(self.calls) > 0, "{0} has not been called.".format(self.name)
 
     def has_been_called_times(self, times):
-        assert len(self.calls) == times, "{name} has not been called {times}" \
+        assert len(self.calls) == times, (
+            "{name} has not been called {times}"
             " times.".format(name=self.name, times=times)
+        )
 
     def has_been_called_with(self, *args, **kwargs):
         if len(self.calls) == 0:
@@ -49,12 +50,13 @@ class CallableMock:
         lastcall = self.calls[-1]
 
         # not sure if this is correct
-        assert lastcall['args'] == args and lastcall['kwargs'] == kwargs, \
-            "Expected arguments {eargs} {ekwargs} of {name} do not match." \
+        assert lastcall['args'] == args and lastcall['kwargs'] == kwargs, (
+            "Expected arguments {eargs} {ekwargs} of {name} do not match."
             "Received: {rargs} {rkwargs}".format(
                 name=self.name,
                 eargs=args,
                 ekwargs=kwargs,
                 rargs=lastcall['args'],
-                rkwargs=lastcall['kwargs']
+                rkwargs=lastcall['kwargs'],
             )
+        )

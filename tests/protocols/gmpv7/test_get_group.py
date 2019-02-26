@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetGroupTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,15 +32,11 @@ class GmpGetGroupTestCase(unittest.TestCase):
     def test_get_group(self):
         self.gmp.get_group('f1')
 
-        self.connection.send.has_been_called_with(
-            '<get_groups group_id="f1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_groups group_id="f1"/>')
 
         self.gmp.get_group(group_id='f1')
 
-        self.connection.send.has_been_called_with(
-            '<get_groups group_id="f1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_groups group_id="f1"/>')
 
     def test_get_group_missing_group_id(self):
         with self.assertRaises(RequiredArgument):

@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpMoveTaskTestCase(unittest.TestCase):
 
+class GmpMoveTaskTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,14 +32,14 @@ class GmpMoveTaskTestCase(unittest.TestCase):
     def test_move_task(self):
         self.gmp.move_task('a1')
 
-        self.connection.send.has_been_called_with(
-            '<move_task task_id="a1"/>')
+        self.connection.send.has_been_called_with('<move_task task_id="a1"/>')
 
     def test_move_task_to_slave(self):
         self.gmp.move_task('a1', slave_id='s1')
 
         self.connection.send.has_been_called_with(
-            '<move_task task_id="a1" slave_id="s1"/>')
+            '<move_task task_id="a1" slave_id="s1"/>'
+        )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

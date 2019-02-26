@@ -26,29 +26,28 @@ from .. import MockConnection
 
 class GmpImportConfigTestCase(unittest.TestCase):
 
-    CONFIG_XML_STRING = '<get_configs_response status="200" status_text="OK">' \
-        '<config id="c4aa21e4-23e6-4064-ae49-c0d425738a98">' \
-        '<name>Foobar</name>' \
-        '<comment>Foobar config</comment>' \
-        '<creation_time>2018-11-09T10:48:03Z</creation_time>' \
-        '<modification_time>2018-11-09T10:48:03Z</modification_time>' \
-        '</config>' \
+    CONFIG_XML_STRING = (
+        '<get_configs_response status="200" status_text="OK">'
+        '<config id="c4aa21e4-23e6-4064-ae49-c0d425738a98">'
+        '<name>Foobar</name>'
+        '<comment>Foobar config</comment>'
+        '<creation_time>2018-11-09T10:48:03Z</creation_time>'
+        '<modification_time>2018-11-09T10:48:03Z</modification_time>'
+        '</config>'
         '</get_configs_response>'
+    )
 
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_import_config(self):
-        self.gmp.import_config(
-            self.CONFIG_XML_STRING
-        )
+        self.gmp.import_config(self.CONFIG_XML_STRING)
 
         self.connection.send.has_been_called_with(
             '<create_config>'
             '{config}'
-            '</create_config>'.format(
-                config=self.CONFIG_XML_STRING)
+            '</create_config>'.format(config=self.CONFIG_XML_STRING)
         )
 
     def test_import_missing_config_xml(self):
@@ -60,9 +59,7 @@ class GmpImportConfigTestCase(unittest.TestCase):
 
     def test_import_invalid_xml(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.import_config(
-                'abcdef'
-            )
+            self.gmp.import_config('abcdef')
 
 
 if __name__ == '__main__':

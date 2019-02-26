@@ -23,6 +23,7 @@ from gvm.protocols.ospv1 import Osp
 
 from .. import MockConnection
 
+
 class OSPHelpTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
@@ -32,6 +33,7 @@ class OSPHelpTestCase(unittest.TestCase):
         self.osp.help()
 
         self.connection.send.has_been_called_with('<help/>')
+
 
 if __name__ == '__main__':
     unittest.main()

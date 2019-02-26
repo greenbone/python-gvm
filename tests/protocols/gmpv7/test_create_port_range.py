@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpCreatePortRangeTestCase(unittest.TestCase):
 
+class GmpCreatePortRangeTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,77 +32,50 @@ class GmpCreatePortRangeTestCase(unittest.TestCase):
     def test_create_port_range_missing_port_list_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
-                port_list_id=None,
-                start=1,
-                end=1234,
-                port_range_type='TCP',
+                port_list_id=None, start=1, end=1234, port_range_type='TCP'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
-                port_list_id='',
-                start=1,
-                end=1234,
-                port_range_type='TCP',
+                port_list_id='', start=1, end=1234, port_range_type='TCP'
             )
 
     def test_create_port_range_missing_start(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
-                port_list_id='pl1',
-                start=None,
-                end=1234,
-                port_range_type='TCP',
+                port_list_id='pl1', start=None, end=1234, port_range_type='TCP'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
-                port_list_id='pl1',
-                start='',
-                end=1234,
-                port_range_type='TCP',
+                port_list_id='pl1', start='', end=1234, port_range_type='TCP'
             )
 
     def test_create_port_range_missing_end(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
-                port_list_id='pl1',
-                start=1,
-                end=None,
-                port_range_type='TCP',
+                port_list_id='pl1', start=1, end=None, port_range_type='TCP'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
-                port_list_id='pl1',
-                start=1,
-                end='',
-                port_range_type='TCP',
+                port_list_id='pl1', start=1, end='', port_range_type='TCP'
             )
 
     def test_create_port_range_missing_port_range_type(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
-                port_list_id='pl1',
-                start=1,
-                end=1234,
-                port_range_type=None,
+                port_list_id='pl1', start=1, end=1234, port_range_type=None
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
-                port_list_id='pl1',
-                start=1,
-                end=1234,
-                port_range_type='',
+                port_list_id='pl1', start=1, end=1234, port_range_type=''
             )
 
     def test_create_port_range(self):
         self.gmp.create_port_range(
-            port_list_id='pl1',
-            start=1,
-            end=1234,
-            port_range_type='TCP'
+            port_list_id='pl1', start=1, end=1234, port_range_type='TCP'
         )
 
         self.connection.send.has_been_called_with(
@@ -115,10 +88,7 @@ class GmpCreatePortRangeTestCase(unittest.TestCase):
         )
 
         self.gmp.create_port_range(
-            port_list_id='pl1',
-            start='1',
-            end='1234',
-            port_range_type='TCP'
+            port_list_id='pl1', start='1', end='1234', port_range_type='TCP'
         )
 
         self.connection.send.has_been_called_with(
