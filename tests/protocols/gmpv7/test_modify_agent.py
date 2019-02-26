@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpModifyAgentTestCase(unittest.TestCase):
 
+class GmpModifyAgentTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)

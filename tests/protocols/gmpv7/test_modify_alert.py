@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpModifyAlertTestCase(unittest.TestCase):
 
+class GmpModifyAlertTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -68,9 +68,7 @@ class GmpModifyAlertTestCase(unittest.TestCase):
         self.gmp.modify_alert(alert_id='a1', filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<modify_alert alert_id="a1">'
-            '<filter id="f1"/>'
-            '</modify_alert>'
+            '<modify_alert alert_id="a1">' '<filter id="f1"/>' '</modify_alert>'
         )
 
     def test_modify_alert_invalid_condition(self):
@@ -85,10 +83,7 @@ class GmpModifyAlertTestCase(unittest.TestCase):
     def test_modify_alert_invalid_event(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_alert(
-                alert_id='a1',
-                condition='Always',
-                event='lorem',
-                method='Email',
+                alert_id='a1', condition='Always', event='lorem', method='Email'
             )
 
     def test_modify_alert_invalid_method(self):

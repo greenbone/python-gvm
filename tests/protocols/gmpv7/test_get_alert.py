@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetAlertTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,15 +32,11 @@ class GmpGetAlertTestCase(unittest.TestCase):
     def test_get_alert(self):
         self.gmp.get_alert('a1')
 
-        self.connection.send.has_been_called_with(
-            '<get_alerts alert_id="a1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts alert_id="a1"/>')
 
         self.gmp.get_alert(alert_id='a1')
 
-        self.connection.send.has_been_called_with(
-            '<get_alerts alert_id="a1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts alert_id="a1"/>')
 
     def test_get_alert_invalid_alert_id(self):
         with self.assertRaises(RequiredArgument):

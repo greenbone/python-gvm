@@ -31,48 +31,50 @@ from .base import GvmProtocol
 
 logger = logging.getLogger(__name__)
 
-PROTOCOL_VERSION = (1, 2,)
+PROTOCOL_VERSION = (1, 2)
 
 
 def create_credentials_element(_xmlcredentials, credentials):
     """Generates an xml element with credentials."""
     for service, credential in credentials.items():
-        cred_type = credential.get('type')
-        serv_port = credential.get('port')
-        username = credential.get('username')
-        password = credential.get('password')
+        cred_type = credential.get("type")
+        serv_port = credential.get("port")
+        username = credential.get("username")
+        password = credential.get("password")
         _xmlcredential = _xmlcredentials.add_element(
-            'credential', attrs={
-                'type': cred_type,
-                'port': serv_port,
-                'service': service,
-            })
-        _xmlcredential.add_element('username', username)
-        _xmlcredential.add_element('password', password)
+            "credential",
+            attrs={"type": cred_type, "port": serv_port, "service": service},
+        )
+        _xmlcredential.add_element("username", username)
+        _xmlcredential.add_element("password", password)
     return _xmlcredentials
+
 
 def create_vt_selection_element(_xmlvtselection, vt_selection):
     """Generates an xml element with a selection of Vulnerability tests."""
     for vt_id, vt_values in vt_selection.items():
-        if vt_id != 'vt_groups' and isinstance(vt_values, dict):
-            _xmlvt = _xmlvtselection.add_element('vt_single',
-                                                 attrs={'id': vt_id})
+        if vt_id != "vt_groups" and isinstance(vt_values, dict):
+            _xmlvt = _xmlvtselection.add_element(
+                "vt_single", attrs={"id": vt_id}
+            )
             if vt_values:
                 for key, value in vt_values.items():
-                    _xmlvt.add_element('vt_value', value, attrs={'id': key})
-        elif vt_id == 'vt_groups' and isinstance(vt_values, list):
+                    _xmlvt.add_element("vt_value", value, attrs={"id": key})
+        elif vt_id == "vt_groups" and isinstance(vt_values, list):
             for group in vt_values:
                 _xmlvt = _xmlvtselection.add_element(
-                    'vt_group', attrs={'filter': group})
+                    "vt_group", attrs={"filter": group}
+                )
         else:
             raise InvalidArgument(
-                'It was not possible to add {} to the VTs '
-                'selection.'.format(vt_id))
+                "It was not possible to add {} to the VTs "
+                "selection.".format(vt_id)
+            )
 
     return _xmlvtselection
 
-class Osp(GvmProtocol):
 
+class Osp(GvmProtocol):
     @staticmethod
     def get_protocol_version():
         """Allow to determine the Open Scanner Protocol version.
@@ -97,12 +99,12 @@ class Osp(GvmProtocol):
 
     def get_version(self):
         """Get the version of the OSPD server which is connected to."""
-        cmd = XmlCommand('get_version')
+        cmd = XmlCommand("get_version")
         return self._send_xml_command(cmd)
 
     def help(self):
         """Get the help text."""
-        cmd = XmlCommand('help')
+        cmd = XmlCommand("help")
         return self._send_xml_command(cmd)
 
     def get_scans(self, scan_id=None, details=True, pop_results=False):
@@ -118,18 +120,18 @@ class Osp(GvmProtocol):
         Returns:
             str: Response from server.
         """
-        cmd = XmlCommand('get_scans')
+        cmd = XmlCommand("get_scans")
         if scan_id:
-            cmd.set_attribute('scan_id', scan_id)
+            cmd.set_attribute("scan_id", scan_id)
         if details:
-            cmd.set_attribute('details', '1')
+            cmd.set_attribute("details", "1")
         else:
-            cmd.set_attribute('details', '0')
+            cmd.set_attribute("details", "0")
 
         if pop_results:
-            cmd.set_attribute('pop_results', '1')
+            cmd.set_attribute("pop_results", "1")
         else:
-            cmd.set_attribute('pop_results', '0')
+            cmd.set_attribute("pop_results", "0")
 
         return self._send_xml_command(cmd)
 
@@ -143,15 +145,15 @@ class Osp(GvmProtocol):
             str: Response from server.
         """
         if not scan_id:
-            raise ValueError('delete_scan requires a scan_id element')
-        cmd = XmlCommand('delete_scan')
-        cmd.set_attribute('scan_id', scan_id)
+            raise ValueError("delete_scan requires a scan_id element")
+        cmd = XmlCommand("delete_scan")
+        cmd.set_attribute("scan_id", scan_id)
 
         return self._send_xml_command(cmd)
 
     def get_scanner_details(self):
         """Return scanner description and parameters."""
-        cmd = XmlCommand('get_scanner_details')
+        cmd = XmlCommand("get_scanner_details")
         return self._send_xml_command(cmd)
 
     def get_vts(self, vt_id=None):
@@ -164,15 +166,22 @@ class Osp(GvmProtocol):
         Returns:
             str: Response from server.
         """
-        cmd = XmlCommand('get_vts')
+        cmd = XmlCommand("get_vts")
         if vt_id:
-            cmd.set_attribute('vt_id', vt_id)
+            cmd.set_attribute("vt_id", vt_id)
 
         return self._send_xml_command(cmd)
 
-    def start_scan(self, scan_id=None, parallel=1, target=None,
-                   ports=None, targets=None, scanner_params=None,
-                   vt_selection=None):
+    def start_scan(
+        self,
+        scan_id=None,
+        parallel=1,
+        target=None,
+        ports=None,
+        targets=None,
+        scanner_params=None,
+        vt_selection=None,
+    ):
         """Start a new scan.
 
         Arguments:
@@ -227,44 +236,48 @@ class Osp(GvmProtocol):
                     'vt_groups': ['family=debian', 'family=general']
                 }
         """
-        cmd = XmlCommand('start_scan')
+        cmd = XmlCommand("start_scan")
 
         if scan_id:
-            cmd.set_attribute('scan_id', scan_id)
+            cmd.set_attribute("scan_id", scan_id)
 
-        cmd.set_attribute('parallel', str(parallel))
+        cmd.set_attribute("parallel", str(parallel))
 
         # Add <scanner_params> even if it is empty, since it is mandatory
-        _xmlscanparams = cmd.add_element('scanner_params')
+        _xmlscanparams = cmd.add_element("scanner_params")
         if scanner_params:
             _xmlscanparams.set_attributes(scanner_params)
 
         if targets:
-            _xmltargets = cmd.add_element('targets')
+            _xmltargets = cmd.add_element("targets")
             for target in targets:
-                _xmltarget = _xmltargets.add_element('target')
-                hosts = target.get('hosts')
-                ports = target.get('ports')
-                credentials = target.get('credentials')
-                _xmltarget.add_element('hosts', hosts)
-                _xmltarget.add_element('ports', ports)
+                _xmltarget = _xmltargets.add_element("target")
+                hosts = target.get("hosts")
+                ports = target.get("ports")
+                credentials = target.get("credentials")
+                _xmltarget.add_element("hosts", hosts)
+                _xmltarget.add_element("ports", ports)
                 if credentials:
-                    _xmlcredentials = _xmltarget.add_element('credentials')
-                    _xmlcredentials = (create_credentials_element(
-                        _xmlcredentials, credentials))
+                    _xmlcredentials = _xmltarget.add_element("credentials")
+                    _xmlcredentials = create_credentials_element(
+                        _xmlcredentials, credentials
+                    )
         # Check target as attribute for legacy mode compatibility. Deprecated.
         elif target:
-            cmd.set_attribute('target', target)
+            cmd.set_attribute("target", target)
             if ports:
-                cmd.set_attribute('ports', ports)
+                cmd.set_attribute("ports", ports)
         else:
-            raise RequiredArgument('start_scan requires a target. Please pass '
-                                   'targets parameter.')
+            raise RequiredArgument(
+                "start_scan requires a target. Please pass "
+                "targets parameter."
+            )
 
         if vt_selection:
-            _xmlvtselection = cmd.add_element('vt_selection')
+            _xmlvtselection = cmd.add_element("vt_selection")
             _xmlvtselection = create_vt_selection_element(
-                _xmlvtselection, vt_selection)
+                _xmlvtselection, vt_selection
+            )
 
         return self._send_xml_command(cmd)
 
@@ -278,9 +291,9 @@ class Osp(GvmProtocol):
             str: Response from server.
         """
         if not scan_id:
-            raise RequiredArgument('stop_scan requires a scan_id argument')
+            raise RequiredArgument("stop_scan requires a scan_id argument")
 
-        cmd = XmlCommand('stop_scan')
-        cmd.set_attribute('scan_id', scan_id)
+        cmd = XmlCommand("stop_scan")
+        cmd.set_attribute("scan_id", scan_id)
 
         return self._send_xml_command(cmd)

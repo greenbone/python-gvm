@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetConfigTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,7 +33,8 @@ class GmpGetConfigTestCase(unittest.TestCase):
         self.gmp.get_config('a1')
 
         self.connection.send.has_been_called_with(
-            '<get_configs config_id="a1" details="1"/>')
+            '<get_configs config_id="a1" details="1"/>'
+        )
 
     def test_fail_without_config_id(self):
         with self.assertRaises(GvmError):

@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetAssetsTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,21 +32,15 @@ class GmpGetAssetsTestCase(unittest.TestCase):
     def test_get_assets(self):
         self.gmp.get_assets('os')
 
-        self.connection.send.has_been_called_with(
-            '<get_assets type="os"/>'
-        )
+        self.connection.send.has_been_called_with('<get_assets type="os"/>')
 
         self.gmp.get_assets(asset_type='os')
 
-        self.connection.send.has_been_called_with(
-            '<get_assets type="os"/>'
-        )
+        self.connection.send.has_been_called_with('<get_assets type="os"/>')
 
         self.gmp.get_assets(asset_type='host')
 
-        self.connection.send.has_been_called_with(
-            '<get_assets type="host"/>'
-        )
+        self.connection.send.has_been_called_with('<get_assets type="host"/>')
 
     def test_get_assets_invalid_asset_type(self):
         with self.assertRaises(InvalidArgument):

@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetInfoListTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -39,21 +38,15 @@ class GmpGetInfoListTestCase(unittest.TestCase):
 
         self.gmp.get_info_list('cpe')
 
-        self.connection.send.has_been_called_with(
-            '<get_info type="CPE"/>'
-        )
+        self.connection.send.has_been_called_with('<get_info type="CPE"/>')
 
         self.gmp.get_info_list(info_type='cpe')
 
-        self.connection.send.has_been_called_with(
-            '<get_info type="CPE"/>'
-        )
+        self.connection.send.has_been_called_with('<get_info type="CPE"/>')
 
         self.gmp.get_info_list('cve')
 
-        self.connection.send.has_been_called_with(
-            '<get_info type="CVE"/>'
-        )
+        self.connection.send.has_been_called_with('<get_info type="CVE"/>')
 
         self.gmp.get_info_list('dfn_cert_adv')
 
@@ -63,21 +56,15 @@ class GmpGetInfoListTestCase(unittest.TestCase):
 
         self.gmp.get_info_list('ovaldef')
 
-        self.connection.send.has_been_called_with(
-            '<get_info type="OVALDEF"/>'
-        )
+        self.connection.send.has_been_called_with('<get_info type="OVALDEF"/>')
 
         self.gmp.get_info_list('nvt')
 
-        self.connection.send.has_been_called_with(
-            '<get_info type="NVT"/>'
-        )
+        self.connection.send.has_been_called_with('<get_info type="NVT"/>')
 
         self.gmp.get_info_list('allinfo')
 
-        self.connection.send.has_been_called_with(
-            '<get_info type="ALLINFO"/>'
-        )
+        self.connection.send.has_been_called_with('<get_info type="ALLINFO"/>')
 
     def test_get_info_list_missing_info_type(self):
         with self.assertRaises(RequiredArgument):

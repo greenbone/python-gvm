@@ -23,17 +23,14 @@ from gvm.protocols.ospv1 import Osp
 
 from .. import MockConnection
 
+
 class OSPGetScanTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.osp = Osp(self.connection)
 
     def test_get_scans_with_params(self):
-        self.osp.get_scans(
-            scan_id='123-456',
-            details=False,
-            pop_results=False
-        )
+        self.osp.get_scans(scan_id='123-456', details=False, pop_results=False)
 
         self.connection.send.has_been_called_with(
             '<get_scans scan_id="123-456" details="0" pop_results="0"/>'
@@ -45,6 +42,7 @@ class OSPGetScanTestCase(unittest.TestCase):
         self.connection.send.has_been_called_with(
             '<get_scans details="1" pop_results="0"/>'
         )
+
 
 if __name__ == '__main__':
     unittest.main()

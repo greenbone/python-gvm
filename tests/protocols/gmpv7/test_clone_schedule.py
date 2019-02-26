@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpCloneScheduleTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,9 +33,7 @@ class GmpCloneScheduleTestCase(unittest.TestCase):
         self.gmp.clone_schedule('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_schedule>'
-            '<copy>a1</copy>'
-            '</create_schedule>'
+            '<create_schedule>' '<copy>a1</copy>' '</create_schedule>'
         )
 
     def test_missing_id(self):

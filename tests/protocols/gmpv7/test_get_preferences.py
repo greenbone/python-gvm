@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetPreferencesTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,9 +31,7 @@ class GmpGetPreferencesTestCase(unittest.TestCase):
     def test_get_preferences(self):
         self.gmp.get_preferences()
 
-        self.connection.send.has_been_called_with(
-            '<get_preferences/>'
-        )
+        self.connection.send.has_been_called_with('<get_preferences/>')
 
     def test_get_preferences_with_nvt_oid(self):
         self.gmp.get_preferences(nvt_oid='oid')

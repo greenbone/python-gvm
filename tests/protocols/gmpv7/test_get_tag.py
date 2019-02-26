@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetTagTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,15 +32,11 @@ class GmpGetTagTestCase(unittest.TestCase):
     def test_get_tag(self):
         self.gmp.get_tag('t1')
 
-        self.connection.send.has_been_called_with(
-            '<get_tags tag_id="t1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_tags tag_id="t1"/>')
 
         self.gmp.get_tag(tag_id='t1')
 
-        self.connection.send.has_been_called_with(
-            '<get_tags tag_id="t1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_tags tag_id="t1"/>')
 
     def test_get_tag_missing_tag_id(self):
         with self.assertRaises(RequiredArgument):

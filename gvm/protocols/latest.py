@@ -37,4 +37,4 @@ Exports:
 from .gmpv7 import Gmp
 from .ospv1 import Osp
 
-__all__ = ['Gmp', 'Osp']
+__all__ = ["Gmp", "Osp"]

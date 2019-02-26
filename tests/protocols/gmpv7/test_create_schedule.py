@@ -25,38 +25,26 @@ from .. import MockConnection
 
 
 class GmpCreateScheduleTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_create_schedule(self):
-        self.gmp.create_schedule(
-            name='foo',
-        )
+        self.gmp.create_schedule(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<create_schedule>'
-            '<name>foo</name>'
-            '</create_schedule>'
+            '<create_schedule>' '<name>foo</name>' '</create_schedule>'
         )
 
     def test_create_schedule_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_schedule(
-                name=None,
-            )
+            self.gmp.create_schedule(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_schedule(
-                name='',
-            )
+            self.gmp.create_schedule(name='')
 
     def test_create_schedule_with_comment(self):
-        self.gmp.create_schedule(
-            name='foo',
-            comment='bar'
-        )
+        self.gmp.create_schedule(name='foo', comment='bar')
 
         self.connection.send.has_been_called_with(
             '<create_schedule>'
@@ -259,7 +247,6 @@ class GmpCreateScheduleTestCase(unittest.TestCase):
                 first_time_year=2020,
             )
 
-
     def test_create_schedule_with_first_time(self):
         self.gmp.create_schedule(
             name='foo',
@@ -283,50 +270,34 @@ class GmpCreateScheduleTestCase(unittest.TestCase):
             '</create_schedule>'
         )
 
-
     def test_create_schedule_invalid_duration(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(
-                name='foo',
-                duration='bar',
-                duration_unit='day',
+                name='foo', duration='bar', duration_unit='day'
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(
-                name='foo',
-                duration=0,
-                duration_unit='day',
+                name='foo', duration=0, duration_unit='day'
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(
-                name='foo',
-                duration=-1,
-                duration_unit='day',
+                name='foo', duration=-1, duration_unit='day'
             )
 
     def test_create_schedule_with_duration_missing_unit(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_schedule(
-                name='foo',
-                duration=1,
-            )
+            self.gmp.create_schedule(name='foo', duration=1)
 
     def test_create_schedule_with_duration_invalid_unit(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(
-                name='foo',
-                duration=1,
-                duration_unit='foo'
+                name='foo', duration=1, duration_unit='foo'
             )
 
     def test_create_schedule_with_duration(self):
-        self.gmp.create_schedule(
-            name='foo',
-            duration=1,
-            duration_unit='day',
-        )
+        self.gmp.create_schedule(name='foo', duration=1, duration_unit='day')
 
         self.connection.send.has_been_called_with(
             '<create_schedule>'
@@ -339,48 +310,26 @@ class GmpCreateScheduleTestCase(unittest.TestCase):
 
     def test_create_schedule_with_period_missing_unit(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_schedule(
-                name='foo',
-                period=1,
-            )
+            self.gmp.create_schedule(name='foo', period=1)
 
     def test_create_schedule_with_period_invalid_unit(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_schedule(
-                name='foo',
-                period=1,
-                period_unit='foo'
-            )
+            self.gmp.create_schedule(name='foo', period=1, period_unit='foo')
 
     def test_create_schedule_invalid_period(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(
-                name='foo',
-                period='foo',
-                period_unit='day'
+                name='foo', period='foo', period_unit='day'
             )
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_schedule(
-                name='foo',
-                period=0,
-                period_unit='day'
-            )
+            self.gmp.create_schedule(name='foo', period=0, period_unit='day')
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_schedule(
-                name='foo',
-                period=-1,
-                period_unit='day'
-            )
-
+            self.gmp.create_schedule(name='foo', period=-1, period_unit='day')
 
     def test_create_schedule_with_period(self):
-        self.gmp.create_schedule(
-            name='foo',
-            period=1,
-            period_unit='day',
-        )
+        self.gmp.create_schedule(name='foo', period=1, period_unit='day')
 
         self.connection.send.has_been_called_with(
             '<create_schedule>'
@@ -392,10 +341,7 @@ class GmpCreateScheduleTestCase(unittest.TestCase):
         )
 
     def test_create_schedule_with_timezone(self):
-        self.gmp.create_schedule(
-            name='foo',
-            timezone='foo',
-        )
+        self.gmp.create_schedule(name='foo', timezone='foo')
 
         self.connection.send.has_been_called_with(
             '<create_schedule>'

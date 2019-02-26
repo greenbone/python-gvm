@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpAuthenticateTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -62,7 +61,8 @@ class GmpAuthenticateTestCase(unittest.TestCase):
 
     def test_authentication_failure(self):
         self.connection.read.return_value(
-            '<authentication_response status="400" status_text="Auth failed"/>')
+            '<authentication_response status="400" status_text="Auth failed"/>'
+        )
 
         self.assertFalse(self.gmp.is_authenticated())
 

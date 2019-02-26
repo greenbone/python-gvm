@@ -23,6 +23,7 @@ from gvm.protocols.ospv1 import Osp
 
 from .. import MockConnection
 
+
 class OSPStartScanTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
@@ -42,10 +43,14 @@ class OSPStartScanTestCase(unittest.TestCase):
         _target2['hosts'] = '192.168.10.1'
         _target2['ports'] = '443'
         _credential1 = dict()
-        _credential1 = {'smb': {'username': 'username',
-                               'password': 'pass',
-                               'port': 'port',
-                               'type': 'type'}}
+        _credential1 = {
+            'smb': {
+                'username': 'username',
+                'password': 'pass',
+                'port': 'port',
+                'type': 'type',
+            }
+        }
         _target2['credentials'] = _credential1
         targets.append(_target2)
 
@@ -58,7 +63,7 @@ class OSPStartScanTestCase(unittest.TestCase):
             parallel=10,
             scanner_params=scanner_params,
             targets=targets,
-            vt_selection=vts
+            vt_selection=vts,
         )
 
         self.connection.send.has_been_called_with(
@@ -82,14 +87,11 @@ class OSPStartScanTestCase(unittest.TestCase):
 
     def test_start_scan_without_target(self):
         with self.assertRaises(RequiredArgument):
-             self.osp.start_scan()
+            self.osp.start_scan()
 
     def test_start_scan_legacy(self):
         self.osp.start_scan(
-            scan_id='123-456',
-            parallel=10,
-            target="localhost",
-            ports="22"
+            scan_id='123-456', parallel=10, target="localhost", ports="22"
         )
         self.connection.send.has_been_called_with(
             '<start_scan scan_id="123-456" parallel="10" '

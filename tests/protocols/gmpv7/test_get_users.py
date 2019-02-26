@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetUserTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,9 +31,7 @@ class GmpGetUserTestCase(unittest.TestCase):
     def test_get_users(self):
         self.gmp.get_users()
 
-        self.connection.send.has_been_called_with(
-            '<get_users/>'
-        )
+        self.connection.send.has_been_called_with('<get_users/>')
 
     def test_get_users_with_filter(self):
         self.gmp.get_users(filter='foo=bar')
@@ -46,9 +43,7 @@ class GmpGetUserTestCase(unittest.TestCase):
     def test_get_users_with_filter_id(self):
         self.gmp.get_users(filter_id='f1')
 
-        self.connection.send.has_been_called_with(
-            '<get_users filt_id="f1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_users filt_id="f1"/>')
 
 
 if __name__ == '__main__':

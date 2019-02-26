@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetSettingTestCase(unittest.TestCase):
 
+class GmpGetSettingTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,7 +33,8 @@ class GmpGetSettingTestCase(unittest.TestCase):
         self.gmp.get_setting('id')
 
         self.connection.send.has_been_called_with(
-            '<get_settings setting_id="id"/>')
+            '<get_settings setting_id="id"/>'
+        )
 
     def test_get_setting_missing_setting_id(self):
         with self.assertRaises(RequiredArgument):

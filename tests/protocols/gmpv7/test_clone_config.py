@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpCloneConfigTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,9 +33,7 @@ class GmpCloneConfigTestCase(unittest.TestCase):
         self.gmp.clone_config('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_config>'
-            '<copy>a1</copy>'
-            '</create_config>'
+            '<create_config>' '<copy>a1</copy>' '</create_config>'
         )
 
     def test_missing_id(self):

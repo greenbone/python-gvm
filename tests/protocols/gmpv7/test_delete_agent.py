@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpDeleteAgentTestCase(unittest.TestCase):
 
+class GmpDeleteAgentTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,13 +33,15 @@ class GmpDeleteAgentTestCase(unittest.TestCase):
         self.gmp.delete_agent('a1')
 
         self.connection.send.has_been_called_with(
-            '<delete_agent agent_id="a1" ultimate="0"/>')
+            '<delete_agent agent_id="a1" ultimate="0"/>'
+        )
 
     def test_delete_ultimate(self):
         self.gmp.delete_agent('a1', ultimate=True)
 
         self.connection.send.has_been_called_with(
-            '<delete_agent agent_id="a1" ultimate="1"/>')
+            '<delete_agent agent_id="a1" ultimate="1"/>'
+        )
 
     def test_missing_alert_id(self):
         with self.assertRaises(GvmError):

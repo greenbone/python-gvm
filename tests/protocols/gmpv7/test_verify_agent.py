@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpVerifyAgentTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,7 +33,8 @@ class GmpVerifyAgentTestCase(unittest.TestCase):
         self.gmp.verify_agent('a1')
 
         self.connection.send.has_been_called_with(
-            '<verify_agent agent_id="a1"/>')
+            '<verify_agent agent_id="a1"/>'
+        )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

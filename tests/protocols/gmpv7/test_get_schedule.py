@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpGetScheduleTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)

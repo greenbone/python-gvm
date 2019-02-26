@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetSchedulesTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,9 +31,7 @@ class GmpGetSchedulesTestCase(unittest.TestCase):
     def test_get_schedules(self):
         self.gmp.get_schedules()
 
-        self.connection.send.has_been_called_with(
-            '<get_schedules/>'
-        )
+        self.connection.send.has_been_called_with('<get_schedules/>')
 
     def test_get_schedules_with_filter(self):
         self.gmp.get_schedules(filter='foo=bar')
@@ -53,28 +50,20 @@ class GmpGetSchedulesTestCase(unittest.TestCase):
     def test_get_schedules_with_trash(self):
         self.gmp.get_schedules(trash=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_schedules trash="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_schedules trash="1"/>')
 
         self.gmp.get_schedules(trash=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_schedules trash="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_schedules trash="0"/>')
 
     def test_get_schedules_with_tasks(self):
         self.gmp.get_schedules(tasks=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_schedules tasks="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_schedules tasks="1"/>')
 
         self.gmp.get_schedules(tasks=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_schedules tasks="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_schedules tasks="0"/>')
 
 
 if __name__ == '__main__':

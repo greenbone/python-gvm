@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpDeleteReportTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,7 +33,8 @@ class GmpDeleteReportTestCase(unittest.TestCase):
         self.gmp.delete_report('a1')
 
         self.connection.send.has_been_called_with(
-            '<delete_report report_id="a1"/>')
+            '<delete_report report_id="a1"/>'
+        )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

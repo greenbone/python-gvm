@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpCloneNoteTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,9 +33,7 @@ class GmpCloneNoteTestCase(unittest.TestCase):
         self.gmp.clone_note('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_note>'
-            '<copy>a1</copy>'
-            '</create_note>'
+            '<create_note>' '<copy>a1</copy>' '</create_note>'
         )
 
     def test_missing_id(self):

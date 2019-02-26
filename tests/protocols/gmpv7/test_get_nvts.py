@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetNvtsTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,34 +31,25 @@ class GmpGetNvtsTestCase(unittest.TestCase):
     def test_get_nvts_simple(self):
         self.gmp.get_nvts()
 
-        self.connection.send.has_been_called_with(
-            '<get_nvts/>')
+        self.connection.send.has_been_called_with('<get_nvts/>')
 
     def test_get_nvts_with_details(self):
         self.gmp.get_nvts(details=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_nvts details="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_nvts details="1"/>')
 
         self.gmp.get_nvts(details=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_nvts details="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_nvts details="0"/>')
 
     def test_get_nvts_with_preferences(self):
         self.gmp.get_nvts(preferences=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_nvts preferences="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_nvts preferences="1"/>')
 
         self.gmp.get_nvts(preferences=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_nvts preferences="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_nvts preferences="0"/>')
 
     def test_get_nvts_with_preference_count(self):
         self.gmp.get_nvts(preference_count=True)
@@ -71,15 +61,11 @@ class GmpGetNvtsTestCase(unittest.TestCase):
     def test_get_nvts_with_timeout(self):
         self.gmp.get_nvts(timeout=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_nvts timeout="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_nvts timeout="1"/>')
 
         self.gmp.get_nvts(timeout=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_nvts timeout="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_nvts timeout="0"/>')
 
     def test_get_nvts_with_config_id(self):
         self.gmp.get_nvts(config_id='config_id')
@@ -98,9 +84,7 @@ class GmpGetNvtsTestCase(unittest.TestCase):
     def test_get_nvts_with_family(self):
         self.gmp.get_nvts(family='family')
 
-        self.connection.send.has_been_called_with(
-            '<get_nvts family="family"/>'
-        )
+        self.connection.send.has_been_called_with('<get_nvts family="family"/>')
 
     def test_get_nvts_with_sort_order(self):
         self.gmp.get_nvts(sort_order='sort_order')

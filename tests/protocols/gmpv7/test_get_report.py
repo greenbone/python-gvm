@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetReportTestCase(unittest.TestCase):
 
+class GmpGetReportTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -40,25 +40,29 @@ class GmpGetReportTestCase(unittest.TestCase):
         self.gmp.get_report(report_id='r1', filter='name=foo')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" filter="name=foo"/>')
+            '<get_reports report_id="r1" filter="name=foo"/>'
+        )
 
     def test_get_report_with_filter_id(self):
         self.gmp.get_report(report_id='r1', filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" filt_id="f1"/>')
+            '<get_reports report_id="r1" filt_id="f1"/>'
+        )
 
     def test_get_report_with_report_format_id(self):
         self.gmp.get_report(report_id='r1', report_format_id='bar')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" format_id="bar"/>')
+            '<get_reports report_id="r1" format_id="bar"/>'
+        )
 
     def test_get_report_with_delta_report_id(self):
         self.gmp.get_report(report_id='r1', delta_report_id='r2')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" delta_report_id="r2"/>')
+            '<get_reports report_id="r1" delta_report_id="r2"/>'
+        )
 
 
 if __name__ == '__main__':

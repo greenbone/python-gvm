@@ -22,8 +22,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetFeedsTestCase(unittest.TestCase):
 
+class GmpGetFeedsTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -31,9 +31,7 @@ class GmpGetFeedsTestCase(unittest.TestCase):
     def test_get_feeds(self):
         self.gmp.get_feeds()
 
-        self.connection.send.has_been_called_with(
-            '<get_feeds/>'
-        )
+        self.connection.send.has_been_called_with('<get_feeds/>')
 
 
 if __name__ == '__main__':

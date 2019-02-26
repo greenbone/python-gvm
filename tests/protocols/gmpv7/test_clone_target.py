@@ -23,6 +23,7 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
+
 class GmpCloneTargetCommandTestCase(unittest.TestCase):
 
     TARGET_ID = '00000000-0000-0000-0000-000000000000'
