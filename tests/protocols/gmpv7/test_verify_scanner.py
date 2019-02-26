@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpVerifyScannerTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,7 +33,8 @@ class GmpVerifyScannerTestCase(unittest.TestCase):
         self.gmp.verify_scanner('a1')
 
         self.connection.send.has_been_called_with(
-            '<verify_scanner scanner_id="a1"/>')
+            '<verify_scanner scanner_id="a1"/>'
+        )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

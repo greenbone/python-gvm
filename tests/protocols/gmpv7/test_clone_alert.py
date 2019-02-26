@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpCloneAlertTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,9 +33,7 @@ class GmpCloneAlertTestCase(unittest.TestCase):
         self.gmp.clone_alert('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_alert>'
-            '<copy>a1</copy>'
-            '</create_alert>'
+            '<create_alert>' '<copy>a1</copy>' '</create_alert>'
         )
 
     def test_missing_id(self):

@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpCreateTagTestCase(unittest.TestCase):
 
+class GmpCreateTagTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,54 +32,36 @@ class GmpCreateTagTestCase(unittest.TestCase):
     def test_create_tag_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name=None,
-                resource_id='foo',
-                resource_type='task',
+                name=None, resource_id='foo', resource_type='task'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name='',
-                resource_id='foo',
-                resource_type='task',
+                name='', resource_id='foo', resource_type='task'
             )
 
     def test_create_tag_missing_resource_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name='foo',
-                resource_id=None,
-                resource_type='task',
+                name='foo', resource_id=None, resource_type='task'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name='foo',
-                resource_id='',
-                resource_type='task',
+                name='foo', resource_id='', resource_type='task'
             )
 
     def test_create_tag_missing_resource_type(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name='foo',
-                resource_id='foo',
-                resource_type=None,
+                name='foo', resource_id='foo', resource_type=None
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_tag(
-                name='foo',
-                resource_id='foo',
-                resource_type='',
-            )
+            self.gmp.create_tag(name='foo', resource_id='foo', resource_type='')
 
     def test_create_tag(self):
-        self.gmp.create_tag(
-            name='foo',
-            resource_id='foo',
-            resource_type='task',
-        )
+        self.gmp.create_tag(name='foo', resource_id='foo', resource_type='task')
 
         self.connection.send.has_been_called_with(
             '<create_tag>'
@@ -92,10 +74,7 @@ class GmpCreateTagTestCase(unittest.TestCase):
 
     def test_create_tag_with_comment(self):
         self.gmp.create_tag(
-            name='foo',
-            resource_id='foo',
-            resource_type='task',
-            comment='bar',
+            name='foo', resource_id='foo', resource_type='task', comment='bar'
         )
 
         self.connection.send.has_been_called_with(
@@ -110,10 +89,7 @@ class GmpCreateTagTestCase(unittest.TestCase):
 
     def test_create_tag_with_value(self):
         self.gmp.create_tag(
-            name='foo',
-            resource_id='foo',
-            resource_type='task',
-            value='bar',
+            name='foo', resource_id='foo', resource_type='task', value='bar'
         )
 
         self.connection.send.has_been_called_with(
@@ -128,10 +104,7 @@ class GmpCreateTagTestCase(unittest.TestCase):
 
     def test_create_tag_with_active(self):
         self.gmp.create_tag(
-            name='foo',
-            resource_id='foo',
-            resource_type='task',
-            active=True,
+            name='foo', resource_id='foo', resource_type='task', active=True
         )
 
         self.connection.send.has_been_called_with(
@@ -145,10 +118,7 @@ class GmpCreateTagTestCase(unittest.TestCase):
         )
 
         self.gmp.create_tag(
-            name='foo',
-            resource_id='foo',
-            resource_type='task',
-            active=False,
+            name='foo', resource_id='foo', resource_type='task', active=False
         )
 
         self.connection.send.has_been_called_with(

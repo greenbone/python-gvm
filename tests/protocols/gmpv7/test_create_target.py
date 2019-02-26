@@ -25,17 +25,12 @@ from .. import MockConnection
 
 
 class GMPCreateTargetCommandTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_create_target_with_make_unique(self):
-        self.gmp.create_target(
-            'foo',
-            make_unique=True,
-            hosts=['foo', 'bar'],
-        )
+        self.gmp.create_target('foo', make_unique=True, hosts=['foo', 'bar'])
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -44,11 +39,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
             '</create_target>'
         )
 
-        self.gmp.create_target(
-            'foo',
-            make_unique=False,
-            hosts=['foo', 'bar'],
-        )
+        self.gmp.create_target('foo', make_unique=False, hosts=['foo', 'bar'])
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -59,28 +50,16 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
 
     def test_create_target_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_target(
-                None,
-                hosts=['foo'],
-            )
+            self.gmp.create_target(None, hosts=['foo'])
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_target(
-                name=None,
-                hosts=['foo'],
-            )
+            self.gmp.create_target(name=None, hosts=['foo'])
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_target(
-                '',
-                hosts=['foo'],
-            )
+            self.gmp.create_target('', hosts=['foo'])
 
     def test_create_target_with_asset_hosts_filter(self):
-        self.gmp.create_target(
-            'foo',
-            asset_hosts_filter='name=foo',
-        )
+        self.gmp.create_target('foo', asset_hosts_filter='name=foo')
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -91,16 +70,10 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
 
     def test_create_target_missing_hosts(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_target(
-                name='foo'
-            )
+            self.gmp.create_target(name='foo')
 
     def test_create_target_with_comment(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            comment='bar',
-        )
+        self.gmp.create_target('foo', hosts=['foo'], comment='bar')
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -112,9 +85,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
 
     def test_create_target_with_exclude_hosts(self):
         self.gmp.create_target(
-            'foo',
-            hosts=['foo', 'bar'],
-            exclude_hosts=['bar', 'ipsum'],
+            'foo', hosts=['foo', 'bar'], exclude_hosts=['bar', 'ipsum']
         )
 
         self.connection.send.has_been_called_with(
@@ -126,11 +97,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
         )
 
     def test_create_target_with_ssh_credential(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            ssh_credential_id='c1',
-        )
+        self.gmp.create_target('foo', hosts=['foo'], ssh_credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -159,11 +126,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
         )
 
     def test_create_target_with_smb_credential_id(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            smb_credential_id='c1',
-        )
+        self.gmp.create_target('foo', hosts=['foo'], smb_credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -174,11 +137,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
         )
 
     def test_create_target_with_esxi_credential_id(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            esxi_credential_id='c1',
-        )
+        self.gmp.create_target('foo', hosts=['foo'], esxi_credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -189,11 +148,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
         )
 
     def test_create_target_with_snmp_credential_id(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            snmp_credential_id='c1',
-        )
+        self.gmp.create_target('foo', hosts=['foo'], snmp_credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -204,11 +159,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
         )
 
     def test_create_target_with_alive_tests(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            alive_tests='ICMP Ping',
-        )
+        self.gmp.create_target('foo', hosts=['foo'], alive_tests='ICMP Ping')
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -220,18 +171,10 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
 
     def test_create_target_invalid_alive_tests(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_target(
-                'foo',
-                hosts=['foo'],
-                alive_tests='foo',
-            )
+            self.gmp.create_target('foo', hosts=['foo'], alive_tests='foo')
 
     def test_create_target_with_reverse_lookup_only(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            reverse_lookup_only=True,
-        )
+        self.gmp.create_target('foo', hosts=['foo'], reverse_lookup_only=True)
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -241,11 +184,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
             '</create_target>'
         )
 
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            reverse_lookup_only=False,
-        )
+        self.gmp.create_target('foo', hosts=['foo'], reverse_lookup_only=False)
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -256,11 +195,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
         )
 
     def test_create_target_with_reverse_lookup_unify(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            reverse_lookup_unify=True,
-        )
+        self.gmp.create_target('foo', hosts=['foo'], reverse_lookup_unify=True)
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -270,11 +205,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
             '</create_target>'
         )
 
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            reverse_lookup_unify=False,
-        )
+        self.gmp.create_target('foo', hosts=['foo'], reverse_lookup_unify=False)
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -285,11 +216,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
         )
 
     def test_create_target_with_port_range(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            port_range='bar',
-        )
+        self.gmp.create_target('foo', hosts=['foo'], port_range='bar')
 
         self.connection.send.has_been_called_with(
             '<create_target>'
@@ -300,11 +227,7 @@ class GMPCreateTargetCommandTestCase(unittest.TestCase):
         )
 
     def test_create_target_with_port_list_id(self):
-        self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            port_list_id='pl1',
-        )
+        self.gmp.create_target('foo', hosts=['foo'], port_list_id='pl1')
 
         self.connection.send.has_been_called_with(
             '<create_target>'

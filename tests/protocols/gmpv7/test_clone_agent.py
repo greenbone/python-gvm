@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpCloneAgentTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,9 +33,7 @@ class GmpCloneAgentTestCase(unittest.TestCase):
         self.gmp.clone_agent('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_agent>'
-            '<copy>a1</copy>'
-            '</create_agent>'
+            '<create_agent>' '<copy>a1</copy>' '</create_agent>'
         )
 
     def test_missing_id(self):

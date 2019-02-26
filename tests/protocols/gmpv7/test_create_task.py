@@ -26,17 +26,13 @@ from .. import MockConnection
 
 
 class GMPCreateTaskCommandTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_create_task(self):
         self.gmp.create_task(
-            name='foo',
-            config_id='c1',
-            target_id='t1',
-            scanner_id='s1',
+            name='foo', config_id='c1', target_id='t1', scanner_id='s1'
         )
 
         self.connection.send.has_been_called_with(
@@ -51,69 +47,45 @@ class GMPCreateTaskCommandTestCase(unittest.TestCase):
     def test_create_task_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_task(
-                name=None,
-                config_id='c1',
-                target_id='t1',
-                scanner_id='s1',
+                name=None, config_id='c1', target_id='t1', scanner_id='s1'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_task(
-                name='',
-                config_id='c1',
-                target_id='t1',
-                scanner_id='s1',
+                name='', config_id='c1', target_id='t1', scanner_id='s1'
             )
 
     def test_create_task_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_task(
-                name='foo',
-                config_id=None,
-                target_id='t1',
-                scanner_id='s1',
+                name='foo', config_id=None, target_id='t1', scanner_id='s1'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_task(
-                name='foo',
-                config_id='',
-                target_id='t1',
-                scanner_id='s1',
+                name='foo', config_id='', target_id='t1', scanner_id='s1'
             )
 
     def test_create_task_missing_target_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_task(
-                name='foo',
-                config_id='c1',
-                target_id=None,
-                scanner_id='s1',
+                name='foo', config_id='c1', target_id=None, scanner_id='s1'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_task(
-                name='foo',
-                config_id='c1',
-                target_id='',
-                scanner_id='s1',
+                name='foo', config_id='c1', target_id='', scanner_id='s1'
             )
 
     def test_create_task_missing_scanner_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_task(
-                name='foo',
-                config_id='c1',
-                target_id='t1',
-                scanner_id=None,
+                name='foo', config_id='c1', target_id='t1', scanner_id=None
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_task(
-                name='foo',
-                config_id='c1',
-                target_id='t1',
-                scanner_id='',
+                name='foo', config_id='c1', target_id='t1', scanner_id=''
             )
 
     def test_create_task_with_comment(self):
@@ -145,7 +117,7 @@ class GMPCreateTaskCommandTestCase(unittest.TestCase):
                 config_id='c1',
                 target_id='t1',
                 scanner_id='s1',
-                alert_ids='a1', # will be removed in future
+                alert_ids='a1',  # will be removed in future
             )
 
             self.assertEqual(len(w), 1)
@@ -381,10 +353,7 @@ class GMPCreateTaskCommandTestCase(unittest.TestCase):
             config_id='c1',
             target_id='t1',
             scanner_id='s1',
-            preferences={
-                'foo': 'bar',
-                'lorem': 'ipsum',
-            },
+            preferences={'foo': 'bar', 'lorem': 'ipsum'},
         )
 
         self.connection.send.has_been_called_with(

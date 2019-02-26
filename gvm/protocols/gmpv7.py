@@ -41,64 +41,59 @@ logger = logging.getLogger(__name__)
 PROTOCOL_VERSION = (7,)
 
 FILTER_TYPES = (
-    'agent',
-    'alert',
-    'asset',
-    'config',
-    'credential',
-    'filter',
-    'group',
-    'note',
-    'override',
-    'permission',
-    'port_list',
-    'report',
-    'report_format',
-    'result',
-    'role',
-    'schedule',
-    'secinfo',
-    'tag',
-    'target',
-    'task',
-    'user',
+    "agent",
+    "alert",
+    "asset",
+    "config",
+    "credential",
+    "filter",
+    "group",
+    "note",
+    "override",
+    "permission",
+    "port_list",
+    "report",
+    "report_format",
+    "result",
+    "role",
+    "schedule",
+    "secinfo",
+    "tag",
+    "target",
+    "task",
+    "user",
 )
 
 TIME_UNITS = (
-    'second',
-    'minute',
-    'hour',
-    'day',
-    'week',
-    'month',
-    'year',
-    'decade',
+    "second",
+    "minute",
+    "hour",
+    "day",
+    "week",
+    "month",
+    "year",
+    "decade",
 )
 
 ALIVE_TESTS = (
-    'Consider Alive',
-    'ICMP, TCP-ACK Service & ARP Ping',
-    'TCP-ACK Service & ARP Ping',
-    'ICMP & ARP Ping',
-    'ICMP & TCP-ACK Service Ping',
-    'ARP Ping',
-    'TCP-ACK Service Ping',
-    'TCP-SYN Service Ping',
-    'ICMP Ping',
-    'Scan Config Default',
+    "Consider Alive",
+    "ICMP, TCP-ACK Service & ARP Ping",
+    "TCP-ACK Service & ARP Ping",
+    "ICMP & ARP Ping",
+    "ICMP & TCP-ACK Service Ping",
+    "ARP Ping",
+    "TCP-ACK Service Ping",
+    "TCP-SYN Service Ping",
+    "ICMP Ping",
+    "Scan Config Default",
 )
 
-CREDENTIAL_TYPES = (
-    'cc',
-    'snmp',
-    'up',
-    'usk',
-)
+CREDENTIAL_TYPES = ("cc", "snmp", "up", "usk")
 
-OSP_SCANNER_TYPE = '1'
-OPENVAS_SCANNER_TYPE = '2'
-CVE_SCANNER_TYPE = '3'
-GMP_SCANNER_TYPE = '4' # formerly slave scanner
+OSP_SCANNER_TYPE = "1"
+OPENVAS_SCANNER_TYPE = "2"
+CVE_SCANNER_TYPE = "3"
+GMP_SCANNER_TYPE = "4"  # formerly slave scanner
 
 SCANNER_TYPES = (
     OSP_SCANNER_TYPE,
@@ -107,77 +102,50 @@ SCANNER_TYPES = (
     GMP_SCANNER_TYPE,
 )
 
-ALERT_EVENTS = (
-    'Task run status changed',
-)
+ALERT_EVENTS = ("Task run status changed",)
 
-ALERT_EVENTS_SECINFO = (
-    'Updated SecInfo arrived',
-    'New SecInfo arrived'
-)
+ALERT_EVENTS_SECINFO = ("Updated SecInfo arrived", "New SecInfo arrived")
 
 ALERT_CONDITIONS = (
-    'Always',
-    'Severity at least',
-    'Filter count changed',
-    'Filter count at least',
+    "Always",
+    "Severity at least",
+    "Filter count changed",
+    "Filter count at least",
 )
 
-ALERT_CONDITIONS_SECINFO = (
-    'Always',
-)
+ALERT_CONDITIONS_SECINFO = ("Always",)
 
 ALERT_METHODS = (
-    'SCP',
-    'Send',
-    'SMB',
-    'SNMP',
-    'Syslog',
-    'Email',
-    'Start Task',
-    'HTTP Get',
-    'Sourcefire Connector',
-    'verinice Connector',
+    "SCP",
+    "Send",
+    "SMB",
+    "SNMP",
+    "Syslog",
+    "Email",
+    "Start Task",
+    "HTTP Get",
+    "Sourcefire Connector",
+    "verinice Connector",
 )
 
-ALERT_METHODS_SECINFO = (
-    'SCP',
-    'Send',
-    'SMB',
-    'SNMP',
-    'Syslog',
-    'Email',
-)
+ALERT_METHODS_SECINFO = ("SCP", "Send", "SMB", "SNMP", "Syslog", "Email")
 
-ASSET_TYPES = (
-    'host',
-    'os',
-)
+ASSET_TYPES = ("host", "os")
 
 INFO_TYPES = (
-    'CERT_BUND_ADV',
-    'CPE',
-    'CVE',
-    'DFN_CERT_ADV',
-    'OVALDEF',
-    'NVT',
-    'ALLINFO',
+    "CERT_BUND_ADV",
+    "CPE",
+    "CVE",
+    "DFN_CERT_ADV",
+    "OVALDEF",
+    "NVT",
+    "ALLINFO",
 )
 
-THREAD_TYPES = (
-    'High',
-    'Medium',
-    'Low',
-    'Alarm',
-    'Log',
-    'Debug',
-)
+THREAD_TYPES = ("High", "Medium", "Low", "Alarm", "Log", "Debug")
 
-SUBJECT_TYPES = (
-    'user',
-    'group',
-    'role',
-)
+SUBJECT_TYPES = ("user", "group", "role")
+
 
 def _check_command_status(xml):
     """Check gmp response
@@ -192,48 +160,50 @@ def _check_command_status(xml):
     """
 
     if xml is 0 or xml is None:
-        logger.error('XML Command is empty')
+        logger.error("XML Command is empty")
         return False
 
     try:
         root = etree.XML(xml, parser=create_parser())
-        status = root.attrib['status']
-        return status is not None and status[0] == '2'
+        status = root.attrib["status"]
+        return status is not None and status[0] == "2"
 
     except etree.Error as e:
-        logger.error('etree.XML(xml): %s', e)
+        logger.error("etree.XML(xml): %s", e)
         return False
 
 
 def _to_bool(value):
-    return '1' if value else '0'
+    return "1" if value else "0"
 
 
 def _to_base64(value):
-    return base64.b64encode(value.encode('utf-8'))
+    return base64.b64encode(value.encode("utf-8"))
+
 
 def _to_comma_list(value):
-    return ','.join(value)
+    return ",".join(value)
 
 
 def _add_filter(cmd, filter, filter_id):
     if filter:
-        cmd.set_attribute('filter', filter)
+        cmd.set_attribute("filter", filter)
 
     if filter_id:
-        cmd.set_attribute('filt_id', filter_id)
+        cmd.set_attribute("filt_id", filter_id)
+
 
 def _check_event(event, condition, method):
     if event in ALERT_EVENTS:
         if condition not in ALERT_CONDITIONS:
-            raise InvalidArgument('Invalid condition for event')
+            raise InvalidArgument("Invalid condition for event")
         if method not in ALERT_METHODS:
-            raise InvalidArgument('Invalid method for event')
+            raise InvalidArgument("Invalid method for event")
     elif event in ALERT_EVENTS_SECINFO:
         if condition not in ALERT_CONDITIONS_SECINFO:
-            raise InvalidArgument('Invalid condition for event')
+            raise InvalidArgument("Invalid condition for event")
         if method not in ALERT_METHODS_SECINFO:
-            raise InvalidArgument('Invalid method for event')
+            raise InvalidArgument("Invalid method for event")
     elif event is not None:
         raise InvalidArgument('Invalid event "{0}"'.format(event))
 
@@ -304,17 +274,17 @@ class Gmp(GvmProtocol):
         Returns:
             any, str by default: Transformed response from server.
         """
-        cmd = XmlCommand('authenticate')
+        cmd = XmlCommand("authenticate")
 
         if not username:
-            raise RequiredArgument('authenticate requires username')
+            raise RequiredArgument("authenticate requires username")
 
         if not password:
-            raise RequiredArgument('authenticate requires password')
+            raise RequiredArgument("authenticate requires password")
 
-        credentials = cmd.add_element('credentials')
-        credentials.add_element('username', username)
-        credentials.add_element('password', password)
+        credentials = cmd.add_element("credentials")
+        credentials.add_element("username", username)
+        credentials.add_element("password", password)
 
         self._send(cmd.to_string())
         response = self._read()
@@ -324,8 +294,16 @@ class Gmp(GvmProtocol):
 
         return self._transform(response)
 
-    def create_agent(self, installer, signature, name, *, comment=None,
-                     howto_install=None, howto_use=None):
+    def create_agent(
+        self,
+        installer,
+        signature,
+        name,
+        *,
+        comment=None,
+        howto_install=None,
+        howto_use=None,
+    ):
         """Create a new agent
 
         Arguments:
@@ -343,27 +321,27 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_agent requires name argument')
+            raise RequiredArgument("create_agent requires name argument")
 
         if not installer:
-            raise RequiredArgument('create_agent requires installer argument')
+            raise RequiredArgument("create_agent requires installer argument")
 
         if not signature:
-            raise RequiredArgument('create_agent requires signature argument')
+            raise RequiredArgument("create_agent requires signature argument")
 
-        cmd = XmlCommand('create_agent')
-        cmd.add_element('installer', installer)
-        cmd.add_element('signature', signature)
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_agent")
+        cmd.add_element("installer", installer)
+        cmd.add_element("signature", signature)
+        cmd.add_element("name", name)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if howto_install:
-            cmd.add_element('howto_install', howto_install)
+            cmd.add_element("howto_install", howto_install)
 
         if howto_use:
-            cmd.add_element('howto_use', howto_use)
+            cmd.add_element("howto_use", howto_use)
 
         return self._send_xml_command(cmd)
 
@@ -377,15 +355,25 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
-            raise RequiredArgument('clone_agent requires a agent_id argument')
+            raise RequiredArgument("clone_agent requires a agent_id argument")
 
-        cmd = XmlCommand('create_agent')
-        cmd.add_element('copy', agent_id)
+        cmd = XmlCommand("create_agent")
+        cmd.add_element("copy", agent_id)
         return self._send_xml_command(cmd)
 
-    def create_alert(self, name, condition, event, method, *, method_data=None,
-                     event_data=None, condition_data=None, filter_id=None,
-                     comment=None):
+    def create_alert(
+        self,
+        name,
+        condition,
+        event,
+        method,
+        *,
+        method_data=None,
+        event_data=None,
+        condition_data=None,
+        filter_id=None,
+        comment=None,
+    ):
         """Create a new alert
 
         Arguments:
@@ -413,48 +401,48 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_alert requires name argument')
+            raise RequiredArgument("create_alert requires name argument")
 
         if not condition:
-            raise RequiredArgument('create_alert requires condition argument')
+            raise RequiredArgument("create_alert requires condition argument")
 
         if not event:
-            raise RequiredArgument('create_alert requires event argument')
+            raise RequiredArgument("create_alert requires event argument")
 
         if not method:
-            raise RequiredArgument('create_alert requires method argument')
+            raise RequiredArgument("create_alert requires method argument")
 
         _check_event(event, condition, method)
 
-        cmd = XmlCommand('create_alert')
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_alert")
+        cmd.add_element("name", name)
 
-        conditions = cmd.add_element('condition', condition)
+        conditions = cmd.add_element("condition", condition)
 
         if not condition_data is None:
             for key, value in condition_data.items():
-                _data = conditions.add_element('data', value)
-                _data.add_element('name', key)
+                _data = conditions.add_element("data", value)
+                _data.add_element("name", key)
 
-        events = cmd.add_element('event', event)
+        events = cmd.add_element("event", event)
 
         if not event_data is None:
             for key, value in event_data.items():
-                _data = events.add_element('data', value)
-                _data.add_element('name', key)
+                _data = events.add_element("data", value)
+                _data.add_element("name", key)
 
-        methods = cmd.add_element('method', method)
+        methods = cmd.add_element("method", method)
 
         if not method_data is None:
             for key, value in method_data.items():
-                _data = methods.add_element('data', value)
-                _data.add_element('name', key)
+                _data = methods.add_element("data", value)
+                _data.add_element("name", key)
 
         if filter_id:
-            cmd.add_element('filter', attrs={'id': filter_id})
+            cmd.add_element("filter", attrs={"id": filter_id})
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
@@ -468,10 +456,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not alert_id:
-            raise RequiredArgument('clone_alert requires a alert_id argument')
+            raise RequiredArgument("clone_alert requires a alert_id argument")
 
-        cmd = XmlCommand('create_alert')
-        cmd.add_element('copy', alert_id)
+        cmd = XmlCommand("create_alert")
+        cmd.add_element("copy", alert_id)
         return self._send_xml_command(cmd)
 
     def create_config(self, config_id, name):
@@ -485,14 +473,14 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_config requires name argument')
+            raise RequiredArgument("create_config requires name argument")
 
         if not config_id:
-            raise RequiredArgument('create_config requires config_id argument')
+            raise RequiredArgument("create_config requires config_id argument")
 
-        cmd = XmlCommand('create_config')
-        cmd.add_element('copy', config_id)
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_config")
+        cmd.add_element("copy", config_id)
+        cmd.add_element("name", name)
         return self._send_xml_command(cmd)
 
     def clone_config(self, config_id):
@@ -505,10 +493,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not config_id:
-            raise RequiredArgument('clone_config requires config_id argument')
+            raise RequiredArgument("clone_config requires config_id argument")
 
-        cmd = XmlCommand('create_config')
-        cmd.add_element('copy', config_id)
+        cmd = XmlCommand("create_config")
+        cmd.add_element("copy", config_id)
         return self._send_xml_command(cmd)
 
     def import_config(self, config):
@@ -522,24 +510,36 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not config:
-            raise RequiredArgument('import_config requires config argument')
+            raise RequiredArgument("import_config requires config argument")
 
-        cmd = XmlCommand('create_config')
+        cmd = XmlCommand("create_config")
 
         try:
             cmd.append_xml_str(config)
         except etree.XMLSyntaxError as e:
             raise InvalidArgument(
-                'Invalid xml passed as config to import_config', e)
+                "Invalid xml passed as config to import_config", e
+            )
 
         return self._send_xml_command(cmd)
 
-    def create_credential(self, name, credential_type, *, comment=None,
-                          allow_insecure=None, certificate=None,
-                          key_phrase=None, private_key=None,
-                          login=None, password=None, auth_algorithm=None,
-                          community=None, privacy_algorithm=None,
-                          privacy_password=None):
+    def create_credential(
+        self,
+        name,
+        credential_type,
+        *,
+        comment=None,
+        allow_insecure=None,
+        certificate=None,
+        key_phrase=None,
+        private_key=None,
+        login=None,
+        password=None,
+        auth_algorithm=None,
+        community=None,
+        privacy_algorithm=None,
+        privacy_password=None,
+    ):
         """Create a new credential
 
         Create a new credential e.g. to be used in the method of an alert.
@@ -608,84 +608,93 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_credential requires name argument')
+            raise RequiredArgument("create_credential requires name argument")
 
         if credential_type not in CREDENTIAL_TYPES:
             raise InvalidArgument(
-                'create_credential requires type to be either cc, snmp, up '
-                ' or usk')
+                "create_credential requires type to be either cc, snmp, up "
+                " or usk"
+            )
 
-        cmd = XmlCommand('create_credential')
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_credential")
+        cmd.add_element("name", name)
 
-        cmd.add_element('type', credential_type)
+        cmd.add_element("type", credential_type)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if allow_insecure is not None:
-            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
+            cmd.add_element("allow_insecure", _to_bool(allow_insecure))
 
-        if credential_type == 'cc':
+        if credential_type == "cc":
             if not certificate:
                 raise RequiredArgument(
-                    'create_credential requires certificate argument for '
-                    'credential_type {0}'.format(credential_type))
+                    "create_credential requires certificate argument for "
+                    "credential_type {0}".format(credential_type)
+                )
 
-            cmd.add_element('certificate', certificate)
+            cmd.add_element("certificate", certificate)
 
-        if (credential_type == 'up' or credential_type == 'usk' or \
-                credential_type == 'snmp'):
+        if (
+            credential_type == "up"
+            or credential_type == "usk"
+            or credential_type == "snmp"
+        ):
             if not login:
                 raise RequiredArgument(
-                    'create_credential requires login argument for '
-                    'credential_type {0}'.format(credential_type))
+                    "create_credential requires login argument for "
+                    "credential_type {0}".format(credential_type)
+                )
 
-            cmd.add_element('login', login)
+            cmd.add_element("login", login)
 
-        if (credential_type == 'up' or credential_type == 'snmp') and password:
-            cmd.add_element('password', password)
+        if (credential_type == "up" or credential_type == "snmp") and password:
+            cmd.add_element("password", password)
 
-        if credential_type == 'usk':
+        if credential_type == "usk":
             if not private_key:
                 raise RequiredArgument(
-                    'create_credential requires certificate argument for '
-                    'credential_type usk')
+                    "create_credential requires certificate argument for "
+                    "credential_type usk"
+                )
 
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('private', private_key)
+            _xmlkey = cmd.add_element("key")
+            _xmlkey.add_element("private", private_key)
 
             if key_phrase:
-                _xmlkey.add_element('phrase', key_phrase)
+                _xmlkey.add_element("phrase", key_phrase)
 
-        if credential_type == 'cc' and private_key:
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('private', private_key)
+        if credential_type == "cc" and private_key:
+            _xmlkey = cmd.add_element("key")
+            _xmlkey.add_element("private", private_key)
 
-        if credential_type == 'snmp':
-            if auth_algorithm not in ('md5', 'sha1'):
+        if credential_type == "snmp":
+            if auth_algorithm not in ("md5", "sha1"):
                 raise InvalidArgument(
-                    'create_credential requires auth_algorithm to be either '
-                    'md5 or sha1')
+                    "create_credential requires auth_algorithm to be either "
+                    "md5 or sha1"
+                )
 
-            cmd.add_element('auth_algorithm', auth_algorithm)
+            cmd.add_element("auth_algorithm", auth_algorithm)
 
             if community:
-                cmd.add_element('community', community)
+                cmd.add_element("community", community)
 
             if privacy_algorithm is not None or privacy_password:
-                _xmlprivacy = cmd.add_element('privacy')
+                _xmlprivacy = cmd.add_element("privacy")
 
                 if privacy_algorithm is not None:
-                    if privacy_algorithm not in ('aes', 'des'):
+                    if privacy_algorithm not in ("aes", "des"):
                         raise InvalidArgument(
-                            'create_credential requires algorithm to be either '
-                            'aes or des')
+                            "create_credential requires algorithm to be either "
+                            "aes or des"
+                        )
 
-                    _xmlprivacy.add_element('algorithm', privacy_algorithm)
+                    _xmlprivacy.add_element("algorithm", privacy_algorithm)
 
                 if privacy_password:
-                    _xmlprivacy.add_element('password', privacy_password)
+                    _xmlprivacy.add_element("password", privacy_password)
 
         return self._send_xml_command(cmd)
 
@@ -700,14 +709,22 @@ class Gmp(GvmProtocol):
         """
         if not credential_id:
             raise RequiredArgument(
-                'clone_credential requires a credential_id argument')
+                "clone_credential requires a credential_id argument"
+            )
 
-        cmd = XmlCommand('create_credential')
-        cmd.add_element('copy', credential_id)
+        cmd = XmlCommand("create_credential")
+        cmd.add_element("copy", credential_id)
         return self._send_xml_command(cmd)
 
-    def create_filter(self, name, *, make_unique=False, filter_type=None,
-                      comment=None, term=None):
+    def create_filter(
+        self,
+        name,
+        *,
+        make_unique=False,
+        filter_type=None,
+        comment=None,
+        term=None,
+    ):
         """Create a new filter
 
         Arguments:
@@ -721,26 +738,27 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_filter requires a name argument')
+            raise RequiredArgument("create_filter requires a name argument")
 
-        cmd = XmlCommand('create_filter')
-        _xmlname = cmd.add_element('name', name)
+        cmd = XmlCommand("create_filter")
+        _xmlname = cmd.add_element("name", name)
         if make_unique:
-            _xmlname.add_element('make_unique', '1')
+            _xmlname.add_element("make_unique", "1")
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if term:
-            cmd.add_element('term', term)
+            cmd.add_element("term", term)
 
         if filter_type:
             filter_type = filter_type.lower()
             if filter_type not in FILTER_TYPES:
                 raise InvalidArgument(
-                    'create_filter requires type to be one of {0} but '
-                    'was {1}'.format(', '.join(FILTER_TYPES), filter_type))
-            cmd.add_element('type', filter_type)
+                    "create_filter requires type to be one of {0} but "
+                    "was {1}".format(", ".join(FILTER_TYPES), filter_type)
+                )
+            cmd.add_element("type", filter_type)
 
         return self._send_xml_command(cmd)
 
@@ -754,10 +772,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not filter_id:
-            raise RequiredArgument('clone_filter requires a filter_id argument')
+            raise RequiredArgument("clone_filter requires a filter_id argument")
 
-        cmd = XmlCommand('create_filter')
-        cmd.add_element('copy', filter_id)
+        cmd = XmlCommand("create_filter")
+        cmd.add_element("copy", filter_id)
         return self._send_xml_command(cmd)
 
     def create_group(self, name, *, comment=None, special=False, users=None):
@@ -774,20 +792,20 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_group requires a name argument')
+            raise RequiredArgument("create_group requires a name argument")
 
-        cmd = XmlCommand('create_group')
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_group")
+        cmd.add_element("name", name)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if special:
-            _xmlspecial = cmd.add_element('specials')
-            _xmlspecial.add_element('full')
+            _xmlspecial = cmd.add_element("specials")
+            _xmlspecial.add_element("full")
 
         if users:
-            cmd.add_element('users', _to_comma_list(users))
+            cmd.add_element("users", _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -801,10 +819,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not group_id:
-            raise RequiredArgument('clone_group requires a group_id argument')
+            raise RequiredArgument("clone_group requires a group_id argument")
 
-        cmd = XmlCommand('create_group')
-        cmd.add_element('copy', group_id)
+        cmd = XmlCommand("create_group")
+        cmd.add_element("copy", group_id)
         return self._send_xml_command(cmd)
 
     def create_host(self, name, *, comment=None):
@@ -818,21 +836,31 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_host requires name argument')
+            raise RequiredArgument("create_host requires name argument")
 
-        cmd = XmlCommand('create_asset')
-        asset = cmd.add_element('asset')
-        asset.add_element('type', 'host') # ignored for gmp7, required for gmp8
-        asset.add_element('name', name)
+        cmd = XmlCommand("create_asset")
+        asset = cmd.add_element("asset")
+        asset.add_element("type", "host")  # ignored for gmp7, required for gmp8
+        asset.add_element("name", name)
 
         if comment:
-            asset.add_element('comment', comment)
+            asset.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
-    def create_note(self, text, nvt_oid, *, seconds_active=None, hosts=None,
-                    result_id=None, severity=None, task_id=None, threat=None,
-                    port=None):
+    def create_note(
+        self,
+        text,
+        nvt_oid,
+        *,
+        seconds_active=None,
+        hosts=None,
+        result_id=None,
+        severity=None,
+        task_id=None,
+        threat=None,
+        port=None,
+    ):
         """Create a new note
 
         Arguments:
@@ -853,41 +881,41 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not text:
-            raise RequiredArgument('create_note requires a text argument')
+            raise RequiredArgument("create_note requires a text argument")
 
         if not nvt_oid:
-            raise RequiredArgument('create_note requires a nvt_oid argument')
+            raise RequiredArgument("create_note requires a nvt_oid argument")
 
-        cmd = XmlCommand('create_note')
-        cmd.add_element('text', text)
-        cmd.add_element('nvt', attrs={"oid": nvt_oid})
+        cmd = XmlCommand("create_note")
+        cmd.add_element("text", text)
+        cmd.add_element("nvt", attrs={"oid": nvt_oid})
 
         if not seconds_active is None:
-            cmd.add_element('active', str(seconds_active))
+            cmd.add_element("active", str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', _to_comma_list(hosts))
+            cmd.add_element("hosts", _to_comma_list(hosts))
 
         if port:
-            cmd.add_element('port', str(port))
+            cmd.add_element("port", str(port))
 
         if result_id:
-            cmd.add_element('result', attrs={'id': result_id})
+            cmd.add_element("result", attrs={"id": result_id})
 
         if severity:
-            cmd.add_element('severity', str(severity))
+            cmd.add_element("severity", str(severity))
 
         if task_id:
-            cmd.add_element('task', attrs={'id': task_id})
+            cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
             if threat not in THREAD_TYPES:
                 raise InvalidArgument(
-                    'create_note threat argument {0} is invalid. threat must '
-                    'be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                    "create_note threat argument {0} is invalid. threat must "
+                    "be one of {1}".format(threat, ", ".join(THREAD_TYPES))
                 )
 
-            cmd.add_element('threat', threat)
+            cmd.add_element("threat", threat)
 
         return self._send_xml_command(cmd)
 
@@ -901,16 +929,27 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not note_id:
-            raise RequiredArgument('clone_note requires a note_id argument')
+            raise RequiredArgument("clone_note requires a note_id argument")
 
-        cmd = XmlCommand('create_note')
-        cmd.add_element('copy', note_id)
+        cmd = XmlCommand("create_note")
+        cmd.add_element("copy", note_id)
         return self._send_xml_command(cmd)
 
-    def create_override(self, text, nvt_oid, *, seconds_active=None, hosts=None,
-                        port=None, result_id=None, severity=None,
-                        new_severity=None, task_id=None, threat=None,
-                        new_threat=None):
+    def create_override(
+        self,
+        text,
+        nvt_oid,
+        *,
+        seconds_active=None,
+        hosts=None,
+        port=None,
+        result_id=None,
+        severity=None,
+        new_severity=None,
+        task_id=None,
+        threat=None,
+        new_threat=None,
+    ):
         """Create a new override
 
         Arguments:
@@ -936,57 +975,57 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not text:
-            raise RequiredArgument('create_override requires a text argument')
+            raise RequiredArgument("create_override requires a text argument")
 
         if not nvt_oid:
-            raise RequiredArgument('create_override requires a nvt_oid '
-                                   'argument')
+            raise RequiredArgument(
+                "create_override requires a nvt_oid " "argument"
+            )
 
-        cmd = XmlCommand('create_override')
-        cmd.add_element('text', text)
-        cmd.add_element('nvt', attrs={'oid': nvt_oid})
+        cmd = XmlCommand("create_override")
+        cmd.add_element("text", text)
+        cmd.add_element("nvt", attrs={"oid": nvt_oid})
 
         if not seconds_active is None:
-            cmd.add_element('active', str(seconds_active))
+            cmd.add_element("active", str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', _to_comma_list(hosts))
+            cmd.add_element("hosts", _to_comma_list(hosts))
 
         if port:
-            cmd.add_element('port', str(port))
+            cmd.add_element("port", str(port))
 
         if result_id:
-            cmd.add_element('result', attrs={'id': result_id})
+            cmd.add_element("result", attrs={"id": result_id})
 
         if severity:
-            cmd.add_element('severity', str(severity))
+            cmd.add_element("severity", str(severity))
 
         if new_severity:
-            cmd.add_element('new_severity', str(new_severity))
+            cmd.add_element("new_severity", str(new_severity))
 
         if task_id:
-            cmd.add_element('task', attrs={'id': task_id})
+            cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
             if threat not in THREAD_TYPES:
                 raise InvalidArgument(
-                    'create_override threat argument {0} is invalid. threat'
-                    'must be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                    "create_override threat argument {0} is invalid. threat"
+                    "must be one of {1}".format(threat, ", ".join(THREAD_TYPES))
                 )
 
-            cmd.add_element('threat', threat)
+            cmd.add_element("threat", threat)
 
         if new_threat is not None:
             if new_threat not in THREAD_TYPES:
                 raise InvalidArgument(
-                    'create_override new_threat argument {0} is invalid. '
-                    'new_threat must be one of {1}'.format(
-                        new_threat,
-                        ', '.join(THREAD_TYPES),
+                    "create_override new_threat argument {0} is invalid. "
+                    "new_threat must be one of {1}".format(
+                        new_threat, ", ".join(THREAD_TYPES)
                     )
                 )
 
-            cmd.add_element('new_threat', new_threat)
+            cmd.add_element("new_threat", new_threat)
 
         return self._send_xml_command(cmd)
 
@@ -1001,15 +1040,23 @@ class Gmp(GvmProtocol):
         """
         if not override_id:
             raise RequiredArgument(
-                'clone_override requires a override_id argument')
+                "clone_override requires a override_id argument"
+            )
 
-        cmd = XmlCommand('create_override')
-        cmd.add_element('copy', override_id)
+        cmd = XmlCommand("create_override")
+        cmd.add_element("copy", override_id)
         return self._send_xml_command(cmd)
 
-    def create_permission(self, name, subject_id, subject_type, *,
-                          resource_id=None, resource_type=None,
-                          comment=None):
+    def create_permission(
+        self,
+        name,
+        subject_id,
+        subject_type,
+        *,
+        resource_id=None,
+        resource_type=None,
+        comment=None,
+    ):
         """Create a new permission
 
         Arguments:
@@ -1026,39 +1073,43 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_permission requires a name argument')
+            raise RequiredArgument("create_permission requires a name argument")
 
         if not subject_id:
             raise RequiredArgument(
-                'create_permission requires a subject_id argument')
+                "create_permission requires a subject_id argument"
+            )
 
         if subject_type not in SUBJECT_TYPES:
             raise InvalidArgument(
-                'create_permission requires subject_type to be either user, '
-                'group or role')
+                "create_permission requires subject_type to be either user, "
+                "group or role"
+            )
 
-        cmd = XmlCommand('create_permission')
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_permission")
+        cmd.add_element("name", name)
 
-        _xmlsubject = cmd.add_element('subject', attrs={'id': subject_id})
-        _xmlsubject.add_element('type', subject_type)
+        _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
+        _xmlsubject.add_element("type", subject_type)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if resource_id or resource_type:
             if not resource_id:
                 raise RequiredArgument(
-                    'create_permission requires resource_id for resource_type')
+                    "create_permission requires resource_id for resource_type"
+                )
 
             if not resource_type:
                 raise RequiredArgument(
-                    'create_permission requires resource_type for resource_id')
+                    "create_permission requires resource_type for resource_id"
+                )
 
-            _xmlresource = cmd.add_element('resource',
-                                           attrs={'id': resource_id})
-            _xmlresource.add_element('type', resource_type)
-
+            _xmlresource = cmd.add_element(
+                "resource", attrs={"id": resource_id}
+            )
+            _xmlresource.add_element("type", resource_type)
 
         return self._send_xml_command(cmd)
 
@@ -1073,10 +1124,11 @@ class Gmp(GvmProtocol):
         """
         if not permission_id:
             raise RequiredArgument(
-                'clone_permission requires a permission_id argument')
+                "clone_permission requires a permission_id argument"
+            )
 
-        cmd = XmlCommand('create_permission')
-        cmd.add_element('copy', permission_id)
+        cmd = XmlCommand("create_permission")
+        cmd.add_element("copy", permission_id)
         return self._send_xml_command(cmd)
 
     def create_port_list(self, name, port_range, *, comment=None):
@@ -1092,18 +1144,19 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_port_list requires a name argument')
+            raise RequiredArgument("create_port_list requires a name argument")
 
         if not port_range:
             raise RequiredArgument(
-                'create_port_list requires a port_range argument')
+                "create_port_list requires a port_range argument"
+            )
 
-        cmd = XmlCommand('create_port_list')
-        cmd.add_element('name', name)
-        cmd.add_element('port_range', port_range)
+        cmd = XmlCommand("create_port_list")
+        cmd.add_element("name", name)
+        cmd.add_element("port_range", port_range)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
@@ -1118,14 +1171,16 @@ class Gmp(GvmProtocol):
         """
         if not port_list_id:
             raise RequiredArgument(
-                'clone_port_list requires a port_list_id argument')
+                "clone_port_list requires a port_list_id argument"
+            )
 
-        cmd = XmlCommand('create_port_list')
-        cmd.add_element('copy', port_list_id)
+        cmd = XmlCommand("create_port_list")
+        cmd.add_element("copy", port_list_id)
         return self._send_xml_command(cmd)
 
-    def create_port_range(self, port_list_id, start, end, port_range_type,
-                          *, comment=None):
+    def create_port_range(
+        self, port_list_id, start, end, port_range_type, *, comment=None
+    ):
         """Create new port range
 
         Arguments:
@@ -1139,34 +1194,43 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not port_list_id:
-            raise RequiredArgument('create_port_range requires '
-                                   'a port_list_id argument')
+            raise RequiredArgument(
+                "create_port_range requires " "a port_list_id argument"
+            )
 
         if not port_range_type:
             raise RequiredArgument(
-                'create_port_range requires a port_range_type argument')
+                "create_port_range requires a port_range_type argument"
+            )
 
         if not start:
             raise RequiredArgument(
-                'create_port_range requires a start argument')
+                "create_port_range requires a start argument"
+            )
 
         if not end:
-            raise RequiredArgument(
-                'create_port_range requires a end argument')
+            raise RequiredArgument("create_port_range requires a end argument")
 
-        cmd = XmlCommand('create_port_range')
-        cmd.add_element('port_list', attrs={'id': port_list_id})
-        cmd.add_element('start', str(start))
-        cmd.add_element('end', str(end))
-        cmd.add_element('type', port_range_type)
+        cmd = XmlCommand("create_port_range")
+        cmd.add_element("port_list", attrs={"id": port_list_id})
+        cmd.add_element("start", str(start))
+        cmd.add_element("end", str(end))
+        cmd.add_element("type", port_range_type)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
-    def import_report(self, report, *, task_id=None, task_name=None,
-                      task_comment=None, in_assets=None):
+    def import_report(
+        self,
+        report,
+        *,
+        task_id=None,
+        task_name=None,
+        task_comment=None,
+        in_assets=None,
+    ):
         """Import a Report from XML
 
         Arguments:
@@ -1184,30 +1248,32 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not report:
-            raise RequiredArgument('import_report requires a report argument')
+            raise RequiredArgument("import_report requires a report argument")
 
-        cmd = XmlCommand('create_report')
+        cmd = XmlCommand("create_report")
 
         if task_id:
-            cmd.add_element('task', attrs={'id': task_id})
+            cmd.add_element("task", attrs={"id": task_id})
         elif task_name:
-            _xmltask = cmd.add_element('task')
-            _xmltask.add_element('name', task_name)
+            _xmltask = cmd.add_element("task")
+            _xmltask.add_element("name", task_name)
 
             if task_comment:
-                _xmltask.add_element('comment', task_comment)
+                _xmltask.add_element("comment", task_comment)
         else:
             raise RequiredArgument(
-                'import_report requires a task_id or task_name argument')
+                "import_report requires a task_id or task_name argument"
+            )
 
         if not in_assets is None:
-            cmd.add_element('in_assets', _to_bool(in_assets))
+            cmd.add_element("in_assets", _to_bool(in_assets))
 
         try:
             cmd.append_xml_str(report)
         except etree.XMLSyntaxError as e:
             raise InvalidArgument(
-                'Invalid xml passed as report to import_report', e)
+                "Invalid xml passed as report to import_report", e
+            )
 
         return self._send_xml_command(cmd)
 
@@ -1224,16 +1290,16 @@ class Gmp(GvmProtocol):
         """
 
         if not name:
-            raise RequiredArgument('create_role requires a name argument')
+            raise RequiredArgument("create_role requires a name argument")
 
-        cmd = XmlCommand('create_role')
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_role")
+        cmd.add_element("name", name)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if users:
-            cmd.add_element('users', _to_comma_list(users))
+            cmd.add_element("users", _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -1247,14 +1313,23 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not role_id:
-            raise RequiredArgument('clone_role requires a role_id argument')
+            raise RequiredArgument("clone_role requires a role_id argument")
 
-        cmd = XmlCommand('create_role')
-        cmd.add_element('copy', role_id)
+        cmd = XmlCommand("create_role")
+        cmd.add_element("copy", role_id)
         return self._send_xml_command(cmd)
 
-    def create_scanner(self, name, host, port, scanner_type, credential_id, *,
-                       ca_pub=None, comment=None):
+    def create_scanner(
+        self,
+        name,
+        host,
+        port,
+        scanner_type,
+        credential_id,
+        *,
+        ca_pub=None,
+        comment=None,
+    ):
         """Create a new scanner
 
         Arguments:
@@ -1273,41 +1348,45 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_scanner requires a name argument')
+            raise RequiredArgument("create_scanner requires a name argument")
 
         if not host:
-            raise RequiredArgument('create_scanner requires a host argument')
+            raise RequiredArgument("create_scanner requires a host argument")
 
         if not port:
-            raise RequiredArgument('create_scanner requires a port argument')
+            raise RequiredArgument("create_scanner requires a port argument")
 
         if not scanner_type:
-            raise RequiredArgument('create_scanner requires a scanner_type '
-                                   'argument')
+            raise RequiredArgument(
+                "create_scanner requires a scanner_type " "argument"
+            )
 
         if not credential_id:
-            raise RequiredArgument('create_scanner requires a credential_id '
-                                   'argument')
+            raise RequiredArgument(
+                "create_scanner requires a credential_id " "argument"
+            )
 
         if scanner_type not in SCANNER_TYPES:
-            raise InvalidArgument('create_scanner requires a scanner_type '
-                                  'argument which must be either "1" for OSP, '
-                                  '"2" for OpenVAS (Classic), "3" for CVE or '
-                                  '"4" for GMP Scanner.')
+            raise InvalidArgument(
+                "create_scanner requires a scanner_type "
+                'argument which must be either "1" for OSP, '
+                '"2" for OpenVAS (Classic), "3" for CVE or '
+                '"4" for GMP Scanner.'
+            )
 
-        cmd = XmlCommand('create_scanner')
-        cmd.add_element('name', name)
-        cmd.add_element('host', host)
-        cmd.add_element('port', str(port))
-        cmd.add_element('type', scanner_type)
+        cmd = XmlCommand("create_scanner")
+        cmd.add_element("name", name)
+        cmd.add_element("host", host)
+        cmd.add_element("port", str(port))
+        cmd.add_element("type", scanner_type)
 
         if ca_pub:
-            cmd.add_element('ca_pub', ca_pub)
+            cmd.add_element("ca_pub", ca_pub)
 
-        cmd.add_element('credential', attrs={'id': str(credential_id)})
+        cmd.add_element("credential", attrs={"id": str(credential_id)})
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
@@ -1322,17 +1401,29 @@ class Gmp(GvmProtocol):
         """
         if not scanner_id:
             raise RequiredArgument(
-                'clone_scanner requires a scanner_id argument')
+                "clone_scanner requires a scanner_id argument"
+            )
 
-        cmd = XmlCommand('create_scanner')
-        cmd.add_element('copy', scanner_id)
+        cmd = XmlCommand("create_scanner")
+        cmd.add_element("copy", scanner_id)
         return self._send_xml_command(cmd)
 
-    def create_schedule(self, name, *, comment=None, first_time_minute=None,
-                        first_time_hour=None, first_time_day_of_month=None,
-                        first_time_month=None, first_time_year=None,
-                        duration=None, duration_unit=None, period=None,
-                        period_unit=None, timezone=None):
+    def create_schedule(
+        self,
+        name,
+        *,
+        comment=None,
+        first_time_minute=None,
+        first_time_hour=None,
+        first_time_day_of_month=None,
+        first_time_month=None,
+        first_time_year=None,
+        duration=None,
+        duration_unit=None,
+        period=None,
+        period_unit=None,
+        timezone=None,
+    ):
         """Create a new schedule
 
         Arguments:
@@ -1365,116 +1456,143 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_schedule requires a name argument')
+            raise RequiredArgument("create_schedule requires a name argument")
 
-        cmd = XmlCommand('create_schedule')
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_schedule")
+        cmd.add_element("name", name)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
-        if first_time_minute is not None or first_time_hour is not None or \
-            first_time_day_of_month is not None or \
-            first_time_month is not None or first_time_year is not None:
+        if (
+            first_time_minute is not None
+            or first_time_hour is not None
+            or first_time_day_of_month is not None
+            or first_time_month is not None
+            or first_time_year is not None
+        ):
 
             if first_time_minute is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_minute argument')
-            elif not isinstance(first_time_minute, numbers.Integral) or \
-                first_time_minute < 0:
+                    "Setting first_time requires first_time_minute argument"
+                )
+            elif (
+                not isinstance(first_time_minute, numbers.Integral)
+                or first_time_minute < 0
+            ):
                 raise InvalidArgument(
-                    'first_time_minute argument of create_schedule needs to be '
-                    'an integer greater or equal 0'
+                    "first_time_minute argument of create_schedule needs to be "
+                    "an integer greater or equal 0"
                 )
 
             if first_time_hour is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_hour argument')
-            elif not isinstance(first_time_hour, numbers.Integral) or \
-                first_time_hour < 0:
+                    "Setting first_time requires first_time_hour argument"
+                )
+            elif (
+                not isinstance(first_time_hour, numbers.Integral)
+                or first_time_hour < 0
+            ):
                 raise InvalidArgument(
-                    'first_time_hour argument of create_schedule needs to be '
-                    'an integer greater or equal 0'
+                    "first_time_hour argument of create_schedule needs to be "
+                    "an integer greater or equal 0"
                 )
 
             if first_time_day_of_month is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_day_of_month '
-                    'argument')
-            elif not isinstance(first_time_day_of_month, numbers.Integral) or \
-                first_time_day_of_month < 1 or first_time_day_of_month > 31:
+                    "Setting first_time requires first_time_day_of_month "
+                    "argument"
+                )
+            elif (
+                not isinstance(first_time_day_of_month, numbers.Integral)
+                or first_time_day_of_month < 1
+                or first_time_day_of_month > 31
+            ):
                 raise InvalidArgument(
-                    'first_time_day_of_month argument of create_schedule needs '
-                    'to be an integer between 1 and 31'
+                    "first_time_day_of_month argument of create_schedule needs "
+                    "to be an integer between 1 and 31"
                 )
 
             if first_time_month is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_month argument')
-            elif not isinstance(first_time_month, numbers.Integral) or \
-                first_time_month < 1 or first_time_month > 12:
+                    "Setting first_time requires first_time_month argument"
+                )
+            elif (
+                not isinstance(first_time_month, numbers.Integral)
+                or first_time_month < 1
+                or first_time_month > 12
+            ):
                 raise InvalidArgument(
-                    'first_time_month argument of create_schedule needs '
-                    'to be an integer between 1 and 12'
+                    "first_time_month argument of create_schedule needs "
+                    "to be an integer between 1 and 12"
                 )
 
             if first_time_year is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_year argument')
-            elif not isinstance(first_time_year, numbers.Integral) or \
-                first_time_year < 1970:
+                    "Setting first_time requires first_time_year argument"
+                )
+            elif (
+                not isinstance(first_time_year, numbers.Integral)
+                or first_time_year < 1970
+            ):
                 raise InvalidArgument(
-                    'first_time_year argument of create_schedule needs '
-                    'to be an integer greater or equal 1970'
+                    "first_time_year argument of create_schedule needs "
+                    "to be an integer greater or equal 1970"
                 )
 
-            _xmlftime = cmd.add_element('first_time')
-            _xmlftime.add_element('minute', str(first_time_minute))
-            _xmlftime.add_element('hour', str(first_time_hour))
-            _xmlftime.add_element('day_of_month', str(first_time_day_of_month))
-            _xmlftime.add_element('month', str(first_time_month))
-            _xmlftime.add_element('year', str(first_time_year))
+            _xmlftime = cmd.add_element("first_time")
+            _xmlftime.add_element("minute", str(first_time_minute))
+            _xmlftime.add_element("hour", str(first_time_hour))
+            _xmlftime.add_element("day_of_month", str(first_time_day_of_month))
+            _xmlftime.add_element("month", str(first_time_month))
+            _xmlftime.add_element("year", str(first_time_year))
 
         if duration is not None:
             if not duration_unit:
                 raise RequiredArgument(
-                    'Setting duration requires duration_unit argument')
+                    "Setting duration requires duration_unit argument"
+                )
 
             if not duration_unit in TIME_UNITS:
                 raise InvalidArgument(
-                    'duration_unit must be one of {units}. But {actual} has '
-                    'been passed'.format(
-                        units=', '.join(TIME_UNITS), actual=duration_unit))
+                    "duration_unit must be one of {units}. But {actual} has "
+                    "been passed".format(
+                        units=", ".join(TIME_UNITS), actual=duration_unit
+                    )
+                )
 
             if not isinstance(duration, numbers.Integral) or duration < 1:
                 raise InvalidArgument(
-                    'duration argument must be an integer greater than 0',
+                    "duration argument must be an integer greater than 0"
                 )
 
-            _xmlduration = cmd.add_element('duration', str(duration))
-            _xmlduration.add_element('unit', duration_unit)
+            _xmlduration = cmd.add_element("duration", str(duration))
+            _xmlduration.add_element("unit", duration_unit)
 
         if period is not None:
             if not period_unit:
                 raise RequiredArgument(
-                    'Setting period requires period_unit argument')
+                    "Setting period requires period_unit argument"
+                )
 
             if not period_unit in TIME_UNITS:
                 raise InvalidArgument(
-                    'period_unit must be one of {units} but {actual} has '
-                    'been passed'.format(
-                        units=', '.join(TIME_UNITS), actual=period_unit))
+                    "period_unit must be one of {units} but {actual} has "
+                    "been passed".format(
+                        units=", ".join(TIME_UNITS), actual=period_unit
+                    )
+                )
 
             if not isinstance(period, numbers.Integral) or period < 1:
                 raise InvalidArgument(
-                    'period argument must be an integer greater than 0',
+                    "period argument must be an integer greater than 0"
                 )
 
-            _xmlperiod = cmd.add_element('period', str(period))
-            _xmlperiod.add_element('unit', period_unit)
+            _xmlperiod = cmd.add_element("period", str(period))
+            _xmlperiod.add_element("unit", period_unit)
 
         if timezone:
-            cmd.add_element('timezone', timezone)
+            cmd.add_element("timezone", timezone)
 
         return self._send_xml_command(cmd)
 
@@ -1489,14 +1607,23 @@ class Gmp(GvmProtocol):
         """
         if not schedule_id:
             raise RequiredArgument(
-                'clone_schedule requires a schedule_id argument')
+                "clone_schedule requires a schedule_id argument"
+            )
 
-        cmd = XmlCommand('create_schedule')
-        cmd.add_element('copy', schedule_id)
+        cmd = XmlCommand("create_schedule")
+        cmd.add_element("copy", schedule_id)
         return self._send_xml_command(cmd)
 
-    def create_tag(self, name, resource_id, resource_type, *, value=None,
-                   comment=None, active=None):
+    def create_tag(
+        self,
+        name,
+        resource_id,
+        resource_type,
+        *,
+        value=None,
+        comment=None,
+        active=None,
+    ):
         """Create a new tag
 
         Arguments:
@@ -1512,38 +1639,32 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(
-                'create_tag requires name argument'
-            )
+            raise RequiredArgument("create_tag requires name argument")
 
         if not resource_id:
-            raise RequiredArgument(
-                'create_tag requires resource_id argument'
-            )
+            raise RequiredArgument("create_tag requires resource_id argument")
 
         if not resource_type:
-            raise RequiredArgument(
-                'create_tag requires resource_type argument'
-            )
+            raise RequiredArgument("create_tag requires resource_type argument")
 
-
-        cmd = XmlCommand('create_tag')
-        cmd.add_element('name', name)
-        _xmlresource = cmd.add_element('resource',
-                                       attrs={'id': str(resource_id)})
-        _xmlresource.add_element('type', resource_type)
+        cmd = XmlCommand("create_tag")
+        cmd.add_element("name", name)
+        _xmlresource = cmd.add_element(
+            "resource", attrs={"id": str(resource_id)}
+        )
+        _xmlresource.add_element("type", resource_type)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if value:
-            cmd.add_element('value', value)
+            cmd.add_element("value", value)
 
         if not active is None:
             if active:
-                cmd.add_element('active', '1')
+                cmd.add_element("active", "1")
             else:
-                cmd.add_element('active', '0')
+                cmd.add_element("active", "0")
 
         return self._send_xml_command(cmd)
 
@@ -1557,19 +1678,32 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not tag_id:
-            raise RequiredArgument('clone_tag requires a tag_id argument')
+            raise RequiredArgument("clone_tag requires a tag_id argument")
 
-        cmd = XmlCommand('create_tag')
-        cmd.add_element('copy', tag_id)
+        cmd = XmlCommand("create_tag")
+        cmd.add_element("copy", tag_id)
         return self._send_xml_command(cmd)
 
-    def create_target(self, name, *, make_unique=None, asset_hosts_filter=None,
-                      hosts=None, comment=None, exclude_hosts=None,
-                      ssh_credential_id=None, ssh_credential_port=None,
-                      smb_credential_id=None, esxi_credential_id=None,
-                      snmp_credential_id=None, alive_tests=None,
-                      reverse_lookup_only=None, reverse_lookup_unify=None,
-                      port_range=None, port_list_id=None):
+    def create_target(
+        self,
+        name,
+        *,
+        make_unique=None,
+        asset_hosts_filter=None,
+        hosts=None,
+        comment=None,
+        exclude_hosts=None,
+        ssh_credential_id=None,
+        ssh_credential_port=None,
+        smb_credential_id=None,
+        esxi_credential_id=None,
+        snmp_credential_id=None,
+        alive_tests=None,
+        reverse_lookup_only=None,
+        reverse_lookup_unify=None,
+        port_range=None,
+        port_list_id=None,
+    ):
         """Create a new target
 
         Arguments:
@@ -1604,66 +1738,74 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_target requires a name argument')
+            raise RequiredArgument("create_target requires a name argument")
 
-        cmd = XmlCommand('create_target')
-        _xmlname = cmd.add_element('name', name)
+        cmd = XmlCommand("create_target")
+        _xmlname = cmd.add_element("name", name)
 
         if make_unique is not None:
-            _xmlname.add_element('make_unique', _to_bool(make_unique))
+            _xmlname.add_element("make_unique", _to_bool(make_unique))
 
         if asset_hosts_filter:
-            cmd.add_element('asset_hosts',
-                            attrs={'filter': str(asset_hosts_filter)})
+            cmd.add_element(
+                "asset_hosts", attrs={"filter": str(asset_hosts_filter)}
+            )
         elif hosts:
-            cmd.add_element('hosts', _to_comma_list(hosts))
+            cmd.add_element("hosts", _to_comma_list(hosts))
         else:
-            raise RequiredArgument('create_target requires either a hosts or '
-                                   'an asset_hosts_filter argument')
+            raise RequiredArgument(
+                "create_target requires either a hosts or "
+                "an asset_hosts_filter argument"
+            )
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if exclude_hosts:
-            cmd.add_element('exclude_hosts', _to_comma_list(exclude_hosts))
+            cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
 
         if ssh_credential_id:
-            _xmlssh = cmd.add_element('ssh_credential',
-                                      attrs={'id': ssh_credential_id})
+            _xmlssh = cmd.add_element(
+                "ssh_credential", attrs={"id": ssh_credential_id}
+            )
             if ssh_credential_port:
-                _xmlssh.add_element('port', str(ssh_credential_port))
+                _xmlssh.add_element("port", str(ssh_credential_port))
 
         if smb_credential_id:
-            cmd.add_element('smb_credential', attrs={'id': smb_credential_id})
+            cmd.add_element("smb_credential", attrs={"id": smb_credential_id})
 
         if esxi_credential_id:
-            cmd.add_element('esxi_credential', attrs={'id': esxi_credential_id})
+            cmd.add_element("esxi_credential", attrs={"id": esxi_credential_id})
 
         if snmp_credential_id:
-            cmd.add_element('snmp_credential', attrs={'id': snmp_credential_id})
+            cmd.add_element("snmp_credential", attrs={"id": snmp_credential_id})
 
         if alive_tests:
             if not alive_tests in ALIVE_TESTS:
                 raise InvalidArgument(
-                    'alive_tests must be one of {tests} but '
-                    '{actual} has been passed'.format(
-                        tests='|'.join(ALIVE_TESTS), actual=alive_tests))
+                    "alive_tests must be one of {tests} but "
+                    "{actual} has been passed".format(
+                        tests="|".join(ALIVE_TESTS), actual=alive_tests
+                    )
+                )
 
-            cmd.add_element('alive_tests', alive_tests)
+            cmd.add_element("alive_tests", alive_tests)
 
         if not reverse_lookup_only is None:
-            cmd.add_element('reverse_lookup_only',
-                            _to_bool(reverse_lookup_only))
+            cmd.add_element(
+                "reverse_lookup_only", _to_bool(reverse_lookup_only)
+            )
 
         if not reverse_lookup_unify is None:
-            cmd.add_element('reverse_lookup_unify',
-                            _to_bool(reverse_lookup_unify))
+            cmd.add_element(
+                "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
+            )
 
         if port_range:
-            cmd.add_element('port_range', port_range)
+            cmd.add_element("port_range", port_range)
 
         if port_list_id:
-            cmd.add_element('port_list', attrs={'id': port_list_id})
+            cmd.add_element("port_list", attrs={"id": port_list_id})
 
         return self._send_xml_command(cmd)
 
@@ -1677,16 +1819,28 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not target_id:
-            raise RequiredArgument('clone_target requires a target_id argument')
+            raise RequiredArgument("clone_target requires a target_id argument")
 
-        cmd = XmlCommand('create_target')
-        cmd.add_element('copy', target_id)
+        cmd = XmlCommand("create_target")
+        cmd.add_element("copy", target_id)
         return self._send_xml_command(cmd)
 
-    def create_task(self, name, config_id, target_id, scanner_id, *,
-                    alterable=None, hosts_ordering=None, schedule_id=None,
-                    alert_ids=None, comment=None, schedule_periods=None,
-                    observers=None, preferences=None):
+    def create_task(
+        self,
+        name,
+        config_id,
+        target_id,
+        scanner_id,
+        *,
+        alterable=None,
+        hosts_ordering=None,
+        schedule_id=None,
+        alert_ids=None,
+        comment=None,
+        schedule_periods=None,
+        observers=None,
+        preferences=None,
+    ):
         """Create a new task
 
         Arguments:
@@ -1712,71 +1866,72 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_task requires a name argument')
+            raise RequiredArgument("create_task requires a name argument")
 
         if not config_id:
-            raise RequiredArgument('create_task requires a config_id argument')
+            raise RequiredArgument("create_task requires a config_id argument")
 
         if not target_id:
-            raise RequiredArgument('create_task requires a target_id argument')
+            raise RequiredArgument("create_task requires a target_id argument")
 
         if not scanner_id:
-            raise RequiredArgument('create_task requires a scanner_id argument')
+            raise RequiredArgument("create_task requires a scanner_id argument")
 
-        cmd = XmlCommand('create_task')
-        cmd.add_element('name', name)
-        cmd.add_element('config', attrs={'id': config_id})
-        cmd.add_element('target', attrs={'id': target_id})
-        cmd.add_element('scanner', attrs={'id': scanner_id})
+        cmd = XmlCommand("create_task")
+        cmd.add_element("name", name)
+        cmd.add_element("config", attrs={"id": config_id})
+        cmd.add_element("target", attrs={"id": target_id})
+        cmd.add_element("scanner", attrs={"id": scanner_id})
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if not alterable is None:
-            cmd.add_element('alterable', _to_bool(alterable))
+            cmd.add_element("alterable", _to_bool(alterable))
 
         if hosts_ordering:
             # not sure about the possible values for hosts_orderning
             # it seems gvmd does not check the param
             # gsa allows to select 'sequential', 'random' or 'reverse'
-            cmd.add_element('hosts_ordering', hosts_ordering)
+            cmd.add_element("hosts_ordering", hosts_ordering)
 
         if alert_ids:
             if isinstance(alert_ids, str):
                 deprecation(
-                    'Please pass a list as alert_ids parameter to create_task. '
-                    'Passing a string is deprecated and will be removed in '
-                    'future.')
+                    "Please pass a list as alert_ids parameter to create_task. "
+                    "Passing a string is deprecated and will be removed in "
+                    "future."
+                )
 
-                #if a single id is given as a string wrap it into a list
+                # if a single id is given as a string wrap it into a list
                 alert_ids = [alert_ids]
             if _is_list_like(alert_ids):
-                #parse all given alert id's
+                # parse all given alert id's
                 for alert in alert_ids:
-                    cmd.add_element('alert', attrs={'id': str(alert)})
+                    cmd.add_element("alert", attrs={"id": str(alert)})
 
         if schedule_id:
-            cmd.add_element('schedule', attrs={'id': schedule_id})
+            cmd.add_element("schedule", attrs={"id": schedule_id})
 
             if schedule_periods is not None:
-                if not isinstance(schedule_periods, numbers.Integral) or \
-                    schedule_periods < 0:
+                if (
+                    not isinstance(schedule_periods, numbers.Integral)
+                    or schedule_periods < 0
+                ):
                     raise InvalidArgument(
-                        'schedule_periods must be an integer greater or equal '
-                        'than 0'
+                        "schedule_periods must be an integer greater or equal "
+                        "than 0"
                     )
-                cmd.add_element('schedule_periods', str(schedule_periods))
+                cmd.add_element("schedule_periods", str(schedule_periods))
 
         if observers is not None:
             if not _is_list_like(observers):
-                raise InvalidArgument(
-                    'obeservers argument must be a list'
-                )
+                raise InvalidArgument("obeservers argument must be a list")
 
             # gvmd splits by comma and space
             # gvmd tries to lookup each value as user name and afterwards as
             # user id. So both user name and user id are possible
-            cmd.add_element('observers', _to_comma_list(observers))
+            cmd.add_element("observers", _to_comma_list(observers))
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
@@ -1784,11 +1939,11 @@ class Gmp(GvmProtocol):
                     'preferences argument must be a dict'
                 )
 
-            _xmlprefs = cmd.add_element('preferences')
+            _xmlprefs = cmd.add_element("preferences")
             for pref_name, pref_value in preferences.items():
-                _xmlpref = _xmlprefs.add_element('preference')
-                _xmlpref.add_element('scanner_name', pref_name)
-                _xmlpref.add_element('value', str(pref_value))
+                _xmlpref = _xmlprefs.add_element("preference")
+                _xmlpref.add_element("scanner_name", pref_name)
+                _xmlpref.add_element("value", str(pref_value))
 
         return self._send_xml_command(cmd)
 
@@ -1802,14 +1957,23 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise RequiredArgument('clone_task requires a task_id argument')
+            raise RequiredArgument("clone_task requires a task_id argument")
 
-        cmd = XmlCommand('create_task')
-        cmd.add_element('copy', task_id)
+        cmd = XmlCommand("create_task")
+        cmd.add_element("copy", task_id)
         return self._send_xml_command(cmd)
 
-    def create_user(self, name, *, password=None, hosts=None, hosts_allow=False,
-                    ifaces=None, ifaces_allow=False, role_ids=None):
+    def create_user(
+        self,
+        name,
+        *,
+        password=None,
+        hosts=None,
+        hosts_allow=False,
+        ifaces=None,
+        ifaces_allow=False,
+        role_ids=None,
+    ):
         """Create a new user
 
         Arguments:
@@ -1828,25 +1992,31 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument('create_user requires a name argument')
+            raise RequiredArgument("create_user requires a name argument")
 
-        cmd = XmlCommand('create_user')
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_user")
+        cmd.add_element("name", name)
 
         if password:
-            cmd.add_element('password', password)
+            cmd.add_element("password", password)
 
         if hosts:
-            cmd.add_element('hosts', _to_comma_list(hosts),
-                            attrs={'allow': _to_bool(hosts_allow)})
+            cmd.add_element(
+                "hosts",
+                _to_comma_list(hosts),
+                attrs={"allow": _to_bool(hosts_allow)},
+            )
 
         if ifaces:
-            cmd.add_element('ifaces', _to_comma_list(ifaces),
-                            attrs={'allow': _to_bool(ifaces_allow)})
+            cmd.add_element(
+                "ifaces",
+                _to_comma_list(ifaces),
+                attrs={"allow": _to_bool(ifaces_allow)},
+            )
 
         if role_ids:
             for role in role_ids:
-                cmd.add_element('role', attrs={'id': role})
+                cmd.add_element("role", attrs={"id": role})
 
         return self._send_xml_command(cmd)
 
@@ -1860,10 +2030,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not user_id:
-            raise RequiredArgument('clone_user requires a user_id argument')
+            raise RequiredArgument("clone_user requires a user_id argument")
 
-        cmd = XmlCommand('create_user')
-        cmd.add_element('copy', user_id)
+        cmd = XmlCommand("create_user")
+        cmd.add_element("copy", user_id)
         return self._send_xml_command(cmd)
 
     def delete_agent(self, agent_id, *, ultimate=False):
@@ -1875,11 +2045,11 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not agent_id:
-            raise RequiredArgument('delete_agent requires an agent_id argument')
+            raise RequiredArgument("delete_agent requires an agent_id argument")
 
-        cmd = XmlCommand('delete_agent')
-        cmd.set_attribute('agent_id', agent_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_agent")
+        cmd.set_attribute("agent_id", agent_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -1892,11 +2062,11 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not alert_id:
-            raise RequiredArgument('delete_alert requires an alert_id argument')
+            raise RequiredArgument("delete_alert requires an alert_id argument")
 
-        cmd = XmlCommand('delete_alert')
-        cmd.set_attribute('alert_id', alert_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_alert")
+        cmd.set_attribute("alert_id", alert_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -1909,14 +2079,15 @@ class Gmp(GvmProtocol):
                 assets to delete.
         """
         if not asset_id and not report_id:
-            raise RequiredArgument('delete_asset requires an asset_id or '
-                                   'a report_id argument')
+            raise RequiredArgument(
+                "delete_asset requires an asset_id or " "a report_id argument"
+            )
 
-        cmd = XmlCommand('delete_asset')
+        cmd = XmlCommand("delete_asset")
         if asset_id:
-            cmd.set_attribute('asset_id', asset_id)
+            cmd.set_attribute("asset_id", asset_id)
         else:
-            cmd.set_attribute('report_id', report_id)
+            cmd.set_attribute("report_id", report_id)
 
         return self._send_xml_command(cmd)
 
@@ -1929,12 +2100,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not config_id:
-            raise RequiredArgument('delete_config requires a '
-                                   'config_id argument')
+            raise RequiredArgument(
+                "delete_config requires a " "config_id argument"
+            )
 
-        cmd = XmlCommand('delete_config')
-        cmd.set_attribute('config_id', config_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_config")
+        cmd.set_attribute("config_id", config_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -1947,12 +2119,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not credential_id:
-            raise RequiredArgument('delete_credential requires a '
-                                   'credential_id argument')
+            raise RequiredArgument(
+                "delete_credential requires a " "credential_id argument"
+            )
 
-        cmd = XmlCommand('delete_credential')
-        cmd.set_attribute('credential_id', credential_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_credential")
+        cmd.set_attribute("credential_id", credential_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -1965,12 +2138,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not filter_id:
-            raise RequiredArgument('delete_filter requires a '
-                                   'filter_id argument')
+            raise RequiredArgument(
+                "delete_filter requires a " "filter_id argument"
+            )
 
-        cmd = XmlCommand('delete_filter')
-        cmd.set_attribute('filter_id', filter_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_filter")
+        cmd.set_attribute("filter_id", filter_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -1983,12 +2157,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not group_id:
-            raise RequiredArgument('delete_group requires a '
-                                   'group_id argument')
+            raise RequiredArgument(
+                "delete_group requires a " "group_id argument"
+            )
 
-        cmd = XmlCommand('delete_group')
-        cmd.set_attribute('group_id', group_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_group")
+        cmd.set_attribute("group_id", group_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2001,12 +2176,11 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not note_id:
-            raise RequiredArgument('delete_note requires a '
-                                   'note_id argument')
+            raise RequiredArgument("delete_note requires a " "note_id argument")
 
-        cmd = XmlCommand('delete_note')
-        cmd.set_attribute('note_id', note_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_note")
+        cmd.set_attribute("note_id", note_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2019,12 +2193,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not override_id:
-            raise RequiredArgument('delete_override requires a '
-                                   'override_id argument')
+            raise RequiredArgument(
+                "delete_override requires a " "override_id argument"
+            )
 
-        cmd = XmlCommand('delete_override')
-        cmd.set_attribute('override_id', override_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_override")
+        cmd.set_attribute("override_id", override_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2037,12 +2212,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not permission_id:
-            raise RequiredArgument('delete_permission requires a '
-                                   'permission_id argument')
+            raise RequiredArgument(
+                "delete_permission requires a " "permission_id argument"
+            )
 
-        cmd = XmlCommand('delete_permission')
-        cmd.set_attribute('permission_id', permission_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_permission")
+        cmd.set_attribute("permission_id", permission_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2055,12 +2231,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not port_list_id:
-            raise RequiredArgument('delete_port_list requires a '
-                                   'port_list_id argument')
+            raise RequiredArgument(
+                "delete_port_list requires a " "port_list_id argument"
+            )
 
-        cmd = XmlCommand('delete_port_list')
-        cmd.set_attribute('port_list_id', port_list_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_port_list")
+        cmd.set_attribute("port_list_id", port_list_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2071,11 +2248,12 @@ class Gmp(GvmProtocol):
             port_range_id (str) UUID of the port range to be deleted.
         """
         if not port_range_id:
-            raise RequiredArgument('delete_port_range requires a '
-                                   'port_range_id argument')
+            raise RequiredArgument(
+                "delete_port_range requires a " "port_range_id argument"
+            )
 
-        cmd = XmlCommand('delete_port_range')
-        cmd.set_attribute('port_range_id', port_range_id)
+        cmd = XmlCommand("delete_port_range")
+        cmd.set_attribute("port_range_id", port_range_id)
 
         return self._send_xml_command(cmd)
 
@@ -2086,14 +2264,14 @@ class Gmp(GvmProtocol):
             report_id (str) UUID of the report to be deleted.
         """
         if not report_id:
-            raise RequiredArgument('delete_report requires a '
-                                   'report_id argument')
+            raise RequiredArgument(
+                "delete_report requires a " "report_id argument"
+            )
 
-        cmd = XmlCommand('delete_report')
-        cmd.set_attribute('report_id', report_id)
+        cmd = XmlCommand("delete_report")
+        cmd.set_attribute("report_id", report_id)
 
         return self._send_xml_command(cmd)
-
 
     def delete_report_format(self, report_format_id, *, ultimate=False):
         """Deletes an existing report format
@@ -2104,15 +2282,15 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not report_format_id:
-            raise RequiredArgument('delete_report_format requires a '
-                                   'report_format_id argument')
+            raise RequiredArgument(
+                "delete_report_format requires a " "report_format_id argument"
+            )
 
-        cmd = XmlCommand('delete_report_format')
-        cmd.set_attribute('report_format_id', report_format_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_report_format")
+        cmd.set_attribute("report_format_id", report_format_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
-
 
     def delete_role(self, role_id, *, ultimate=False):
         """Deletes an existing role
@@ -2123,12 +2301,11 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not role_id:
-            raise RequiredArgument('delete_role requires a '
-                                   'role_id argument')
+            raise RequiredArgument("delete_role requires a " "role_id argument")
 
-        cmd = XmlCommand('delete_role')
-        cmd.set_attribute('role_id', role_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_role")
+        cmd.set_attribute("role_id", role_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2141,12 +2318,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not scanner_id:
-            raise RequiredArgument('delete_scanner requires a '
-                                   'scanner_id argument')
+            raise RequiredArgument(
+                "delete_scanner requires a " "scanner_id argument"
+            )
 
-        cmd = XmlCommand('delete_scanner')
-        cmd.set_attribute('scanner_id', scanner_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_scanner")
+        cmd.set_attribute("scanner_id", scanner_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2159,12 +2337,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not schedule_id:
-            raise RequiredArgument('delete_schedule requires a '
-                                   'schedule_id argument')
+            raise RequiredArgument(
+                "delete_schedule requires a " "schedule_id argument"
+            )
 
-        cmd = XmlCommand('delete_schedule')
-        cmd.set_attribute('schedule_id', schedule_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_schedule")
+        cmd.set_attribute("schedule_id", schedule_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2177,12 +2356,11 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not tag_id:
-            raise RequiredArgument('delete_tag requires a '
-                                   'tag_id argument')
+            raise RequiredArgument("delete_tag requires a " "tag_id argument")
 
-        cmd = XmlCommand('delete_tag')
-        cmd.set_attribute('tag_id', tag_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_tag")
+        cmd.set_attribute("tag_id", tag_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2195,12 +2373,13 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not target_id:
-            raise RequiredArgument('delete_target requires a '
-                                   'target_id argument')
+            raise RequiredArgument(
+                "delete_target requires a " "target_id argument"
+            )
 
-        cmd = XmlCommand('delete_target')
-        cmd.set_attribute('target_id', target_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_target")
+        cmd.set_attribute("target_id", target_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2213,17 +2392,17 @@ class Gmp(GvmProtocol):
                 or to the trashcan.
         """
         if not task_id:
-            raise RequiredArgument('delete_task requires a '
-                                   'task_id argument')
+            raise RequiredArgument("delete_task requires a " "task_id argument")
 
-        cmd = XmlCommand('delete_task')
-        cmd.set_attribute('task_id', task_id)
-        cmd.set_attribute('ultimate', _to_bool(ultimate))
+        cmd = XmlCommand("delete_task")
+        cmd.set_attribute("task_id", task_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
-    def delete_user(self, user_id=None, *, name=None, inheritor_id=None,
-                    inheritor_name=None):
+    def delete_user(
+        self, user_id=None, *, name=None, inheritor_id=None, inheritor_name=None
+    ):
         """Deletes an existing user
 
         Either user_id or name must be passed.
@@ -2238,21 +2417,22 @@ class Gmp(GvmProtocol):
         """
         if not user_id and not name:
             raise RequiredArgument(
-                'delete_user requires a user_id or name argument')
+                "delete_user requires a user_id or name argument"
+            )
 
-        cmd = XmlCommand('delete_user')
+        cmd = XmlCommand("delete_user")
 
         if user_id:
-            cmd.set_attribute('user_id', user_id)
+            cmd.set_attribute("user_id", user_id)
 
         if name:
-            cmd.set_attribute('name', name)
+            cmd.set_attribute("name", name)
 
         if inheritor_id:
-            cmd.set_attribute('inheritor_id', inheritor_id)
+            cmd.set_attribute("inheritor_id", inheritor_id)
 
         if inheritor_name:
-            cmd.set_attribute('inheritor_name', inheritor_name)
+            cmd.set_attribute("inheritor_name", inheritor_name)
 
         return self._send_xml_command(cmd)
 
@@ -2265,7 +2445,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self._send_xml_command(XmlCommand('describe_auth'))
+        return self._send_xml_command(XmlCommand("describe_auth"))
 
     def empty_trashcan(self):
         """Empty the trashcan
@@ -2276,10 +2456,17 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self._send_xml_command(XmlCommand('empty_trashcan'))
+        return self._send_xml_command(XmlCommand("empty_trashcan"))
 
-    def get_agents(self, *, filter=None, filter_id=None, trash=None,
-                   details=None, format=None):
+    def get_agents(
+        self,
+        *,
+        filter=None,
+        filter_id=None,
+        trash=None,
+        details=None,
+        format=None,
+    ):
         """Request a list of agents
 
         Arguments:
@@ -2296,23 +2483,24 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_agents')
+        cmd = XmlCommand("get_agents")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         if format:
-            if not format in ('installer', 'howto_install', 'howto_use'):
+            if not format in ("installer", "howto_install", "howto_use"):
                 raise InvalidArgument(
-                    'installer argument needs to be one of installer, '
-                    'howto_install or howto_use')
+                    "installer argument needs to be one of installer, "
+                    "howto_install or howto_use"
+                )
 
-            cmd.set_attribute('format', format)
+            cmd.set_attribute("format", format)
 
         return self._send_xml_command(cmd)
 
@@ -2326,24 +2514,23 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
-            raise RequiredArgument(
-                'get_agent requires an agent_id argument'
-            )
+            raise RequiredArgument("get_agent requires an agent_id argument")
 
-        cmd = XmlCommand('get_agents')
-        cmd.set_attribute('agent_id', agent_id)
+        cmd = XmlCommand("get_agents")
+        cmd.set_attribute("agent_id", agent_id)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
     def get_aggregates(self, **kwargs):
-        cmd = XmlCommand('get_aggregates')
+        cmd = XmlCommand("get_aggregates")
         cmd.set_attributes(kwargs)
         return self._send_xml_command(cmd)
 
-    def get_alerts(self, *, filter=None, filter_id=None, trash=None,
-                   tasks=None):
+    def get_alerts(
+        self, *, filter=None, filter_id=None, trash=None, tasks=None
+    ):
         """Request a list of alerts
 
         Arguments:
@@ -2357,15 +2544,15 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_alerts')
+        cmd = XmlCommand("get_alerts")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not tasks is None:
-            cmd.set_attribute('tasks', _to_bool(tasks))
+            cmd.set_attribute("tasks", _to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -2379,10 +2566,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not alert_id:
-            raise RequiredArgument('get_alert requires an alert_id argument')
+            raise RequiredArgument("get_alert requires an alert_id argument")
 
-        cmd = XmlCommand('get_alerts')
-        cmd.set_attribute('alert_id', alert_id)
+        cmd = XmlCommand("get_alerts")
+        cmd.set_attribute("alert_id", alert_id)
         return self._send_xml_command(cmd)
 
     def get_assets(self, asset_type, *, filter=None, filter_id=None):
@@ -2398,11 +2585,11 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not asset_type in ASSET_TYPES:
-            raise InvalidArgument('asset_type must be either os or host')
+            raise InvalidArgument("asset_type must be either os or host")
 
-        cmd = XmlCommand('get_assets')
+        cmd = XmlCommand("get_assets")
 
-        cmd.set_attribute('type', asset_type)
+        cmd.set_attribute("type", asset_type)
 
         _add_filter(cmd, filter, filter_id)
 
@@ -2419,19 +2606,26 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not asset_type in ASSET_TYPES:
-            raise InvalidArgument('asset_type must be either os or host')
+            raise InvalidArgument("asset_type must be either os or host")
 
         if not asset_id:
-            raise RequiredArgument('get_asset requires an asset_type argument')
+            raise RequiredArgument("get_asset requires an asset_type argument")
 
-        cmd = XmlCommand('get_assets')
-        cmd.set_attribute('asset_id', asset_id)
-        cmd.set_attribute('type', asset_type)
+        cmd = XmlCommand("get_assets")
+        cmd.set_attribute("asset_id", asset_id)
+        cmd.set_attribute("type", asset_type)
 
         return self._send_xml_command(cmd)
 
-    def get_credentials(self, *, filter=None, filter_id=None, scanners=None,
-                        trash=None, targets=None):
+    def get_credentials(
+        self,
+        *,
+        filter=None,
+        filter_id=None,
+        scanners=None,
+        trash=None,
+        targets=None,
+    ):
         """Request a list of credentials
 
         Arguments:
@@ -2448,18 +2642,18 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_credentials')
+        cmd = XmlCommand("get_credentials")
 
         _add_filter(cmd, filter, filter_id)
 
         if not scanners is None:
-            cmd.set_attribute('scanners', _to_bool(scanners))
+            cmd.set_attribute("scanners", _to_bool(scanners))
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not targets is None:
-            cmd.set_attribute('targets', _to_bool(targets))
+            cmd.set_attribute("targets", _to_bool(targets))
 
         return self._send_xml_command(cmd)
 
@@ -2476,21 +2670,32 @@ class Gmp(GvmProtocol):
         """
         if not credential_id:
             raise RequiredArgument(
-                'get_credential requires credential_id argument')
+                "get_credential requires credential_id argument"
+            )
 
-        cmd = XmlCommand('get_credentials')
-        cmd.set_attribute('credential_id', credential_id)
+        cmd = XmlCommand("get_credentials")
+        cmd.set_attribute("credential_id", credential_id)
         if credential_format:
-            if not credential_format in ('key', 'rpm', 'deb', 'exe', 'pem'):
+            if not credential_format in ("key", "rpm", "deb", "exe", "pem"):
                 raise InvalidArgument(
-                    'credential_format argument needs to be one of '
-                    'key, rpm, deb, exe or pem')
+                    "credential_format argument needs to be one of "
+                    "key, rpm, deb, exe or pem"
+                )
 
-            cmd.set_attribute('format', credential_format)
+            cmd.set_attribute("format", credential_format)
         return self._send_xml_command(cmd)
 
-    def get_configs(self, *, filter=None, filter_id=None, trash=None,
-                    details=None, families=None, preferences=None, tasks=None):
+    def get_configs(
+        self,
+        *,
+        filter=None,
+        filter_id=None,
+        trash=None,
+        details=None,
+        families=None,
+        preferences=None,
+        tasks=None,
+    ):
         """Request a list of scan configs
 
         Arguments:
@@ -2510,24 +2715,24 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_configs')
+        cmd = XmlCommand("get_configs")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         if not families is None:
-            cmd.set_attribute('families', _to_bool(families))
+            cmd.set_attribute("families", _to_bool(families))
 
         if not preferences is None:
-            cmd.set_attribute('preferences', _to_bool(preferences))
+            cmd.set_attribute("preferences", _to_bool(preferences))
 
         if not tasks is None:
-            cmd.set_attribute('tasks', _to_bool(tasks))
+            cmd.set_attribute("tasks", _to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -2541,13 +2746,13 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not config_id:
-            raise RequiredArgument('get_config requires config_id argument')
+            raise RequiredArgument("get_config requires config_id argument")
 
-        cmd = XmlCommand('get_configs')
-        cmd.set_attribute('config_id', config_id)
+        cmd = XmlCommand("get_configs")
+        cmd.set_attribute("config_id", config_id)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
     def get_feeds(self):
@@ -2556,7 +2761,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self._send_xml_command(XmlCommand('get_feeds'))
+        return self._send_xml_command(XmlCommand("get_feeds"))
 
     def get_feed(self, feed_type):
         """Request a single feed
@@ -2568,21 +2773,23 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not feed_type:
-            raise RequiredArgument('get_feed requires a feed_type argument')
+            raise RequiredArgument("get_feed requires a feed_type argument")
 
         feed_type = feed_type.upper()
 
-        if not feed_type in ('NVT', 'CERT', 'SCAP'):
+        if not feed_type in ("NVT", "CERT", "SCAP"):
             raise InvalidArgument(
-                'get_feed type arguments must be one of NVT, CERT or SCAP')
+                "get_feed type arguments must be one of NVT, CERT or SCAP"
+            )
 
-        cmd = XmlCommand('get_feeds')
-        cmd.set_attribute('type', feed_type)
+        cmd = XmlCommand("get_feeds")
+        cmd.set_attribute("type", feed_type)
 
         return self._send_xml_command(cmd)
 
-    def get_filters(self, *, filter=None, filter_id=None, trash=None,
-                    alerts=None):
+    def get_filters(
+        self, *, filter=None, filter_id=None, trash=None, alerts=None
+    ):
         """Request a list of filters
 
         Arguments:
@@ -2597,15 +2804,15 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_filters')
+        cmd = XmlCommand("get_filters")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not alerts is None:
-            cmd.set_attribute('alerts', _to_bool(alerts))
+            cmd.set_attribute("alerts", _to_bool(alerts))
 
         return self._send_xml_command(cmd)
 
@@ -2619,10 +2826,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not filter_id:
-            raise RequiredArgument('get_filter requires a filter_id argument')
+            raise RequiredArgument("get_filter requires a filter_id argument")
 
-        cmd = XmlCommand('get_filters')
-        cmd.set_attribute('filter_id', filter_id)
+        cmd = XmlCommand("get_filters")
+        cmd.set_attribute("filter_id", filter_id)
         return self._send_xml_command(cmd)
 
     def get_groups(self, *, filter=None, filter_id=None, trash=None):
@@ -2638,12 +2845,12 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_groups')
+        cmd = XmlCommand("get_groups")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -2657,14 +2864,15 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not group_id:
-            raise RequiredArgument('get_group requires a group_id argument')
+            raise RequiredArgument("get_group requires a group_id argument")
 
-        cmd = XmlCommand('get_groups')
-        cmd.set_attribute('group_id', group_id)
+        cmd = XmlCommand("get_groups")
+        cmd.set_attribute("group_id", group_id)
         return self._send_xml_command(cmd)
 
-    def get_info_list(self, info_type, *, filter=None, filter_id=None,
-                      name=None, details=None):
+    def get_info_list(
+        self, info_type, *, filter=None, filter_id=None, name=None, details=None
+    ):
         """Request a list of security information
 
         Arguments:
@@ -2683,26 +2891,28 @@ class Gmp(GvmProtocol):
         """
         if not info_type:
             raise RequiredArgument(
-                'get_info_list requires an info_type argument')
+                "get_info_list requires an info_type argument"
+            )
 
         info_type = info_type.upper()
 
         if not info_type in INFO_TYPES:
             raise InvalidArgument(
-                'get_info_list info_type argument must be one of CERT_BUND_ADV'
-                ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
+                "get_info_list info_type argument must be one of CERT_BUND_ADV"
+                ", CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO"
+            )
 
-        cmd = XmlCommand('get_info')
+        cmd = XmlCommand("get_info")
 
-        cmd.set_attribute('type', info_type)
+        cmd.set_attribute("type", info_type)
 
         _add_filter(cmd, filter, filter_id)
 
         if name:
-            cmd.set_attribute('name', name)
+            cmd.set_attribute("name", name)
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         return self._send_xml_command(cmd)
 
@@ -2718,31 +2928,31 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not info_type:
-            raise RequiredArgument(
-                'get_info requires an info_type argument')
+            raise RequiredArgument("get_info requires an info_type argument")
 
         info_type = info_type.upper()
 
         if not info_type in INFO_TYPES:
             raise InvalidArgument(
-                'get_info info_type argument must be one of CERT_BUND_ADV'
-                ', CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO')
+                "get_info info_type argument must be one of CERT_BUND_ADV"
+                ", CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO"
+            )
 
         if not info_id:
-            raise RequiredArgument(
-                'get_info requires an info_id argument')
+            raise RequiredArgument("get_info requires an info_id argument")
 
-        cmd = XmlCommand('get_info')
-        cmd.set_attribute('info_id', info_id)
+        cmd = XmlCommand("get_info")
+        cmd.set_attribute("info_id", info_id)
 
-        cmd.set_attribute('type', info_type)
+        cmd.set_attribute("type", info_type)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def get_notes(self, *, filter=None, filter_id=None, details=None,
-                  result=None):
+    def get_notes(
+        self, *, filter=None, filter_id=None, details=None, result=None
+    ):
         """Request a list of notes
 
         Arguments:
@@ -2757,15 +2967,15 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_notes')
+        cmd = XmlCommand("get_notes")
 
         _add_filter(cmd, filter, filter_id)
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         if not result is None:
-            cmd.set_attribute('result', _to_bool(result))
+            cmd.set_attribute("result", _to_bool(result))
 
         return self._send_xml_command(cmd)
 
@@ -2779,20 +2989,28 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not note_id:
-            raise RequiredArgument(
-                'get_note requires a note_id argument'
-            )
+            raise RequiredArgument("get_note requires a note_id argument")
 
-        cmd = XmlCommand('get_notes')
-        cmd.set_attribute('note_id', note_id)
+        cmd = XmlCommand("get_notes")
+        cmd.set_attribute("note_id", note_id)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def get_nvts(self, *, details=None, preferences=None, preference_count=None,
-                 timeout=None, config_id=None, preferences_config_id=None,
-                 family=None, sort_order=None, sort_field=None):
+    def get_nvts(
+        self,
+        *,
+        details=None,
+        preferences=None,
+        preference_count=None,
+        timeout=None,
+        config_id=None,
+        preferences_config_id=None,
+        family=None,
+        sort_order=None,
+        sort_field=None,
+    ):
         """Request a list of nvts
 
         Arguments:
@@ -2813,34 +3031,34 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_nvts')
+        cmd = XmlCommand("get_nvts")
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         if not preferences is None:
-            cmd.set_attribute('preferences', _to_bool(preferences))
+            cmd.set_attribute("preferences", _to_bool(preferences))
 
         if not preference_count is None:
-            cmd.set_attribute('preference_count', _to_bool(preference_count))
+            cmd.set_attribute("preference_count", _to_bool(preference_count))
 
         if not timeout is None:
-            cmd.set_attribute('timeout', _to_bool(timeout))
+            cmd.set_attribute("timeout", _to_bool(timeout))
 
         if config_id:
-            cmd.set_attribute('config_id', config_id)
+            cmd.set_attribute("config_id", config_id)
 
         if preferences_config_id:
-            cmd.set_attribute('preferences_config_id', preferences_config_id)
+            cmd.set_attribute("preferences_config_id", preferences_config_id)
 
         if family:
-            cmd.set_attribute('family', family)
+            cmd.set_attribute("family", family)
 
         if sort_order:
-            cmd.set_attribute('sort_order', sort_order)
+            cmd.set_attribute("sort_order", sort_order)
 
         if sort_field:
-            cmd.set_attribute('sort_field', sort_field)
+            cmd.set_attribute("sort_field", sort_field)
 
         return self._send_xml_command(cmd)
 
@@ -2854,13 +3072,13 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not nvt_oid:
-            raise RequiredArgument('get_nvt requires nvt_oid argument')
+            raise RequiredArgument("get_nvt requires nvt_oid argument")
 
-        cmd = XmlCommand('get_nvts')
-        cmd.set_attribute('nvt_oid', nvt_oid)
+        cmd = XmlCommand("get_nvts")
+        cmd.set_attribute("nvt_oid", nvt_oid)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
     def get_nvt_families(self, *, sort_order=None):
@@ -2872,15 +3090,16 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_nvt_families')
+        cmd = XmlCommand("get_nvt_families")
 
         if sort_order:
-            cmd.set_attribute('sort_order', sort_order)
+            cmd.set_attribute("sort_order", sort_order)
 
         return self._send_xml_command(cmd)
 
-    def get_overrides(self, *, filter=None, filter_id=None, details=None,
-                      result=None):
+    def get_overrides(
+        self, *, filter=None, filter_id=None, details=None, result=None
+    ):
         """Request a list of overrides
 
         Arguments:
@@ -2893,15 +3112,15 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_overrides')
+        cmd = XmlCommand("get_overrides")
 
         _add_filter(cmd, filter, filter_id)
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         if not result is None:
-            cmd.set_attribute('result', _to_bool(result))
+            cmd.set_attribute("result", _to_bool(result))
 
         return self._send_xml_command(cmd)
 
@@ -2916,14 +3135,14 @@ class Gmp(GvmProtocol):
         """
         if not override_id:
             raise RequiredArgument(
-                'get_override requires an override_id argument'
+                "get_override requires an override_id argument"
             )
 
-        cmd = XmlCommand('get_overrides')
-        cmd.set_attribute('override_id', override_id)
+        cmd = XmlCommand("get_overrides")
+        cmd.set_attribute("override_id", override_id)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
     def get_permissions(self, *, filter=None, filter_id=None, trash=None):
@@ -2939,12 +3158,12 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_permissions')
+        cmd = XmlCommand("get_permissions")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -2959,15 +3178,22 @@ class Gmp(GvmProtocol):
         """
         if not permission_id:
             raise RequiredArgument(
-                'get_permission requires a permission_id argument'
+                "get_permission requires a permission_id argument"
             )
 
-        cmd = XmlCommand('get_permissions')
-        cmd.set_attribute('permission_id', permission_id)
+        cmd = XmlCommand("get_permissions")
+        cmd.set_attribute("permission_id", permission_id)
         return self._send_xml_command(cmd)
 
-    def get_port_lists(self, *, filter=None, filter_id=None, details=None,
-                       targets=None, trash=None):
+    def get_port_lists(
+        self,
+        *,
+        filter=None,
+        filter_id=None,
+        details=None,
+        targets=None,
+        trash=None,
+    ):
         """Request a list of port lists
 
         Arguments:
@@ -2984,18 +3210,18 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_port_lists')
+        cmd = XmlCommand("get_port_lists")
 
         _add_filter(cmd, filter, filter_id)
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         if not targets is None:
-            cmd.set_attribute('targets', _to_bool(targets))
+            cmd.set_attribute("targets", _to_bool(targets))
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -3010,14 +3236,14 @@ class Gmp(GvmProtocol):
         """
         if not port_list_id:
             raise RequiredArgument(
-                'get_port_list requires a port_list_id argument'
+                "get_port_list requires a port_list_id argument"
             )
 
-        cmd = XmlCommand('get_port_lists')
-        cmd.set_attribute('port_list_id', port_list_id)
+        cmd = XmlCommand("get_port_lists")
+        cmd.set_attribute("port_list_id", port_list_id)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
     def get_preferences(self, *, nvt_oid=None, config_id=None):
@@ -3037,13 +3263,13 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_preferences')
+        cmd = XmlCommand("get_preferences")
 
         if nvt_oid:
-            cmd.set_attribute('nvt_oid', nvt_oid)
+            cmd.set_attribute("nvt_oid", nvt_oid)
 
         if config_id:
-            cmd.set_attribute('config_id', config_id)
+            cmd.set_attribute("config_id", config_id)
 
         return self._send_xml_command(cmd)
 
@@ -3058,18 +3284,22 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(
-                'get_preference requires a name argument'
-            )
+            raise RequiredArgument("get_preference requires a name argument")
 
-        cmd = XmlCommand('get_preferences')
+        cmd = XmlCommand("get_preferences")
 
-        cmd.set_attribute('preference', name)
+        cmd.set_attribute("preference", name)
 
         return self._send_xml_command(cmd)
 
-    def get_reports(self, *, filter=None, filter_id=None, note_details=None,
-                    override_details=None):
+    def get_reports(
+        self,
+        *,
+        filter=None,
+        filter_id=None,
+        note_details=None,
+        override_details=None,
+    ):
         """Request a list of reports
 
         Arguments:
@@ -3084,26 +3314,33 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_reports')
+        cmd = XmlCommand("get_reports")
 
         if filter:
-            cmd.set_attribute('report_filter', filter)
+            cmd.set_attribute("report_filter", filter)
 
         if filter_id:
-            cmd.set_attribute('report_filt_id', filter_id)
+            cmd.set_attribute("report_filt_id", filter_id)
 
         if not note_details is None:
-            cmd.set_attribute('note_details', _to_bool(note_details))
+            cmd.set_attribute("note_details", _to_bool(note_details))
 
         if not override_details is None:
-            cmd.set_attribute('override_details', _to_bool(override_details))
+            cmd.set_attribute("override_details", _to_bool(override_details))
 
-        cmd.set_attribute('ignore_pagination', '1')
+        cmd.set_attribute("ignore_pagination", "1")
 
         return self._send_xml_command(cmd)
 
-    def get_report(self, report_id, *, filter=None, filter_id=None,
-                   delta_report_id=None, report_format_id=None):
+    def get_report(
+        self,
+        report_id,
+        *,
+        filter=None,
+        filter_id=None,
+        delta_report_id=None,
+        report_format_id=None,
+    ):
         """Request a single report
 
         Arguments:
@@ -3120,23 +3357,31 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not report_id:
-            raise RequiredArgument('get_report requires a report_id argument')
+            raise RequiredArgument("get_report requires a report_id argument")
 
-        cmd = XmlCommand('get_reports')
-        cmd.set_attribute('report_id', report_id)
+        cmd = XmlCommand("get_reports")
+        cmd.set_attribute("report_id", report_id)
 
         _add_filter(cmd, filter, filter_id)
 
         if delta_report_id:
-            cmd.set_attribute('delta_report_id', delta_report_id)
+            cmd.set_attribute("delta_report_id", delta_report_id)
 
         if report_format_id:
-            cmd.set_attribute('format_id', report_format_id)
+            cmd.set_attribute("format_id", report_format_id)
 
         return self._send_xml_command(cmd)
 
-    def get_report_formats(self, *, filter=None, filter_id=None, trash=None,
-                           alerts=None, params=None, details=None):
+    def get_report_formats(
+        self,
+        *,
+        filter=None,
+        filter_id=None,
+        trash=None,
+        alerts=None,
+        params=None,
+        details=None,
+    ):
         """Request a list of report formats
 
         Arguments:
@@ -3155,21 +3400,21 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_report_formats')
+        cmd = XmlCommand("get_report_formats")
 
         _add_filter(cmd, filter, filter_id)
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         if not alerts is None:
-            cmd.set_attribute('alerts', _to_bool(alerts))
+            cmd.set_attribute("alerts", _to_bool(alerts))
 
         if not params is None:
-            cmd.set_attribute('params', _to_bool(params))
+            cmd.set_attribute("params", _to_bool(params))
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -3184,18 +3429,26 @@ class Gmp(GvmProtocol):
         """
         if not report_format_id:
             raise RequiredArgument(
-                'get_report_format requires report_format_id argument'
+                "get_report_format requires report_format_id argument"
             )
 
-        cmd = XmlCommand('get_report_formats')
-        cmd.set_attribute('report_format_id', report_format_id)
+        cmd = XmlCommand("get_report_formats")
+        cmd.set_attribute("report_format_id", report_format_id)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def get_results(self, *, filter=None, filter_id=None, task_id=None,
-                    note_details=None, override_details=None, details=None):
+    def get_results(
+        self,
+        *,
+        filter=None,
+        filter_id=None,
+        task_id=None,
+        note_details=None,
+        override_details=None,
+        details=None,
+    ):
         """Request a list of results
 
         Arguments:
@@ -3213,21 +3466,21 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_results')
+        cmd = XmlCommand("get_results")
 
         _add_filter(cmd, filter, filter_id)
 
         if task_id:
-            cmd.set_attribute('task_id', task_id)
+            cmd.set_attribute("task_id", task_id)
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         if not note_details is None:
-            cmd.set_attribute('note_details', _to_bool(note_details))
+            cmd.set_attribute("note_details", _to_bool(note_details))
 
         if not override_details is None:
-            cmd.set_attribute('override_details', _to_bool(override_details))
+            cmd.set_attribute("override_details", _to_bool(override_details))
 
         return self._send_xml_command(cmd)
 
@@ -3241,15 +3494,13 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not result_id:
-            raise RequiredArgument(
-                'get_result requires a result_id argument'
-            )
+            raise RequiredArgument("get_result requires a result_id argument")
 
-        cmd = XmlCommand('get_results')
-        cmd.set_attribute('result_id', result_id)
+        cmd = XmlCommand("get_results")
+        cmd.set_attribute("result_id", result_id)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
     def get_roles(self, *, filter=None, filter_id=None, trash=None):
@@ -3264,12 +3515,12 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_roles')
+        cmd = XmlCommand("get_roles")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -3283,16 +3534,15 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not role_id:
-            raise RequiredArgument(
-                'get_role requires a role_id argument'
-            )
+            raise RequiredArgument("get_role requires a role_id argument")
 
-        cmd = XmlCommand('get_roles')
-        cmd.set_attribute('role_id', role_id)
+        cmd = XmlCommand("get_roles")
+        cmd.set_attribute("role_id", role_id)
         return self._send_xml_command(cmd)
 
-    def get_scanners(self, *, filter=None, filter_id=None, trash=None,
-                     details=None):
+    def get_scanners(
+        self, *, filter=None, filter_id=None, trash=None, details=None
+    ):
         """Request a list of scanners
 
         Arguments:
@@ -3307,15 +3557,15 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_scanners')
+        cmd = XmlCommand("get_scanners")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         return self._send_xml_command(cmd)
 
@@ -3329,19 +3579,18 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not scanner_id:
-            raise RequiredArgument(
-                'get_scanner requires a scanner_id argument'
-            )
+            raise RequiredArgument("get_scanner requires a scanner_id argument")
 
-        cmd = XmlCommand('get_scanners')
-        cmd.set_attribute('scanner_id', scanner_id)
+        cmd = XmlCommand("get_scanners")
+        cmd.set_attribute("scanner_id", scanner_id)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def get_schedules(self, *, filter=None, filter_id=None, trash=None,
-                      tasks=None):
+    def get_schedules(
+        self, *, filter=None, filter_id=None, trash=None, tasks=None
+    ):
         """Request a list of schedules
 
         Arguments:
@@ -3356,15 +3605,15 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_schedules')
+        cmd = XmlCommand("get_schedules")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not tasks is None:
-            cmd.set_attribute('tasks', _to_bool(tasks))
+            cmd.set_attribute("tasks", _to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -3379,11 +3628,11 @@ class Gmp(GvmProtocol):
         """
         if not schedule_id:
             raise RequiredArgument(
-                'get_schedule requires a schedule_id argument'
+                "get_schedule requires a schedule_id argument"
             )
 
-        cmd = XmlCommand('get_schedules')
-        cmd.set_attribute('schedule_id', schedule_id)
+        cmd = XmlCommand("get_schedules")
+        cmd.set_attribute("schedule_id", schedule_id)
         return self._send_xml_command(cmd)
 
     def get_settings(self, *, filter=None):
@@ -3395,10 +3644,10 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_settings')
+        cmd = XmlCommand("get_settings")
 
         if filter:
-            cmd.set_attribute('filter', filter)
+            cmd.set_attribute("filter", filter)
 
         return self._send_xml_command(cmd)
 
@@ -3412,16 +3661,22 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not setting_id:
-            raise RequiredArgument(
-                'get_setting requires a setting_id argument'
-            )
+            raise RequiredArgument("get_setting requires a setting_id argument")
 
-        cmd = XmlCommand('get_settings')
-        cmd.set_attribute('setting_id', setting_id)
+        cmd = XmlCommand("get_settings")
+        cmd.set_attribute("setting_id", setting_id)
         return self._send_xml_command(cmd)
 
-    def get_system_reports(self, *, name=None, duration=None, start_time=None,
-                           end_time=None, brief=None, slave_id=None):
+    def get_system_reports(
+        self,
+        *,
+        name=None,
+        duration=None,
+        start_time=None,
+        end_time=None,
+        brief=None,
+        slave_id=None,
+    ):
         """Request a list of system reports
 
         Arguments:
@@ -3440,35 +3695,34 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_system_reports')
+        cmd = XmlCommand("get_system_reports")
 
         if name:
-            cmd.set_attribute('name', name)
+            cmd.set_attribute("name", name)
 
         if not duration is None:
             if not isinstance(duration, numbers.Integral):
-                raise InvalidArgument(
-                    'duration needs to be an integer number'
-                )
+                raise InvalidArgument("duration needs to be an integer number")
 
-            cmd.set_attribute('duration', str(duration))
+            cmd.set_attribute("duration", str(duration))
 
         if start_time:
-            cmd.set_attribute('start_time', str(start_time))
+            cmd.set_attribute("start_time", str(start_time))
 
         if end_time:
-            cmd.set_attribute('end_time', str(end_time))
+            cmd.set_attribute("end_time", str(end_time))
 
         if not brief is None:
-            cmd.set_attribute('brief', _to_bool(brief))
+            cmd.set_attribute("brief", _to_bool(brief))
 
         if slave_id:
-            cmd.set_attribute('slave_id', slave_id)
+            cmd.set_attribute("slave_id", slave_id)
 
         return self._send_xml_command(cmd)
 
-    def get_tags(self, *, filter=None, filter_id=None, trash=None,
-                 names_only=None):
+    def get_tags(
+        self, *, filter=None, filter_id=None, trash=None, names_only=None
+    ):
         """Request a list of tags
 
         Arguments:
@@ -3483,15 +3737,15 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_tags')
+        cmd = XmlCommand("get_tags")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not names_only is None:
-            cmd.set_attribute('names_only', _to_bool(names_only))
+            cmd.set_attribute("names_only", _to_bool(names_only))
 
         return self._send_xml_command(cmd)
 
@@ -3505,16 +3759,15 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not tag_id:
-            raise RequiredArgument(
-                'get_tag requires a tag_id argument'
-            )
+            raise RequiredArgument("get_tag requires a tag_id argument")
 
-        cmd = XmlCommand('get_tags')
-        cmd.set_attribute('tag_id', tag_id)
+        cmd = XmlCommand("get_tags")
+        cmd.set_attribute("tag_id", tag_id)
         return self._send_xml_command(cmd)
 
-    def get_targets(self, *, filter=None, filter_id=None, trash=None,
-                    tasks=None):
+    def get_targets(
+        self, *, filter=None, filter_id=None, trash=None, tasks=None
+    ):
         """Request a list of targets
 
         Arguments:
@@ -3529,15 +3782,15 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_targets')
+        cmd = XmlCommand("get_targets")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not tasks is None:
-            cmd.set_attribute('tasks', _to_bool(tasks))
+            cmd.set_attribute("tasks", _to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -3551,16 +3804,21 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not target_id:
-            raise RequiredArgument(
-                'get_target requires a target_id argument'
-            )
+            raise RequiredArgument("get_target requires a target_id argument")
 
-        cmd = XmlCommand('get_targets')
-        cmd.set_attribute('target_id', target_id)
+        cmd = XmlCommand("get_targets")
+        cmd.set_attribute("target_id", target_id)
         return self._send_xml_command(cmd)
 
-    def get_tasks(self, *, filter=None, filter_id=None, trash=None,
-                  details=None, schedules_only=None):
+    def get_tasks(
+        self,
+        *,
+        filter=None,
+        filter_id=None,
+        trash=None,
+        details=None,
+        schedules_only=None,
+    ):
         """Request a list of tasks
 
         Arguments:
@@ -3575,18 +3833,18 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_tasks')
+        cmd = XmlCommand("get_tasks")
 
         _add_filter(cmd, filter, filter_id)
 
         if not trash is None:
-            cmd.set_attribute('trash', _to_bool(trash))
+            cmd.set_attribute("trash", _to_bool(trash))
 
         if not details is None:
-            cmd.set_attribute('details', _to_bool(details))
+            cmd.set_attribute("details", _to_bool(details))
 
         if not schedules_only is None:
-            cmd.set_attribute('schedules_only', _to_bool(schedules_only))
+            cmd.set_attribute("schedules_only", _to_bool(schedules_only))
 
         return self._send_xml_command(cmd)
 
@@ -3600,13 +3858,13 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise RequiredArgument('get_task requires task_id argument')
+            raise RequiredArgument("get_task requires task_id argument")
 
-        cmd = XmlCommand('get_tasks')
-        cmd.set_attribute('task_id', task_id)
+        cmd = XmlCommand("get_tasks")
+        cmd.set_attribute("task_id", task_id)
 
         # for single entity always request all details
-        cmd.set_attribute('details', '1')
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
     def get_users(self, *, filter=None, filter_id=None):
@@ -3620,7 +3878,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('get_users')
+        cmd = XmlCommand("get_users")
 
         _add_filter(cmd, filter, filter_id)
 
@@ -3636,12 +3894,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not user_id:
-            raise RequiredArgument(
-                'get_user requires a user_id argument'
-            )
+            raise RequiredArgument("get_user requires a user_id argument")
 
-        cmd = XmlCommand('get_users')
-        cmd.set_attribute('user_id', user_id)
+        cmd = XmlCommand("get_users")
+        cmd.set_attribute("user_id", user_id)
         return self._send_xml_command(cmd)
 
     def get_version(self):
@@ -3650,9 +3906,9 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self._send_xml_command(XmlCommand('get_version'))
+        return self._send_xml_command(XmlCommand("get_version"))
 
-    def help(self, *, format=None, help_type=''):
+    def help(self, *, format=None, help_type=""):
         """Get the help text
 
         Arguments:
@@ -3662,21 +3918,23 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        cmd = XmlCommand('help')
+        cmd = XmlCommand("help")
 
-        if help_type not in ('', 'brief'):
+        if help_type not in ("", "brief"):
             raise InvalidArgument(
-                'help_type argument must be an empty string or "brief"')
+                'help_type argument must be an empty string or "brief"'
+            )
 
-        cmd.set_attribute('type', help_type)
+        cmd.set_attribute("type", help_type)
 
         if format:
-            if not format.lower() in ('html', 'rnc', 'text', 'xml'):
+            if not format.lower() in ("html", "rnc", "text", "xml"):
                 raise InvalidArgument(
-                    'help format Argument must be one of html, rnc, text or '
-                    'xml')
+                    "help format Argument must be one of html, rnc, text or "
+                    "xml"
+                )
 
-            cmd.set_attribute('format', format)
+            cmd.set_attribute("format", format)
 
         return self._send_xml_command(cmd)
 
@@ -3692,23 +3950,33 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
-            raise RequiredArgument('modify_agent requires agent_id argument')
+            raise RequiredArgument("modify_agent requires agent_id argument")
 
-        cmd = XmlCommand('modify_agent')
-        cmd.set_attribute('agent_id', str(agent_id))
+        cmd = XmlCommand("modify_agent")
+        cmd.set_attribute("agent_id", str(agent_id))
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
-    def modify_alert(self, alert_id, *, name=None, comment=None,
-                     filter_id=None, event=None, event_data=None,
-                     condition=None, condition_data=None, method=None,
-                     method_data=None):
+    def modify_alert(
+        self,
+        alert_id,
+        *,
+        name=None,
+        comment=None,
+        filter_id=None,
+        event=None,
+        event_data=None,
+        condition=None,
+        condition_data=None,
+        method=None,
+        method_data=None,
+    ):
         """Modifies an existing alert.
 
         Arguments:
@@ -3740,49 +4008,49 @@ class Gmp(GvmProtocol):
         """
 
         if not alert_id:
-            raise RequiredArgument('modify_alert requires an alert_id argument')
+            raise RequiredArgument("modify_alert requires an alert_id argument")
 
         _check_event(event, condition, method)
 
-        cmd = XmlCommand('modify_alert')
-        cmd.set_attribute('alert_id', str(alert_id))
+        cmd = XmlCommand("modify_alert")
+        cmd.set_attribute("alert_id", str(alert_id))
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if filter_id:
-            cmd.add_element('filter', attrs={'id': filter_id})
+            cmd.add_element("filter", attrs={"id": filter_id})
 
         if condition:
-            conditions = cmd.add_element('condition', condition)
+            conditions = cmd.add_element("condition", condition)
 
             if not condition_data is None:
                 for key, value in condition_data.items():
-                    _data = conditions.add_element('data', value)
-                    _data.add_element('name', key)
+                    _data = conditions.add_element("data", value)
+                    _data.add_element("name", key)
 
         if event:
-            events = cmd.add_element('event', event)
+            events = cmd.add_element("event", event)
 
             if not event_data is None:
                 for key, value in event_data.items():
-                    _data = events.add_element('data', value)
-                    _data.add_element('name', key)
+                    _data = events.add_element("data", value)
+                    _data.add_element("name", key)
 
         if method:
-            methods = cmd.add_element('method', method)
+            methods = cmd.add_element("method", method)
 
             if not method_data is None:
                 for key, value in method_data.items():
-                    _data = methods.add_element('data', value)
-                    _data.add_element('name', key)
+                    _data = methods.add_element("data", value)
+                    _data.add_element("name", key)
 
         return self._send_xml_command(cmd)
 
-    def modify_asset(self, asset_id, comment=''):
+    def modify_asset(self, asset_id, comment=""):
         """Modifies an existing asset.
 
         Arguments:
@@ -3793,11 +4061,11 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not asset_id:
-            raise RequiredArgument('modify_asset requires an asset_id argument')
+            raise RequiredArgument("modify_asset requires an asset_id argument")
 
-        cmd = XmlCommand('modify_asset')
-        cmd.set_attribute('asset_id', asset_id)
-        cmd.add_element('comment', comment)
+        cmd = XmlCommand("modify_asset")
+        cmd.set_attribute("asset_id", asset_id)
+        cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
@@ -3812,22 +4080,24 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not group_name:
-            raise RequiredArgument('modify_auth requires a group_name argument')
+            raise RequiredArgument("modify_auth requires a group_name argument")
         if not auth_conf_settings:
-            raise RequiredArgument('modify_auth requires an '
-                                   'auth_conf_settings argument')
-        cmd = XmlCommand('modify_auth')
-        _xmlgroup = cmd.add_element('group', attrs={'name': str(group_name)})
+            raise RequiredArgument(
+                "modify_auth requires an " "auth_conf_settings argument"
+            )
+        cmd = XmlCommand("modify_auth")
+        _xmlgroup = cmd.add_element("group", attrs={"name": str(group_name)})
 
         for key, value in auth_conf_settings.items():
-            _xmlauthconf = _xmlgroup.add_element('auth_conf_setting')
-            _xmlauthconf.add_element('key', key)
-            _xmlauthconf.add_element('value', value)
+            _xmlauthconf = _xmlgroup.add_element("auth_conf_setting")
+            _xmlauthconf.add_element("key", key)
+            _xmlauthconf.add_element("value", value)
 
         return self._send_xml_command(cmd)
 
-    def modify_config_set_nvt_preference(self, config_id, name, nvt_oid, *,
-                                         value=None):
+    def modify_config_set_nvt_preference(
+        self, config_id, name, nvt_oid, *, value=None
+    ):
         """Modifies the nvt preferences of an existing scan config.
 
         Arguments:
@@ -3839,33 +4109,33 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                'modify_config_set_nvt_preference requires config_id argument'
+                "modify_config_set_nvt_preference requires config_id argument"
             )
 
         if not nvt_oid:
             raise RequiredArgument(
-                'modify_config_set_nvt_preference requires a nvt_oid argument'
+                "modify_config_set_nvt_preference requires a nvt_oid argument"
             )
 
         if not name:
             raise RequiredArgument(
-                'modify_config_set_nvt_preference requires a name argument'
+                "modify_config_set_nvt_preference requires a name argument"
             )
 
-        cmd = XmlCommand('modify_config')
-        cmd.set_attribute('config_id', str(config_id))
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(config_id))
 
-        _xmlpref = cmd.add_element('preference')
+        _xmlpref = cmd.add_element("preference")
 
-        _xmlpref.add_element('nvt', attrs={'oid': nvt_oid})
-        _xmlpref.add_element('name', name)
+        _xmlpref.add_element("nvt", attrs={"oid": nvt_oid})
+        _xmlpref.add_element("name", name)
 
         if value:
-            _xmlpref.add_element('value', _to_base64(value))
+            _xmlpref.add_element("value", _to_base64(value))
 
         return self._send_xml_command(cmd)
 
-    def modify_config_set_comment(self, config_id, comment=''):
+    def modify_config_set_comment(self, config_id, comment=""):
         """Modifies the comment of an existing scan config
 
         Arguments:
@@ -3874,18 +4144,19 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                'modify_config_set_comment requires a config_id argument'
+                "modify_config_set_comment requires a config_id argument"
             )
 
-        cmd = XmlCommand('modify_config')
-        cmd.set_attribute('config_id', str(config_id))
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(config_id))
 
-        cmd.add_element('comment', comment)
+        cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
-    def modify_config_set_scanner_preference(self, config_id, name, *,
-                                             value=None):
+    def modify_config_set_scanner_preference(
+        self, config_id, name, *, value=None
+    ):
         """Modifies the scanner preferences of an existing scan config
 
         Arguments:
@@ -3897,24 +4168,24 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                'modify_config_set_scanner_preference requires a config_id '
-                'argument'
+                "modify_config_set_scanner_preference requires a config_id "
+                "argument"
             )
 
         if not name:
             raise RequiredArgument(
-                'modify_config_set_scanner_preference requires a name argument'
+                "modify_config_set_scanner_preference requires a name argument"
             )
 
-        cmd = XmlCommand('modify_config')
-        cmd.set_attribute('config_id', str(config_id))
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(config_id))
 
-        _xmlpref = cmd.add_element('preference')
+        _xmlpref = cmd.add_element("preference")
 
-        _xmlpref.add_element('name', name)
+        _xmlpref.add_element("name", name)
 
         if value:
-            _xmlpref.add_element('value', _to_base64(value))
+            _xmlpref.add_element("value", _to_base64(value))
 
         return self._send_xml_command(cmd)
 
@@ -3931,35 +4202,40 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                'modify_config_set_nvt_selection requires a config_id '
-                'argument'
+                "modify_config_set_nvt_selection requires a config_id "
+                "argument"
             )
 
         if not family:
             raise RequiredArgument(
-                'modify_config_set_nvt_selection requires a family argument'
+                "modify_config_set_nvt_selection requires a family argument"
             )
 
         if not _is_list_like(nvt_oids):
             raise InvalidArgument(
-                'modify_config_set_nvt_selection requires an iterable as '
-                'nvt_oids argument'
+                "modify_config_set_nvt_selection requires an iterable as "
+                "nvt_oids argument"
             )
 
-        cmd = XmlCommand('modify_config')
-        cmd.set_attribute('config_id', str(config_id))
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(config_id))
 
-        _xmlnvtsel = cmd.add_element('nvt_selection')
-        _xmlnvtsel.add_element('family', family)
+        _xmlnvtsel = cmd.add_element("nvt_selection")
+        _xmlnvtsel.add_element("family", family)
 
         for nvt in nvt_oids:
-            _xmlnvtsel.add_element('nvt', attrs={'oid': nvt})
+            _xmlnvtsel.add_element("nvt", attrs={"oid": nvt})
 
         return self._send_xml_command(cmd)
 
     def modify_config_set_family_selection(
-            self, config_id, families, *, auto_add_new_families=True,
-            auto_add_new_nvts=True):
+        self,
+        config_id,
+        families,
+        *,
+        auto_add_new_families=True,
+        auto_add_new_nvts=True,
+    ):
         """
         Selected the NVTs of a scan config at a family level.
 
@@ -3974,27 +4250,27 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                'modify_config_set_family_selection requires a config_id '
-                'argument'
+                "modify_config_set_family_selection requires a config_id "
+                "argument"
             )
 
         if not _is_list_like(families):
             raise InvalidArgument(
-                'modify_config_set_family_selection requires a list as '
-                'families argument'
+                "modify_config_set_family_selection requires a list as "
+                "families argument"
             )
 
-        cmd = XmlCommand('modify_config')
-        cmd.set_attribute('config_id', str(config_id))
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(config_id))
 
-        _xmlfamsel = cmd.add_element('family_selection')
-        _xmlfamsel.add_element('growing', _to_bool(auto_add_new_families))
+        _xmlfamsel = cmd.add_element("family_selection")
+        _xmlfamsel.add_element("growing", _to_bool(auto_add_new_families))
 
         for family in families:
-            _xmlfamily = _xmlfamsel.add_element('family')
-            _xmlfamily.add_element('name', family)
-            _xmlfamily.add_element('all', '1')
-            _xmlfamily.add_element('growing', _to_bool(auto_add_new_nvts))
+            _xmlfamily = _xmlfamsel.add_element("family")
+            _xmlfamily.add_element("name", family)
+            _xmlfamily.add_element("all", "1")
+            _xmlfamily.add_element("growing", _to_bool(auto_add_new_nvts))
 
         return self._send_xml_command(cmd)
 
@@ -4019,66 +4295,80 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not config_id:
-            raise RequiredArgument('modify_config required config_id argument')
+            raise RequiredArgument("modify_config required config_id argument")
 
         if selection is None:
             deprecation(
-                'Using modify_config to update the comment of a scan config is'
-                'deprecated. Please use modify_config_set_comment instead.'
+                "Using modify_config to update the comment of a scan config is"
+                "deprecated. Please use modify_config_set_comment instead."
             )
             return self.modify_config_set_comment(
-                config_id, kwargs.get('comment'))
-
-        if selection not in ('nvt_pref', 'scan_pref',
-                             'family_selection', 'nvt_selection'):
-            raise InvalidArgument('selection must be one of nvt_pref, '
-                                  'scan_pref, family_selection or '
-                                  'nvt_selection')
-
-
-        if selection == 'nvt_pref':
-            deprecation(
-                'Using modify_config to update a nvt preference of a scan '
-                'config is deprecated. Please use '
-                'modify_config_set_nvt_preference instead.'
+                config_id, kwargs.get("comment")
             )
-            return self.modify_config_set_nvt_preference(
-                config_id, **kwargs)
 
-        if selection == 'scan_pref':
+        if selection not in (
+            "nvt_pref",
+            "scan_pref",
+            "family_selection",
+            "nvt_selection",
+        ):
+            raise InvalidArgument(
+                "selection must be one of nvt_pref, "
+                "scan_pref, family_selection or "
+                "nvt_selection"
+            )
+
+        if selection == "nvt_pref":
             deprecation(
-                'Using modify_config to update a scanner preference of a '
-                'scan config is deprecated. Please use '
-                'modify_config_set_scanner_preference instead.'
+                "Using modify_config to update a nvt preference of a scan "
+                "config is deprecated. Please use "
+                "modify_config_set_nvt_preference instead."
+            )
+            return self.modify_config_set_nvt_preference(config_id, **kwargs)
+
+        if selection == "scan_pref":
+            deprecation(
+                "Using modify_config to update a scanner preference of a "
+                "scan config is deprecated. Please use "
+                "modify_config_set_scanner_preference instead."
             )
             return self.modify_config_set_scanner_preference(
-                config_id, **kwargs,
+                config_id, **kwargs
             )
 
-        if selection == 'nvt_selection':
+        if selection == "nvt_selection":
             deprecation(
-                'Using modify_config to update a nvt selection of a '
-                'scan config is deprecated. Please use '
-                'modify_config_set_nvt_selection instead.'
+                "Using modify_config to update a nvt selection of a "
+                "scan config is deprecated. Please use "
+                "modify_config_set_nvt_selection instead."
             )
-            return self.modify_config_set_nvt_selection(
-                config_id, **kwargs,
-            )
+            return self.modify_config_set_nvt_selection(config_id, **kwargs)
 
         deprecation(
-            'Using modify_config to update a family selection of a '
-            'scan config is deprecated. Please use '
-            'modify_config_set_family_selection instead.'
+            "Using modify_config to update a family selection of a "
+            "scan config is deprecated. Please use "
+            "modify_config_set_family_selection instead."
         )
-        return self.modify_config_set_family_selection(
-            config_id, **kwargs)
+        return self.modify_config_set_family_selection(config_id, **kwargs)
 
-    def modify_credential(self, credential_id, credential_type=None, *,
-                          name=None, comment=None, allow_insecure=None,
-                          certificate=None, key_phrase=None, private_key=None,
-                          login=None, password=None, auth_algorithm=None,
-                          community=None, privacy_algorithm=None,
-                          privacy_password=None):
+    def modify_credential(
+        self,
+        credential_id,
+        credential_type=None,
+        *,
+        name=None,
+        comment=None,
+        allow_insecure=None,
+        certificate=None,
+        key_phrase=None,
+        private_key=None,
+        login=None,
+        password=None,
+        auth_algorithm=None,
+        community=None,
+        privacy_algorithm=None,
+        privacy_password=None,
+    ):
         """Modifies an existing credential.
 
         Arguments:
@@ -4105,72 +4395,82 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not credential_id:
-            raise RequiredArgument('modify_credential requires '
-                                   'a credential_id attribute')
+            raise RequiredArgument(
+                "modify_credential requires " "a credential_id attribute"
+            )
 
-        cmd = XmlCommand('modify_credential')
-        cmd.set_attribute('credential_id', credential_id)
+        cmd = XmlCommand("modify_credential")
+        cmd.set_attribute("credential_id", credential_id)
 
         if credential_type:
             if credential_type not in CREDENTIAL_TYPES:
-                raise InvalidArgument('modify_credential requires type '
-                                      'to be either cc, snmp, up or usk')
+                raise InvalidArgument(
+                    "modify_credential requires type "
+                    "to be either cc, snmp, up or usk"
+                )
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if allow_insecure is not None:
-            cmd.add_element('allow_insecure', _to_bool(allow_insecure))
+            cmd.add_element("allow_insecure", _to_bool(allow_insecure))
 
         if certificate:
-            cmd.add_element('certificate', certificate)
+            cmd.add_element("certificate", certificate)
 
         if key_phrase is not None or private_key:
             if key_phrase is not None and not private_key:
-                raise RequiredArgument('modify_credential requires '
-                                       'key_phrase and private_key arguments')
+                raise RequiredArgument(
+                    "modify_credential requires "
+                    "key_phrase and private_key arguments"
+                )
 
-            _xmlkey = cmd.add_element('key')
-            _xmlkey.add_element('private', private_key)
+            _xmlkey = cmd.add_element("key")
+            _xmlkey.add_element("private", private_key)
 
             if key_phrase is not None:
-                _xmlkey.add_element('phrase', key_phrase)
+                _xmlkey.add_element("phrase", key_phrase)
 
         if login:
-            cmd.add_element('login', login)
+            cmd.add_element("login", login)
 
         if password:
-            cmd.add_element('password', password)
+            cmd.add_element("password", password)
 
         if auth_algorithm is not None:
-            if auth_algorithm not in ('md5', 'sha1'):
-                raise InvalidArgument('modify_credential requires '
-                                      'auth_algorithm to be either '
-                                      'md5 or sha1')
-            cmd.add_element('auth_algorithm', auth_algorithm)
+            if auth_algorithm not in ("md5", "sha1"):
+                raise InvalidArgument(
+                    "modify_credential requires "
+                    "auth_algorithm to be either "
+                    "md5 or sha1"
+                )
+            cmd.add_element("auth_algorithm", auth_algorithm)
 
         if community:
-            cmd.add_element('community', community)
+            cmd.add_element("community", community)
 
         if privacy_algorithm is not None:
-            if privacy_algorithm not in ('aes', 'des'):
-                raise InvalidArgument('modify_credential requires '
-                                      'privacy_algorithm to be either'
-                                      'aes or des')
+            if privacy_algorithm not in ("aes", "des"):
+                raise InvalidArgument(
+                    "modify_credential requires "
+                    "privacy_algorithm to be either"
+                    "aes or des"
+                )
 
-            _xmlprivacy = cmd.add_element('privacy')
-            _xmlprivacy.add_element('algorithm', privacy_algorithm)
+            _xmlprivacy = cmd.add_element("privacy")
+            _xmlprivacy.add_element("algorithm", privacy_algorithm)
 
             if privacy_password is not None:
-                _xmlprivacy.add_element('password', privacy_password)
+                _xmlprivacy.add_element("password", privacy_password)
 
         return self._send_xml_command(cmd)
 
-    def modify_filter(self, filter_id, *, comment=None, name=None, term=None,
-                      filter_type=None):
+    def modify_filter(
+        self, filter_id, *, comment=None, name=None, term=None, filter_type=None
+    ):
         """Modifies an existing filter.
 
         Arguments:
@@ -4184,33 +4484,34 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not filter_id:
-            raise RequiredArgument('modify_filter requires a filter_id '
-                                   'attribute')
+            raise RequiredArgument(
+                "modify_filter requires a filter_id " "attribute"
+            )
 
-        cmd = XmlCommand('modify_filter')
-        cmd.set_attribute('filter_id', filter_id)
+        cmd = XmlCommand("modify_filter")
+        cmd.set_attribute("filter_id", filter_id)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if term:
-            cmd.add_element('term', term)
+            cmd.add_element("term", term)
 
         if filter_type:
             filter_type = filter_type.lower()
             if filter_type not in FILTER_TYPES:
                 raise InvalidArgument(
-                    'modify_filter requires type to be one of {0} but '
-                    'was {1}'.format(', '.join(FILTER_TYPES), filter_type))
-            cmd.add_element('type', filter_type)
+                    "modify_filter requires type to be one of {0} but "
+                    "was {1}".format(", ".join(FILTER_TYPES), filter_type)
+                )
+            cmd.add_element("type", filter_type)
 
         return self._send_xml_command(cmd)
 
-    def modify_group(self, group_id, *, comment=None, name=None,
-                     users=None):
+    def modify_group(self, group_id, *, comment=None, name=None, users=None):
         """Modifies an existing group.
 
         Arguments:
@@ -4223,25 +4524,35 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not group_id:
-            raise RequiredArgument('modify_group requires a group_id argument')
+            raise RequiredArgument("modify_group requires a group_id argument")
 
-        cmd = XmlCommand('modify_group')
-        cmd.set_attribute('group_id', group_id)
+        cmd = XmlCommand("modify_group")
+        cmd.set_attribute("group_id", group_id)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if users:
-            cmd.add_element('users', _to_comma_list(users))
+            cmd.add_element("users", _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
-    def modify_note(self, note_id, text, *, seconds_active=None, hosts=None,
-                    port=None, result_id=None, severity=None, task_id=None,
-                    threat=None):
+    def modify_note(
+        self,
+        note_id,
+        text,
+        *,
+        seconds_active=None,
+        hosts=None,
+        port=None,
+        result_id=None,
+        severity=None,
+        task_id=None,
+        threat=None,
+    ):
         """Modifies an existing note.
 
         Arguments:
@@ -4262,48 +4573,59 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not note_id:
-            raise RequiredArgument('modify_note requires a note_id attribute')
+            raise RequiredArgument("modify_note requires a note_id attribute")
 
         if not text:
-            raise RequiredArgument('modify_note requires a text element')
+            raise RequiredArgument("modify_note requires a text element")
 
-        cmd = XmlCommand('modify_note')
-        cmd.set_attribute('note_id', note_id)
-        cmd.add_element('text', text)
+        cmd = XmlCommand("modify_note")
+        cmd.set_attribute("note_id", note_id)
+        cmd.add_element("text", text)
 
         if not seconds_active is None:
-            cmd.add_element('active', str(seconds_active))
+            cmd.add_element("active", str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', _to_comma_list(hosts))
+            cmd.add_element("hosts", _to_comma_list(hosts))
 
         if port:
-            cmd.add_element('port', str(port))
+            cmd.add_element("port", str(port))
 
         if result_id:
-            cmd.add_element('result', attrs={'id': result_id})
+            cmd.add_element("result", attrs={"id": result_id})
 
         if severity:
-            cmd.add_element('severity', str(severity))
+            cmd.add_element("severity", str(severity))
 
         if task_id:
-            cmd.add_element('task', attrs={'id': task_id})
+            cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
-            cmd.add_element('threat', threat)
+            cmd.add_element("threat", threat)
 
             if threat not in THREAD_TYPES:
                 raise InvalidArgument(
-                    'modify_note threat argument {0} is invalid. threat must '
-                    'be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                    "modify_note threat argument {0} is invalid. threat must "
+                    "be one of {1}".format(threat, ", ".join(THREAD_TYPES))
                 )
 
         return self._send_xml_command(cmd)
 
-    def modify_override(self, override_id, text, *, seconds_active=None,
-                        hosts=None, port=None, result_id=None, severity=None,
-                        new_severity=None, task_id=None, threat=None,
-                        new_threat=None):
+    def modify_override(
+        self,
+        override_id,
+        text,
+        *,
+        seconds_active=None,
+        hosts=None,
+        port=None,
+        result_id=None,
+        severity=None,
+        new_severity=None,
+        task_id=None,
+        threat=None,
+        new_threat=None,
+    ):
         """Modifies an existing override.
 
         Arguments:
@@ -4328,61 +4650,69 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not override_id:
-            raise RequiredArgument('modify_override requires a override_id '
-                                   'argument')
+            raise RequiredArgument(
+                "modify_override requires a override_id " "argument"
+            )
         if not text:
-            raise RequiredArgument('modify_override requires a text argument')
+            raise RequiredArgument("modify_override requires a text argument")
 
-        cmd = XmlCommand('modify_override')
-        cmd.set_attribute('override_id', override_id)
-        cmd.add_element('text', text)
+        cmd = XmlCommand("modify_override")
+        cmd.set_attribute("override_id", override_id)
+        cmd.add_element("text", text)
 
         if not seconds_active is None:
-            cmd.add_element('active', str(seconds_active))
+            cmd.add_element("active", str(seconds_active))
 
         if hosts:
-            cmd.add_element('hosts', _to_comma_list(hosts))
+            cmd.add_element("hosts", _to_comma_list(hosts))
 
         if port:
-            cmd.add_element('port', str(port))
+            cmd.add_element("port", str(port))
 
         if result_id:
-            cmd.add_element('result', attrs={'id': result_id})
+            cmd.add_element("result", attrs={"id": result_id})
 
         if severity:
-            cmd.add_element('severity', str(severity))
+            cmd.add_element("severity", str(severity))
 
         if new_severity:
-            cmd.add_element('new_severity', str(new_severity))
+            cmd.add_element("new_severity", str(new_severity))
 
         if task_id:
-            cmd.add_element('task', attrs={'id': task_id})
+            cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
             if threat not in THREAD_TYPES:
                 raise InvalidArgument(
-                    'modify_override threat argument {0} is invalid. threat'
-                    'must be one of {1}'.format(threat, ', '.join(THREAD_TYPES))
+                    "modify_override threat argument {0} is invalid. threat"
+                    "must be one of {1}".format(threat, ", ".join(THREAD_TYPES))
                 )
-            cmd.add_element('threat', threat)
+            cmd.add_element("threat", threat)
 
         if new_threat is not None:
             if new_threat not in THREAD_TYPES:
                 raise InvalidArgument(
-                    'modify_override new_threat argument {0} is invalid. '
-                    'new_threat must be one of {1}'.format(
-                        new_threat,
-                        ', '.join(THREAD_TYPES),
+                    "modify_override new_threat argument {0} is invalid. "
+                    "new_threat must be one of {1}".format(
+                        new_threat, ", ".join(THREAD_TYPES)
                     )
                 )
 
-            cmd.add_element('new_threat', new_threat)
+            cmd.add_element("new_threat", new_threat)
 
         return self._send_xml_command(cmd)
 
-    def modify_permission(self, permission_id, *, comment=None, name=None,
-                          resource_id=None, resource_type=None,
-                          subject_id=None, subject_type=None):
+    def modify_permission(
+        self,
+        permission_id,
+        *,
+        comment=None,
+        name=None,
+        resource_id=None,
+        resource_type=None,
+        subject_id=None,
+        subject_type=None,
+    ):
         """Modifies an existing permission.
 
         Arguments:
@@ -4403,48 +4733,49 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not permission_id:
-            raise RequiredArgument('modify_permission requires '
-                                   'a permission_id element')
+            raise RequiredArgument(
+                "modify_permission requires " "a permission_id element"
+            )
 
-        cmd = XmlCommand('modify_permission')
-        cmd.set_attribute('permission_id', permission_id)
+        cmd = XmlCommand("modify_permission")
+        cmd.set_attribute("permission_id", permission_id)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if resource_id or resource_type:
             if not resource_id:
                 raise RequiredArgument(
-                    'modify_permission requires resource_id for resource_type'
+                    "modify_permission requires resource_id for resource_type"
                 )
 
             if not resource_type:
                 raise RequiredArgument(
-                    'modify_permission requires resource_type for resource_id'
+                    "modify_permission requires resource_type for resource_id"
                 )
 
-            _xmlresource = cmd.add_element('resource',
-                                           attrs={'id': resource_id})
-            _xmlresource.add_element('type', resource_type)
+            _xmlresource = cmd.add_element(
+                "resource", attrs={"id": resource_id}
+            )
+            _xmlresource.add_element("type", resource_type)
 
         if subject_id or subject_type:
             if not subject_id:
                 raise RequiredArgument(
-                    'modify_permission requires a subject_id for subject_type'
+                    "modify_permission requires a subject_id for subject_type"
                 )
 
             if subject_type not in SUBJECT_TYPES:
                 raise InvalidArgument(
-                    'modify_permission requires subject_type to be either '
-                    'user, group or role'
+                    "modify_permission requires subject_type to be either "
+                    "user, group or role"
                 )
 
-            _xmlsubject = cmd.add_element('subject',
-                                          attrs={'id': subject_id})
-            _xmlsubject.add_element('type', subject_type)
+            _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
+            _xmlsubject.add_element("type", subject_type)
 
         return self._send_xml_command(cmd)
 
@@ -4460,21 +4791,30 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not port_list_id:
-            raise RequiredArgument('modify_port_list requires '
-                                   'a port_list_id attribute')
-        cmd = XmlCommand('modify_port_list')
-        cmd.set_attribute('port_list_id', port_list_id)
+            raise RequiredArgument(
+                "modify_port_list requires " "a port_list_id attribute"
+            )
+        cmd = XmlCommand("modify_port_list")
+        cmd.set_attribute("port_list_id", port_list_id)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         return self._send_xml_command(cmd)
 
-    def modify_report_format(self, report_format_id, *, active=None, name=None,
-                             summary=None, param_name=None, param_value=None):
+    def modify_report_format(
+        self,
+        report_format_id,
+        *,
+        active=None,
+        name=None,
+        summary=None,
+        param_name=None,
+        param_value=None,
+    ):
         """Modifies an existing report format.
 
         Arguments:
@@ -4489,27 +4829,28 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not report_format_id:
-            raise RequiredArgument('modify_report requires '
-                                   'a report_format_id attribute')
+            raise RequiredArgument(
+                "modify_report requires " "a report_format_id attribute"
+            )
 
-        cmd = XmlCommand('modify_report_format')
-        cmd.set_attribute('report_format_id', report_format_id)
+        cmd = XmlCommand("modify_report_format")
+        cmd.set_attribute("report_format_id", report_format_id)
 
         if active is not None:
-            cmd.add_element('active', _to_bool(active))
+            cmd.add_element("active", _to_bool(active))
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if summary:
-            cmd.add_element('summary', summary)
+            cmd.add_element("summary", summary)
 
         if param_name:
-            _xmlparam = cmd.add_element('param')
-            _xmlparam.add_element('name', param_name)
+            _xmlparam = cmd.add_element("param")
+            _xmlparam.add_element("name", param_name)
 
             if param_value is not None:
-                _xmlparam.add_element('value', param_value)
+                _xmlparam.add_element("value", param_value)
 
         return self._send_xml_command(cmd)
 
@@ -4526,25 +4867,34 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not role_id:
-            raise RequiredArgument('modify_role requires a role_id argument')
+            raise RequiredArgument("modify_role requires a role_id argument")
 
-        cmd = XmlCommand('modify_role')
-        cmd.set_attribute('role_id', role_id)
+        cmd = XmlCommand("modify_role")
+        cmd.set_attribute("role_id", role_id)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if users:
-            cmd.add_element('users', _to_comma_list(users))
+            cmd.add_element("users", _to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
-    def modify_scanner(self, scanner_id, *, scanner_type=None, host=None,
-                       port=None, comment=None, name=None, ca_pub=None,
-                       credential_id=None):
+    def modify_scanner(
+        self,
+        scanner_id,
+        *,
+        scanner_type=None,
+        host=None,
+        port=None,
+        comment=None,
+        name=None,
+        ca_pub=None,
+        credential_id=None,
+    ):
         """Modifies an existing scanner.
 
         Arguments:
@@ -4566,46 +4916,60 @@ class Gmp(GvmProtocol):
         """
         if not scanner_id:
             raise RequiredArgument(
-                'modify_scanner requires a scanner_id argument'
+                "modify_scanner requires a scanner_id argument"
             )
 
         if scanner_type is not None and scanner_type not in SCANNER_TYPES:
-            raise InvalidArgument('modify_scanner requires a scanner_type '
-                                  'argument which must be either "1" for OSP, '
-                                  '"2" for OpenVAS (Classic), "3" for CVE or '
-                                  '"4" for GMP Scanner.')
+            raise InvalidArgument(
+                "modify_scanner requires a scanner_type "
+                'argument which must be either "1" for OSP, '
+                '"2" for OpenVAS (Classic), "3" for CVE or '
+                '"4" for GMP Scanner.'
+            )
 
-        cmd = XmlCommand('modify_scanner')
-        cmd.set_attribute('scanner_id', scanner_id)
+        cmd = XmlCommand("modify_scanner")
+        cmd.set_attribute("scanner_id", scanner_id)
 
         if scanner_type:
-            cmd.add_element('type', scanner_type)
+            cmd.add_element("type", scanner_type)
 
         if host:
-            cmd.add_element('host', host)
+            cmd.add_element("host", host)
 
         if port:
-            cmd.add_element('port', str(port))
+            cmd.add_element("port", str(port))
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if ca_pub:
-            cmd.add_element('ca_pub', ca_pub)
+            cmd.add_element("ca_pub", ca_pub)
 
         if credential_id:
-            cmd.add_element('credential', attrs={'id': str(credential_id)})
+            cmd.add_element("credential", attrs={"id": str(credential_id)})
 
         return self._send_xml_command(cmd)
 
-    def modify_schedule(self, schedule_id, *, comment=None, name=None,
-                        first_time_minute=None, first_time_hour=None,
-                        first_time_day_of_month=None, first_time_month=None,
-                        first_time_year=None, duration=None, duration_unit=None,
-                        period=None, period_unit=None, timezone=None):
+    def modify_schedule(
+        self,
+        schedule_id,
+        *,
+        comment=None,
+        name=None,
+        first_time_minute=None,
+        first_time_hour=None,
+        first_time_day_of_month=None,
+        first_time_month=None,
+        first_time_year=None,
+        duration=None,
+        duration_unit=None,
+        period=None,
+        period_unit=None,
+        timezone=None,
+    ):
         """Modifies an existing schedule.
 
         Arguments:
@@ -4638,120 +5002,148 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not schedule_id:
-            raise RequiredArgument('modify_schedule requires a schedule_id'
-                                   'argument')
+            raise RequiredArgument(
+                "modify_schedule requires a schedule_id" "argument"
+            )
 
-        cmd = XmlCommand('modify_schedule')
-        cmd.set_attribute('schedule_id', schedule_id)
+        cmd = XmlCommand("modify_schedule")
+        cmd.set_attribute("schedule_id", schedule_id)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
-        if first_time_minute is not None or first_time_hour is not None or \
-            first_time_day_of_month is not None or \
-            first_time_month is not None or first_time_year is not None:
+        if (
+            first_time_minute is not None
+            or first_time_hour is not None
+            or first_time_day_of_month is not None
+            or first_time_month is not None
+            or first_time_year is not None
+        ):
 
             if first_time_minute is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_minute argument')
-            elif not isinstance(first_time_minute, numbers.Integral) or \
-                first_time_minute < 0:
+                    "Setting first_time requires first_time_minute argument"
+                )
+            elif (
+                not isinstance(first_time_minute, numbers.Integral)
+                or first_time_minute < 0
+            ):
                 raise InvalidArgument(
-                    'first_time_minute argument of modify_schedule needs to be '
-                    'an integer greater or equal 0'
+                    "first_time_minute argument of modify_schedule needs to be "
+                    "an integer greater or equal 0"
                 )
 
             if first_time_hour is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_hour argument')
-            elif not isinstance(first_time_hour, numbers.Integral) or \
-                first_time_hour < 0:
+                    "Setting first_time requires first_time_hour argument"
+                )
+            elif (
+                not isinstance(first_time_hour, numbers.Integral)
+                or first_time_hour < 0
+            ):
                 raise InvalidArgument(
-                    'first_time_hour argument of modify_schedule needs to be '
-                    'an integer greater or equal 0'
+                    "first_time_hour argument of modify_schedule needs to be "
+                    "an integer greater or equal 0"
                 )
 
             if first_time_day_of_month is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_day_of_month '
-                    'argument')
-            elif not isinstance(first_time_day_of_month, numbers.Integral) or \
-                first_time_day_of_month < 1 or first_time_day_of_month > 31:
+                    "Setting first_time requires first_time_day_of_month "
+                    "argument"
+                )
+            elif (
+                not isinstance(first_time_day_of_month, numbers.Integral)
+                or first_time_day_of_month < 1
+                or first_time_day_of_month > 31
+            ):
                 raise InvalidArgument(
-                    'first_time_day_of_month argument of modify_schedule needs '
-                    'to be an integer between 1 and 31'
+                    "first_time_day_of_month argument of modify_schedule needs "
+                    "to be an integer between 1 and 31"
                 )
 
             if first_time_month is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_month argument')
-            elif not isinstance(first_time_month, numbers.Integral) or \
-                first_time_month < 1 or first_time_month > 12:
+                    "Setting first_time requires first_time_month argument"
+                )
+            elif (
+                not isinstance(first_time_month, numbers.Integral)
+                or first_time_month < 1
+                or first_time_month > 12
+            ):
                 raise InvalidArgument(
-                    'first_time_month argument of modify_schedule needs '
-                    'to be an integer between 1 and 12'
+                    "first_time_month argument of modify_schedule needs "
+                    "to be an integer between 1 and 12"
                 )
 
             if first_time_year is None:
                 raise RequiredArgument(
-                    'Setting first_time requires first_time_year argument')
-            elif not isinstance(first_time_year, numbers.Integral) or \
-                first_time_year < 1970:
+                    "Setting first_time requires first_time_year argument"
+                )
+            elif (
+                not isinstance(first_time_year, numbers.Integral)
+                or first_time_year < 1970
+            ):
                 raise InvalidArgument(
-                    'first_time_year argument of create_schedule needs '
-                    'to be an integer greater or equal 1970'
+                    "first_time_year argument of create_schedule needs "
+                    "to be an integer greater or equal 1970"
                 )
 
-            _xmlftime = cmd.add_element('first_time')
-            _xmlftime.add_element('minute', str(first_time_minute))
-            _xmlftime.add_element('hour', str(first_time_hour))
-            _xmlftime.add_element('day_of_month', str(first_time_day_of_month))
-            _xmlftime.add_element('month', str(first_time_month))
-            _xmlftime.add_element('year', str(first_time_year))
+            _xmlftime = cmd.add_element("first_time")
+            _xmlftime.add_element("minute", str(first_time_minute))
+            _xmlftime.add_element("hour", str(first_time_hour))
+            _xmlftime.add_element("day_of_month", str(first_time_day_of_month))
+            _xmlftime.add_element("month", str(first_time_month))
+            _xmlftime.add_element("year", str(first_time_year))
 
         if duration is not None:
             if not duration_unit:
                 raise RequiredArgument(
-                    'Setting duration requires duration_unit argument')
+                    "Setting duration requires duration_unit argument"
+                )
 
             if not duration_unit in TIME_UNITS:
                 raise InvalidArgument(
-                    'duration_unit must be one of {units} but {actual} has '
-                    'been passed'.format(
-                        units=', '.join(TIME_UNITS), actual=duration_unit))
+                    "duration_unit must be one of {units} but {actual} has "
+                    "been passed".format(
+                        units=", ".join(TIME_UNITS), actual=duration_unit
+                    )
+                )
 
             if not isinstance(duration, numbers.Integral) or duration < 1:
                 raise InvalidArgument(
-                    'duration argument must be an integer greater than 0',
+                    "duration argument must be an integer greater than 0"
                 )
 
-            _xmlduration = cmd.add_element('duration', str(duration))
-            _xmlduration.add_element('unit', duration_unit)
+            _xmlduration = cmd.add_element("duration", str(duration))
+            _xmlduration.add_element("unit", duration_unit)
 
         if period is not None:
             if not period_unit:
                 raise RequiredArgument(
-                    'Setting period requires period_unit argument')
+                    "Setting period requires period_unit argument"
+                )
 
             if not period_unit in TIME_UNITS:
                 raise InvalidArgument(
-                    'period_unit must be one of {units} but {actual} has '
-                    'been passed'.format(
-                        units=', '.join(TIME_UNITS), actual=period_unit))
+                    "period_unit must be one of {units} but {actual} has "
+                    "been passed".format(
+                        units=", ".join(TIME_UNITS), actual=period_unit
+                    )
+                )
 
             if not isinstance(period, numbers.Integral) or period < 1:
                 raise InvalidArgument(
-                    'period argument must be an integer greater than 0',
+                    "period argument must be an integer greater than 0"
                 )
 
-            _xmlperiod = cmd.add_element('period', str(period))
-            _xmlperiod.add_element('unit', period_unit)
+            _xmlperiod = cmd.add_element("period", str(period))
+            _xmlperiod.add_element("unit", period_unit)
 
         if timezone:
-            cmd.add_element('timezone', timezone)
+            cmd.add_element("timezone", timezone)
 
         return self._send_xml_command(cmd)
 
@@ -4769,25 +5161,34 @@ class Gmp(GvmProtocol):
         """
         if not setting_id and not name:
             raise RequiredArgument(
-                'modify_setting requires a setting_id or name argument'
+                "modify_setting requires a setting_id or name argument"
             )
 
         if value is None:
-            raise RequiredArgument('modify_setting requires a value argument')
+            raise RequiredArgument("modify_setting requires a value argument")
 
-        cmd = XmlCommand('modify_setting')
+        cmd = XmlCommand("modify_setting")
 
         if setting_id:
-            cmd.set_attribute('setting_id', setting_id)
+            cmd.set_attribute("setting_id", setting_id)
         else:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
-        cmd.add_element('value', _to_base64(value))
+        cmd.add_element("value", _to_base64(value))
 
         return self._send_xml_command(cmd)
 
-    def modify_tag(self, tag_id, *, comment=None, name=None, value=None,
-                   active=None, resource_id=None, resource_type=None):
+    def modify_tag(
+        self,
+        tag_id,
+        *,
+        comment=None,
+        name=None,
+        value=None,
+        active=None,
+        resource_id=None,
+        resource_type=None,
+    ):
         """Modifies an existing tag.
 
         Arguments:
@@ -4805,48 +5206,61 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not tag_id:
-            raise RequiredArgument('modify_tag requires a tag_id element')
+            raise RequiredArgument("modify_tag requires a tag_id element")
 
-        cmd = XmlCommand('modify_tag')
-        cmd.set_attribute('tag_id', str(tag_id))
+        cmd = XmlCommand("modify_tag")
+        cmd.set_attribute("tag_id", str(tag_id))
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if value:
-            cmd.add_element('value', value)
+            cmd.add_element("value", value)
 
         if active is not None:
-            cmd.add_element('active', _to_bool(active))
+            cmd.add_element("active", _to_bool(active))
 
         if resource_id or resource_type:
             if not resource_id:
                 raise RequiredArgument(
-                    'modify_tag requires resource_id argument when '
-                    'resource_type is set'
+                    "modify_tag requires resource_id argument when "
+                    "resource_type is set"
                 )
 
             if not resource_type:
                 raise RequiredArgument(
-                    'modify_tag requires resource_type argument when '
-                    'resource_id is set'
+                    "modify_tag requires resource_type argument when "
+                    "resource_id is set"
                 )
 
-            _xmlresource = cmd.add_element('resource',
-                                           attrs={'id': resource_id})
-            _xmlresource.add_element('type', resource_type)
+            _xmlresource = cmd.add_element(
+                "resource", attrs={"id": resource_id}
+            )
+            _xmlresource.add_element("type", resource_type)
 
         return self._send_xml_command(cmd)
 
-    def modify_target(self, target_id, *, name=None, comment=None,
-                      hosts=None, exclude_hosts=None, ssh_credential_id=None,
-                      ssh_credential_port=None, smb_credential_id=None,
-                      esxi_credential_id=None, snmp_credential_id=None,
-                      alive_tests=None, reverse_lookup_only=None,
-                      reverse_lookup_unify=None, port_list_id=None):
+    def modify_target(
+        self,
+        target_id,
+        *,
+        name=None,
+        comment=None,
+        hosts=None,
+        exclude_hosts=None,
+        ssh_credential_id=None,
+        ssh_credential_port=None,
+        smb_credential_id=None,
+        esxi_credential_id=None,
+        snmp_credential_id=None,
+        alive_tests=None,
+        reverse_lookup_only=None,
+        reverse_lookup_unify=None,
+        port_list_id=None,
+    ):
         """Modifies an existing target.
 
         Arguments:
@@ -4877,65 +5291,84 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not target_id:
-            raise RequiredArgument('modify_target requires a '
-                                   'target_id argument')
+            raise RequiredArgument(
+                "modify_target requires a " "target_id argument"
+            )
 
-        cmd = XmlCommand('modify_target')
-        cmd.set_attribute('target_id', target_id)
+        cmd = XmlCommand("modify_target")
+        cmd.set_attribute("target_id", target_id)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if hosts:
-            cmd.add_element('hosts', _to_comma_list(hosts))
+            cmd.add_element("hosts", _to_comma_list(hosts))
 
         if exclude_hosts:
-            cmd.add_element('exclude_hosts', _to_comma_list(exclude_hosts))
+            cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
 
         if alive_tests:
             if not alive_tests in ALIVE_TESTS:
                 raise InvalidArgument(
-                    'alive_tests must be one of {tests} but '
-                    '{actual} has been passed'.format(
-                        tests='|'.join(ALIVE_TESTS), actual=alive_tests))
-            cmd.add_element('alive_tests', alive_tests)
+                    "alive_tests must be one of {tests} but "
+                    "{actual} has been passed".format(
+                        tests="|".join(ALIVE_TESTS), actual=alive_tests
+                    )
+                )
+            cmd.add_element("alive_tests", alive_tests)
 
         if ssh_credential_id:
-            _xmlssh = cmd.add_element('ssh_credential',
-                                      attrs={'id': ssh_credential_id})
+            _xmlssh = cmd.add_element(
+                "ssh_credential", attrs={"id": ssh_credential_id}
+            )
 
             if ssh_credential_port:
-                _xmlssh.add_element('port', str(ssh_credential_port))
+                _xmlssh.add_element("port", str(ssh_credential_port))
 
         if smb_credential_id:
-            cmd.add_element('smb_credential', attrs={'id': smb_credential_id})
+            cmd.add_element("smb_credential", attrs={"id": smb_credential_id})
 
         if esxi_credential_id:
-            cmd.add_element('esxi_credential', attrs={'id': esxi_credential_id})
+            cmd.add_element("esxi_credential", attrs={"id": esxi_credential_id})
 
         if snmp_credential_id:
-            cmd.add_element('snmp_credential', attrs={'id': snmp_credential_id})
+            cmd.add_element("snmp_credential", attrs={"id": snmp_credential_id})
 
         if not reverse_lookup_only is None:
-            cmd.add_element('reverse_lookup_only',
-                            _to_bool(reverse_lookup_only))
+            cmd.add_element(
+                "reverse_lookup_only", _to_bool(reverse_lookup_only)
+            )
 
         if not reverse_lookup_unify is None:
-            cmd.add_element('reverse_lookup_unify',
-                            _to_bool(reverse_lookup_unify))
+            cmd.add_element(
+                "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
+            )
 
         if port_list_id:
-            cmd.add_element('port_list', attrs={'id': port_list_id})
+            cmd.add_element("port_list", attrs={"id": port_list_id})
 
         return self._send_xml_command(cmd)
 
-    def modify_task(self, task_id, *, name=None, config_id=None, target_id=None,
-                    scanner_id=None, alterable=None, hosts_ordering=None,
-                    schedule_id=None, schedule_periods=None, comment=None,
-                    alert_ids=None, observers=None, preferences=None):
+    def modify_task(
+        self,
+        task_id,
+        *,
+        name=None,
+        config_id=None,
+        target_id=None,
+        scanner_id=None,
+        alterable=None,
+        hosts_ordering=None,
+        schedule_id=None,
+        schedule_periods=None,
+        comment=None,
+        alert_ids=None,
+        observers=None,
+        preferences=None,
+    ):
         """Modifies an existing task.
 
         Arguments:
@@ -4962,63 +5395,61 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise RequiredArgument('modify_task requires a task_id argument')
+            raise RequiredArgument("modify_task requires a task_id argument")
 
-        cmd = XmlCommand('modify_task')
-        cmd.set_attribute('task_id', task_id)
+        cmd = XmlCommand("modify_task")
+        cmd.set_attribute("task_id", task_id)
 
         if name:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if comment:
-            cmd.add_element('comment', comment)
+            cmd.add_element("comment", comment)
 
         if config_id:
-            cmd.add_element('config', attrs={'id': config_id})
+            cmd.add_element("config", attrs={"id": config_id})
 
         if target_id:
-            cmd.add_element('target', attrs={'id': target_id})
+            cmd.add_element("target", attrs={"id": target_id})
 
         if not alterable is None:
-            cmd.add_element('alterable', _to_bool(alterable))
+            cmd.add_element("alterable", _to_bool(alterable))
 
         if hosts_ordering:
             # not sure about the possible values for hosts_orderning
             # it seems gvmd does not check the param
             # gsa allows to select 'sequential', 'random' or 'reverse'
-            cmd.add_element('hosts_ordering', hosts_ordering)
+            cmd.add_element("hosts_ordering", hosts_ordering)
 
         if scanner_id:
-            cmd.add_element('scanner', attrs={'id': scanner_id})
+            cmd.add_element("scanner", attrs={"id": scanner_id})
 
         if schedule_id:
-            cmd.add_element('schedule', attrs={'id': schedule_id})
+            cmd.add_element("schedule", attrs={"id": schedule_id})
 
         if schedule_periods is not None:
-            if not isinstance(schedule_periods, numbers.Integral) or \
-                schedule_periods < 0:
+            if (
+                not isinstance(schedule_periods, numbers.Integral)
+                or schedule_periods < 0
+            ):
                 raise InvalidArgument(
-                    'schedule_periods must be an integer greater or equal '
-                    'than 0'
+                    "schedule_periods must be an integer greater or equal "
+                    "than 0"
                 )
-            cmd.add_element('schedule_periods', str(schedule_periods))
+            cmd.add_element("schedule_periods", str(schedule_periods))
 
         if alert_ids is not None:
             if not _is_list_like(alert_ids):
-                raise InvalidArgument(
-                    'alert_ids argument must be a list'
-                )
+                raise InvalidArgument("alert_ids argument must be a list")
 
             for alert in alert_ids:
-                cmd.add_element('alert', attrs={'id': str(alert)})
+                cmd.add_element("alert", attrs={"id": str(alert)})
 
         if observers is not None:
             if not _is_list_like(observers):
-                raise InvalidArgument(
-                    'obeservers argument must be a list'
-                )
+                raise InvalidArgument("obeservers argument must be a list")
 
-            cmd.add_element('observers', _to_comma_list(observers))
+            cmd.add_element("observers", _to_comma_list(observers))
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
@@ -5026,17 +5457,27 @@ class Gmp(GvmProtocol):
                     'preferences argument must be a dict'
                 )
 
-            _xmlprefs = cmd.add_element('preferences')
+            _xmlprefs = cmd.add_element("preferences")
             for pref_name, pref_value in preferences.items():
-                _xmlpref = _xmlprefs.add_element('preference')
-                _xmlpref.add_element('scanner_name', pref_name)
-                _xmlpref.add_element('value', str(pref_value))
+                _xmlpref = _xmlprefs.add_element("preference")
+                _xmlpref.add_element("scanner_name", pref_name)
+                _xmlpref.add_element("value", str(pref_value))
 
         return self._send_xml_command(cmd)
 
-    def modify_user(self, user_id=None, name=None, *, new_name=None,
-                    password=None, role_ids=None, hosts=None, hosts_allow=False,
-                    ifaces=None, ifaces_allow=False):
+    def modify_user(
+        self,
+        user_id=None,
+        name=None,
+        *,
+        new_name=None,
+        password=None,
+        role_ids=None,
+        hosts=None,
+        hosts_allow=False,
+        ifaces=None,
+        ifaces_allow=False,
+    ):
         """Modifies an existing user.
 
         Arguments:
@@ -5060,33 +5501,39 @@ class Gmp(GvmProtocol):
         """
         if not user_id and not name:
             raise RequiredArgument(
-                'modify_user requires an user_id or name argument'
+                "modify_user requires an user_id or name argument"
             )
 
-        cmd = XmlCommand('modify_user')
+        cmd = XmlCommand("modify_user")
 
         if user_id:
-            cmd.set_attribute('user_id', user_id)
+            cmd.set_attribute("user_id", user_id)
         else:
-            cmd.add_element('name', name)
+            cmd.add_element("name", name)
 
         if new_name:
-            cmd.add_element('new_name', new_name)
+            cmd.add_element("new_name", new_name)
 
         if password:
-            cmd.add_element('password', password)
+            cmd.add_element("password", password)
 
         if role_ids:
             for role in role_ids:
-                cmd.add_element('role', attrs={'id': role})
+                cmd.add_element("role", attrs={"id": role})
 
         if hosts:
-            cmd.add_element('hosts', _to_comma_list(hosts),
-                            attrs={'allow': _to_bool(hosts_allow)})
+            cmd.add_element(
+                "hosts",
+                _to_comma_list(hosts),
+                attrs={"allow": _to_bool(hosts_allow)},
+            )
 
         if ifaces:
-            cmd.add_element('ifaces', _to_comma_list(ifaces),
-                            attrs={'allow': _to_bool(ifaces_allow)})
+            cmd.add_element(
+                "ifaces",
+                _to_comma_list(ifaces),
+                attrs={"allow": _to_bool(ifaces_allow)},
+            )
 
         return self._send_xml_command(cmd)
 
@@ -5102,13 +5549,13 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise InvalidArgument('move_task requires an task_id argument')
+            raise InvalidArgument("move_task requires an task_id argument")
 
-        cmd = XmlCommand('move_task')
-        cmd.set_attribute('task_id', task_id)
+        cmd = XmlCommand("move_task")
+        cmd.set_attribute("task_id", task_id)
 
         if not slave_id is None:
-            cmd.set_attribute('slave_id', slave_id)
+            cmd.set_attribute("slave_id", slave_id)
 
         return self._send_xml_command(cmd)
 
@@ -5122,10 +5569,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not entity_id:
-            raise InvalidArgument('restore requires an entity_id argument')
+            raise InvalidArgument("restore requires an entity_id argument")
 
-        cmd = XmlCommand('restore')
-        cmd.set_attribute('id', entity_id)
+        cmd = XmlCommand("restore")
+        cmd.set_attribute("id", entity_id)
 
         return self._send_xml_command(cmd)
 
@@ -5139,10 +5586,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise InvalidArgument('resume_task requires an task_id argument')
+            raise InvalidArgument("resume_task requires an task_id argument")
 
-        cmd = XmlCommand('resume_task')
-        cmd.set_attribute('task_id', task_id)
+        cmd = XmlCommand("resume_task")
+        cmd.set_attribute("task_id", task_id)
 
         return self._send_xml_command(cmd)
 
@@ -5156,10 +5603,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise InvalidArgument('start_task requires an task_id argument')
+            raise InvalidArgument("start_task requires an task_id argument")
 
-        cmd = XmlCommand('start_task')
-        cmd.set_attribute('task_id', task_id)
+        cmd = XmlCommand("start_task")
+        cmd.set_attribute("task_id", task_id)
 
         return self._send_xml_command(cmd)
 
@@ -5173,10 +5620,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise InvalidArgument('stop_task requires an task_id argument')
+            raise InvalidArgument("stop_task requires an task_id argument")
 
-        cmd = XmlCommand('stop_task')
-        cmd.set_attribute('task_id', task_id)
+        cmd = XmlCommand("stop_task")
+        cmd.set_attribute("task_id", task_id)
 
         return self._send_xml_command(cmd)
 
@@ -5186,7 +5633,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self._send_xml_command(XmlCommand('sync_cert'))
+        return self._send_xml_command(XmlCommand("sync_cert"))
 
     def sync_config(self):
         """Request an OSP config synchronization with scanner
@@ -5194,7 +5641,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self._send_xml_command(XmlCommand('sync_config'))
+        return self._send_xml_command(XmlCommand("sync_config"))
 
     def sync_feed(self):
         """Request a synchronization with the NVT feed service
@@ -5202,7 +5649,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self._send_xml_command(XmlCommand('sync_feed'))
+        return self._send_xml_command(XmlCommand("sync_feed"))
 
     def sync_scap(self):
         """Request a synchronization with the SCAP feed service
@@ -5210,7 +5657,7 @@ class Gmp(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self._send_xml_command(XmlCommand('sync_scap'))
+        return self._send_xml_command(XmlCommand("sync_scap"))
 
     def test_alert(self, alert_id):
         """Run an alert
@@ -5224,15 +5671,23 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not alert_id:
-            raise InvalidArgument('test_alert requires an alert_id argument')
+            raise InvalidArgument("test_alert requires an alert_id argument")
 
-        cmd = XmlCommand('test_alert')
-        cmd.set_attribute('alert_id', alert_id)
+        cmd = XmlCommand("test_alert")
+        cmd.set_attribute("alert_id", alert_id)
 
         return self._send_xml_command(cmd)
 
-    def trigger_alert(self, alert_id, report_id, *, filter=None, filter_id=None,
-                      report_format_id=None, delta_report_id=None):
+    def trigger_alert(
+        self,
+        alert_id,
+        report_id,
+        *,
+        filter=None,
+        filter_id=None,
+        report_format_id=None,
+        delta_report_id=None,
+    ):
         """Run an alert by ignoring its event and conditions
 
         The alert is triggered to run immediately with the provided filtered
@@ -5253,26 +5708,26 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not alert_id:
-            raise RequiredArgument('run_alert requires a alert_id argument')
+            raise RequiredArgument("run_alert requires a alert_id argument")
 
         if not report_id:
-            raise RequiredArgument('run_alert requires a report_id argument')
+            raise RequiredArgument("run_alert requires a report_id argument")
 
-        cmd = XmlCommand('get_reports')
-        cmd.set_attribute('report_id', report_id)
-        cmd.set_attribute('alert_id', alert_id)
+        cmd = XmlCommand("get_reports")
+        cmd.set_attribute("report_id", report_id)
+        cmd.set_attribute("alert_id", alert_id)
 
         if filter:
-            cmd.set_attribute('filter', filter)
+            cmd.set_attribute("filter", filter)
 
         if filter_id:
-            cmd.set_attribute('filt_id', filter_id)
+            cmd.set_attribute("filt_id", filter_id)
 
         if report_format_id:
-            cmd.set_attribute('format_id', report_format_id)
+            cmd.set_attribute("format_id", report_format_id)
 
         if delta_report_id:
-            cmd.set_attribute('delta_report_id', delta_report_id)
+            cmd.set_attribute("delta_report_id", delta_report_id)
 
         return self._send_xml_command(cmd)
 
@@ -5291,10 +5746,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
-            raise InvalidArgument('verify_agent requires an agent_id argument')
+            raise InvalidArgument("verify_agent requires an agent_id argument")
 
-        cmd = XmlCommand('verify_agent')
-        cmd.set_attribute('agent_id', agent_id)
+        cmd = XmlCommand("verify_agent")
+        cmd.set_attribute("agent_id", agent_id)
 
         return self._send_xml_command(cmd)
 
@@ -5315,10 +5770,11 @@ class Gmp(GvmProtocol):
         """
         if not report_format_id:
             raise InvalidArgument(
-                'verify_report_format requires a report_format_id argument')
+                "verify_report_format requires a report_format_id argument"
+            )
 
-        cmd = XmlCommand('verify_report_format')
-        cmd.set_attribute('report_format_id', report_format_id)
+        cmd = XmlCommand("verify_report_format")
+        cmd.set_attribute("report_format_id", report_format_id)
 
         return self._send_xml_command(cmd)
 
@@ -5336,9 +5792,10 @@ class Gmp(GvmProtocol):
         """
         if not scanner_id:
             raise InvalidArgument(
-                'verify_scanner requires a scanner_id argument')
+                "verify_scanner requires a scanner_id argument"
+            )
 
-        cmd = XmlCommand('verify_scanner')
-        cmd.set_attribute('scanner_id', scanner_id)
+        cmd = XmlCommand("verify_scanner")
+        cmd.set_attribute("scanner_id", scanner_id)
 
         return self._send_xml_command(cmd)

@@ -20,8 +20,8 @@ import unittest
 
 from gvm.utils import get_version_string
 
-class TestGetVersionString(unittest.TestCase):
 
+class TestGetVersionString(unittest.TestCase):
     def test_simple_version(self):
         self.assertEqual(get_version_string((1, 0)), '1.0')
 
@@ -33,8 +33,11 @@ class TestGetVersionString(unittest.TestCase):
 
     def test_beta_version(self):
         self.assertEqual(
-            get_version_string((1, 0, 1, 'beta', 1)), '1.0.1.beta1')
+            get_version_string((1, 0, 1, 'beta', 1)), '1.0.1.beta1'
+        )
 
     def test_dev_after_beta_version(self):
-        self.assertEqual(get_version_string((1, 0, 1, 'beta', 2, 'dev', 1)),
-                         '1.0.1.beta2.dev1')
+        self.assertEqual(
+            get_version_string((1, 0, 1, 'beta', 2, 'dev', 1)),
+            '1.0.1.beta2.dev1',
+        )

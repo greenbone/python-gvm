@@ -23,6 +23,7 @@ from gvm.protocols.gmpv7 import Gmp, FILTER_TYPES
 
 from .. import MockConnection
 
+
 class GMPCreateFilterCommandTestCase(unittest.TestCase):
 
     FILTER_NAME = "special filter"
@@ -44,7 +45,7 @@ class GMPCreateFilterCommandTestCase(unittest.TestCase):
                 '<name>{0}</name>'
                 '<term>sort-reverse=threat first=1 rows=1000</term>'
                 '<type>{1}</type>'
-                '</create_filter>'.format(self.FILTER_NAME, filter_type),
+                '</create_filter>'.format(self.FILTER_NAME, filter_type)
             )
 
     def test_invalid_filters_type(self):
@@ -52,15 +53,16 @@ class GMPCreateFilterCommandTestCase(unittest.TestCase):
             self.gmp.create_filter(
                 name=self.FILTER_NAME,
                 term='sort-reverse=threat result_hosts_only=1 '
-                     'notes=1 overrides=1 levels=hml first=1 rows=1000',
+                'notes=1 overrides=1 levels=hml first=1 rows=1000',
                 filter_type='foo',
             )
 
     def test_all_arguments(self):
         self.gmp.create_filter(
-            name=self.FILTER_NAME, make_unique=True,
+            name=self.FILTER_NAME,
+            make_unique=True,
             term='sort-reverse=threat result_hosts_only=1 '
-                 'notes=1 overrides=1 levels=hml first=1 rows=1000',
+            'notes=1 overrides=1 levels=hml first=1 rows=1000',
             filter_type='task',
             comment='foo',
         )
@@ -72,7 +74,7 @@ class GMPCreateFilterCommandTestCase(unittest.TestCase):
             '<term>sort-reverse=threat result_hosts_only=1 notes=1 '
             'overrides=1 levels=hml first=1 rows=1000</term>'
             '<type>task</type>'
-            '</create_filter>'.format(self.FILTER_NAME),
+            '</create_filter>'.format(self.FILTER_NAME)
         )
 
     def test_missing_name(self):

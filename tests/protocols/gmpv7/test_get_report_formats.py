@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetReportFormatsTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,9 +31,7 @@ class GmpGetReportFormatsTestCase(unittest.TestCase):
     def test_get_report_formats(self):
         self.gmp.get_report_formats()
 
-        self.connection.send.has_been_called_with(
-            '<get_report_formats/>'
-        )
+        self.connection.send.has_been_called_with('<get_report_formats/>')
 
     def test_get_report_formats_with_filter(self):
         self.gmp.get_report_formats(filter='foo=bar')

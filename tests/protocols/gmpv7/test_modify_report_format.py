@@ -25,15 +25,12 @@ from .. import MockConnection
 
 
 class GmpModifyReportFormatTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_modify_report_format(self):
-        self.gmp.modify_report_format(
-            report_format_id='rf1',
-        )
+        self.gmp.modify_report_format(report_format_id='rf1')
 
         self.connection.send.has_been_called_with(
             '<modify_report_format report_format_id="rf1"/>'
@@ -41,25 +38,16 @@ class GmpModifyReportFormatTestCase(unittest.TestCase):
 
     def test_modify_report_format_missing_report_format_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_report_format(
-                report_format_id=None,
-            )
+            self.gmp.modify_report_format(report_format_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_report_format(
-                report_format_id='',
-            )
+            self.gmp.modify_report_format(report_format_id='')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_report_format(
-                '',
-            )
+            self.gmp.modify_report_format('')
 
     def test_modify_report_format_with_summary(self):
-        self.gmp.modify_report_format(
-            report_format_id='rf1',
-            summary='foo',
-        )
+        self.gmp.modify_report_format(report_format_id='rf1', summary='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_report_format report_format_id="rf1">'
@@ -68,10 +56,7 @@ class GmpModifyReportFormatTestCase(unittest.TestCase):
         )
 
     def test_modify_report_format_with_name(self):
-        self.gmp.modify_report_format(
-            report_format_id='rf1',
-            name='foo',
-        )
+        self.gmp.modify_report_format(report_format_id='rf1', name='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_report_format report_format_id="rf1">'
@@ -80,10 +65,7 @@ class GmpModifyReportFormatTestCase(unittest.TestCase):
         )
 
     def test_modify_report_format_with_active(self):
-        self.gmp.modify_report_format(
-            report_format_id='rf1',
-            active=True,
-        )
+        self.gmp.modify_report_format(report_format_id='rf1', active=True)
 
         self.connection.send.has_been_called_with(
             '<modify_report_format report_format_id="rf1">'
@@ -91,10 +73,7 @@ class GmpModifyReportFormatTestCase(unittest.TestCase):
             '</modify_report_format>'
         )
 
-        self.gmp.modify_report_format(
-            report_format_id='rf1',
-            active=False,
-        )
+        self.gmp.modify_report_format(report_format_id='rf1', active=False)
 
         self.connection.send.has_been_called_with(
             '<modify_report_format report_format_id="rf1">'
@@ -103,10 +82,7 @@ class GmpModifyReportFormatTestCase(unittest.TestCase):
         )
 
     def test_modify_report_format_with_param_name(self):
-        self.gmp.modify_report_format(
-            report_format_id='rf1',
-            param_name='foo',
-        )
+        self.gmp.modify_report_format(report_format_id='rf1', param_name='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_report_format report_format_id="rf1">'
@@ -118,9 +94,7 @@ class GmpModifyReportFormatTestCase(unittest.TestCase):
 
     def test_modify_report_format_with_param_name_and_value(self):
         self.gmp.modify_report_format(
-            report_format_id='rf1',
-            param_name='foo',
-            param_value='bar',
+            report_format_id='rf1', param_name='foo', param_value='bar'
         )
 
         self.connection.send.has_been_called_with(
@@ -133,9 +107,7 @@ class GmpModifyReportFormatTestCase(unittest.TestCase):
         )
 
         self.gmp.modify_report_format(
-            report_format_id='rf1',
-            param_name='foo',
-            param_value='',
+            report_format_id='rf1', param_name='foo', param_value=''
         )
 
         self.connection.send.has_been_called_with(
@@ -146,7 +118,6 @@ class GmpModifyReportFormatTestCase(unittest.TestCase):
             '</param>'
             '</modify_report_format>'
         )
-
 
 
 if __name__ == '__main__':

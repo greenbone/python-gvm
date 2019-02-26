@@ -25,16 +25,13 @@ from .. import MockConnection
 
 
 class GmpModifyConfigSetNvtSelectionTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_modify_config_set_nvt_selection(self):
         self.gmp.modify_config_set_nvt_selection(
-            config_id='c1',
-            family='foo',
-            nvt_oids=['o1']
+            config_id='c1', family='foo', nvt_oids=['o1']
         )
 
         self.connection.send.has_been_called_with(
@@ -47,40 +44,7 @@ class GmpModifyConfigSetNvtSelectionTestCase(unittest.TestCase):
         )
 
         self.gmp.modify_config_set_nvt_selection(
-            config_id='c1',
-            family='foo',
-            nvt_oids=['o1', 'o2']
-        )
-
-        self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            '<nvt_selection>'
-            '<family>foo</family>'
-            '<nvt oid="o1"/>'
-            '<nvt oid="o2"/>'
-            '</nvt_selection>'
-            '</modify_config>'
-        )
-
-        self.gmp.modify_config_set_nvt_selection(
-            'c1',
-            'foo',
-            ['o1']
-        )
-
-        self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            '<nvt_selection>'
-            '<family>foo</family>'
-            '<nvt oid="o1"/>'
-            '</nvt_selection>'
-            '</modify_config>'
-        )
-
-        self.gmp.modify_config_set_nvt_selection(
-            'c1',
-            'foo',
-            ('o1', 'o2'),
+            config_id='c1', family='foo', nvt_oids=['o1', 'o2']
         )
 
         self.connection.send.has_been_called_with(
@@ -93,10 +57,31 @@ class GmpModifyConfigSetNvtSelectionTestCase(unittest.TestCase):
             '</modify_config>'
         )
 
+        self.gmp.modify_config_set_nvt_selection('c1', 'foo', ['o1'])
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<nvt_selection>'
+            '<family>foo</family>'
+            '<nvt oid="o1"/>'
+            '</nvt_selection>'
+            '</modify_config>'
+        )
+
+        self.gmp.modify_config_set_nvt_selection('c1', 'foo', ('o1', 'o2'))
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<nvt_selection>'
+            '<family>foo</family>'
+            '<nvt oid="o1"/>'
+            '<nvt oid="o2"/>'
+            '</nvt_selection>'
+            '</modify_config>'
+        )
+
         self.gmp.modify_config_set_nvt_selection(
-            config_id='c1',
-            family='foo',
-            nvt_oids=[]
+            config_id='c1', family='foo', nvt_oids=[]
         )
 
         self.connection.send.has_been_called_with(
@@ -110,68 +95,44 @@ class GmpModifyConfigSetNvtSelectionTestCase(unittest.TestCase):
     def test_modify_config_set_nvt_selection_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_nvt_selection(
-                config_id=None,
-                family='foo',
-                nvt_oids=['o1']
+                config_id=None, family='foo', nvt_oids=['o1']
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_nvt_selection(
-                config_id='',
-                family='foo',
-                nvt_oids=['o1']
+                config_id='', family='foo', nvt_oids=['o1']
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_nvt_selection(
-                '',
-                'foo',
-                ['o1']
-            )
+            self.gmp.modify_config_set_nvt_selection('', 'foo', ['o1'])
 
     def test_modify_config_set_nvt_selection_missing_family(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_nvt_selection(
-                config_id='c1',
-                family=None,
-                nvt_oids=['o1']
+                config_id='c1', family=None, nvt_oids=['o1']
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_nvt_selection(
-                config_id='c1',
-                family='',
-                nvt_oids=['o1']
+                config_id='c1', family='', nvt_oids=['o1']
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_nvt_selection(
-                'c1',
-                '',
-                ['o1']
-            )
+            self.gmp.modify_config_set_nvt_selection('c1', '', ['o1'])
 
     def test_modify_config_set_nvt_selection_invalid_nvt_oids(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_config_set_nvt_selection(
-                config_id='c1',
-                family='foo',
-                nvt_oids=None
+                config_id='c1', family='foo', nvt_oids=None
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_config_set_nvt_selection(
-                config_id='c1',
-                family='foo',
-                nvt_oids='',
+                config_id='c1', family='foo', nvt_oids=''
             )
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.modify_config_set_nvt_selection(
-                'c1',
-                'foo',
-                ''
-            )
+            self.gmp.modify_config_set_nvt_selection('c1', 'foo', '')
 
 
 if __name__ == '__main__':

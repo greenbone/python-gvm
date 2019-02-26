@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetScannersTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,9 +31,7 @@ class GmpGetScannersTestCase(unittest.TestCase):
     def test_get_scanners(self):
         self.gmp.get_scanners()
 
-        self.connection.send.has_been_called_with(
-            '<get_scanners/>'
-        )
+        self.connection.send.has_been_called_with('<get_scanners/>')
 
     def test_get_scanners_with_filter(self):
         self.gmp.get_scanners(filter='foo=bar')
@@ -53,28 +50,20 @@ class GmpGetScannersTestCase(unittest.TestCase):
     def test_get_scanners_with_trash(self):
         self.gmp.get_scanners(trash=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_scanners trash="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_scanners trash="1"/>')
 
         self.gmp.get_scanners(trash=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_scanners trash="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_scanners trash="0"/>')
 
     def test_get_scanners_with_details(self):
         self.gmp.get_scanners(details=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_scanners details="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_scanners details="1"/>')
 
         self.gmp.get_scanners(details=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_scanners details="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_scanners details="0"/>')
 
 
 if __name__ == '__main__':

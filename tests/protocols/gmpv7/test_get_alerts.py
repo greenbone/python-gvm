@@ -24,7 +24,6 @@ from .. import MockConnection
 
 
 class GmpGetAlertsTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -32,22 +31,16 @@ class GmpGetAlertsTestCase(unittest.TestCase):
     def test_get_alerts(self):
         self.gmp.get_alerts()
 
-        self.connection.send.has_been_called_with(
-            '<get_alerts/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts/>')
 
     def test_get_alerts_with_trash(self):
         self.gmp.get_alerts(trash=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_alerts trash="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts trash="1"/>')
 
         self.gmp.get_alerts(trash=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_alerts trash="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts trash="0"/>')
 
     def test_get_alerts_with_filter(self):
         self.gmp.get_alerts(filter="foo=bar")
@@ -59,22 +52,16 @@ class GmpGetAlertsTestCase(unittest.TestCase):
     def test_get_alerts_with_filter_id(self):
         self.gmp.get_alerts(filter_id='f1')
 
-        self.connection.send.has_been_called_with(
-            '<get_alerts filt_id="f1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts filt_id="f1"/>')
 
     def test_get_alerts_with_tasks(self):
         self.gmp.get_alerts(tasks=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_alerts tasks="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts tasks="1"/>')
 
         self.gmp.get_alerts(tasks=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_alerts tasks="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts tasks="0"/>')
 
 
 if __name__ == '__main__':

@@ -23,8 +23,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpCloneTaskTestCase(unittest.TestCase):
 
+class GmpCloneTaskTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -33,9 +33,7 @@ class GmpCloneTaskTestCase(unittest.TestCase):
         self.gmp.clone_task('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_task>'
-            '<copy>a1</copy>'
-            '</create_task>'
+            '<create_task>' '<copy>a1</copy>' '</create_task>'
         )
 
     def test_missing_id(self):

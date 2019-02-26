@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpDeleteFilterTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,13 +33,15 @@ class GmpDeleteFilterTestCase(unittest.TestCase):
         self.gmp.delete_filter('a1')
 
         self.connection.send.has_been_called_with(
-            '<delete_filter filter_id="a1" ultimate="0"/>')
+            '<delete_filter filter_id="a1" ultimate="0"/>'
+        )
 
     def test_delete_ultimate(self):
         self.gmp.delete_filter('a1', ultimate=True)
 
         self.connection.send.has_been_called_with(
-            '<delete_filter filter_id="a1" ultimate="1"/>')
+            '<delete_filter filter_id="a1" ultimate="1"/>'
+        )
 
     def test_missing_filter_id(self):
         with self.assertRaises(GvmError):
@@ -52,5 +53,3 @@ class GmpDeleteFilterTestCase(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-
-

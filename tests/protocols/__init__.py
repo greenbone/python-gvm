@@ -20,7 +20,6 @@ from tests import CallableMock
 
 
 class MockConnection:
-
     def __init__(self):
         self.connect = CallableMock('connect')
         self.disconnect = CallableMock('disconnect')

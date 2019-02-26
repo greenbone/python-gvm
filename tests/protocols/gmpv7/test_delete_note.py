@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpDeleteNoteTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,13 +33,15 @@ class GmpDeleteNoteTestCase(unittest.TestCase):
         self.gmp.delete_note('a1')
 
         self.connection.send.has_been_called_with(
-            '<delete_note note_id="a1" ultimate="0"/>')
+            '<delete_note note_id="a1" ultimate="0"/>'
+        )
 
     def test_delete_ultimate(self):
         self.gmp.delete_note('a1', ultimate=True)
 
         self.connection.send.has_been_called_with(
-            '<delete_note note_id="a1" ultimate="1"/>')
+            '<delete_note note_id="a1" ultimate="1"/>'
+        )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

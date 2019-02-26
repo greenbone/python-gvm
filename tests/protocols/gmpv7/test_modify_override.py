@@ -27,16 +27,12 @@ from .. import MockConnection
 
 
 class GmpModifyOverrideTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_modify_override(self):
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-        )
+        self.gmp.modify_override(override_id='o1', text='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -46,48 +42,26 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
 
     def test_modify_override_missing_override_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_override(
-                override_id=None,
-                text='foo'
-            )
+            self.gmp.modify_override(override_id=None, text='foo')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_override(
-                override_id='',
-                text='foo'
-            )
+            self.gmp.modify_override(override_id='', text='foo')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_override(
-                '',
-                text='foo'
-            )
+            self.gmp.modify_override('', text='foo')
 
     def test_modify_override_missing_text(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_override(
-                override_id='o1',
-                text=''
-            )
+            self.gmp.modify_override(override_id='o1', text='')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_override(
-                override_id='o1',
-                text=None,
-            )
+            self.gmp.modify_override(override_id='o1', text=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_override(
-                'o1',
-                ''
-            )
+            self.gmp.modify_override('o1', '')
 
     def test_modify_override_with_seconds_active(self):
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            seconds_active=0,
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', seconds_active=0)
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -97,9 +71,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
         self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            seconds_active=-1,
+            override_id='o1', text='foo', seconds_active=-1
         )
 
         self.connection.send.has_been_called_with(
@@ -110,9 +82,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
         self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            seconds_active=600,
+            override_id='o1', text='foo', seconds_active=600
         )
 
         self.connection.send.has_been_called_with(
@@ -121,12 +91,9 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
             '<active>600</active>'
             '</modify_override>'
         )
+
     def test_modify_override_with_port(self):
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            port='123',
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', port='123')
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -135,11 +102,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
             '</modify_override>'
         )
 
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            port=123,
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', port=123)
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -149,11 +112,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
     def test_modify_override_with_hosts(self):
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            hosts=['foo'],
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', hosts=['foo'])
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -163,9 +122,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
         self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            hosts=['foo', 'bar'],
+            override_id='o1', text='foo', hosts=['foo', 'bar']
         )
 
         self.connection.send.has_been_called_with(
@@ -176,11 +133,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
     def test_modify_override_with_result_id(self):
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            result_id='r1',
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', result_id='r1')
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -190,11 +143,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
     def test_modify_override_with_task_id(self):
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            task_id='r1',
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', task_id='r1')
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -204,11 +153,16 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
     def test_modify_override_with_severity(self):
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            severity='5.5',
+        self.gmp.modify_override(override_id='o1', text='foo', severity='5.5')
+
+        self.connection.send.has_been_called_with(
+            '<modify_override override_id="o1">'
+            '<text>foo</text>'
+            '<severity>5.5</severity>'
+            '</modify_override>'
         )
+
+        self.gmp.modify_override(override_id='o1', text='foo', severity=5.5)
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -218,22 +172,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
         self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            severity=5.5,
-        )
-
-        self.connection.send.has_been_called_with(
-            '<modify_override override_id="o1">'
-            '<text>foo</text>'
-            '<severity>5.5</severity>'
-            '</modify_override>'
-        )
-
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            severity=Decimal(5.5),
+            override_id='o1', text='foo', severity=Decimal(5.5)
         )
 
         self.connection.send.has_been_called_with(
@@ -245,9 +184,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
 
     def test_modify_override_with_new_severity(self):
         self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            new_severity='5.5',
+            override_id='o1', text='foo', new_severity='5.5'
         )
 
         self.connection.send.has_been_called_with(
@@ -257,11 +194,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
             '</modify_override>'
         )
 
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            new_severity=5.5,
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', new_severity=5.5)
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -271,9 +204,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
         self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            new_severity=Decimal(5.5),
+            override_id='o1', text='foo', new_severity=Decimal(5.5)
         )
 
         self.connection.send.has_been_called_with(
@@ -284,11 +215,7 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
         )
 
     def test_modify_override_with_threat(self):
-        self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            threat='High',
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', threat='High')
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -299,24 +226,14 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
 
     def test_modify_override_invalid_threat(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.modify_override(
-                override_id='o1',
-                text='foo',
-                threat='',
-            )
+            self.gmp.modify_override(override_id='o1', text='foo', threat='')
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.modify_override(
-                override_id='o1',
-                text='foo',
-                threat='foo',
-            )
+            self.gmp.modify_override(override_id='o1', text='foo', threat='foo')
 
     def test_modify_override_with_new_threat(self):
         self.gmp.modify_override(
-            override_id='o1',
-            text='foo',
-            new_threat='High',
+            override_id='o1', text='foo', new_threat='High'
         )
 
         self.connection.send.has_been_called_with(
@@ -329,16 +246,12 @@ class GmpModifyOverrideTestCase(unittest.TestCase):
     def test_modify_override_invalid_new_threat(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_override(
-                override_id='o1',
-                text='foo',
-                new_threat='',
+                override_id='o1', text='foo', new_threat=''
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_override(
-                override_id='o1',
-                text='foo',
-                new_threat='foo',
+                override_id='o1', text='foo', new_threat='foo'
             )
 
 

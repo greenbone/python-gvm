@@ -22,8 +22,8 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpGetTaskTestCase(unittest.TestCase):
 
+class GmpGetTaskTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -31,43 +31,41 @@ class GmpGetTaskTestCase(unittest.TestCase):
     def test_get_tasks_simple(self):
         self.gmp.get_tasks()
 
-        self.connection.send.has_been_called_with(
-            '<get_tasks/>')
+        self.connection.send.has_been_called_with('<get_tasks/>')
+
     def test_get_tasks_with_filter(self):
         self.gmp.get_tasks(filter='name=foo')
 
         self.connection.send.has_been_called_with(
-            '<get_tasks filter="name=foo"/>')
+            '<get_tasks filter="name=foo"/>'
+        )
 
     def test_get_tasks_with_filter_id(self):
         self.gmp.get_tasks(filter_id='f1')
 
-        self.connection.send.has_been_called_with(
-            '<get_tasks filt_id="f1"/>')
+        self.connection.send.has_been_called_with('<get_tasks filt_id="f1"/>')
 
     def test_get_tasks_from_trash(self):
         self.gmp.get_tasks(trash=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_tasks trash="1"/>')
+        self.connection.send.has_been_called_with('<get_tasks trash="1"/>')
 
     def test_get_tasks_with_details(self):
         self.gmp.get_tasks(details=True)
 
-        self.connection.send.has_been_called_with(
-            '<get_tasks details="1"/>')
+        self.connection.send.has_been_called_with('<get_tasks details="1"/>')
 
     def test_get_tasks_without_details(self):
         self.gmp.get_tasks(details=False)
 
-        self.connection.send.has_been_called_with(
-            '<get_tasks details="0"/>')
+        self.connection.send.has_been_called_with('<get_tasks details="0"/>')
 
     def test_get_tasks_with_schedules_only(self):
         self.gmp.get_tasks(schedules_only=True)
 
         self.connection.send.has_been_called_with(
-            '<get_tasks schedules_only="1"/>')
+            '<get_tasks schedules_only="1"/>'
+        )
 
 
 if __name__ == '__main__':

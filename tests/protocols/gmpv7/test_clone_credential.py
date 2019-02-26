@@ -25,7 +25,6 @@ from .. import MockConnection
 
 
 class GmpCloneCredentialTestCase(unittest.TestCase):
-
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
@@ -34,9 +33,7 @@ class GmpCloneCredentialTestCase(unittest.TestCase):
         self.gmp.clone_credential('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_credential>'
-            '<copy>a1</copy>'
-            '</create_credential>'
+            '<create_credential>' '<copy>a1</copy>' '</create_credential>'
         )
 
     def test_missing_id(self):

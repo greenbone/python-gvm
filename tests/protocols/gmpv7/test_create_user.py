@@ -23,39 +23,28 @@ from gvm.protocols.gmpv7 import Gmp
 
 from .. import MockConnection
 
-class GmpCreateUserTestCase(unittest.TestCase):
 
+class GmpCreateUserTestCase(unittest.TestCase):
     def setUp(self):
         self.connection = MockConnection()
         self.gmp = Gmp(self.connection)
 
     def test_create_user_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_user(
-                name=None,
-            )
+            self.gmp.create_user(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_user(
-                name='',
-            )
+            self.gmp.create_user(name='')
 
     def test_create_user(self):
-        self.gmp.create_user(
-            name='foo',
-        )
+        self.gmp.create_user(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<create_user>'
-            '<name>foo</name>'
-            '</create_user>'
+            '<create_user>' '<name>foo</name>' '</create_user>'
         )
 
     def test_create_user_with_password(self):
-        self.gmp.create_user(
-            name='foo',
-            password='bar',
-        )
+        self.gmp.create_user(name='foo', password='bar')
 
         self.connection.send.has_been_called_with(
             '<create_user>'
@@ -65,11 +54,7 @@ class GmpCreateUserTestCase(unittest.TestCase):
         )
 
     def test_create_user_with_hosts(self):
-        self.gmp.create_user(
-            name='foo',
-            hosts=['h1', 'h2'],
-            hosts_allow=True,
-        )
+        self.gmp.create_user(name='foo', hosts=['h1', 'h2'], hosts_allow=True)
 
         self.connection.send.has_been_called_with(
             '<create_user>'
@@ -78,10 +63,7 @@ class GmpCreateUserTestCase(unittest.TestCase):
             '</create_user>'
         )
 
-        self.gmp.create_user(
-            name='foo',
-            hosts=['h1', 'h2'],
-        )
+        self.gmp.create_user(name='foo', hosts=['h1', 'h2'])
 
         self.connection.send.has_been_called_with(
             '<create_user>'
@@ -90,11 +72,7 @@ class GmpCreateUserTestCase(unittest.TestCase):
             '</create_user>'
         )
 
-        self.gmp.create_user(
-            name='foo',
-            hosts=['h1', 'h2'],
-            hosts_allow=False,
-        )
+        self.gmp.create_user(name='foo', hosts=['h1', 'h2'], hosts_allow=False)
 
         self.connection.send.has_been_called_with(
             '<create_user>'
@@ -104,11 +82,7 @@ class GmpCreateUserTestCase(unittest.TestCase):
         )
 
     def test_create_user_with_ifaces(self):
-        self.gmp.create_user(
-            name='foo',
-            ifaces=['h1', 'h2'],
-            ifaces_allow=True,
-        )
+        self.gmp.create_user(name='foo', ifaces=['h1', 'h2'], ifaces_allow=True)
 
         self.connection.send.has_been_called_with(
             '<create_user>'
@@ -117,10 +91,7 @@ class GmpCreateUserTestCase(unittest.TestCase):
             '</create_user>'
         )
 
-        self.gmp.create_user(
-            name='foo',
-            ifaces=['h1', 'h2'],
-        )
+        self.gmp.create_user(name='foo', ifaces=['h1', 'h2'])
 
         self.connection.send.has_been_called_with(
             '<create_user>'
@@ -130,9 +101,7 @@ class GmpCreateUserTestCase(unittest.TestCase):
         )
 
         self.gmp.create_user(
-            name='foo',
-            ifaces=['h1', 'h2'],
-            ifaces_allow=False,
+            name='foo', ifaces=['h1', 'h2'], ifaces_allow=False
         )
 
         self.connection.send.has_been_called_with(
@@ -143,10 +112,7 @@ class GmpCreateUserTestCase(unittest.TestCase):
         )
 
     def test_create_user_with_role_ids(self):
-        self.gmp.create_user(
-            name='foo',
-            role_ids=['r1', 'r2'],
-        )
+        self.gmp.create_user(name='foo', role_ids=['r1', 'r2'])
 
         self.connection.send.has_been_called_with(
             '<create_user>'
