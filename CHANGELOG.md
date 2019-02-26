@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [unreleased]
+## [Unreleased]
 
 ### Added
 * Added preferences argument to `create_task` method [PR 89](https://github.com/greenbone/python-gvm/pull/89)
@@ -137,3 +137,7 @@ Some notable changes are:
 * `get_assets` type parameter got renamed to `asset_type`
 * Copying an entity via the `copy` argument has been removed and extracted to
   own `clone` methods e.g. `clone_task`.
+
+[Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.0.0.beta2...HEAD
+[1.0.0.beta2]: https://github.com/greenbone/python-gvm/compare/v1.0.0.beta1...v1.0.0.beta2
+[1.0.0.beta1]: https://github.com/greenbone/python-gvm/releases/tag/v1.0.0.beta1
