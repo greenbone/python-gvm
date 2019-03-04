@@ -302,7 +302,7 @@ class Gmp(GvmProtocol):
         *,
         comment=None,
         howto_install=None,
-        howto_use=None,
+        howto_use=None
     ):
         """Create a new agent
 
@@ -372,7 +372,7 @@ class Gmp(GvmProtocol):
         event_data=None,
         condition_data=None,
         filter_id=None,
-        comment=None,
+        comment=None
     ):
         """Create a new alert
 
@@ -538,7 +538,7 @@ class Gmp(GvmProtocol):
         auth_algorithm=None,
         community=None,
         privacy_algorithm=None,
-        privacy_password=None,
+        privacy_password=None
     ):
         """Create a new credential
 
@@ -723,7 +723,7 @@ class Gmp(GvmProtocol):
         make_unique=False,
         filter_type=None,
         comment=None,
-        term=None,
+        term=None
     ):
         """Create a new filter
 
@@ -859,7 +859,7 @@ class Gmp(GvmProtocol):
         severity=None,
         task_id=None,
         threat=None,
-        port=None,
+        port=None
     ):
         """Create a new note
 
@@ -948,7 +948,7 @@ class Gmp(GvmProtocol):
         new_severity=None,
         task_id=None,
         threat=None,
-        new_threat=None,
+        new_threat=None
     ):
         """Create a new override
 
@@ -1055,7 +1055,7 @@ class Gmp(GvmProtocol):
         *,
         resource_id=None,
         resource_type=None,
-        comment=None,
+        comment=None
     ):
         """Create a new permission
 
@@ -1229,7 +1229,7 @@ class Gmp(GvmProtocol):
         task_id=None,
         task_name=None,
         task_comment=None,
-        in_assets=None,
+        in_assets=None
     ):
         """Import a Report from XML
 
@@ -1328,7 +1328,7 @@ class Gmp(GvmProtocol):
         credential_id,
         *,
         ca_pub=None,
-        comment=None,
+        comment=None
     ):
         """Create a new scanner
 
@@ -1422,7 +1422,7 @@ class Gmp(GvmProtocol):
         duration_unit=None,
         period=None,
         period_unit=None,
-        timezone=None,
+        timezone=None
     ):
         """Create a new schedule
 
@@ -1622,7 +1622,7 @@ class Gmp(GvmProtocol):
         *,
         value=None,
         comment=None,
-        active=None,
+        active=None
     ):
         """Create a new tag
 
@@ -1702,7 +1702,7 @@ class Gmp(GvmProtocol):
         reverse_lookup_only=None,
         reverse_lookup_unify=None,
         port_range=None,
-        port_list_id=None,
+        port_list_id=None
     ):
         """Create a new target
 
@@ -1839,7 +1839,7 @@ class Gmp(GvmProtocol):
         comment=None,
         schedule_periods=None,
         observers=None,
-        preferences=None,
+        preferences=None
     ):
         """Create a new task
 
@@ -1935,9 +1935,7 @@ class Gmp(GvmProtocol):
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
-                raise InvalidArgument(
-                    'preferences argument must be a dict'
-                )
+                raise InvalidArgument('preferences argument must be a dict')
 
             _xmlprefs = cmd.add_element("preferences")
             for pref_name, pref_value in preferences.items():
@@ -1972,7 +1970,7 @@ class Gmp(GvmProtocol):
         hosts_allow=False,
         ifaces=None,
         ifaces_allow=False,
-        role_ids=None,
+        role_ids=None
     ):
         """Create a new user
 
@@ -2465,7 +2463,7 @@ class Gmp(GvmProtocol):
         filter_id=None,
         trash=None,
         details=None,
-        format=None,
+        format=None
     ):
         """Request a list of agents
 
@@ -2624,7 +2622,7 @@ class Gmp(GvmProtocol):
         filter_id=None,
         scanners=None,
         trash=None,
-        targets=None,
+        targets=None
     ):
         """Request a list of credentials
 
@@ -2694,7 +2692,7 @@ class Gmp(GvmProtocol):
         details=None,
         families=None,
         preferences=None,
-        tasks=None,
+        tasks=None
     ):
         """Request a list of scan configs
 
@@ -3009,7 +3007,7 @@ class Gmp(GvmProtocol):
         preferences_config_id=None,
         family=None,
         sort_order=None,
-        sort_field=None,
+        sort_field=None
     ):
         """Request a list of nvts
 
@@ -3192,7 +3190,7 @@ class Gmp(GvmProtocol):
         filter_id=None,
         details=None,
         targets=None,
-        trash=None,
+        trash=None
     ):
         """Request a list of port lists
 
@@ -3298,7 +3296,7 @@ class Gmp(GvmProtocol):
         filter=None,
         filter_id=None,
         note_details=None,
-        override_details=None,
+        override_details=None
     ):
         """Request a list of reports
 
@@ -3339,7 +3337,7 @@ class Gmp(GvmProtocol):
         filter=None,
         filter_id=None,
         delta_report_id=None,
-        report_format_id=None,
+        report_format_id=None
     ):
         """Request a single report
 
@@ -3380,7 +3378,7 @@ class Gmp(GvmProtocol):
         trash=None,
         alerts=None,
         params=None,
-        details=None,
+        details=None
     ):
         """Request a list of report formats
 
@@ -3447,7 +3445,7 @@ class Gmp(GvmProtocol):
         task_id=None,
         note_details=None,
         override_details=None,
-        details=None,
+        details=None
     ):
         """Request a list of results
 
@@ -3675,7 +3673,7 @@ class Gmp(GvmProtocol):
         start_time=None,
         end_time=None,
         brief=None,
-        slave_id=None,
+        slave_id=None
     ):
         """Request a list of system reports
 
@@ -3817,7 +3815,7 @@ class Gmp(GvmProtocol):
         filter_id=None,
         trash=None,
         details=None,
-        schedules_only=None,
+        schedules_only=None
     ):
         """Request a list of tasks
 
@@ -3975,7 +3973,7 @@ class Gmp(GvmProtocol):
         condition=None,
         condition_data=None,
         method=None,
-        method_data=None,
+        method_data=None
     ):
         """Modifies an existing alert.
 
@@ -4234,7 +4232,7 @@ class Gmp(GvmProtocol):
         families,
         *,
         auto_add_new_families=True,
-        auto_add_new_nvts=True,
+        auto_add_new_nvts=True
     ):
         """
         Selected the NVTs of a scan config at a family level.
@@ -4367,7 +4365,7 @@ class Gmp(GvmProtocol):
         auth_algorithm=None,
         community=None,
         privacy_algorithm=None,
-        privacy_password=None,
+        privacy_password=None
     ):
         """Modifies an existing credential.
 
@@ -4551,7 +4549,7 @@ class Gmp(GvmProtocol):
         result_id=None,
         severity=None,
         task_id=None,
-        threat=None,
+        threat=None
     ):
         """Modifies an existing note.
 
@@ -4624,7 +4622,7 @@ class Gmp(GvmProtocol):
         new_severity=None,
         task_id=None,
         threat=None,
-        new_threat=None,
+        new_threat=None
     ):
         """Modifies an existing override.
 
@@ -4711,7 +4709,7 @@ class Gmp(GvmProtocol):
         resource_id=None,
         resource_type=None,
         subject_id=None,
-        subject_type=None,
+        subject_type=None
     ):
         """Modifies an existing permission.
 
@@ -4813,7 +4811,7 @@ class Gmp(GvmProtocol):
         name=None,
         summary=None,
         param_name=None,
-        param_value=None,
+        param_value=None
     ):
         """Modifies an existing report format.
 
@@ -4893,7 +4891,7 @@ class Gmp(GvmProtocol):
         comment=None,
         name=None,
         ca_pub=None,
-        credential_id=None,
+        credential_id=None
     ):
         """Modifies an existing scanner.
 
@@ -4968,7 +4966,7 @@ class Gmp(GvmProtocol):
         duration_unit=None,
         period=None,
         period_unit=None,
-        timezone=None,
+        timezone=None
     ):
         """Modifies an existing schedule.
 
@@ -5187,7 +5185,7 @@ class Gmp(GvmProtocol):
         value=None,
         active=None,
         resource_id=None,
-        resource_type=None,
+        resource_type=None
     ):
         """Modifies an existing tag.
 
@@ -5259,7 +5257,7 @@ class Gmp(GvmProtocol):
         alive_tests=None,
         reverse_lookup_only=None,
         reverse_lookup_unify=None,
-        port_list_id=None,
+        port_list_id=None
     ):
         """Modifies an existing target.
 
@@ -5367,7 +5365,7 @@ class Gmp(GvmProtocol):
         comment=None,
         alert_ids=None,
         observers=None,
-        preferences=None,
+        preferences=None
     ):
         """Modifies an existing task.
 
@@ -5453,9 +5451,7 @@ class Gmp(GvmProtocol):
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
-                raise InvalidArgument(
-                    'preferences argument must be a dict'
-                )
+                raise InvalidArgument('preferences argument must be a dict')
 
             _xmlprefs = cmd.add_element("preferences")
             for pref_name, pref_value in preferences.items():
@@ -5476,7 +5472,7 @@ class Gmp(GvmProtocol):
         hosts=None,
         hosts_allow=False,
         ifaces=None,
-        ifaces_allow=False,
+        ifaces_allow=False
     ):
         """Modifies an existing user.
 
@@ -5686,7 +5682,7 @@ class Gmp(GvmProtocol):
         filter=None,
         filter_id=None,
         report_format_id=None,
-        delta_report_id=None,
+        delta_report_id=None
     ):
         """Run an alert by ignoring its event and conditions
 

@@ -273,6 +273,7 @@ class Gmp(Gmpv7):
     def modify_credential(
         self,
         credential_id,
+        *,
         name=None,
         comment=None,
         allow_insecure=None,
@@ -286,7 +287,7 @@ class Gmp(Gmpv7):
         privacy_algorithm=None,
         privacy_password=None,
         credential_type=None,
-        public_key=None,
+        public_key=None
     ):
         """Modifies an existing credential.
 
