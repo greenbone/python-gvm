@@ -24,6 +24,7 @@ from gvm.utils import deprecation
 
 class TestDeprecation(unittest.TestCase):
     def test_deprecation(self):
+        # pylint: disable=invalid-name
         with warnings.catch_warnings(record=True) as w:
             self.assertEqual(len(w), 0)
 

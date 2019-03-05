@@ -110,7 +110,7 @@ class GMPCreateTaskCommandTestCase(unittest.TestCase):
         )
 
     def test_create_task_single_alert(self):
-
+        # pylint: disable=invalid-name
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
 
