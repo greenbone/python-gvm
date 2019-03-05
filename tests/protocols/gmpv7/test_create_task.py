@@ -19,6 +19,8 @@
 import unittest
 import warnings
 
+from collections import OrderedDict
+
 from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
 
@@ -353,7 +355,7 @@ class GMPCreateTaskCommandTestCase(unittest.TestCase):
             config_id='c1',
             target_id='t1',
             scanner_id='s1',
-            preferences={'foo': 'bar', 'lorem': 'ipsum'},
+            preferences=OrderedDict([('foo', 'bar'), ('lorem', 'ipsum')]),
         )
 
         self.connection.send.has_been_called_with(
