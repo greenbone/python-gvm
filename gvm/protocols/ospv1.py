@@ -23,7 +23,7 @@ Module for communication to a daemon speaking `Open Scanner Protocol version 1`_
 """
 import logging
 
-from gvm.errors import RequiredArgument
+from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
