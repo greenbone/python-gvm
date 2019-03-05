@@ -18,6 +18,8 @@
 
 import unittest
 
+from collections import OrderedDict
+
 from gvm.errors import RequiredArgument
 from gvm.protocols.ospv1 import Osp
 
@@ -30,19 +32,19 @@ class OSPStartScanTestCase(unittest.TestCase):
         self.osp = Osp(self.connection)
 
     def test_start_scan(self):
-        scanner_params = dict()
+        scanner_params = OrderedDict()
         scanner_params['key1'] = 'value1'
 
         targets = list()
-        _target1 = dict()
+        _target1 = OrderedDict()
         _target1['hosts'] = 'localhost'
         _target1['ports'] = '22,80'
         targets.append(_target1)
 
-        _target2 = dict()
+        _target2 = OrderedDict()
         _target2['hosts'] = '192.168.10.1'
         _target2['ports'] = '443'
-        _credential1 = dict()
+        _credential1 = OrderedDict()
         _credential1 = {
             'smb': {
                 'username': 'username',
@@ -54,7 +56,7 @@ class OSPStartScanTestCase(unittest.TestCase):
         _target2['credentials'] = _credential1
         targets.append(_target2)
 
-        vts = dict()
+        vts = OrderedDict()
         vts['vt1'] = {'value_id': 'value'}
         vts['vt_groups'] = ['family=A', 'family=B']
 
