@@ -18,6 +18,8 @@
 
 import unittest
 
+from collections import OrderedDict
+
 from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.protocols.gmpv7 import Gmp
 
@@ -181,7 +183,8 @@ class GmpModifyTaskCommandTestCase(unittest.TestCase):
 
     def test_modify_task_with_preferences(self):
         self.gmp.modify_task(
-            task_id='t1', preferences={'foo': 'bar', 'lorem': 'ipsum'}
+            task_id='t1',
+            preferences=OrderedDict([('foo', 'bar'), ('lorem', 'ipsum')]),
         )
 
         self.connection.send.has_been_called_with(

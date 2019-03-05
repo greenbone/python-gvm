@@ -18,6 +18,8 @@
 
 import unittest
 
+from collections import OrderedDict
+
 from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import Gmp
 
@@ -30,7 +32,9 @@ class GmpModifyAuthTestCase(unittest.TestCase):
         self.gmp = Gmp(self.connection)
 
     def test_modify_auth(self):
-        self.gmp.modify_auth('foo', {'foo': 'bar', 'lorem': 'ipsum'})
+        self.gmp.modify_auth(
+            'foo', OrderedDict([('foo', 'bar'), ('lorem', 'ipsum')])
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_auth>'
