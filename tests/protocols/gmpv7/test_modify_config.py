@@ -48,6 +48,7 @@ class GmpModifyConfigTestCase(unittest.TestCase):
             self.gmp.modify_config('', selection='nvt_pref')
 
     def test_modify_config_set_comment(self):
+        # pylint: disable=invalid-name
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
 
@@ -65,6 +66,7 @@ class GmpModifyConfigTestCase(unittest.TestCase):
         )
 
     def test_modify_config_set_nvt_pref(self):
+        # pylint: disable=invalid-name
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
 
@@ -85,6 +87,7 @@ class GmpModifyConfigTestCase(unittest.TestCase):
         )
 
     def test_modify_config_set_scanner_pref(self):
+        # pylint: disable=invalid-name
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
 
@@ -105,6 +108,7 @@ class GmpModifyConfigTestCase(unittest.TestCase):
         )
 
     def test_modify_config_set_nvt_selection(self):
+        # pylint: disable=invalid-name
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
 
@@ -128,6 +132,7 @@ class GmpModifyConfigTestCase(unittest.TestCase):
         )
 
     def test_modify_config_set_family_selection(self):
+        # pylint: disable=invalid-name
         with warnings.catch_warnings(record=True) as w:
             warnings.simplefilter("always")
 

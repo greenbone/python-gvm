@@ -18,7 +18,6 @@
 
 import unittest
 
-from gvm.errors import InvalidArgument
 from gvm.protocols.ospv1 import Osp
 
 from .. import MockConnection
