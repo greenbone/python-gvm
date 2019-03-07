@@ -2541,7 +2541,10 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_aggregates(self, resource_type, **kwargs):
-        """Request a list of aggregates
+        """Request aggregated information on a resource type
+
+        Additional arguments can be set via the **kwargs parameter, but are not
+        yet validated.
 
         Arguments:
            resource_type (str): The GMP resource type to gather data from
