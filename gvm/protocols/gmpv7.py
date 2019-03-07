@@ -2550,12 +2550,14 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not resource_type:
-            raise RequiredArgument ("get_aggregates requires resource_type
-            argument")
+            raise RequiredArgument(
+                "get_aggregates requires resource_type argument"
+            )
 
         if resource_type not in RESOURCE_TYPES:
-            raise InvalidArgument("get_aggregates requires a valid resource_type
-argument")
+            raise InvalidArgument(
+                "get_aggregates requires a valid resource_type argument"
+            )
 
         cmd = XmlCommand("get_aggregates")
 
