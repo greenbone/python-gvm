@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+* Added resource_type argument to `get_aggregates` method [PR 107](https://github.com/greenbone/python-gvm/pull/107)
 * Added preferences argument to `create_task` method [PR 89](https://github.com/greenbone/python-gvm/pull/89)
 * Added validation of alive_tests argument to `create_target` method [PR 88](https://github.com/greenbone/python-gvm/pull/88)
 * Added ssh_credential_port argument to `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
