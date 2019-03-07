@@ -146,6 +146,25 @@ THREAD_TYPES = ("High", "Medium", "Low", "Alarm", "Log", "Debug")
 
 SUBJECT_TYPES = ("user", "group", "role")
 
+RESOURCE_TYPES = (
+    "alert",
+    "allinfo",
+    "cert_bund_adv",
+    "cpe",
+    "cve",
+    "dfn_cert_adv",
+    "host",
+    "note",
+    "nvt",
+    "os",
+    "ovaldef",
+    "override",
+    "report",
+    "result",
+    "task",
+    "vuln",
+)
+
 
 def _check_command_status(xml):
     """Check gmp response
@@ -2521,8 +2540,32 @@ class Gmp(GvmProtocol):
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def get_aggregates(self, **kwargs):
+    def get_aggregates(self, resource_type, **kwargs):
+        """Request aggregated information on a resource type
+
+        Additional arguments can be set via the **kwargs parameter, but are not
+        yet validated.
+
+        Arguments:
+           resource_type (str): The GMP resource type to gather data from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not resource_type:
+            raise RequiredArgument(
+                "get_aggregates requires resource_type argument"
+            )
+
+        if resource_type not in RESOURCE_TYPES:
+            raise InvalidArgument(
+                "get_aggregates requires a valid resource_type argument"
+            )
+
         cmd = XmlCommand("get_aggregates")
+
+        cmd.set_attribute("type", resource_type)
+
         cmd.set_attributes(kwargs)
         return self._send_xml_command(cmd)
 
