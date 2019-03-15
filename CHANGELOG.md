@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added ssh_credential_port argument to `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
 * Split getting a single preference by name from `get_preferences` method into
   `get_preference` [PR 85](https://github.com/greenbone/python-gvm/pull/85)
+* Added an explicit `create_container_task` method [PR 108](https://github.com/greenbone/python-gvm/pull/108)
 
 ### Changed
 * Aligned ALIVE_TESTS declaration with list from GSA [PR 93](https://github.com/greenbone/python-gvm/pull/93)
@@ -36,6 +37,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Updated and improved validation of `create_schedule` and
   `modify_schedule` arguments [PR 89](https://github.com/greenbone/python-gvm/pull/89)
 * Address DeprecationWarning regarding `collections` module [PR 99](https://github.com/greenbone/python-gvm/pull/99)
+* Forbid *'0'* as target_id value for  `create_task` method and move creating a
+  container task into an own method [PR 108](https://github.com/greenbone/python-gvm/pull/108)
 
 ### Removed
 * Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)

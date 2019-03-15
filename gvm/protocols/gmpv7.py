@@ -1896,6 +1896,12 @@ class Gmp(GvmProtocol):
         if not scanner_id:
             raise RequiredArgument("create_task requires a scanner_id argument")
 
+        # don't allow to create a container task with create_task
+        if target_id == '0':
+            raise InvalidArgument(
+                'Invalid argument {} for target_id'.format(target_id)
+            )
+
         cmd = XmlCommand("create_task")
         cmd.add_element("name", name)
         cmd.add_element("config", attrs={"id": config_id})
@@ -1961,6 +1967,31 @@ class Gmp(GvmProtocol):
                 _xmlpref = _xmlprefs.add_element("preference")
                 _xmlpref.add_element("scanner_name", pref_name)
                 _xmlpref.add_element("value", str(pref_value))
+
+        return self._send_xml_command(cmd)
+
+    def create_container_task(self, name, *, comment=None):
+        """Create a new container task
+
+        A container task is a "meta" task to import and view reports from other
+        systems.
+
+        Arguments:
+            name (str): Name of the task
+            comment (str, optional): Comment for the task
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument("create_task requires a name argument")
+
+        cmd = XmlCommand("create_task")
+        cmd.add_element("name", name)
+        cmd.add_element("target", attrs={"id": "0"})
+
+        if comment:
+            cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
