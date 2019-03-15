@@ -396,6 +396,26 @@ class GMPCreateTaskCommandTestCase(unittest.TestCase):
                 preferences=['foo', 'bar'],
             )
 
+    def test_create_task_don_t_allow_container_task(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='0',
+                scanner_id='s1',
+                observers='',
+            )
+
+        # target_id=0 is considered as False
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id=0,
+                scanner_id='s1',
+                observers='',
+            )
+
 
 if __name__ == '__main__':
     unittest.main()

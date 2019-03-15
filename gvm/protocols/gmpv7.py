@@ -1896,6 +1896,12 @@ class Gmp(GvmProtocol):
         if not scanner_id:
             raise RequiredArgument("create_task requires a scanner_id argument")
 
+        # don't allow to create a container task with create_task
+        if target_id == '0':
+            raise InvalidArgument(
+                'Invalid argument {} for target_id'.format(target_id)
+            )
+
         cmd = XmlCommand("create_task")
         cmd.add_element("name", name)
         cmd.add_element("config", attrs={"id": config_id})
