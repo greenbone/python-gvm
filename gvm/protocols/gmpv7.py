@@ -1602,9 +1602,9 @@ class Gmp(GvmProtocol):
                     )
                 )
 
-            if not isinstance(period, numbers.Integral) or period < 1:
+            if not isinstance(period, numbers.Integral) or period < 0:
                 raise InvalidArgument(
-                    "period argument must be an integer greater than 0"
+                    "period argument must be a positive integer"
                 )
 
             _xmlperiod = cmd.add_element("period", str(period))

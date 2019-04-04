@@ -323,7 +323,7 @@ class GmpCreateScheduleTestCase(unittest.TestCase):
             )
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_schedule(name='foo', period=0, period_unit='day')
+            self.gmp.create_schedule(name='foo', period=0.5, period_unit='day')
 
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(name='foo', period=-1, period_unit='day')
