@@ -39,6 +39,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Address DeprecationWarning regarding `collections` module [PR 99](https://github.com/greenbone/python-gvm/pull/99)
 * Forbid *'0'* as target_id value for  `create_task` method and move creating a
   container task into an own method [PR 108](https://github.com/greenbone/python-gvm/pull/108)
+* Refresh the dependencies specified via the Pipfile.lock file to their latest
+  versions [PR 113](https://github.com/greenbone/python-gvm/pull/113)
 
 ### Removed
 * Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
