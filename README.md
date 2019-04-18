@@ -53,7 +53,7 @@ from gvm.xml import pretty_print
 
 connection = UnixSocketConnection()
 transform = EtreeTransform()
-gmp = Gmp(connection, transform)
+gmp = Gmp(connection, transform=transform)
 
 # Retrieve current GMP version
 version = gmp.get_version()
