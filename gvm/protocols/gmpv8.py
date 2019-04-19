@@ -394,52 +394,60 @@ class Gmp(Gmpv7):
         return self._send_xml_command(cmd)
 
     def create_tag(
-            self,
-            name,
-            resource_ids,
-            resource_type,
-            *,
-            value=None,
-            comment=None,
-            active=None
+        self,
+        name,
+        resource_type,
+        *,
+        resource_filter=None,
+        resource_ids=None,
+        value=None,
+        comment=None,
+        active=None
     ):
         """Create a tag.
 
         Arguments:
             name (str): Name of the tag. A full tag name consisting of
-                namespace and predicate e.g. `foo:bar`
-            resource_ids (list): IDs of the resources the tag is to be
-                attached to
+                namespace and predicate e.g. `foo:bar`.
             resource_type (str): Entity type the tag is to be attached
-                to
-            value (str, optional): Value associated with the tag
-            comment (str, optional): Comment for the tag
+                to.
+            resource_filter (str, optional) Filter term to select
+                resources the tag is to be attached to. Either
+                resource_filter or resource_ids must be provided.
+            resource_ids (list, optional): IDs of the resources the
+                tag is to be attached to. Either resource_filter or
+                resource_ids must be provided.
+            value (str, optional): Value associated with the tag.
+            comment (str, optional): Comment for the tag.
             active (boolean, optional): Whether the tag should be
-                active
+                active.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
+            raise RequiredArgument("create_tag requires name argument")
 
+        if not resource_filter and not resource_ids:
             raise RequiredArgument(
-                "create_tag requires name argument")
-
-        if not resource_ids:
-            raise RequiredArgument(
-                "create_tag requires resource_ids argument")
+                "create_tag requires resource_filter or resource_ids argument"
+            )
 
         if not resource_type:
-            raise RequiredArgument(
-                "create_tag requires resource_type argument")
+            raise RequiredArgument("create_tag requires resource_type argument")
 
         cmd = XmlCommand('create_tag')
         cmd.add_element('name', name)
+
         _xmlresources = cmd.add_element("resources")
-        for resource_id in resource_ids:
+        if resource_filter is not None:
+            _xmlresources.set_attribute("filter", resource_filter)
+
+        for resource_id in resource_ids or []:
             _xmlresources.add_element(
                 "resource", attrs={"id": str(resource_id)}
             )
+
         _xmlresources.add_element("type", resource_type)
 
         if comment:

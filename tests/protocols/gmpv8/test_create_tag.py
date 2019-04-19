@@ -40,29 +40,68 @@ class GmpCreateTagTestCase(unittest.TestCase):
                 name='', resource_ids=['foo'], resource_type='task'
             )
 
-    def test_create_tag_missing_resource_id(self):
+    def test_create_tag_missing_resource_filter_and_ids(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name='foo', resource_ids=None, resource_type='task'
+                name='foo',
+                resource_type='task',
+                resource_filter=None,
+                resource_ids=None
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name='foo', resource_ids=[], resource_type='task'
+                name='foo',
+                resource_type='task',
+                resource_filter=None,
+                resource_ids=[]
+            )
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_tag(
+                name='foo',
+                resource_type='task'
             )
 
     def test_create_tag_missing_resource_type(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name='foo', resource_ids=['foo'], resource_type=None
+                name='foo',
+                resource_type=None,
+                resource_filter=None,
+                resource_ids=['foo']
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name='foo', resource_ids=['foo'], resource_type=''
+                name='foo',
+                resource_type=None,
+                resource_filter="name=foo",
+                resource_ids=None
             )
 
-    def test_create_tag(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_tag(
+                name='foo',
+                resource_type='',
+                resource_ids=['foo']
+            )
+
+    def test_create_tag_with_resource_filter(self):
+        self.gmp.create_tag(
+            name='foo', resource_filter='name=foo', resource_type='task'
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resources filter="name=foo">'
+            '<type>task</type>'
+            '</resources>'
+            '</create_tag>'
+        )
+
+    def test_create_tag_with_resource_ids(self):
         self.gmp.create_tag(
             name='foo', resource_ids=['foo'], resource_type='task'
         )
@@ -72,6 +111,21 @@ class GmpCreateTagTestCase(unittest.TestCase):
             '<name>foo</name>'
             '<resources>'
             '<resource id="foo"/>'
+            '<type>task</type>'
+            '</resources>'
+            '</create_tag>'
+        )
+
+        self.gmp.create_tag(
+            name='foo', resource_ids=['foo', 'bar'], resource_type='task'
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resources>'
+            '<resource id="foo"/>'
+            '<resource id="bar"/>'
             '<type>task</type>'
             '</resources>'
             '</create_tag>'
