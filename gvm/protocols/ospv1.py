@@ -77,10 +77,10 @@ def create_vt_selection_element(_xmlvtselection, vt_selection):
 class Osp(GvmProtocol):
     @staticmethod
     def get_protocol_version():
-        """Allow to determine the Open Scanner Protocol version.
+        """Determine the Open Scanner Protocol version.
 
-            Returns:
-                str: Implemented version of the Open Scanner Protocol
+        Returns:
+            str: Implemented version of the Open Scanner Protocol
         """
         return get_version_string(PROTOCOL_VERSION)
 
