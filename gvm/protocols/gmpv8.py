@@ -392,3 +392,66 @@ class Gmp(Gmpv7):
             _xmlkey.add_element("public", public_key)
 
         return self._send_xml_command(cmd)
+
+    def create_tag(
+            self,
+            name,
+            resource_ids,
+            resource_type,
+            *,
+            value=None,
+            comment=None,
+            active=None
+    ):
+        """Create a tag.
+
+        Arguments:
+            name (str): Name of the tag. A full tag name consisting of
+                namespace and predicate e.g. `foo:bar`
+            resource_ids (list): IDs of the resources the tag is to be
+                attached to
+            resource_type (str): Entity type the tag is to be attached
+                to
+            value (str, optional): Value associated with the tag
+            comment (str, optional): Comment for the tag
+            active (boolean, optional): Whether the tag should be
+                active
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+
+            raise RequiredArgument(
+                "create_tag requires name argument")
+
+        if not resource_ids:
+            raise RequiredArgument(
+                "create_tag requires resource_ids argument")
+
+        if not resource_type:
+            raise RequiredArgument(
+                "create_tag requires resource_type argument")
+
+        cmd = XmlCommand('create_tag')
+        cmd.add_element('name', name)
+        _xmlresources = cmd.add_element("resources")
+        for resource_id in resource_ids:
+            _xmlresources.add_element(
+                "resource", attrs={"id": str(resource_id)}
+            )
+        _xmlresources.add_element("type", resource_type)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if value:
+            cmd.add_element("value", value)
+
+        if active is not None:
+            if active:
+                cmd.add_element("active", "1")
+            else:
+                cmd.add_element("active", "0")
+
+        return self._send_xml_command(cmd)

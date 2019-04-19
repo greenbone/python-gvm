@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Split getting a single preference by name from `get_preferences` method into
   `get_preference` [PR 85](https://github.com/greenbone/python-gvm/pull/85)
 * Added an explicit `create_container_task` method [PR 108](https://github.com/greenbone/python-gvm/pull/108)
+* Added Gmpv8 version of create_tag with plural resource_ids parameter
 
 ### Changed
 * Aligned ALIVE_TESTS declaration with list from GSA [PR 93](https://github.com/greenbone/python-gvm/pull/93)
