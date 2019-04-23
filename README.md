@@ -92,9 +92,9 @@ This project is maintained by [Greenbone Networks GmbH](https://www.greenbone.ne
 ## Contributing
 
 Your contributions are highly appreciated. Please
-[create a pull request](https://github.com/greenbone/gvm-tools/pulls) on GitHub.
+[create a pull request](https://github.com/greenbone/python-gvm/pulls) on GitHub.
 For bigger changes, please discuss it first in the
-[issues](https://github.com/greenbone/gvm-tools/issues).
+[issues](https://github.com/greenbone/python-gvm/issues).
 
 For development you should use [pipenv](https://pipenv.readthedocs.io/en/latest/)
 to keep you python packages separated in different environments. First install
