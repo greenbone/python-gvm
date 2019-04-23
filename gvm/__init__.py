@@ -28,7 +28,8 @@ Current Version of python-gvm as a tuple
 
 
 def get_version():
-    """Returns the version of python-gvm as a string in `PEP440`_ compliant format.
+    """Returns the version of python-gvm as a string in `PEP440`_ compliant
+    format.
 
     Returns:
         str: Current version of python-gvm
