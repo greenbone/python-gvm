@@ -26,8 +26,6 @@ class GvmError(Exception):
     Base class for all exceptions originating in python-gvm.
     """
 
-    pass
-
 
 class InvalidArgument(GvmError):
     """Raised if an invalid argument/parameter is passed
