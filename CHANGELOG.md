@@ -54,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed the format parameter from `get_credentials` method [PR 85](https://github.com/greenbone/python-gvm/pull/85)
 * Removed the task_id and nvt_oid parameters from `get_notes` and
   `get_overrides` methods [PR 85](https://github.com/greenbone/python-gvm/pull/85)
+* Excluded tests from installation [PR 119](https://github.com/greenbone/python-gvm/pull/119)
 
 ### Fixed
 * Fixed sending resource id in `modify_tag` [PR 88](https://github.com/greenbone/python-gvm/pull/88)

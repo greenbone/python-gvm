@@ -261,10 +261,10 @@ class Gmp(GvmProtocol):
 
     @staticmethod
     def get_protocol_version():
-        """Allow to determine the Greenbone Management Protocol version.
+        """Determine the Greenbone Management Protocol version.
 
-            Returns:
-                str: Implemented version of the Greenbone Management Protocol
+        Returns:
+            str: Implemented version of the Greenbone Management Protocol
         """
         return get_version_string(PROTOCOL_VERSION)
 
