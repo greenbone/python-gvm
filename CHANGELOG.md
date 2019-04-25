@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Split getting a single preference by name from `get_preferences` method into
   `get_preference` [PR 85](https://github.com/greenbone/python-gvm/pull/85)
 * Added an explicit `create_container_task` method [PR 108](https://github.com/greenbone/python-gvm/pull/108)
+* Added Gmpv8 version of create_tag with resource_filter parameter and
+  plural resource_ids parameter [PR 115](https://github.com/greenbone/python-gvm/pull/115)
+* Added Gmpv8 version of modify_tag with resource_action parameter,
+  resource_filter parameter, plural resource_ids parameter [PR 115](https://github.com/greenbone/python-gvm/pull/115)
 
 ### Changed
 * Aligned ALIVE_TESTS declaration with list from GSA [PR 93](https://github.com/greenbone/python-gvm/pull/93)
@@ -50,6 +54,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed the format parameter from `get_credentials` method [PR 85](https://github.com/greenbone/python-gvm/pull/85)
 * Removed the task_id and nvt_oid parameters from `get_notes` and
   `get_overrides` methods [PR 85](https://github.com/greenbone/python-gvm/pull/85)
+* Excluded tests from installation [PR 119](https://github.com/greenbone/python-gvm/pull/119)
 
 ### Fixed
 * Fixed sending resource id in `modify_tag` [PR 88](https://github.com/greenbone/python-gvm/pull/88)

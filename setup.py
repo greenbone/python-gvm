@@ -43,7 +43,7 @@ setup(
     long_description=long_description,
     long_description_content_type='text/markdown',
     url='https://github.com/greenbone/python-gvm',
-    packages=find_packages(),
+    packages=find_packages(exclude=['tests']),
     install_requires=['paramiko', 'lxml', 'defusedxml'],
     python_requires='>=3.5',
     classifiers=[

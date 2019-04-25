@@ -41,10 +41,10 @@ PROTOCOL_VERSION = (8,)
 class Gmp(Gmpv7):
     @staticmethod
     def get_protocol_version():
-        """Allow to determine the Greenbone Management Protocol version.
+        """Determine the Greenbone Management Protocol version.
 
-            Returns:
-                str: Implemented version of the Greenbone Management Protocol
+        Returns:
+            str: Implemented version of the Greenbone Management Protocol
         """
         return get_version_string(PROTOCOL_VERSION)
 
@@ -390,5 +390,161 @@ class Gmp(Gmpv7):
         if public_key:
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("public", public_key)
+
+        return self._send_xml_command(cmd)
+
+    def create_tag(
+        self,
+        name,
+        resource_type,
+        *,
+        resource_filter=None,
+        resource_ids=None,
+        value=None,
+        comment=None,
+        active=None
+    ):
+        """Create a tag.
+
+        Arguments:
+            name (str): Name of the tag. A full tag name consisting of
+                namespace and predicate e.g. `foo:bar`.
+            resource_type (str): Entity type the tag is to be attached
+                to.
+            resource_filter (str, optional) Filter term to select
+                resources the tag is to be attached to. Either
+                resource_filter or resource_ids must be provided.
+            resource_ids (list, optional): IDs of the resources the
+                tag is to be attached to. Either resource_filter or
+                resource_ids must be provided.
+            value (str, optional): Value associated with the tag.
+            comment (str, optional): Comment for the tag.
+            active (boolean, optional): Whether the tag should be
+                active.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument("create_tag requires name argument")
+
+        if not resource_filter and not resource_ids:
+            raise RequiredArgument(
+                "create_tag requires resource_filter or resource_ids argument"
+            )
+
+        if not resource_type:
+            raise RequiredArgument("create_tag requires resource_type argument")
+
+        cmd = XmlCommand('create_tag')
+        cmd.add_element('name', name)
+
+        _xmlresources = cmd.add_element("resources")
+        if resource_filter is not None:
+            _xmlresources.set_attribute("filter", resource_filter)
+
+        for resource_id in resource_ids or []:
+            _xmlresources.add_element(
+                "resource", attrs={"id": str(resource_id)}
+            )
+
+        _xmlresources.add_element("type", resource_type)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if value:
+            cmd.add_element("value", value)
+
+        if active is not None:
+            if active:
+                cmd.add_element("active", "1")
+            else:
+                cmd.add_element("active", "0")
+
+        return self._send_xml_command(cmd)
+
+    def modify_tag(
+        self,
+        tag_id,
+        *,
+        comment=None,
+        name=None,
+        value=None,
+        active=None,
+        resource_action=None,
+        resource_type=None,
+        resource_filter=None,
+        resource_ids=None
+    ):
+        """Modifies an existing tag.
+
+        Arguments:
+            tag_id (str): UUID of the tag.
+            comment (str, optional): Comment to add to the tag.
+            name (str, optional): Name of the tag.
+            value (str, optional): Value of the tag.
+            active (boolean, optional): Whether the tag is active.
+            resource_action (str, optional) Whether to add or remove
+                resources instead of overwriting. One of '', 'add',
+                'set' or 'remove'.
+            resource_type (str, optional): Type of the resources to
+                which to attach the tag. Required if resource_filter
+                or resource_ids is set.
+            resource_filter (str, optional) Filter term to select
+                resources the tag is to be attached to. Required if
+                resource_type is set unless resource_ids is set.
+            resource_ids (list, optional): IDs of the resources to
+                which to attach the tag. Required if resource_type is
+                set unless resource_filter is set.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not tag_id:
+            raise RequiredArgument("modify_tag requires a tag_id element")
+
+        cmd = XmlCommand("modify_tag")
+        cmd.set_attribute("tag_id", str(tag_id))
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if name:
+            cmd.add_element("name", name)
+
+        if value:
+            cmd.add_element("value", value)
+
+        if active is not None:
+            cmd.add_element("active", _to_bool(active))
+
+        if resource_action or resource_filter or resource_ids or resource_type:
+            if not resource_filter and not resource_ids:
+                raise RequiredArgument(
+                    "modify_tag requires resource_filter or resource_ids "
+                    "argument when resource_action or resource_type is set"
+                )
+
+            if not resource_type:
+                raise RequiredArgument(
+                    "modify_tag requires resource_type argument when "
+                    "resource_action or resource_filter or resource_ids "
+                    "is set"
+                )
+
+            _xmlresources = cmd.add_element("resources")
+            if resource_action is not None:
+                _xmlresources.set_attribute("action", resource_action)
+
+            if resource_filter is not None:
+                _xmlresources.set_attribute("filter", resource_filter)
+
+            for resource_id in resource_ids or []:
+                _xmlresources.add_element(
+                    "resource", attrs={"id": str(resource_id)}
+                )
+
+            _xmlresources.add_element("type", resource_type)
 
         return self._send_xml_command(cmd)
