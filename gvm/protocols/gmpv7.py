@@ -1636,9 +1636,9 @@ class Gmp(GvmProtocol):
     def create_tag(
         self,
         name,
-        resource_id,
         resource_type,
         *,
+        resource_id=None,
         value=None,
         comment=None,
         active=None
