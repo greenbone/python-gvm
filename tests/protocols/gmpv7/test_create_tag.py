@@ -41,15 +41,27 @@ class GmpCreateTagTestCase(unittest.TestCase):
             )
 
     def test_create_tag_missing_resource_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.create_tag(
-                name='foo', resource_id=None, resource_type='task'
-            )
+        self.gmp.create_tag(name='foo', resource_id=None, resource_type='task')
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.create_tag(
-                name='foo', resource_id='', resource_type='task'
-            )
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resource id="">'
+            '<type>task</type>'
+            '</resource>'
+            '</create_tag>'
+        )
+
+        self.gmp.create_tag(name='foo', resource_id='', resource_type='task')
+
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resource id="">'
+            '<type>task</type>'
+            '</resource>'
+            '</create_tag>'
+        )
 
     def test_create_tag_missing_resource_type(self):
         with self.assertRaises(RequiredArgument):
