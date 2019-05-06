@@ -45,6 +45,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   container task into an own method [PR 108](https://github.com/greenbone/python-gvm/pull/108)
 * Refresh the dependencies specified via the Pipfile.lock file to their latest
   versions [PR 113](https://github.com/greenbone/python-gvm/pull/113)
+* Make resource_id optional when creating tags (Gmpv7) [PR 124](https://github.com/greenbone/python-gvm/pull/124)
 
 ### Removed
 * Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)

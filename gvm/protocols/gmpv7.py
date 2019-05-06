@@ -1636,9 +1636,9 @@ class Gmp(GvmProtocol):
     def create_tag(
         self,
         name,
-        resource_id,
         resource_type,
         *,
+        resource_id=None,
         value=None,
         comment=None,
         active=None
@@ -1648,7 +1648,8 @@ class Gmp(GvmProtocol):
         Arguments:
             name (str): Name of the tag. A full tag name consisting of namespace
                 and predicate e.g. `foo:bar`.
-            resource_id (str): ID of the resource  the tag is to be attached to.
+            resource_id (str, optional): ID of the resource the tag is to be
+                attached to.
             resource_type (str): Entity type the tag is to be attached to
             value (str, optional): Value associated with the tag
             comment (str, optional): Comment for the tag
@@ -1660,14 +1661,15 @@ class Gmp(GvmProtocol):
         if not name:
             raise RequiredArgument("create_tag requires name argument")
 
-        if not resource_id:
-            raise RequiredArgument("create_tag requires resource_id argument")
-
         if not resource_type:
             raise RequiredArgument("create_tag requires resource_type argument")
 
         cmd = XmlCommand("create_tag")
         cmd.add_element("name", name)
+
+        if not resource_id:
+            resource_id = ''
+
         _xmlresource = cmd.add_element(
             "resource", attrs={"id": str(resource_id)}
         )
