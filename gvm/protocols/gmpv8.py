@@ -412,11 +412,11 @@ class Gmp(Gmpv7):
             resource_type (str): Entity type the tag is to be attached
                 to.
             resource_filter (str, optional) Filter term to select
-                resources the tag is to be attached to. Either
-                resource_filter or resource_ids must be provided.
+                resources the tag is to be attached to. Only one of
+                resource_filter or resource_ids can be provided.
             resource_ids (list, optional): IDs of the resources the
-                tag is to be attached to. Either resource_filter or
-                resource_ids must be provided.
+                tag is to be attached to. Only one of resource_filter or
+                resource_ids can be provided.
             value (str, optional): Value associated with the tag.
             comment (str, optional): Comment for the tag.
             active (boolean, optional): Whether the tag should be
@@ -428,9 +428,10 @@ class Gmp(Gmpv7):
         if not name:
             raise RequiredArgument("create_tag requires name argument")
 
-        if not resource_filter and not resource_ids:
-            raise RequiredArgument(
-                "create_tag requires resource_filter or resource_ids argument"
+        if resource_filter and resource_ids:
+            raise InvalidArgument(
+                "create_tag accepts either resource_filter or resource_ids "
+                "argument"
             )
 
         if not resource_type:
