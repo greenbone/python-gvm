@@ -430,7 +430,8 @@ class Gmp(Gmpv7):
 
         if resource_filter and resource_ids:
             raise InvalidArgument(
-                "create_tag accepts either resource_filter or resource_ids argument"
+                "create_tag accepts either resource_filter or resource_ids "
+                "argument"
             )
 
         if not resource_type:
