@@ -146,7 +146,7 @@ THREAD_TYPES = ("High", "Medium", "Low", "Alarm", "Log", "Debug")
 
 SUBJECT_TYPES = ("user", "group", "role")
 
-RESOURCE_TYPES = (
+AGGREGATE_RESOURCE_TYPES = (
     "alert",
     "allinfo",
     "cert_bund_adv",
@@ -2590,7 +2590,7 @@ class Gmp(GvmProtocol):
                 "get_aggregates requires resource_type argument"
             )
 
-        if resource_type not in RESOURCE_TYPES:
+        if resource_type not in AGGREGATE_RESOURCE_TYPES:
             raise InvalidArgument(
                 "get_aggregates requires a valid resource_type argument"
             )
