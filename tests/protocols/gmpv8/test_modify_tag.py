@@ -72,7 +72,7 @@ class GmpModifyTagTestCase(unittest.TestCase):
         self.gmp.modify_tag(tag_id='t1', active=False)
 
         self.connection.send.has_been_called_with(
-            '<modify_tag tag_id="t1">' '<active>0</active>' '</modify_tag>'
+            '<modify_tag tag_id="t1"><active>0</active></modify_tag>'
         )
 
     def test_modify_tag_with_resource_filter_and_type(self):
