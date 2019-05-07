@@ -45,44 +45,34 @@ class GmpModifyTagTestCase(unittest.TestCase):
         self.gmp.modify_tag(tag_id='t1', comment='foo')
 
         self.connection.send.has_been_called_with(
-            '<modify_tag tag_id="t1">'
-            '<comment>foo</comment>'
-            '</modify_tag>'
+            '<modify_tag tag_id="t1"><comment>foo</comment></modify_tag>'
         )
 
     def test_modify_tag_with_value(self):
         self.gmp.modify_tag(tag_id='t1', value='foo')
 
         self.connection.send.has_been_called_with(
-            '<modify_tag tag_id="t1">'
-            '<value>foo</value>'
-            '</modify_tag>'
+            '<modify_tag tag_id="t1"><value>foo</value></modify_tag>'
         )
 
     def test_modify_tag_with_name(self):
         self.gmp.modify_tag(tag_id='t1', name='foo')
 
         self.connection.send.has_been_called_with(
-            '<modify_tag tag_id="t1">'
-            '<name>foo</name>'
-            '</modify_tag>'
+            '<modify_tag tag_id="t1"><name>foo</name></modify_tag>'
         )
 
     def test_modify_tag_with_active(self):
         self.gmp.modify_tag(tag_id='t1', active=True)
 
         self.connection.send.has_been_called_with(
-            '<modify_tag tag_id="t1">'
-            '<active>1</active>'
-            '</modify_tag>'
+            '<modify_tag tag_id="t1"><active>1</active></modify_tag>'
         )
 
         self.gmp.modify_tag(tag_id='t1', active=False)
 
         self.connection.send.has_been_called_with(
-            '<modify_tag tag_id="t1">'
-            '<active>0</active>'
-            '</modify_tag>'
+            '<modify_tag tag_id="t1"><active>0</active></modify_tag>'
         )
 
     def test_modify_tag_with_resource_filter_and_type(self):
@@ -103,7 +93,7 @@ class GmpModifyTagTestCase(unittest.TestCase):
             tag_id='t1',
             resource_action='set',
             resource_filter='name=foo',
-            resource_type='task'
+            resource_type='task',
         )
 
         self.connection.send.has_been_called_with(
@@ -116,9 +106,7 @@ class GmpModifyTagTestCase(unittest.TestCase):
 
     def test_modify_tag_with_resource_ids_and_type(self):
         self.gmp.modify_tag(
-            tag_id='t1',
-            resource_ids=['r1'],
-            resource_type='task'
+            tag_id='t1', resource_ids=['r1'], resource_type='task'
         )
 
         self.connection.send.has_been_called_with(
@@ -135,7 +123,7 @@ class GmpModifyTagTestCase(unittest.TestCase):
             tag_id='t1',
             resource_action="set",
             resource_ids=['r1'],
-            resource_type='task'
+            resource_type='task',
         )
 
         self.connection.send.has_been_called_with(
@@ -148,19 +136,38 @@ class GmpModifyTagTestCase(unittest.TestCase):
         )
 
     def test_modify_tag_with_missing_resource_filter_or_ids_andtype(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.modify_tag(tag_id='t1', resource_action='add')
+        self.gmp.modify_tag(tag_id='t1', resource_action='add')
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">'
+            '<resources action="add"/>'
+            '</modify_tag>'
+        )
 
     def test_modify_tag_with_missing_resource_type(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.modify_tag(tag_id='t1', resource_ids=['r1'])
+        self.gmp.modify_tag(tag_id='t1', resource_ids=['r1'])
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">'
+            '<resources>'
+            '<resource id="r1"/>'
+            '</resources>'
+            '</modify_tag>'
+        )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_tag(tag_id='t1', resource_filter='name=foo')
 
     def test_modify_tag_with_missing_resource_filter_and_ids(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.modify_tag(tag_id='t1', resource_type='task')
+        self.gmp.modify_tag(tag_id='t1', resource_type='task')
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">'
+            '<resources>'
+            '<type>task</type>'
+            '</resources>'
+            '</modify_tag>'
+        )
 
 
 if __name__ == '__main__':

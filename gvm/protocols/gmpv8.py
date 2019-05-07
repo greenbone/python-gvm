@@ -491,13 +491,11 @@ class Gmp(Gmpv7):
                 'set' or 'remove'.
             resource_type (str, optional): Type of the resources to
                 which to attach the tag. Required if resource_filter
-                or resource_ids is set.
+                is set.
             resource_filter (str, optional) Filter term to select
-                resources the tag is to be attached to. Required if
-                resource_type is set unless resource_ids is set.
+                resources the tag is to be attached to.
             resource_ids (list, optional): IDs of the resources to
-                which to attach the tag. Required if resource_type is
-                set unless resource_filter is set.
+                which to attach the tag.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -521,17 +519,10 @@ class Gmp(Gmpv7):
             cmd.add_element("active", _to_bool(active))
 
         if resource_action or resource_filter or resource_ids or resource_type:
-            if not resource_filter and not resource_ids:
-                raise RequiredArgument(
-                    "modify_tag requires resource_filter or resource_ids "
-                    "argument when resource_action or resource_type is set"
-                )
-
-            if not resource_type:
+            if resource_filter and not resource_type:
                 raise RequiredArgument(
                     "modify_tag requires resource_type argument when "
-                    "resource_action or resource_filter or resource_ids "
-                    "is set"
+                    "resource_filter is set"
                 )
 
             _xmlresources = cmd.add_element("resources")
@@ -546,6 +537,7 @@ class Gmp(Gmpv7):
                     "resource", attrs={"id": str(resource_id)}
                 )
 
-            _xmlresources.add_element("type", resource_type)
+            if resource_type is not None:
+                _xmlresources.add_element("type", resource_type)
 
         return self._send_xml_command(cmd)
