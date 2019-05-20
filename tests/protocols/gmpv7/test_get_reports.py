@@ -77,18 +77,18 @@ class GmpGetReportsTestCase(unittest.TestCase):
             '<get_reports override_details="1" ignore_pagination="1"/>'
         )
 
-    def test_get_reports_without_details(self):
-        self.gmp.get_reports(details=False)
-
-        self.connection.send.has_been_called_with(
-            '<get_reports details="0" ignore_pagination="1"/>'
-        )
-
     def test_get_reports_with_details(self):
-        self.gmp.get_reports(details=True)
+        self.gmp.get_reports(no_details=False)
 
         self.connection.send.has_been_called_with(
             '<get_reports details="1" ignore_pagination="1"/>'
+        )
+
+    def test_get_reports_without_details(self):
+        self.gmp.get_reports(no_details=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_reports details="0" ignore_pagination="1"/>'
         )
 
 
