@@ -3372,7 +3372,8 @@ class Gmp(GvmProtocol):
         filter=None,
         filter_id=None,
         note_details=None,
-        override_details=None
+        override_details=None,
+        no_details=None
     ):
         """Request a list of reports
 
@@ -3384,6 +3385,7 @@ class Gmp(GvmProtocol):
                 include note details
             override_details (boolean, optional): If overrides are included,
                 whether to include override details
+            no_details (boolean, optional): Whether to exclude results
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3401,6 +3403,9 @@ class Gmp(GvmProtocol):
 
         if not override_details is None:
             cmd.set_attribute("override_details", _to_bool(override_details))
+
+        if not no_details is None:
+            cmd.set_attribute("details", _to_bool(not no_details))
 
         cmd.set_attribute("ignore_pagination", "1")
 
