@@ -15,9 +15,9 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-"""Lastest supported protocols.
+"""Latest supported protocols.
 
-This module exposes the lastest supported protocols of gvm.
+This module exposes the latest supported protocols of gvm.
 
 The provided Gmp class implements the latest `Greenbone Management
 Protocol`_.
