@@ -45,7 +45,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Forbid *'0'* as target_id value for  `create_task` method and move creating a
   container task into an own method [PR 108](https://github.com/greenbone/python-gvm/pull/108)
 * Refresh the dependencies specified via the Pipfile.lock file to their latest
-  versions [PR 113](https://github.com/greenbone/python-gvm/pull/113)
+  versions [PR 113](https://github.com/greenbone/python-gvm/pull/113),
+  [PR 131](https://github.com/greenbone/python-gvm/pull/131)
 * Make resource_id optional when creating tags (Gmpv7) [PR 124](https://github.com/greenbone/python-gvm/pull/124)
 * Allow creating tags without resource (Gmpv8) [PR 125](https://github.com/greenbone/python-gvm/pull/125)
 * Adapt modify_tag validation to actual implementation (Gmpv8) [PR 127](https://github.com/greenbone/python-gvm/pull/127)
