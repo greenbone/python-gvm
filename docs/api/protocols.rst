@@ -19,6 +19,15 @@ GMP v7
     :members:
     :inherited-members:
 
+GMP v8
+^^^^^^
+
+.. automodule:: gvm.protocols.gmpv8
+
+.. autoclass:: Gmp
+    :members:
+    :inherited-members:
+
 OSP v1
 ^^^^^^
 
