@@ -1,6 +1,6 @@
 ![Greenbone Logo](https://www.greenbone.net/wp-content/uploads/gb_logo_resilience_horizontal.png)
 
-# Greenbone Vulnerability Management Python Library
+# Greenbone Vulnerability Management Python Library <!-- omit in toc -->
 
 [![GitHub releases](https://img.shields.io/github/release-pre/greenbone/python-gvm.svg)](https://github.com/greenbone/python-gvm/releases)
 [![PyPI release](https://img.shields.io/pypi/v/gvm.svg)](https://pypi.org/project/python-gvm/)
@@ -14,16 +14,17 @@ Manager (GSM) appliance and its underlying Greenbone Vulnerability Manager
 (GVM). The library essentially abstracts accessing the communication protocols
 Greenbone Management Protocol (GMP) and Open Scanner Protocol (OSP).
 
-## Table of Contents
+## Table of Contents <!-- omit in toc -->
 
-* [Installation](#installation)
-  * [Requirements](#requirements)
-  * [Install using pip](#install-using-pip)
-* [Example](#example)
-* [Support](#support)
-* [Maintainer](#maintainer)
-* [Contributing](#contributing)
-* [License](#license)
+- [Installation](#installation)
+  - [Requirements](#requirements)
+  - [Install using pip](#install-using-pip)
+- [Example](#example)
+- [Documentation](#documentation)
+- [Support](#support)
+- [Maintainer](#maintainer)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Installation
 
