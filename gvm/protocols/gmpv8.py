@@ -21,8 +21,6 @@
 """
 Module for communication with gvmd in `Greenbone Management Protocol version 8`_
 
-**GMP Version 8 has not been released yet**
-
 .. _Greenbone Management Protocol version 8:
     https://docs.greenbone.net/API/GMP/gmp-8.0.html
 """
