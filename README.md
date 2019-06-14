@@ -37,12 +37,7 @@ Python 3.5 and later is supported.
 You can install the latest stable release of python-gvm from the Python Package
 Index using [pip](https://pip.pypa.io/):
 
-    pip install python-gvm
-
-alternatively download or clone this repository and install the latest
-development version:
-
-    pip install .
+    pip install --user python-gvm
 
 ## Example
 
