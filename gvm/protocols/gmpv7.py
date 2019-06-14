@@ -2576,7 +2576,7 @@ class Gmp(GvmProtocol):
     def get_aggregates(self, resource_type, **kwargs):
         """Request aggregated information on a resource type
 
-        Additional arguments can be set via the **kwargs parameter, but are not
+        Additional arguments can be set via the kwargs parameter, but are not
         yet validated.
 
         Arguments:
