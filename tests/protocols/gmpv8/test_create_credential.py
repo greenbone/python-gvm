@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv8 import Gmp
 
-from .. import MockConnection
+from . import Gmpv8TestCase
 
 
-class GmpCreateCredentialTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_up_credential_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(

@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv8 import Gmp
 
-from .. import MockConnection
+from . import Gmpv8TestCase
 
 
-class GmpCreateTagTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpCreateTagTestCase(Gmpv8TestCase):
     def test_create_tag_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
