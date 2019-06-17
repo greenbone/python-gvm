@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=arguments-differ
+# pylint: disable=arguments-differ, redefined-builtin
 
 """
 Module for communication with gvmd in `Greenbone Management Protocol version 8`_
@@ -29,7 +29,7 @@ from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
-from .gmpv7 import Gmp as Gmpv7, _to_bool
+from .gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
 
 CREDENTIAL_TYPES = ("cc", "snmp", "up", "usk", "smime", "pgp")
 
@@ -538,4 +538,38 @@ class Gmp(Gmpv7):
             if resource_type is not None:
                 _xmlresources.add_element("type", resource_type)
 
+        return self._send_xml_command(cmd)
+
+    def get_vulnerabilities(self, *, filter=None, filter_id=None):
+        """Request a list of vulnerabilities
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_vulns")
+
+        _add_filter(cmd, filter, filter_id)
+
+        return self._send_xml_command(cmd)
+
+    def get_vulnerability(self, vulnerability_id):
+        """Request a single vulnerability
+
+        Arguments:
+            vulnerability_id (str): UUID of an existing vulnerability
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not vulnerability_id:
+            raise RequiredArgument(
+                "get_vulnerability requires a vulnerability_id argument"
+            )
+
+        cmd = XmlCommand("get_vulns")
+        cmd.set_attribute("vuln_id", vulnerability_id)
         return self._send_xml_command(cmd)
