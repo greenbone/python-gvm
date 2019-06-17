@@ -24,6 +24,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 8`_
 .. _Greenbone Management Protocol version 8:
     https://docs.greenbone.net/API/GMP/gmp-8.0.html
 """
+from enum import Enum
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
@@ -34,6 +35,12 @@ from .gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
 CREDENTIAL_TYPES = ("cc", "snmp", "up", "usk", "smime", "pgp")
 
 PROTOCOL_VERSION = (8,)
+
+
+class TicketStatus(Enum):
+    OPEN = 'Open'
+    FIXED = 'Fixed'
+    CLOSED = 'Closed'
 
 
 class Gmp(Gmpv7):
@@ -62,7 +69,7 @@ class Gmp(Gmpv7):
         community=None,
         privacy_algorithm=None,
         privacy_password=None,
-        public_key=None
+        public_key=None,
     ):
         """Create a new credential
 
@@ -285,7 +292,7 @@ class Gmp(Gmpv7):
         privacy_algorithm=None,
         privacy_password=None,
         credential_type=None,
-        public_key=None
+        public_key=None,
     ):
         """Modifies an existing credential.
 
@@ -400,7 +407,7 @@ class Gmp(Gmpv7):
         resource_ids=None,
         value=None,
         comment=None,
-        active=None
+        active=None,
     ):
         """Create a tag.
 
@@ -474,7 +481,7 @@ class Gmp(Gmpv7):
         resource_action=None,
         resource_type=None,
         resource_filter=None,
-        resource_ids=None
+        resource_ids=None,
     ):
         """Modifies an existing tag.
 
@@ -540,6 +547,124 @@ class Gmp(Gmpv7):
 
         return self._send_xml_command(cmd)
 
+    def clone_ticket(self, ticket_id):
+        """Clone an existing ticket
+
+        Arguments:
+            ticket_id (str): UUID of an existing ticket to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not ticket_id:
+            raise RequiredArgument("clone_ticket requires a ticket_id argument")
+
+        cmd = XmlCommand("create_ticket")
+
+        _copy = cmd.add_element("copy", ticket_id)
+
+        return self._send_xml_command(cmd)
+
+    def create_ticket(
+        self, *, result_id, assigned_to_user_id, note, comment=None
+    ):
+        """Create a new ticket
+
+        Arguments:
+            result_id (str): UUID of the result the ticket applies to
+            assigned_to_user_id (str): UUID of a user the ticket should be
+                assigned to
+            note (str): A note about opening the ticket
+            comment (str, optional): Comment for the ticket
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not result_id:
+            raise RequiredArgument(
+                "create_ticket requires a result_id argument"
+            )
+
+        if not assigned_to_user_id:
+            raise RequiredArgument(
+                "create_ticket requires a assigned_to_user_id argument"
+            )
+
+        if not note:
+            raise RequiredArgument("create_ticket requires a note argument")
+
+        cmd = XmlCommand("create_ticket")
+
+        _result = cmd.add_element("result")
+        _result.set_attribute("id", result_id)
+
+        _assigned = cmd.add_element("assigned_to")
+        _user = _assigned.add_element("user")
+        _user.set_attribute("id", assigned_to_user_id)
+
+        _note = cmd.add_element("open_note", note)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        return self._send_xml_command(cmd)
+
+    def delete_ticket(self, ticket_id, *, ultimate=False):
+        """Deletes an existing ticket
+
+        Arguments:
+            ticket_id (str) UUID of the ticket to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not ticket_id:
+            raise RequiredArgument(
+                "delete_ticket requires a " "ticket_id argument"
+            )
+
+        cmd = XmlCommand("delete_ticket")
+        cmd.set_attribute("ticket_id", ticket_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def get_tickets(self, *, trash=None, filter=None, filter_id=None):
+        """Request a list of tickets
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): True to request the tickets in the
+                trashcan
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_tickets")
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute("trash", _to_bool(trash))
+
+        return self._send_xml_command(cmd)
+
+    def get_ticket(self, ticket_id):
+        """Request a single ticket
+
+        Arguments:
+            ticket_id (str): UUID of an existing ticket
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not ticket_id:
+            raise RequiredArgument("get_ticket requires a ticket_id argument")
+
+        cmd = XmlCommand("get_tickets")
+        cmd.set_attribute("ticket_id", ticket_id)
+        return self._send_xml_command(cmd)
+
     def get_vulnerabilities(self, *, filter=None, filter_id=None):
         """Request a list of vulnerabilities
 
@@ -572,4 +697,65 @@ class Gmp(Gmpv7):
 
         cmd = XmlCommand("get_vulns")
         cmd.set_attribute("vuln_id", vulnerability_id)
+        return self._send_xml_command(cmd)
+
+    def modify_ticket(
+        self,
+        ticket_id,
+        *,
+        status=None,
+        note=None,
+        assigned_to_user_id=None,
+        comment=None,
+    ):
+        """Modify a single ticket
+
+        Arguments:
+            ticket_id (str): UUID of an existing ticket
+            status (TicketStatus, optional): New status for the ticket
+            note (str, optional): Note for the status change. Required if status
+                is set.
+            assigned_to_user_id (str, optional): UUID of the user the ticket
+                should be assigned to
+            comment (str, optional): Comment for the ticket
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not ticket_id:
+            raise RequiredArgument(
+                "modify_ticket requires a ticket_id argument"
+            )
+
+        if status and not note:
+            raise RequiredArgument(
+                "setting a status in modify_ticket requires a note argument"
+            )
+
+        if note and not status:
+            raise RequiredArgument(
+                "setting a note in modify_ticket requires a status argument"
+            )
+
+        cmd = XmlCommand("modify_ticket")
+        cmd.set_attribute("ticket_id", ticket_id)
+
+        if assigned_to_user_id:
+            _assigned = cmd.add_element("assigned_to")
+            _user = _assigned.add_element("user")
+            _user.set_attribute("id", assigned_to_user_id)
+
+        if status:
+            if not isinstance(status, TicketStatus):
+                raise InvalidArgument(
+                    "status argument of modify_ticket needs to be a "
+                    "TicketStatus"
+                )
+
+            cmd.add_element('status', status.value)
+            cmd.add_element('{}_note'.format(status.name.lower()), note)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
         return self._send_xml_command(cmd)
