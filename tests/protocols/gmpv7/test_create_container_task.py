@@ -17,21 +17,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
-import warnings
 
-from collections import OrderedDict
+from gvm.errors import RequiredArgument
 
-from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
-
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GMPCreateContainerTaskCommandTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GMPCreateContainerTaskCommandTestCase(Gmpv7TestCase):
     def test_create_task(self):
         self.gmp.create_container_task(name='foo')
 

@@ -20,16 +20,11 @@ import unittest
 import warnings
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyConfigTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyConfigTestCase(Gmpv7TestCase):
     def test_modify_config_invalid_selection(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_config(config_id='c1', selection='foo')

@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import GvmError
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpDeleteScannerTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpDeleteScannerTestCase(Gmpv7TestCase):
     def test_delete(self):
         self.gmp.delete_scanner('a1')
 

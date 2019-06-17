@@ -20,21 +20,16 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.protocols.gmpv7 import (
-    Gmp,
     OSP_SCANNER_TYPE,
     OPENVAS_SCANNER_TYPE,
     CVE_SCANNER_TYPE,
     GMP_SCANNER_TYPE,
 )
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyScannerTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyScannerTestCase(Gmpv7TestCase):
     def test_modify_scanner(self):
         self.gmp.modify_scanner(scanner_id='s1')
 

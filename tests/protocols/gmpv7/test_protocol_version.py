@@ -18,15 +18,13 @@
 
 import unittest
 
-from gvm.protocols.gmpv7 import Gmp
-
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpProtocolVersionTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpProtocolVersionTestCase(Gmpv7TestCase):
     def test_protocol_version(self):
         self.assertEqual(self.gmp.get_protocol_version(), '7')
+
+
+if __name__ == '__main__':
+    unittest.main()

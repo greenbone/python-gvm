@@ -21,16 +21,11 @@ import unittest
 from decimal import Decimal
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyNoteTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyNoteTestCase(Gmpv7TestCase):
     def test_modify_note(self):
         self.gmp.modify_note(note_id='n1', text='foo')
 

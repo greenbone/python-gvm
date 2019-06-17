@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpGetAgentTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpGetAgentTestCase(Gmpv7TestCase):
     def test_get_agent_missing_agent_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.get_agent(agent_id=None)

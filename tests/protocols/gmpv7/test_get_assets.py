@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpGetAssetsTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpGetAssetsTestCase(Gmpv7TestCase):
     def test_get_assets(self):
         self.gmp.get_assets('os')
 

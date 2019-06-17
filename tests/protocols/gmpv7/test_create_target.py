@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GMPCreateTargetCommandTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpCreateTargetCommandTestCase(Gmpv7TestCase):
     def test_create_target_with_make_unique(self):
         self.gmp.create_target('foo', make_unique=True, hosts=['foo', 'bar'])
 

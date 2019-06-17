@@ -18,16 +18,10 @@
 
 import unittest
 
-from gvm.protocols.gmpv7 import Gmp
-
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpEmptyTrashcanCommandTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpEmptyTrashcanCommandTestCase(Gmpv7TestCase):
     def test_empty_trashcan(self):
         self.gmp.empty_trashcan()
 

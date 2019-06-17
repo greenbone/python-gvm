@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpAuthenticateTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpAuthenticateTestCase(Gmpv7TestCase):
     def test_missing_username(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.authenticate(None, 'foo')

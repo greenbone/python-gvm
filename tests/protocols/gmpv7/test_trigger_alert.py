@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpTriggerAlertTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpTriggerAlertTestCase(Gmpv7TestCase):
     def test_trigger_alert_without_alert_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.trigger_alert(alert_id=None, report_id='r1')

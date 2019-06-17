@@ -19,18 +19,14 @@
 import unittest
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv7 import Gmp, FILTER_TYPES
+from gvm.protocols.gmpv7 import FILTER_TYPES
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GMPCreateFilterCommandTestCase(unittest.TestCase):
+class GMPCreateFilterCommandTestCase(Gmpv7TestCase):
 
     FILTER_NAME = "special filter"
-
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
 
     def test_all_available_filters_types_correct(self):
         for filter_type in FILTER_TYPES:

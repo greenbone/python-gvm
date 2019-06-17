@@ -21,16 +21,11 @@ import unittest
 from collections import OrderedDict
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyAuthTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyAuthTestCase(Gmpv7TestCase):
     def test_modify_auth(self):
         self.gmp.modify_auth(
             'foo', OrderedDict([('foo', 'bar'), ('lorem', 'ipsum')])

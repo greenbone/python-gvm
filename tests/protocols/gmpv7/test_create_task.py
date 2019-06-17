@@ -22,16 +22,11 @@ import warnings
 from collections import OrderedDict
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GMPCreateTaskCommandTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpCreateTaskCommandTestCase(Gmpv7TestCase):
     def test_create_task(self):
         self.gmp.create_task(
             name='foo', config_id='c1', target_id='t1', scanner_id='s1'
