@@ -22,6 +22,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added `get_vulnerabilites` method [PR 132](https://github.com/greenbone/python-gvm/pull/132)
 * Added `get_ticket`, `get_tickets`, `create_ticket`, `clone_ticket`, `modify_ticket` and `delete_ticket`
   APIs to GMPv8 [PR 132](https://github.com/greenbone/python-gvm/pull/132)
+* Added filter types for `host`, `operating system`, `ticket` and `vulnerability`
+  [PR 133](https://github.com/greenbone/python-gvm/pull/133)
+* Added a `password only` credential type [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 
 ### Changed
 * Use Gmpv8 as latest Gmp version [PR 132](https://github.com/greenbone/python-gvm/pull/132)
@@ -56,6 +59,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adapt modify_tag validation to actual implementation (Gmpv8) [PR 127](https://github.com/greenbone/python-gvm/pull/127)
 * Introduced new CredentialType Enum for Gmpv8 and expect an instance of CredentialType
   for `create_credential` and `modify_credential` `credential_type` argument [PR 132](https://github.com/greenbone/python-gvm/pull/132)
+* Introduced new FilterType Enum for Gmpv8 and expect an instance of FilterType
+  for `create_filter` and `modify_filter` `filter_type` argument [PR 133](https://github.com/greenbone/python-gvm/pull/133)
+* Dropped the `make_unique` arguments from `create_filter` and `create_target`
+  methods in Gmpv8 [PR 133](https://github.com/greenbone/python-gvm/pull/133)
+* Introduced Enum classes for authentication and privacy algorithms of SNMP
+  credentials [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 
 ### Removed
 * Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
