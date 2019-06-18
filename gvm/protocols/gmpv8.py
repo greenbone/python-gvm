@@ -43,7 +43,9 @@ class FilterType(Enum):
     CREDENTIAL = "credential"
     FILTER = "filter"
     GROUP = "group"
+    HOST = "host"
     NOTE = "note"
+    OPERATING_SYSTEM = "os"
     OVERRIDE = "override"
     PERMISSION = "permission"
     PORT_LIST = "port_list"
@@ -56,7 +58,9 @@ class FilterType(Enum):
     TAG = "tag"
     TARGET = "target"
     TASK = "task"
+    TICKET = "ticket"
     USER = "user"
+    VULNERABILITY = "vuln"
 
 
 class CredentialType(Enum):
