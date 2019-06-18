@@ -537,7 +537,7 @@ class Gmp(GvmProtocol):
             cmd.append_xml_str(config)
         except etree.XMLSyntaxError as e:
             raise InvalidArgument(
-                "Invalid xml passed as config to import_config", e
+                "Invalid xml passed as config to import_config {}".format(e)
             )
 
         return self._send_xml_command(cmd)
@@ -1291,7 +1291,7 @@ class Gmp(GvmProtocol):
             cmd.append_xml_str(report)
         except etree.XMLSyntaxError as e:
             raise InvalidArgument(
-                "Invalid xml passed as report to import_report", e
+                "Invalid xml passed as report to import_report {}".format(e)
             )
 
         return self._send_xml_command(cmd)
