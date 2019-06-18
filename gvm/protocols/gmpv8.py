@@ -904,3 +904,71 @@ class Gmp(Gmpv7):
             cmd.add_element("type", filter_type.value)
 
         return self._send_xml_command(cmd)
+
+    def create_target(
+        self,
+        name,
+        *,
+        asset_hosts_filter=None,
+        hosts=None,
+        comment=None,
+        exclude_hosts=None,
+        ssh_credential_id=None,
+        ssh_credential_port=None,
+        smb_credential_id=None,
+        esxi_credential_id=None,
+        snmp_credential_id=None,
+        alive_tests=None,
+        reverse_lookup_only=None,
+        reverse_lookup_unify=None,
+        port_range=None,
+        port_list_id=None
+    ):
+        """Create a new target
+
+        Arguments:
+            name (str): Name of the target
+            asset_hosts_filter (str, optional): Filter to select target host
+                from assets hosts
+            hosts (list, optional): List of hosts addresses to scan
+            exclude_hosts (list, optional): List of hosts addresses to exclude
+                from scan
+            comment (str, optional): Comment for the target
+            ssh_credential_id (str, optional): UUID of a ssh credential to use
+                on target
+            ssh_credential_port (int, optional): The port to use for ssh
+                credential
+            smb_credential_id (str, optional): UUID of a smb credential to use
+                on target
+            snmp_credential_id (str, optional): UUID of a snmp credential to use
+                on target
+            esxi_credential_id (str, optional): UUID of a esxi credential to use
+                on target
+            alive_tests (str, optional): Which alive tests to use
+            reverse_lookup_only (boolean, optional): Whether to scan only hosts
+                that have names
+            reverse_lookup_unify (boolean, optional): Whether to scan only one
+                IP when multiple IPs have the same name.
+            port_range (str, optional): Port range for the target
+            port_list_id (str, optional): UUID of the port list to use on target
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return super().create_target(
+            name,
+            asset_hosts_filter=asset_hosts_filter,
+            hosts=hosts,
+            exclude_hosts=exclude_hosts,
+            comment=comment,
+            ssh_credential_id=ssh_credential_id,
+            ssh_credential_port=ssh_credential_port,
+            smb_credential_id=smb_credential_id,
+            snmp_credential_id=snmp_credential_id,
+            esxi_credential_id=esxi_credential_id,
+            alive_tests=alive_tests,
+            reverse_lookup_only=reverse_lookup_only,
+            reverse_lookup_unify=reverse_lookup_unify,
+            port_range=port_range,
+            port_list_id=port_list_id,
+        )
