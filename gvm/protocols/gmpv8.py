@@ -69,7 +69,7 @@ class Gmp(Gmpv7):
         community=None,
         privacy_algorithm=None,
         privacy_password=None,
-        public_key=None,
+        public_key=None
     ):
         """Create a new credential
 
@@ -292,7 +292,7 @@ class Gmp(Gmpv7):
         privacy_algorithm=None,
         privacy_password=None,
         credential_type=None,
-        public_key=None,
+        public_key=None
     ):
         """Modifies an existing credential.
 
@@ -407,7 +407,7 @@ class Gmp(Gmpv7):
         resource_ids=None,
         value=None,
         comment=None,
-        active=None,
+        active=None
     ):
         """Create a tag.
 
@@ -481,7 +481,7 @@ class Gmp(Gmpv7):
         resource_action=None,
         resource_type=None,
         resource_filter=None,
-        resource_ids=None,
+        resource_ids=None
     ):
         """Modifies an existing tag.
 
@@ -706,7 +706,7 @@ class Gmp(Gmpv7):
         status=None,
         note=None,
         assigned_to_user_id=None,
-        comment=None,
+        comment=None
     ):
         """Modify a single ticket
 
