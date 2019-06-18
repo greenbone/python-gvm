@@ -18,16 +18,10 @@
 
 import unittest
 
-from gvm.protocols.gmpv7 import Gmp
-
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpGetFiltersTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpGetFiltersTestCase(Gmpv7TestCase):
     def test_get_filters(self):
         self.gmp.get_filters()
 

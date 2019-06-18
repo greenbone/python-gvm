@@ -368,7 +368,7 @@ class Gmp(GvmProtocol):
         """Clone an existing agent
 
         Arguments:
-            copy (str): UUID of an existing agent to clone from
+            agent_id (str): UUID of an existing agent to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -469,7 +469,7 @@ class Gmp(GvmProtocol):
         """Clone an existing alert
 
         Arguments:
-            copy (str): UUID of an existing alert to clone from
+            alert_id (str): UUID of an existing alert to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -721,7 +721,7 @@ class Gmp(GvmProtocol):
         """Clone an existing credential
 
         Arguments:
-            copy (str): UUID of an existing credential to clone from
+            credential_id (str): UUID of an existing credential to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -785,7 +785,7 @@ class Gmp(GvmProtocol):
         """Clone an existing filter
 
         Arguments:
-            copy (str): UUID of an existing filter to clone from
+            filter_id (str): UUID of an existing filter to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -832,7 +832,7 @@ class Gmp(GvmProtocol):
         """Clone an existing group
 
         Arguments:
-            copy (str): UUID of an existing group to clone from
+            group_id (str): UUID of an existing group to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -942,7 +942,7 @@ class Gmp(GvmProtocol):
         """Clone an existing note
 
         Arguments:
-            copy (str): UUID of an existing note to clone from
+            note_id (str): UUID of an existing note to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1052,7 +1052,7 @@ class Gmp(GvmProtocol):
         """Clone an existing override
 
         Arguments:
-            copy (str): UUID of an existing override to clone from
+            override_id (str): UUID of an existing override to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1136,7 +1136,7 @@ class Gmp(GvmProtocol):
         """Clone an existing permission
 
         Arguments:
-            copy (str): UUID of an existing permission to clone from
+            permission_id (str): UUID of an existing permission to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1183,7 +1183,7 @@ class Gmp(GvmProtocol):
         """Clone an existing port list
 
         Arguments:
-            copy (str): UUID of an existing port list to clone from
+            port_list_id (str): UUID of an existing port list to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1326,7 +1326,7 @@ class Gmp(GvmProtocol):
         """Clone an existing role
 
         Arguments:
-            copy (str): UUID of an existing role to clone from
+            role_id (str): UUID of an existing role to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1413,7 +1413,7 @@ class Gmp(GvmProtocol):
         """Clone an existing scanner
 
         Arguments:
-            copy (str): UUID of an existing scanner to clone from
+            scanner_id (str): UUID of an existing scanner to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1619,7 +1619,7 @@ class Gmp(GvmProtocol):
         """Clone an existing schedule
 
         Arguments:
-            copy (str): UUID of an existing schedule to clone from
+            schedule_id (str): UUID of an existing schedule to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1693,7 +1693,7 @@ class Gmp(GvmProtocol):
         """Clone an existing tag
 
         Arguments:
-            copy (str): UUID of an existing tag to clone from
+            tag_id (str): UUID of an existing tag to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1834,7 +1834,7 @@ class Gmp(GvmProtocol):
         """Clone an existing target
 
         Arguments:
-            copy (str): UUID of an existing target to clone from
+            target_id (str): UUID of an existing target to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2576,7 +2576,7 @@ class Gmp(GvmProtocol):
     def get_aggregates(self, resource_type, **kwargs):
         """Request aggregated information on a resource type
 
-        Additional arguments can be set via the **kwargs parameter, but are not
+        Additional arguments can be set via the kwargs parameter, but are not
         yet validated.
 
         Arguments:

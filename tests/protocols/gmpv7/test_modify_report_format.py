@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyReportFormatTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyReportFormatTestCase(Gmpv7TestCase):
     def test_modify_report_format(self):
         self.gmp.modify_report_format(report_format_id='rf1')
 

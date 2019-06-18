@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyConfigSetCommentTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyConfigSetCommentTestCase(Gmpv7TestCase):
     def test_modify_config_set_comment(self):
         self.gmp.modify_config_set_comment('c1')
 

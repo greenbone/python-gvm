@@ -21,16 +21,11 @@ import unittest
 from collections import OrderedDict
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyTaskCommandTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyTaskCommandTestCase(Gmpv7TestCase):
     def test_modify_task(self):
         self.gmp.modify_task('t1')
 

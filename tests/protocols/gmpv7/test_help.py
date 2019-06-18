@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpHelpTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpHelpTestCase(Gmpv7TestCase):
     def test_help(self):
         self.gmp.help()
 

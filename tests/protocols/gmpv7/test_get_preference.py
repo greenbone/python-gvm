@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpGetPreferenceTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpGetPreferenceTestCase(Gmpv7TestCase):
     def test_get_preference(self):
         self.gmp.get_preference(name='foo')
 

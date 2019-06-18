@@ -19,18 +19,13 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpCloneTargetCommandTestCase(unittest.TestCase):
+class GmpCloneTargetCommandTestCase(Gmpv7TestCase):
 
     TARGET_ID = '00000000-0000-0000-0000-000000000000'
-
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
 
     def test_clone(self):
         self.gmp.clone_target(self.TARGET_ID)

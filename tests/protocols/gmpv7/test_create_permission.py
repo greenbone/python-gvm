@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpCreatePermissionTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpCreatePermissionTestCase(Gmpv7TestCase):
     def test_create_permission(self):
         self.gmp.create_permission('foo', subject_id='u1', subject_type='user')
 

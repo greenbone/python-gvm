@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyAlertTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyAlertTestCase(Gmpv7TestCase):
     def test_modify_alert(self):
         self.gmp.modify_alert(alert_id='a1')
 

@@ -21,16 +21,11 @@ import unittest
 from decimal import Decimal
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyOverrideTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyOverrideTestCase(Gmpv7TestCase):
     def test_modify_override(self):
         self.gmp.modify_override(override_id='o1', text='foo')
 

@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import unittest
+
 from tests import CallableMock
 
 
@@ -27,3 +29,13 @@ class MockConnection:
         self.read = CallableMock('read')
         self.read.return_value('<foo_response status="200"/>')
         self.finish_send = CallableMock('finish_send')
+
+
+class GmpTestCase(unittest.TestCase):
+
+    gmp_class = None
+
+    def setUp(self):
+        self.connection = MockConnection()
+        # pylint: disable=not-callable
+        self.gmp = self.gmp_class(self.connection)

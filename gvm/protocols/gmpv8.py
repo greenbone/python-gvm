@@ -16,26 +16,38 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=arguments-differ
+# pylint: disable=arguments-differ, redefined-builtin
 
 """
 Module for communication with gvmd in `Greenbone Management Protocol version 8`_
 
-**GMP Version 8 has not been released yet**
-
 .. _Greenbone Management Protocol version 8:
     https://docs.greenbone.net/API/GMP/gmp-8.0.html
 """
+from enum import Enum
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
-from .gmpv7 import Gmp as Gmpv7, _to_bool
-
-CREDENTIAL_TYPES = ("cc", "snmp", "up", "usk", "smime", "pgp")
+from .gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
 
 PROTOCOL_VERSION = (8,)
+
+
+class CredentialType(Enum):
+    CLIENT_CERTIFICATE = 'cc'
+    SNMP = 'snmp'
+    USERNAME_PASSWORD = 'up'
+    USERNAME_SSH_KEY = 'usk'
+    SMIME_CERTIFICATE = 'smime'
+    PGP_ENCRYPTION_KEY = 'pgp'
+
+
+class TicketStatus(Enum):
+    OPEN = 'Open'
+    FIXED = 'Fixed'
+    CLOSED = 'Closed'
 
 
 class Gmp(Gmpv7):
@@ -72,17 +84,17 @@ class Gmp(Gmpv7):
 
         Currently the following credential types are supported:
 
-            - 'up'    - Username + Password
-            - 'usk'   - Username + private SSH-Key
-            - 'cc'    - Client Certificates
-            - 'snmp'  - SNMPv1 or SNMPv2c protocol
-            - 'smime' - S/MIME Certificate
-            - 'pgp'   - OpenPGP Key
+            - Username + Password
+            - Username + private SSH-Key
+            - Client Certificates
+            - SNMPv1 or SNMPv2c protocol
+            - S/MIME Certificate
+            - OpenPGP Key
+            - Password only
 
         Arguments:
             name (str): Name of the new credential
-            credential_type (str): The credential type. One of 'cc', 'snmp',
-                'up', 'usk', 'smime', 'pgp'
+            credential_type (CredentialType): The credential type.
             comment (str, optional): Comment for the credential
             allow_insecure (boolean, optional): Whether to allow insecure use of
                 the credential
@@ -114,7 +126,7 @@ class Gmp(Gmpv7):
 
                 gmp.create_credential(
                     name='UP Credential',
-                    credential_type='up',
+                    credential_type=CredentialType.USERNAME_PASSWORD,
                     login='foo',
                     password='bar',
                 );
@@ -128,7 +140,7 @@ class Gmp(Gmpv7):
 
                 gmp.create_credential(
                     name='USK Credential',
-                    credential_type='usk',
+                    credential_type=CredentialType.USERNAME_SSH_KEY,
                     login='foo',
                     key_phrase='foobar',
                     private_key=key,
@@ -150,7 +162,7 @@ class Gmp(Gmpv7):
 
                 gmp.create_credential(
                     name='PGP Credential',
-                    credential_type='pgp',
+                    credential_type=CredentialType.PGP_ENCRYPTION_KEY,
                     public_key=key,
                 )
 
@@ -163,7 +175,7 @@ class Gmp(Gmpv7):
 
                 gmp.create_credential(
                     name='SMIME Credential',
-                    credential_type='smime',
+                    credential_type=CredentialType.SMIME_CERTIFICATE,
                     certificate=cert,
                 )
 
@@ -173,16 +185,16 @@ class Gmp(Gmpv7):
         if not name:
             raise RequiredArgument("create_credential requires name argument")
 
-        if credential_type not in CREDENTIAL_TYPES:
+        if not isinstance(credential_type, CredentialType):
             raise InvalidArgument(
-                "create_credential requires type to be either cc, snmp, up,"
-                "smime, pgp or usk"
+                "create_credential requires type to be a CredentialType "
+                "instance"
             )
 
         cmd = XmlCommand("create_credential")
         cmd.add_element("name", name)
 
-        cmd.add_element("type", credential_type)
+        cmd.add_element("type", credential_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -190,36 +202,42 @@ class Gmp(Gmpv7):
         if allow_insecure is not None:
             cmd.add_element("allow_insecure", _to_bool(allow_insecure))
 
-        if credential_type == "cc" or credential_type == "smime":
+        if (
+            credential_type == CredentialType.CLIENT_CERTIFICATE
+            or credential_type == CredentialType.SMIME_CERTIFICATE
+        ):
             if not certificate:
                 raise RequiredArgument(
                     "create_credential requires certificate argument for "
-                    "credential_type {0}".format(credential_type)
+                    "credential_type {0}".format(credential_type.name)
                 )
 
             cmd.add_element("certificate", certificate)
 
         if (
-            credential_type == "up"
-            or credential_type == "usk"
-            or credential_type == "snmp"
+            credential_type == CredentialType.USERNAME_PASSWORD
+            or credential_type == CredentialType.USERNAME_SSH_KEY
+            or credential_type == CredentialType.SNMP
         ):
             if not login:
                 raise RequiredArgument(
                     "create_credential requires login argument for "
-                    "credential_type {0}".format(credential_type)
+                    "credential_type {0}".format(credential_type.name)
                 )
 
             cmd.add_element("login", login)
 
-        if (credential_type == "up" or credential_type == "snmp") and password:
+        if (
+            credential_type == CredentialType.USERNAME_PASSWORD
+            or credential_type == CredentialType.SNMP
+        ) and password:
             cmd.add_element("password", password)
 
-        if credential_type == "usk":
+        if credential_type == CredentialType.USERNAME_SSH_KEY:
             if not private_key:
                 raise RequiredArgument(
                     "create_credential requires certificate argument for "
-                    "credential_type usk"
+                    "credential_type {0}".format(credential_type.name)
                 )
 
             _xmlkey = cmd.add_element("key")
@@ -228,11 +246,11 @@ class Gmp(Gmpv7):
             if key_phrase:
                 _xmlkey.add_element("phrase", key_phrase)
 
-        if credential_type == "cc" and private_key:
+        if credential_type == CredentialType.CLIENT_CERTIFICATE and private_key:
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("private", private_key)
 
-        if credential_type == "snmp":
+        if credential_type == CredentialType.SNMP:
             if auth_algorithm not in ("md5", "sha1"):
                 raise InvalidArgument(
                     "create_credential requires auth_algorithm to be either "
@@ -259,7 +277,7 @@ class Gmp(Gmpv7):
                 if privacy_password:
                     _xmlprivacy.add_element("password", privacy_password)
 
-        if credential_type == "pgp":
+        if credential_type == CredentialType.PGP_ENCRYPTION_KEY:
             if not public_key:
                 raise RequiredArgument(
                     "Creating a pgp credential requires a public_key argument"
@@ -308,8 +326,7 @@ class Gmp(Gmpv7):
             privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optional): The credential type. One of 'cc',
-                'snmp', 'up', 'usk', 'smime', 'pgp'
+            credential_type (CredentialType, optional): The credential type.
             public_key: (str, optional): PGP public key in *armor* plain text
                 format
 
@@ -325,12 +342,12 @@ class Gmp(Gmpv7):
         cmd.set_attribute("credential_id", credential_id)
 
         if credential_type:
-            if credential_type not in CREDENTIAL_TYPES:
+            if not isinstance(credential_type, CredentialType):
                 raise InvalidArgument(
-                    "modify_credential requires type to be either cc, snmp, up "
-                    "smime, pgp or usk"
+                    "modify_credential requires type to be a CredentialType "
+                    "instance"
                 )
-            cmd.add_element("type", credential_type)
+            cmd.add_element("type", credential_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -539,5 +556,218 @@ class Gmp(Gmpv7):
 
             if resource_type is not None:
                 _xmlresources.add_element("type", resource_type)
+
+        return self._send_xml_command(cmd)
+
+    def clone_ticket(self, ticket_id):
+        """Clone an existing ticket
+
+        Arguments:
+            ticket_id (str): UUID of an existing ticket to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not ticket_id:
+            raise RequiredArgument("clone_ticket requires a ticket_id argument")
+
+        cmd = XmlCommand("create_ticket")
+
+        _copy = cmd.add_element("copy", ticket_id)
+
+        return self._send_xml_command(cmd)
+
+    def create_ticket(
+        self, *, result_id, assigned_to_user_id, note, comment=None
+    ):
+        """Create a new ticket
+
+        Arguments:
+            result_id (str): UUID of the result the ticket applies to
+            assigned_to_user_id (str): UUID of a user the ticket should be
+                assigned to
+            note (str): A note about opening the ticket
+            comment (str, optional): Comment for the ticket
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not result_id:
+            raise RequiredArgument(
+                "create_ticket requires a result_id argument"
+            )
+
+        if not assigned_to_user_id:
+            raise RequiredArgument(
+                "create_ticket requires a assigned_to_user_id argument"
+            )
+
+        if not note:
+            raise RequiredArgument("create_ticket requires a note argument")
+
+        cmd = XmlCommand("create_ticket")
+
+        _result = cmd.add_element("result")
+        _result.set_attribute("id", result_id)
+
+        _assigned = cmd.add_element("assigned_to")
+        _user = _assigned.add_element("user")
+        _user.set_attribute("id", assigned_to_user_id)
+
+        _note = cmd.add_element("open_note", note)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        return self._send_xml_command(cmd)
+
+    def delete_ticket(self, ticket_id, *, ultimate=False):
+        """Deletes an existing ticket
+
+        Arguments:
+            ticket_id (str) UUID of the ticket to be deleted.
+            ultimate (boolean, optional): Whether to remove entirely,
+                or to the trashcan.
+        """
+        if not ticket_id:
+            raise RequiredArgument(
+                "delete_ticket requires a " "ticket_id argument"
+            )
+
+        cmd = XmlCommand("delete_ticket")
+        cmd.set_attribute("ticket_id", ticket_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def get_tickets(self, *, trash=None, filter=None, filter_id=None):
+        """Request a list of tickets
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+            trash (boolean, optional): True to request the tickets in the
+                trashcan
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_tickets")
+
+        _add_filter(cmd, filter, filter_id)
+
+        if not trash is None:
+            cmd.set_attribute("trash", _to_bool(trash))
+
+        return self._send_xml_command(cmd)
+
+    def get_ticket(self, ticket_id):
+        """Request a single ticket
+
+        Arguments:
+            ticket_id (str): UUID of an existing ticket
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not ticket_id:
+            raise RequiredArgument("get_ticket requires a ticket_id argument")
+
+        cmd = XmlCommand("get_tickets")
+        cmd.set_attribute("ticket_id", ticket_id)
+        return self._send_xml_command(cmd)
+
+    def get_vulnerabilities(self, *, filter=None, filter_id=None):
+        """Request a list of vulnerabilities
+
+        Arguments:
+            filter (str, optional): Filter term to use for the query
+            filter_id (str, optional): UUID of an existing filter to use for
+                the query
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_vulns")
+
+        _add_filter(cmd, filter, filter_id)
+
+        return self._send_xml_command(cmd)
+
+    def get_vulnerability(self, vulnerability_id):
+        """Request a single vulnerability
+
+        Arguments:
+            vulnerability_id (str): UUID of an existing vulnerability
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not vulnerability_id:
+            raise RequiredArgument(
+                "get_vulnerability requires a vulnerability_id argument"
+            )
+
+        cmd = XmlCommand("get_vulns")
+        cmd.set_attribute("vuln_id", vulnerability_id)
+        return self._send_xml_command(cmd)
+
+    def modify_ticket(
+        self,
+        ticket_id,
+        *,
+        status=None,
+        note=None,
+        assigned_to_user_id=None,
+        comment=None
+    ):
+        """Modify a single ticket
+
+        Arguments:
+            ticket_id (str): UUID of an existing ticket
+            status (TicketStatus, optional): New status for the ticket
+            note (str, optional): Note for the status change. Required if status
+                is set.
+            assigned_to_user_id (str, optional): UUID of the user the ticket
+                should be assigned to
+            comment (str, optional): Comment for the ticket
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not ticket_id:
+            raise RequiredArgument(
+                "modify_ticket requires a ticket_id argument"
+            )
+
+        if status and not note:
+            raise RequiredArgument(
+                "setting a status in modify_ticket requires a note argument"
+            )
+
+        if note and not status:
+            raise RequiredArgument(
+                "setting a note in modify_ticket requires a status argument"
+            )
+
+        cmd = XmlCommand("modify_ticket")
+        cmd.set_attribute("ticket_id", ticket_id)
+
+        if assigned_to_user_id:
+            _assigned = cmd.add_element("assigned_to")
+            _user = _assigned.add_element("user")
+            _user.set_attribute("id", assigned_to_user_id)
+
+        if status:
+            if not isinstance(status, TicketStatus):
+                raise InvalidArgument(
+                    "status argument of modify_ticket needs to be a "
+                    "TicketStatus"
+                )
+
+            cmd.add_element('status', status.value)
+            cmd.add_element('{}_note'.format(status.name.lower()), note)
+
+        if comment:
+            cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)

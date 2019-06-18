@@ -18,16 +18,10 @@
 
 import unittest
 
-from gvm.protocols.gmpv7 import Gmp
-
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpSyncCertCommandTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpSyncCertCommandTestCase(Gmpv7TestCase):
     def test_sync_cert(self):
         self.gmp.sync_cert()
 

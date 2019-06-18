@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import GvmError
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpGetConfigTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpGetConfigTestCase(Gmpv7TestCase):
     def test_get_config(self):
         self.gmp.get_config('a1')
 

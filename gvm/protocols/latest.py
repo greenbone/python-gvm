@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2018 - 2019 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -27,14 +27,14 @@ For details about the possible supported protocol versions please take a look at
 :py:mod:`gvm.protocols`.
 
 Exports:
-  - :py:class:`gvm.protocols.gmpv7.Gmp`
+  - :py:class:`gvm.protocols.gmpv8.Gmp`
   - :py:class:`gvm.protocols.ospv1.Osp`
 
 .. _Greenbone Management Protocol:
     https://docs.greenbone.net/API/GMP/gmp.html
 """
 
-from .gmpv7 import Gmp
+from .gmpv8 import Gmp
 from .ospv1 import Osp
 
 __all__ = ["Gmp", "Osp"]

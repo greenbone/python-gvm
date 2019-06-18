@@ -18,16 +18,10 @@
 
 import unittest
 
-from gvm.protocols.gmpv7 import Gmp
-
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpDescribeAuthCommandTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpDescribeAuthCommandTestCase(Gmpv7TestCase):
     def test_describe_auth(self):
         self.gmp.describe_auth()
 

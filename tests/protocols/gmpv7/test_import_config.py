@@ -19,12 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpImportConfigTestCase(unittest.TestCase):
+class GmpImportConfigTestCase(Gmpv7TestCase):
 
     CONFIG_XML_STRING = (
         '<get_configs_response status="200" status_text="OK">'
@@ -36,10 +35,6 @@ class GmpImportConfigTestCase(unittest.TestCase):
         '</config>'
         '</get_configs_response>'
     )
-
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
 
     def test_import_config(self):
         self.gmp.import_config(self.CONFIG_XML_STRING)

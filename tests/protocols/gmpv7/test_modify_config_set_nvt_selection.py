@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyConfigSetNvtSelectionTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyConfigSetNvtSelectionTestCase(Gmpv7TestCase):
     def test_modify_config_set_nvt_selection(self):
         self.gmp.modify_config_set_nvt_selection(
             config_id='c1', family='foo', nvt_oids=['o1']

@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpGetFeedTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpGetFeedTestCase(Gmpv7TestCase):
     def test_get_feed(self):
         self.gmp.get_feed('nvt')
 

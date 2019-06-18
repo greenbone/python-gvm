@@ -19,12 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpImportReportTestCase(unittest.TestCase):
+class GmpImportReportTestCase(Gmpv7TestCase):
 
     TASK_ID = '00000000-0000-0000-0000-000000000001'
     TASK_NAME = 'unit test task'
@@ -38,10 +37,6 @@ class GmpImportReportTestCase(unittest.TestCase):
         '<host>132.67.253.114</host>'
         '</result></results></report>'
     )
-
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
 
     def test_import_report_with_task_id(self):
         self.gmp.import_report(self.REPORT_XML_STRING, task_id=self.TASK_ID)

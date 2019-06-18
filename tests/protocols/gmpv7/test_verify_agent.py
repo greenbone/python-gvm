@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import GvmError
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpVerifyAgentTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpVerifyAgentTestCase(Gmpv7TestCase):
     def test_verify(self):
         self.gmp.verify_agent('a1')
 

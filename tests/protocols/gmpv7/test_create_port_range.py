@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpCreatePortRangeTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpCreatePortRangeTestCase(Gmpv7TestCase):
     def test_create_port_range_missing_port_list_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(

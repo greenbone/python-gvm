@@ -19,16 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import Gmp
 
-from .. import MockConnection
+from . import Gmpv7TestCase
 
 
-class GmpModifyCredentialTestCase(unittest.TestCase):
-    def setUp(self):
-        self.connection = MockConnection()
-        self.gmp = Gmp(self.connection)
-
+class GmpModifyCredentialTestCase(Gmpv7TestCase):
     def test_modify_credential_invalid_credential_type(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_credential(
