@@ -32,9 +32,20 @@ from gvm.xml import XmlCommand
 
 from .gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
 
-CREDENTIAL_TYPES = ("cc", "snmp", "up", "usk", "smime", "pgp")
-
 PROTOCOL_VERSION = (8,)
+
+
+class CredentialType(Enum):
+    CLIENT_CERTIFICATE = 'cc'
+    SNMP = 'snmp'
+    USERNAME_PASSWORD = 'up'
+    USERNAME_SSH_KEY = 'usk'
+    SMIME_CERTIFICATE = 'smime'
+    PGP_ENCRYPTION_KEY = 'pgp'
+
+    @staticmethod
+    def values():
+        return [t.value for t in list(CredentialType)]
 
 
 class TicketStatus(Enum):
@@ -77,12 +88,13 @@ class Gmp(Gmpv7):
 
         Currently the following credential types are supported:
 
-            - 'up'    - Username + Password
-            - 'usk'   - Username + private SSH-Key
-            - 'cc'    - Client Certificates
-            - 'snmp'  - SNMPv1 or SNMPv2c protocol
-            - 'smime' - S/MIME Certificate
-            - 'pgp'   - OpenPGP Key
+            - Username + Password
+            - Username + private SSH-Key
+            - Client Certificates
+            - SNMPv1 or SNMPv2c protocol
+            - S/MIME Certificate
+            - OpenPGP Key
+            - Password only
 
         Arguments:
             name (str): Name of the new credential
@@ -178,7 +190,7 @@ class Gmp(Gmpv7):
         if not name:
             raise RequiredArgument("create_credential requires name argument")
 
-        if credential_type not in CREDENTIAL_TYPES:
+        if credential_type not in CredentialType.values():
             raise InvalidArgument(
                 "create_credential requires type to be either cc, snmp, up,"
                 "smime, pgp or usk"
@@ -330,7 +342,7 @@ class Gmp(Gmpv7):
         cmd.set_attribute("credential_id", credential_id)
 
         if credential_type:
-            if credential_type not in CREDENTIAL_TYPES:
+            if credential_type not in CredentialType.values():
                 raise InvalidArgument(
                     "modify_credential requires type to be either cc, snmp, up "
                     "smime, pgp or usk"
