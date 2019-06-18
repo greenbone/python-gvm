@@ -35,6 +35,30 @@ from .gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
 PROTOCOL_VERSION = (8,)
 
 
+class FilterType(Enum):
+    AGENT = "agent"
+    ALERT = "alert"
+    ASSET = "asset"
+    SCAN_CONFIG = "config"
+    CREDENTIAL = "credential"
+    FILTER = "filter"
+    GROUP = "group"
+    NOTE = "note"
+    OVERRIDE = "override"
+    PERMISSION = "permission"
+    PORT_LIST = "port_list"
+    REPORT = "report"
+    REPORT_FORMAT = "report_format"
+    RESULT = "result"
+    ROLE = "role"
+    SCHEDULE = "schedule"
+    ALL_SECINFO = "secinfo"
+    TAG = "tag"
+    TARGET = "target"
+    TASK = "task"
+    USER = "user"
+
+
 class CredentialType(Enum):
     CLIENT_CERTIFICATE = 'cc'
     SNMP = 'snmp'
@@ -797,5 +821,82 @@ class Gmp(Gmpv7):
 
         if comment:
             cmd.add_element("comment", comment)
+
+        return self._send_xml_command(cmd)
+
+    def create_filter(self, name, *, filter_type=None, comment=None, term=None):
+        """Create a new filter
+
+        Arguments:
+            name (str): Name of the new filter
+            filter_type (str, optional): Filter for entity type
+            comment (str, optional): Comment for the filter
+            term (str, optional): Filter term e.g. 'name=foo'
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument("create_filter requires a name argument")
+
+        cmd = XmlCommand("create_filter")
+        _xmlname = cmd.add_element("name", name)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if term:
+            cmd.add_element("term", term)
+
+        if filter_type:
+            if not isinstance(filter_type, FilterType):
+                raise InvalidArgument(
+                    "create_filter requires type to be a FilterType instance. "
+                    "was {}".format(filter_type)
+                )
+
+            cmd.add_element("type", filter_type.value)
+
+        return self._send_xml_command(cmd)
+
+    def modify_filter(
+        self, filter_id, *, comment=None, name=None, term=None, filter_type=None
+    ):
+        """Modifies an existing filter.
+
+        Arguments:
+            filter_id (str): UUID of the filter to be modified
+            comment (str, optional): Comment on filter.
+            name (str, optional): Name of filter.
+            term (str, optional): Filter term.
+            filter_type (FilterType, optional): Resource type filter applies to.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not filter_id:
+            raise RequiredArgument(
+                "modify_filter requires a filter_id " "attribute"
+            )
+
+        cmd = XmlCommand("modify_filter")
+        cmd.set_attribute("filter_id", filter_id)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if name:
+            cmd.add_element("name", name)
+
+        if term:
+            cmd.add_element("term", term)
+
+        if filter_type:
+            if not isinstance(filter_type, FilterType):
+                raise InvalidArgument(
+                    "modify_filter requires type to be a FilterType instance. "
+                    "was {}".format(filter_type)
+                )
+            cmd.add_element("type", filter_type.value)
 
         return self._send_xml_command(cmd)
