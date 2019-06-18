@@ -19,6 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.protocols.gmpv8 import CredentialType
 
 from . import Gmpv8TestCase
 
@@ -208,7 +209,9 @@ class GmpModifyTestCase(Gmpv8TestCase):
         )
 
     def test_modify_credential_with_credential_type(self):
-        self.gmp.modify_credential(credential_id='c1', credential_type='up')
+        self.gmp.modify_credential(
+            credential_id='c1', credential_type=CredentialType.USERNAME_PASSWORD
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'

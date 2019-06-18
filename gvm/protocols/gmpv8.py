@@ -43,10 +43,6 @@ class CredentialType(Enum):
     SMIME_CERTIFICATE = 'smime'
     PGP_ENCRYPTION_KEY = 'pgp'
 
-    @staticmethod
-    def values():
-        return [t.value for t in list(CredentialType)]
-
 
 class TicketStatus(Enum):
     OPEN = 'Open'
@@ -98,8 +94,7 @@ class Gmp(Gmpv7):
 
         Arguments:
             name (str): Name of the new credential
-            credential_type (str): The credential type. One of 'cc', 'snmp',
-                'up', 'usk', 'smime', 'pgp'
+            credential_type (CredentialType): The credential type.
             comment (str, optional): Comment for the credential
             allow_insecure (boolean, optional): Whether to allow insecure use of
                 the credential
@@ -131,7 +126,7 @@ class Gmp(Gmpv7):
 
                 gmp.create_credential(
                     name='UP Credential',
-                    credential_type='up',
+                    credential_type=CredentialType.USERNAME_PASSWORD,
                     login='foo',
                     password='bar',
                 );
@@ -145,7 +140,7 @@ class Gmp(Gmpv7):
 
                 gmp.create_credential(
                     name='USK Credential',
-                    credential_type='usk',
+                    credential_type=CredentialType.USERNAME_SSH_KEY,
                     login='foo',
                     key_phrase='foobar',
                     private_key=key,
@@ -167,7 +162,7 @@ class Gmp(Gmpv7):
 
                 gmp.create_credential(
                     name='PGP Credential',
-                    credential_type='pgp',
+                    credential_type=CredentialType.PGP_ENCRYPTION_KEY,
                     public_key=key,
                 )
 
@@ -180,7 +175,7 @@ class Gmp(Gmpv7):
 
                 gmp.create_credential(
                     name='SMIME Credential',
-                    credential_type='smime',
+                    credential_type=CredentialType.SMIME_CERTIFICATE,
                     certificate=cert,
                 )
 
@@ -190,16 +185,16 @@ class Gmp(Gmpv7):
         if not name:
             raise RequiredArgument("create_credential requires name argument")
 
-        if credential_type not in CredentialType.values():
+        if not isinstance(credential_type, CredentialType):
             raise InvalidArgument(
-                "create_credential requires type to be either cc, snmp, up,"
-                "smime, pgp or usk"
+                "create_credential requires type to be a CredentialType "
+                "instance"
             )
 
         cmd = XmlCommand("create_credential")
         cmd.add_element("name", name)
 
-        cmd.add_element("type", credential_type)
+        cmd.add_element("type", credential_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -207,36 +202,42 @@ class Gmp(Gmpv7):
         if allow_insecure is not None:
             cmd.add_element("allow_insecure", _to_bool(allow_insecure))
 
-        if credential_type == "cc" or credential_type == "smime":
+        if (
+            credential_type == CredentialType.CLIENT_CERTIFICATE
+            or credential_type == CredentialType.SMIME_CERTIFICATE
+        ):
             if not certificate:
                 raise RequiredArgument(
                     "create_credential requires certificate argument for "
-                    "credential_type {0}".format(credential_type)
+                    "credential_type {0}".format(credential_type.name)
                 )
 
             cmd.add_element("certificate", certificate)
 
         if (
-            credential_type == "up"
-            or credential_type == "usk"
-            or credential_type == "snmp"
+            credential_type == CredentialType.USERNAME_PASSWORD
+            or credential_type == CredentialType.USERNAME_SSH_KEY
+            or credential_type == CredentialType.SNMP
         ):
             if not login:
                 raise RequiredArgument(
                     "create_credential requires login argument for "
-                    "credential_type {0}".format(credential_type)
+                    "credential_type {0}".format(credential_type.name)
                 )
 
             cmd.add_element("login", login)
 
-        if (credential_type == "up" or credential_type == "snmp") and password:
+        if (
+            credential_type == CredentialType.USERNAME_PASSWORD
+            or credential_type == CredentialType.SNMP
+        ) and password:
             cmd.add_element("password", password)
 
-        if credential_type == "usk":
+        if credential_type == CredentialType.USERNAME_SSH_KEY:
             if not private_key:
                 raise RequiredArgument(
                     "create_credential requires certificate argument for "
-                    "credential_type usk"
+                    "credential_type {0}".format(credential_type.name)
                 )
 
             _xmlkey = cmd.add_element("key")
@@ -245,11 +246,11 @@ class Gmp(Gmpv7):
             if key_phrase:
                 _xmlkey.add_element("phrase", key_phrase)
 
-        if credential_type == "cc" and private_key:
+        if credential_type == CredentialType.CLIENT_CERTIFICATE and private_key:
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("private", private_key)
 
-        if credential_type == "snmp":
+        if credential_type == CredentialType.SNMP:
             if auth_algorithm not in ("md5", "sha1"):
                 raise InvalidArgument(
                     "create_credential requires auth_algorithm to be either "
@@ -276,7 +277,7 @@ class Gmp(Gmpv7):
                 if privacy_password:
                     _xmlprivacy.add_element("password", privacy_password)
 
-        if credential_type == "pgp":
+        if credential_type == CredentialType.PGP_ENCRYPTION_KEY:
             if not public_key:
                 raise RequiredArgument(
                     "Creating a pgp credential requires a public_key argument"
@@ -325,8 +326,7 @@ class Gmp(Gmpv7):
             privacy_algorithm (str, optional): The SNMP privacy algorithm,
                 either aes or des.
             privacy_password (str, optional): The SNMP privacy password
-            credential_type (str, optional): The credential type. One of 'cc',
-                'snmp', 'up', 'usk', 'smime', 'pgp'
+            credential_type (CredentialType, optional): The credential type.
             public_key: (str, optional): PGP public key in *armor* plain text
                 format
 
@@ -342,12 +342,12 @@ class Gmp(Gmpv7):
         cmd.set_attribute("credential_id", credential_id)
 
         if credential_type:
-            if credential_type not in CredentialType.values():
+            if not isinstance(credential_type, CredentialType):
                 raise InvalidArgument(
-                    "modify_credential requires type to be either cc, snmp, up "
-                    "smime, pgp or usk"
+                    "modify_credential requires type to be a CredentialType "
+                    "instance"
                 )
-            cmd.add_element("type", credential_type)
+            cmd.add_element("type", credential_type.value)
 
         if comment:
             cmd.add_element("comment", comment)

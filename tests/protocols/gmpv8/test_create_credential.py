@@ -19,6 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.protocols.gmpv8 import CredentialType
 
 from . import Gmpv8TestCase
 
@@ -27,18 +28,22 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_up_credential_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(
-                name='', credential_type='up', login='foo'
+                name='',
+                credential_type=CredentialType.USERNAME_PASSWORD,
+                login='foo',
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(
-                name=None, credential_type='up', login='foo'
+                name=None,
+                credential_type=CredentialType.USERNAME_PASSWORD,
+                login='foo',
             )
 
     def test_create_up_credential(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='up',
+            credential_type=CredentialType.USERNAME_PASSWORD,
             comment='bar',
             login='Max',
             password='123',
@@ -57,7 +62,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_up_credential_with_allow_insecure(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='up',
+            credential_type=CredentialType.USERNAME_PASSWORD,
             comment='bar',
             login='Max',
             password='123',
@@ -77,7 +82,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
 
         self.gmp.create_credential(
             name='foo',
-            credential_type='up',
+            credential_type=CredentialType.USERNAME_PASSWORD,
             comment='bar',
             login='Max',
             password='123',
@@ -97,11 +102,15 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
 
     def test_create_cc_credential_missing_certificate(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_credential(name='foo', credential_type='cc')
+            self.gmp.create_credential(
+                name='foo', credential_type=CredentialType.CLIENT_CERTIFICATE
+            )
 
     def test_create_cc_credential(self):
         self.gmp.create_credential(
-            name='foo', credential_type='cc', certificate='abcdef'
+            name='foo',
+            credential_type=CredentialType.CLIENT_CERTIFICATE,
+            certificate='abcdef',
         )
 
         self.connection.send.has_been_called_with(
@@ -115,7 +124,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_cc_credential_with_private_key(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='cc',
+            credential_type=CredentialType.CLIENT_CERTIFICATE,
             certificate='abcdef',
             private_key='123456',
         )
@@ -134,18 +143,25 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_usk_credential_missing_private_key(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(
-                name='foo', credential_type='usk', login='foo'
+                name='foo',
+                credential_type=CredentialType.USERNAME_SSH_KEY,
+                login='foo',
             )
 
     def test_create_usk_credential_missing_login(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(
-                name='foo', credential_type='usk', private_key='123456'
+                name='foo',
+                credential_type=CredentialType.USERNAME_SSH_KEY,
+                private_key='123456',
             )
 
     def test_create_usk_credential(self):
         self.gmp.create_credential(
-            name='foo', credential_type='usk', private_key='123456', login='foo'
+            name='foo',
+            credential_type=CredentialType.USERNAME_SSH_KEY,
+            private_key='123456',
+            login='foo',
         )
 
         self.connection.send.has_been_called_with(
@@ -162,7 +178,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_usk_credential_with_key_phrase(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='usk',
+            credential_type=CredentialType.USERNAME_SSH_KEY,
             private_key='123456',
             login='foo',
             key_phrase='abcdef',
@@ -183,13 +199,13 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_snmp_credential_invalid_auth_algorithm(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(
-                name='foo', credential_type='snmp', login='foo'
+                name='foo', credential_type=CredentialType.SNMP, login='foo'
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(
                 name='foo',
-                credential_type='snmp',
+                credential_type=CredentialType.SNMP,
                 login='foo',
                 auth_algorithm='',
             )
@@ -197,7 +213,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(
                 name='foo',
-                credential_type='snmp',
+                credential_type=CredentialType.SNMP,
                 login='foo',
                 auth_algorithm='bar',
             )
@@ -205,7 +221,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_snmp_credential_auth_algorithm_md5(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='snmp',
+            credential_type=CredentialType.SNMP,
             login='foo',
             auth_algorithm='md5',
         )
@@ -222,7 +238,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_snmp_credential_auth_algorithm_sha1(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='snmp',
+            credential_type=CredentialType.SNMP,
             login='foo',
             auth_algorithm='sha1',
         )
@@ -239,7 +255,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_snmp_credential_with_community(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='snmp',
+            credential_type=CredentialType.SNMP,
             login='foo',
             auth_algorithm='sha1',
             community='ipsum',
@@ -259,7 +275,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(
                 name='foo',
-                credential_type='snmp',
+                credential_type=CredentialType.SNMP,
                 login='foo',
                 auth_algorithm='sha1',
                 privacy_algorithm='',
@@ -268,7 +284,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(
                 name='foo',
-                credential_type='snmp',
+                credential_type=CredentialType.SNMP,
                 login='foo',
                 auth_algorithm='sha1',
                 privacy_algorithm='foo',
@@ -277,7 +293,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_snmp_credential_with_privacy_algorithm_aes(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='snmp',
+            credential_type=CredentialType.SNMP,
             login='foo',
             auth_algorithm='sha1',
             privacy_algorithm='aes',
@@ -298,7 +314,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_snmp_credential_with_privacy_algorithm_des(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='snmp',
+            credential_type=CredentialType.SNMP,
             login='foo',
             auth_algorithm='sha1',
             privacy_algorithm='des',
@@ -319,7 +335,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
     def test_create_snmp_credential_with_privacy_password(self):
         self.gmp.create_credential(
             name='foo',
-            credential_type='snmp',
+            credential_type=CredentialType.SNMP,
             login='foo',
             auth_algorithm='sha1',
             privacy_password='123',
@@ -339,7 +355,9 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
 
     def test_create_smime_credential(self):
         self.gmp.create_credential(
-            name='foo', credential_type='smime', certificate='ipsum'
+            name='foo',
+            credential_type=CredentialType.SMIME_CERTIFICATE,
+            certificate='ipsum',
         )
 
         self.connection.send.has_been_called_with(
@@ -352,11 +370,15 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
 
     def test_create_smime_credential_missing_certificate(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_credential(name='foo', credential_type='smime')
+            self.gmp.create_credential(
+                name='foo', credential_type=CredentialType.SMIME_CERTIFICATE
+            )
 
     def test_create_pgp_credential(self):
         self.gmp.create_credential(
-            name='foo', credential_type='pgp', public_key='ipsum'
+            name='foo',
+            credential_type=CredentialType.PGP_ENCRYPTION_KEY,
+            public_key='ipsum',
         )
 
         self.connection.send.has_been_called_with(
@@ -371,7 +393,9 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
 
     def test_create_pgp_credential_missing_public_key(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_credential(name='foo', credential_type='pgp')
+            self.gmp.create_credential(
+                name='foo', credential_type=CredentialType.PGP_ENCRYPTION_KEY
+            )
 
     def test_create_credential_invalid_credential_type(self):
         with self.assertRaises(InvalidArgument):
