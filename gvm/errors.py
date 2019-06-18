@@ -31,11 +31,58 @@ class InvalidArgument(GvmError):
     """Raised if an invalid argument/parameter is passed
 
     Derives from :py:class:`GvmError`
+
+    Attributes:
+        message (str, optional): Error message to be displayed. Takes precedence
+            over argument and function
+        argument (str, optional): Optional name of the invalid argument
+        function (str, optional): Optional name of the called function
     """
+
+    def __init__(self, message=None, *, argument=None, function=None):
+        # pylint: disable=super-init-not-called
+        self.message = message
+        self.argument = argument
+        self.function = function
+
+    def __str__(self):
+        if self.message:
+            return self.message
+
+        if not self.function:
+            return "Invalid argument {}".format(self.argument)
+
+        if not self.argument:
+            return "Invalid argument for {}".format(self.function)
+
+        return "Invalid argument {} for {}".format(self.argument, self.function)
 
 
 class RequiredArgument(GvmError):
     """Raised if a required argument/parameter is missing
 
     Derives from :py:class:`GvmError`
+
+    Attributes:
+        message (str): Error message to be displayed
+        argument (str, optional): Optional name of the required argument
+        function (str, optional): Optional name of the called function
     """
+
+    def __init__(self, message=None, argument=None, function=None):
+        # pylint: disable=super-init-not-called
+        self.message = message
+        self.argument = argument
+        self.function = function
+
+    def __str__(self):
+        if self.message:
+            return self.message
+
+        if not self.function:
+            return "Required argument {}".format(self.argument)
+
+        if not self.argument:
+            return "Required argument missing for {}".format(self.function)
+
+        return "{} requires a {} argument".format(self.function, self.argument)
