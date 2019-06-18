@@ -16,15 +16,22 @@ Greenbone Management Protocol (GMP) and Open Scanner Protocol (OSP).
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Installation](#installation)
-  - [Requirements](#requirements)
-  - [Install using pip](#install-using-pip)
-- [Example](#example)
-- [Documentation](#documentation)
-- [Support](#support)
-- [Maintainer](#maintainer)
-- [Contributing](#contributing)
-- [License](#license)
+- [Documentation](#Documentation)
+- [Installation](#Installation)
+  - [Requirements](#Requirements)
+  - [Install using pip](#Install-using-pip)
+- [Example](#Example)
+- [Support](#Support)
+- [Maintainer](#Maintainer)
+- [Contributing](#Contributing)
+- [License](#License)
+
+## Documentation
+
+The documentation for python-gvm can be found at
+[https://python-gvm.readthedocs.io/](https://python-gvm.readthedocs.io/en/latest/).
+Please always take a look at the documentation for further details. This
+**README** just gives you a short overview.
 
 ## Installation
 
@@ -67,11 +74,6 @@ tasks = gmp.get_tasks()
 task_names = tasks.xpath('task/name/text()')
 pretty_print(task_names)
 ```
-
-## Documentation
-
-The documentation for python-gvm can be found at
-[https://python-gvm.readthedocs.io/](https://python-gvm.readthedocs.io/en/latest/)
 
 ## Support
 
