@@ -42,6 +42,7 @@ class CredentialType(Enum):
     USERNAME_SSH_KEY = 'usk'
     SMIME_CERTIFICATE = 'smime'
     PGP_ENCRYPTION_KEY = 'pgp'
+    PASSWORD_ONLY = 'pw'
 
 
 class TicketStatus(Enum):
@@ -189,6 +190,15 @@ class Gmp(Gmpv7):
                     certificate=cert,
                 )
 
+            Creating a Password-Only credential
+
+            .. code-block:: python
+
+                gmp.create_credential(
+                    name='Password-Only Credential',
+                    credential_type=CredentialType.PASSWORD_ONLY,
+                    password='foo',
+                )
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
@@ -237,9 +247,16 @@ class Gmp(Gmpv7):
 
             cmd.add_element("login", login)
 
+        if credential_type == CredentialType.PASSWORD_ONLY and not password:
+            raise RequiredArgument(
+                "create_credential requires password argument for "
+                "credential_type {0}".format(credential_type.name)
+            )
+
         if (
             credential_type == CredentialType.USERNAME_PASSWORD
             or credential_type == CredentialType.SNMP
+            or credential_type == CredentialType.PASSWORD_ONLY
         ) and password:
             cmd.add_element("password", password)
 

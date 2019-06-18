@@ -411,6 +411,26 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(name='foo', credential_type='bar')
 
+    def test_create_pw_credential_missing_pasword(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_credential(
+                name='foo', credential_type=CredentialType.PASSWORD_ONLY
+            )
+
+    def test_create_pw_credential(self):
+        self.gmp.create_credential(
+            name='foo',
+            credential_type=CredentialType.PASSWORD_ONLY,
+            password='foo',
+        )
+        self.connection.send.has_been_called_with(
+            '<create_credential>'
+            '<name>foo</name>'
+            '<type>pw</type>'
+            '<password>foo</password>'
+            '</create_credential>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
