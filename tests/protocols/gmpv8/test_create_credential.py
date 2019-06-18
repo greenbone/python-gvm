@@ -19,7 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv8 import CredentialType
+from gvm.protocols.gmpv8 import (
+    CredentialType,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+)
 
 from . import Gmpv8TestCase
 
@@ -223,7 +227,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
             name='foo',
             credential_type=CredentialType.SNMP,
             login='foo',
-            auth_algorithm='md5',
+            auth_algorithm=SnmpAuthAlgorithm.MD5,
         )
 
         self.connection.send.has_been_called_with(
@@ -240,7 +244,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
             name='foo',
             credential_type=CredentialType.SNMP,
             login='foo',
-            auth_algorithm='sha1',
+            auth_algorithm=SnmpAuthAlgorithm.SHA1,
         )
 
         self.connection.send.has_been_called_with(
@@ -257,7 +261,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
             name='foo',
             credential_type=CredentialType.SNMP,
             login='foo',
-            auth_algorithm='sha1',
+            auth_algorithm=SnmpAuthAlgorithm.SHA1,
             community='ipsum',
         )
 
@@ -277,7 +281,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
                 name='foo',
                 credential_type=CredentialType.SNMP,
                 login='foo',
-                auth_algorithm='sha1',
+                auth_algorithm=SnmpAuthAlgorithm.SHA1,
                 privacy_algorithm='',
             )
 
@@ -286,7 +290,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
                 name='foo',
                 credential_type=CredentialType.SNMP,
                 login='foo',
-                auth_algorithm='sha1',
+                auth_algorithm=SnmpAuthAlgorithm.SHA1,
                 privacy_algorithm='foo',
             )
 
@@ -295,8 +299,8 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
             name='foo',
             credential_type=CredentialType.SNMP,
             login='foo',
-            auth_algorithm='sha1',
-            privacy_algorithm='aes',
+            auth_algorithm=SnmpAuthAlgorithm.SHA1,
+            privacy_algorithm=SnmpPrivacyAlgorithm.AES,
         )
 
         self.connection.send.has_been_called_with(
@@ -316,8 +320,8 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
             name='foo',
             credential_type=CredentialType.SNMP,
             login='foo',
-            auth_algorithm='sha1',
-            privacy_algorithm='des',
+            auth_algorithm=SnmpAuthAlgorithm.SHA1,
+            privacy_algorithm=SnmpPrivacyAlgorithm.DES,
         )
 
         self.connection.send.has_been_called_with(
@@ -337,7 +341,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
             name='foo',
             credential_type=CredentialType.SNMP,
             login='foo',
-            auth_algorithm='sha1',
+            auth_algorithm=SnmpAuthAlgorithm.SHA1,
             privacy_password='123',
         )
 

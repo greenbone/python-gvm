@@ -50,6 +50,16 @@ class TicketStatus(Enum):
     CLOSED = 'Closed'
 
 
+class SnmpAuthAlgorithm(Enum):
+    SHA1 = 'sha1'
+    MD5 = 'md5'
+
+
+class SnmpPrivacyAlgorithm(Enum):
+    AES = 'aes'
+    DES = 'des'
+
+
 class Gmp(Gmpv7):
     @staticmethod
     def get_protocol_version():
@@ -111,10 +121,10 @@ class Gmp(Gmpv7):
             password (str, optional): Password for the credential. Used for
                 up and snmp credential types.
             community (str, optional): The SNMP community
-            auth_algorithm (str, optional): The SNMP authentication algorithm.
-                Either 'md5' or 'sha1'. Required for snmp credential type.
-            privacy_algorithm (str, optional): The SNMP privacy algorithm,
-                either aes or des.
+            auth_algorithm (SnmpAuthAlgorithm, optional): The SNMP
+                authentication algorithm. Required for snmp credential type.
+            privacy_algorithm (SnmpPrivacyAlgorithm, optional): The SNMP privacy
+                algorithm
             privacy_password (str, optional): The SNMP privacy password
             public_key: (str, optional): PGP public key in *armor* plain text
                 format. Required for pgp credential type.
@@ -251,13 +261,13 @@ class Gmp(Gmpv7):
             _xmlkey.add_element("private", private_key)
 
         if credential_type == CredentialType.SNMP:
-            if auth_algorithm not in ("md5", "sha1"):
+            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgument(
-                    "create_credential requires auth_algorithm to be either "
-                    "md5 or sha1"
+                    "create_credential requires auth_algorithm to be a "
+                    "SnmpAuthAlgorithm instance"
                 )
 
-            cmd.add_element("auth_algorithm", auth_algorithm)
+            cmd.add_element("auth_algorithm", auth_algorithm.value)
 
             if community:
                 cmd.add_element("community", community)
@@ -266,13 +276,15 @@ class Gmp(Gmpv7):
                 _xmlprivacy = cmd.add_element("privacy")
 
                 if privacy_algorithm is not None:
-                    if privacy_algorithm not in ("aes", "des"):
+                    if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                         raise InvalidArgument(
-                            "create_credential requires algorithm to be either "
-                            "aes or des"
+                            "create_credential requires algorithm to be a "
+                            "SnmpPrivacyAlgorithm instance"
                         )
 
-                    _xmlprivacy.add_element("algorithm", privacy_algorithm)
+                    _xmlprivacy.add_element(
+                        "algorithm", privacy_algorithm.value
+                    )
 
                 if privacy_password:
                     _xmlprivacy.add_element("password", privacy_password)
@@ -320,11 +332,11 @@ class Gmp(Gmpv7):
             private_key (str, optional): Private key to use for login
             login (str, optional): Username for the credential
             password (str, optional): Password for the credential
-            auth_algorithm (str, optional): The auth_algorithm,
-                either md5 or sha1.
+            auth_algorithm (SnmpAuthAlgorithm, optional): The authentication
+                algorithm for SNMP
             community (str, optional): The SNMP community
-            privacy_algorithm (str, optional): The SNMP privacy algorithm,
-                either aes or des.
+            privacy_algorithm (SnmpPrivacyAlgorithm, optional): The privacy
+                algorithm for SNMP
             privacy_password (str, optional): The SNMP privacy password
             credential_type (CredentialType, optional): The credential type.
             public_key: (str, optional): PGP public key in *armor* plain text
@@ -378,13 +390,12 @@ class Gmp(Gmpv7):
             cmd.add_element("password", password)
 
         if auth_algorithm:
-            if auth_algorithm not in ("md5", "sha1"):
+            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgument(
-                    "modify_credential requires "
-                    "auth_algorithm to be either "
-                    "md5 or sha1"
+                    "modify_credential requires auth_algorithm to be a "
+                    "SnmpAuthAlgorithm instance"
                 )
-            cmd.add_element("auth_algorithm", auth_algorithm)
+            cmd.add_element("auth_algorithm", auth_algorithm.value)
 
         if community:
             cmd.add_element("community", community)
@@ -393,13 +404,13 @@ class Gmp(Gmpv7):
             _xmlprivacy = cmd.add_element("privacy")
 
             if privacy_algorithm is not None:
-                if privacy_algorithm not in ("aes", "des"):
+                if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                     raise InvalidArgument(
                         "modify_credential requires privacy_algorithm to be "
-                        "either aes or des"
+                        "a SnmpPrivacyAlgorithm instance"
                     )
 
-                _xmlprivacy.add_element("algorithm", privacy_algorithm)
+                _xmlprivacy.add_element("algorithm", privacy_algorithm.value)
 
             if privacy_password is not None:
                 _xmlprivacy.add_element("password", privacy_password)
