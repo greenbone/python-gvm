@@ -54,6 +54,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Make resource_id optional when creating tags (Gmpv7) [PR 124](https://github.com/greenbone/python-gvm/pull/124)
 * Allow creating tags without resource (Gmpv8) [PR 125](https://github.com/greenbone/python-gvm/pull/125)
 * Adapt modify_tag validation to actual implementation (Gmpv8) [PR 127](https://github.com/greenbone/python-gvm/pull/127)
+* Introduced new CredentialType Enum for Gmpv8 and expect an instance of CredentialType
+  for `create_credential` and `modify_credential` `credential_type` argument [PR 132](https://github.com/greenbone/python-gvm/pull/132)
 
 ### Removed
 * Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
