@@ -19,8 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added Gmpv8 version of modify_tag with resource_action parameter,
   resource_filter parameter, plural resource_ids parameter [PR 115](https://github.com/greenbone/python-gvm/pull/115)
 * Added no_details argument to `get_reports` method [PR 129](https://github.com/greenbone/python-gvm/pull/129)
+* Added `get_vulnerabilites` method [PR 132](https://github.com/greenbone/python-gvm/pull/132)
+* Added `get_ticket`, `get_tickets`, `create_ticket`, `clone_ticket`, `modify_ticket` and `delete_ticket`
+  APIs to GMPv8 [PR 132](https://github.com/greenbone/python-gvm/pull/132)
 
 ### Changed
+* Use Gmpv8 as latest Gmp version [PR 132](https://github.com/greenbone/python-gvm/pull/132)
 * Aligned ALIVE_TESTS declaration with list from GSA [PR 93](https://github.com/greenbone/python-gvm/pull/93)
 * Refactor `modify_task` to use same arguments as `create_task` [PR 89](https://github.com/greenbone/python-gvm/pull/89)
 * Allow to pass either user_id or name to `delete_user` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
