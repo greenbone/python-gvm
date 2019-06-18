@@ -58,7 +58,7 @@ connection = UnixSocketConnection()
 transform = EtreeTransform()
 gmp = Gmp(connection, transform=transform)
 
-# Retrieve current GMP version
+# Retrieve GMP version supported by the remote daemon
 version = gmp.get_version()
 
 # Prints the XML in beautiful form
