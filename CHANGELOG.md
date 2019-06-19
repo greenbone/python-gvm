@@ -65,6 +65,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   methods in Gmpv8 [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 * Introduced Enum classes for authentication and privacy algorithms of SNMP
   credentials [PR 133](https://github.com/greenbone/python-gvm/pull/133)
+* Extended `InvalidArgument` and `RequiredArgument` errors to allow passing
+  argument and function name as keyword parameter [PR 134](https://github.com/greenbone/python-gvm/pull/134)
 
 ### Removed
 * Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
