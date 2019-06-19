@@ -19,7 +19,11 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv8 import CredentialType
+from gvm.protocols.gmpv8 import (
+    CredentialType,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+)
 
 from . import Gmpv8TestCase
 
@@ -127,7 +131,9 @@ class GmpModifyTestCase(Gmpv8TestCase):
         )
 
     def test_modify_credential_with_auth_algorithm(self):
-        self.gmp.modify_credential(credential_id='c1', auth_algorithm='md5')
+        self.gmp.modify_credential(
+            credential_id='c1', auth_algorithm=SnmpAuthAlgorithm.MD5
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -135,7 +141,9 @@ class GmpModifyTestCase(Gmpv8TestCase):
             '</modify_credential>'
         )
 
-        self.gmp.modify_credential(credential_id='c1', auth_algorithm='sha1')
+        self.gmp.modify_credential(
+            credential_id='c1', auth_algorithm=SnmpAuthAlgorithm.SHA1
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -157,7 +165,9 @@ class GmpModifyTestCase(Gmpv8TestCase):
         )
 
     def test_modify_credential_with_privacy_algorithm(self):
-        self.gmp.modify_credential(credential_id='c1', privacy_algorithm='aes')
+        self.gmp.modify_credential(
+            credential_id='c1', privacy_algorithm=SnmpPrivacyAlgorithm.AES
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'
@@ -167,7 +177,9 @@ class GmpModifyTestCase(Gmpv8TestCase):
             '</modify_credential>'
         )
 
-        self.gmp.modify_credential(credential_id='c1', privacy_algorithm='des')
+        self.gmp.modify_credential(
+            credential_id='c1', privacy_algorithm=SnmpPrivacyAlgorithm.DES
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_credential credential_id="c1">'

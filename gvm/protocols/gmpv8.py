@@ -35,6 +35,34 @@ from .gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
 PROTOCOL_VERSION = (8,)
 
 
+class FilterType(Enum):
+    AGENT = "agent"
+    ALERT = "alert"
+    ASSET = "asset"
+    SCAN_CONFIG = "config"
+    CREDENTIAL = "credential"
+    FILTER = "filter"
+    GROUP = "group"
+    HOST = "host"
+    NOTE = "note"
+    OPERATING_SYSTEM = "os"
+    OVERRIDE = "override"
+    PERMISSION = "permission"
+    PORT_LIST = "port_list"
+    REPORT = "report"
+    REPORT_FORMAT = "report_format"
+    RESULT = "result"
+    ROLE = "role"
+    SCHEDULE = "schedule"
+    ALL_SECINFO = "secinfo"
+    TAG = "tag"
+    TARGET = "target"
+    TASK = "task"
+    TICKET = "ticket"
+    USER = "user"
+    VULNERABILITY = "vuln"
+
+
 class CredentialType(Enum):
     CLIENT_CERTIFICATE = 'cc'
     SNMP = 'snmp'
@@ -42,12 +70,23 @@ class CredentialType(Enum):
     USERNAME_SSH_KEY = 'usk'
     SMIME_CERTIFICATE = 'smime'
     PGP_ENCRYPTION_KEY = 'pgp'
+    PASSWORD_ONLY = 'pw'
 
 
 class TicketStatus(Enum):
     OPEN = 'Open'
     FIXED = 'Fixed'
     CLOSED = 'Closed'
+
+
+class SnmpAuthAlgorithm(Enum):
+    SHA1 = 'sha1'
+    MD5 = 'md5'
+
+
+class SnmpPrivacyAlgorithm(Enum):
+    AES = 'aes'
+    DES = 'des'
 
 
 class Gmp(Gmpv7):
@@ -111,10 +150,10 @@ class Gmp(Gmpv7):
             password (str, optional): Password for the credential. Used for
                 up and snmp credential types.
             community (str, optional): The SNMP community
-            auth_algorithm (str, optional): The SNMP authentication algorithm.
-                Either 'md5' or 'sha1'. Required for snmp credential type.
-            privacy_algorithm (str, optional): The SNMP privacy algorithm,
-                either aes or des.
+            auth_algorithm (SnmpAuthAlgorithm, optional): The SNMP
+                authentication algorithm. Required for snmp credential type.
+            privacy_algorithm (SnmpPrivacyAlgorithm, optional): The SNMP privacy
+                algorithm
             privacy_password (str, optional): The SNMP privacy password
             public_key: (str, optional): PGP public key in *armor* plain text
                 format. Required for pgp credential type.
@@ -179,6 +218,15 @@ class Gmp(Gmpv7):
                     certificate=cert,
                 )
 
+            Creating a Password-Only credential
+
+            .. code-block:: python
+
+                gmp.create_credential(
+                    name='Password-Only Credential',
+                    credential_type=CredentialType.PASSWORD_ONLY,
+                    password='foo',
+                )
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
@@ -227,9 +275,16 @@ class Gmp(Gmpv7):
 
             cmd.add_element("login", login)
 
+        if credential_type == CredentialType.PASSWORD_ONLY and not password:
+            raise RequiredArgument(
+                "create_credential requires password argument for "
+                "credential_type {0}".format(credential_type.name)
+            )
+
         if (
             credential_type == CredentialType.USERNAME_PASSWORD
             or credential_type == CredentialType.SNMP
+            or credential_type == CredentialType.PASSWORD_ONLY
         ) and password:
             cmd.add_element("password", password)
 
@@ -251,13 +306,13 @@ class Gmp(Gmpv7):
             _xmlkey.add_element("private", private_key)
 
         if credential_type == CredentialType.SNMP:
-            if auth_algorithm not in ("md5", "sha1"):
+            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgument(
-                    "create_credential requires auth_algorithm to be either "
-                    "md5 or sha1"
+                    "create_credential requires auth_algorithm to be a "
+                    "SnmpAuthAlgorithm instance"
                 )
 
-            cmd.add_element("auth_algorithm", auth_algorithm)
+            cmd.add_element("auth_algorithm", auth_algorithm.value)
 
             if community:
                 cmd.add_element("community", community)
@@ -266,13 +321,15 @@ class Gmp(Gmpv7):
                 _xmlprivacy = cmd.add_element("privacy")
 
                 if privacy_algorithm is not None:
-                    if privacy_algorithm not in ("aes", "des"):
+                    if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                         raise InvalidArgument(
-                            "create_credential requires algorithm to be either "
-                            "aes or des"
+                            "create_credential requires algorithm to be a "
+                            "SnmpPrivacyAlgorithm instance"
                         )
 
-                    _xmlprivacy.add_element("algorithm", privacy_algorithm)
+                    _xmlprivacy.add_element(
+                        "algorithm", privacy_algorithm.value
+                    )
 
                 if privacy_password:
                     _xmlprivacy.add_element("password", privacy_password)
@@ -320,11 +377,11 @@ class Gmp(Gmpv7):
             private_key (str, optional): Private key to use for login
             login (str, optional): Username for the credential
             password (str, optional): Password for the credential
-            auth_algorithm (str, optional): The auth_algorithm,
-                either md5 or sha1.
+            auth_algorithm (SnmpAuthAlgorithm, optional): The authentication
+                algorithm for SNMP
             community (str, optional): The SNMP community
-            privacy_algorithm (str, optional): The SNMP privacy algorithm,
-                either aes or des.
+            privacy_algorithm (SnmpPrivacyAlgorithm, optional): The privacy
+                algorithm for SNMP
             privacy_password (str, optional): The SNMP privacy password
             credential_type (CredentialType, optional): The credential type.
             public_key: (str, optional): PGP public key in *armor* plain text
@@ -378,13 +435,12 @@ class Gmp(Gmpv7):
             cmd.add_element("password", password)
 
         if auth_algorithm:
-            if auth_algorithm not in ("md5", "sha1"):
+            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgument(
-                    "modify_credential requires "
-                    "auth_algorithm to be either "
-                    "md5 or sha1"
+                    "modify_credential requires auth_algorithm to be a "
+                    "SnmpAuthAlgorithm instance"
                 )
-            cmd.add_element("auth_algorithm", auth_algorithm)
+            cmd.add_element("auth_algorithm", auth_algorithm.value)
 
         if community:
             cmd.add_element("community", community)
@@ -393,13 +449,13 @@ class Gmp(Gmpv7):
             _xmlprivacy = cmd.add_element("privacy")
 
             if privacy_algorithm is not None:
-                if privacy_algorithm not in ("aes", "des"):
+                if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                     raise InvalidArgument(
                         "modify_credential requires privacy_algorithm to be "
-                        "either aes or des"
+                        "a SnmpPrivacyAlgorithm instance"
                     )
 
-                _xmlprivacy.add_element("algorithm", privacy_algorithm)
+                _xmlprivacy.add_element("algorithm", privacy_algorithm.value)
 
             if privacy_password is not None:
                 _xmlprivacy.add_element("password", privacy_password)
@@ -771,3 +827,148 @@ class Gmp(Gmpv7):
             cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
+
+    def create_filter(self, name, *, filter_type=None, comment=None, term=None):
+        """Create a new filter
+
+        Arguments:
+            name (str): Name of the new filter
+            filter_type (str, optional): Filter for entity type
+            comment (str, optional): Comment for the filter
+            term (str, optional): Filter term e.g. 'name=foo'
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument("create_filter requires a name argument")
+
+        cmd = XmlCommand("create_filter")
+        _xmlname = cmd.add_element("name", name)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if term:
+            cmd.add_element("term", term)
+
+        if filter_type:
+            if not isinstance(filter_type, FilterType):
+                raise InvalidArgument(
+                    "create_filter requires type to be a FilterType instance. "
+                    "was {}".format(filter_type)
+                )
+
+            cmd.add_element("type", filter_type.value)
+
+        return self._send_xml_command(cmd)
+
+    def modify_filter(
+        self, filter_id, *, comment=None, name=None, term=None, filter_type=None
+    ):
+        """Modifies an existing filter.
+
+        Arguments:
+            filter_id (str): UUID of the filter to be modified
+            comment (str, optional): Comment on filter.
+            name (str, optional): Name of filter.
+            term (str, optional): Filter term.
+            filter_type (FilterType, optional): Resource type filter applies to.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not filter_id:
+            raise RequiredArgument(
+                "modify_filter requires a filter_id " "attribute"
+            )
+
+        cmd = XmlCommand("modify_filter")
+        cmd.set_attribute("filter_id", filter_id)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if name:
+            cmd.add_element("name", name)
+
+        if term:
+            cmd.add_element("term", term)
+
+        if filter_type:
+            if not isinstance(filter_type, FilterType):
+                raise InvalidArgument(
+                    "modify_filter requires type to be a FilterType instance. "
+                    "was {}".format(filter_type)
+                )
+            cmd.add_element("type", filter_type.value)
+
+        return self._send_xml_command(cmd)
+
+    def create_target(
+        self,
+        name,
+        *,
+        asset_hosts_filter=None,
+        hosts=None,
+        comment=None,
+        exclude_hosts=None,
+        ssh_credential_id=None,
+        ssh_credential_port=None,
+        smb_credential_id=None,
+        esxi_credential_id=None,
+        snmp_credential_id=None,
+        alive_tests=None,
+        reverse_lookup_only=None,
+        reverse_lookup_unify=None,
+        port_range=None,
+        port_list_id=None
+    ):
+        """Create a new target
+
+        Arguments:
+            name (str): Name of the target
+            asset_hosts_filter (str, optional): Filter to select target host
+                from assets hosts
+            hosts (list, optional): List of hosts addresses to scan
+            exclude_hosts (list, optional): List of hosts addresses to exclude
+                from scan
+            comment (str, optional): Comment for the target
+            ssh_credential_id (str, optional): UUID of a ssh credential to use
+                on target
+            ssh_credential_port (int, optional): The port to use for ssh
+                credential
+            smb_credential_id (str, optional): UUID of a smb credential to use
+                on target
+            snmp_credential_id (str, optional): UUID of a snmp credential to use
+                on target
+            esxi_credential_id (str, optional): UUID of a esxi credential to use
+                on target
+            alive_tests (str, optional): Which alive tests to use
+            reverse_lookup_only (boolean, optional): Whether to scan only hosts
+                that have names
+            reverse_lookup_unify (boolean, optional): Whether to scan only one
+                IP when multiple IPs have the same name.
+            port_range (str, optional): Port range for the target
+            port_list_id (str, optional): UUID of the port list to use on target
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return super().create_target(
+            name,
+            asset_hosts_filter=asset_hosts_filter,
+            hosts=hosts,
+            exclude_hosts=exclude_hosts,
+            comment=comment,
+            ssh_credential_id=ssh_credential_id,
+            ssh_credential_port=ssh_credential_port,
+            smb_credential_id=smb_credential_id,
+            snmp_credential_id=snmp_credential_id,
+            esxi_credential_id=esxi_credential_id,
+            alive_tests=alive_tests,
+            reverse_lookup_only=reverse_lookup_only,
+            reverse_lookup_unify=reverse_lookup_unify,
+            port_range=port_range,
+            port_list_id=port_list_id,
+        )
