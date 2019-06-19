@@ -411,7 +411,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(name='foo', credential_type='bar')
 
-    def test_create_pw_credential_missing_pasword(self):
+    def test_create_pw_credential_missing_password(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(
                 name='foo', credential_type=CredentialType.PASSWORD_ONLY
