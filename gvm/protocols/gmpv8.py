@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=arguments-differ, redefined-builtin
+# pylint: disable=arguments-differ, redefined-builtin, too-many-lines
 
 """
 Module for communication with gvmd in `Greenbone Management Protocol version 8`_
@@ -231,12 +231,16 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument("create_credential requires name argument")
+            raise RequiredArgument(
+                function="create_credential", argument="name"
+            )
 
         if not isinstance(credential_type, CredentialType):
             raise InvalidArgument(
                 "create_credential requires type to be a CredentialType "
-                "instance"
+                "instance",
+                function="create_credential",
+                argument="credential_type",
             )
 
         cmd = XmlCommand("create_credential")
@@ -257,7 +261,9 @@ class Gmp(Gmpv7):
             if not certificate:
                 raise RequiredArgument(
                     "create_credential requires certificate argument for "
-                    "credential_type {0}".format(credential_type.name)
+                    "credential_type {0}".format(credential_type.name),
+                    function="create_credential",
+                    argument="certificate",
                 )
 
             cmd.add_element("certificate", certificate)
@@ -270,7 +276,9 @@ class Gmp(Gmpv7):
             if not login:
                 raise RequiredArgument(
                     "create_credential requires login argument for "
-                    "credential_type {0}".format(credential_type.name)
+                    "credential_type {0}".format(credential_type.name),
+                    function="create_credential",
+                    argument="login",
                 )
 
             cmd.add_element("login", login)
@@ -278,7 +286,9 @@ class Gmp(Gmpv7):
         if credential_type == CredentialType.PASSWORD_ONLY and not password:
             raise RequiredArgument(
                 "create_credential requires password argument for "
-                "credential_type {0}".format(credential_type.name)
+                "credential_type {0}".format(credential_type.name),
+                function="create_credential",
+                argument="password",
             )
 
         if (
@@ -291,8 +301,10 @@ class Gmp(Gmpv7):
         if credential_type == CredentialType.USERNAME_SSH_KEY:
             if not private_key:
                 raise RequiredArgument(
-                    "create_credential requires certificate argument for "
-                    "credential_type {0}".format(credential_type.name)
+                    "create_credential requires private_key argument for "
+                    "credential_type {0}".format(credential_type.name),
+                    function="create_credential",
+                    argument="private_key",
                 )
 
             _xmlkey = cmd.add_element("key")
@@ -309,7 +321,9 @@ class Gmp(Gmpv7):
             if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgument(
                     "create_credential requires auth_algorithm to be a "
-                    "SnmpAuthAlgorithm instance"
+                    "SnmpAuthAlgorithm instance",
+                    function="create_credential",
+                    argument="auth_algorithm",
                 )
 
             cmd.add_element("auth_algorithm", auth_algorithm.value)
@@ -324,7 +338,9 @@ class Gmp(Gmpv7):
                     if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                         raise InvalidArgument(
                             "create_credential requires algorithm to be a "
-                            "SnmpPrivacyAlgorithm instance"
+                            "SnmpPrivacyAlgorithm instance",
+                            function="create_credential",
+                            argument="privacy_algorithm",
                         )
 
                     _xmlprivacy.add_element(
@@ -337,7 +353,9 @@ class Gmp(Gmpv7):
         if credential_type == CredentialType.PGP_ENCRYPTION_KEY:
             if not public_key:
                 raise RequiredArgument(
-                    "Creating a pgp credential requires a public_key argument"
+                    "Creating a pgp credential requires a public_key argument",
+                    argument="public_key",
+                    function="create_credential",
                 )
 
             _xmlkey = cmd.add_element("key")
@@ -392,7 +410,7 @@ class Gmp(Gmpv7):
         """
         if not credential_id:
             raise RequiredArgument(
-                "modify_credential requires " "a credential_id attribute"
+                argument="credential_id", function="modify_credential"
             )
 
         cmd = XmlCommand("modify_credential")
@@ -402,7 +420,9 @@ class Gmp(Gmpv7):
             if not isinstance(credential_type, CredentialType):
                 raise InvalidArgument(
                     "modify_credential requires type to be a CredentialType "
-                    "instance"
+                    "instance",
+                    argument="type",
+                    function="modify_credential",
                 )
             cmd.add_element("type", credential_type.value)
 
@@ -422,7 +442,8 @@ class Gmp(Gmpv7):
             if not key_phrase or not private_key:
                 raise RequiredArgument(
                     "modify_credential requires "
-                    "a key_phrase and private_key arguments"
+                    "a key_phrase and private_key arguments",
+                    function="modify_credential",
                 )
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("phrase", key_phrase)
@@ -438,7 +459,9 @@ class Gmp(Gmpv7):
             if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgument(
                     "modify_credential requires auth_algorithm to be a "
-                    "SnmpAuthAlgorithm instance"
+                    "SnmpAuthAlgorithm instance",
+                    argument="auth_algorithm",
+                    function="modify_credential",
                 )
             cmd.add_element("auth_algorithm", auth_algorithm.value)
 
@@ -452,7 +475,9 @@ class Gmp(Gmpv7):
                 if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                     raise InvalidArgument(
                         "modify_credential requires privacy_algorithm to be "
-                        "a SnmpPrivacyAlgorithm instance"
+                        "a SnmpPrivacyAlgorithm instance",
+                        argument="privacy_algorithm",
+                        function="modify_credential",
                     )
 
                 _xmlprivacy.add_element("algorithm", privacy_algorithm.value)
@@ -499,16 +524,19 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument("create_tag requires name argument")
+            raise RequiredArgument(function="create_tag", argument="name")
 
         if resource_filter and resource_ids:
             raise InvalidArgument(
                 "create_tag accepts either resource_filter or resource_ids "
-                "argument"
+                "argument",
+                function="create_tag",
             )
 
         if not resource_type:
-            raise RequiredArgument("create_tag requires resource_type argument")
+            raise RequiredArgument(
+                function="create_tag", argument="resource_type"
+            )
 
         cmd = XmlCommand('create_tag')
         cmd.add_element('name', name)
@@ -595,7 +623,9 @@ class Gmp(Gmpv7):
             if resource_filter and not resource_type:
                 raise RequiredArgument(
                     "modify_tag requires resource_type argument when "
-                    "resource_filter is set"
+                    "resource_filter is set",
+                    function="modify_tag",
+                    argument="resource_type",
                 )
 
             _xmlresources = cmd.add_element("resources")
@@ -625,7 +655,9 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not ticket_id:
-            raise RequiredArgument("clone_ticket requires a ticket_id argument")
+            raise RequiredArgument(
+                function="clone_ticket", argument="ticket_id"
+            )
 
         cmd = XmlCommand("create_ticket")
 
@@ -650,16 +682,16 @@ class Gmp(Gmpv7):
         """
         if not result_id:
             raise RequiredArgument(
-                "create_ticket requires a result_id argument"
+                function="create_ticket", argument="result_id"
             )
 
         if not assigned_to_user_id:
             raise RequiredArgument(
-                "create_ticket requires a assigned_to_user_id argument"
+                function="create_ticket", argument="assigned_to_user_id"
             )
 
         if not note:
-            raise RequiredArgument("create_ticket requires a note argument")
+            raise RequiredArgument(function="create_ticket", argument="note")
 
         cmd = XmlCommand("create_ticket")
 
@@ -687,7 +719,7 @@ class Gmp(Gmpv7):
         """
         if not ticket_id:
             raise RequiredArgument(
-                "delete_ticket requires a " "ticket_id argument"
+                function="delete_ticket", argument="ticket_id"
             )
 
         cmd = XmlCommand("delete_ticket")
@@ -727,7 +759,7 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not ticket_id:
-            raise RequiredArgument("get_ticket requires a ticket_id argument")
+            raise RequiredArgument(function="get_ticket", argument="ticket_id")
 
         cmd = XmlCommand("get_tickets")
         cmd.set_attribute("ticket_id", ticket_id)
@@ -760,7 +792,7 @@ class Gmp(Gmpv7):
         """
         if not vulnerability_id:
             raise RequiredArgument(
-                "get_vulnerability requires a vulnerability_id argument"
+                function="get_vulnerability", argument="vulnerability_id"
             )
 
         cmd = XmlCommand("get_vulns")
@@ -792,17 +824,21 @@ class Gmp(Gmpv7):
         """
         if not ticket_id:
             raise RequiredArgument(
-                "modify_ticket requires a ticket_id argument"
+                function="modify_ticket", argument="ticket_id"
             )
 
         if status and not note:
             raise RequiredArgument(
-                "setting a status in modify_ticket requires a note argument"
+                "setting a status in modify_ticket requires a note argument",
+                function="modify_ticket",
+                argument="note",
             )
 
         if note and not status:
             raise RequiredArgument(
-                "setting a note in modify_ticket requires a status argument"
+                "setting a note in modify_ticket requires a status argument",
+                function="modify_ticket",
+                argument="status",
             )
 
         cmd = XmlCommand("modify_ticket")
@@ -817,7 +853,9 @@ class Gmp(Gmpv7):
             if not isinstance(status, TicketStatus):
                 raise InvalidArgument(
                     "status argument of modify_ticket needs to be a "
-                    "TicketStatus"
+                    "TicketStatus",
+                    function="modify_ticket",
+                    argument="status",
                 )
 
             cmd.add_element('status', status.value)
@@ -841,7 +879,7 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument("create_filter requires a name argument")
+            raise RequiredArgument(function="create_filter", argument="name")
 
         cmd = XmlCommand("create_filter")
         _xmlname = cmd.add_element("name", name)
@@ -856,7 +894,9 @@ class Gmp(Gmpv7):
             if not isinstance(filter_type, FilterType):
                 raise InvalidArgument(
                     "create_filter requires type to be a FilterType instance. "
-                    "was {}".format(filter_type)
+                    "was {}".format(filter_type),
+                    function="create_filter",
+                    argument="filter_type",
                 )
 
             cmd.add_element("type", filter_type.value)
@@ -880,7 +920,7 @@ class Gmp(Gmpv7):
         """
         if not filter_id:
             raise RequiredArgument(
-                "modify_filter requires a filter_id " "attribute"
+                function="modify_filter", argument="filter_id"
             )
 
         cmd = XmlCommand("modify_filter")
@@ -899,7 +939,9 @@ class Gmp(Gmpv7):
             if not isinstance(filter_type, FilterType):
                 raise InvalidArgument(
                     "modify_filter requires type to be a FilterType instance. "
-                    "was {}".format(filter_type)
+                    "was {}".format(filter_type),
+                    function="modify_filter",
+                    argument="filter_type",
                 )
             cmd.add_element("type", filter_type.value)
 
