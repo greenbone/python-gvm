@@ -785,7 +785,7 @@ class Gmp(Gmpv7):
         """Request a single vulnerability
 
         Arguments:
-            vulnerability_id (str): UUID of an existing vulnerability
+            vulnerability_id (str): ID of an existing vulnerability
 
         Returns:
             The response. See :py:meth:`send_command` for details.
