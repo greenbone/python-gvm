@@ -90,6 +90,20 @@ class SnmpPrivacyAlgorithm(Enum):
     DES = 'des'
 
 
+class AliveTest(Enum):
+    ICMP_PING = 'ICMP Ping'
+    TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
+    TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
+    APR_PING = 'ARP Ping'
+    ICMP_AND_TCP_ACK_SERVICE_PING = 'ICMP & TCP-ACK Service Ping'
+    ICMP_AND_ARP_PING = 'ICMP & ARP Ping'
+    TCP_ACK_SERVICE_AND_ARP_PING = 'TCP-ACK Service & ARP Ping'
+    ICMP_TCP_ACK_SERVICE_AND_ARP_PING = (  # pylint: disable=invalid-name
+        'ICMP, TCP-ACK Service & ARP Ping'
+    )
+    CONSIDER_ALIVE = 'Consider Alive'
+
+
 class Gmp(Gmpv7):
     @staticmethod
     def get_protocol_version() -> str:
@@ -989,7 +1003,7 @@ class Gmp(Gmpv7):
         smb_credential_id: Optional[str] = None,
         esxi_credential_id: Optional[str] = None,
         snmp_credential_id: Optional[str] = None,
-        alive_tests: Optional[str] = None,
+        alive_test: Optional[AliveTest] = None,
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
         port_range: Optional[str] = None,
@@ -1015,7 +1029,7 @@ class Gmp(Gmpv7):
                 on target
             esxi_credential_id (str, optional): UUID of a esxi credential to use
                 on target
-            alive_tests (str, optional): Which alive tests to use
+            alive_test (AliveTest, optional): Which alive tests to use
             reverse_lookup_only (boolean, optional): Whether to scan only hosts
                 that have names
             reverse_lookup_unify (boolean, optional): Whether to scan only one
@@ -1026,6 +1040,13 @@ class Gmp(Gmpv7):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if alive_test:
+            if not isinstance(alive_test, AliveTest):
+                raise InvalidArgument(
+                    argument='alive_tests', function='create_target'
+                )
+            alive_test = alive_test.value
+
         return super().create_target(
             name,
             asset_hosts_filter=asset_hosts_filter,
@@ -1037,7 +1058,7 @@ class Gmp(Gmpv7):
             smb_credential_id=smb_credential_id,
             snmp_credential_id=snmp_credential_id,
             esxi_credential_id=esxi_credential_id,
-            alive_tests=alive_tests,
+            alive_tests=alive_test,
             reverse_lookup_only=reverse_lookup_only,
             reverse_lookup_unify=reverse_lookup_unify,
             port_range=port_range,
