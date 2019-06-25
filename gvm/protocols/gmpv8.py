@@ -129,6 +129,23 @@ class TicketStatus(Enum):
     CLOSED = 'Closed'
 
 
+def get_ticket_status_from_string(
+    ticket_status: Optional[str]
+) -> Optional[TicketStatus]:
+    """ Convert a ticket status string into a TicketStatus instance
+    """
+    if not ticket_status:
+        return None
+
+    try:
+        return TicketStatus[ticket_status.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='ticket_status',
+            function=get_ticket_status_from_string.__name__,
+        )
+
+
 class SnmpAuthAlgorithm(Enum):
     SHA1 = 'sha1'
     MD5 = 'md5'
