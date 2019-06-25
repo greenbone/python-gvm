@@ -151,9 +151,44 @@ class SnmpAuthAlgorithm(Enum):
     MD5 = 'md5'
 
 
+def get_snmp_auth_algorithm_from_string(
+    algorithm: Optional[str]
+) -> Optional[TicketStatus]:
+    """ Convert a SNMP auth algorithm string into a SnmpAuthAlgorithm instance
+    """
+    if not algorithm:
+        return None
+
+    try:
+        return SnmpAuthAlgorithm[algorithm.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='algorithm',
+            function=get_snmp_auth_algorithm_from_string.__name__,
+        )
+
+
 class SnmpPrivacyAlgorithm(Enum):
     AES = 'aes'
     DES = 'des'
+
+
+def get_snmp_privacy_algorithm_from_string(
+    algorithm: Optional[str]
+) -> Optional[TicketStatus]:
+    """ Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
+        instance
+    """
+    if not algorithm:
+        return None
+
+    try:
+        return SnmpPrivacyAlgorithm[algorithm.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='algorithm',
+            function=get_snmp_privacy_algorithm_from_string.__name__,
+        )
 
 
 class AliveTest(Enum):
