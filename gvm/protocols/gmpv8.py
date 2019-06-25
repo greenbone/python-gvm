@@ -106,6 +106,23 @@ class CredentialType(Enum):
     PASSWORD_ONLY = 'pw'
 
 
+def get_credential_type_from_string(
+    credential_type: Optional[str]
+) -> Optional[CredentialType]:
+    """ Convert a credential type string into a CredentialType instance
+    """
+    if not credential_type:
+        return None
+
+    try:
+        return CredentialType[credential_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='credential_type',
+            function=get_credential_type_from_string.__name__,
+        )
+
+
 class TicketStatus(Enum):
     OPEN = 'Open'
     FIXED = 'Fixed'
