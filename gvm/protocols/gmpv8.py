@@ -64,6 +64,38 @@ class FilterType(Enum):
     VULNERABILITY = "vuln"
 
 
+def get_filter_type_from_string(
+    filter_type: Optional[str]
+) -> Optional[FilterType]:
+    """ Convert a filter type string to an actual FilterType instance
+
+    Arguments:
+        filter_type (str): Filter type string to convert to a FilterType
+    """
+    if not filter_type:
+        return None
+
+    if filter_type == 'vuln':
+        return FilterType.VULNERABILITY
+
+    if filter_type == 'os':
+        return FilterType.OPERATING_SYSTEM
+
+    if filter_type == 'config':
+        return FilterType.SCAN_CONFIG
+
+    if filter_type == 'secinfo':
+        return FilterType.ALL_SECINFO
+
+    try:
+        return FilterType[filter_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='filter_type',
+            function=get_filter_type_from_string.__name__,
+        )
+
+
 class CredentialType(Enum):
     CLIENT_CERTIFICATE = 'cc'
     SNMP = 'snmp'
