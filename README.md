@@ -117,6 +117,6 @@ Please create your git commits from within the Python environment to apply our
 
 ## License
 
-Copyright (C) 2017-2018 [Greenbone Networks GmbH](https://www.greenbone.net/)
+Copyright (C) 2017-2019 [Greenbone Networks GmbH](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
