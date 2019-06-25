@@ -900,7 +900,7 @@ class Gmp(Gmpv7):
         self,
         name: str,
         *,
-        filter_type: Optional[str] = None,
+        filter_type: Optional[FilterType] = None,
         comment: Optional[str] = None,
         term: Optional[str] = None
     ) -> Any:
@@ -908,7 +908,7 @@ class Gmp(Gmpv7):
 
         Arguments:
             name (str): Name of the new filter
-            filter_type (str, optional): Filter for entity type
+            filter_type (FilterType, optional): Entity type for the new filter
             comment (str, optional): Comment for the filter
             term (str, optional): Filter term e.g. 'name=foo'
 
@@ -947,7 +947,7 @@ class Gmp(Gmpv7):
         comment: Optional[str] = None,
         name: Optional[str] = None,
         term: Optional[str] = None,
-        filter_type: Optional[str] = None
+        filter_type: Optional[FilterType] = None
     ) -> Any:
         """Modifies an existing filter.
 
