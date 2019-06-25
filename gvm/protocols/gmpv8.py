@@ -25,6 +25,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 8`_
     https://docs.greenbone.net/API/GMP/gmp-8.0.html
 """
 from enum import Enum
+from typing import Any, List, Optional
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
@@ -91,7 +92,7 @@ class SnmpPrivacyAlgorithm(Enum):
 
 class Gmp(Gmpv7):
     @staticmethod
-    def get_protocol_version():
+    def get_protocol_version() -> str:
         """Determine the Greenbone Management Protocol version.
 
         Returns:
@@ -101,22 +102,22 @@ class Gmp(Gmpv7):
 
     def create_credential(
         self,
-        name,
-        credential_type,
+        name: str,
+        credential_type: CredentialType,
         *,
-        comment=None,
-        allow_insecure=None,
-        certificate=None,
-        key_phrase=None,
-        private_key=None,
-        login=None,
-        password=None,
-        auth_algorithm=None,
-        community=None,
-        privacy_algorithm=None,
-        privacy_password=None,
-        public_key=None
-    ):
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        certificate: Optional[str] = None,
+        key_phrase: Optional[str] = None,
+        private_key: Optional[str] = None,
+        login: Optional[str] = None,
+        password: Optional[str] = None,
+        auth_algorithm: Optional[SnmpAuthAlgorithm] = None,
+        community: Optional[str] = None,
+        privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
+        privacy_password: Optional[str] = None,
+        public_key: Optional[str] = None
+    ) -> Any:
         """Create a new credential
 
         Create a new credential e.g. to be used in the method of an alert.
@@ -365,23 +366,23 @@ class Gmp(Gmpv7):
 
     def modify_credential(
         self,
-        credential_id,
+        credential_id: str,
         *,
-        name=None,
-        comment=None,
-        allow_insecure=None,
-        certificate=None,
-        key_phrase=None,
-        private_key=None,
-        login=None,
-        password=None,
-        auth_algorithm=None,
-        community=None,
-        privacy_algorithm=None,
-        privacy_password=None,
-        credential_type=None,
-        public_key=None
-    ):
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        certificate: Optional[str] = None,
+        key_phrase: Optional[str] = None,
+        private_key: Optional[str] = None,
+        login: Optional[str] = None,
+        password: Optional[str] = None,
+        auth_algorithm: Optional[SnmpAuthAlgorithm] = None,
+        community: Optional[str] = None,
+        privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
+        privacy_password: Optional[str] = None,
+        credential_type: Optional[CredentialType] = None,
+        public_key: Optional[str] = None
+    ) -> Any:
         """Modifies an existing credential.
 
         Arguments:
@@ -493,15 +494,15 @@ class Gmp(Gmpv7):
 
     def create_tag(
         self,
-        name,
-        resource_type,
+        name: str,
+        resource_type: str,
         *,
-        resource_filter=None,
-        resource_ids=None,
-        value=None,
-        comment=None,
-        active=None
-    ):
+        resource_filter: Optional[str] = None,
+        resource_ids: Optional[List[str]] = None,
+        value: Optional[str] = None,
+        comment: Optional[str] = None,
+        active: Optional[bool] = None
+    ) -> Any:
         """Create a tag.
 
         Arguments:
@@ -568,17 +569,17 @@ class Gmp(Gmpv7):
 
     def modify_tag(
         self,
-        tag_id,
+        tag_id: str,
         *,
-        comment=None,
-        name=None,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
         value=None,
         active=None,
-        resource_action=None,
-        resource_type=None,
-        resource_filter=None,
-        resource_ids=None
-    ):
+        resource_action: Optional[str] = None,
+        resource_type: Optional[str] = None,
+        resource_filter: Optional[str] = None,
+        resource_ids: Optional[List[str]] = None
+    ) -> Any:
         """Modifies an existing tag.
 
         Arguments:
@@ -645,7 +646,7 @@ class Gmp(Gmpv7):
 
         return self._send_xml_command(cmd)
 
-    def clone_ticket(self, ticket_id):
+    def clone_ticket(self, ticket_id: str) -> Any:
         """Clone an existing ticket
 
         Arguments:
@@ -666,8 +667,13 @@ class Gmp(Gmpv7):
         return self._send_xml_command(cmd)
 
     def create_ticket(
-        self, *, result_id, assigned_to_user_id, note, comment=None
-    ):
+        self,
+        *,
+        result_id: str,
+        assigned_to_user_id: str,
+        note: str,
+        comment: Optional[str] = None
+    ) -> Any:
         """Create a new ticket
 
         Arguments:
@@ -709,7 +715,9 @@ class Gmp(Gmpv7):
 
         return self._send_xml_command(cmd)
 
-    def delete_ticket(self, ticket_id, *, ultimate=False):
+    def delete_ticket(
+        self, ticket_id: str, *, ultimate: Optional[bool] = False
+    ):
         """Deletes an existing ticket
 
         Arguments:
@@ -728,7 +736,13 @@ class Gmp(Gmpv7):
 
         return self._send_xml_command(cmd)
 
-    def get_tickets(self, *, trash=None, filter=None, filter_id=None):
+    def get_tickets(
+        self,
+        *,
+        trash: Optional[bool] = None,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None
+    ) -> Any:
         """Request a list of tickets
 
         Arguments:
@@ -749,7 +763,7 @@ class Gmp(Gmpv7):
 
         return self._send_xml_command(cmd)
 
-    def get_ticket(self, ticket_id):
+    def get_ticket(self, ticket_id: str) -> Any:
         """Request a single ticket
 
         Arguments:
@@ -765,7 +779,9 @@ class Gmp(Gmpv7):
         cmd.set_attribute("ticket_id", ticket_id)
         return self._send_xml_command(cmd)
 
-    def get_vulnerabilities(self, *, filter=None, filter_id=None):
+    def get_vulnerabilities(
+        self, *, filter: Optional[str] = None, filter_id: Optional[str] = None
+    ) -> Any:
         """Request a list of vulnerabilities
 
         Arguments:
@@ -781,7 +797,7 @@ class Gmp(Gmpv7):
 
         return self._send_xml_command(cmd)
 
-    def get_vulnerability(self, vulnerability_id):
+    def get_vulnerability(self, vulnerability_id: str) -> Any:
         """Request a single vulnerability
 
         Arguments:
@@ -801,13 +817,13 @@ class Gmp(Gmpv7):
 
     def modify_ticket(
         self,
-        ticket_id,
+        ticket_id: str,
         *,
-        status=None,
-        note=None,
-        assigned_to_user_id=None,
-        comment=None
-    ):
+        status: Optional[TicketStatus] = None,
+        note: Optional[str] = None,
+        assigned_to_user_id: Optional[str] = None,
+        comment: Optional[str] = None
+    ) -> Any:
         """Modify a single ticket
 
         Arguments:
@@ -866,7 +882,14 @@ class Gmp(Gmpv7):
 
         return self._send_xml_command(cmd)
 
-    def create_filter(self, name, *, filter_type=None, comment=None, term=None):
+    def create_filter(
+        self,
+        name: str,
+        *,
+        filter_type: Optional[str] = None,
+        comment: Optional[str] = None,
+        term: Optional[str] = None
+    ) -> Any:
         """Create a new filter
 
         Arguments:
@@ -904,8 +927,14 @@ class Gmp(Gmpv7):
         return self._send_xml_command(cmd)
 
     def modify_filter(
-        self, filter_id, *, comment=None, name=None, term=None, filter_type=None
-    ):
+        self,
+        filter_id: str,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        term: Optional[str] = None,
+        filter_type: Optional[str] = None
+    ) -> Any:
         """Modifies an existing filter.
 
         Arguments:
@@ -949,23 +978,23 @@ class Gmp(Gmpv7):
 
     def create_target(
         self,
-        name,
+        name: str,
         *,
-        asset_hosts_filter=None,
-        hosts=None,
-        comment=None,
-        exclude_hosts=None,
-        ssh_credential_id=None,
-        ssh_credential_port=None,
-        smb_credential_id=None,
-        esxi_credential_id=None,
-        snmp_credential_id=None,
-        alive_tests=None,
-        reverse_lookup_only=None,
-        reverse_lookup_unify=None,
-        port_range=None,
-        port_list_id=None
-    ):
+        asset_hosts_filter: Optional[str] = None,
+        hosts: Optional[List[str]] = None,
+        comment: Optional[str] = None,
+        exclude_hosts: Optional[List[str]] = None,
+        ssh_credential_id: Optional[str] = None,
+        ssh_credential_port: Optional[int] = None,
+        smb_credential_id: Optional[str] = None,
+        esxi_credential_id: Optional[str] = None,
+        snmp_credential_id: Optional[str] = None,
+        alive_tests: Optional[str] = None,
+        reverse_lookup_only: Optional[bool] = None,
+        reverse_lookup_unify: Optional[bool] = None,
+        port_range: Optional[str] = None,
+        port_list_id: Optional[str] = None
+    ) -> Any:
         """Create a new target
 
         Arguments:
