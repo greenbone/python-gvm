@@ -240,7 +240,7 @@ class Gmp(Gmpv7):
         Currently the following credential types are supported:
 
             - Username + Password
-            - Username + private SSH-Key
+            - Username + SSH-Key
             - Client Certificates
             - SNMPv1 or SNMPv2c protocol
             - S/MIME Certificate
@@ -248,31 +248,29 @@ class Gmp(Gmpv7):
             - Password only
 
         Arguments:
-            name (str): Name of the new credential
-            credential_type (CredentialType): The credential type.
-            comment (str, optional): Comment for the credential
-            allow_insecure (boolean, optional): Whether to allow insecure use of
-                the credential
-            certificate (str, optional): Certificate for the credential.
-                Required for cc and smime credential types.
-            key_phrase (str, optional): Key passphrase for the private key.
-                Used for the usk credential type.
-            private_key (str, optional): Private key to use for login. Required
+            name: Name of the new credential
+            credential_type: The credential type.
+            comment: Comment for the credential
+            allow_insecure: Whether to allow insecure use of the credential
+            certificate: Certificate for the credential.
+                Required for client-certificate and smime credential types.
+            key_phrase: Key passphrase for the private key.
+                Used for the username+ssh-key credential type.
+            private_key: Private key to use for login. Required
                 for usk credential type. Also used for the cc credential type.
                 The supported key types (dsa, rsa, ecdsa, ...) and formats (PEM,
                 PKC#12, OpenSSL, ...) depend on your installed GnuTLS version.
-            login (str, optional): Username for the credential. Required for
-                up, usk and snmp credential type.
-            password (str, optional): Password for the credential. Used for
-                up and snmp credential types.
-            community (str, optional): The SNMP community
-            auth_algorithm (SnmpAuthAlgorithm, optional): The SNMP
-                authentication algorithm. Required for snmp credential type.
-            privacy_algorithm (SnmpPrivacyAlgorithm, optional): The SNMP privacy
-                algorithm
-            privacy_password (str, optional): The SNMP privacy password
-            public_key: (str, optional): PGP public key in *armor* plain text
-                format. Required for pgp credential type.
+            login: Username for the credential. Required for username+password,
+                username+ssh-key and snmp credential type.
+            password: Password for the credential. Used for username+password
+                and snmp credential types.
+            community: The SNMP community
+            auth_algorithm: The SNMP authentication algorithm. Required for snmp
+                credential type.
+            privacy_algorithm: The SNMP privacy algorithm
+            privacy_password: The SNMP privacy password
+            public_key: PGP public key in *armor* plain text format. Required
+                for pgp credential type.
 
         Examples:
             Creating a Username + Password credential
@@ -501,25 +499,21 @@ class Gmp(Gmpv7):
         """Modifies an existing credential.
 
         Arguments:
-            credential_id (str): UUID of the credential
-            name (str, optional): Name of the credential
-            comment (str, optional): Comment for the credential
-            allow_insecure (boolean, optional): Whether to allow insecure use of
-                 the credential
-            certificate (str, optional): Certificate for the credential
-            key_phrase (str, optional): Key passphrase for the private key
-            private_key (str, optional): Private key to use for login
-            login (str, optional): Username for the credential
-            password (str, optional): Password for the credential
-            auth_algorithm (SnmpAuthAlgorithm, optional): The authentication
-                algorithm for SNMP
-            community (str, optional): The SNMP community
-            privacy_algorithm (SnmpPrivacyAlgorithm, optional): The privacy
-                algorithm for SNMP
-            privacy_password (str, optional): The SNMP privacy password
-            credential_type (CredentialType, optional): The credential type.
-            public_key: (str, optional): PGP public key in *armor* plain text
-                format
+            credential_id: UUID of the credential
+            name: Name of the credential
+            comment: Comment for the credential
+            allow_insecure: Whether to allow insecure use of the credential
+            certificate: Certificate for the credential
+            key_phrase: Key passphrase for the private key
+            private_key: Private key to use for login
+            login: Username for the credential
+            password: Password for the credential
+            auth_algorithm: The authentication algorithm for SNMP
+            community: The SNMP community
+            privacy_algorithm: The privacy algorithm for SNMP
+            privacy_password: The SNMP privacy password
+            credential_type: The credential type.
+            public_key: PGP public key in *armor* plain text format
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -621,20 +615,17 @@ class Gmp(Gmpv7):
         """Create a tag.
 
         Arguments:
-            name (str): Name of the tag. A full tag name consisting of
-                namespace and predicate e.g. `foo:bar`.
-            resource_type (str): Entity type the tag is to be attached
-                to.
-            resource_filter (str, optional) Filter term to select
-                resources the tag is to be attached to. Only one of
-                resource_filter or resource_ids can be provided.
-            resource_ids (list, optional): IDs of the resources the
-                tag is to be attached to. Only one of resource_filter or
-                resource_ids can be provided.
-            value (str, optional): Value associated with the tag.
-            comment (str, optional): Comment for the tag.
-            active (boolean, optional): Whether the tag should be
-                active.
+            name: Name of the tag. A full tag name consisting of namespace and
+                predicate e.g. `foo:bar`.
+            resource_type: Entity type the tag is to be attached to.
+            resource_filter: Filter term to select resources the tag is to be
+                attached to. Only one of resource_filter or resource_ids can be
+                provided.
+            resource_ids: IDs of the resources the tag is to be attached to.
+                Only one of resource_filter or resource_ids can be provided.
+            value: Value associated with the tag.
+            comment: Comment for the tag.
+            active: Whether the tag should be active.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -698,21 +689,18 @@ class Gmp(Gmpv7):
         """Modifies an existing tag.
 
         Arguments:
-            tag_id (str): UUID of the tag.
-            comment (str, optional): Comment to add to the tag.
-            name (str, optional): Name of the tag.
-            value (str, optional): Value of the tag.
-            active (boolean, optional): Whether the tag is active.
-            resource_action (str, optional) Whether to add or remove
-                resources instead of overwriting. One of '', 'add',
-                'set' or 'remove'.
-            resource_type (str, optional): Type of the resources to
-                which to attach the tag. Required if resource_filter
-                is set.
-            resource_filter (str, optional) Filter term to select
-                resources the tag is to be attached to.
-            resource_ids (list, optional): IDs of the resources to
-                which to attach the tag.
+            tag_id: UUID of the tag.
+            comment: Comment to add to the tag.
+            name: Name of the tag.
+            value: Value of the tag.
+            active: Whether the tag is active.
+            resource_action: Whether to add or remove resources instead of
+                overwriting. One of '', 'add', 'set' or 'remove'.
+            resource_type: Type of the resources to which to attach the tag.
+                Required if resource_filter is set.
+            resource_filter: Filter term to select resources the tag is to be
+                attached to.
+            resource_ids: IDs of the resources to which to attach the tag.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -765,7 +753,7 @@ class Gmp(Gmpv7):
         """Clone an existing ticket
 
         Arguments:
-            ticket_id (str): UUID of an existing ticket to clone from
+            ticket_id: UUID of an existing ticket to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -792,11 +780,10 @@ class Gmp(Gmpv7):
         """Create a new ticket
 
         Arguments:
-            result_id (str): UUID of the result the ticket applies to
-            assigned_to_user_id (str): UUID of a user the ticket should be
-                assigned to
-            note (str): A note about opening the ticket
-            comment (str, optional): Comment for the ticket
+            result_id: UUID of the result the ticket applies to
+            assigned_to_user_id: UUID of a user the ticket should be assigned to
+            note: A note about opening the ticket
+            comment: Comment for the ticket
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -836,9 +823,8 @@ class Gmp(Gmpv7):
         """Deletes an existing ticket
 
         Arguments:
-            ticket_id (str) UUID of the ticket to be deleted.
-            ultimate (boolean, optional): Whether to remove entirely,
-                or to the trashcan.
+            ticket_id: UUID of the ticket to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
         """
         if not ticket_id:
             raise RequiredArgument(
@@ -861,11 +847,10 @@ class Gmp(Gmpv7):
         """Request a list of tickets
 
         Arguments:
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
-            trash (boolean, optional): True to request the tickets in the
-                trashcan
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: True to request the tickets in the trashcan
+
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
@@ -882,7 +867,7 @@ class Gmp(Gmpv7):
         """Request a single ticket
 
         Arguments:
-            ticket_id (str): UUID of an existing ticket
+            ticket_id: UUID of an existing ticket
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -900,9 +885,8 @@ class Gmp(Gmpv7):
         """Request a list of vulnerabilities
 
         Arguments:
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
@@ -916,7 +900,7 @@ class Gmp(Gmpv7):
         """Request a single vulnerability
 
         Arguments:
-            vulnerability_id (str): ID of an existing vulnerability
+            vulnerability_id: ID of an existing vulnerability
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -942,13 +926,12 @@ class Gmp(Gmpv7):
         """Modify a single ticket
 
         Arguments:
-            ticket_id (str): UUID of an existing ticket
-            status (TicketStatus, optional): New status for the ticket
-            note (str, optional): Note for the status change. Required if status
-                is set.
-            assigned_to_user_id (str, optional): UUID of the user the ticket
-                should be assigned to
-            comment (str, optional): Comment for the ticket
+            ticket_id: UUID of an existing ticket
+            status: New status for the ticket
+            note: Note for the status change. Required if status is set.
+            assigned_to_user_id: UUID of the user the ticket should be assigned
+                to
+            comment: Comment for the ticket
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1008,10 +991,10 @@ class Gmp(Gmpv7):
         """Create a new filter
 
         Arguments:
-            name (str): Name of the new filter
-            filter_type (FilterType, optional): Entity type for the new filter
-            comment (str, optional): Comment for the filter
-            term (str, optional): Filter term e.g. 'name=foo'
+            name: Name of the new filter
+            filter_type: Entity type for the new filter
+            comment: Comment for the filter
+            term: Filter term e.g. 'name=foo'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1053,11 +1036,11 @@ class Gmp(Gmpv7):
         """Modifies an existing filter.
 
         Arguments:
-            filter_id (str): UUID of the filter to be modified
-            comment (str, optional): Comment on filter.
-            name (str, optional): Name of filter.
-            term (str, optional): Filter term.
-            filter_type (FilterType, optional): Resource type filter applies to.
+            filter_id: UUID of the filter to be modified
+            comment: Comment on filter.
+            name: Name of filter.
+            term: Filter term.
+            filter_type: Resource type filter applies to.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1113,30 +1096,22 @@ class Gmp(Gmpv7):
         """Create a new target
 
         Arguments:
-            name (str): Name of the target
-            asset_hosts_filter (str, optional): Filter to select target host
-                from assets hosts
-            hosts (list, optional): List of hosts addresses to scan
-            exclude_hosts (list, optional): List of hosts addresses to exclude
-                from scan
-            comment (str, optional): Comment for the target
-            ssh_credential_id (str, optional): UUID of a ssh credential to use
-                on target
-            ssh_credential_port (int, optional): The port to use for ssh
-                credential
-            smb_credential_id (str, optional): UUID of a smb credential to use
-                on target
-            snmp_credential_id (str, optional): UUID of a snmp credential to use
-                on target
-            esxi_credential_id (str, optional): UUID of a esxi credential to use
-                on target
-            alive_test (AliveTest, optional): Which alive tests to use
-            reverse_lookup_only (boolean, optional): Whether to scan only hosts
-                that have names
-            reverse_lookup_unify (boolean, optional): Whether to scan only one
-                IP when multiple IPs have the same name.
-            port_range (str, optional): Port range for the target
-            port_list_id (str, optional): UUID of the port list to use on target
+            name: Name of the target
+            asset_hosts_filter: Filter to select target host from assets hosts
+            hosts: List of hosts addresses to scan
+            exclude_hosts: List of hosts addresses to exclude from scan
+            comment: Comment for the target
+            ssh_credential_id: UUID of a ssh credential to use on target
+            ssh_credential_port: The port to use for ssh credential
+            smb_credential_id: UUID of a smb credential to use on target
+            snmp_credential_id: UUID of a snmp credential to use on target
+            esxi_credential_id: UUID of a esxi credential to use on target
+            alive_test: Which alive tests to use
+            reverse_lookup_only: Whether to scan only hosts that have names
+            reverse_lookup_unify: Whether to scan only one IP when multiple IPs
+                have the same name.
+            port_range: Port range for the target
+            port_list_id: UUID of the port list to use on target
 
         Returns:
             The response. See :py:meth:`send_command` for details.
