@@ -25,6 +25,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added filter types for `host`, `operating system`, `ticket` and `vulnerability`
   [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 * Added a `password only` credential type [PR 133](https://github.com/greenbone/python-gvm/pull/133)
+* Added [type hints](https://docs.python.org/3/library/typing.html) for Gmpv8
+  [PR 136](https://github.com/greenbone/python-gvm/pull/136)
 
 ### Changed
 * Renamed `create_asset` method to `create_host` and dropped asset_type
@@ -67,6 +69,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   credentials [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 * Extended `InvalidArgument` and `RequiredArgument` errors to allow passing
   argument and function name as keyword parameter [PR 134](https://github.com/greenbone/python-gvm/pull/134)
+* Use [enum](https://docs.python.org/3/library/enum.html) for AliveTest and provide
+  conversion functions from string type value to enum for Gmpv8
+  [PR 136](https://github.com/greenbone/python-gvm/pull/136)
 
 ### Removed
 * Removed the format parameter from `get_credentials` method [PR 85](https://github.com/greenbone/python-gvm/pull/85)
