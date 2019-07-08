@@ -7,12 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-* Added resource_type argument to `get_aggregates` method [PR 107](https://github.com/greenbone/python-gvm/pull/107)
 * Added preferences argument to `create_task` method [PR 89](https://github.com/greenbone/python-gvm/pull/89)
 * Added validation of alive_tests argument to `create_target` method [PR 88](https://github.com/greenbone/python-gvm/pull/88)
 * Added ssh_credential_port argument to `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
 * Split getting a single preference by name from `get_preferences` method into
   `get_preference` [PR 85](https://github.com/greenbone/python-gvm/pull/85)
+* Added resource_type argument to `get_aggregates` method [PR 107](https://github.com/greenbone/python-gvm/pull/107)
 * Added an explicit `create_container_task` method [PR 108](https://github.com/greenbone/python-gvm/pull/108)
 * Added Gmpv8 version of create_tag with resource_filter parameter and
   plural resource_ids parameter [PR 115](https://github.com/greenbone/python-gvm/pull/115)
@@ -27,15 +27,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added a `password only` credential type [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 
 ### Changed
-* Use Gmpv8 as latest Gmp version [PR 132](https://github.com/greenbone/python-gvm/pull/132)
-* Aligned ALIVE_TESTS declaration with list from GSA [PR 93](https://github.com/greenbone/python-gvm/pull/93)
-* Refactor `modify_task` to use same arguments as `create_task` [PR 89](https://github.com/greenbone/python-gvm/pull/89)
-* Allow to pass either user_id or name to `delete_user` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
-* Don't require inheritor_id or inheritor_name for `delete_user`
-* Don't require ca_pub for `create_scanner` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
-* Change port argument for `create_scanner` to be an integer [PR 88](https://github.com/greenbone/python-gvm/pull/88)
-* Refactor `modify_scanner` method: Adjust argument types corresponding to
- `create_scanner` and only require scanner_id [PR 88](https://github.com/greenbone/python-gvm/pull/88)
+* Renamed `create_asset` method to `create_host` and dropped asset_type
+  argument. It is only possible to create host assets. [PR 77](https://github.com/greenbone/python-gvm/pull/77)
 * Require either setting_id or name for `modify_setting` not both arguments [PR 87](https://github.com/greenbone/python-gvm/pull/87)
 * Allow empty string as value argument for `modify_setting` [PR 87](https://github.com/greenbone/python-gvm/pull/87)
 * Require either user_id or name for `modify_user` not both arguments [PR 87](https://github.com/greenbone/python-gvm/pull/87)
@@ -44,10 +37,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * The arguments threat (and new_threat) for `create_note`, `modify_note`,
   `create_override` and `modify_override` must be one of 'High', 'Medium',
   'Low', 'Alarm', 'Log' or 'Debug' now [PR 87](https://github.com/greenbone/python-gvm/pull/87)
-* Renamed `create_asset` method to `create_host` and dropped asset_type
-  argument. It is only possible to create host assets. [PR 77](https://github.com/greenbone/python-gvm/pull/77)
+* Allow to pass either user_id or name to `delete_user` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
+* Don't require inheritor_id or inheritor_name for `delete_user`
+* Don't require ca_pub for `create_scanner` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
+* Change port argument for `create_scanner` to be an integer [PR 88](https://github.com/greenbone/python-gvm/pull/88)
+* Refactor `modify_scanner` method: Adjust argument types corresponding to
+ `create_scanner` and only require scanner_id [PR 88](https://github.com/greenbone/python-gvm/pull/88)
 * Updated and improved validation of `create_schedule` and
   `modify_schedule` arguments [PR 89](https://github.com/greenbone/python-gvm/pull/89)
+* Refactor `modify_task` to use same arguments as `create_task` [PR 89](https://github.com/greenbone/python-gvm/pull/89)
+* Aligned ALIVE_TESTS declaration with list from GSA [PR 93](https://github.com/greenbone/python-gvm/pull/93)
 * Address DeprecationWarning regarding `collections` module [PR 99](https://github.com/greenbone/python-gvm/pull/99)
 * Forbid *'0'* as target_id value for  `create_task` method and move creating a
   container task into an own method [PR 108](https://github.com/greenbone/python-gvm/pull/108)
@@ -59,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adapt modify_tag validation to actual implementation (Gmpv8) [PR 127](https://github.com/greenbone/python-gvm/pull/127)
 * Introduced new CredentialType Enum for Gmpv8 and expect an instance of CredentialType
   for `create_credential` and `modify_credential` `credential_type` argument [PR 132](https://github.com/greenbone/python-gvm/pull/132)
+* Use Gmpv8 as latest Gmp version [PR 132](https://github.com/greenbone/python-gvm/pull/132)
 * Introduced new FilterType Enum for Gmpv8 and expect an instance of FilterType
   for `create_filter` and `modify_filter` `filter_type` argument [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 * Dropped the `make_unique` arguments from `create_filter` and `create_target`
@@ -69,22 +69,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   argument and function name as keyword parameter [PR 134](https://github.com/greenbone/python-gvm/pull/134)
 
 ### Removed
-* Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
-* Removed sources argument from `modify_user` method [PR 87](https://github.com/greenbone/python-gvm/pull/87)
-* Removed `modify_report` method [PR 87](https://github.com/greenbone/python-gvm/pull/87)
-* Removed unused comment argument from `create_note` and `create_override` [PR 87](https://github.com/greenbone/python-gvm/pull/87)
 * Removed the format parameter from `get_credentials` method [PR 85](https://github.com/greenbone/python-gvm/pull/85)
 * Removed the task_id and nvt_oid parameters from `get_notes` and
   `get_overrides` methods [PR 85](https://github.com/greenbone/python-gvm/pull/85)
+* Removed sources argument from `modify_user` method [PR 87](https://github.com/greenbone/python-gvm/pull/87)
+* Removed `modify_report` method [PR 87](https://github.com/greenbone/python-gvm/pull/87)
+* Removed unused comment argument from `create_note` and `create_override` [PR 87](https://github.com/greenbone/python-gvm/pull/87)
+* Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
 * Excluded tests from installation [PR 119](https://github.com/greenbone/python-gvm/pull/119)
 
 ### Fixed
-* Fixed sending resource id in `modify_tag` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
-* Fixed generating XML for `get_nvts` command [PR 84](https://github.com/greenbone/python-gvm/pull/84)
-* Fixed generating XML for `get_settings` command [PR 80](https://github.com/greenbone/python-gvm/pull/80)
 * Fixed generating XML for `get_credentials` command [PR 74](https://github.com/greenbone/python-gvm/pull/74)
+* Fixed generating XML for `get_settings` command [PR 80](https://github.com/greenbone/python-gvm/pull/80)
+* Fixed generating XML for `get_nvts` command [PR 84](https://github.com/greenbone/python-gvm/pull/84)
 * Fixed wrong order of key and value for condition_data, event_data and
   method_data dict parameters of `modify_alert` method [PR 85](https://github.com/greenbone/python-gvm/pull/85)
+* Fixed sending resource id in `modify_tag` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
 * Ensure `modify_setting` value is send as Base64-encoded [PR 98](https://github.com/greenbone/python-gvm/pull/98)
 
 ### Deprecated
