@@ -22,7 +22,7 @@ import gvm
 # -- Project information -----------------------------------------------------
 
 project = 'python-gvm'
-copyright = '2018, Greenbone Networks GmbH'
+copyright = '2018 - 2019, Greenbone Networks GmbH'
 author = 'Greenbone Networks GmbH'
 
 # The short X.Y version
