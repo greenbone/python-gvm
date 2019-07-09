@@ -32,14 +32,14 @@ class EtreeTransform:
     def __init__(self):
         self._parser = create_parser()
 
-    def _convert_response(self, response):
+    def _convert_response(self, response: str) -> etree.Element:
         return etree.XML(response, parser=self._parser)
 
-    def __call__(self, response):
+    def __call__(self, response: str) -> etree.Element:
         return self._convert_response(response)
 
 
-def _check_command_status(root):
+def _check_command_status(root: etree.Element):
     status = root.get("status")
 
     if status is None:
@@ -57,7 +57,7 @@ class CheckCommandTransform(EtreeTransform):
     response was an error response
     """
 
-    def __call__(self, response):
+    def __call__(self, response: str) -> str:
         root = self._convert_response(response)
 
         _check_command_status(root)
@@ -71,7 +71,7 @@ class EtreeCheckCommandTransform(EtreeTransform):
     response was an error response
     """
 
-    def __call__(self, response):
+    def __call__(self, response: str) -> etree.Element:
         root = self._convert_response(response)
 
         _check_command_status(root)

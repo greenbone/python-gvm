@@ -23,6 +23,8 @@ import socket as socketlib
 import ssl
 import time
 
+from typing import Optional, Union
+
 import paramiko
 
 from lxml import etree
@@ -82,11 +84,11 @@ class GvmConnection(XmlReader):
     Base class for establishing a connection to a remote server daemon.
 
     Arguments:
-        timeout (int, optional): Timeout in seconds for the connection. None to
+        timeout: Timeout in seconds for the connection. None to
             wait indefinitely
     """
 
-    def __init__(self, timeout=DEFAULT_TIMEOUT):
+    def __init__(self, timeout: Optional[int] = DEFAULT_TIMEOUT):
         self._socket = None
         self._timeout = timeout
 
@@ -98,19 +100,19 @@ class GvmConnection(XmlReader):
         """
         raise NotImplementedError
 
-    def send(self, data):
+    def send(self, data: Union[bytes, str]):
         """Send data to the connected remote server
 
         Arguments:
-            data (str or bytes): Data to be send to the server. Either utf-8
-                encoded string or bytes.
+            data: Data to be send to the server. Either utf-8 encoded string or
+                bytes.
         """
         if isinstance(data, str):
             self._socket.sendall(data.encode())
         else:
             self._socket.sendall(data)
 
-    def read(self):
+    def read(self) -> str:
         """Read data from the remote server
 
         Returns:
@@ -168,22 +170,22 @@ class SSHConnection(GvmConnection):
     SSH Class to connect, read and write from GVM via SSH
 
     Arguments:
-        timeout (int, optional): Timeout in seconds for the connection.
-        hostname (str, optional): DNS name or IP address of the remote server.
-            Default is 127.0.0.1.
-        port (int, optional): Port of the remote SSH server.
-        username (str, optional): Username to use for SSH login.
-        password (str, optional): Passwort to use for SSH login.
+        timeout: Timeout in seconds for the connection.
+        hostname: DNS name or IP address of the remote server. Default is
+            127.0.0.1.
+        port: Port of the remote SSH server. Default is port 22.
+        username: Username to use for SSH login. Default is "gmp".
+        password: Passwort to use for SSH login. Default is "".
     """
 
     def __init__(
         self,
         *,
-        timeout=DEFAULT_TIMEOUT,
-        hostname="127.0.0.1",
-        port=22,
-        username="gmp",
-        password=""
+        timeout: Optional[int] = DEFAULT_TIMEOUT,
+        hostname: Optional[str] = "127.0.0.1",
+        port: Optional[int] = 22,
+        username: Optional[str] = "gmp",
+        password: Optional[str] = ""
     ):
         super().__init__(timeout=timeout)
 
@@ -233,7 +235,7 @@ class SSHConnection(GvmConnection):
     def _read(self):
         return self._stdout.channel.recv(BUF_SIZE)
 
-    def send(self, data):
+    def send(self, data: Union[bytes, str]):
         self._send_all(data)
 
     def finish_send(self):
@@ -247,19 +249,18 @@ class TLSConnection(GvmConnection):
     secured socket.
 
     Arguments:
-        timeout (int, optional): Timeout in seconds for the connection.
-        hostname (str, optional): DNS name or IP address of the remote TLS
-            server.
-        port (str, optional): Port for the TLS connection. Default is 9390.
-        certfile (str, optional): Path to PEM encoded certificate file. See
+        timeout: Timeout in seconds for the connection.
+        hostname: DNS name or IP address of the remote TLS server.
+        port: Port for the TLS connection. Default is 9390.
+        certfile: Path to PEM encoded certificate file. See
             `python certificates`_ for details.
-        cafile (str, optional): Path to PEM encoded CA file. See
-            `python certificates`_ for details.
-        keyfile (str, optional): Path to PEM encoded private key. See
-            `python certificates`_ for details.
-        password (str, optional): Password for the private key. If the password
-            argument is not specified and a password is required it will be
-            interactively prompt the user for a password.
+        cafile: Path to PEM encoded CA file. See `python certificates`_
+            for details.
+        keyfile: Path to PEM encoded private key. See `python certificates`_
+            for details.
+        password: Password for the private key. If the password argument is not
+            specified and a password is required it will be interactively prompt
+            the user for a password.
 
     .. _python certificates:
         https://docs.python.org/3/library/ssl.html#certificates
@@ -268,13 +269,13 @@ class TLSConnection(GvmConnection):
     def __init__(
         self,
         *,
-        certfile=None,
-        cafile=None,
-        keyfile=None,
-        hostname="127.0.0.1",
-        port=DEFAULT_GVM_PORT,
-        password=None,
-        timeout=DEFAULT_TIMEOUT
+        certfile: Optional[str] = None,
+        cafile: Optional[str] = None,
+        keyfile: Optional[str] = None,
+        hostname: Optional[str] = "127.0.0.1",
+        port: Optional[int] = DEFAULT_GVM_PORT,
+        password: Optional[str] = None,
+        timeout: Optional[int] = DEFAULT_TIMEOUT
     ):
         super().__init__(timeout=timeout)
 
@@ -320,12 +321,15 @@ class UnixSocketConnection(GvmConnection):
     direct communicating UNIX-Socket
 
     Arguments:
-        path (str, optional): Path to the socket.
-        timeout (int, optional): Timeout in seconds for the connection.
+        path: Path to the socket. Default is "/usr/local/var/run/gvmd.sock".
+        timeout: Timeout in seconds for the connection. Default is 60 seconds.
     """
 
     def __init__(
-        self, *, path=DEFAULT_UNIX_SOCKET_PATH, timeout=DEFAULT_TIMEOUT
+        self,
+        *,
+        path: Optional[str] = DEFAULT_UNIX_SOCKET_PATH,
+        timeout: Optional[int] = DEFAULT_TIMEOUT
     ):
         super().__init__(timeout=timeout)
 
@@ -368,16 +372,16 @@ class DebugConnection:
         gmp = Gmp(connection=connection)
 
     Arguments:
-        connection (GvmConnection): GvmConnection to observe
+        connection: GvmConnection to observe
 
     .. _logging:
         https://docs.python.org/3/library/logging.html
     """
 
-    def __init__(self, connection):
+    def __init__(self, connection: GvmConnection):
         self._connection = connection
 
-    def read(self):
+    def read(self) -> str:
         data = self._connection.read()
 
         logger.debug("Read %s characters. Data %s", len(data), data)

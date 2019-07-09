@@ -19,6 +19,8 @@
 Module for GVM errors
 """
 
+from typing import Optional
+
 
 class GvmError(Exception):
     """An exception for gvm errors
@@ -32,14 +34,20 @@ class InvalidArgument(GvmError):
 
     Derives from :py:class:`GvmError`
 
-    Attributes:
-        message (str, optional): Error message to be displayed. Takes precedence
-            over argument and function
-        argument (str, optional): Optional name of the invalid argument
-        function (str, optional): Optional name of the called function
+    Arguments:
+        message: Error message to be displayed. Takes precedence over argument
+            and function
+        argument: Optional name of the invalid argument
+        function: Optional name of the called function
     """
 
-    def __init__(self, message=None, *, argument=None, function=None):
+    def __init__(
+        self,
+        message: Optional[str] = None,
+        *,
+        argument: Optional[str] = None,
+        function: Optional[str] = None
+    ):
         # pylint: disable=super-init-not-called
         self.message = message
         self.argument = argument
@@ -63,13 +71,19 @@ class RequiredArgument(GvmError):
 
     Derives from :py:class:`GvmError`
 
-    Attributes:
-        message (str): Error message to be displayed
-        argument (str, optional): Optional name of the required argument
-        function (str, optional): Optional name of the called function
+    Arguments:
+        message: Error message to be displayed. Takes precedence over argument
+            and function.
+        argument: Optional name of the required argument.
+        function: Optional name of the called function.
     """
 
-    def __init__(self, message=None, argument=None, function=None):
+    def __init__(
+        self,
+        message: Optional[str] = None,
+        argument: Optional[str] = None,
+        function: Optional[str] = None,
+    ):
         # pylint: disable=super-init-not-called
         self.message = message
         self.argument = argument
