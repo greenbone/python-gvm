@@ -46,19 +46,6 @@ Severity = numbers.Real
 
 PROTOCOL_VERSION = (7,)
 
-ALIVE_TESTS = (
-    "Consider Alive",
-    "ICMP, TCP-ACK Service & ARP Ping",
-    "TCP-ACK Service & ARP Ping",
-    "ICMP & ARP Ping",
-    "ICMP & TCP-ACK Service Ping",
-    "ARP Ping",
-    "TCP-ACK Service Ping",
-    "TCP-SYN Service Ping",
-    "ICMP Ping",
-    "Scan Config Default",
-)
-
 CREDENTIAL_TYPES = ("cc", "snmp", "up", "usk")
 
 
@@ -169,6 +156,63 @@ def get_alert_method_from_string(
             argument='alert_method',
             function=get_alert_method_from_string.__name__,
         )
+
+
+class AliveTest(Enum):
+    """ Enum for choosing an alive test """
+
+    ICMP_PING = 'ICMP Ping'
+    TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
+    TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
+    APR_PING = 'ARP Ping'
+    ICMP_AND_TCP_ACK_SERVICE_PING = 'ICMP & TCP-ACK Service Ping'
+    ICMP_AND_ARP_PING = 'ICMP & ARP Ping'
+    TCP_ACK_SERVICE_AND_ARP_PING = 'TCP-ACK Service & ARP Ping'
+    ICMP_TCP_ACK_SERVICE_AND_ARP_PING = (  # pylint: disable=invalid-name
+        'ICMP, TCP-ACK Service & ARP Ping'
+    )
+    CONSIDER_ALIVE = 'Consider Alive'
+
+
+def get_alive_test_from_string(
+    alive_test: Optional[str]
+) -> Optional[AliveTest]:
+    """ Convert an alive test string into a AliveTest instance """
+    if not alive_test:
+        return None
+
+    alive_test = alive_test.lower()
+
+    if alive_test == 'icmp ping':
+        return AliveTest.ICMP_PING
+
+    if alive_test == 'tcp-ack service ping':
+        return AliveTest.TCP_ACK_SERVICE_PING
+
+    if alive_test == 'tcp-syn service ping':
+        return AliveTest.TCP_SYN_SERVICE_PING
+
+    if alive_test == 'arp ping':
+        return AliveTest.APR_PING
+
+    if alive_test == 'icmp & tcp-ack service ping':
+        return AliveTest.ICMP_AND_TCP_ACK_SERVICE_PING
+
+    if alive_test == 'icmp & arp ping':
+        return AliveTest.ICMP_AND_ARP_PING
+
+    if alive_test == 'tcp-ack service & arp ping':
+        return AliveTest.TCP_ACK_SERVICE_AND_ARP_PING
+
+    if alive_test == 'icmp, tcp-ack service & arp ping':
+        return AliveTest.ICMP_TCP_ACK_SERVICE_AND_ARP_PING
+
+    if alive_test == 'consider alive':
+        return AliveTest.CONSIDER_ALIVE
+
+    raise InvalidArgument(
+        argument='alive_test', function=get_alive_test_from_string.__name__
+    )
 
 
 class CredentialType(Enum):
@@ -2126,53 +2170,44 @@ class Gmp(GvmProtocol):
 
     def create_target(
         self,
-        name,
+        name: str,
         *,
-        make_unique=None,
-        asset_hosts_filter=None,
-        hosts=None,
-        comment=None,
-        exclude_hosts=None,
-        ssh_credential_id=None,
-        ssh_credential_port=None,
-        smb_credential_id=None,
-        esxi_credential_id=None,
-        snmp_credential_id=None,
-        alive_tests=None,
-        reverse_lookup_only=None,
-        reverse_lookup_unify=None,
-        port_range=None,
-        port_list_id=None
-    ):
+        make_unique: Optional[bool] = None,
+        asset_hosts_filter: Optional[str] = None,
+        hosts: Optional[List[str]] = None,
+        comment: Optional[str] = None,
+        exclude_hosts: Optional[List[str]] = None,
+        ssh_credential_id: Optional[str] = None,
+        ssh_credential_port: Optional[int] = None,
+        smb_credential_id: Optional[str] = None,
+        esxi_credential_id: Optional[str] = None,
+        snmp_credential_id: Optional[str] = None,
+        alive_tests: Optional[AliveTest] = None,
+        reverse_lookup_only: Optional[bool] = None,
+        reverse_lookup_unify: Optional[bool] = None,
+        port_range: Optional[str] = None,
+        port_list_id: Optional[str] = None
+    ) -> Any:
         """Create a new target
 
         Arguments:
-            name (str): Name of the target
-            make_unique (boolean, optional): Append a unique suffix if the name
-                already exists
-            asset_hosts_filter (str, optional): Filter to select target host
-                from assets hosts
-            hosts (list, optional): List of hosts addresses to scan
-            exclude_hosts (list, optional): List of hosts addresses to exclude
-                from scan
-            comment (str, optional): Comment for the target
-            ssh_credential_id (str, optional): UUID of a ssh credential to use
-                on target
-            ssh_credential_port (int, optional): The port to use for ssh
-                credential
-            smb_credential_id (str, optional): UUID of a smb credential to use
-                on target
-            snmp_credential_id (str, optional): UUID of a snmp credential to use
-                on target
-            esxi_credential_id (str, optional): UUID of a esxi credential to use
-                on target
-            alive_tests (str, optional): Which alive tests to use
-            reverse_lookup_only (boolean, optional): Whether to scan only hosts
-                that have names
-            reverse_lookup_unify (boolean, optional): Whether to scan only one
-                IP when multiple IPs have the same name.
-            port_range (str, optional): Port range for the target
-            port_list_id (str, optional): UUID of the port list to use on target
+            name: Name of the target
+            make_unique: Append a unique suffix if the name already exists
+            asset_hosts_filter: Filter to select target host from assets hosts
+            hosts: List of hosts addresses to scan
+            exclude_hosts: List of hosts addresses to exclude from scan
+            comment: Comment for the target
+            ssh_credential_id: UUID of a ssh credential to use on target
+            ssh_credential_port: The port to use for ssh credential
+            smb_credential_id: UUID of a smb credential to use on target
+            snmp_credential_id: UUID of a snmp credential to use on target
+            esxi_credential_id: UUID of a esxi credential to use on target
+            alive_tests: Which alive test to use
+            reverse_lookup_only: Whether to scan only hosts that have names
+            reverse_lookup_unify: Whether to scan only one IP when multiple IPs
+                have the same name.
+            port_range: Port range for the target
+            port_list_id: UUID of the port list to use on target
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2221,15 +2256,12 @@ class Gmp(GvmProtocol):
             cmd.add_element("snmp_credential", attrs={"id": snmp_credential_id})
 
         if alive_tests:
-            if not alive_tests in ALIVE_TESTS:
+            if not isinstance(alive_tests, AliveTest):
                 raise InvalidArgument(
-                    "alive_tests must be one of {tests} but "
-                    "{actual} has been passed".format(
-                        tests="|".join(ALIVE_TESTS), actual=alive_tests
-                    )
+                    function="create_target", argument="alive_tests"
                 )
 
-            cmd.add_element("alive_tests", alive_tests)
+            cmd.add_element("alive_tests", alive_tests.value)
 
         if not reverse_lookup_only is None:
             cmd.add_element(
@@ -5747,47 +5779,40 @@ class Gmp(GvmProtocol):
 
     def modify_target(
         self,
-        target_id,
+        target_id: str,
         *,
-        name=None,
-        comment=None,
-        hosts=None,
-        exclude_hosts=None,
-        ssh_credential_id=None,
-        ssh_credential_port=None,
-        smb_credential_id=None,
-        esxi_credential_id=None,
-        snmp_credential_id=None,
-        alive_tests=None,
-        reverse_lookup_only=None,
-        reverse_lookup_unify=None,
-        port_list_id=None
-    ):
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        hosts: Optional[List[str]] = None,
+        exclude_hosts: Optional[List[str]] = None,
+        ssh_credential_id: Optional[str] = None,
+        ssh_credential_port: Optional[bool] = None,
+        smb_credential_id: Optional[str] = None,
+        esxi_credential_id: Optional[str] = None,
+        snmp_credential_id: Optional[str] = None,
+        alive_tests: Optional[AliveTest] = None,
+        reverse_lookup_only: Optional[bool] = None,
+        reverse_lookup_unify: Optional[bool] = None,
+        port_list_id: Optional[str] = None
+    ) -> Any:
         """Modifies an existing target.
 
         Arguments:
-            target_id (uuid) ID of target to modify.
-            comment (str, optional): Comment on target.
-            name (str, optional): Name of target.
-            hosts (list, optional): List of target hosts.
-            exclude_hosts (list, optional): A list of hosts to exclude.
-            ssh_credential (str, optional): UUID of SSH credential to
-                use on target.
-            ssh_credential_port (int, optional): The port to use for ssh
-                credential
-            smb_credential (str, optional): UUID of SMB credential to use
-                on target.
-            esxi_credential (str, optional): UUID of ESXi credential to use
-                on target.
-            snmp_credential (str, optional): UUID of SNMP credential to use
-                on target.
-            port_list (str, optional): UUID of port list describing ports to
-                scan.
-            alive_tests (str, optional): Which alive tests to use.
-            reverse_lookup_only (boolean, optional): Whether to scan only hosts
-                that have names.
-            reverse_lookup_unify (boolean, optional): Whether to scan only one
-                IP when multiple IPs have the same name.
+            target_id: ID of target to modify.
+            comment: Comment on target.
+            name: Name of target.
+            hosts: List of target hosts.
+            exclude_hosts: A list of hosts to exclude.
+            ssh_credential_id: UUID of SSH credential to use on target.
+            ssh_credential_port: The port to use for ssh credential
+            smb_credential_id: UUID of SMB credential to use on target.
+            esxi_credential_id: UUID of ESXi credential to use on target.
+            snmp_credential_id: UUID of SNMP credential to use on target.
+            port_list_id: UUID of port list describing ports to scan.
+            alive_tests: Which alive tests to use.
+            reverse_lookup_only: Whether to scan only hosts that have names.
+            reverse_lookup_unify: Whether to scan only one IP when multiple IPs
+                have the same name.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5813,14 +5838,11 @@ class Gmp(GvmProtocol):
             cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
 
         if alive_tests:
-            if not alive_tests in ALIVE_TESTS:
+            if not isinstance(alive_tests, AliveTest):
                 raise InvalidArgument(
-                    "alive_tests must be one of {tests} but "
-                    "{actual} has been passed".format(
-                        tests="|".join(ALIVE_TESTS), actual=alive_tests
-                    )
+                    function="modify_target", argument="alive_tests"
                 )
-            cmd.add_element("alive_tests", alive_tests)
+            cmd.add_element("alive_tests", alive_tests.value)
 
         if ssh_credential_id:
             _xmlssh = cmd.add_element(

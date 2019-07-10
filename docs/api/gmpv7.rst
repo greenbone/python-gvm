@@ -20,6 +20,10 @@ Enums
     :members:
     :undoc-members:
 
+.. autoclass:: AliveTest
+    :members:
+    :undoc-members:
+
 .. autoclass:: CredentialType
     :members:
     :undoc-members:

@@ -35,6 +35,7 @@ from gvm.protocols.gmpv7 import (
     AlertCondition,
     AlertEvent,
     AlertMethod,
+    AliveTest,
     Gmp as Gmpv7,
     _to_bool,
     _add_filter,
@@ -54,6 +55,7 @@ __all__ = [
     "AlertCondition",
     "AlertEvent",
     "AlertMethod",
+    "AliveTest",
     "CredentialType",
     "FilterType",
     "Gmp",
@@ -189,22 +191,6 @@ def get_ticket_status_from_string(
             argument='ticket_status',
             function=get_ticket_status_from_string.__name__,
         )
-
-
-class AliveTest(Enum):
-    """ Enum for choosing an alive test """
-
-    ICMP_PING = 'ICMP Ping'
-    TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
-    TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
-    APR_PING = 'ARP Ping'
-    ICMP_AND_TCP_ACK_SERVICE_PING = 'ICMP & TCP-ACK Service Ping'
-    ICMP_AND_ARP_PING = 'ICMP & ARP Ping'
-    TCP_ACK_SERVICE_AND_ARP_PING = 'TCP-ACK Service & ARP Ping'
-    ICMP_TCP_ACK_SERVICE_AND_ARP_PING = (  # pylint: disable=invalid-name
-        'ICMP, TCP-ACK Service & ARP Ping'
-    )
-    CONSIDER_ALIVE = 'Consider Alive'
 
 
 class Gmp(Gmpv7):
@@ -1100,13 +1086,6 @@ class Gmp(Gmpv7):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if alive_test:
-            if not isinstance(alive_test, AliveTest):
-                raise InvalidArgument(
-                    argument='alive_tests', function='create_target'
-                )
-            alive_test = alive_test.value
-
         return super().create_target(
             name,
             asset_hosts_filter=asset_hosts_filter,

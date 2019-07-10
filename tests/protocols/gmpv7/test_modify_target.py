@@ -20,6 +20,8 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import AliveTest
+
 from . import Gmpv7TestCase
 
 
@@ -140,7 +142,7 @@ class GmpModifyTargetTestCase(Gmpv7TestCase):
         )
 
     def test_modify_target_with_alive_tests(self):
-        self.gmp.modify_target(target_id='t1', alive_tests='ICMP Ping')
+        self.gmp.modify_target(target_id='t1', alive_tests=AliveTest.ICMP_PING)
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
