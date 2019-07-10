@@ -157,7 +157,7 @@ class GmpCreateTargetCommandTestCase(Gmpv7TestCase):
 
     def test_create_target_with_alive_tests(self):
         self.gmp.create_target(
-            'foo', hosts=['foo'], alive_tests=AliveTest.ICMP_PING
+            'foo', hosts=['foo'], alive_test=AliveTest.ICMP_PING
         )
 
         self.connection.send.has_been_called_with(
@@ -170,7 +170,7 @@ class GmpCreateTargetCommandTestCase(Gmpv7TestCase):
 
     def test_create_target_invalid_alive_tests(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_target('foo', hosts=['foo'], alive_tests='foo')
+            self.gmp.create_target('foo', hosts=['foo'], alive_test='foo')
 
     def test_create_target_with_reverse_lookup_only(self):
         self.gmp.create_target('foo', hosts=['foo'], reverse_lookup_only=True)

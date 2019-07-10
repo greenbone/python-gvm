@@ -72,6 +72,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Use [enum](https://docs.python.org/3/library/enum.html) for AliveTest and provide
   conversion functions from string type value to enum for Gmpv8
   [PR 136](https://github.com/greenbone/python-gvm/pull/136)
+* Renamed `modify_target` and `create_target` argument `alive_tests` to `alive_test`
+  [PR ]()
 
 ### Removed
 * Removed the format parameter from `get_credentials` method [PR 85](https://github.com/greenbone/python-gvm/pull/85)

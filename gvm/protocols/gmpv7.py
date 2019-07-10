@@ -2182,7 +2182,7 @@ class Gmp(GvmProtocol):
         smb_credential_id: Optional[str] = None,
         esxi_credential_id: Optional[str] = None,
         snmp_credential_id: Optional[str] = None,
-        alive_tests: Optional[AliveTest] = None,
+        alive_test: Optional[AliveTest] = None,
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
         port_range: Optional[str] = None,
@@ -2202,7 +2202,7 @@ class Gmp(GvmProtocol):
             smb_credential_id: UUID of a smb credential to use on target
             snmp_credential_id: UUID of a snmp credential to use on target
             esxi_credential_id: UUID of a esxi credential to use on target
-            alive_tests: Which alive test to use
+            alive_test: Which alive test to use
             reverse_lookup_only: Whether to scan only hosts that have names
             reverse_lookup_unify: Whether to scan only one IP when multiple IPs
                 have the same name.
@@ -2255,13 +2255,13 @@ class Gmp(GvmProtocol):
         if snmp_credential_id:
             cmd.add_element("snmp_credential", attrs={"id": snmp_credential_id})
 
-        if alive_tests:
-            if not isinstance(alive_tests, AliveTest):
+        if alive_test:
+            if not isinstance(alive_test, AliveTest):
                 raise InvalidArgument(
-                    function="create_target", argument="alive_tests"
+                    function="create_target", argument="alive_test"
                 )
 
-            cmd.add_element("alive_tests", alive_tests.value)
+            cmd.add_element("alive_tests", alive_test.value)
 
         if not reverse_lookup_only is None:
             cmd.add_element(
@@ -5790,7 +5790,7 @@ class Gmp(GvmProtocol):
         smb_credential_id: Optional[str] = None,
         esxi_credential_id: Optional[str] = None,
         snmp_credential_id: Optional[str] = None,
-        alive_tests: Optional[AliveTest] = None,
+        alive_test: Optional[AliveTest] = None,
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
         port_list_id: Optional[str] = None
@@ -5809,7 +5809,7 @@ class Gmp(GvmProtocol):
             esxi_credential_id: UUID of ESXi credential to use on target.
             snmp_credential_id: UUID of SNMP credential to use on target.
             port_list_id: UUID of port list describing ports to scan.
-            alive_tests: Which alive tests to use.
+            alive_test: Which alive tests to use.
             reverse_lookup_only: Whether to scan only hosts that have names.
             reverse_lookup_unify: Whether to scan only one IP when multiple IPs
                 have the same name.
@@ -5837,12 +5837,12 @@ class Gmp(GvmProtocol):
         if exclude_hosts:
             cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
 
-        if alive_tests:
-            if not isinstance(alive_tests, AliveTest):
+        if alive_test:
+            if not isinstance(alive_test, AliveTest):
                 raise InvalidArgument(
-                    function="modify_target", argument="alive_tests"
+                    function="modify_target", argument="alive_test"
                 )
-            cmd.add_element("alive_tests", alive_tests.value)
+            cmd.add_element("alive_tests", alive_test.value)
 
         if ssh_credential_id:
             _xmlssh = cmd.add_element(

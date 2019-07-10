@@ -142,7 +142,7 @@ class GmpModifyTargetTestCase(Gmpv7TestCase):
         )
 
     def test_modify_target_with_alive_tests(self):
-        self.gmp.modify_target(target_id='t1', alive_tests=AliveTest.ICMP_PING)
+        self.gmp.modify_target(target_id='t1', alive_test=AliveTest.ICMP_PING)
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
@@ -152,7 +152,7 @@ class GmpModifyTargetTestCase(Gmpv7TestCase):
 
     def test_modify_target_invalid_alive_tests(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.modify_target(target_id='t1', alive_tests='foo')
+            self.gmp.modify_target(target_id='t1', alive_test='foo')
 
     def test_modify_target_with_reverse_lookup_only(self):
         self.gmp.modify_target(target_id='t1', reverse_lookup_only=True)
