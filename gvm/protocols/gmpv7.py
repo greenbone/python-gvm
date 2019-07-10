@@ -1612,23 +1612,23 @@ class Gmp(GvmProtocol):
 
     def import_report(
         self,
-        report,
+        report: str,
         *,
-        task_id=None,
-        task_name=None,
-        task_comment=None,
-        in_assets=None
-    ):
+        task_id: Optional[str] = None,
+        task_name: Optional[str] = None,
+        task_comment: Optional[str] = None,
+        in_assets: Optional[bool] = None
+    ) -> Any:
         """Import a Report from XML
 
         Arguments:
-            report (str): Report XML as string to import. This XML must contain
+            report: Report XML as string to import. This XML must contain
                 a :code:`<report>` root element.
-            task_id (str, optional): UUID of task to import report to
-            task_name (str, optional): Name of task to be created if task_id is
-                not present. Either task_id or task_name must be passed
-            task_comment (str, optional): Comment for task to be created if
-                task_id is not present
+            task_id: UUID of task to import report to
+            task_name: Name of task to be created if task_id is not present.
+                Either task_id or task_name must be passed
+            task_comment: Comment for task to be created if task_id is not
+                present
             in_asset (boolean, optional): Whether to create or update assets
                 using the report
 
@@ -1665,13 +1665,19 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_role(self, name, *, comment=None, users=None):
+    def create_role(
+        self,
+        name: str,
+        *,
+        comment: Optional[str] = None,
+        users: Optional[List[str]] = None
+    ) -> Any:
         """Create a new role
 
         Arguments:
-            name (str): Name of the role
-            comment (str, optional): Comment for the role
-            users (list, optional): List of user names to add to the role
+            name: Name of the role
+            comment: Comment for the role
+            users: List of user names to add to the role
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1691,11 +1697,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def clone_role(self, role_id):
+    def clone_role(self, role_id: str) -> Any:
         """Clone an existing role
 
         Arguments:
-            role_id (str): UUID of an existing role to clone from
+            role_id: UUID of an existing role to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
