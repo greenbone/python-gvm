@@ -28,6 +28,10 @@ Enums
     :members:
     :undoc-members:
 
+.. autoclass:: PermissionSubjectType
+    :members:
+    :undoc-members:
+
 .. autoclass:: SeverityLevel
     :members:
     :undoc-members:

@@ -31,16 +31,18 @@ from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
-from .gmpv7 import (
+from gvm.protocols.gmpv7 import (
     AlertCondition,
     AlertEvent,
     AlertMethod,
     Gmp as Gmpv7,
     _to_bool,
     _add_filter,
+    PermissionSubjectType,
     SeverityLevel,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
+    get_permission_subject_type_from_string,
     get_snmp_auth_algorithm_from_string,
     get_snmp_privacy_algorithm_from_string,
 )
@@ -52,11 +54,13 @@ __all__ = [
     "CredentialType",
     "FilterType",
     "Gmp",
+    "PermissionSubjectType",
     "SeverityLevel",
     "SnmpAuthAlgorithm",
     "SnmpPrivacyAlgorithm",
     "get_credential_type_from_string",
     "get_filter_type_from_string",
+    "get_permission_subject_type_from_string",
     "get_snmp_auth_algorithm_from_string",
     "get_snmp_privacy_algorithm_from_string",
     "get_ticket_status_from_string",

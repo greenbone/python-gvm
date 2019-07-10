@@ -265,6 +265,36 @@ def get_filter_type_from_string(
         )
 
 
+class PermissionSubjectType(Enum):
+    """ Enum for permission subject type """
+
+    USER = 'user'
+    GROUP = 'group'
+    ROLE = 'role'
+
+
+def get_permission_subject_type_from_string(
+    subject_type: Optional[str]
+) -> Optional[PermissionSubjectType]:
+    """ Convert a permission subject type string to an actual
+    PermissionSubjectType instance
+
+    Arguments:
+        subject_type: Permission subject type string to convert to a
+            PermissionSubjectType
+    """
+    if not subject_type:
+        return None
+
+    try:
+        return PermissionSubjectType[subject_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='subject_type',
+            function=get_permission_subject_type_from_string.__name__,
+        )
+
+
 class SnmpAuthAlgorithm(Enum):
     """ Enum for SNMP auth algorithm """
 
@@ -1368,7 +1398,7 @@ class Gmp(GvmProtocol):
         self,
         name: str,
         subject_id: str,
-        subject_type,
+        subject_type: PermissionSubjectType,
         *,
         resource_id: Optional[str] = None,
         resource_type=None,
@@ -1396,17 +1426,19 @@ class Gmp(GvmProtocol):
                 "create_permission requires a subject_id argument"
             )
 
-        if subject_type not in SUBJECT_TYPES:
+        if not isinstance(subject_type, PermissionSubjectType):
             raise InvalidArgument(
-                "create_permission requires subject_type to be either user, "
-                "group or role"
+                "create_permission requires subject_type to be a "
+                "PermissionSubjectType instance",
+                function="create_permission",
+                argument="subject_type",
             )
 
         cmd = XmlCommand("create_permission")
         cmd.add_element("name", name)
 
         _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
-        _xmlsubject.add_element("type", subject_type)
+        _xmlsubject.add_element("type", subject_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -5109,30 +5141,26 @@ class Gmp(GvmProtocol):
 
     def modify_permission(
         self,
-        permission_id,
+        permission_id: str,
         *,
-        comment=None,
-        name=None,
-        resource_id=None,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        resource_id: Optional[str] = None,
         resource_type=None,
-        subject_id=None,
-        subject_type=None
-    ):
+        subject_id: Optional[str] = None,
+        subject_type: Optional[PermissionSubjectType] = None
+    ) -> Any:
         """Modifies an existing permission.
 
         Arguments:
-            permission_id (str): UUID of permission to be modified.
-            comment (str, optional): The comment on the permission.
-            name (str, optional): Permission name, currently the name of
-                a command.
-            subject_id (str, optional): UUID of subject to whom the permission
-                is granted
-            subject_type (str, optional): Type of the subject user, group or
-                role
-            resource_id (str, optional): UUID of entity to which the permission
-                applies
-            resource_type (str, optional): Type of the resource. For Super
-                permissions user, group or role
+            permission_id: UUID of permission to be modified.
+            comment: The comment on the permission.
+            name: Permission name, currently the name of a command.
+            subject_id: UUID of subject to whom the permission is granted
+            subject_type: Type of the subject user, group or role
+            resource_id: UUID of entity to which the permission applies
+            resource_type: Type of the resource. For Super permissions user,
+                group or role
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5173,14 +5201,16 @@ class Gmp(GvmProtocol):
                     "modify_permission requires a subject_id for subject_type"
                 )
 
-            if subject_type not in SUBJECT_TYPES:
+            if not isinstance(subject_type, PermissionSubjectType):
                 raise InvalidArgument(
-                    "modify_permission requires subject_type to be either "
-                    "user, group or role"
+                    "modify_permission requires subject_type to be a "
+                    "PermissionSubjectType instance",
+                    function="modify_permission",
+                    argument="subject_type",
                 )
 
             _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
-            _xmlsubject.add_element("type", subject_type)
+            _xmlsubject.add_element("type", subject_type.value)
 
         return self._send_xml_command(cmd)
 
