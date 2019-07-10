@@ -31,12 +31,43 @@ from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
-from .gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
+from .gmpv7 import (
+    AlertCondition,
+    AlertEvent,
+    AlertMethod,
+    Gmp as Gmpv7,
+    _to_bool,
+    _add_filter,
+    SeverityLevel,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+    get_snmp_auth_algorithm_from_string,
+    get_snmp_privacy_algorithm_from_string,
+)
+
+__all__ = [
+    "AlertCondition",
+    "AlertEvent",
+    "AlertMethod",
+    "CredentialType",
+    "FilterType",
+    "Gmp",
+    "SeverityLevel",
+    "SnmpAuthAlgorithm",
+    "SnmpPrivacyAlgorithm",
+    "get_credential_type_from_string",
+    "get_filter_type_from_string",
+    "get_snmp_auth_algorithm_from_string",
+    "get_snmp_privacy_algorithm_from_string",
+    "get_ticket_status_from_string",
+]
 
 PROTOCOL_VERSION = (8,)
 
 
 class FilterType(Enum):
+    """ Enum for filter types """
+
     AGENT = "agent"
     ALERT = "alert"
     ASSET = "asset"
@@ -97,6 +128,8 @@ def get_filter_type_from_string(
 
 
 class CredentialType(Enum):
+    """ Enum for credential types """
+
     CLIENT_CERTIFICATE = 'cc'
     SNMP = 'snmp'
     USERNAME_PASSWORD = 'up'
@@ -124,6 +157,8 @@ def get_credential_type_from_string(
 
 
 class TicketStatus(Enum):
+    """ Enum for ticket status """
+
     OPEN = 'Open'
     FIXED = 'Fixed'
     CLOSED = 'Closed'
@@ -146,52 +181,9 @@ def get_ticket_status_from_string(
         )
 
 
-class SnmpAuthAlgorithm(Enum):
-    SHA1 = 'sha1'
-    MD5 = 'md5'
-
-
-def get_snmp_auth_algorithm_from_string(
-    algorithm: Optional[str]
-) -> Optional[TicketStatus]:
-    """ Convert a SNMP auth algorithm string into a SnmpAuthAlgorithm instance
-    """
-    if not algorithm:
-        return None
-
-    try:
-        return SnmpAuthAlgorithm[algorithm.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='algorithm',
-            function=get_snmp_auth_algorithm_from_string.__name__,
-        )
-
-
-class SnmpPrivacyAlgorithm(Enum):
-    AES = 'aes'
-    DES = 'des'
-
-
-def get_snmp_privacy_algorithm_from_string(
-    algorithm: Optional[str]
-) -> Optional[TicketStatus]:
-    """ Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
-        instance
-    """
-    if not algorithm:
-        return None
-
-    try:
-        return SnmpPrivacyAlgorithm[algorithm.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='algorithm',
-            function=get_snmp_privacy_algorithm_from_string.__name__,
-        )
-
-
 class AliveTest(Enum):
+    """ Enum for choosing an alive test """
+
     ICMP_PING = 'ICMP Ping'
     TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
     TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
@@ -206,6 +198,9 @@ class AliveTest(Enum):
 
 
 class Gmp(Gmpv7):
+
+    _filter_type = FilterType
+
     @staticmethod
     def get_protocol_version() -> str:
         """Determine the Greenbone Management Protocol version.
@@ -992,37 +987,16 @@ class Gmp(Gmpv7):
 
         Arguments:
             name: Name of the new filter
-            filter_type: Entity type for the new filter
+            filter_type: Filter for entity type
             comment: Comment for the filter
             term: Filter term e.g. 'name=foo'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not name:
-            raise RequiredArgument(function="create_filter", argument="name")
-
-        cmd = XmlCommand("create_filter")
-        _xmlname = cmd.add_element("name", name)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if term:
-            cmd.add_element("term", term)
-
-        if filter_type:
-            if not isinstance(filter_type, FilterType):
-                raise InvalidArgument(
-                    "create_filter requires type to be a FilterType instance. "
-                    "was {}".format(filter_type),
-                    function="create_filter",
-                    argument="filter_type",
-                )
-
-            cmd.add_element("type", filter_type.value)
-
-        return self._send_xml_command(cmd)
+        return super().create_filter(
+            name, filter_type=filter_type, comment=comment, term=term
+        )
 
     def modify_filter(
         self,
