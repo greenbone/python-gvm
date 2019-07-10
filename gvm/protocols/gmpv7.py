@@ -88,13 +88,20 @@ def get_alert_event_from_string(
     if not alert_event:
         return None
 
-    try:
-        return AlertEvent[alert_event.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='alert_event',
-            function=get_alert_event_from_string.__name__,
-        )
+    alert_event = alert_event.lower()
+
+    if alert_event == 'task run status changed':
+        return AlertEvent.TASK_RUN_STATUS_CHANGED
+
+    if alert_event == 'updated secinfo arrived':
+        return AlertEvent.UPDATED_SECINFO_ARRIVED
+
+    if alert_event == 'new secinfo arrived':
+        return AlertEvent.NEW_SECINFO_ARRIVED
+
+    raise InvalidArgument(
+        argument='alert_event', function=get_alert_event_from_string.__name__
+    )
 
 
 class AlertCondition(Enum):
@@ -113,13 +120,21 @@ def get_alert_condition_from_string(
     if not alert_condition:
         return None
 
-    try:
-        return AlertCondition[alert_condition.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='alert_condition',
-            function=get_alert_condition_from_string.__name__,
-        )
+    alert_condition = alert_condition.lower()
+
+    if alert_condition == 'always':
+        return AlertCondition.ALWAYS
+
+    if alert_condition == 'filter count changed':
+        return AlertCondition.FILTER_COUNT_CHANGED
+
+    if alert_condition == 'filter count at least':
+        return AlertCondition.FILTER_COUNT_AT_LEAST
+
+    raise InvalidArgument(
+        argument='alert_condition',
+        function=get_alert_condition_from_string.__name__,
+    )
 
 
 class AlertMethod(Enum):
@@ -144,8 +159,22 @@ def get_alert_method_from_string(
     if not alert_method:
         return None
 
+    alert_method = alert_method.upper()
+
+    if alert_method == 'START TASK':
+        return AlertMethod.START_TASK
+
+    if alert_method == 'HTTP GET':
+        return AlertMethod.HTTP_GET
+
+    if alert_method == 'SOURCEFIRE CONNECTOR':
+        return AlertMethod.SOURCEFIRE_CONNECTOR
+
+    if alert_method == 'VERINICE CONNECTOR':
+        return AlertMethod.VERINICE_CONNECTOR
+
     try:
-        return AlertMethod[alert_method.upper()]
+        return AlertMethod[alert_method]
     except KeyError:
         raise InvalidArgument(
             argument='alert_method',
