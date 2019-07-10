@@ -43,6 +43,7 @@ from gvm.protocols.gmpv7 import (
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
     get_permission_subject_type_from_string,
+    get_severity_level_from_string,
     get_snmp_auth_algorithm_from_string,
     get_snmp_privacy_algorithm_from_string,
 )
@@ -61,6 +62,7 @@ __all__ = [
     "get_credential_type_from_string",
     "get_filter_type_from_string",
     "get_permission_subject_type_from_string",
+    "get_severity_level_from_string",
     "get_snmp_auth_algorithm_from_string",
     "get_snmp_privacy_algorithm_from_string",
     "get_ticket_status_from_string",
