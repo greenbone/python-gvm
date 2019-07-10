@@ -36,7 +36,7 @@ Enums
     :members:
     :undoc-members:
 
-.. autoclass:: TicketStatus
+.. autoclass:: ScannerType
     :members:
     :undoc-members:
 
@@ -53,6 +53,10 @@ Enums
     :undoc-members:
 
 .. autoclass:: SnmpPrivacyAlgorithm
+    :members:
+    :undoc-members:
+
+.. autoclass:: TicketStatus
     :members:
     :undoc-members:
 

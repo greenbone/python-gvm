@@ -20,6 +20,8 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import ScannerType
+
 from . import Gmpv7TestCase
 
 
@@ -29,7 +31,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
             name='foo',
             host='localhost',
             port=1234,
-            scanner_type='1',
+            scanner_type=ScannerType.OSP_SCANNER_TYPE,
             credential_id='c1',
         )
 
@@ -49,7 +51,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
                 name=None,
                 host='localhost',
                 port=1234,
-                scanner_type='1',
+                scanner_type=ScannerType.OSP_SCANNER_TYPE,
                 credential_id='c1',
             )
 
@@ -68,7 +70,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
                 name='foo',
                 host=None,
                 port=1234,
-                scanner_type='1',
+                scanner_type=ScannerType.OSP_SCANNER_TYPE,
                 credential_id='c1',
             )
 
@@ -77,7 +79,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
                 name='foo',
                 host='',
                 port=1234,
-                scanner_type='1',
+                scanner_type=ScannerType.OSP_SCANNER_TYPE,
                 credential_id='c1',
             )
 
@@ -87,7 +89,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
                 name='foo',
                 host='localhost',
                 port=None,
-                scanner_type='1',
+                scanner_type=ScannerType.OSP_SCANNER_TYPE,
                 credential_id='c1',
             )
 
@@ -96,7 +98,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
                 name='foo',
                 host='localhost',
                 port='',
-                scanner_type='1',
+                scanner_type=ScannerType.OSP_SCANNER_TYPE,
                 credential_id='c1',
             )
 
@@ -125,7 +127,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
                 name='foo',
                 host='localhost',
                 port=1234,
-                scanner_type='1',
+                scanner_type=ScannerType.OSP_SCANNER_TYPE,
                 credential_id=None,
             )
 
@@ -134,7 +136,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
                 name='foo',
                 host='localhost',
                 port=1234,
-                scanner_type='1',
+                scanner_type=ScannerType.OSP_SCANNER_TYPE,
                 credential_id='',
             )
 
@@ -163,7 +165,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
             host='localhost',
             port=1234,
             ca_pub='foo',
-            scanner_type='1',
+            scanner_type=ScannerType.OSP_SCANNER_TYPE,
             credential_id='c1',
         )
 
@@ -183,7 +185,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
             name='foo',
             host='localhost',
             port=1234,
-            scanner_type='1',
+            scanner_type=ScannerType.OSP_SCANNER_TYPE,
             credential_id='c1',
             comment='bar',
         )

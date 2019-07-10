@@ -322,6 +322,57 @@ def get_port_range_type_from_string(
         )
 
 
+class ScannerType(Enum):
+    """ Enum for scanner type """
+
+    OSP_SCANNER_TYPE = "1"
+    OPENVAS_SCANNER_TYPE = "2"
+    CVE_SCANNER_TYPE = "3"
+    GMP_SCANNER_TYPE = "4"  # formerly slave scanner
+
+
+def get_scanner_type_from_string(
+    scanner_type: Optional[str]
+) -> Optional[ScannerType]:
+    """ Convert a scanner type string to an actual ScannerType instance
+
+    Arguments:
+        scanner_type: Scanner type string to convert to a ScannerType
+    """
+    if not scanner_type:
+        return None
+
+    scanner_type = scanner_type.lower()
+
+    if (
+        scanner_type == ScannerType.OSP_SCANNER_TYPE.value
+        or scanner_type == 'osp'
+    ):
+        return ScannerType.OSP_SCANNER_TYPE
+
+    if (
+        scanner_type == ScannerType.OPENVAS_SCANNER_TYPE.value
+        or scanner_type == 'openvas'
+    ):
+        return ScannerType.OPENVAS_SCANNER_TYPE
+
+    if (
+        scanner_type == ScannerType.CVE_SCANNER_TYPE.value
+        or scanner_type == 'cve'
+    ):
+        return ScannerType.CVE_SCANNER_TYPE
+
+    if (
+        scanner_type == ScannerType.GMP_SCANNER_TYPE.value
+        or scanner_type == 'gmp'
+    ):
+        return ScannerType.GMP_SCANNER_TYPE
+
+    raise InvalidArgument(
+        argument='scanner_type', function=get_scanner_type_from_string.__name__
+    )
+
+
 class SnmpAuthAlgorithm(Enum):
     """ Enum for SNMP auth algorithm """
 
@@ -396,19 +447,6 @@ def get_severity_level_from_string(
             argument='severity_level',
             function=get_severity_level_from_string.__name__,
         )
-
-
-OSP_SCANNER_TYPE = "1"
-OPENVAS_SCANNER_TYPE = "2"
-CVE_SCANNER_TYPE = "3"
-GMP_SCANNER_TYPE = "4"  # formerly slave scanner
-
-SCANNER_TYPES = (
-    OSP_SCANNER_TYPE,
-    OPENVAS_SCANNER_TYPE,
-    CVE_SCANNER_TYPE,
-    GMP_SCANNER_TYPE,
-)
 
 
 ASSET_TYPES = ("host", "os")
@@ -1715,28 +1753,26 @@ class Gmp(GvmProtocol):
 
     def create_scanner(
         self,
-        name,
-        host,
-        port,
-        scanner_type,
-        credential_id,
+        name: str,
+        host: str,
+        port: int,
+        scanner_type: ScannerType,
+        credential_id: str,
         *,
-        ca_pub=None,
-        comment=None
-    ):
+        ca_pub: Optional[str] = None,
+        comment: Optional[str] = None
+    ) -> Any:
         """Create a new scanner
 
         Arguments:
-            name (str): Name of the scanner
-            host (str): The host of the scanner
-            port (int): The port of the scanner
-            scanner_type (str): Type of the scanner.
-                '1' for OSP, '2' for OpenVAS (classic) Scanner.
-            credential_id (str): UUID of client certificate credential for the
+            name: Name of the scanner
+            host: The host of the scanner
+            port: The port of the scanner
+            scanner_type: Type of the scanner.
+            credential_id: UUID of client certificate credential for the
                 scanner
-            ca_pub (str, optional): Certificate of CA to verify scanner
-                certificate
-            comment (str, optional): Comment for the scanner
+            ca_pub: Certificate of CA to verify scanner certificate
+            comment: Comment for the scanner
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1760,19 +1796,16 @@ class Gmp(GvmProtocol):
                 "create_scanner requires a credential_id " "argument"
             )
 
-        if scanner_type not in SCANNER_TYPES:
+        if not isinstance(scanner_type, ScannerType):
             raise InvalidArgument(
-                "create_scanner requires a scanner_type "
-                'argument which must be either "1" for OSP, '
-                '"2" for OpenVAS (Classic), "3" for CVE or '
-                '"4" for GMP Scanner.'
+                function="create_scanner", argument="scanner_type"
             )
 
         cmd = XmlCommand("create_scanner")
         cmd.add_element("name", name)
         cmd.add_element("host", host)
         cmd.add_element("port", str(port))
-        cmd.add_element("type", scanner_type)
+        cmd.add_element("type", scanner_type.value)
 
         if ca_pub:
             cmd.add_element("ca_pub", ca_pub)
@@ -5358,31 +5391,28 @@ class Gmp(GvmProtocol):
 
     def modify_scanner(
         self,
-        scanner_id,
+        scanner_id: str,
         *,
-        scanner_type=None,
-        host=None,
-        port=None,
-        comment=None,
-        name=None,
-        ca_pub=None,
-        credential_id=None
-    ):
+        scanner_type: Optional[ScannerType] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        ca_pub: Optional[str] = None,
+        credential_id: Optional[str] = None
+    ) -> Any:
         """Modifies an existing scanner.
 
         Arguments:
-            scanner_id (str): UUID of scanner to modify.
-            scanner_type (str, optional): New type of the Scanner. Must be one
-                of '1' (OSP Scanner), '2' (OpenVAS Scanner), '3' CVE Scanner or
-                '4' (GMP Scanner).
-            host (str, optional): Host of the scanner.
-            port (int, optional): Port of the scanner.
-            comment (str, optional): Comment on scanner.
-            name (str, optional): Name of scanner.
-            ca_pub (str, optional): Certificate of CA to verify scanner's
-                certificate.
-            credential_id (str, optional): UUID of the client certificate
-                credential for the Scanner.
+            scanner_id: UUID of scanner to modify.
+            scanner_type: New type of the Scanner.
+            host: Host of the scanner.
+            port: Port of the scanner.
+            comment: Comment on scanner.
+            name: Name of scanner.
+            ca_pub: Certificate of CA to verify scanner's certificate.
+            credential_id: UUID of the client certificate credential for the
+                Scanner.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5392,19 +5422,16 @@ class Gmp(GvmProtocol):
                 "modify_scanner requires a scanner_id argument"
             )
 
-        if scanner_type is not None and scanner_type not in SCANNER_TYPES:
-            raise InvalidArgument(
-                "modify_scanner requires a scanner_type "
-                'argument which must be either "1" for OSP, '
-                '"2" for OpenVAS (Classic), "3" for CVE or '
-                '"4" for GMP Scanner.'
-            )
-
         cmd = XmlCommand("modify_scanner")
         cmd.set_attribute("scanner_id", scanner_id)
 
-        if scanner_type:
-            cmd.add_element("type", scanner_type)
+        if scanner_type is not None:
+            if not isinstance(scanner_type, ScannerType):
+                raise InvalidArgument(
+                    function="modify_scanner", argument="scanner_type"
+                )
+
+            cmd.add_element("type", scanner_type.value)
 
         if host:
             cmd.add_element("host", host)

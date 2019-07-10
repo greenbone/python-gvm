@@ -36,6 +36,10 @@ Enums
     :members:
     :undoc-members:
 
+.. autoclass:: ScannerType
+    :members:
+    :undoc-members:
+
 .. autoclass:: SeverityLevel
     :members:
     :undoc-members:

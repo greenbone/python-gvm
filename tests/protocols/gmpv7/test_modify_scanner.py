@@ -19,12 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv7 import (
-    OSP_SCANNER_TYPE,
-    OPENVAS_SCANNER_TYPE,
-    CVE_SCANNER_TYPE,
-    GMP_SCANNER_TYPE,
-)
+from gvm.protocols.gmpv7 import ScannerType
 
 from . import Gmpv7TestCase
 
@@ -107,7 +102,9 @@ class GmpModifyScannerTestCase(Gmpv7TestCase):
         )
 
     def test_modify_scanner_with_scanner_type(self):
-        self.gmp.modify_scanner(scanner_id='s1', scanner_type=OSP_SCANNER_TYPE)
+        self.gmp.modify_scanner(
+            scanner_id='s1', scanner_type=ScannerType.OSP_SCANNER_TYPE
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_scanner scanner_id="s1">'
@@ -116,7 +113,7 @@ class GmpModifyScannerTestCase(Gmpv7TestCase):
         )
 
         self.gmp.modify_scanner(
-            scanner_id='s1', scanner_type=OPENVAS_SCANNER_TYPE
+            scanner_id='s1', scanner_type=ScannerType.OPENVAS_SCANNER_TYPE
         )
 
         self.connection.send.has_been_called_with(
@@ -125,7 +122,9 @@ class GmpModifyScannerTestCase(Gmpv7TestCase):
             '</modify_scanner>'
         )
 
-        self.gmp.modify_scanner(scanner_id='s1', scanner_type=CVE_SCANNER_TYPE)
+        self.gmp.modify_scanner(
+            scanner_id='s1', scanner_type=ScannerType.CVE_SCANNER_TYPE
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_scanner scanner_id="s1">'
@@ -133,7 +132,9 @@ class GmpModifyScannerTestCase(Gmpv7TestCase):
             '</modify_scanner>'
         )
 
-        self.gmp.modify_scanner(scanner_id='s1', scanner_type=GMP_SCANNER_TYPE)
+        self.gmp.modify_scanner(
+            scanner_id='s1', scanner_type=ScannerType.GMP_SCANNER_TYPE
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_scanner scanner_id="s1">'
@@ -149,7 +150,7 @@ class GmpModifyScannerTestCase(Gmpv7TestCase):
             self.gmp.modify_scanner(scanner_id='s1', scanner_type='-1')
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.modify_scanner(scanner_id='s1', scanner_type='66')
+            self.gmp.modify_scanner(scanner_id='s1', scanner_type=1)
 
 
 if __name__ == '__main__':
