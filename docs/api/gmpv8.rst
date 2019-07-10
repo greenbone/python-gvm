@@ -40,6 +40,10 @@ Enums
     :members:
     :undoc-members:
 
+.. autoclass:: PortRangeType
+    :members:
+    :undoc-members:
+
 .. autoclass:: SeverityLevel
     :members:
     :undoc-members:

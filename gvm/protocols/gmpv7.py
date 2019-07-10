@@ -295,6 +295,33 @@ def get_permission_subject_type_from_string(
         )
 
 
+class PortRangeType(Enum):
+    """ Enum for port range type """
+
+    TCP = 'TCP'
+    UDP = 'UDP'
+
+
+def get_port_range_type_from_string(
+    port_range_type: Optional[str]
+) -> Optional[PortRangeType]:
+    """ Convert a port range type string to an actual PortRangeType instance
+
+    Arguments:
+        port_range_type: Port range type string to convert to a PortRangeType
+    """
+    if not port_range_type:
+        return None
+
+    try:
+        return PortRangeType[port_range_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='port_range_type',
+            function=get_port_range_type_from_string.__name__,
+        )
+
+
 class SnmpAuthAlgorithm(Enum):
     """ Enum for SNMP auth algorithm """
 
@@ -1533,10 +1560,10 @@ class Gmp(GvmProtocol):
         port_list_id: str,
         start: int,
         end: int,
-        port_range_type,
+        port_range_type: PortRangeType,
         *,
         comment: Optional[str] = None
-    ):
+    ) -> Any:
         """Create new port range
 
         Arguments:
@@ -1567,11 +1594,16 @@ class Gmp(GvmProtocol):
         if not end:
             raise RequiredArgument("create_port_range requires a end argument")
 
+        if not isinstance(port_range_type, PortRangeType):
+            raise InvalidArgument(
+                function="create_port_range", argument="port_range_type"
+            )
+
         cmd = XmlCommand("create_port_range")
         cmd.add_element("port_list", attrs={"id": port_list_id})
         cmd.add_element("start", str(start))
         cmd.add_element("end", str(end))
-        cmd.add_element("type", port_range_type)
+        cmd.add_element("type", port_range_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
