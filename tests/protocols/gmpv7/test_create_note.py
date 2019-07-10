@@ -22,6 +22,8 @@ from decimal import Decimal
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import SeverityLevel
+
 from . import Gmpv7TestCase
 
 
@@ -145,7 +147,7 @@ class GmpCreateNoteTestCase(Gmpv7TestCase):
         )
 
     def test_create_note_with_threat(self):
-        self.gmp.create_note('foo', nvt_oid='oid1', threat='High')
+        self.gmp.create_note('foo', nvt_oid='oid1', threat=SeverityLevel.HIGH)
 
         self.connection.send.has_been_called_with(
             '<create_note>'

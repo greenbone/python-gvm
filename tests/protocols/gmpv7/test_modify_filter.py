@@ -20,6 +20,8 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import FilterType
+
 from . import Gmpv7TestCase
 
 
@@ -32,7 +34,7 @@ class GmpModifyFilterTestCase(Gmpv7TestCase):
         )
 
     def test_modify_filter_with_filter_type(self):
-        self.gmp.modify_filter(filter_id='f1', filter_type='task')
+        self.gmp.modify_filter(filter_id='f1', filter_type=FilterType.TASK)
 
         self.connection.send.has_been_called_with(
             '<modify_filter filter_id="f1">'

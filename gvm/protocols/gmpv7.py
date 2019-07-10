@@ -28,8 +28,12 @@ import collections
 import logging
 import numbers
 
+from enum import Enum
+from typing import Any, List, Optional, Callable
+
 from lxml import etree
 
+from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string, deprecation
 from gvm.xml import XmlCommand, create_parser
@@ -38,31 +42,9 @@ from .base import GvmProtocol
 
 logger = logging.getLogger(__name__)
 
-PROTOCOL_VERSION = (7,)
+Severity = numbers.Real
 
-FILTER_TYPES = (
-    "agent",
-    "alert",
-    "asset",
-    "config",
-    "credential",
-    "filter",
-    "group",
-    "note",
-    "override",
-    "permission",
-    "port_list",
-    "report",
-    "report_format",
-    "result",
-    "role",
-    "schedule",
-    "secinfo",
-    "tag",
-    "target",
-    "task",
-    "user",
-)
+PROTOCOL_VERSION = (7,)
 
 TIME_UNITS = (
     "second",
@@ -90,6 +72,246 @@ ALIVE_TESTS = (
 
 CREDENTIAL_TYPES = ("cc", "snmp", "up", "usk")
 
+
+class AlertEvent(Enum):
+    """ Enum for alert event types """
+
+    TASK_RUN_STATUS_CHANGED = 'Task run status changed'
+    UPDATED_SECINFO_ARRIVED = 'Updated SecInfo arrived'
+    NEW_SECINFO_ARRIVED = 'New SecInfo arrived'
+
+
+def get_alert_event_from_string(
+    alert_event: Optional[str]
+) -> Optional[AlertEvent]:
+    """ Convert an alert event string into a AlertEvent instance """
+    if not alert_event:
+        return None
+
+    try:
+        return AlertEvent[alert_event.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='alert_event',
+            function=get_alert_event_from_string.__name__,
+        )
+
+
+class AlertCondition(Enum):
+    """ Enum for alert condition types """
+
+    ALWAYS = 'Always'
+    SEVERITY_AT_LEAST = 'Severity at least'
+    FILTER_COUNT_CHANGED = 'Filter count changed'
+    FILTER_COUNT_AT_LEAST = 'Filter count at least'
+
+
+def get_alert_condition_from_string(
+    alert_condition: Optional[str]
+) -> Optional[AlertCondition]:
+    """ Convert an alert condition string into a AlertCondition instance """
+    if not alert_condition:
+        return None
+
+    try:
+        return AlertCondition[alert_condition.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='alert_condition',
+            function=get_alert_condition_from_string.__name__,
+        )
+
+
+class AlertMethod(Enum):
+    """ Enum for alert method type"""
+
+    SCP = "SCP"
+    SEND = "Send"
+    SMB = "SMB"
+    SNMP = "SNMP"
+    SYSLOG = "Syslog"
+    EMAIL = "Email"
+    START_TASK = "Start Task"
+    HTTP_GET = "HTTP Get"
+    SOURCEFIRE_CONNECTOR = "Sourcefire Connector"
+    VERINICE_CONNECTOR = "verinice Connector"
+
+
+def get_alert_method_from_string(
+    alert_method: Optional[str]
+) -> Optional[AlertMethod]:
+    """ Convert an alert method string into a AlertCondition instance """
+    if not alert_method:
+        return None
+
+    try:
+        return AlertMethod[alert_method.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='alert_method',
+            function=get_alert_method_from_string.__name__,
+        )
+
+
+class CredentialType(Enum):
+    """ Enum for credential types """
+
+    CLIENT_CERTIFICATE = 'cc'
+    SNMP = 'snmp'
+    USERNAME_PASSWORD = 'up'
+    USERNAME_SSH_KEY = 'usk'
+
+
+def get_credential_type_from_string(
+    credential_type: Optional[str]
+) -> Optional[CredentialType]:
+    """ Convert a credential type string into a CredentialType instance
+    """
+    if not credential_type:
+        return None
+
+    try:
+        return CredentialType[credential_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='credential_type',
+            function=get_credential_type_from_string.__name__,
+        )
+
+
+class FilterType(Enum):
+    """ Enum for filter types """
+
+    AGENT = "agent"
+    ALERT = "alert"
+    ASSET = "asset"
+    SCAN_CONFIG = "config"
+    CREDENTIAL = "credential"
+    FILTER = "filter"
+    GROUP = "group"
+    HOST = "host"
+    NOTE = "note"
+    OPERATING_SYSTEM = "os"
+    OVERRIDE = "override"
+    PERMISSION = "permission"
+    PORT_LIST = "port_list"
+    REPORT = "report"
+    REPORT_FORMAT = "report_format"
+    RESULT = "result"
+    ROLE = "role"
+    SCHEDULE = "schedule"
+    ALL_SECINFO = "secinfo"
+    TAG = "tag"
+    TARGET = "target"
+    TASK = "task"
+    USER = "user"
+
+
+def get_filter_type_from_string(
+    filter_type: Optional[str]
+) -> Optional[FilterType]:
+    """ Convert a filter type string to an actual FilterType instance
+
+    Arguments:
+        filter_type (str): Filter type string to convert to a FilterType
+    """
+    if not filter_type:
+        return None
+
+    if filter_type == 'os':
+        return FilterType.OPERATING_SYSTEM
+
+    if filter_type == 'config':
+        return FilterType.SCAN_CONFIG
+
+    if filter_type == 'secinfo':
+        return FilterType.ALL_SECINFO
+
+    try:
+        return FilterType[filter_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='filter_type',
+            function=get_filter_type_from_string.__name__,
+        )
+
+
+class SnmpAuthAlgorithm(Enum):
+    """ Enum for SNMP auth algorithm """
+
+    SHA1 = 'sha1'
+    MD5 = 'md5'
+
+
+def get_snmp_auth_algorithm_from_string(
+    algorithm: Optional[str]
+) -> Optional[SnmpAuthAlgorithm]:
+    """ Convert a SNMP auth algorithm string into a SnmpAuthAlgorithm instance
+    """
+    if not algorithm:
+        return None
+
+    try:
+        return SnmpAuthAlgorithm[algorithm.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='algorithm',
+            function=get_snmp_auth_algorithm_from_string.__name__,
+        )
+
+
+class SnmpPrivacyAlgorithm(Enum):
+    """ Enum for SNMP privacy algorithm """
+
+    AES = 'aes'
+    DES = 'des'
+
+
+def get_snmp_privacy_algorithm_from_string(
+    algorithm: Optional[str]
+) -> Optional[SnmpPrivacyAlgorithm]:
+    """ Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
+        instance
+    """
+    if not algorithm:
+        return None
+
+    try:
+        return SnmpPrivacyAlgorithm[algorithm.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='algorithm',
+            function=get_snmp_privacy_algorithm_from_string.__name__,
+        )
+
+
+class SeverityLevel(Enum):
+    """ Enum for severity levels """
+
+    HIGH = "High"
+    MEDIUM = "Medium"
+    LOW = "Low"
+    LOG = "Log"
+    ALARM = "Alarm"
+    DEBUG = "Debug"
+
+
+def get_severity_level_from_string(
+    severity_level: Optional[str]
+) -> Optional[SeverityLevel]:
+    """ Convert a severity level string into a SeverityLevel instance """
+    if not severity_level:
+        return None
+
+    try:
+        return SeverityLevel[severity_level.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='severity_level',
+            function=get_severity_level_from_string.__name__,
+        )
+
+
 OSP_SCANNER_TYPE = "1"
 OPENVAS_SCANNER_TYPE = "2"
 CVE_SCANNER_TYPE = "3"
@@ -102,33 +324,6 @@ SCANNER_TYPES = (
     GMP_SCANNER_TYPE,
 )
 
-ALERT_EVENTS = ("Task run status changed",)
-
-ALERT_EVENTS_SECINFO = ("Updated SecInfo arrived", "New SecInfo arrived")
-
-ALERT_CONDITIONS = (
-    "Always",
-    "Severity at least",
-    "Filter count changed",
-    "Filter count at least",
-)
-
-ALERT_CONDITIONS_SECINFO = ("Always",)
-
-ALERT_METHODS = (
-    "SCP",
-    "Send",
-    "SMB",
-    "SNMP",
-    "Syslog",
-    "Email",
-    "Start Task",
-    "HTTP Get",
-    "Sourcefire Connector",
-    "verinice Connector",
-)
-
-ALERT_METHODS_SECINFO = ("SCP", "Send", "SMB", "SNMP", "Syslog", "Email")
 
 ASSET_TYPES = ("host", "os")
 
@@ -142,7 +337,6 @@ INFO_TYPES = (
     "ALLINFO",
 )
 
-THREAD_TYPES = ("High", "Medium", "Low", "Alarm", "Log", "Debug")
 
 SUBJECT_TYPES = ("user", "group", "role")
 
@@ -166,16 +360,16 @@ AGGREGATE_RESOURCE_TYPES = (
 )
 
 
-def _check_command_status(xml):
+def _check_command_status(xml: str) -> bool:
     """Check gmp response
 
     Look into the gmp response and check for the status in the root element
 
     Arguments:
-        xml {string} -- XML-Source
+        xml: XML-Source
 
     Returns:
-        bool -- True if valid, otherwise False
+        True if valid, otherwise False
     """
 
     if xml is 0 or xml is None:
@@ -192,15 +386,15 @@ def _check_command_status(xml):
         return False
 
 
-def _to_bool(value):
+def _to_bool(value: bool) -> str:
     return "1" if value else "0"
 
 
-def _to_base64(value):
+def _to_base64(value: bytes) -> str:
     return base64.b64encode(value.encode("utf-8"))
 
 
-def _to_comma_list(value):
+def _to_comma_list(value: List) -> str:
     return ",".join(value)
 
 
@@ -212,22 +406,61 @@ def _add_filter(cmd, filter, filter_id):
         cmd.set_attribute("filt_id", filter_id)
 
 
-def _check_event(event, condition, method):
-    if event in ALERT_EVENTS:
-        if condition not in ALERT_CONDITIONS:
-            raise InvalidArgument("Invalid condition for event")
-        if method not in ALERT_METHODS:
-            raise InvalidArgument("Invalid method for event")
-    elif event in ALERT_EVENTS_SECINFO:
-        if condition not in ALERT_CONDITIONS_SECINFO:
-            raise InvalidArgument("Invalid condition for event")
-        if method not in ALERT_METHODS_SECINFO:
-            raise InvalidArgument("Invalid method for event")
+def _check_event(
+    event: AlertEvent, condition: AlertCondition, method: AlertMethod
+):
+    if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
+        if condition not in (
+            AlertCondition.ALWAYS,
+            AlertCondition.FILTER_COUNT_CHANGED,
+            AlertCondition.FILTER_COUNT_AT_LEAST,
+            AlertCondition.SEVERITY_AT_LEAST,
+        ):
+            raise InvalidArgument(
+                "Invalid condition {} for event {}".format(
+                    condition.name, event.name
+                )
+            )
+        if method not in (
+            AlertMethod.SCP,
+            AlertMethod.SEND,
+            AlertMethod.SMB,
+            AlertMethod.SNMP,
+            AlertMethod.SYSLOG,
+            AlertMethod.EMAIL,
+            AlertMethod.START_TASK,
+            AlertMethod.HTTP_GET,
+            AlertMethod.SOURCEFIRE_CONNECTOR,
+            AlertMethod.VERINICE_CONNECTOR,
+        ):
+            raise InvalidArgument(
+                "Invalid method {} for event {}".format(method.name, event.name)
+            )
+    elif event in (
+        AlertEvent.NEW_SECINFO_ARRIVED,
+        AlertEvent.UPDATED_SECINFO_ARRIVED,
+    ):
+        if condition not in (AlertCondition.ALWAYS,):
+            raise InvalidArgument(
+                "Invalid condition {} for event {}".format(
+                    condition.name, event.name
+                )
+            )
+        if method not in (
+            AlertMethod.SCP,
+            AlertMethod.SEND,
+            AlertMethod.SNMP,
+            AlertMethod.SYSLOG,
+            AlertMethod.EMAIL,
+        ):
+            raise InvalidArgument(
+                "Invalid method {} for event {}".format(method.name, event.name)
+            )
     elif event is not None:
-        raise InvalidArgument('Invalid event "{0}"'.format(event))
+        raise InvalidArgument('Invalid event "{}"'.format(event.name))
 
 
-def _is_list_like(value):
+def _is_list_like(value: Any) -> bool:
     return isinstance(value, (list, tuple))
 
 
@@ -236,14 +469,13 @@ class Gmp(GvmProtocol):
 
     This class implements the `Greenbone Management Protocol version 7`_
 
-    Attributes:
-        connection (:class:`gvm.connections.GvmConnection`): Connection to use
-            to talk with the gvmd daemon. See :mod:`gvm.connections` for
-            possible connection types.
-        transform (`callable`_, optional): Optional transform callable to
-            convert response data. After each request the callable gets passed
-            the plain response data which can be used to check the data and/or
-            conversion into different representations like a xml dom.
+    Arguments:
+        connection: Connection to use to talk with the gvmd daemon. See
+            :mod:`gvm.connections` for possible connection types.
+        transform: Optional transform `callable`_ to convert response data.
+            After each request the callable gets passed the plain response data
+            which can be used to check the data and/or conversion into different
+            representations like a xml dom.
 
             See :mod:`gvm.transforms` for existing transforms.
 
@@ -253,22 +485,29 @@ class Gmp(GvmProtocol):
         https://docs.python.org/3/library/functions.html#callable
     """
 
-    def __init__(self, connection, *, transform=None):
+    _filter_type = FilterType
+
+    def __init__(
+        self,
+        connection: GvmConnection,
+        *,
+        transform: Optional[Callable[[str], Any]] = None
+    ):
         super().__init__(connection, transform=transform)
 
         # Is authenticated on gvmd
         self._authenticated = False
 
     @staticmethod
-    def get_protocol_version():
+    def get_protocol_version() -> str:
         """Determine the Greenbone Management Protocol version.
 
         Returns:
-            str: Implemented version of the Greenbone Management Protocol
+            Implemented version of the Greenbone Management Protocol
         """
         return get_version_string(PROTOCOL_VERSION)
 
-    def is_authenticated(self):
+    def is_authenticated(self) -> bool:
         """Checks if the user is authenticated
 
         If the user is authenticated privileged GMP commands like get_tasks
@@ -280,18 +519,18 @@ class Gmp(GvmProtocol):
         """
         return self._authenticated
 
-    def authenticate(self, username, password):
+    def authenticate(self, username: str, password: str) -> Any:
         """Authenticate to gvmd.
 
         The generated authenticate command will be send to server.
         Afterwards the response is read, transformed and returned.
 
         Arguments:
-            username (str): Username
-            password (str): Password
+            username: Username
+            password: Password
 
         Returns:
-            any, str by default: Transformed response from server.
+            Transformed response from server.
         """
         cmd = XmlCommand("authenticate")
 
@@ -315,26 +554,24 @@ class Gmp(GvmProtocol):
 
     def create_agent(
         self,
-        installer,
-        signature,
-        name,
+        installer: str,
+        signature: str,
+        name: str,
         *,
-        comment=None,
-        howto_install=None,
-        howto_use=None
-    ):
+        comment: Optional[str] = None,
+        howto_install: Optional[str] = None,
+        howto_use: Optional[str] = None
+    ) -> Any:
         """Create a new agent
 
         Arguments:
-            installer (str): A base64 encoded file that installs the agent on a
+            installer: A base64 encoded file that installs the agent on a
                 target machine
-            signature: (str): A detached OpenPGP signature of the installer
-            name (str): A name for the agent
-            comment (str, optional): A comment for the agent
-            howto_install (str, optional): A file that describes how to install
-                the agent
-            howto_use (str, optional): A file that describes how to use the
-                agent
+            signature: A detached OpenPGP signature of the installer
+            name: A name for the agent
+            comment: A comment for the agent
+            howto_install: A file that describes how to install the agent
+            howto_use: A file that describes how to use the agent
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -364,11 +601,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def clone_agent(self, agent_id):
+    def clone_agent(self, agent_id: str) -> Any:
         """Clone an existing agent
 
         Arguments:
-            agent_id (str): UUID of an existing agent to clone from
+            agent_id: UUID of an existing agent to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -382,39 +619,39 @@ class Gmp(GvmProtocol):
 
     def create_alert(
         self,
-        name,
-        condition,
-        event,
-        method,
+        name: str,
+        condition: AlertCondition,
+        event: AlertEvent,
+        method: AlertMethod,
         *,
-        method_data=None,
-        event_data=None,
-        condition_data=None,
-        filter_id=None,
-        comment=None
-    ):
+        method_data: Optional[dict] = None,
+        event_data: Optional[dict] = None,
+        condition_data: Optional[dict] = None,
+        filter_id: Optional[int] = None,
+        comment: Optional[str] = None
+    ) -> Any:
         """Create a new alert
 
         Arguments:
-            name (str): Name of the new Alert
-            condition (str): The condition that must be satisfied for the alert
+            name: Name of the new Alert
+            condition: The condition that must be satisfied for the alert
                 to occur; if the event is either 'Updated SecInfo arrived' or
                 'New SecInfo arrived', condition must be 'Always'. Otherwise,
                 condition can also be on of 'Severity at least', 'Filter count
                 changed' or 'Filter count at least'.
-            event (str): The event that must happen for the alert to occur, one
+            event: The event that must happen for the alert to occur, one
                 of 'Task run status changed', 'Updated SecInfo arrived' or 'New
                 SecInfo arrived'
-            method (str): The method by which the user is alerted, one of 'SCP',
+            method: The method by which the user is alerted, one of 'SCP',
                 'Send', 'SMB', 'SNMP', 'Syslog' or 'Email'; if the event is
                 neither 'Updated SecInfo arrived' nor 'New SecInfo arrived',
                 method can also be one of 'Start Task', 'HTTP Get', 'Sourcefire
                 Connector' or 'verinice Connector'.
-            condition_data (dict, optional): Data that defines the condition
-            event_data (dict, optional): Data that defines the event
-            method_data (dict, optional): Data that defines the method
-            filter_id (str, optional): Filter to apply when executing alert
-            comment (str, optional): Comment for the alert
+            condition_data: Data that defines the condition
+            event_data: Data that defines the event
+            method_data: Data that defines the method
+            filter_id: Filter to apply when executing alert
+            comment: Comment for the alert
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -431,26 +668,35 @@ class Gmp(GvmProtocol):
         if not method:
             raise RequiredArgument("create_alert requires method argument")
 
+        if not isinstance(condition, AlertCondition):
+            raise InvalidArgument(function="create_alert", argument="condition")
+
+        if not isinstance(event, AlertEvent):
+            raise InvalidArgument(function="create_alert", argument="event")
+
+        if not isinstance(method, AlertMethod):
+            raise InvalidArgument(function="create_alert", argument="method")
+
         _check_event(event, condition, method)
 
         cmd = XmlCommand("create_alert")
         cmd.add_element("name", name)
 
-        conditions = cmd.add_element("condition", condition)
+        conditions = cmd.add_element("condition", condition.value)
 
         if not condition_data is None:
             for key, value in condition_data.items():
                 _data = conditions.add_element("data", value)
                 _data.add_element("name", key)
 
-        events = cmd.add_element("event", event)
+        events = cmd.add_element("event", event.value)
 
         if not event_data is None:
             for key, value in event_data.items():
                 _data = events.add_element("data", value)
                 _data.add_element("name", key)
 
-        methods = cmd.add_element("method", method)
+        methods = cmd.add_element("method", method.value)
 
         if not method_data is None:
             for key, value in method_data.items():
@@ -465,11 +711,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def clone_alert(self, alert_id):
+    def clone_alert(self, alert_id: str) -> Any:
         """Clone an existing alert
 
         Arguments:
-            alert_id (str): UUID of an existing alert to clone from
+            alert_id: UUID of an existing alert to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -481,12 +727,12 @@ class Gmp(GvmProtocol):
         cmd.add_element("copy", alert_id)
         return self._send_xml_command(cmd)
 
-    def create_config(self, config_id, name):
+    def create_config(self, config_id: str, name: str) -> Any:
         """Create a new scan config from an existing one
 
         Arguments:
-            config_id (str): UUID of the existing scan config
-            name (str): Name of the new scan config
+            config_id: UUID of the existing scan config
+            name: Name of the new scan config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -502,11 +748,11 @@ class Gmp(GvmProtocol):
         cmd.add_element("name", name)
         return self._send_xml_command(cmd)
 
-    def clone_config(self, config_id):
+    def clone_config(self, config_id: str) -> Any:
         """Clone a scan config from an existing one
 
         Arguments:
-            config_id (str): UUID of the existing scan config
+            config_id: UUID of the existing scan config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -518,11 +764,11 @@ class Gmp(GvmProtocol):
         cmd.add_element("copy", config_id)
         return self._send_xml_command(cmd)
 
-    def import_config(self, config):
+    def import_config(self, config: str) -> Any:
         """Import a scan config from XML
 
         Arguments:
-            config (str): Scan Config XML as string to import. This XML must
+            config: Scan Config XML as string to import. This XML must
                 contain a :code:`<get_configs_response>` root element.
 
         Returns:
@@ -544,57 +790,54 @@ class Gmp(GvmProtocol):
 
     def create_credential(
         self,
-        name,
-        credential_type,
+        name: str,
+        credential_type: CredentialType,
         *,
-        comment=None,
-        allow_insecure=None,
-        certificate=None,
-        key_phrase=None,
-        private_key=None,
-        login=None,
-        password=None,
-        auth_algorithm=None,
-        community=None,
-        privacy_algorithm=None,
-        privacy_password=None
-    ):
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        certificate: Optional[str] = None,
+        key_phrase: Optional[str] = None,
+        private_key: Optional[str] = None,
+        login: Optional[str] = None,
+        password: Optional[str] = None,
+        auth_algorithm: Optional[SnmpAuthAlgorithm] = None,
+        community: Optional[str] = None,
+        privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
+        privacy_password: Optional[str] = None
+    ) -> Any:
         """Create a new credential
 
         Create a new credential e.g. to be used in the method of an alert.
 
         Currently the following credential types are supported:
 
-            - 'up'   - Username + Password
-            - 'usk'  - Username + private SSH-Key
-            - 'cc'   - Client Certificates
-            - 'snmp' - SNMPv1 or SNMPv2c protocol
+            - Username + Password
+            - Username + private SSH-Key
+            - Client Certificates
+            - SNMPv1 or SNMPv2c protocol
 
         Arguments:
-            name (str): Name of the new credential
-            credential_type (str): The credential type. One of 'cc', 'snmp',
-                'up', 'usk'
-            comment (str, optional): Comment for the credential
-            allow_insecure (boolean, optional): Whether to allow insecure use of
-                the credential
-            certificate (str, optional): Certificate for the credential.
+            name: Name of the new credential
+            credential_type: The credential type.
+            comment: Comment for the credential
+            allow_insecure: Whether to allow insecure use of the credential
+            certificate: Certificate for the credential.
                 Required for cc credential type.
-            key_phrase (str, optional): Key passphrase for the private key.
+            key_phrase: Key passphrase for the private key.
                 Used for the usk credential type.
-            private_key (str, optional): Private key to use for login. Required
+            private_key: Private key to use for login. Required
                 for usk credential type. Also used for the cc credential type.
                 The supported key types (dsa, rsa, ecdsa, ...) and formats (PEM,
                 PKC#12, OpenSSL, ...) depend on your installed GnuTLS version.
-            login (str, optional): Username for the credential. Required for
+            login: Username for the credential. Required for
                 up, usk and snmp credential type.
-            password (str, optional): Password for the credential. Used for
+            password: Password for the credential. Used for
                 up and snmp credential types.
-            community (str, optional): The SNMP community.
-            auth_algorithm (str, optional): The SNMP authentication algorithm.
-                Either 'md5' or 'sha1'. Required for snmp credential type.
-            privacy_algorithm (str, optional): The SNMP privacy algorithm,
-                either aes or des.
-            privacy_password (str, optional): The SNMP privacy password
+            community: The SNMP community.
+            auth_algorithm: The SNMP authentication algorithm.
+                Required for snmp credential type.
+            privacy_algorithm: The SNMP privacy algorithm.
+            privacy_password: The SNMP privacy password
 
         Examples:
             Creating a Username + Password credential
@@ -603,7 +846,7 @@ class Gmp(GvmProtocol):
 
                 gmp.create_credential(
                     name='UP Credential',
-                    credential_type='up',
+                    credential_type=CredentialType.USENAME_PASSWORD,
                     login='foo',
                     password='bar',
                 );
@@ -617,7 +860,7 @@ class Gmp(GvmProtocol):
 
                 gmp.create_credential(
                     name='USK Credential',
-                    credential_type='usk',
+                    credential_type=CredentialType.USERNAME_SSH_KEY,
                     login='foo',
                     key_phrase='foobar',
                     private_key=key,
@@ -629,16 +872,18 @@ class Gmp(GvmProtocol):
         if not name:
             raise RequiredArgument("create_credential requires name argument")
 
-        if credential_type not in CREDENTIAL_TYPES:
+        if not isinstance(credential_type, CredentialType):
             raise InvalidArgument(
-                "create_credential requires type to be either cc, snmp, up "
-                " or usk"
+                "create_credential requires type to be a CredentialType "
+                "instance",
+                function="create_credential",
+                argument="credential_type",
             )
 
         cmd = XmlCommand("create_credential")
         cmd.add_element("name", name)
 
-        cmd.add_element("type", credential_type)
+        cmd.add_element("type", credential_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -646,36 +891,45 @@ class Gmp(GvmProtocol):
         if allow_insecure is not None:
             cmd.add_element("allow_insecure", _to_bool(allow_insecure))
 
-        if credential_type == "cc":
+        if credential_type == CredentialType.CLIENT_CERTIFICATE:
             if not certificate:
                 raise RequiredArgument(
                     "create_credential requires certificate argument for "
-                    "credential_type {0}".format(credential_type)
+                    "credential_type {0}".format(credential_type.name),
+                    function="create_credential",
+                    argument="certificate",
                 )
 
             cmd.add_element("certificate", certificate)
 
         if (
-            credential_type == "up"
-            or credential_type == "usk"
-            or credential_type == "snmp"
+            credential_type == CredentialType.USERNAME_PASSWORD
+            or credential_type == CredentialType.USERNAME_SSH_KEY
+            or credential_type == CredentialType.SNMP
         ):
             if not login:
                 raise RequiredArgument(
                     "create_credential requires login argument for "
-                    "credential_type {0}".format(credential_type)
+                    "credential_type {0}".format(credential_type.name),
+                    function="create_credential",
+                    argument="login",
                 )
 
             cmd.add_element("login", login)
 
-        if (credential_type == "up" or credential_type == "snmp") and password:
+        if (
+            credential_type == CredentialType.USERNAME_PASSWORD
+            or credential_type == CredentialType.SNMP
+        ) and password:
             cmd.add_element("password", password)
 
-        if credential_type == "usk":
+        if credential_type == CredentialType.USERNAME_SSH_KEY:
             if not private_key:
                 raise RequiredArgument(
-                    "create_credential requires certificate argument for "
-                    "credential_type usk"
+                    "create_credential requires private_key argument for "
+                    "credential_type {0}".format(credential_type.name),
+                    function="create_credential",
+                    argument="private_key",
                 )
 
             _xmlkey = cmd.add_element("key")
@@ -684,18 +938,20 @@ class Gmp(GvmProtocol):
             if key_phrase:
                 _xmlkey.add_element("phrase", key_phrase)
 
-        if credential_type == "cc" and private_key:
+        if credential_type == CredentialType.CLIENT_CERTIFICATE and private_key:
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("private", private_key)
 
-        if credential_type == "snmp":
-            if auth_algorithm not in ("md5", "sha1"):
+        if credential_type == CredentialType.SNMP:
+            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgument(
-                    "create_credential requires auth_algorithm to be either "
-                    "md5 or sha1"
+                    "create_credential requires auth_algorithm to be a "
+                    "SnmpAuthAlgorithm instance",
+                    function="create_credential",
+                    argument="auth_algorithm",
                 )
 
-            cmd.add_element("auth_algorithm", auth_algorithm)
+            cmd.add_element("auth_algorithm", auth_algorithm.value)
 
             if community:
                 cmd.add_element("community", community)
@@ -704,24 +960,28 @@ class Gmp(GvmProtocol):
                 _xmlprivacy = cmd.add_element("privacy")
 
                 if privacy_algorithm is not None:
-                    if privacy_algorithm not in ("aes", "des"):
+                    if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                         raise InvalidArgument(
-                            "create_credential requires algorithm to be either "
-                            "aes or des"
+                            "create_credential requires algorithm to be a "
+                            "SnmpPrivacyAlgorithm instance",
+                            function="create_credential",
+                            argument="privacy_algorithm",
                         )
 
-                    _xmlprivacy.add_element("algorithm", privacy_algorithm)
+                    _xmlprivacy.add_element(
+                        "algorithm", privacy_algorithm.value
+                    )
 
                 if privacy_password:
                     _xmlprivacy.add_element("password", privacy_password)
 
         return self._send_xml_command(cmd)
 
-    def clone_credential(self, credential_id):
+    def clone_credential(self, credential_id: str) -> Any:
         """Clone an existing credential
 
         Arguments:
-            credential_id (str): UUID of an existing credential to clone from
+            credential_id: UUID of an existing credential to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -737,32 +997,30 @@ class Gmp(GvmProtocol):
 
     def create_filter(
         self,
-        name,
+        name: str,
         *,
-        make_unique=False,
-        filter_type=None,
-        comment=None,
-        term=None
-    ):
+        make_unique: Optional[bool] = None,
+        filter_type: Optional[FilterType] = None,
+        comment: Optional[str] = None,
+        term: Optional[str] = None
+    ) -> Any:
         """Create a new filter
 
         Arguments:
-            name (str): Name of the new filter
-            make_unique (boolean, optional):
-            filter_type (str, optional): Filter for entity type
-            comment (str, optional): Comment for the filter
-            term (str, optional): Filter term e.g. 'name=foo'
+            name: Name of the new filter
+            make_unique:
+            filter_type: Filter for entity type
+            comment: Comment for the filter
+            term: Filter term e.g. 'name=foo'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument("create_filter requires a name argument")
+            raise RequiredArgument(function="create_filter", argument="name")
 
         cmd = XmlCommand("create_filter")
         _xmlname = cmd.add_element("name", name)
-        if make_unique:
-            _xmlname.add_element("make_unique", "1")
 
         if comment:
             cmd.add_element("comment", comment)
@@ -770,18 +1028,23 @@ class Gmp(GvmProtocol):
         if term:
             cmd.add_element("term", term)
 
+        if make_unique is not None:
+            cmd.add_element("make_unique", _to_bool(make_unique))
+
         if filter_type:
-            filter_type = filter_type.lower()
-            if filter_type not in FILTER_TYPES:
+            if not isinstance(filter_type, self._filter_type):
                 raise InvalidArgument(
-                    "create_filter requires type to be one of {0} but "
-                    "was {1}".format(", ".join(FILTER_TYPES), filter_type)
+                    "create_filter requires filter_type to be a FilterType "
+                    "instance. was {}".format(filter_type),
+                    function="create_filter",
+                    argument="filter_type",
                 )
-            cmd.add_element("type", filter_type)
+
+            cmd.add_element("type", filter_type.value)
 
         return self._send_xml_command(cmd)
 
-    def clone_filter(self, filter_id):
+    def clone_filter(self, filter_id: str) -> Any:
         """Clone an existing filter
 
         Arguments:
@@ -797,15 +1060,22 @@ class Gmp(GvmProtocol):
         cmd.add_element("copy", filter_id)
         return self._send_xml_command(cmd)
 
-    def create_group(self, name, *, comment=None, special=False, users=None):
+    def create_group(
+        self,
+        name: str,
+        *,
+        comment: Optional[str] = None,
+        special: Optional[bool] = False,
+        users: Optional[List[str]] = None
+    ) -> Any:
         """Create a new group
 
         Arguments:
-            name (str): Name of the new group
-            comment (str, optional): Comment for the group
-            special (boolean, optional): Create permission giving members full
-                access to each other's entities
-            users (list, optional): List of user names to be in the group
+            name: Name of the new group
+            comment: Comment for the group
+            special: Create permission giving members full access to each
+                other's entities
+            users: List of user names to be in the group
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -828,7 +1098,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def clone_group(self, group_id):
+    def clone_group(self, group_id: str) -> Any:
         """Clone an existing group
 
         Arguments:
@@ -844,12 +1114,12 @@ class Gmp(GvmProtocol):
         cmd.add_element("copy", group_id)
         return self._send_xml_command(cmd)
 
-    def create_host(self, name, *, comment=None):
+    def create_host(self, name: str, *, comment: Optional[str] = None) -> Any:
         """Create a new host asset
 
         Arguments:
-            name (str): Name for the new host asset
-            comment (str, optional): Comment for the new host asset
+            name: Name for the new host asset
+            comment: Comment for the new host asset
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -869,31 +1139,30 @@ class Gmp(GvmProtocol):
 
     def create_note(
         self,
-        text,
-        nvt_oid,
+        text: str,
+        nvt_oid: str,
         *,
-        seconds_active=None,
-        hosts=None,
-        result_id=None,
-        severity=None,
-        task_id=None,
-        threat=None,
-        port=None
-    ):
+        seconds_active: Optional[int] = None,
+        hosts: Optional[List[str]] = None,
+        port: Optional[int] = None,
+        result_id: Optional[str] = None,
+        severity: Optional[Severity] = None,
+        task_id: Optional[str] = None,
+        threat: Optional[SeverityLevel] = None
+    ) -> Any:
         """Create a new note
 
         Arguments:
-            text (str): Text of the new note
-            nvt_id (str): OID of the nvt to which note applies
-            seconds_active (int, optional): Seconds note will be active. -1 on
+            text: Text of the new note
+            nvt_id: OID of the nvt to which note applies
+            seconds_active: Seconds note will be active. -1 on
                 always, 0 off
-            hosts (list, optional): A list of hosts addresses
-            port (int, optional): Port to which the note applies
-            result_id (str, optional): UUID of a result to which note applies
-            severity (decimal, optional): Severity to which note applies
-            task_id (str, optional): UUID of task to which note applies
-            threat (str, optional): Threat level to which note applies. One of
-                High, Medium, Low, Alarm, Log or Debug. Will be converted to
+            hosts: A list of hosts addresses
+            port: Port to which the note applies
+            result_id: UUID of a result to which note applies
+            severity: Severity to which note applies
+            task_id: UUID of task to which note applies
+            threat: Severity level to which note applies. Will be converted to
                 severity.
 
         Returns:
@@ -928,17 +1197,19 @@ class Gmp(GvmProtocol):
             cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
-            if threat not in THREAD_TYPES:
+            if not isinstance(threat, SeverityLevel):
                 raise InvalidArgument(
                     "create_note threat argument {0} is invalid. threat must "
-                    "be one of {1}".format(threat, ", ".join(THREAD_TYPES))
+                    "be a SeverityLevel instance",
+                    function="create_note",
+                    argument="threat",
                 )
 
-            cmd.add_element("threat", threat)
+            cmd.add_element("threat", threat.value)
 
         return self._send_xml_command(cmd)
 
-    def clone_note(self, note_id):
+    def clone_note(self, note_id: str) -> Any:
         """Clone an existing note
 
         Arguments:
@@ -956,38 +1227,34 @@ class Gmp(GvmProtocol):
 
     def create_override(
         self,
-        text,
-        nvt_oid,
+        text: str,
+        nvt_oid: str,
         *,
-        seconds_active=None,
-        hosts=None,
-        port=None,
-        result_id=None,
-        severity=None,
-        new_severity=None,
-        task_id=None,
-        threat=None,
-        new_threat=None
-    ):
+        seconds_active: Optional[int] = None,
+        hosts: Optional[List[str]] = None,
+        port: Optional[int] = None,
+        result_id: Optional[str] = None,
+        severity: Optional[Severity] = None,
+        new_severity: Optional[Severity] = None,
+        task_id: Optional[str] = None,
+        threat: Optional[SeverityLevel] = None,
+        new_threat: Optional[SeverityLevel] = None
+    ) -> Any:
         """Create a new override
 
         Arguments:
-            text (str): Text of the new override
-            nvt_id (str): OID of the nvt to which override applies
-            seconds_active (int, optional): Seconds override will be active.
-                -1 on always, 0 off
-            hosts (list, optional): A list of host addresses
-            port (int, optional): Port to which the override applies
-            result_id (str, optional): UUID of a result to which override
-                applies
-            severity (decimal, optional): Severity to which override applies
-            new_severity (decimal, optional): New severity for result
-            task_id (str, optional): UUID of task to which override applies
-            threat (str, optional): Threat level to which override applies. One
-                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
-                severity.
-            new_threat (str, optional): New threat level for results. One
-                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+            text: Text of the new override
+            nvt_id: OID of the nvt to which override applies
+            seconds_active: Seconds override will be active. -1 on always, 0 off
+            hosts: A list of host addresses
+            port: Port to which the override applies
+            result_id: UUID of a result to which override applies
+            severity: Severity to which override applies
+            new_severity: New severity for result
+            task_id: UUID of task to which override applies
+            threat: Severity level to which override applies. Will be converted
+                to severity.
+            new_threat: New severity level for results. Will be converted to
                 new_severity.
 
         Returns:
@@ -1027,32 +1294,34 @@ class Gmp(GvmProtocol):
             cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
-            if threat not in THREAD_TYPES:
+            if not isinstance(threat, SeverityLevel):
                 raise InvalidArgument(
-                    "create_override threat argument {0} is invalid. threat"
-                    "must be one of {1}".format(threat, ", ".join(THREAD_TYPES))
+                    "create_override threat argument {0} is invalid. threat "
+                    "must be a SeverityLevel instance".format(threat),
+                    function="create_override",
+                    argument="threat",
                 )
 
-            cmd.add_element("threat", threat)
+            cmd.add_element("threat", threat.value)
 
         if new_threat is not None:
-            if new_threat not in THREAD_TYPES:
+            if not isinstance(new_threat, SeverityLevel):
                 raise InvalidArgument(
                     "create_override new_threat argument {0} is invalid. "
-                    "new_threat must be one of {1}".format(
-                        new_threat, ", ".join(THREAD_TYPES)
-                    )
+                    "new_threat be a SeverityLevel instance".format(new_threat),
+                    function="create_override",
+                    argument="new_threat",
                 )
 
-            cmd.add_element("new_threat", new_threat)
+            cmd.add_element("new_threat", new_threat.value)
 
         return self._send_xml_command(cmd)
 
-    def clone_override(self, override_id):
+    def clone_override(self, override_id: str) -> Any:
         """Clone an existing override
 
         Arguments:
-            override_id (str): UUID of an existing override to clone from
+            override_id: UUID of an existing override to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1068,25 +1337,24 @@ class Gmp(GvmProtocol):
 
     def create_permission(
         self,
-        name,
-        subject_id,
+        name: str,
+        subject_id: str,
         subject_type,
         *,
-        resource_id=None,
+        resource_id: Optional[str] = None,
         resource_type=None,
-        comment=None
-    ):
+        comment: Optional[str] = None
+    ) -> Any:
         """Create a new permission
 
         Arguments:
-            name (str): Name of the new permission
-            subject_id (str): UUID of subject to whom the permission is granted
-            subject_type (str): Type of the subject user, group or role
-            comment (str, optional): Comment for the permission
-            resource_id (str, optional): UUID of entity to which the permission
-                applies
-            resource_type (str, optional): Type of the resource. For Super
-                permissions user, group or role
+            name: Name of the new permission
+            subject_id: UUID of subject to whom the permission is granted
+            subject_type: Type of the subject user, group or role
+            comment: Comment for the permission
+            resource_id: UUID of entity to which the permission applies
+            resource_type: Type of the resource. For Super permissions user,
+                group or role
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1132,11 +1400,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def clone_permission(self, permission_id):
+    def clone_permission(self, permission_id: str) -> Any:
         """Clone an existing permission
 
         Arguments:
-            permission_id (str): UUID of an existing permission to clone from
+            permission_id: UUID of an existing permission to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1150,14 +1418,16 @@ class Gmp(GvmProtocol):
         cmd.add_element("copy", permission_id)
         return self._send_xml_command(cmd)
 
-    def create_port_list(self, name, port_range, *, comment=None):
+    def create_port_list(
+        self, name: str, port_range: str, *, comment: Optional[str] = None
+    ) -> Any:
         """Create a new port list
 
         Arguments:
-            name (str): Name of the new port list
-            port_range (str): Port list ranges e.g. `"T: 1-1234"` for tcp port
+            name: Name of the new port list
+            port_range: Port list ranges e.g. `"T: 1-1234"` for tcp port
                 1 - 1234
-            comment (str, optional): Comment for the port list
+            comment: Comment for the port list
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1179,7 +1449,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def clone_port_list(self, port_list_id):
+    def clone_port_list(self, port_list_id: str) -> Any:
         """Clone an existing port list
 
         Arguments:
@@ -1198,23 +1468,29 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def create_port_range(
-        self, port_list_id, start, end, port_range_type, *, comment=None
+        self,
+        port_list_id: str,
+        start: int,
+        end: int,
+        port_range_type,
+        *,
+        comment: Optional[str] = None
     ):
         """Create new port range
 
         Arguments:
-            port_list_id (str): UUID of the port list to which to add the range
-            start (int): The first port in the range
-            end (int): The last port in the range
-            port_range_type (str): The type of the ports: TCP, UDP, ...
-            comment (str, optional): Comment for the port range
+            port_list_id: UUID of the port list to which to add the range
+            start: The first port in the range
+            end: The last port in the range
+            port_range_type: The type of the ports: TCP, UDP, ...
+            comment: Comment for the port range
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
         if not port_list_id:
             raise RequiredArgument(
-                "create_port_range requires " "a port_list_id argument"
+                "create_port_range requires a port_list_id argument"
             )
 
         if not port_range_type:
@@ -4044,43 +4320,41 @@ class Gmp(GvmProtocol):
 
     def modify_alert(
         self,
-        alert_id,
+        alert_id: str,
         *,
-        name=None,
-        comment=None,
-        filter_id=None,
-        event=None,
-        event_data=None,
-        condition=None,
-        condition_data=None,
-        method=None,
-        method_data=None
-    ):
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        event: Optional[AlertEvent] = None,
+        event_data: Optional[dict] = None,
+        condition: Optional[AlertCondition] = None,
+        condition_data: Optional[dict] = None,
+        method: Optional[AlertMethod] = None,
+        method_data: Optional[dict] = None
+    ) -> Any:
         """Modifies an existing alert.
 
         Arguments:
-            alert_id (str) UUID of the alert to be modified.
-            name (str, optional): Name of the Alert.
-            condition (str, optional): The condition that must be satisfied
-                for the alert to occur.
-            condition (str, optional): The condition that must be satisfied for
-                the alert to occur; if the event is either 'Updated SecInfo
+            alert_id: UUID of the alert to be modified.
+            name: Name of the Alert.
+            condition: The condition that must be satisfied for the alert to
+                occur. If the event is either 'Updated SecInfo
                 arrived' or 'New SecInfo arrived', condition must be 'Always'.
                 Otherwise, condition can also be on of 'Severity at least',
                 'Filter count changed' or 'Filter count at least'.
-            condition_data (dict, optional): Data that defines the condition
-            event (str, optional): The event that must happen for the alert to
-                occur, one of 'Task run status changed',
-                'Updated SecInfo arrived' or 'New SecInfo arrived'
-            event_data (dict, optional): Data that defines the event
-            method (str, optional): The method by which the user is alerted,
-                one of 'SCP', 'Send', 'SMB', 'SNMP', 'Syslog' or 'Email';
+            condition_data: Data that defines the condition
+            event: The event that must happen for the alert to occur, one of
+                'Task run status changed', 'Updated SecInfo arrived' or
+                'New SecInfo arrived'
+            event_data: Data that defines the event
+            method: The method by which the user is alerted, one of 'SCP',
+                'Send', 'SMB', 'SNMP', 'Syslog' or 'Email';
                 if the event is neither 'Updated SecInfo arrived' nor
                 'New SecInfo arrived', method can also be one of 'Start Task',
                 'HTTP Get', 'Sourcefire Connector' or 'verinice Connector'.
-            method_data (dict, optional): Data that defines the method
-            filter_id (str, optional): Filter to apply when executing alert
-            comment (str, optional): Comment for the alert
+            method_data: Data that defines the method
+            filter_id: Filter to apply when executing alert
+            comment: Comment for the alert
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4088,8 +4362,6 @@ class Gmp(GvmProtocol):
 
         if not alert_id:
             raise RequiredArgument("modify_alert requires an alert_id argument")
-
-        _check_event(event, condition, method)
 
         cmd = XmlCommand("modify_alert")
         cmd.set_attribute("alert_id", str(alert_id))
@@ -4104,27 +4376,42 @@ class Gmp(GvmProtocol):
             cmd.add_element("filter", attrs={"id": filter_id})
 
         if condition:
-            conditions = cmd.add_element("condition", condition)
+            if not isinstance(condition, AlertCondition):
+                raise InvalidArgument(
+                    function="modify_alert", argument="condition"
+                )
+
+            conditions = cmd.add_element("condition", condition.value)
 
             if not condition_data is None:
                 for key, value in condition_data.items():
                     _data = conditions.add_element("data", value)
                     _data.add_element("name", key)
 
-        if event:
-            events = cmd.add_element("event", event)
-
-            if not event_data is None:
-                for key, value in event_data.items():
-                    _data = events.add_element("data", value)
-                    _data.add_element("name", key)
-
         if method:
-            methods = cmd.add_element("method", method)
+            if not isinstance(method, AlertMethod):
+                raise InvalidArgument(
+                    function="modify_alert", argument="method"
+                )
+
+            methods = cmd.add_element("method", method.value)
 
             if not method_data is None:
                 for key, value in method_data.items():
                     _data = methods.add_element("data", value)
+                    _data.add_element("name", key)
+
+        if event:
+            if not isinstance(event, AlertEvent):
+                raise InvalidArgument(function="modify_alert", argument="event")
+
+            _check_event(event, condition, method)
+
+            events = cmd.add_element("event", event.value)
+
+            if not event_data is None:
+                for key, value in event_data.items():
+                    _data = events.add_element("data", value)
                     _data.add_element("name", key)
 
         return self._send_xml_command(cmd)
@@ -4548,16 +4835,22 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_filter(
-        self, filter_id, *, comment=None, name=None, term=None, filter_type=None
-    ):
+        self,
+        filter_id: str,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        term: Optional[str] = None,
+        filter_type: Optional[FilterType] = None
+    ) -> Any:
         """Modifies an existing filter.
 
         Arguments:
-            filter_id (str): UUID of the filter to be modified
-            comment (str, optional): Comment on filter.
-            name (str, optional): Name of filter.
-            term (str, optional): Filter term.
-            filter_type (str, optional): Resource type filter applies to.
+            filter_id: UUID of the filter to be modified
+            comment: Comment on filter.
+            name: Name of filter.
+            term: Filter term.
+            filter_type: Filter type the filter applies to.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4580,13 +4873,14 @@ class Gmp(GvmProtocol):
             cmd.add_element("term", term)
 
         if filter_type:
-            filter_type = filter_type.lower()
-            if filter_type not in FILTER_TYPES:
+            if not isinstance(filter_type, self._filter_type):
                 raise InvalidArgument(
-                    "modify_filter requires type to be one of {0} but "
-                    "was {1}".format(", ".join(FILTER_TYPES), filter_type)
+                    "modify_filter requires filter_type to be a FilterType "
+                    "instance. was {}".format(filter_type),
+                    function="modify_filter",
+                    argument="filter_type",
                 )
-            cmd.add_element("type", filter_type)
+            cmd.add_element("type", filter_type.value)
 
         return self._send_xml_command(cmd)
 
@@ -4621,31 +4915,29 @@ class Gmp(GvmProtocol):
 
     def modify_note(
         self,
-        note_id,
-        text,
+        note_id: str,
+        text: str,
         *,
-        seconds_active=None,
-        hosts=None,
-        port=None,
-        result_id=None,
-        severity=None,
-        task_id=None,
-        threat=None
-    ):
+        seconds_active: Optional[int] = None,
+        hosts: Optional[List[str]] = None,
+        port: Optional[int] = None,
+        result_id: Optional[str] = None,
+        severity: Optional[Severity] = None,
+        task_id: Optional[str] = None,
+        threat: Optional[SeverityLevel] = None
+    ) -> Any:
         """Modifies an existing note.
 
         Arguments:
-            note_id (str): UUID of note to modify.
-            text (str): The text of the note.
-            seconds_active (int, optional): Seconds note will be active.
-                -1 on always, 0 off.
-            hosts (list, optional): A list of hosts addresses
-            port (int, optional): Port to which note applies.
-            result_id (str, optional): Result to which note applies.
-            severity (descimal, optional): Severity to which note applies.
-            task_id (str, optional): Task to which note applies.
-            threat (str, optional): Threat level to which note applies. One of
-                High, Medium, Low, Alarm, Log or Debug. Will be converted to
+            note_id: UUID of note to modify.
+            text: The text of the note.
+            seconds_active: Seconds note will be active. -1 on always, 0 off.
+            hosts: A list of hosts addresses
+            port: Port to which note applies.
+            result_id: Result to which note applies.
+            severity: Severity to which note applies.
+            task_id: Task to which note applies.
+            threat: Threat level to which note applies. Will be converted to
                 severity.
 
         Returns:
@@ -4680,49 +4972,50 @@ class Gmp(GvmProtocol):
             cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
-            cmd.add_element("threat", threat)
 
-            if threat not in THREAD_TYPES:
+            if not isinstance(threat, SeverityLevel):
                 raise InvalidArgument(
-                    "modify_note threat argument {0} is invalid. threat must "
-                    "be one of {1}".format(threat, ", ".join(THREAD_TYPES))
+                    "modify_note threat argument {} is invalid. threat must "
+                    "be a SeverityLevel instance".format(threat),
+                    function="modify_note",
+                    argument="threat",
                 )
+
+            cmd.add_element("threat", threat.value)
 
         return self._send_xml_command(cmd)
 
     def modify_override(
         self,
-        override_id,
-        text,
+        override_id: str,
+        text: str,
         *,
-        seconds_active=None,
-        hosts=None,
-        port=None,
-        result_id=None,
-        severity=None,
-        new_severity=None,
-        task_id=None,
-        threat=None,
-        new_threat=None
-    ):
+        seconds_active: Optional[int] = None,
+        hosts: Optional[List[str]] = None,
+        port: Optional[int] = None,
+        result_id: Optional[str] = None,
+        severity: Optional[Severity] = None,
+        new_severity: Optional[Severity] = None,
+        task_id: Optional[str] = None,
+        threat: Optional[SeverityLevel] = None,
+        new_threat: Optional[SeverityLevel] = None
+    ) -> Any:
         """Modifies an existing override.
 
         Arguments:
-            override_id (str): UUID of override to modify.
-            text (str): The text of the override.
-            seconds_active (int, optional): Seconds override will be active.
-                -1 on always, 0 off.
-            hosts (list, optional): A list of host addresses
-            port (int, optional): Port to which override applies.
-            result_id (str, optional): Result to which override applies.
-            severity (decimal, optional): Severity to which override applies.
-            new_severity (decimal, optional): New severity score for result.
-            task_id (str, optional): Task to which override applies.
-            threat (str, optional): Threat level to which override applies. One
-                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
-                severity.
-            new_threat (str, optional): New threat level for results. One
-                of High, Medium, Low, Alarm, Log or Debug. Will be converted to
+            override_id: UUID of override to modify.
+            text: The text of the override.
+            seconds_active: Seconds override will be active. -1 on always,
+                0 off.
+            hosts: A list of host addresses
+            port: Port to which override applies.
+            result_id: Result to which override applies.
+            severity: Severity to which override applies.
+            new_severity: New severity score for result.
+            task_id: Task to which override applies.
+            threat: Threat level to which override applies.
+                Will be converted to severity.
+            new_threat: New threat level for results. Will be converted to
                 new_severity.
 
         Returns:
@@ -4730,7 +5023,7 @@ class Gmp(GvmProtocol):
         """
         if not override_id:
             raise RequiredArgument(
-                "modify_override requires a override_id " "argument"
+                "modify_override requires a override_id argument"
             )
         if not text:
             raise RequiredArgument("modify_override requires a text argument")
@@ -4761,23 +5054,27 @@ class Gmp(GvmProtocol):
             cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
-            if threat not in THREAD_TYPES:
+            if not isinstance(threat, SeverityLevel):
                 raise InvalidArgument(
-                    "modify_override threat argument {0} is invalid. threat"
-                    "must be one of {1}".format(threat, ", ".join(THREAD_TYPES))
+                    "modify_override threat argument {} is invalid. threat "
+                    "must be a SeverityLevel instance".format(threat),
+                    function="modify_override",
+                    argument="threat",
                 )
-            cmd.add_element("threat", threat)
+            cmd.add_element("threat", threat.value)
 
         if new_threat is not None:
-            if new_threat not in THREAD_TYPES:
+            if not isinstance(new_threat, SeverityLevel):
                 raise InvalidArgument(
-                    "modify_override new_threat argument {0} is invalid. "
-                    "new_threat must be one of {1}".format(
-                        new_threat, ", ".join(THREAD_TYPES)
-                    )
+                    "modify_override new_threat argument {} is invalid. "
+                    "new_threat must be a SeverityLevel instance".format(
+                        new_threat
+                    ),
+                    function="modify_override",
+                    argument="new_threat",
                 )
 
-            cmd.add_element("new_threat", new_threat)
+            cmd.add_element("new_threat", new_threat.value)
 
         return self._send_xml_command(cmd)
 

@@ -20,6 +20,8 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import AlertCondition, AlertEvent, AlertMethod
+
 from . import Gmpv7TestCase
 
 
@@ -111,53 +113,53 @@ class GmpModifyAlertTestCase(Gmpv7TestCase):
     def test_modify_alert_with_event_data(self):
         self.gmp.modify_alert(
             alert_id='a1',
-            condition='Always',
-            event='Task run status changed',
-            method='Email',
+            condition=AlertCondition.ALWAYS,
+            event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+            method=AlertMethod.EMAIL,
             event_data={'foo': 'bar'},
         )
 
         self.connection.send.has_been_called_with(
             '<modify_alert alert_id="a1">'
             '<condition>Always</condition>'
+            '<method>Email</method>'
             '<event>Task run status changed'
             '<data>bar<name>foo</name></data>'
             '</event>'
-            '<method>Email</method>'
             '</modify_alert>'
         )
 
     def test_modify_alert_with_condition_data(self):
         self.gmp.modify_alert(
             alert_id='a1',
-            condition='Always',
-            event='Task run status changed',
-            method='Email',
+            condition=AlertCondition.ALWAYS,
+            event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+            method=AlertMethod.EMAIL,
             condition_data={'foo': 'bar'},
         )
 
         self.connection.send.has_been_called_with(
             '<modify_alert alert_id="a1">'
             '<condition>Always<data>bar<name>foo</name></data></condition>'
-            '<event>Task run status changed</event>'
             '<method>Email</method>'
+            '<event>Task run status changed</event>'
             '</modify_alert>'
         )
 
     def test_modify_alert_with_method_data(self):
         self.gmp.modify_alert(
             alert_id='a1',
-            condition='Always',
-            event='Task run status changed',
-            method='Email',
+            condition=AlertCondition.ALWAYS,
+            event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+            method=AlertMethod.EMAIL,
             method_data={'foo': 'bar'},
         )
 
         self.connection.send.has_been_called_with(
             '<modify_alert alert_id="a1">'
             '<condition>Always</condition>'
-            '<event>Task run status changed</event>'
             '<method>Email<data>bar<name>foo</name></data></method>'
+            '<event>Task run status changed</event>'
             '</modify_alert>'
         )
 

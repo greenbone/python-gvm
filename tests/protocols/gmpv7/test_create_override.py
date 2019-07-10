@@ -22,6 +22,8 @@ from decimal import Decimal
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import SeverityLevel
+
 from . import Gmpv7TestCase
 
 
@@ -178,7 +180,9 @@ class GmpCreateOverrideTestCase(Gmpv7TestCase):
         )
 
     def test_create_override_with_threat(self):
-        self.gmp.create_override('foo', nvt_oid='oid1', threat='High')
+        self.gmp.create_override(
+            'foo', nvt_oid='oid1', threat=SeverityLevel.HIGH
+        )
 
         self.connection.send.has_been_called_with(
             '<create_override>'
@@ -196,7 +200,9 @@ class GmpCreateOverrideTestCase(Gmpv7TestCase):
             self.gmp.create_override('foo', nvt_oid='oid1', threat='foo')
 
     def test_create_override_with_new_threat(self):
-        self.gmp.create_override('foo', nvt_oid='oid1', new_threat='High')
+        self.gmp.create_override(
+            'foo', nvt_oid='oid1', new_threat=SeverityLevel.HIGH
+        )
 
         self.connection.send.has_been_called_with(
             '<create_override>'
