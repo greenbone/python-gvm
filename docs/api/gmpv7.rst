@@ -52,6 +52,10 @@ Enums
     :members:
     :undoc-members:
 
+.. autoclass:: TimeUnit
+    :members:
+    :undoc-members:
+
 Protocol
 --------
 

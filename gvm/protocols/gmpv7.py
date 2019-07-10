@@ -46,17 +46,6 @@ Severity = numbers.Real
 
 PROTOCOL_VERSION = (7,)
 
-TIME_UNITS = (
-    "second",
-    "minute",
-    "hour",
-    "day",
-    "week",
-    "month",
-    "year",
-    "decade",
-)
-
 ALIVE_TESTS = (
     "Consider Alive",
     "ICMP, TCP-ACK Service & ARP Ping",
@@ -442,6 +431,35 @@ def get_severity_level_from_string(
 
     try:
         return SeverityLevel[severity_level.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='severity_level',
+            function=get_severity_level_from_string.__name__,
+        )
+
+
+class TimeUnit(Enum):
+    """ Enum for time units """
+
+    SECOND = "second"
+    MINUTE = "minute"
+    HOUR = "hour"
+    DAY = "day"
+    WEEK = "week"
+    MONTH = "month"
+    YEAR = "year"
+    DECADE = "decade"
+
+
+def get_time_unit_from_string(
+    time_unit: Optional[str]
+) -> Optional[SeverityLevel]:
+    """ Convert a time unit string into a TimeUnit instance """
+    if not time_unit:
+        return None
+
+    try:
+        return TimeUnit[time_unit.upper()]
     except KeyError:
         raise InvalidArgument(
             argument='severity_level',
@@ -1837,47 +1855,46 @@ class Gmp(GvmProtocol):
 
     def create_schedule(
         self,
-        name,
+        name: str,
         *,
-        comment=None,
-        first_time_minute=None,
-        first_time_hour=None,
-        first_time_day_of_month=None,
-        first_time_month=None,
-        first_time_year=None,
-        duration=None,
-        duration_unit=None,
-        period=None,
-        period_unit=None,
-        timezone=None
-    ):
+        comment: Optional[str] = None,
+        first_time_minute: Optional[int] = None,
+        first_time_hour: Optional[int] = None,
+        first_time_day_of_month: Optional[int] = None,
+        first_time_month: Optional[int] = None,
+        first_time_year: Optional[int] = None,
+        duration: Optional[int] = None,
+        duration_unit: Optional[TimeUnit] = None,
+        period: Optional[int] = None,
+        period_unit: Optional[TimeUnit] = None,
+        timezone: Optional[str] = None
+    ) -> Any:
         """Create a new schedule
 
         Arguments:
-            name (str): Name of the schedule
-            comment (str, optional): Comment for the schedule
-            first_time_minute (int, optional): First time minute the schedule
-                will run. Must be an integer >= 0.
-            first_time_hour (int, optional): First time hour the schedule
-                will run. Must be an integer >= 0.
-            first_time_day_of_month (int, optional): First time day of month the
-                schedule will run. Must be an integer > 0 <= 31.
-            first_time_month (int, optional): First time month the schedule
-                will run. Must be an integer >= 1 <= 12.
-            first_time_year (int, optional): First time year the schedule
-                will run. Must be an integer >= 1970.
-            duration (int, optional): How long the Manager will run the
-                scheduled task for until it gets paused if not finished yet.
-                Must be an integer > 0.
-            duration_unit (str, optional): Unit of the duration. One of second,
+            name: Name of the schedule
+            comment: Comment for the schedule
+            first_time_minute: First time minute the schedule will run. Must be
+                an integer >= 0.
+            first_time_hour: First time hour the schedule will run. Must be an
+                integer >= 0.
+            first_time_day_of_month: First time day of month the schedule will
+                run. Must be an integer > 0 <= 31.
+            first_time_month: First time month the schedule will run. Must be an
+                integer >= 1 <= 12.
+            first_time_year: First time year the schedule will run. Must be an
+                integer >= 1970.
+            duration: How long the Manager will run the scheduled task for until
+                it gets paused if not finished yet. Must be an integer > 0.
+            duration_unit: Unit of the duration. One of second,
                 minute, hour, day, week, month, year, decade. Required if
                 duration is set.
-            period (int, optional): How often the Manager will repeat the
+            period: How often the Manager will repeat the
                 scheduled task. Must be an integer > 0.
-            period_unit (str, optional): Unit of the period. One of second,
+            period_unit: Unit of the period. One of second,
                 minute, hour, day, week, month, year, decade. Required if
                 period is set.
-            timezone (str, optional): The timezone the schedule will follow
+            timezone: The timezone the schedule will follow
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1980,12 +1997,9 @@ class Gmp(GvmProtocol):
                     "Setting duration requires duration_unit argument"
                 )
 
-            if not duration_unit in TIME_UNITS:
+            if not isinstance(duration_unit, TimeUnit):
                 raise InvalidArgument(
-                    "duration_unit must be one of {units}. But {actual} has "
-                    "been passed".format(
-                        units=", ".join(TIME_UNITS), actual=duration_unit
-                    )
+                    function="create_schedule", argument="duration_unit"
                 )
 
             if not isinstance(duration, numbers.Integral) or duration < 1:
@@ -1994,7 +2008,7 @@ class Gmp(GvmProtocol):
                 )
 
             _xmlduration = cmd.add_element("duration", str(duration))
-            _xmlduration.add_element("unit", duration_unit)
+            _xmlduration.add_element("unit", duration_unit.value)
 
         if period is not None:
             if not period_unit:
@@ -2002,12 +2016,9 @@ class Gmp(GvmProtocol):
                     "Setting period requires period_unit argument"
                 )
 
-            if not period_unit in TIME_UNITS:
+            if not isinstance(period_unit, TimeUnit):
                 raise InvalidArgument(
-                    "period_unit must be one of {units} but {actual} has "
-                    "been passed".format(
-                        units=", ".join(TIME_UNITS), actual=period_unit
-                    )
+                    function="create_schedule", argument="period_unit"
                 )
 
             if not isinstance(period, numbers.Integral) or period < 0:
@@ -2016,7 +2027,7 @@ class Gmp(GvmProtocol):
                 )
 
             _xmlperiod = cmd.add_element("period", str(period))
-            _xmlperiod.add_element("unit", period_unit)
+            _xmlperiod.add_element("unit", period_unit.value)
 
         if timezone:
             cmd.add_element("timezone", timezone)
@@ -5455,48 +5466,45 @@ class Gmp(GvmProtocol):
 
     def modify_schedule(
         self,
-        schedule_id,
+        schedule_id: str,
         *,
-        comment=None,
-        name=None,
-        first_time_minute=None,
-        first_time_hour=None,
-        first_time_day_of_month=None,
-        first_time_month=None,
-        first_time_year=None,
-        duration=None,
-        duration_unit=None,
-        period=None,
-        period_unit=None,
-        timezone=None
-    ):
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        first_time_minute: Optional[int] = None,
+        first_time_hour: Optional[int] = None,
+        first_time_day_of_month: Optional[int] = None,
+        first_time_month: Optional[int] = None,
+        first_time_year: Optional[int] = None,
+        duration: Optional[int] = None,
+        duration_unit: Optional[TimeUnit] = None,
+        period: Optional[int] = None,
+        period_unit: Optional[TimeUnit] = None,
+        timezone: Optional[str] = None
+    ) -> Any:
         """Modifies an existing schedule.
 
         Arguments:
-            schedule_id (str): UUID of schedule to modify.
-            name (str, optional): Name of the schedule
-            comment (str, optional): Comment for the schedule
-            first_time_minute (int, optional): First time minute the schedule
-                will run. Must be an integer >= 0.
-            first_time_hour (int, optional): First time hour the schedule
-                will run. Must be an integer >= 0.
-            first_time_day_of_month (int, optional): First time day of month the
-                schedule will run. Must be an integer > 0 <= 31.
-            first_time_month (int, optional): First time month the schedule
-                will run. Must be an integer >= 1 <= 12.
-            first_time_year (int, optional): First time year the schedule
-                will run
-            duration (int, optional): How long the Manager will run the
-                scheduled task for until it gets paused if not finished yet.
-            duration_unit (str, optional): Unit of the duration. One of second,
-                minute, hour, day, week, month, year, decade. Required if
-                duration is set.
-            period (int, optional): How often the Manager will repeat the
-                scheduled task. Must be an integer > 0.
-            period_unit (str, optional): Unit of the period. One of second,
-                minute, hour, day, week, month, year, decade. Required if
-                period is set.
-            timezone (str, optional): The timezone the schedule will follow
+            schedule_id: UUID of schedule to modify.
+            name: Name of the schedule
+            comment: Comment for the schedule
+            first_time_minute: First time minute the schedule will run. Must be
+                an integer >= 0.
+            first_time_hour: First time hour the schedule will run. Must be an
+                integer >= 0.
+            first_time_day_of_month: First time day of month the schedule will
+                run. Must be an integer > 0 <= 31.
+            first_time_month: First time month the schedule will run. Must be an
+                integer >= 1 <= 12.
+            first_time_year: First time year the schedule will run
+            duration: How long the Manager will run the scheduled task for until
+                it gets paused if not finished yet.
+            duration_unit: Unit of the duration. One of second, minute, hour,
+                day, week, month, year, decade. Required if duration is set.
+            period: How often the Manager will repeat the scheduled task. Must
+                be an integer > 0.
+            period_unit: Unit of the period. One of second, minute, hour, day,
+                week, month, year, decade. Required if period is set.
+            timezone: The timezone the schedule will follow
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5604,12 +5612,9 @@ class Gmp(GvmProtocol):
                     "Setting duration requires duration_unit argument"
                 )
 
-            if not duration_unit in TIME_UNITS:
+            if not isinstance(duration_unit, TimeUnit):
                 raise InvalidArgument(
-                    "duration_unit must be one of {units} but {actual} has "
-                    "been passed".format(
-                        units=", ".join(TIME_UNITS), actual=duration_unit
-                    )
+                    function="modify_schedule", argument="duration_unit"
                 )
 
             if not isinstance(duration, numbers.Integral) or duration < 1:
@@ -5618,7 +5623,7 @@ class Gmp(GvmProtocol):
                 )
 
             _xmlduration = cmd.add_element("duration", str(duration))
-            _xmlduration.add_element("unit", duration_unit)
+            _xmlduration.add_element("unit", duration_unit.value)
 
         if period is not None:
             if not period_unit:
@@ -5626,12 +5631,9 @@ class Gmp(GvmProtocol):
                     "Setting period requires period_unit argument"
                 )
 
-            if not period_unit in TIME_UNITS:
+            if not isinstance(period_unit, TimeUnit):
                 raise InvalidArgument(
-                    "period_unit must be one of {units} but {actual} has "
-                    "been passed".format(
-                        units=", ".join(TIME_UNITS), actual=period_unit
-                    )
+                    function="modify_schedule", argument="period_unit"
                 )
 
             if not isinstance(period, numbers.Integral) or period < 1:
@@ -5640,7 +5642,7 @@ class Gmp(GvmProtocol):
                 )
 
             _xmlperiod = cmd.add_element("period", str(period))
-            _xmlperiod.add_element("unit", period_unit)
+            _xmlperiod.add_element("unit", period_unit.value)
 
         if timezone:
             cmd.add_element("timezone", timezone)
