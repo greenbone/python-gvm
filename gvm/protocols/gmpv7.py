@@ -242,7 +242,7 @@ def get_filter_type_from_string(
     """ Convert a filter type string to an actual FilterType instance
 
     Arguments:
-        filter_type (str): Filter type string to convert to a FilterType
+        filter_type: Filter type string to convert to a FilterType
     """
     if not filter_type:
         return None
