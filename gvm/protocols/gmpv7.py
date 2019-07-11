@@ -3079,24 +3079,21 @@ class Gmp(GvmProtocol):
     def get_agents(
         self,
         *,
-        filter=None,
-        filter_id=None,
-        trash=None,
-        details=None,
-        format=None
-    ):
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        format: Optional[str] = None
+    ) -> Any:
         """Request a list of agents
 
         Arguments:
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
-            trash (boolean, optional): True to request the agents in the
-                trashcan
-            details (boolean, optional): Whether to include agents package
-                information when no format was provided
-            format (str, optional): One of "installer", "howto_install" or
-                "howto_use"
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: True to request the agents in the trashcan
+            details: Whether to include agents packageinformation when no format
+                was provided
+            format: One of "installer", "howto_install" or "howto_use"
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3122,11 +3119,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_agent(self, agent_id):
+    def get_agent(self, agent_id: str) -> Any:
         """Request a single agent
 
         Arguments:
-            agent_id (str): UUID of an existing agent
+            agent_id: UUID of an existing agent
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3141,14 +3138,14 @@ class Gmp(GvmProtocol):
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def get_aggregates(self, resource_type, **kwargs):
+    def get_aggregates(self, resource_type, **kwargs) -> Any:
         """Request aggregated information on a resource type
 
         Additional arguments can be set via the kwargs parameter, but are not
         yet validated.
 
         Arguments:
-           resource_type (str): The GMP resource type to gather data from
+           resource_type: The GMP resource type to gather data from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3171,18 +3168,20 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_alerts(
-        self, *, filter=None, filter_id=None, trash=None, tasks=None
-    ):
+        self,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        tasks: Optional[bool] = None
+    ) -> Any:
         """Request a list of alerts
 
         Arguments:
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
-            trash (boolean, optional): True to request the alerts in the
-                trashcan
-            tasks (boolean, optional): Whether to include the tasks using the
-                alerts
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: True to request the alerts in the trashcan
+            tasks: Whether to include the tasks using the alerts
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
@@ -3198,11 +3197,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_alert(self, alert_id):
+    def get_alert(self, alert_id: str) -> Any:
         """Request a single alert
 
         Arguments:
-            alert_id (str): UUID of an existing alert
+            alert_id: UUID of an existing alert
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3267,24 +3266,21 @@ class Gmp(GvmProtocol):
     def get_credentials(
         self,
         *,
-        filter=None,
-        filter_id=None,
-        scanners=None,
-        trash=None,
-        targets=None
-    ):
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        scanners: Optional[bool] = None,
+        trash: Optional[bool] = None,
+        targets: Optional[bool] = None
+    ) -> Any:
         """Request a list of credentials
 
         Arguments:
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
-            scanners (boolean, optional): Whether to include a list of scanners
-                using the credentials
-            trash (boolean, optional): Whether to get the trashcan credentials
-                instead
-            targets (boolean, optional): Whether to include a list of targets
-                using the credentials
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            scanners: Whether to include a list of scanners using the
+                credentials
+            trash: Whether to get the trashcan credentials instead
+            targets: Whether to include a list of targets using the credentials
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3339,29 +3335,27 @@ class Gmp(GvmProtocol):
     def get_configs(
         self,
         *,
-        filter=None,
-        filter_id=None,
-        trash=None,
-        details=None,
-        families=None,
-        preferences=None,
-        tasks=None
-    ):
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        families: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        tasks: Optional[bool] = None
+    ) -> Any:
         """Request a list of scan configs
 
         Arguments:
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
-            trash (boolean, optional): Whether to get the trashcan scan configs
-                instead
-            details (boolean, optional): Whether to get config families,
-                preferences, nvt selectors and tasks.
-            families (boolean, optional): Whether to include the families if no
-                details are requested
-            preferences (boolean, optional): Whether to include the preferences
-                if no details are requested
-            tasks (boolean, optional): Whether to get tasks using this config
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan scan configs instead
+            details: Whether to get config families, preferences, nvt selectors
+                and tasks.
+            families: Whether to include the families if no details are
+                requested
+            preferences: Whether to include the preferences if no details are
+                requested
+            tasks: Whether to get tasks using this config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3387,11 +3381,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_config(self, config_id):
+    def get_config(self, config_id: str) -> Any:
         """Request a single scan config
 
         Arguments:
-            config_id (str): UUID of an existing scan config
+            config_id: UUID of an existing scan config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3406,7 +3400,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def get_feeds(self):
+    def get_feeds(self) -> Any:
         """Request the list of feeds
 
         Returns:
@@ -3426,31 +3420,31 @@ class Gmp(GvmProtocol):
         if not feed_type:
             raise RequiredArgument("get_feed requires a feed_type argument")
 
-        feed_type = feed_type.upper()
-
-        if not feed_type in ("NVT", "CERT", "SCAP"):
+        if not isinstance(feed_type, FeedType):
             raise InvalidArgument(
                 "get_feed type arguments must be one of NVT, CERT or SCAP"
             )
 
         cmd = XmlCommand("get_feeds")
-        cmd.set_attribute("type", feed_type)
+        cmd.set_attribute("type", feed_type.value)
 
         return self._send_xml_command(cmd)
 
     def get_filters(
-        self, *, filter=None, filter_id=None, trash=None, alerts=None
-    ):
+        self,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        alerts: Optional[bool] = None
+    ) -> Any:
         """Request a list of filters
 
         Arguments:
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
-            trash (boolean, optional): Whether to get the trashcan filters
-                instead
-            alerts (boolean, optional): Whether to include list of alerts that
-                use the filter.
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan filters instead
+            alerts: Whether to include list of alerts that use the filter.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3467,11 +3461,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_filter(self, filter_id):
+    def get_filter(self, filter_id: str) -> Any:
         """Request a single filter
 
         Arguments:
-            filter_id (str): UUID of an existing filter
+            filter_id: UUID of an existing filter
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3483,15 +3477,19 @@ class Gmp(GvmProtocol):
         cmd.set_attribute("filter_id", filter_id)
         return self._send_xml_command(cmd)
 
-    def get_groups(self, *, filter=None, filter_id=None, trash=None):
+    def get_groups(
+        self,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None
+    ) -> Any:
         """Request a list of groups
 
         Arguments:
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
-            trash (boolean, optional): Whether to get the trashcan groups
-                instead
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan groups instead
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3505,11 +3503,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_group(self, group_id):
+    def get_group(self, group_id: str) -> Any:
         """Request a single group
 
         Arguments:
-            group_id (str): UUID of an existing group
+            group_id: UUID of an existing group
 
         Returns:
             The response. See :py:meth:`send_command` for details.
