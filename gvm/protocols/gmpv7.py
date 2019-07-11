@@ -290,6 +290,28 @@ def get_credential_type_from_string(
         )
 
 
+class FeedType(Enum):
+    """ Enum for feed types """
+
+    NVT = "NVT"
+    CERT = "CERT"
+    SCAP = "SCAP"
+
+
+def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
+    """ Convert a feed type string into a FeedType instance
+    """
+    if not feed_type:
+        return None
+
+    try:
+        return FeedType[feed_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='feed_type', function=get_feed_type_from_string.__name__
+        )
+
+
 class FilterType(Enum):
     """ Enum for filter types """
 
@@ -3392,11 +3414,11 @@ class Gmp(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand("get_feeds"))
 
-    def get_feed(self, feed_type):
+    def get_feed(self, feed_type: Optional[FeedType]) -> Any:
         """Request a single feed
 
         Arguments:
-            feed_type (str): Type of single feed to get: NVT, CERT or SCAP
+            feed_type: Type of single feed to get: NVT, CERT or SCAP
 
         Returns:
             The response. See :py:meth:`send_command` for details.

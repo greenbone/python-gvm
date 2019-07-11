@@ -20,24 +20,26 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import FeedType
+
 from . import Gmpv7TestCase
 
 
 class GmpGetFeedTestCase(Gmpv7TestCase):
     def test_get_feed(self):
-        self.gmp.get_feed('nvt')
+        self.gmp.get_feed(FeedType.NVT)
 
         self.connection.send.has_been_called_with('<get_feeds type="NVT"/>')
 
-        self.gmp.get_feed(feed_type='nvt')
+        self.gmp.get_feed(feed_type=FeedType.NVT)
 
         self.connection.send.has_been_called_with('<get_feeds type="NVT"/>')
 
-        self.gmp.get_feed('cert')
+        self.gmp.get_feed(FeedType.CERT)
 
         self.connection.send.has_been_called_with('<get_feeds type="CERT"/>')
 
-        self.gmp.get_feed('scap')
+        self.gmp.get_feed(FeedType.SCAP)
 
         self.connection.send.has_been_called_with('<get_feeds type="SCAP"/>')
 
