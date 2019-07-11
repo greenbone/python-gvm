@@ -239,6 +239,31 @@ def get_asset_type_from_string(
         )
 
 
+class CredentialFormat(Enum):
+    """ Enum for credential format """
+
+    KEY = 'key'
+    RPM = 'rpm'
+    DEB = 'deb'
+    EXE = 'exe'
+    PEM = 'pem'
+
+
+def get_credential_format_from_string(
+    credential_format: Optional[str]
+) -> Optional[CredentialFormat]:
+    if not credential_format:
+        return None
+
+    try:
+        return CredentialFormat[credential_format.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='credential_format',
+            function=get_credential_format_from_string.__name__,
+        )
+
+
 class CredentialType(Enum):
     """ Enum for credential types """
 
@@ -3257,13 +3282,17 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_credential(self, credential_id, *, credential_format=None):
+    def get_credential(
+        self,
+        credential_id: str,
+        *,
+        credential_format: Optional[CredentialFormat] = None
+    ) -> Any:
         """Request a single credential
 
         Arguments:
-            credential_id (str): UUID of an existing credential
-            credential_format (str, optional): One of "key", "rpm", "deb",
-                "exe" or "pem"
+            credential_id: UUID of an existing credential
+            credential_format: One of "key", "rpm", "deb", "exe" or "pem"
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3275,14 +3304,14 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand("get_credentials")
         cmd.set_attribute("credential_id", credential_id)
+
         if credential_format:
-            if not credential_format in ("key", "rpm", "deb", "exe", "pem"):
+            if not isinstance(credential_format, CredentialFormat):
                 raise InvalidArgument(
-                    "credential_format argument needs to be one of "
-                    "key, rpm, deb, exe or pem"
+                    function="get_credential", argument="credential_format"
                 )
 
-            cmd.set_attribute("format", credential_format)
+            cmd.set_attribute("format", credential_format.value)
         return self._send_xml_command(cmd)
 
     def get_configs(

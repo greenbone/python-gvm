@@ -28,6 +28,10 @@ Enums
     :members:
     :undoc-members:
 
+.. autoclass:: CredentialFormat
+    :members:
+    :undoc-members:
+
 .. autoclass:: CredentialType
     :members:
     :undoc-members:
