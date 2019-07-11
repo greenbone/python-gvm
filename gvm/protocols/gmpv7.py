@@ -298,6 +298,33 @@ def get_filter_type_from_string(
         )
 
 
+class HostsOrdering(Enum):
+    """ Enum for host ordering during scans """
+
+    SEQUENTIAL = "sequential"
+    RANDOM = "random"
+    REVERSE = "reverse"
+
+
+def get_hosts_ordering_from_string(
+    hosts_ordering: Optional[str]
+) -> Optional[HostsOrdering]:
+    """ Convert a hosts ordering string to an actual HostsOrdering instance
+
+    Arguments:
+        hosts_ordering: Host ordering string to convert to a HostsOrdering
+    """
+    if not hosts_ordering:
+        return None
+    try:
+        return HostsOrdering[hosts_ordering.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='hosts_ordering',
+            function=get_hosts_ordering_from_string.__name__,
+        )
+
+
 class PermissionSubjectType(Enum):
     """ Enum for permission subject type """
 
@@ -2299,40 +2326,37 @@ class Gmp(GvmProtocol):
 
     def create_task(
         self,
-        name,
-        config_id,
-        target_id,
-        scanner_id,
+        name: str,
+        config_id: str,
+        target_id: str,
+        scanner_id: str,
         *,
-        alterable=None,
-        hosts_ordering=None,
-        schedule_id=None,
-        alert_ids=None,
-        comment=None,
-        schedule_periods=None,
-        observers=None,
-        preferences=None
-    ):
+        alterable: Optional[bool] = None,
+        hosts_ordering: Optional[HostsOrdering] = None,
+        schedule_id: Optional[str] = None,
+        alert_ids: Optional[List[str]] = None,
+        comment: Optional[str] = None,
+        schedule_periods: Optional[int] = None,
+        observers: Optional[List[str]] = None,
+        preferences: Optional[dict] = None
+    ) -> Any:
         """Create a new task
 
         Arguments:
-            name (str): Name of the task
-            config_id (str): UUID of scan config to use by the task
-            target_id (str): UUID of target to be scanned
-            scanner_id (str): UUID of scanner to use for scanning the target
-            comment (str, optional): Comment for the task
-            alterable (boolean, optional): Whether the task should be alterable
-            alert_ids (list, optional): List of UUIDs for alerts to be applied
-                to the task
-            hosts_ordering (str, optional): The order hosts are scanned in
-            schedule_id (str, optional): UUID of a schedule when the task should
-                be run.
-            schedule_periods (int, optional): A limit to the number of times the
-                task will be scheduled, or 0 for no limit
-            observers (list, optional): List of names or ids of users which
-                should be allowed to observe this task
-            preferences (dict, optional): Name/Value pairs of scanner
-                preferences.
+            name: Name of the task
+            config_id: UUID of scan config to use by the task
+            target_id: UUID of target to be scanned
+            scanner_id: UUID of scanner to use for scanning the target
+            comment: Comment for the task
+            alterable: Whether the task should be alterable
+            alert_ids: List of UUIDs for alerts to be applied to the task
+            hosts_ordering: The order hosts are scanned in
+            schedule_id: UUID of a schedule when the task should be run.
+            schedule_periods: A limit to the number of times the task will be
+                scheduled, or 0 for no limit
+            observers: List of names or ids of users which should be allowed to
+                observe this task
+            preferences: Name/Value pairs of scanner preferences.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2368,10 +2392,11 @@ class Gmp(GvmProtocol):
             cmd.add_element("alterable", _to_bool(alterable))
 
         if hosts_ordering:
-            # not sure about the possible values for hosts_orderning
-            # it seems gvmd does not check the param
-            # gsa allows to select 'sequential', 'random' or 'reverse'
-            cmd.add_element("hosts_ordering", hosts_ordering)
+            if not isinstance(hosts_ordering, HostsOrdering):
+                raise InvalidArgument(
+                    function="create_task", argument="hosts_ordering"
+                )
+            cmd.add_element("hosts_ordering", hosts_ordering.value)
 
         if alert_ids:
             if isinstance(alert_ids, str):
@@ -5878,42 +5903,38 @@ class Gmp(GvmProtocol):
 
     def modify_task(
         self,
-        task_id,
+        task_id: str,
         *,
-        name=None,
-        config_id=None,
-        target_id=None,
-        scanner_id=None,
-        alterable=None,
-        hosts_ordering=None,
-        schedule_id=None,
-        schedule_periods=None,
-        comment=None,
-        alert_ids=None,
-        observers=None,
-        preferences=None
-    ):
+        name: Optional[str] = None,
+        config_id: Optional[str] = None,
+        target_id: Optional[str] = None,
+        scanner_id: Optional[str] = None,
+        alterable: Optional[bool] = None,
+        hosts_ordering: Optional[HostsOrdering] = None,
+        schedule_id: Optional[str] = None,
+        schedule_periods: Optional[int] = None,
+        comment: Optional[str] = None,
+        alert_ids: Optional[List[str]] = None,
+        observers: Optional[List[str]] = None,
+        preferences: Optional[dict] = None
+    ) -> Any:
         """Modifies an existing task.
 
         Arguments:
-            task_id (str) UUID of task to modify.
-            name  (str, optional): The name of the task.
-            config_id (str, optional): UUID of scan config to use by the task
-            target_id (str, optional): UUID of target to be scanned
-            scanner_id (str, optional): UUID of scanner to use for scanning the
-                target
-            comment  (str, optional):The comment on the task.
-            alert_ids (list, optional): List of UUIDs for alerts to be applied
-                to the task
-            hosts_ordering (str, optional): The order hosts are scanned in
-            schedule_id (str, optional): UUID of a schedule when the task should
-                be run.
-            schedule_periods (int, optional): A limit to the number of times
-                the task will be scheduled, or 0 for no limit.
-            observers (list, optional): List of names or ids of users which
-                should be allowed to observe this task
-            preferences (dict, optional): Name/Value pairs of scanner
-                preferences.
+            task_id: UUID of task to modify.
+            name: The name of the task.
+            config_id: UUID of scan config to use by the task
+            target_id: UUID of target to be scanned
+            scanner_id: UUID of scanner to use for scanning the target
+            comment: The comment on the task.
+            alert_ids: List of UUIDs for alerts to be applied to the task
+            hosts_ordering: The order hosts are scanned in
+            schedule_id: UUID of a schedule when the task should be run.
+            schedule_periods: A limit to the number of times the task will be
+                scheduled, or 0 for no limit.
+            observers: List of names or ids of users which should be allowed to
+                observe this task
+            preferences: Name/Value pairs of scanner preferences.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5940,10 +5961,11 @@ class Gmp(GvmProtocol):
             cmd.add_element("alterable", _to_bool(alterable))
 
         if hosts_ordering:
-            # not sure about the possible values for hosts_orderning
-            # it seems gvmd does not check the param
-            # gsa allows to select 'sequential', 'random' or 'reverse'
-            cmd.add_element("hosts_ordering", hosts_ordering)
+            if not isinstance(hosts_ordering, HostsOrdering):
+                raise InvalidArgument(
+                    function="modify_tasks", argument="hosts_ordering"
+                )
+            cmd.add_element("hosts_ordering", hosts_ordering.value)
 
         if scanner_id:
             cmd.add_element("scanner", attrs={"id": scanner_id})

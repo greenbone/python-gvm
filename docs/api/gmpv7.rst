@@ -32,6 +32,10 @@ Enums
     :members:
     :undoc-members:
 
+.. autoclass:: HostsOrdering
+    :members:
+    :undoc-members:
+
 .. autoclass:: PermissionSubjectType
     :members:
     :undoc-members:

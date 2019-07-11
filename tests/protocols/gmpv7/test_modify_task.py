@@ -22,6 +22,8 @@ from collections import OrderedDict
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import HostsOrdering
+
 from . import Gmpv7TestCase
 
 
@@ -121,13 +123,17 @@ class GmpModifyTaskCommandTestCase(Gmpv7TestCase):
         )
 
     def test_modify_task_with_hosts_ordering(self):
-        self.gmp.modify_task(task_id='t1', hosts_ordering='foo')
+        self.gmp.modify_task(task_id='t1', hosts_ordering=HostsOrdering.REVERSE)
 
         self.connection.send.has_been_called_with(
             '<modify_task task_id="t1">'
-            '<hosts_ordering>foo</hosts_ordering>'
+            '<hosts_ordering>reverse</hosts_ordering>'
             '</modify_task>'
         )
+
+    def test_modify_task_invalid_hosts_ordering(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_task(task_id='t1', hosts_ordering='foo')
 
     def test_modify_task_with_schedule(self):
         self.gmp.modify_task(task_id='t1', schedule_id='s1')
