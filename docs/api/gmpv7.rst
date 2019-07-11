@@ -24,6 +24,10 @@ Enums
     :members:
     :undoc-members:
 
+.. autoclass:: AssetType
+    :members:
+    :undoc-members:
+
 .. autoclass:: CredentialType
     :members:
     :undoc-members:

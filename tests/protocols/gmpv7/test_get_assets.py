@@ -20,20 +20,22 @@ import unittest
 
 from gvm.errors import InvalidArgument
 
+from gvm.protocols.gmpv7 import AssetType
+
 from . import Gmpv7TestCase
 
 
 class GmpGetAssetsTestCase(Gmpv7TestCase):
     def test_get_assets(self):
-        self.gmp.get_assets('os')
+        self.gmp.get_assets(AssetType.OPERATING_SYSTEM)
 
         self.connection.send.has_been_called_with('<get_assets type="os"/>')
 
-        self.gmp.get_assets(asset_type='os')
+        self.gmp.get_assets(asset_type=AssetType.OPERATING_SYSTEM)
 
         self.connection.send.has_been_called_with('<get_assets type="os"/>')
 
-        self.gmp.get_assets(asset_type='host')
+        self.gmp.get_assets(asset_type=AssetType.HOST)
 
         self.connection.send.has_been_called_with('<get_assets type="host"/>')
 
@@ -47,14 +49,18 @@ class GmpGetAssetsTestCase(Gmpv7TestCase):
             self.gmp.get_assets(asset_type='foo')
 
     def test_get_assets_with_filter(self):
-        self.gmp.get_assets(asset_type='os', filter='foo=bar')
+        self.gmp.get_assets(
+            asset_type=AssetType.OPERATING_SYSTEM, filter='foo=bar'
+        )
 
         self.connection.send.has_been_called_with(
             '<get_assets type="os" filter="foo=bar"/>'
         )
 
     def test_get_assets_with_filter_id(self):
-        self.gmp.get_assets(asset_type='os', filter_id='f1')
+        self.gmp.get_assets(
+            asset_type=AssetType.OPERATING_SYSTEM, filter_id='f1'
+        )
 
         self.connection.send.has_been_called_with(
             '<get_assets type="os" filt_id="f1"/>'

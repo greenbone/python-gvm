@@ -215,6 +215,30 @@ def get_alive_test_from_string(
     )
 
 
+class AssetType(Enum):
+    """" Enum for asset types """
+
+    OPERATING_SYSTEM = 'os'
+    HOST = 'host'
+
+
+def get_asset_type_from_string(
+    asset_type: Optional[str]
+) -> Optional[AssetType]:
+    if not asset_type:
+        return None
+
+    if asset_type == 'os' or asset_type == 'operatingsystem':
+        return AssetType.OPERATING_SYSTEM
+
+    try:
+        return AssetType[asset_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='asset_type', function=get_asset_type_from_string.__name__
+        )
+
+
 class CredentialType(Enum):
     """ Enum for credential types """
 
@@ -537,8 +561,6 @@ def get_time_unit_from_string(
             function=get_severity_level_from_string.__name__,
         )
 
-
-ASSET_TYPES = ("host", "os")
 
 INFO_TYPES = (
     "CERT_BUND_ADV",
@@ -3145,48 +3167,53 @@ class Gmp(GvmProtocol):
         cmd.set_attribute("alert_id", alert_id)
         return self._send_xml_command(cmd)
 
-    def get_assets(self, asset_type, *, filter=None, filter_id=None):
+    def get_assets(
+        self,
+        asset_type: AssetType,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None
+    ) -> Any:
         """Request a list of assets
 
         Arguments:
-            asset_type (str): Either 'os' or 'host'
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
+            asset_type: Either 'os' or 'host'
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not asset_type in ASSET_TYPES:
-            raise InvalidArgument("asset_type must be either os or host")
+        if not isinstance(asset_type, AssetType):
+            raise InvalidArgument(function="get_assets", argument="asset_type")
 
         cmd = XmlCommand("get_assets")
 
-        cmd.set_attribute("type", asset_type)
+        cmd.set_attribute("type", asset_type.value)
 
         _add_filter(cmd, filter, filter_id)
 
         return self._send_xml_command(cmd)
 
-    def get_asset(self, asset_id, asset_type):
+    def get_asset(self, asset_id: str, asset_type: AssetType) -> Any:
         """Request a single asset
 
         Arguments:
-            asset_type (str): Either 'os' or 'host'
-            asset_id (str): UUID of an existing asset
+            asset_id: UUID of an existing asset
+            asset_type: Either 'os' or 'host'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not asset_type in ASSET_TYPES:
-            raise InvalidArgument("asset_type must be either os or host")
+        if not isinstance(asset_type, AssetType):
+            raise InvalidArgument(function="get_asset", argument="asset_type")
 
         if not asset_id:
             raise RequiredArgument("get_asset requires an asset_type argument")
 
         cmd = XmlCommand("get_assets")
         cmd.set_attribute("asset_id", asset_id)
-        cmd.set_attribute("type", asset_type)
+        cmd.set_attribute("type", asset_type.value)
 
         return self._send_xml_command(cmd)
 
