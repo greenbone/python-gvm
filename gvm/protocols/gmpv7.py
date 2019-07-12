@@ -1384,7 +1384,7 @@ class Gmp(GvmProtocol):
         """Clone an existing filter
 
         Arguments:
-            filter_id (str): UUID of an existing filter to clone from
+            filter_id: UUID of an existing filter to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1438,7 +1438,7 @@ class Gmp(GvmProtocol):
         """Clone an existing group
 
         Arguments:
-            group_id (str): UUID of an existing group to clone from
+            group_id: UUID of an existing group to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1549,7 +1549,7 @@ class Gmp(GvmProtocol):
         """Clone an existing note
 
         Arguments:
-            note_id (str): UUID of an existing note to clone from
+            note_id: UUID of an existing note to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1796,7 +1796,7 @@ class Gmp(GvmProtocol):
         """Clone an existing port list
 
         Arguments:
-            port_list_id (str): UUID of an existing port list to clone from
+            port_list_id: UUID of an existing port list to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1884,8 +1884,7 @@ class Gmp(GvmProtocol):
                 Either task_id or task_name must be passed
             task_comment: Comment for task to be created if task_id is not
                 present
-            in_asset (boolean, optional): Whether to create or update assets
-                using the report
+            in_asset: Whether to create or update assets using the report
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2038,7 +2037,7 @@ class Gmp(GvmProtocol):
         """Clone an existing scanner
 
         Arguments:
-            scanner_id (str): UUID of an existing scanner to clone from
+            scanner_id: UUID of an existing scanner to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2237,7 +2236,7 @@ class Gmp(GvmProtocol):
         """Clone an existing schedule
 
         Arguments:
-            schedule_id (str): UUID of an existing schedule to clone from
+            schedule_id: UUID of an existing schedule to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2315,7 +2314,7 @@ class Gmp(GvmProtocol):
         """Clone an existing tag
 
         Arguments:
-            tag_id (str): UUID of an existing tag to clone from
+            tag_id: UUID of an existing tag to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2444,7 +2443,7 @@ class Gmp(GvmProtocol):
         """Clone an existing target
 
         Arguments:
-            target_id (str): UUID of an existing target to clone from
+            target_id: UUID of an existing target to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -2800,9 +2799,8 @@ class Gmp(GvmProtocol):
         """Deletes an existing filter
 
         Arguments:
-            filter_id (str) UUID of the filter to be deleted.
-            ultimate (boolean, optional): Whether to remove entirely,
-                or to the trashcan.
+            filter_id: UUID of the filter to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
         """
         if not filter_id:
             raise RequiredArgument(
@@ -3670,13 +3668,10 @@ class Gmp(GvmProtocol):
         """Request a list of notes
 
         Arguments:
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
-            details (boolean, optional): Add info about connected results and
-                tasks
-            result (boolean, optional): Return the details of possible connected
-                results.
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            details: Add info about connected results and tasks
+            result: Return the details of possible connected results.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3697,7 +3692,7 @@ class Gmp(GvmProtocol):
         """Request a single note
 
         Arguments:
-            note_id (str): UUID of an existing note
+            note_id: UUID of an existing note
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3796,7 +3791,7 @@ class Gmp(GvmProtocol):
         """Request a list of nvt families
 
         Arguments:
-            sort_order (str, optional): Sort order
+            sort_order: Sort order
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3944,7 +3939,7 @@ class Gmp(GvmProtocol):
         """Request a single port list
 
         Arguments:
-            port_list_id (str): UUID of an existing port list
+            port_list_id: UUID of an existing port list
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4132,7 +4127,7 @@ class Gmp(GvmProtocol):
         """Request a single report format
 
         Arguments:
-            report_format_id (str): UUID of an existing report format
+            report_format_id: UUID of an existing report format
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4470,7 +4465,7 @@ class Gmp(GvmProtocol):
         """Request a single tag
 
         Arguments:
-            tag_id (str): UUID of an existing tag
+            tag_id: UUID of an existing tag
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4905,10 +4900,10 @@ class Gmp(GvmProtocol):
         """Modifies the scanner preferences of an existing scan config
 
         Arguments:
-            config_id (str): UUID of scan config to modify.
-            name (str): Name of the scanner preference to change
-            value (str, optional): New value for the preference. None to delete
-                the preference and to use the default instead.
+            config_id: UUID of scan config to modify.
+            name: Name of the scanner preference to change
+            value: New value for the preference. None to delete the preference
+                and to use the default instead.
 
         """
         if not config_id:
@@ -5030,14 +5025,13 @@ class Gmp(GvmProtocol):
         modify_config has four modes to operate depending on the selection.
 
         Arguments:
-            config_id (str): UUID of scan config to modify.
-            selection (str): one of 'scan_pref', 'nvt_pref', 'nvt_selection' or
+            config_id: UUID of scan config to modify.
+            selection: one of 'scan_pref', 'nvt_pref', 'nvt_selection' or
                 'family_selection'
-            name (str, optional): New name for preference.
-            value(str, optional): New value for preference.
-            nvt_oids (list, optional): List of NVTs associated with preference
-                to modify.
-            family (str,optional): Name of family to modify.
+            name: New name for preference.
+            value: New value for preference.
+            nvt_oids: List of NVTs associated with preference to modify.
+            family: Name of family to modify.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5129,7 +5123,7 @@ class Gmp(GvmProtocol):
             login: Username for the credential
             password: Password for the credential
             auth_algorithm: The SNMP auth algorithm.
-            community (str, optional): The SNMP community
+            community: The SNMP community
             privacy_algorithm: The SNMP privacy algorithm.
             privacy_password: The SNMP privacy password
 
@@ -5905,10 +5899,10 @@ class Gmp(GvmProtocol):
         """Modifies an existing setting.
 
         Arguments:
-            setting_id (str, optional): UUID of the setting to be changed.
-            name (str, optional): The name of the setting. Either setting_id or
-                name must be passed.
-            value (str): The value of the setting.
+            setting_id: UUID of the setting to be changed.
+            name: The name of the setting. Either setting_id or name must be
+                passed.
+            value: The value of the setting.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
