@@ -288,6 +288,66 @@ def get_credential_type_from_string(
         )
 
 
+class EntityType(Enum):
+    """ Enum for entity types """
+
+    AGENT = "note"
+    ALERT = "alert"
+    ASSET = "asset"
+    CERT_BUND_ADV = "cert_bund_adv"
+    CPE = "cpe"
+    CREDENTIAL = "credential"
+    CVE = "cve"
+    DFN_CERT_ADV = "dfn_cert_adv"
+    FILTER = "filter"
+    GROUP = "group"
+    HOST = "host"
+    INFO = "info"
+    NOTE = "note"
+    NVT = "nvt"
+    OPERATING_SYSTEM = "os"
+    OVALDEF = "ovaldef"
+    OVERRIDE = "override"
+    PERMISSION = "permission"
+    PORT_LIST = "port_list"
+    REPORT = "report"
+    REPORT_FORMAT = "report_format"
+    RESULT = "result"
+    ROLE = "role"
+    SCAN_CONFIG = "config"
+    SCANNER = "scanner"
+    SCHEDULE = "schedule"
+    TAG = "tag"
+    TARGET = "target"
+    TASK = "task"
+    USER = "user"
+
+
+def get_entity_type_from_string(
+    entity_type: Optional[str]
+) -> Optional[EntityType]:
+    """ Convert a entity type string to an actual EntityType instance
+
+    Arguments:
+        entity_type: Resource type string to convert to a EntityType
+    """
+    if not entity_type:
+        return None
+
+    if entity_type == 'config':
+        return EntityType.SCAN_CONFIG
+    if entity_type == 'os':
+        return EntityType.OPERATING_SYSTEM
+
+    try:
+        return EntityType[entity_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='entity_type',
+            function=get_entity_type_from_string.__name__,
+        )
+
+
 class FeedType(Enum):
     """ Enum for feed types """
 
@@ -635,26 +695,6 @@ def get_time_unit_from_string(
         )
 
 
-AGGREGATE_RESOURCE_TYPES = (
-    "alert",
-    "allinfo",
-    "cert_bund_adv",
-    "cpe",
-    "cve",
-    "dfn_cert_adv",
-    "host",
-    "note",
-    "nvt",
-    "os",
-    "ovaldef",
-    "override",
-    "report",
-    "result",
-    "task",
-    "vuln",
-)
-
-
 def _check_command_status(xml: str) -> bool:
     """Check gmp response
 
@@ -781,6 +821,7 @@ class Gmp(GvmProtocol):
     """
 
     _filter_type = FilterType
+    _entity_type = EntityType
 
     def __init__(
         self,
@@ -1637,7 +1678,7 @@ class Gmp(GvmProtocol):
         subject_type: PermissionSubjectType,
         *,
         resource_id: Optional[str] = None,
-        resource_type=None,
+        resource_type: Optional[EntityType] = None,
         comment: Optional[str] = None
     ) -> Any:
         """Create a new permission
@@ -1690,10 +1731,15 @@ class Gmp(GvmProtocol):
                     "create_permission requires resource_type for resource_id"
                 )
 
+            if not isinstance(resource_type, self._entity_type):
+                raise InvalidArgument(
+                    function="create_permission", argument="resource_type"
+                )
+
             _xmlresource = cmd.add_element(
                 "resource", attrs={"id": resource_id}
             )
-            _xmlresource.add_element("type", resource_type)
+            _xmlresource.add_element("type", resource_type.value)
 
         return self._send_xml_command(cmd)
 
@@ -2208,7 +2254,7 @@ class Gmp(GvmProtocol):
     def create_tag(
         self,
         name: str,
-        resource_type,
+        resource_type: EntityType,
         *,
         resource_id: Optional[str] = None,
         value: Optional[str] = None,
@@ -2235,6 +2281,11 @@ class Gmp(GvmProtocol):
         if not resource_type:
             raise RequiredArgument("create_tag requires resource_type argument")
 
+        if not isinstance(resource_type, self._entity_type):
+            raise InvalidArgument(
+                function="create_tag", argument="resource_type"
+            )
+
         cmd = XmlCommand("create_tag")
         cmd.add_element("name", name)
 
@@ -2244,7 +2295,7 @@ class Gmp(GvmProtocol):
         _xmlresource = cmd.add_element(
             "resource", attrs={"id": str(resource_id)}
         )
-        _xmlresource.add_element("type", resource_type)
+        _xmlresource.add_element("type", resource_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -3151,14 +3202,14 @@ class Gmp(GvmProtocol):
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def get_aggregates(self, resource_type, **kwargs) -> Any:
+    def get_aggregates(self, resource_type: EntityType, **kwargs) -> Any:
         """Request aggregated information on a resource type
 
         Additional arguments can be set via the kwargs parameter, but are not
         yet validated.
 
         Arguments:
-           resource_type: The GMP resource type to gather data from
+           resource_type: The entity type to gather data from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3168,14 +3219,14 @@ class Gmp(GvmProtocol):
                 "get_aggregates requires resource_type argument"
             )
 
-        if resource_type not in AGGREGATE_RESOURCE_TYPES:
+        if not isinstance(resource_type, self._entity_type):
             raise InvalidArgument(
-                "get_aggregates requires a valid resource_type argument"
+                function="get_aggregate", argument="resource_type"
             )
 
         cmd = XmlCommand("get_aggregates")
 
-        cmd.set_attribute("type", resource_type)
+        cmd.set_attribute("type", resource_type.value)
 
         cmd.set_attributes(kwargs)
         return self._send_xml_command(cmd)
@@ -5406,7 +5457,7 @@ class Gmp(GvmProtocol):
         comment: Optional[str] = None,
         name: Optional[str] = None,
         resource_id: Optional[str] = None,
-        resource_type=None,
+        resource_type: Optional[EntityType] = None,
         subject_id: Optional[str] = None,
         subject_type: Optional[PermissionSubjectType] = None
     ) -> Any:
@@ -5450,10 +5501,15 @@ class Gmp(GvmProtocol):
                     "modify_permission requires resource_type for resource_id"
                 )
 
+            if not isinstance(resource_type, self._entity_type):
+                raise InvalidArgument(
+                    function="modify_permission", argument="resource_type"
+                )
+
             _xmlresource = cmd.add_element(
                 "resource", attrs={"id": resource_id}
             )
-            _xmlresource.add_element("type", resource_type)
+            _xmlresource.add_element("type", resource_type.value)
 
         if subject_id or subject_type:
             if not subject_id:
@@ -5885,7 +5941,7 @@ class Gmp(GvmProtocol):
         value: Optional[str] = None,
         active: Optional[bool] = None,
         resource_id: Optional[str] = None,
-        resource_type=None
+        resource_type: Optional[EntityType] = None
     ) -> Any:
         """Modifies an existing tag.
 
@@ -5934,10 +5990,15 @@ class Gmp(GvmProtocol):
                     "resource_id is set"
                 )
 
+            if not isinstance(resource_type, self._entity_type):
+                raise InvalidArgument(
+                    function="modify_tag", argument="resource_type"
+                )
+
             _xmlresource = cmd.add_element(
                 "resource", attrs={"id": resource_id}
             )
-            _xmlresource.add_element("type", resource_type)
+            _xmlresource.add_element("type", resource_type.value)
 
         return self._send_xml_command(cmd)
 

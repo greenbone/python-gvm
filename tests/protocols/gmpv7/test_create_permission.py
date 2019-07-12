@@ -20,7 +20,7 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
-from gvm.protocols.gmpv7 import PermissionSubjectType
+from gvm.protocols.gmpv7 import PermissionSubjectType, EntityType
 
 from . import Gmpv7TestCase
 
@@ -124,7 +124,7 @@ class GmpCreatePermissionTestCase(Gmpv7TestCase):
             subject_id='u1',
             subject_type=PermissionSubjectType.USER,
             resource_id='t1',
-            resource_type='task',
+            resource_type=EntityType.TASK,
         )
 
         self.connection.send.has_been_called_with(

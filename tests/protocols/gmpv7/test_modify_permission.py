@@ -20,7 +20,7 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
-from gvm.protocols.gmpv7 import PermissionSubjectType
+from gvm.protocols.gmpv7 import PermissionSubjectType, EntityType
 
 from . import Gmpv7TestCase
 
@@ -54,13 +54,13 @@ class GmpModifyPermissionTestCase(Gmpv7TestCase):
 
     def test_modify_permission_with_resource_id_and_type(self):
         self.gmp.modify_permission(
-            permission_id='p1', resource_id='r1', resource_type='foo'
+            permission_id='p1', resource_id='r1', resource_type=EntityType.TASK
         )
 
         self.connection.send.has_been_called_with(
             '<modify_permission permission_id="p1">'
             '<resource id="r1">'
-            '<type>foo</type>'
+            '<type>task</type>'
             '</resource>'
             '</modify_permission>'
         )

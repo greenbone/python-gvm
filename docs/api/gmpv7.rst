@@ -36,6 +36,10 @@ Enums
     :members:
     :undoc-members:
 
+.. autoclass:: EntityType
+    :members:
+    :undoc-members:
+
 .. autoclass:: FeedType
     :members:
     :undoc-members:

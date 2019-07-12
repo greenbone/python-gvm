@@ -20,6 +20,8 @@ import unittest
 
 from gvm.errors import RequiredArgument
 
+from gvm.protocols.gmpv7 import EntityType
+
 from . import Gmpv7TestCase
 
 
@@ -71,7 +73,9 @@ class GmpModifyTagTestCase(Gmpv7TestCase):
         )
 
     def test_modify_tag_with_resource_id_and_type(self):
-        self.gmp.modify_tag(tag_id='t1', resource_id='r1', resource_type='task')
+        self.gmp.modify_tag(
+            tag_id='t1', resource_id='r1', resource_type=EntityType.TASK
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_tag tag_id="t1">'
@@ -87,7 +91,7 @@ class GmpModifyTagTestCase(Gmpv7TestCase):
 
     def test_modify_tag_with_missing_resource_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_tag(tag_id='t1', resource_type='task')
+            self.gmp.modify_tag(tag_id='t1', resource_type=EntityType.TASK)
 
 
 if __name__ == '__main__':
