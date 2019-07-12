@@ -498,7 +498,6 @@ class Gmp(Gmpv7):
         community: Optional[str] = None,
         privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
         privacy_password: Optional[str] = None,
-        credential_type: Optional[CredentialType] = None,
         public_key: Optional[str] = None
     ) -> Any:
         """Modifies an existing credential.
@@ -517,7 +516,6 @@ class Gmp(Gmpv7):
             community: The SNMP community
             privacy_algorithm: The privacy algorithm for SNMP
             privacy_password: The SNMP privacy password
-            credential_type: The credential type.
             public_key: PGP public key in *armor* plain text format
 
         Returns:
@@ -530,16 +528,6 @@ class Gmp(Gmpv7):
 
         cmd = XmlCommand("modify_credential")
         cmd.set_attribute("credential_id", credential_id)
-
-        if credential_type:
-            if not isinstance(credential_type, CredentialType):
-                raise InvalidArgument(
-                    "modify_credential requires type to be a CredentialType "
-                    "instance",
-                    argument="type",
-                    function="modify_credential",
-                )
-            cmd.add_element("type", credential_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
