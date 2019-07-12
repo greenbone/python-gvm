@@ -618,8 +618,6 @@ INFO_TYPES = (
 )
 
 
-SUBJECT_TYPES = ("user", "group", "role")
-
 AGGREGATE_RESOURCE_TYPES = (
     "alert",
     "allinfo",
