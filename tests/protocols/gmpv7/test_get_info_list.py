@@ -20,44 +20,46 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import InfoType
+
 from . import Gmpv7TestCase
 
 
 class GmpGetInfoListTestCase(Gmpv7TestCase):
     def test_get_info_list(self):
-        self.gmp.get_info_list('cert_bund_adv')
+        self.gmp.get_info_list(InfoType.CERT_BUND_ADV)
 
         self.connection.send.has_been_called_with(
             '<get_info type="CERT_BUND_ADV"/>'
         )
 
-        self.gmp.get_info_list('cpe')
+        self.gmp.get_info_list(InfoType.CPE)
 
         self.connection.send.has_been_called_with('<get_info type="CPE"/>')
 
-        self.gmp.get_info_list(info_type='cpe')
+        self.gmp.get_info_list(info_type=InfoType.CPE)
 
         self.connection.send.has_been_called_with('<get_info type="CPE"/>')
 
-        self.gmp.get_info_list('cve')
+        self.gmp.get_info_list(InfoType.CVE)
 
         self.connection.send.has_been_called_with('<get_info type="CVE"/>')
 
-        self.gmp.get_info_list('dfn_cert_adv')
+        self.gmp.get_info_list(InfoType.DFN_CERT_ADV)
 
         self.connection.send.has_been_called_with(
             '<get_info type="DFN_CERT_ADV"/>'
         )
 
-        self.gmp.get_info_list('ovaldef')
+        self.gmp.get_info_list(InfoType.OVALDEF)
 
         self.connection.send.has_been_called_with('<get_info type="OVALDEF"/>')
 
-        self.gmp.get_info_list('nvt')
+        self.gmp.get_info_list(InfoType.NVT)
 
         self.connection.send.has_been_called_with('<get_info type="NVT"/>')
 
-        self.gmp.get_info_list('allinfo')
+        self.gmp.get_info_list(InfoType.ALLINFO)
 
         self.connection.send.has_been_called_with('<get_info type="ALLINFO"/>')
 
@@ -76,34 +78,34 @@ class GmpGetInfoListTestCase(Gmpv7TestCase):
             self.gmp.get_info_list(info_type='foo')
 
     def test_get_info_list_with_filter(self):
-        self.gmp.get_info_list('cpe', filter='foo=bar')
+        self.gmp.get_info_list(InfoType.CPE, filter='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" filter="foo=bar"/>'
         )
 
     def test_get_info_list_with_filter_id(self):
-        self.gmp.get_info_list(info_type='cpe', filter_id='f1')
+        self.gmp.get_info_list(info_type=InfoType.CPE, filter_id='f1')
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" filt_id="f1"/>'
         )
 
     def test_get_info_list_with_name(self):
-        self.gmp.get_info_list(info_type='cpe', name='foo')
+        self.gmp.get_info_list(info_type=InfoType.CPE, name='foo')
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" name="foo"/>'
         )
 
     def test_get_info_list_with_details(self):
-        self.gmp.get_info_list(info_type='cpe', details=True)
+        self.gmp.get_info_list(info_type=InfoType.CPE, details=True)
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" details="1"/>'
         )
 
-        self.gmp.get_info_list(info_type='cpe', details=False)
+        self.gmp.get_info_list(info_type=InfoType.CPE, details=False)
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" details="0"/>'

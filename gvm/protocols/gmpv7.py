@@ -394,6 +394,34 @@ def get_hosts_ordering_from_string(
         )
 
 
+class InfoType(Enum):
+    """ Enum for info types """
+
+    CERT_BUND_ADV = "CERT_BUND_ADV"
+    CPE = "CPE"
+    CVE = "CVE"
+    DFN_CERT_ADV = "DFN_CERT_ADV"
+    OVALDEF = "OVALDEF"
+    NVT = "NVT"
+    ALLINFO = "ALLINFO"
+
+
+def get_info_type_from_string(info_type: Optional[str]) -> Optional[InfoType]:
+    """ Convert a info type string to an actual InfoType instance
+
+    Arguments:
+        info_type: Info type string to convert to a InfoType
+    """
+    if not info_type:
+        return None
+    try:
+        return InfoType[info_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='info_type', function=get_info_type_from_string.__name__
+        )
+
+
 class PermissionSubjectType(Enum):
     """ Enum for permission subject type """
 
@@ -605,17 +633,6 @@ def get_time_unit_from_string(
             argument='severity_level',
             function=get_severity_level_from_string.__name__,
         )
-
-
-INFO_TYPES = (
-    "CERT_BUND_ADV",
-    "CPE",
-    "CVE",
-    "DFN_CERT_ADV",
-    "OVALDEF",
-    "NVT",
-    "ALLINFO",
-)
 
 
 AGGREGATE_RESOURCE_TYPES = (
@@ -3516,20 +3533,24 @@ class Gmp(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_info_list(
-        self, info_type, *, filter=None, filter_id=None, name=None, details=None
-    ):
+        self,
+        info_type: InfoType,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        name: Optional[str] = None,
+        details: Optional[bool] = None
+    ) -> Any:
         """Request a list of security information
 
         Arguments:
-            info_type (str): Type must be either CERT_BUND_ADV, CPE, CVE,
+            info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
                 DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
-            filter (str, optional): Filter term to use for the query
-            filter_id (str, optional): UUID of an existing filter to use for
-                the query
-            name (str, optional): Name or identifier of the requested
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            name: Name or identifier of the requested information
+            details: Whether to include information about references to this
                 information
-            details (boolean, optional): Whether to include information about
-                references to this information
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3539,17 +3560,14 @@ class Gmp(GvmProtocol):
                 "get_info_list requires an info_type argument"
             )
 
-        info_type = info_type.upper()
-
-        if not info_type in INFO_TYPES:
+        if not isinstance(info_type, InfoType):
             raise InvalidArgument(
-                "get_info_list info_type argument must be one of CERT_BUND_ADV"
-                ", CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO"
+                function="get_info_list", argument="info_type"
             )
 
         cmd = XmlCommand("get_info")
 
-        cmd.set_attribute("type", info_type)
+        cmd.set_attribute("type", info_type.value)
 
         _add_filter(cmd, filter, filter_id)
 
@@ -3561,12 +3579,12 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_info(self, info_id, info_type):
+    def get_info(self, info_id: str, info_type: InfoType) -> Any:
         """Request a single secinfo
 
         Arguments:
-            info_id (str): UUID of an existing secinfo
-            info_type (str): Type must be either CERT_BUND_ADV, CPE, CVE,
+            info_id: UUID of an existing secinfo
+            info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
                 DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
 
         Returns:
@@ -3575,13 +3593,8 @@ class Gmp(GvmProtocol):
         if not info_type:
             raise RequiredArgument("get_info requires an info_type argument")
 
-        info_type = info_type.upper()
-
-        if not info_type in INFO_TYPES:
-            raise InvalidArgument(
-                "get_info info_type argument must be one of CERT_BUND_ADV"
-                ", CPE, CVE, DFN_CERT_ADV, OVALDEF, NVT or ALLINFO"
-            )
+        if not isinstance(info_type, InfoType):
+            raise InvalidArgument(function="get_info", argument="info_type")
 
         if not info_id:
             raise RequiredArgument("get_info requires an info_id argument")
@@ -3589,7 +3602,7 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand("get_info")
         cmd.set_attribute("info_id", info_id)
 
-        cmd.set_attribute("type", info_type)
+        cmd.set_attribute("type", info_type.value)
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
