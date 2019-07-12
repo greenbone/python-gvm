@@ -4483,7 +4483,8 @@ class Gmp(GvmProtocol):
             filter_id: UUID of an existing filter to use for the query
             trash: Whether to get the trashcan tasks instead
             details: Whether to include full task details
-            schedules_only: Whether to only include id, name and schedule details
+            schedules_only: Whether to only include id, name and schedule
+                details
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5186,14 +5187,21 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_group(self, group_id, *, comment=None, name=None, users=None):
+    def modify_group(
+        self,
+        group_id: str,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        users: Optional[List[str]] = None
+    ) -> Any:
         """Modifies an existing group.
 
         Arguments:
-            group_id (str): UUID of group to modify.
-            comment (str, optional): Comment on group.
-            name (str, optional): Name of group.
-            users (list, optional): List of user names to be in the group
+            group_id: UUID of group to modify.
+            comment: Comment on group.
+            name: Name of group.
+            users: List of user names to be in the group
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5455,13 +5463,19 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_port_list(self, port_list_id, *, comment=None, name=None):
+    def modify_port_list(
+        self,
+        port_list_id: str,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None
+    ) -> Any:
         """Modifies an existing port list.
 
         Arguments:
-            port_list_id (str): UUID of port list to modify.
-            name (str, optional): Name of port list.
-            comment (str, optional): Comment on port list.
+            port_list_id: UUID of port list to modify.
+            name: Name of port list.
+            comment: Comment on port list.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5483,23 +5497,23 @@ class Gmp(GvmProtocol):
 
     def modify_report_format(
         self,
-        report_format_id,
+        report_format_id: str,
         *,
-        active=None,
-        name=None,
-        summary=None,
-        param_name=None,
-        param_value=None
-    ):
+        active: Optional[bool] = None,
+        name: Optional[str] = None,
+        summary: Optional[str] = None,
+        param_name: Optional[str] = None,
+        param_value: Optional[str] = None
+    ) -> Any:
         """Modifies an existing report format.
 
         Arguments:
-            report_format_id (str) UUID of report format to modify.
-            active (boolean, optional): Whether the report format is active.
-            name (str, optional): The name of the report format.
-            summary (str, optional): A summary of the report format.
-            param_name (str, optional): The name of the param.
-            param_value (str, optional): The value of the param.
+            report_format_id: UUID of report format to modify.
+            active: Whether the report format is active.
+            name: The name of the report format.
+            summary: A summary of the report format.
+            param_name: The name of the param.
+            param_value: The value of the param.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5530,14 +5544,21 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_role(self, role_id, *, comment=None, name=None, users=None):
+    def modify_role(
+        self,
+        role_id: str,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        users: Optional[List[str]] = None
+    ) -> Any:
         """Modifies an existing role.
 
         Arguments:
-            role_id (str): UUID of role to modify.
-            comment (str, optional): Name of role.
-            name (str, optional): Comment on role.
-            users  (list, optional): List of user names.
+            role_id: UUID of role to modify.
+            comment: Name of role.
+            name: Comment on role.
+            users: List of user names.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5808,7 +5829,12 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_setting(self, setting_id=None, name=None, value=None):
+    def modify_setting(
+        self,
+        setting_id: Optional[str] = None,
+        name: Optional[str] = None,
+        value: Optional[str] = None,
+    ) -> Any:
         """Modifies an existing setting.
 
         Arguments:
@@ -5841,27 +5867,27 @@ class Gmp(GvmProtocol):
 
     def modify_tag(
         self,
-        tag_id,
+        tag_id: str,
         *,
-        comment=None,
-        name=None,
-        value=None,
-        active=None,
-        resource_id=None,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        value: Optional[str] = None,
+        active: Optional[bool] = None,
+        resource_id: Optional[str] = None,
         resource_type=None
-    ):
+    ) -> Any:
         """Modifies an existing tag.
 
         Arguments:
-            tag_id (str): UUID of the tag.
-            comment (str, optional): Comment to add to the tag.
-            name (str, optional): Name of the tag.
-            value (str, optional): Value of the tag.
-            active (boolean, optional): Whether the tag is active.
-            resource_id (str, optional): ID of the resource to which to
-                attach the tag. Required if resource_type is set.
-            resource_type (str, optional): Type of the resource to which to
-                attach the tag. Required if resource_id is set.
+            tag_id: UUID of the tag.
+            comment: Comment to add to the tag.
+            name: Name of the tag.
+            value: Value of the tag.
+            active: Whether the tag is active.
+            resource_id: ID of the resource to which to attach the tag.
+                Required if resource_type is set.
+            resource_type: Type of the resource to which to attach the tag.
+                Required if resource_id is set.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6113,34 +6139,31 @@ class Gmp(GvmProtocol):
 
     def modify_user(
         self,
-        user_id=None,
-        name=None,
+        user_id: str = None,
+        name: str = None,
         *,
-        new_name=None,
-        password=None,
-        role_ids=None,
-        hosts=None,
-        hosts_allow=False,
-        ifaces=None,
-        ifaces_allow=False
-    ):
+        new_name: Optional[str] = None,
+        password: Optional[str] = None,
+        role_ids: Optional[List[str]] = None,
+        hosts: Optional[List[str]] = None,
+        hosts_allow: Optional[bool] = False,
+        ifaces: Optional[List[str]] = None,
+        ifaces_allow: Optional[bool] = False
+    ) -> Any:
         """Modifies an existing user.
 
         Arguments:
-            user_id (str, optional): UUID of the user to be modified. Overrides
-                name element argument.
-            name (str, optional): The name of the user to be modified. Either
-                user_id or name must be passed.
-            new_name (str, optional): The new name for the user.
-            password (str, optional): The password for the user.
-            roles_id (list, optional): List of roles UUIDs for the user.
-            hosts (list, optional): User access rules: List of hosts.
-            hosts_allow (boolean,optional): If True, allow only listed,
-                otherwise forbid listed.
-            ifaces (list, optional): User access rules: List
-                of ifaces.
-            ifaces_allow (boolean, optional): If True, allow only listed,
-                otherwise forbid listed.
+            user_id: UUID of the user to be modified. Overrides name element
+                argument.
+            name: The name of the user to be modified. Either user_id or name
+                must be passed.
+            new_name: The new name for the user.
+            password: The password for the user.
+            roles_id: List of roles UUIDs for the user.
+            hosts: User access rules: List of hosts.
+            hosts_allow: If True, allow only listed, otherwise forbid listed.
+            ifaces: User access rules: List of ifaces.
+            ifaces_allow: If True, allow only listed, otherwise forbid listed.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6183,13 +6206,12 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def move_task(self, task_id, *, slave_id=None):
+    def move_task(self, task_id: str, *, slave_id: Optional[str] = None) -> Any:
         """Move an existing task to another GMP slave scanner or the master
 
         Arguments:
-            task_id (str): UUID of the task to be moved
-            slave_id (str, optional): UUID of slave to reassign the task to,
-                empty for master.
+            task_id: UUID of the task to be moved
+            slave_id: UUID of slave to reassign the task to, empty for master.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6205,11 +6227,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def restore(self, entity_id):
+    def restore(self, entity_id: str) -> Any:
         """Restore an entity from the trashcan
 
         Arguments:
-            entity_id (str): ID of the entity to be restored from the trashcan
+            entity_id: ID of the entity to be restored from the trashcan
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6222,11 +6244,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def resume_task(self, task_id):
+    def resume_task(self, task_id: str) -> Any:
         """Resume an existing stopped task
 
         Arguments:
-            task_id (str): UUID of the task to be resumed
+            task_id: UUID of the task to be resumed
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6239,11 +6261,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def start_task(self, task_id):
+    def start_task(self, task_id: str) -> Any:
         """Start an existing task
 
         Arguments:
-            task_id (str): UUID of the task to be started
+            task_id: UUID of the task to be started
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6256,11 +6278,11 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def stop_task(self, task_id):
+    def stop_task(self, task_id: str) -> Any:
         """Stop an existing running task
 
         Arguments:
-            task_id (str): UUID of the task to be stopped
+            task_id: UUID of the task to be stopped
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6273,7 +6295,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def sync_cert(self):
+    def sync_cert(self) -> Any:
         """Request a synchronization with the CERT feed service
 
         Returns:
@@ -6281,7 +6303,7 @@ class Gmp(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand("sync_cert"))
 
-    def sync_config(self):
+    def sync_config(self) -> Any:
         """Request an OSP config synchronization with scanner
 
         Returns:
@@ -6289,7 +6311,7 @@ class Gmp(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand("sync_config"))
 
-    def sync_feed(self):
+    def sync_feed(self) -> Any:
         """Request a synchronization with the NVT feed service
 
         Returns:
@@ -6297,7 +6319,7 @@ class Gmp(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand("sync_feed"))
 
-    def sync_scap(self):
+    def sync_scap(self) -> Any:
         """Request a synchronization with the SCAP feed service
 
         Returns:
@@ -6305,13 +6327,13 @@ class Gmp(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand("sync_scap"))
 
-    def test_alert(self, alert_id):
+    def test_alert(self, alert_id: str) -> Any:
         """Run an alert
 
         Invoke a test run of an alert
 
         Arguments:
-            alert_id (str): UUID of the alert to be tested
+            alert_id: UUID of the alert to be tested
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6326,29 +6348,26 @@ class Gmp(GvmProtocol):
 
     def trigger_alert(
         self,
-        alert_id,
-        report_id,
+        alert_id: str,
+        report_id: str,
         *,
-        filter=None,
-        filter_id=None,
-        report_format_id=None,
-        delta_report_id=None
-    ):
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        report_format_id: Optional[str] = None,
+        delta_report_id: Optional[str] = None
+    ) -> Any:
         """Run an alert by ignoring its event and conditions
 
         The alert is triggered to run immediately with the provided filtered
         report by ignoring the even and condition settings.
 
         Arguments:
-            alert_id (str): UUID of the alert to be run
-            report_id (str): UUID of the report to be provided to the alert
-            filter (str, optional): Filter term to use to filter results in the
-                report
-            filter_id (str, optional): UUID of filter to use to filter results
-                in the report
-            report_format_id (str, optional): UUID of report format to use
-            delta_report_id (str, optional): UUID of an existing report to
-                compare report to.
+            alert_id: UUID of the alert to be run
+            report_id: UUID of the report to be provided to the alert
+            filter: Filter term to use to filter results in the report
+            filter_id: UUID of filter to use to filter results in the report
+            report_format_id: UUID of report format to use
+            delta_report_id: UUID of an existing report to compare report to.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6377,7 +6396,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def verify_agent(self, agent_id):
+    def verify_agent(self, agent_id: str) -> Any:
         """Verify an existing agent
 
         Verifies the trust level of an existing agent. It will be checked
@@ -6386,7 +6405,7 @@ class Gmp(GvmProtocol):
         works as expected by the user.
 
         Arguments:
-            agent_id (str): UUID of the agent to be verified
+            agent_id: UUID of the agent to be verified
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6399,7 +6418,7 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def verify_report_format(self, report_format_id):
+    def verify_report_format(self, report_format_id: str) -> Any:
         """Verify an existing report format
 
         Verifies the trust level of an existing report format. It will be
@@ -6409,7 +6428,7 @@ class Gmp(GvmProtocol):
         as expected by the user.
 
         Arguments:
-            report_format_id (str): UUID of the report format to be verified
+            report_format_id: UUID of the report format to be verified
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6424,14 +6443,14 @@ class Gmp(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def verify_scanner(self, scanner_id):
+    def verify_scanner(self, scanner_id: str) -> Any:
         """Verify an existing scanner
 
         Verifies if it is possible to connect to an existing scanner. It is
         *not* verified if the scanner works as expected by the user.
 
         Arguments:
-            scanner_id (str): UUID of the scanner to be verified
+            scanner_id: UUID of the scanner to be verified
 
         Returns:
             The response. See :py:meth:`send_command` for details.
