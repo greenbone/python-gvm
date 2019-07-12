@@ -46,8 +46,6 @@ Severity = numbers.Real
 
 PROTOCOL_VERSION = (7,)
 
-CREDENTIAL_TYPES = ("cc", "snmp", "up", "usk")
-
 
 class AlertEvent(Enum):
     """ Enum for alert event types """
@@ -5040,43 +5038,37 @@ class Gmp(GvmProtocol):
 
     def modify_credential(
         self,
-        credential_id,
-        credential_type=None,
+        credential_id: str,
         *,
-        name=None,
-        comment=None,
-        allow_insecure=None,
-        certificate=None,
-        key_phrase=None,
-        private_key=None,
-        login=None,
-        password=None,
-        auth_algorithm=None,
-        community=None,
-        privacy_algorithm=None,
-        privacy_password=None
-    ):
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        certificate: Optional[str] = None,
+        key_phrase: Optional[str] = None,
+        private_key: Optional[str] = None,
+        login: Optional[str] = None,
+        password: Optional[str] = None,
+        auth_algorithm: Optional[SnmpAuthAlgorithm] = None,
+        community: Optional[str] = None,
+        privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
+        privacy_password: Optional[str] = None
+    ) -> Any:
         """Modifies an existing credential.
 
         Arguments:
-            credential_id (str): UUID of the credential
-            credential_type (str, optional): The credential type. One of 'cc',
-                'snmp', 'up', 'usk'
-            name (str, optional): Name of the credential
-            comment (str, optional): Comment for the credential
-            allow_insecure (boolean, optional): Whether to allow insecure use of
-                 the credential
-            certificate (str, optional): Certificate for the credential
-            key_phrase (str, optional): Key passphrase for the private key
-            private_key (str, optional): Private key to use for login
-            login (str, optional): Username for the credential
-            password (str, optional): Password for the credential
-            auth_algorithm (str, optional): The auth_algorithm,
-                either md5 or sha1.
+            credential_id: UUID of the credential
+            name: Name of the credential
+            comment: Comment for the credential
+            allow_insecure: Whether to allow insecure use of the credential
+            certificate: Certificate for the credential
+            key_phrase: Key passphrase for the private key
+            private_key: Private key to use for login
+            login: Username for the credential
+            password: Password for the credential
+            auth_algorithm: The SNMP auth algorithm.
             community (str, optional): The SNMP community
-            privacy_algorithm (str, optional): The SNMP privacy algorithm,
-                either aes or des.
-            privacy_password (str, optional): The SNMP privacy password
+            privacy_algorithm: The SNMP privacy algorithm.
+            privacy_password: The SNMP privacy password
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5088,13 +5080,6 @@ class Gmp(GvmProtocol):
 
         cmd = XmlCommand("modify_credential")
         cmd.set_attribute("credential_id", credential_id)
-
-        if credential_type:
-            if credential_type not in CREDENTIAL_TYPES:
-                raise InvalidArgument(
-                    "modify_credential requires type "
-                    "to be either cc, snmp, up or usk"
-                )
 
         if comment:
             cmd.add_element("comment", comment)
@@ -5128,27 +5113,23 @@ class Gmp(GvmProtocol):
             cmd.add_element("password", password)
 
         if auth_algorithm is not None:
-            if auth_algorithm not in ("md5", "sha1"):
+            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgument(
-                    "modify_credential requires "
-                    "auth_algorithm to be either "
-                    "md5 or sha1"
+                    function="modify_credential", argument="auth_algorithm"
                 )
-            cmd.add_element("auth_algorithm", auth_algorithm)
+            cmd.add_element("auth_algorithm", auth_algorithm.value)
 
         if community:
             cmd.add_element("community", community)
 
         if privacy_algorithm is not None:
-            if privacy_algorithm not in ("aes", "des"):
+            if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                 raise InvalidArgument(
-                    "modify_credential requires "
-                    "privacy_algorithm to be either"
-                    "aes or des"
+                    function="modify_credential", argument="privacy_algorithm"
                 )
 
             _xmlprivacy = cmd.add_element("privacy")
-            _xmlprivacy.add_element("algorithm", privacy_algorithm)
+            _xmlprivacy.add_element("algorithm", privacy_algorithm.value)
 
             if privacy_password is not None:
                 _xmlprivacy.add_element("password", privacy_password)

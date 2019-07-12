@@ -84,6 +84,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed unused comment argument from `create_note` and `create_override` [PR 87](https://github.com/greenbone/python-gvm/pull/87)
 * Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
 * Excluded tests from installation [PR 119](https://github.com/greenbone/python-gvm/pull/119)
+* Removed `credential_type` argument from `modify_credential` [PR ]()
 
 ### Fixed
 * Fixed generating XML for `get_credentials` command [PR 74](https://github.com/greenbone/python-gvm/pull/74)
