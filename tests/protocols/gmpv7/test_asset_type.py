@@ -37,9 +37,6 @@ class GetAssetTypeFromStringTestCase(unittest.TestCase):
         ct = get_asset_type_from_string('os')
         self.assertEqual(ct, AssetType.OPERATING_SYSTEM)
 
-        ct = get_asset_type_from_string('operatingsystem')
-        self.assertEqual(ct, AssetType.OPERATING_SYSTEM)
-
         ct = get_asset_type_from_string('operating_system')
         self.assertEqual(ct, AssetType.OPERATING_SYSTEM)
 

@@ -226,7 +226,7 @@ def get_asset_type_from_string(
     if not asset_type:
         return None
 
-    if asset_type == 'os' or asset_type == 'operatingsystem':
+    if asset_type == 'os':
         return AssetType.OPERATING_SYSTEM
 
     try:
