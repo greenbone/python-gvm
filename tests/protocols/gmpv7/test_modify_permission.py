@@ -20,6 +20,8 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import PermissionSubjectType, EntityType
+
 from . import Gmpv7TestCase
 
 
@@ -52,13 +54,13 @@ class GmpModifyPermissionTestCase(Gmpv7TestCase):
 
     def test_modify_permission_with_resource_id_and_type(self):
         self.gmp.modify_permission(
-            permission_id='p1', resource_id='r1', resource_type='foo'
+            permission_id='p1', resource_id='r1', resource_type=EntityType.TASK
         )
 
         self.connection.send.has_been_called_with(
             '<modify_permission permission_id="p1">'
             '<resource id="r1">'
-            '<type>foo</type>'
+            '<type>task</type>'
             '</resource>'
             '</modify_permission>'
         )
@@ -93,7 +95,9 @@ class GmpModifyPermissionTestCase(Gmpv7TestCase):
 
     def test_modify_permission_with_subject_id_and_type(self):
         self.gmp.modify_permission(
-            permission_id='p1', subject_id='s1', subject_type='role'
+            permission_id='p1',
+            subject_id='s1',
+            subject_type=PermissionSubjectType.ROLE,
         )
 
         self.connection.send.has_been_called_with(
@@ -104,18 +108,52 @@ class GmpModifyPermissionTestCase(Gmpv7TestCase):
             '</modify_permission>'
         )
 
+        self.gmp.modify_permission(
+            permission_id='p1',
+            subject_id='s1',
+            subject_type=PermissionSubjectType.USER,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_permission permission_id="p1">'
+            '<subject id="s1">'
+            '<type>user</type>'
+            '</subject>'
+            '</modify_permission>'
+        )
+
+        self.gmp.modify_permission(
+            permission_id='p1',
+            subject_id='s1',
+            subject_type=PermissionSubjectType.GROUP,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_permission permission_id="p1">'
+            '<subject id="s1">'
+            '<type>group</type>'
+            '</subject>'
+            '</modify_permission>'
+        )
+
     def test_modify_permission_missing_subject_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_permission(permission_id='p1', subject_type='role')
-
-        with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1', subject_type='role', subject_id=''
+                permission_id='p1', subject_type=PermissionSubjectType.ROLE
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1', subject_type='role', subject_id=None
+                permission_id='p1',
+                subject_type=PermissionSubjectType.ROLE,
+                subject_id='',
+            )
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_permission(
+                permission_id='p1',
+                subject_type=PermissionSubjectType.ROLE,
+                subject_id=None,
             )
 
     def test_modify_permission_invalid_subject_type(self):

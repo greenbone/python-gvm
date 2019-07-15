@@ -19,18 +19,18 @@
 import warnings
 
 
-def deprecation(message):
+def deprecation(message: str):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
 
 
-def get_version_string(version):
+def get_version_string(version: tuple) -> str:
     """Create a version string from a version tuple
 
     Arguments:
-        version (tuple): version as tuple e.g. (1, 2, 0, dev, 5)
+        version: version as tuple e.g. (1, 2, 0, dev, 5)
 
     Returns:
-        str: The version tuple converted into a string representation
+        The version tuple converted into a string representation
     """
     if len(version) > 4:
         ver = ".".join(str(x) for x in version[:4])

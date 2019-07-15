@@ -20,107 +20,97 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import EntityType
+
 from . import Gmpv7TestCase
 
 
 class GmpGetAggregatesTestCase(Gmpv7TestCase):
     def test_get_aggregates(self):
-        self.gmp.get_aggregates('alert')
+        self.gmp.get_aggregates(EntityType.ALERT)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="alert"/>'
         )
 
-        self.gmp.get_aggregates('allinfo')
-
-        self.connection.send.has_been_called_with(
-            '<get_aggregates type="allinfo"/>'
-        )
-
-        self.gmp.get_aggregates(resource_type='cert_bund_adv')
+        self.gmp.get_aggregates(resource_type=EntityType.CERT_BUND_ADV)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="cert_bund_adv"/>'
         )
 
-        self.gmp.get_aggregates('cpe')
+        self.gmp.get_aggregates(EntityType.CPE)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="cpe"/>'
         )
 
-        self.gmp.get_aggregates('cve')
+        self.gmp.get_aggregates(EntityType.CVE)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="cve"/>'
         )
 
-        self.gmp.get_aggregates('dfn_cert_adv')
+        self.gmp.get_aggregates(EntityType.DFN_CERT_ADV)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="dfn_cert_adv"/>'
         )
 
-        self.gmp.get_aggregates('host')
+        self.gmp.get_aggregates(EntityType.HOST)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="host"/>'
         )
 
-        self.gmp.get_aggregates('note')
+        self.gmp.get_aggregates(EntityType.NOTE)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="note"/>'
         )
 
-        self.gmp.get_aggregates('nvt')
+        self.gmp.get_aggregates(EntityType.NVT)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="nvt"/>'
         )
 
-        self.gmp.get_aggregates('os')
+        self.gmp.get_aggregates(EntityType.OPERATING_SYSTEM)
 
         self.connection.send.has_been_called_with('<get_aggregates type="os"/>')
 
-        self.gmp.get_aggregates('ovaldef')
+        self.gmp.get_aggregates(EntityType.OVALDEF)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="ovaldef"/>'
         )
 
-        self.gmp.get_aggregates('override')
+        self.gmp.get_aggregates(EntityType.OVERRIDE)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="override"/>'
         )
 
-        self.gmp.get_aggregates('report')
+        self.gmp.get_aggregates(EntityType.REPORT)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="report"/>'
         )
 
-        self.gmp.get_aggregates('result')
+        self.gmp.get_aggregates(EntityType.RESULT)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="result"/>'
         )
 
-        self.gmp.get_aggregates('task')
+        self.gmp.get_aggregates(EntityType.TASK)
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="task"/>'
         )
 
-        self.gmp.get_aggregates('vuln')
-
-        self.connection.send.has_been_called_with(
-            '<get_aggregates type="vuln"/>'
-        )
-
     def test_get_aggregates_kwargs(self):
-        self.gmp.get_aggregates('alert', group_column="family")
+        self.gmp.get_aggregates(EntityType.ALERT, group_column="family")
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="alert" group_column="family"/>'

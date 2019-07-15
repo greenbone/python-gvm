@@ -20,30 +20,32 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import AssetType
+
 from . import Gmpv7TestCase
 
 
 class GmpGetAssetTestCase(Gmpv7TestCase):
     def test_get_asset_host(self):
-        self.gmp.get_asset('a1', 'host')
+        self.gmp.get_asset('a1', AssetType.HOST)
 
         self.connection.send.has_been_called_with(
             '<get_assets asset_id="a1" type="host"/>'
         )
 
-        self.gmp.get_asset(asset_id='a1', asset_type='host')
+        self.gmp.get_asset(asset_id='a1', asset_type=AssetType.HOST)
 
         self.connection.send.has_been_called_with(
             '<get_assets asset_id="a1" type="host"/>'
         )
 
     def test_get_asset_os(self):
-        self.gmp.get_asset('a1', 'os')
+        self.gmp.get_asset('a1', AssetType.OPERATING_SYSTEM)
 
         self.connection.send.has_been_called_with(
             '<get_assets asset_id="a1" type="os"/>'
         )
-        self.gmp.get_asset(asset_id='a1', asset_type='os')
+        self.gmp.get_asset(asset_id='a1', asset_type=AssetType.OPERATING_SYSTEM)
 
         self.connection.send.has_been_called_with(
             '<get_assets asset_id="a1" type="os"/>'
@@ -51,10 +53,14 @@ class GmpGetAssetTestCase(Gmpv7TestCase):
 
     def test_get_asset_missing_asset_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_asset(asset_id=None, asset_type='host')
+            self.gmp.get_asset(
+                asset_id=None, asset_type=AssetType.OPERATING_SYSTEM
+            )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_asset(asset_id='', asset_type='os')
+            self.gmp.get_asset(
+                asset_id='', asset_type=AssetType.OPERATING_SYSTEM
+            )
 
     def test_get_asset_invalid_asset_type(self):
         with self.assertRaises(InvalidArgument):

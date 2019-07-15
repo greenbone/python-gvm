@@ -20,6 +20,8 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import AlertCondition, AlertEvent, AlertMethod
+
 from . import Gmpv7TestCase
 
 
@@ -27,12 +29,18 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
     def test_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_alert(
-                name='', condition='foo', event='bar', method='lorem'
+                name='',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+                method=AlertMethod.EMAIL,
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_alert(
-                name=None, condition='foo', event='bar', method='lorem'
+                name=None,
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+                method=AlertMethod.EMAIL,
             )
 
     def test_missing_condition(self):
@@ -73,22 +81,25 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
             self.gmp.create_alert(
                 name='foo',
                 condition='bar',
-                event='Task run status changed',
-                method='Email',
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+                method=AlertMethod.EMAIL,
             )
 
     def test_invalid_event(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_alert(
-                name='foo', condition='Always', event='lorem', method='Email'
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event='lorem',
+                method=AlertMethod.EMAIL,
             )
 
     def test_invalid_method(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_alert(
                 name='foo',
-                condition='Always',
-                event='Task run status changed',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
                 method='ipsum',
             )
 
@@ -96,26 +107,26 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_alert(
                 name='foo',
-                condition='Severity at least',
-                event='Updated SecInfo arrived',
-                method='Email',
+                condition=AlertCondition.SEVERITY_AT_LEAST,
+                event=AlertEvent.UPDATED_SECINFO_ARRIVED,
+                method=AlertMethod.EMAIL,
             )
 
     def test_invalid_method_for_secinfo(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_alert(
                 name='foo',
-                condition='Always',
-                event='Updated SecInfo arrived',
-                method='HTTP Get',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.UPDATED_SECINFO_ARRIVED,
+                method=AlertMethod.HTTP_GET,
             )
 
     def test_create_alert(self):
         self.gmp.create_alert(
             name='foo',
-            condition='Always',
-            event='Task run status changed',
-            method='Email',
+            condition=AlertCondition.ALWAYS,
+            event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+            method=AlertMethod.EMAIL,
         )
 
         self.connection.send.has_been_called_with(
@@ -130,9 +141,9 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
     def test_create_alert_with_filter_id(self):
         self.gmp.create_alert(
             name='foo',
-            condition='Always',
-            event='Task run status changed',
-            method='Email',
+            condition=AlertCondition.ALWAYS,
+            event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+            method=AlertMethod.EMAIL,
             filter_id='f1',
         )
 
@@ -149,9 +160,9 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
     def test_create_alert_with_comment(self):
         self.gmp.create_alert(
             name='foo',
-            condition='Always',
-            event='Task run status changed',
-            method='Email',
+            condition=AlertCondition.ALWAYS,
+            event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+            method=AlertMethod.EMAIL,
             comment='hello',
         )
 
@@ -168,9 +179,9 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
     def test_create_alert_with_condition_data(self):
         self.gmp.create_alert(
             name='foo',
-            condition='Always',
-            event='Task run status changed',
-            method='Email',
+            condition=AlertCondition.ALWAYS,
+            event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+            method=AlertMethod.EMAIL,
             condition_data={'foo': 'bar'},
         )
 
@@ -186,9 +197,9 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
     def test_create_alert_with_event_data(self):
         self.gmp.create_alert(
             name='foo',
-            condition='Always',
-            event='Task run status changed',
-            method='Email',
+            condition=AlertCondition.ALWAYS,
+            event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+            method=AlertMethod.EMAIL,
             event_data={'foo': 'bar'},
         )
 
@@ -206,9 +217,9 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
     def test_create_alert_with_method_data(self):
         self.gmp.create_alert(
             name='foo',
-            condition='Always',
-            event='Task run status changed',
-            method='Email',
+            condition=AlertCondition.ALWAYS,
+            event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+            method=AlertMethod.EMAIL,
             method_data={'foo': 'bar'},
         )
 

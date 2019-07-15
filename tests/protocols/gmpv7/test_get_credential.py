@@ -20,6 +20,8 @@ import unittest
 
 from gvm.errors import InvalidArgument, RequiredArgument
 
+from gvm.protocols.gmpv7 import CredentialFormat
+
 from . import Gmpv7TestCase
 
 
@@ -43,31 +45,31 @@ class GmpGetCredentialTestCase(Gmpv7TestCase):
             self.gmp.get_credential('')
 
     def test_get_credential_with_credential_format(self):
-        self.gmp.get_credential('id', credential_format='key')
+        self.gmp.get_credential('id', credential_format=CredentialFormat.KEY)
 
         self.connection.send.has_been_called_with(
             '<get_credentials credential_id="id" format="key"/>'
         )
 
-        self.gmp.get_credential('id', credential_format='rpm')
+        self.gmp.get_credential('id', credential_format=CredentialFormat.RPM)
 
         self.connection.send.has_been_called_with(
             '<get_credentials credential_id="id" format="rpm"/>'
         )
 
-        self.gmp.get_credential('id', credential_format='deb')
+        self.gmp.get_credential('id', credential_format=CredentialFormat.DEB)
 
         self.connection.send.has_been_called_with(
             '<get_credentials credential_id="id" format="deb"/>'
         )
 
-        self.gmp.get_credential('id', credential_format='exe')
+        self.gmp.get_credential('id', credential_format=CredentialFormat.EXE)
 
         self.connection.send.has_been_called_with(
             '<get_credentials credential_id="id" format="exe"/>'
         )
 
-        self.gmp.get_credential('id', credential_format='pem')
+        self.gmp.get_credential('id', credential_format=CredentialFormat.PEM)
 
         self.connection.send.has_been_called_with(
             '<get_credentials credential_id="id" format="pem"/>'

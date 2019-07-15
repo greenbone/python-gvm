@@ -20,48 +20,50 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import InfoType
+
 from . import Gmpv7TestCase
 
 
 class GmpGetInfoTestCase(Gmpv7TestCase):
     def test_get_info(self):
-        self.gmp.get_info(info_type='cert_bund_adv', info_id='i1')
+        self.gmp.get_info(info_type=InfoType.CERT_BUND_ADV, info_id='i1')
 
         self.connection.send.has_been_called_with(
             '<get_info info_id="i1" type="CERT_BUND_ADV" details="1"/>'
         )
 
-        self.gmp.get_info('i1', 'cpe')
+        self.gmp.get_info('i1', InfoType.CPE)
 
         self.connection.send.has_been_called_with(
             '<get_info info_id="i1" type="CPE" details="1"/>'
         )
 
-        self.gmp.get_info('i1', 'cve')
+        self.gmp.get_info('i1', InfoType.CVE)
 
         self.connection.send.has_been_called_with(
             '<get_info info_id="i1" type="CVE" details="1"/>'
         )
 
-        self.gmp.get_info('i1', 'dfn_cert_adv')
+        self.gmp.get_info('i1', InfoType.DFN_CERT_ADV)
 
         self.connection.send.has_been_called_with(
             '<get_info info_id="i1" type="DFN_CERT_ADV" details="1"/>'
         )
 
-        self.gmp.get_info('i1', 'ovaldef')
+        self.gmp.get_info('i1', InfoType.OVALDEF)
 
         self.connection.send.has_been_called_with(
             '<get_info info_id="i1" type="OVALDEF" details="1"/>'
         )
 
-        self.gmp.get_info('i1', 'nvt')
+        self.gmp.get_info('i1', InfoType.NVT)
 
         self.connection.send.has_been_called_with(
             '<get_info info_id="i1" type="NVT" details="1"/>'
         )
 
-        self.gmp.get_info('i1', 'allinfo')
+        self.gmp.get_info('i1', InfoType.ALLINFO)
 
         self.connection.send.has_been_called_with(
             '<get_info info_id="i1" type="ALLINFO" details="1"/>'
@@ -83,13 +85,13 @@ class GmpGetInfoTestCase(Gmpv7TestCase):
 
     def test_get_info_missing_info_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_info(info_id='', info_type='cpe')
+            self.gmp.get_info(info_id='', info_type=InfoType.CPE)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_info('', info_type='cpe')
+            self.gmp.get_info('', info_type=InfoType.CPE)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_info(info_id=None, info_type='cpe')
+            self.gmp.get_info(info_id=None, info_type=InfoType.CPE)
 
 
 if __name__ == '__main__':

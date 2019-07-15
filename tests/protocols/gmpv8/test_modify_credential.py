@@ -19,11 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.protocols.gmpv8 import (
-    CredentialType,
-    SnmpAuthAlgorithm,
-    SnmpPrivacyAlgorithm,
-)
+from gvm.protocols.gmpv8 import SnmpAuthAlgorithm, SnmpPrivacyAlgorithm
 
 from . import Gmpv8TestCase
 
@@ -219,23 +215,6 @@ class GmpModifyTestCase(Gmpv8TestCase):
             '</key>'
             '</modify_credential>'
         )
-
-    def test_modify_credential_with_credential_type(self):
-        self.gmp.modify_credential(
-            credential_id='c1', credential_type=CredentialType.USERNAME_PASSWORD
-        )
-
-        self.connection.send.has_been_called_with(
-            '<modify_credential credential_id="c1">'
-            '<type>up</type>'
-            '</modify_credential>'
-        )
-
-    def test_modify_credential_invalid_credential_type(self):
-        with self.assertRaises(InvalidArgument):
-            self.gmp.modify_credential(
-                credential_id='c1', credential_type='foo'
-            )
 
 
 if __name__ == '__main__':

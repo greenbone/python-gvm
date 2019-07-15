@@ -58,20 +58,57 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Make resource_id optional when creating tags (Gmpv7) [PR 124](https://github.com/greenbone/python-gvm/pull/124)
 * Allow creating tags without resource (Gmpv8) [PR 125](https://github.com/greenbone/python-gvm/pull/125)
 * Adapt modify_tag validation to actual implementation (Gmpv8) [PR 127](https://github.com/greenbone/python-gvm/pull/127)
-* Introduced new CredentialType Enum for Gmpv8 and expect an instance of CredentialType
-  for `create_credential` and `modify_credential` `credential_type` argument [PR 132](https://github.com/greenbone/python-gvm/pull/132)
 * Use Gmpv8 as latest Gmp version [PR 132](https://github.com/greenbone/python-gvm/pull/132)
-* Introduced new FilterType Enum for Gmpv8 and expect an instance of FilterType
-  for `create_filter` and `modify_filter` `filter_type` argument [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 * Dropped the `make_unique` arguments from `create_filter` and `create_target`
   methods in Gmpv8 [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 * Introduced Enum classes for authentication and privacy algorithms of SNMP
   credentials [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 * Extended `InvalidArgument` and `RequiredArgument` errors to allow passing
   argument and function name as keyword parameter [PR 134](https://github.com/greenbone/python-gvm/pull/134)
-* Use [enum](https://docs.python.org/3/library/enum.html) for AliveTest and provide
-  conversion functions from string type value to enum for Gmpv8
+* Renamed `modify_target` and `create_target` argument `alive_tests` to `alive_test`
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use [enum](https://docs.python.org/3/library/enum.html) AliveTests for
+  `alive_test` arguments
   [PR 136](https://github.com/greenbone/python-gvm/pull/136)
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `AlertCondition`, `AlertEvent` and `AlertMethod` enums for `create_alert`
+  and `modify_alert` methods
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `AssetType` enum for `get_asset` and `get_assets` method
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `CredentialFormat` enum for `get_credential` method
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `CredentialType` enum for `create_credential` and `modify_credential`
+  methods
+  [PR 132](https://github.com/greenbone/python-gvm/pull/132)
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `EntityType` enum for `create_permission`, `create_tag`, `get_aggregates`,
+  `modify_permission` and `modify_tag` methods
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `FeedType` enum for `get_feed` method
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `FilterType` enum for `create_filter` and `modify_filter` method
+  [PR 133](https://github.com/greenbone/python-gvm/pull/133)
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `HostsOrdering` enum for `create_task` and `modify_task` method
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `InfoType` enum for `get_info` and `get_info_list` methods
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `PermissionSubjectType` enum for `create_permission` and
+  `modify_permission` methods
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `PortRangeType` enum for `create_port_range` method
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `ScannerType` enum for `create_scanner` and `modify_scanner` methods
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `SnmpAuthAlgorithm` and `SnmpPrivacyAlgorithm` enums for `create_credential`
+  and `modify_credential` methods
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `SeverityLevel` enum for `create_note`, `create_override`, `modify_note`
+  and `modify_override` methods
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Use new `TimeUnit` enum for `create_schedule` and `modify_schedule` methods
+  [PR 139](https://github.com/greenbone/python-gvm/pull/139)
 
 ### Removed
 * Removed the format parameter from `get_credentials` method [PR 85](https://github.com/greenbone/python-gvm/pull/85)
@@ -82,6 +119,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Removed unused comment argument from `create_note` and `create_override` [PR 87](https://github.com/greenbone/python-gvm/pull/87)
 * Removed hosts_ordering argument from `modify_target` [PR 88](https://github.com/greenbone/python-gvm/pull/88)
 * Excluded tests from installation [PR 119](https://github.com/greenbone/python-gvm/pull/119)
+* Removed `credential_type` argument from `modify_credential` [PR 139](https://github.com/greenbone/python-gvm/pull/139)
 
 ### Fixed
 * Fixed generating XML for `get_credentials` command [PR 74](https://github.com/greenbone/python-gvm/pull/74)

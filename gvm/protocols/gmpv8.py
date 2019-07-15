@@ -31,12 +31,140 @@ from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
-from .gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
+from gvm.protocols.gmpv7 import (
+    AlertCondition,
+    AlertEvent,
+    AlertMethod,
+    AliveTest,
+    AssetType,
+    CredentialFormat,
+    FeedType,
+    Gmp as Gmpv7,
+    HostsOrdering,
+    InfoType,
+    _to_bool,
+    _add_filter,
+    PermissionSubjectType,
+    PortRangeType,
+    ScannerType,
+    SeverityLevel,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+    get_asset_type_from_string,
+    get_feed_type_from_string,
+    get_hosts_ordering_from_string,
+    get_info_type_from_string,
+    get_permission_subject_type_from_string,
+    get_severity_level_from_string,
+    get_snmp_auth_algorithm_from_string,
+    get_snmp_privacy_algorithm_from_string,
+)
+
+__all__ = [
+    "AlertCondition",
+    "AlertEvent",
+    "AlertMethod",
+    "AliveTest",
+    "AssetType",
+    "CredentialType",
+    "CredentialFormat",
+    "FeedType",
+    "FilterType",
+    "Gmp",
+    "HostsOrdering",
+    "InfoType",
+    "PermissionSubjectType",
+    "PortRangeType",
+    "ScannerType",
+    "SeverityLevel",
+    "SnmpAuthAlgorithm",
+    "SnmpPrivacyAlgorithm",
+    "get_asset_type_from_string",
+    "get_credential_type_from_string",
+    "get_feed_type_from_string",
+    "get_filter_type_from_string",
+    "get_hosts_ordering_from_string",
+    "get_info_type_from_string",
+    "get_permission_subject_type_from_string",
+    "get_severity_level_from_string",
+    "get_snmp_auth_algorithm_from_string",
+    "get_snmp_privacy_algorithm_from_string",
+    "get_ticket_status_from_string",
+]
 
 PROTOCOL_VERSION = (8,)
 
 
+class EntityType(Enum):
+    """ Enum for entity types """
+
+    AGENT = "note"
+    ALERT = "alert"
+    ASSET = "asset"
+    CERT_BUND_ADV = "cert_bund_adv"
+    CPE = "cpe"
+    CREDENTIAL = "credential"
+    CVE = "cve"
+    DFN_CERT_ADV = "dfn_cert_adv"
+    FILTER = "filter"
+    GROUP = "group"
+    HOST = "host"
+    INFO = "info"
+    NOTE = "note"
+    NVT = "nvt"
+    OPERATING_SYSTEM = "os"
+    OVALDEF = "ovaldef"
+    OVERRIDE = "override"
+    PERMISSION = "permission"
+    PORT_LIST = "port_list"
+    REPORT = "report"
+    REPORT_FORMAT = "report_format"
+    RESULT = "result"
+    ROLE = "role"
+    SCAN_CONFIG = "config"
+    SCANNER = "scanner"
+    SCHEDULE = "schedule"
+    TAG = "tag"
+    TARGET = "target"
+    TASK = "task"
+    USER = "user"
+
+    TICKET = "ticket"
+    VULNERABILITY = "vuln"
+
+
+def get_entity_type_from_string(
+    entity_type: Optional[str]
+) -> Optional[EntityType]:
+    """ Convert a entity type string to an actual EntityType instance
+
+    Arguments:
+        entity_type: Entity type string to convert to a EntityType
+    """
+    if not entity_type:
+        return None
+
+    if entity_type == 'vuln':
+        return EntityType.VULNERABILITY
+
+    if entity_type == 'os':
+        return EntityType.OPERATING_SYSTEM
+
+    if entity_type == 'config':
+        return EntityType.SCAN_CONFIG
+
+    try:
+        return EntityType[entity_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='entity_type',
+            function=get_entity_type_from_string.__name__,
+        )
+
+
 class FilterType(Enum):
+    """ Enum for filter types """
+
     AGENT = "agent"
     ALERT = "alert"
     ASSET = "asset"
@@ -97,6 +225,8 @@ def get_filter_type_from_string(
 
 
 class CredentialType(Enum):
+    """ Enum for credential types """
+
     CLIENT_CERTIFICATE = 'cc'
     SNMP = 'snmp'
     USERNAME_PASSWORD = 'up'
@@ -124,6 +254,8 @@ def get_credential_type_from_string(
 
 
 class TicketStatus(Enum):
+    """ Enum for ticket status """
+
     OPEN = 'Open'
     FIXED = 'Fixed'
     CLOSED = 'Closed'
@@ -146,66 +278,11 @@ def get_ticket_status_from_string(
         )
 
 
-class SnmpAuthAlgorithm(Enum):
-    SHA1 = 'sha1'
-    MD5 = 'md5'
-
-
-def get_snmp_auth_algorithm_from_string(
-    algorithm: Optional[str]
-) -> Optional[TicketStatus]:
-    """ Convert a SNMP auth algorithm string into a SnmpAuthAlgorithm instance
-    """
-    if not algorithm:
-        return None
-
-    try:
-        return SnmpAuthAlgorithm[algorithm.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='algorithm',
-            function=get_snmp_auth_algorithm_from_string.__name__,
-        )
-
-
-class SnmpPrivacyAlgorithm(Enum):
-    AES = 'aes'
-    DES = 'des'
-
-
-def get_snmp_privacy_algorithm_from_string(
-    algorithm: Optional[str]
-) -> Optional[TicketStatus]:
-    """ Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
-        instance
-    """
-    if not algorithm:
-        return None
-
-    try:
-        return SnmpPrivacyAlgorithm[algorithm.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='algorithm',
-            function=get_snmp_privacy_algorithm_from_string.__name__,
-        )
-
-
-class AliveTest(Enum):
-    ICMP_PING = 'ICMP Ping'
-    TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
-    TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
-    APR_PING = 'ARP Ping'
-    ICMP_AND_TCP_ACK_SERVICE_PING = 'ICMP & TCP-ACK Service Ping'
-    ICMP_AND_ARP_PING = 'ICMP & ARP Ping'
-    TCP_ACK_SERVICE_AND_ARP_PING = 'TCP-ACK Service & ARP Ping'
-    ICMP_TCP_ACK_SERVICE_AND_ARP_PING = (  # pylint: disable=invalid-name
-        'ICMP, TCP-ACK Service & ARP Ping'
-    )
-    CONSIDER_ALIVE = 'Consider Alive'
-
-
 class Gmp(Gmpv7):
+
+    _filter_type = FilterType
+    _entity_type = EntityType
+
     @staticmethod
     def get_protocol_version() -> str:
         """Determine the Greenbone Management Protocol version.
@@ -493,7 +570,6 @@ class Gmp(Gmpv7):
         community: Optional[str] = None,
         privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
         privacy_password: Optional[str] = None,
-        credential_type: Optional[CredentialType] = None,
         public_key: Optional[str] = None
     ) -> Any:
         """Modifies an existing credential.
@@ -512,7 +588,6 @@ class Gmp(Gmpv7):
             community: The SNMP community
             privacy_algorithm: The privacy algorithm for SNMP
             privacy_password: The SNMP privacy password
-            credential_type: The credential type.
             public_key: PGP public key in *armor* plain text format
 
         Returns:
@@ -525,16 +600,6 @@ class Gmp(Gmpv7):
 
         cmd = XmlCommand("modify_credential")
         cmd.set_attribute("credential_id", credential_id)
-
-        if credential_type:
-            if not isinstance(credential_type, CredentialType):
-                raise InvalidArgument(
-                    "modify_credential requires type to be a CredentialType "
-                    "instance",
-                    argument="type",
-                    function="modify_credential",
-                )
-            cmd.add_element("type", credential_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -992,37 +1057,16 @@ class Gmp(Gmpv7):
 
         Arguments:
             name: Name of the new filter
-            filter_type: Entity type for the new filter
+            filter_type: Filter for entity type
             comment: Comment for the filter
             term: Filter term e.g. 'name=foo'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not name:
-            raise RequiredArgument(function="create_filter", argument="name")
-
-        cmd = XmlCommand("create_filter")
-        _xmlname = cmd.add_element("name", name)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if term:
-            cmd.add_element("term", term)
-
-        if filter_type:
-            if not isinstance(filter_type, FilterType):
-                raise InvalidArgument(
-                    "create_filter requires type to be a FilterType instance. "
-                    "was {}".format(filter_type),
-                    function="create_filter",
-                    argument="filter_type",
-                )
-
-            cmd.add_element("type", filter_type.value)
-
-        return self._send_xml_command(cmd)
+        return super().create_filter(
+            name, filter_type=filter_type, comment=comment, term=term
+        )
 
     def modify_filter(
         self,
@@ -1073,70 +1117,3 @@ class Gmp(Gmpv7):
             cmd.add_element("type", filter_type.value)
 
         return self._send_xml_command(cmd)
-
-    def create_target(
-        self,
-        name: str,
-        *,
-        asset_hosts_filter: Optional[str] = None,
-        hosts: Optional[List[str]] = None,
-        comment: Optional[str] = None,
-        exclude_hosts: Optional[List[str]] = None,
-        ssh_credential_id: Optional[str] = None,
-        ssh_credential_port: Optional[int] = None,
-        smb_credential_id: Optional[str] = None,
-        esxi_credential_id: Optional[str] = None,
-        snmp_credential_id: Optional[str] = None,
-        alive_test: Optional[AliveTest] = None,
-        reverse_lookup_only: Optional[bool] = None,
-        reverse_lookup_unify: Optional[bool] = None,
-        port_range: Optional[str] = None,
-        port_list_id: Optional[str] = None
-    ) -> Any:
-        """Create a new target
-
-        Arguments:
-            name: Name of the target
-            asset_hosts_filter: Filter to select target host from assets hosts
-            hosts: List of hosts addresses to scan
-            exclude_hosts: List of hosts addresses to exclude from scan
-            comment: Comment for the target
-            ssh_credential_id: UUID of a ssh credential to use on target
-            ssh_credential_port: The port to use for ssh credential
-            smb_credential_id: UUID of a smb credential to use on target
-            snmp_credential_id: UUID of a snmp credential to use on target
-            esxi_credential_id: UUID of a esxi credential to use on target
-            alive_test: Which alive tests to use
-            reverse_lookup_only: Whether to scan only hosts that have names
-            reverse_lookup_unify: Whether to scan only one IP when multiple IPs
-                have the same name.
-            port_range: Port range for the target
-            port_list_id: UUID of the port list to use on target
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if alive_test:
-            if not isinstance(alive_test, AliveTest):
-                raise InvalidArgument(
-                    argument='alive_tests', function='create_target'
-                )
-            alive_test = alive_test.value
-
-        return super().create_target(
-            name,
-            asset_hosts_filter=asset_hosts_filter,
-            hosts=hosts,
-            exclude_hosts=exclude_hosts,
-            comment=comment,
-            ssh_credential_id=ssh_credential_id,
-            ssh_credential_port=ssh_credential_port,
-            smb_credential_id=smb_credential_id,
-            snmp_credential_id=snmp_credential_id,
-            esxi_credential_id=esxi_credential_id,
-            alive_tests=alive_test,
-            reverse_lookup_only=reverse_lookup_only,
-            reverse_lookup_unify=reverse_lookup_unify,
-            port_range=port_range,
-            port_list_id=port_list_id,
-        )

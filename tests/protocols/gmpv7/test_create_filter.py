@@ -19,61 +19,57 @@
 import unittest
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv7 import FILTER_TYPES
+from gvm.protocols.gmpv7 import FilterType
 
 from . import Gmpv7TestCase
 
 
-class GMPCreateFilterCommandTestCase(Gmpv7TestCase):
-
-    FILTER_NAME = "special filter"
-
+class GmpCreateFilterCommandTestCase(Gmpv7TestCase):
     def test_all_available_filters_types_correct(self):
-        for filter_type in FILTER_TYPES:
+        for filter_type in list(FilterType):
             self.gmp.create_filter(
-                name=self.FILTER_NAME,
+                name='f1',
                 term='sort-reverse=threat first=1 rows=1000',
                 filter_type=filter_type,
             )
 
             self.connection.send.has_been_called_with(
                 '<create_filter>'
-                '<name>{0}</name>'
+                '<name>f1</name>'
                 '<term>sort-reverse=threat first=1 rows=1000</term>'
-                '<type>{1}</type>'
-                '</create_filter>'.format(self.FILTER_NAME, filter_type)
+                '<type>{}</type>'
+                '</create_filter>'.format(filter_type.value)
             )
 
-    def test_invalid_filters_type(self):
+    def test_create_filter_invalid_filter_type(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_filter(
-                name=self.FILTER_NAME,
+                name='f1',
                 term='sort-reverse=threat result_hosts_only=1 '
                 'notes=1 overrides=1 levels=hml first=1 rows=1000',
                 filter_type='foo',
             )
 
-    def test_all_arguments(self):
+    def test_create_filter(self):
         self.gmp.create_filter(
-            name=self.FILTER_NAME,
-            make_unique=True,
+            name='f1',
             term='sort-reverse=threat result_hosts_only=1 '
             'notes=1 overrides=1 levels=hml first=1 rows=1000',
-            filter_type='task',
+            filter_type=FilterType.TASK,
             comment='foo',
         )
 
         self.connection.send.has_been_called_with(
             '<create_filter>'
-            '<name>{0}<make_unique>1</make_unique></name>'
+            '<name>f1</name>'
             '<comment>foo</comment>'
             '<term>sort-reverse=threat result_hosts_only=1 notes=1 '
             'overrides=1 levels=hml first=1 rows=1000</term>'
             '<type>task</type>'
-            '</create_filter>'.format(self.FILTER_NAME)
+            '</create_filter>'
         )
 
-    def test_missing_name(self):
+    def test_create_filter_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_filter('')
 

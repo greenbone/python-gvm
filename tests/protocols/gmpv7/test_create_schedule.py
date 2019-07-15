@@ -20,6 +20,8 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgument
 
+from gvm.protocols.gmpv7 import TimeUnit
+
 from . import Gmpv7TestCase
 
 
@@ -268,17 +270,17 @@ class GmpCreateScheduleTestCase(Gmpv7TestCase):
     def test_create_schedule_invalid_duration(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(
-                name='foo', duration='bar', duration_unit='day'
+                name='foo', duration='bar', duration_unit=TimeUnit.DAY
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(
-                name='foo', duration=0, duration_unit='day'
+                name='foo', duration=0, duration_unit=TimeUnit.DAY
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(
-                name='foo', duration=-1, duration_unit='day'
+                name='foo', duration=-1, duration_unit=TimeUnit.DAY
             )
 
     def test_create_schedule_with_duration_missing_unit(self):
@@ -292,7 +294,9 @@ class GmpCreateScheduleTestCase(Gmpv7TestCase):
             )
 
     def test_create_schedule_with_duration(self):
-        self.gmp.create_schedule(name='foo', duration=1, duration_unit='day')
+        self.gmp.create_schedule(
+            name='foo', duration=1, duration_unit=TimeUnit.DAY
+        )
 
         self.connection.send.has_been_called_with(
             '<create_schedule>'
@@ -314,17 +318,21 @@ class GmpCreateScheduleTestCase(Gmpv7TestCase):
     def test_create_schedule_invalid_period(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_schedule(
-                name='foo', period='foo', period_unit='day'
+                name='foo', period='foo', period_unit=TimeUnit.DAY
             )
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_schedule(name='foo', period=0.5, period_unit='day')
+            self.gmp.create_schedule(
+                name='foo', period=0.5, period_unit=TimeUnit.DAY
+            )
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.create_schedule(name='foo', period=-1, period_unit='day')
+            self.gmp.create_schedule(
+                name='foo', period=-1, period_unit=TimeUnit.DAY
+            )
 
     def test_create_schedule_with_period(self):
-        self.gmp.create_schedule(name='foo', period=1, period_unit='day')
+        self.gmp.create_schedule(name='foo', period=1, period_unit=TimeUnit.DAY)
 
         self.connection.send.has_been_called_with(
             '<create_schedule>'
