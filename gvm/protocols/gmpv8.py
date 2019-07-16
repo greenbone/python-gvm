@@ -1117,3 +1117,51 @@ class Gmp(Gmpv7):
             cmd.add_element("type", filter_type.value)
 
         return self._send_xml_command(cmd)
+
+    def create_schedule(
+        self,
+        name: str,
+        icalendar: str,
+        timezone: str,
+        *,
+        comment: Optional[str] = None
+    ) -> Any:
+        """Create a new schedule based in `iCalendar`_ data.
+
+        Arguments:
+            name: Name of the new schedule
+            icalendar: `iCalendar`_ (RFC 5545) based data.
+            timezone: Timezone to use for the icalender events e.g
+                Europe/Berlin. If the datetime values in the icalendar data are
+                missing timezone information this timezone gets applied.
+                Otherwise the datetime values from the icalendar data are
+                displayed in this timezone
+            comment: Comment on schedule.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+
+        .. _iCalendar:
+            https://tools.ietf.org/html/rfc5545
+        """
+        if not name:
+            raise RequiredArgument(function="create_schedule", argument="name")
+        if not icalendar:
+            raise RequiredArgument(
+                function="create_schedule", argument="icalendar"
+            )
+        if not timezone:
+            raise RequiredArgument(
+                function="create_schedule", argument="timezone"
+            )
+
+        cmd = XmlCommand("create_schedule")
+
+        cmd.add_element("name", name)
+        cmd.add_element("icalendar", icalendar)
+        cmd.add_element("timezone", timezone)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        return self._send_xml_command(cmd)
