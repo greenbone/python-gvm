@@ -109,6 +109,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   [PR 139](https://github.com/greenbone/python-gvm/pull/139)
 * Use new `TimeUnit` enum for `create_schedule` and `modify_schedule` methods
   [PR 139](https://github.com/greenbone/python-gvm/pull/139)
+* Update `create_schedule` and `modify_schedule` in `Gmpv8` to use
+  [iCalendar](https://tools.ietf.org/html/rfc5545) based data for schedules
+  [PR 140](https://github.com/greenbone/python-gvm/pull/140)
 
 ### Removed
 * Removed the format parameter from `get_credentials` method [PR 85](https://github.com/greenbone/python-gvm/pull/85)
