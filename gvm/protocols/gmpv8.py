@@ -1128,6 +1128,35 @@ class Gmp(Gmpv7):
     ) -> Any:
         """Create a new schedule based in `iCalendar`_ data.
 
+        Example:
+            Requires https://pypi.org/project/icalendar/
+
+            .. code-block:: python
+
+                import pytz
+
+                from datetime import datetime
+
+                from icalendar import Calendar, Event
+
+                cal = Calendar()
+
+                cal.add('prodid', '-//Foo Bar//')
+                cal.add('version', '2.0')
+
+                event = Event()
+                event.add('dtstamp', datetime.now(tz=pytz.UTC))
+                event.add('dtstart', datetime(2020, 1, 1, tzinfo=pytz.utc))
+
+                cal.add_component(event)
+
+                gmp.create_schedule(
+                    name="My Schedule",
+                    icalendar=cal.to_ical(),
+                    timezone='UTC'
+                )
+
+
         Arguments:
             name: Name of the new schedule
             icalendar: `iCalendar`_ (RFC 5545) based data.
