@@ -1117,3 +1117,130 @@ class Gmp(Gmpv7):
             cmd.add_element("type", filter_type.value)
 
         return self._send_xml_command(cmd)
+
+    def create_schedule(
+        self,
+        name: str,
+        icalendar: str,
+        timezone: str,
+        *,
+        comment: Optional[str] = None
+    ) -> Any:
+        """Create a new schedule based in `iCalendar`_ data.
+
+        Example:
+            Requires https://pypi.org/project/icalendar/
+
+            .. code-block:: python
+
+                import pytz
+
+                from datetime import datetime
+
+                from icalendar import Calendar, Event
+
+                cal = Calendar()
+
+                cal.add('prodid', '-//Foo Bar//')
+                cal.add('version', '2.0')
+
+                event = Event()
+                event.add('dtstamp', datetime.now(tz=pytz.UTC))
+                event.add('dtstart', datetime(2020, 1, 1, tzinfo=pytz.utc))
+
+                cal.add_component(event)
+
+                gmp.create_schedule(
+                    name="My Schedule",
+                    icalendar=cal.to_ical(),
+                    timezone='UTC'
+                )
+
+
+        Arguments:
+            name: Name of the new schedule
+            icalendar: `iCalendar`_ (RFC 5545) based data.
+            timezone: Timezone to use for the icalender events e.g
+                Europe/Berlin. If the datetime values in the icalendar data are
+                missing timezone information this timezone gets applied.
+                Otherwise the datetime values from the icalendar data are
+                displayed in this timezone
+            comment: Comment on schedule.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+
+        .. _iCalendar:
+            https://tools.ietf.org/html/rfc5545
+        """
+        if not name:
+            raise RequiredArgument(function="create_schedule", argument="name")
+        if not icalendar:
+            raise RequiredArgument(
+                function="create_schedule", argument="icalendar"
+            )
+        if not timezone:
+            raise RequiredArgument(
+                function="create_schedule", argument="timezone"
+            )
+
+        cmd = XmlCommand("create_schedule")
+
+        cmd.add_element("name", name)
+        cmd.add_element("icalendar", icalendar)
+        cmd.add_element("timezone", timezone)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        return self._send_xml_command(cmd)
+
+    def modify_schedule(
+        self,
+        schedule_id: str,
+        *,
+        name: Optional[str] = None,
+        icalendar: Optional[str] = None,
+        timezone: Optional[str] = None,
+        comment: Optional[str] = None
+    ) -> Any:
+        """Modifies an existing schedule
+
+        Arguments:
+            schedule_id: UUID of the schedule to be modified
+            name: Name of the schedule
+            icalendar: `iCalendar`_ (RFC 5545) based data.
+            timezone: Timezone to use for the icalender events e.g
+                Europe/Berlin. If the datetime values in the icalendar data are
+                missing timezone information this timezone gets applied.
+                Otherwise the datetime values from the icalendar data are
+                displayed in this timezone
+            comment: Comment on schedule.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+
+        .. _iCalendar:
+            https://tools.ietf.org/html/rfc5545
+        """
+        if not schedule_id:
+            raise RequiredArgument(
+                function="modify_schedule", argument="schedule_id"
+            )
+
+        cmd = XmlCommand("modify_schedule")
+        cmd.set_attribute("schedule_id", schedule_id)
+
+        if name:
+            cmd.add_element("name", name)
+
+        if icalendar:
+            cmd.add_element("icalendar", icalendar)
+
+        if timezone:
+            cmd.add_element("timezone", timezone)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        return self._send_xml_command(cmd)
