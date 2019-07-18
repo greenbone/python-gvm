@@ -27,6 +27,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added a `password only` credential type [PR 133](https://github.com/greenbone/python-gvm/pull/133)
 * Added [type hints](https://docs.python.org/3/library/typing.html) for Gmpv8
   [PR 136](https://github.com/greenbone/python-gvm/pull/136)
+* Added dynamic selection of the Gmp class depending on the GMP version supported
+  by the remote manager daemon
+  [PR 141](https://github.com/greenbone/python-gvm/pull/141)
 
 ### Changed
 * Renamed `create_asset` method to `create_host` and dropped asset_type
