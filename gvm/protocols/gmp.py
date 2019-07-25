@@ -87,16 +87,16 @@ class Gmp(GvmProtocol):
             )
 
         version = version_el.text
-        major_version = version[0]
+        major_version = int(version[0])
 
-        if major_version == '7':
+        if major_version == 7:
             gmp_class = Gmpv7
-        elif major_version == '8':
+        elif major_version >= 8:
             gmp_class = Gmpv8
         else:
             raise GvmError(
-                'Remote manager daemon uses an unsupported version of GMP.'
-                'The GMP version was {}'.format(major_version)
+                'Remote manager daemon uses an unsupported version of GMP. '
+                'The GMP version was {}.'.format(version)
             )
 
         gmp = gmp_class(self._connection, transform=self._gmp_transform)
