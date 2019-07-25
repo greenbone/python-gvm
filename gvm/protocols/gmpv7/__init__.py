@@ -38,7 +38,7 @@ from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import get_version_string, deprecation
 from gvm.xml import XmlCommand, create_parser
 
-from .base import GvmProtocol
+from gvm.protocols.base import GvmProtocol
 
 logger = logging.getLogger(__name__)
 
