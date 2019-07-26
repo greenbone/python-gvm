@@ -30,6 +30,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added dynamic selection of the Gmp class depending on the GMP version supported
   by the remote manager daemon
   [PR 141](https://github.com/greenbone/python-gvm/pull/141)
+* Added all types as types property to the Gmp classes (e.g gmp.types.EntityType.TASK)
+  [PR 143](https://github.com/greenbone/python-gvm/pull/143)
 
 ### Changed
 * Renamed `create_asset` method to `create_host` and dropped asset_type
