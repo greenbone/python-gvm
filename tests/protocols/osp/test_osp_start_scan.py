@@ -44,15 +44,12 @@ class OSPStartScanTestCase(unittest.TestCase):
         _target2 = OrderedDict()
         _target2['hosts'] = '192.168.10.1'
         _target2['ports'] = '443'
-        _credential1 = OrderedDict()
-        _credential1 = {
-            'smb': {
-                'username': 'username',
-                'password': 'pass',
-                'port': 'port',
-                'type': 'type',
-            }
-        }
+        _smb = OrderedDict()
+        _smb['username'] = 'username'
+        _smb['password'] = 'pass'
+        _smb['port'] = 'port'
+        _smb['type'] = 'type'
+        _credential1 = {'smb': _smb}
         _target2['credentials'] = _credential1
         targets.append(_target2)
 
@@ -76,7 +73,7 @@ class OSPStartScanTestCase(unittest.TestCase):
             '<target><hosts>192.168.10.1</hosts>'
             '<ports>443</ports>'
             '<credentials>'
-            '<credential port="port" service="smb" type="type">'
+            '<credential type="type" port="port" service="smb">'
             '<username>username</username>'
             '<password>pass</password>'
             '</credential></credentials>'

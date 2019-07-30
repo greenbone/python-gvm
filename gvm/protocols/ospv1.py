@@ -41,10 +41,12 @@ def create_credentials_element(_xmlcredentials, credentials):
         serv_port = credential.get("port")
         username = credential.get("username")
         password = credential.get("password")
-        _xmlcredential = _xmlcredentials.add_element(
-            "credential",
-            attrs={"type": cred_type, "port": serv_port, "service": service},
-        )
+
+        _xmlcredential = _xmlcredentials.add_element("credential")
+        _xmlcredential.set_attribute("type", cred_type)
+        _xmlcredential.set_attribute("port", serv_port)
+        _xmlcredential.set_attribute("service", service)
+
         _xmlcredential.add_element("username", username)
         _xmlcredential.add_element("password", password)
     return _xmlcredentials
