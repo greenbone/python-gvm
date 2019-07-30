@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.0.beta3] - 2019-07-30
 
 ### Added
 * Added preferences argument to `create_task` method [PR 89](https://github.com/greenbone/python-gvm/pull/89)
@@ -142,6 +142,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * `modify_config` is marked as deprecated and will be removed in future. One of
   the more specific `modify_config_set_` method should be used instead [PR 87](https://github.com/greenbone/python-gvm/pull/87)
 
+[1.0.0.beta3]: https://github.com/greenbone/python-gvm/compare/v1.0.0.beta2...v1.0.0.beta3
+
 ## [1.0.0.beta2] - 2018-12-04
 
 ### Added
@@ -222,6 +224,5 @@ Some notable changes are:
 * Copying an entity via the `copy` argument has been removed and extracted to
   own `clone` methods e.g. `clone_task`.
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.0.0.beta2...HEAD
 [1.0.0.beta2]: https://github.com/greenbone/python-gvm/compare/v1.0.0.beta1...v1.0.0.beta2
 [1.0.0.beta1]: https://github.com/greenbone/python-gvm/releases/tag/v1.0.0.beta1
