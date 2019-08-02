@@ -139,6 +139,7 @@ def _check_event(
         if method not in (
             AlertMethod.SCP,
             AlertMethod.SEND,
+            AlertMethod.SMB,
             AlertMethod.SNMP,
             AlertMethod.SYSLOG,
             AlertMethod.EMAIL,
