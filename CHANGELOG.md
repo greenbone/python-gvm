@@ -11,6 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Fixed
+* Re-added `SMB` as an allowed `AlertMethod` for SecInfo events
+  [PR 145](https://github.com/greenbone/python-gvm/pull/145)
 
 ### Removed
 
