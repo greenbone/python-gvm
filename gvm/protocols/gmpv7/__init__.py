@@ -3171,8 +3171,8 @@ class Gmp(GvmProtocol):
         Arguments:
             filter: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
-            details: Wether to include full details
-            result: Wether to include results using the override
+            details: Whether to include full details
+            result: Whether to include results using the override
 
         Returns:
             The response. See :py:meth:`send_command` for details.

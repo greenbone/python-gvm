@@ -1,6 +1,6 @@
 .. _gmp:
 
-.. avoid TOCtree warning by marking this file als orphan
+.. avoid TOCtree warning by marking this file as orphan
 
 :orphan:
 
