@@ -34,7 +34,7 @@ from gvm.errors import GvmError
 
 logger = logging.getLogger(__name__)
 
-BUF_SIZE = 1024
+BUF_SIZE = 16 * 1024
 DEFAULT_READ_TIMEOUT = 60  # in seconds
 DEFAULT_TIMEOUT = 60  # in seconds
 DEFAULT_GVM_PORT = 9390
