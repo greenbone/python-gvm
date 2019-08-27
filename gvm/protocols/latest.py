@@ -34,7 +34,52 @@ Exports:
     https://docs.greenbone.net/API/GMP/gmp.html
 """
 
-from .gmpv8 import Gmp
+from .gmpv8 import (
+    Gmp,
+    AlertCondition,
+    AlertEvent,
+    AlertMethod,
+    AliveTest,
+    AssetType,
+    CredentialFormat,
+    CredentialType,
+    EntityType,
+    FeedType,
+    FilterType,
+    HostsOrdering,
+    InfoType,
+    PermissionSubjectType,
+    PortRangeType,
+    ScannerType,
+    SeverityLevel,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+    TicketStatus,
+    TimeUnit,
+)
 from .ospv1 import Osp
 
-__all__ = ["Gmp", "Osp"]
+__all__ = [
+    "Gmp",
+    "Osp",
+    "AlertCondition",
+    "AlertEvent",
+    "AlertMethod",
+    "AliveTest",
+    "AssetType",
+    "CredentialType",
+    "CredentialFormat",
+    "EntityType",
+    "FeedType",
+    "FilterType",
+    "HostsOrdering",
+    "InfoType",
+    "PermissionSubjectType",
+    "PortRangeType",
+    "ScannerType",
+    "SeverityLevel",
+    "SnmpAuthAlgorithm",
+    "SnmpPrivacyAlgorithm",
+    "TicketStatus",
+    "TimeUnit",
+]
