@@ -19,6 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument
+from gvm.protocols.gmpv8 import EntityType
 
 from . import Gmpv8TestCase
 
@@ -72,7 +73,7 @@ class GmpModifyTagTestCase(Gmpv8TestCase):
 
     def test_modify_tag_with_resource_filter_and_type(self):
         self.gmp.modify_tag(
-            tag_id='t1', resource_filter='name=foo', resource_type='task'
+            tag_id='t1', resource_filter='name=foo', resource_type=EntityType.TASK
         )
 
         self.connection.send.has_been_called_with(
@@ -88,7 +89,7 @@ class GmpModifyTagTestCase(Gmpv8TestCase):
             tag_id='t1',
             resource_action='set',
             resource_filter='name=foo',
-            resource_type='task',
+            resource_type=EntityType.TASK,
         )
 
         self.connection.send.has_been_called_with(
@@ -101,7 +102,7 @@ class GmpModifyTagTestCase(Gmpv8TestCase):
 
     def test_modify_tag_with_resource_ids_and_type(self):
         self.gmp.modify_tag(
-            tag_id='t1', resource_ids=['r1'], resource_type='task'
+            tag_id='t1', resource_ids=['r1'], resource_type=EntityType.TASK
         )
 
         self.connection.send.has_been_called_with(
@@ -118,7 +119,7 @@ class GmpModifyTagTestCase(Gmpv8TestCase):
             tag_id='t1',
             resource_action="set",
             resource_ids=['r1'],
-            resource_type='task',
+            resource_type=EntityType.TASK,
         )
 
         self.connection.send.has_been_called_with(
@@ -154,7 +155,7 @@ class GmpModifyTagTestCase(Gmpv8TestCase):
             self.gmp.modify_tag(tag_id='t1', resource_filter='name=foo')
 
     def test_modify_tag_with_missing_resource_filter_and_ids(self):
-        self.gmp.modify_tag(tag_id='t1', resource_type='task')
+        self.gmp.modify_tag(tag_id='t1', resource_type=EntityType.TASK)
 
         self.connection.send.has_been_called_with(
             '<modify_tag tag_id="t1">'
