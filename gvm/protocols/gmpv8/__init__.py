@@ -471,8 +471,9 @@ class Gmp(Gmpv7):
             )
 
         if not isinstance(resource_type, EntityType):
-            raise InvalidArgument(function="create_tag", argument="resource_type")
-
+            raise InvalidArgument(
+                function="create_tag", argument="resource_type"
+            )
 
         cmd = XmlCommand('create_tag')
         cmd.add_element('name', name)
@@ -575,7 +576,9 @@ class Gmp(Gmpv7):
 
             if resource_type is not None:
                 if not isinstance(resource_type, EntityType):
-                    raise InvalidArgument(function="modify_tag", argument="resource_type")
+                    raise InvalidArgument(
+                        function="modify_tag", argument="resource_type"
+                    )
                 _xmlresources.add_element("type", resource_type.value)
 
         return self._send_xml_command(cmd)
