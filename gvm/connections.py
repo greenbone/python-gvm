@@ -107,6 +107,9 @@ class GvmConnection(XmlReader):
             data: Data to be send to the server. Either utf-8 encoded string or
                 bytes.
         """
+        if self._socket is None:
+            raise GvmError("Socket is not connected")
+
         if isinstance(data, str):
             self._socket.sendall(data.encode())
         else:
