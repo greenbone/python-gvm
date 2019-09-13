@@ -80,7 +80,7 @@ def _to_bool(value: bool) -> str:
     return "1" if value else "0"
 
 
-def _to_base64(value: bytes) -> str:
+def _to_base64(value: str) -> bytes:
     return base64.b64encode(value.encode("utf-8"))
 
 
