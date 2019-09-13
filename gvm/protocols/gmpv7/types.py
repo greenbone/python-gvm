@@ -696,9 +696,7 @@ class TimeUnit(Enum):
     DECADE = "decade"
 
 
-def get_time_unit_from_string(
-    time_unit: Optional[str]
-) -> Optional[SeverityLevel]:
+def get_time_unit_from_string(time_unit: Optional[str]) -> Optional[TimeUnit]:
     """ Convert a time unit string into a TimeUnit instance """
     if not time_unit:
         return None
