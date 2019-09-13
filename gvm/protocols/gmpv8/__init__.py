@@ -429,7 +429,7 @@ class Gmp(Gmpv7):
     def create_tag(
         self,
         name: str,
-        resource_type: str,
+        resource_type: EntityType,
         *,
         resource_filter: Optional[str] = None,
         resource_ids: Optional[List[str]] = None,
@@ -470,6 +470,11 @@ class Gmp(Gmpv7):
                 function="create_tag", argument="resource_type"
             )
 
+        if not isinstance(resource_type, EntityType):
+            raise InvalidArgument(
+                function="create_tag", argument="resource_type"
+            )
+
         cmd = XmlCommand('create_tag')
         cmd.add_element('name', name)
 
@@ -482,7 +487,7 @@ class Gmp(Gmpv7):
                 "resource", attrs={"id": str(resource_id)}
             )
 
-        _xmlresources.add_element("type", resource_type)
+        _xmlresources.add_element("type", resource_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -507,7 +512,7 @@ class Gmp(Gmpv7):
         value=None,
         active=None,
         resource_action: Optional[str] = None,
-        resource_type: Optional[str] = None,
+        resource_type: Optional[EntityType] = None,
         resource_filter: Optional[str] = None,
         resource_ids: Optional[List[str]] = None
     ) -> Any:
@@ -570,7 +575,11 @@ class Gmp(Gmpv7):
                 )
 
             if resource_type is not None:
-                _xmlresources.add_element("type", resource_type)
+                if not isinstance(resource_type, EntityType):
+                    raise InvalidArgument(
+                        function="modify_tag", argument="resource_type"
+                    )
+                _xmlresources.add_element("type", resource_type.value)
 
         return self._send_xml_command(cmd)
 

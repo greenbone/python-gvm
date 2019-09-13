@@ -19,20 +19,20 @@
 import unittest
 
 from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.protocols.gmpv8 import EntityType
 
 from . import Gmpv8TestCase
-
 
 class GmpCreateTagTestCase(Gmpv8TestCase):
     def test_create_tag_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name=None, resource_ids=['foo'], resource_type='task'
+                name=None, resource_ids=['foo'], resource_type=EntityType.TASK
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
-                name='', resource_ids=['foo'], resource_type='task'
+                name='', resource_ids=['foo'], resource_type=EntityType.TASK
             )
 
     def test_create_tag_missing_resource_filter_and_ids(self):
@@ -40,7 +40,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
             name='foo',
             resource_filter=None,
             resource_ids=None,
-            resource_type='task',
+            resource_type=EntityType.TASK,
         )
 
         self.connection.send.has_been_called_with(
@@ -56,7 +56,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
             name='foo',
             resource_filter=None,
             resource_ids=[],
-            resource_type='task',
+            resource_type=EntityType.TASK,
         )
 
         self.connection.send.has_been_called_with(
@@ -68,7 +68,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
             '</create_tag>'
         )
 
-        self.gmp.create_tag(name='foo', resource_type='task')
+        self.gmp.create_tag(name='foo', resource_type=EntityType.TASK)
 
         self.connection.send.has_been_called_with(
             '<create_tag>'
@@ -85,7 +85,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
                 name='foo',
                 resource_filter='name=foo',
                 resource_ids=['foo'],
-                resource_type='task',
+                resource_type=EntityType.TASK,
             )
 
     def test_create_tag_missing_resource_type(self):
@@ -112,7 +112,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
 
     def test_create_tag_with_resource_filter(self):
         self.gmp.create_tag(
-            name='foo', resource_filter='name=foo', resource_type='task'
+            name='foo', resource_filter='name=foo', resource_type=EntityType.TASK
         )
 
         self.connection.send.has_been_called_with(
@@ -126,7 +126,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
 
     def test_create_tag_with_resource_ids(self):
         self.gmp.create_tag(
-            name='foo', resource_ids=['foo'], resource_type='task'
+            name='foo', resource_ids=['foo'], resource_type=EntityType.TASK
         )
 
         self.connection.send.has_been_called_with(
@@ -140,7 +140,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
         )
 
         self.gmp.create_tag(
-            name='foo', resource_ids=['foo', 'bar'], resource_type='task'
+            name='foo', resource_ids=['foo', 'bar'], resource_type=EntityType.TASK
         )
 
         self.connection.send.has_been_called_with(
@@ -158,7 +158,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
         self.gmp.create_tag(
             name='foo',
             resource_ids=['foo'],
-            resource_type='task',
+            resource_type=EntityType.TASK,
             comment='bar',
         )
 
@@ -175,7 +175,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
 
     def test_create_tag_with_value(self):
         self.gmp.create_tag(
-            name='foo', resource_ids=['foo'], resource_type='task', value='bar'
+            name='foo', resource_ids=['foo'], resource_type=EntityType.TASK, value='bar'
         )
 
         self.connection.send.has_been_called_with(
@@ -191,7 +191,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
 
     def test_create_tag_with_active(self):
         self.gmp.create_tag(
-            name='foo', resource_ids=['foo'], resource_type='task', active=True
+            name='foo', resource_ids=['foo'], resource_type=EntityType.TASK, active=True
         )
 
         self.connection.send.has_been_called_with(
@@ -206,7 +206,7 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
         )
 
         self.gmp.create_tag(
-            name='foo', resource_ids=['foo'], resource_type='task', active=False
+            name='foo', resource_ids=['foo'], resource_type=EntityType.TASK, active=False
         )
 
         self.connection.send.has_been_called_with(
