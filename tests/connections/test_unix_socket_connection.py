@@ -25,6 +25,7 @@ import threading
 import uuid
 
 from gvm.connections import UnixSocketConnection, DEFAULT_TIMEOUT
+from gvm.errors import GvmError
 
 
 class DummyRequestHandler(socketserver.BaseRequestHandler):
@@ -86,6 +87,13 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         self.connection.send("<gmp/>")
         self.connection.read()
         self.connection.disconnect()
+
+    def test_unix_socket_send_unconnected_socket(self):
+        self.connection = UnixSocketConnection(
+            path=self.socketname, timeout=DEFAULT_TIMEOUT
+        )
+        with self.assertRaises(GvmError):
+            self.connection.send("<gmp>/")
 
 
 if __name__ == '__main__':
