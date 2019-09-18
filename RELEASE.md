@@ -22,7 +22,7 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
 
 * Update [CHANGELOG.md](https://github.com/greenbone/python-gvm/blob/master/CHANGELOG.md)
   * Change [unreleased] to new release version
-  * Add a release data
+  * Add a release date
   * Update reference to Github diff
 
 * Create a source and wheel distribution
@@ -38,7 +38,7 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   git add .
   git commit -m "Prepare release <version>"
   ```
-* Create a pypirc file
+* Create a pypi configuration file
 
   ```sh
   vim ~/.pypirc
