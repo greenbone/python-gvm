@@ -21,7 +21,7 @@ Main module of python-gvm.
 
 from pkg_resources import safe_version
 
-VERSION = (1, 0, 0)
+VERSION = (1, 1, 0, 'dev', 1)
 """
 Current Version of python-gvm as a tuple
 """
