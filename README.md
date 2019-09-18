@@ -3,7 +3,7 @@
 # Greenbone Vulnerability Management Python Library <!-- omit in toc -->
 
 [![GitHub releases](https://img.shields.io/github/release-pre/greenbone/python-gvm.svg)](https://github.com/greenbone/python-gvm/releases)
-[![PyPI release](https://img.shields.io/pypi/v/gvm.svg)](https://pypi.org/project/python-gvm/)
+[![PyPI release](https://img.shields.io/pypi/v/python-gvm.svg)](https://pypi.org/project/python-gvm/)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/greenbone/python-gvm/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/greenbone/python-gvm/?branch=master)
 [![code test coverage](https://codecov.io/gh/greenbone/python-gvm/branch/master/graph/badge.svg)](https://codecov.io/gh/greenbone/python-gvm)
 [![CircleCI](https://circleci.com/gh/greenbone/python-gvm/tree/master.svg?style=svg)](https://circleci.com/gh/greenbone/python-gvm/tree/master)
