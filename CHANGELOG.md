@@ -4,9 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
-
-### Added
+## [1.0.0] - 2019-09-18
 
 ### Changed
 * Return version tuple from get_protocol_version methods [#154](https://github.com/greenbone/python-gvm/pull/154)
@@ -17,9 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Re-added `SMB` as an allowed `AlertMethod` for SecInfo events
   [PR 145](https://github.com/greenbone/python-gvm/pull/145)
 
-### Removed
-
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.0.0.beta3...master
+[1.0.0]: https://github.com/greenbone/python-gvm/compare/v1.0.0.beta3...v1.0.0
 
 ## [1.0.0.beta3] - 2019-07-30
 
