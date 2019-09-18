@@ -24,7 +24,6 @@ Module for communication to a daemon speaking `Open Scanner Protocol version 1`_
 import logging
 
 from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
 from .base import GvmProtocol
@@ -82,9 +81,9 @@ class Osp(GvmProtocol):
         """Determine the Open Scanner Protocol version.
 
         Returns:
-            str: Implemented version of the Open Scanner Protocol
+            tuple: Implemented version of the Open Scanner Protocol
         """
-        return get_version_string(PROTOCOL_VERSION)
+        return PROTOCOL_VERSION
 
     def _read(self):
         # OSP is stateless. Therefore the connection is closed after each

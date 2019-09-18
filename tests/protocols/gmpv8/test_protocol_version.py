@@ -23,7 +23,7 @@ from . import Gmpv8TestCase
 
 class GmpProtocolVersionTestCase(Gmpv8TestCase):
     def test_protocol_version(self):
-        self.assertEqual(self.gmp.get_protocol_version(), '8')
+        self.assertEqual(self.gmp.get_protocol_version(), (8,))
 
 
 if __name__ == '__main__':

@@ -39,7 +39,7 @@ class GmpContextManagerTestCase(GmpTestCase):
         )
 
         with self.gmp as gmp:
-            self.assertEqual(gmp.get_protocol_version(), "7")
+            self.assertEqual(gmp.get_protocol_version(), (7,))
             self.assertIsInstance(gmp, Gmpv7)
 
     def test_select_gmpv8(self):
@@ -50,7 +50,7 @@ class GmpContextManagerTestCase(GmpTestCase):
         )
 
         with self.gmp as gmp:
-            self.assertEqual(gmp.get_protocol_version(), "8")
+            self.assertEqual(gmp.get_protocol_version(), (8,))
             self.assertIsInstance(gmp, Gmpv8)
 
     def test_unknown_protocol(self):

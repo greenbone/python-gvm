@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 ### Changed
+* Return version tuple from get_protocol_version methods [#154](https://github.com/greenbone/python-gvm/pull/154)
 
 ### Fixed
 * Fixed `create_tag` and `modify_tag` `resource_type` argument to expect an
