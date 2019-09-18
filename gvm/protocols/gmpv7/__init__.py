@@ -35,7 +35,7 @@ from lxml import etree
 
 from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.utils import get_version_string, deprecation
+from gvm.utils import deprecation
 from gvm.xml import XmlCommand, create_parser
 
 from gvm.protocols.base import GvmProtocol
@@ -190,13 +190,13 @@ class Gmp(GvmProtocol):
         self._authenticated = False
 
     @staticmethod
-    def get_protocol_version() -> str:
+    def get_protocol_version() -> tuple:
         """Determine the Greenbone Management Protocol version.
 
         Returns:
             Implemented version of the Greenbone Management Protocol
         """
-        return get_version_string(PROTOCOL_VERSION)
+        return PROTOCOL_VERSION
 
     def is_authenticated(self) -> bool:
         """Checks if the user is authenticated

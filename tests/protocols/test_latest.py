@@ -23,10 +23,10 @@ from gvm.protocols.latest import Gmp, Osp
 
 class LatestProtocolsTestCase(unittest.TestCase):
     def test_gmp_version(self):
-        self.assertEqual(Gmp.get_protocol_version(), '8')
+        self.assertEqual(Gmp.get_protocol_version(), (8,))
 
     def test_osp_version(self):
-        self.assertEqual(Osp.get_protocol_version(), '1.2')
+        self.assertEqual(Osp.get_protocol_version(), (1, 2))
 
 
 if __name__ == '__main__':

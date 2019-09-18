@@ -28,7 +28,6 @@ from enum import Enum
 from typing import Any, List, Optional
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.utils import get_version_string
 from gvm.xml import XmlCommand
 
 from gvm.protocols.gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
@@ -44,13 +43,13 @@ class Gmp(Gmpv7):
     types = types
 
     @staticmethod
-    def get_protocol_version() -> str:
+    def get_protocol_version() -> tuple:
         """Determine the Greenbone Management Protocol version.
 
         Returns:
-            str: Implemented version of the Greenbone Management Protocol
+            tuple: Implemented version of the Greenbone Management Protocol
         """
-        return get_version_string(PROTOCOL_VERSION)
+        return PROTOCOL_VERSION
 
     def create_credential(
         self,
