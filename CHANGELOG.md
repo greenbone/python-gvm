@@ -14,6 +14,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+### Deprecated
+* Mark make_unique argument of create_target Gmpv8 as deprecated and ignore it.
+  It is already ignored by gvmd with GMP 8 [PR 156](https://github.com/greenbone/python-gvm/pull/156)
+
 [unreleased]: https://github.com/greenbone/python-gvm/compare/v1.0.0...master
 
 ## [1.0.0] - 2019-09-18
