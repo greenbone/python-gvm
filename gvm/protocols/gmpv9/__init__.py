@@ -243,7 +243,7 @@ class Gmp(Gmpv8):
         _add_filter(cmd, filter, filter_id)
 
         if include_certificate_data is not None:
-            cmd.add_element("include_certificate_data", _to_bool(include_certificate_data))
+            cmd.set_attribute("include_certificate_data", _to_bool(include_certificate_data))
 
         return self._send_xml_command(cmd)
 
