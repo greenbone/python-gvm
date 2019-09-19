@@ -204,7 +204,7 @@ class Gmp(Gmpv8):
             copy: The UUID of an existing TLS certificate
             trust: Whether the certificate is trusted.
             certificate: The Base64 encoded certificate data (x.509 DER or PEM).
-           
+
         Returns:
             The response. See :py:meth:`send_command`for details.
         """
