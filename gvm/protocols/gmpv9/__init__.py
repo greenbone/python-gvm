@@ -31,6 +31,7 @@ from enum import Enum
 from typing import Any, List, Optional
 
 from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.utils import deprecation
 from gvm.xml import XmlCommand
 
 from gvm.protocols.gmpv8 import Gmp as Gmpv8, _to_bool, _add_filter
