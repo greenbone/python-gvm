@@ -178,12 +178,23 @@ class Gmp(Gmpv8):
             preferences=preferences
         )
 
-    def create_tls_certificate(self, name: str, certificate: str) -> Any:
+    def create_tls_certificate(
+        self, 
+        name: str, 
+        certificate: str, 
+        *,
+        comment: Optional[str] = None,
+        copy: Optional[str] = None,
+        trust: Optional[bool] = None
+    ) -> Any:
         """Create a new TLS certificate
 
         Arguments:
-            name:
-            certificate:
+            name: Name of the TLS certificate, defaulting to the MD5 fingerprint.
+            certificate: The Base64 encoded certificate data (x.509 DER or PEM).
+            comment: Comment for the TLS certificate.
+            trust: Whether the certificate is trusted.
+            copy: The UUID of an existing TLS certificate
 
         Returns:
             The response. See :py:meth:`send_command`for details.
@@ -194,8 +205,18 @@ class Gmp(Gmpv8):
             raise RequiredArgument(argument="certificate", function=self.create_tls_certificate.__name__)
 
         cmd = XmlCommand("create_tls_certificate")
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if copy:
+            cmd.add_element("copy", copy)
+
         cmd.add_element("name", name)
         cmd.add_element("certificate", certificate)
+
+        if trust:
+            cmd.add_element("trust", _to_bool(trust))
 
         return self._send_xml_command(cmd)
 
@@ -231,10 +252,10 @@ class Gmp(Gmpv8):
         self,
         tls_certificate_id: str,
         *,
-        name: Optional[str],
-        comment: Optional[str],
-        copy: Optional[str],
-        trust: Optional[bool]
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        copy: Optional[str] = None,
+        trust: Optional[bool] = None
     ) -> Any:
         """Modifies an existing TLS certificate.
 
@@ -254,14 +275,14 @@ class Gmp(Gmpv8):
         cmd = XmlCommand("modify_tls_certificate")
         cmd.set_attribute("tls_certificate_id", str(tls_certificate_id))
 
-        if name:
-            cmd.add_element("name", name)
-
         if comment:
             cmd.add_element("comment", comment)
 
         if copy:
             cmd.add_element("copy", copy)
+
+        if name:
+            cmd.add_element("name", name)
 
         if trust:
             cmd.add_element("trust", _to_bool(trust))
