@@ -200,9 +200,9 @@ class Gmp(Gmpv8):
 
 
     def get_tls_certificates(
-        self, 
-        *, 
-        filter: Optional[str] = None, 
+        self,
+        *,
+        filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         include_certificate_data: Optional[bool] = None
     ) -> Any:
@@ -305,10 +305,10 @@ class Gmp(Gmpv8):
 
         cmd = XmlCommand("create_task")
         cmd.add_element("name", name)
+        cmd.add_element("usage_type", usage_type.value)
         cmd.add_element("config", attrs={"id": config_id})
         cmd.add_element("target", attrs={"id": target_id})
         cmd.add_element("scanner", attrs={"id": scanner_id})
-        cmd.add_element("usage_type", usage_type.value)
 
         if comment:
             cmd.add_element("comment", comment)
