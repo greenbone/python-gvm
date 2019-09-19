@@ -18,6 +18,37 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument
 
 from . import Gmpv9TestCase
+
+
+class GmpCreateConfigTestCase(Gmpv9TestCase):
+    def test_create_config(self):
+        self.gmp.create_config('a1', 'foo')
+
+        self.connection.send.has_been_called_with(
+            '<create_config>'
+            '<copy>a1</copy>'
+            '<name>foo</name>'
+            '<usage_type>scan</usage_type>'
+            '</create_config>'
+        )
+
+    def test_missing_config_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_config(config_id='', name='foo')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_config(config_id=None, name='foo')
+
+    def test_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_config(config_id='c1', name=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_config(config_id='c1', name='')
+
+
+if __name__ == '__main__':
+    unittest.main()

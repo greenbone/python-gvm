@@ -27,7 +27,7 @@ from gvm.protocols.gmpv9 import HostsOrdering
 
 from . import Gmpv9TestCase
 
-class GmpCreateTaskCommandTestCase(Gmpv9TestCase):
+class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_task(self):
         self.gmp.create_audit(
             name='foo', config_id='c1', target_id='t1', scanner_id='s1'
