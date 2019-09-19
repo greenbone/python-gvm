@@ -60,7 +60,7 @@ from gvm.protocols.gmpv8.types import (
     get_scanner_type_from_string,
     get_snmp_auth_algorithm_from_string,
     get_snmp_privacy_algorithm_from_string,
-    get_ticket_status_from_string
+    get_ticket_status_from_string,
 )
 
 

@@ -95,8 +95,8 @@ class Gmp(Gmpv8):
         """
 
         self.__create_task(
-            name=name, 
-            config_id=config_id, 
+            name=name,
+            config_id=config_id,
             target_id=target_id,
             scanner_id=scanner_id,
             usage_type=types._UsageType.AUDIT,
@@ -108,21 +108,30 @@ class Gmp(Gmpv8):
             comment=comment,
             schedule_periods=schedule_periods,
             observers=observers,
-            preferences=preferences
+            preferences=preferences,
         )
-        
+
     def create_config(self, config_id: str, name: str) -> Any:
         """Create a new scan config
 
         """
-        self.__create_config(config_id=config_id, name=name, usage_type=types._UsageType.SCAN, function=self.create_config.__name__)
-
+        self.__create_config(
+            config_id=config_id,
+            name=name,
+            usage_type=types._UsageType.SCAN,
+            function=self.create_config.__name__,
+        )
 
     def create_policy(self, config_id: str, name: str) -> Any:
         """Create a new policy config
 
         """
-        self.__create_config(config_id=config_id, name=name, usage_type=types._UsageType.POLICY, function=self.create_policy.__name__)
+        self.__create_config(
+            config_id=config_id,
+            name=name,
+            usage_type=types._UsageType.POLICY,
+            function=self.create_policy.__name__,
+        )
 
     def create_task(
         self,
@@ -162,8 +171,8 @@ class Gmp(Gmpv8):
             The response. See :py:meth:`send_command` for details.
         """
         self.__create_task(
-            name=name, 
-            config_id=config_id, 
+            name=name,
+            config_id=config_id,
             target_id=target_id,
             scanner_id=scanner_id,
             usage_type=types._UsageType.SCAN,
@@ -175,13 +184,13 @@ class Gmp(Gmpv8):
             comment=comment,
             schedule_periods=schedule_periods,
             observers=observers,
-            preferences=preferences
+            preferences=preferences,
         )
 
     def create_tls_certificate(
-        self, 
-        name: str, 
-        certificate: str, 
+        self,
+        name: str,
+        certificate: str,
         *,
         comment: Optional[str] = None,
         copy: Optional[str] = None,
@@ -200,9 +209,14 @@ class Gmp(Gmpv8):
             The response. See :py:meth:`send_command`for details.
         """
         if not name:
-            raise RequiredArgument(argument='name', function=self.create_tls_certificate.__name__)
+            raise RequiredArgument(
+                argument='name', function=self.create_tls_certificate.__name__
+            )
         if not certificate:
-            raise RequiredArgument(argument="certificate", function=self.create_tls_certificate.__name__)
+            raise RequiredArgument(
+                argument="certificate",
+                function=self.create_tls_certificate.__name__,
+            )
 
         cmd = XmlCommand("create_tls_certificate")
 
@@ -219,7 +233,6 @@ class Gmp(Gmpv8):
             cmd.add_element("trust", _to_bool(trust))
 
         return self._send_xml_command(cmd)
-
 
     def get_tls_certificates(
         self,
@@ -243,10 +256,11 @@ class Gmp(Gmpv8):
         _add_filter(cmd, filter, filter_id)
 
         if include_certificate_data is not None:
-            cmd.set_attribute("include_certificate_data", _to_bool(include_certificate_data))
+            cmd.set_attribute(
+                "include_certificate_data", _to_bool(include_certificate_data)
+            )
 
         return self._send_xml_command(cmd)
-
 
     def modify_tls_certificate(
         self,
@@ -270,7 +284,10 @@ class Gmp(Gmpv8):
             The response. See :py:meth:`send_command` for details.
         """
         if not tls_certificate_id:
-            raise RequiredArgument(argument="tls_certificate_id", function=self.modify_tls_certificate.__name__)
+            raise RequiredArgument(
+                argument="tls_certificate_id",
+                function=self.modify_tls_certificate.__name__,
+            )
 
         cmd = XmlCommand("modify_tls_certificate")
         cmd.set_attribute("tls_certificate_id", str(tls_certificate_id))
@@ -308,16 +325,24 @@ class Gmp(Gmpv8):
         preferences: Optional[dict] = None
     ) -> Any:
         if not name:
-            raise RequiredArgument("{} requires a name argument".format(function))
+            raise RequiredArgument(
+                "{} requires a name argument".format(function)
+            )
 
         if not config_id:
-            raise RequiredArgument("{} requires a config_id argument".format(function))
+            raise RequiredArgument(
+                "{} requires a config_id argument".format(function)
+            )
 
         if not target_id:
-            raise RequiredArgument("{} requires a target_id argument".format(function))
+            raise RequiredArgument(
+                "{} requires a target_id argument".format(function)
+            )
 
         if not scanner_id:
-            raise RequiredArgument("{} requires a scanner_id argument".format(function))
+            raise RequiredArgument(
+                "{} requires a scanner_id argument".format(function)
+            )
 
         # don't allow to create a container task with create_task
         if target_id == '0':
@@ -396,17 +421,19 @@ class Gmp(Gmpv8):
         return self._send_xml_command(cmd)
 
     def __create_config(
-        self, 
-        config_id: str, 
-        name: str, 
-        usage_type: types._UsageType, 
-        function: str
+        self,
+        config_id: str,
+        name: str,
+        usage_type: types._UsageType,
+        function: str,
     ) -> Any:
         if not name:
             raise RequiredArgument("{} requires name argument".format(function))
 
         if not config_id:
-            raise RequiredArgument("{} requires config_id argument".format(function))
+            raise RequiredArgument(
+                "{} requires config_id argument".format(function)
+            )
 
         cmd = XmlCommand("create_config")
         cmd.add_element("copy", config_id)

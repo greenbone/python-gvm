@@ -25,9 +25,7 @@ class GmpGetTLSCertificatesTestCase(Gmpv9TestCase):
     def test_get_tls_certificates(self):
         self.gmp.get_tls_certificates()
 
-        self.connection.send.has_been_called_with(
-            '<get_tls_certificates/>'
-        )
+        self.connection.send.has_been_called_with('<get_tls_certificates/>')
 
     def test_get_tls_certificates_with_filter(self):
         self.gmp.get_tls_certificates(filter='name=foo')

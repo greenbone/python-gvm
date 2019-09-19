@@ -27,6 +27,7 @@ from gvm.protocols.gmpv9 import HostsOrdering
 
 from . import Gmpv9TestCase
 
+
 class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_task(self):
         self.gmp.create_audit(

@@ -47,5 +47,6 @@ class GmpModifyTLSCertificateTestCase(Gmpv9TestCase):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_tls_certificate(name='foo', tls_certificate_id=None)
 
+
 if __name__ == '__main__':
     unittest.main()
