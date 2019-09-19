@@ -29,8 +29,8 @@ from . import Gmpv8TestCase
 class GmpCreateTargetCommandTestCase(Gmpv8TestCase):
     def test_create_target_with_ignoring_make_unique(self):
 
-        with warnings.catch_warnings():
-            warnings.simplefilter("ignore")
+        with warnings.catch_warnings(record=True) as warn:
+            warnings.simplefilter("always")
 
             self.gmp.create_target(
                 'foo', make_unique=True, hosts=['foo', 'bar']
@@ -43,6 +43,9 @@ class GmpCreateTargetCommandTestCase(Gmpv8TestCase):
                 '</create_target>'
             )
 
+            self.assertEqual(len(warn), 1)
+            self.assertTrue(issubclass(warn[-1].category, DeprecationWarning))
+
             self.gmp.create_target(
                 'foo', make_unique=False, hosts=['foo', 'bar']
             )
@@ -53,6 +56,9 @@ class GmpCreateTargetCommandTestCase(Gmpv8TestCase):
                 '<hosts>foo,bar</hosts>'
                 '</create_target>'
             )
+
+            self.assertEqual(len(warn), 2)
+            self.assertTrue(issubclass(warn[-1].category, DeprecationWarning))
 
     def test_create_target_missing_name(self):
         with self.assertRaises(RequiredArgument):
