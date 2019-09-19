@@ -18,8 +18,6 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument
-
 from . import Gmpv9TestCase
 
 
@@ -45,7 +43,6 @@ class GmpGetTLSCertificatesTestCase(Gmpv9TestCase):
             '<get_tls_certificates include_certificate_data="1"/>'
         )
 
-        
-    
+
 if __name__ == '__main__':
     unittest.main()
