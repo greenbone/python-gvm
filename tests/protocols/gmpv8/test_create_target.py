@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2019 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -17,14 +17,43 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
+import warnings
 
 from gvm.errors import RequiredArgument, InvalidArgument
+
 from gvm.protocols.gmpv8 import AliveTest
 
 from . import Gmpv8TestCase
 
 
 class GmpCreateTargetCommandTestCase(Gmpv8TestCase):
+    def test_create_target_with_ignoring_make_unique(self):
+
+        with warnings.catch_warnings():
+            warnings.simplefilter("ignore")
+
+            self.gmp.create_target(
+                'foo', make_unique=True, hosts=['foo', 'bar']
+            )
+
+            self.connection.send.has_been_called_with(
+                '<create_target>'
+                '<name>foo</name>'
+                '<hosts>foo,bar</hosts>'
+                '</create_target>'
+            )
+
+            self.gmp.create_target(
+                'foo', make_unique=False, hosts=['foo', 'bar']
+            )
+
+            self.connection.send.has_been_called_with(
+                '<create_target>'
+                '<name>foo</name>'
+                '<hosts>foo,bar</hosts>'
+                '</create_target>'
+            )
+
     def test_create_target_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_target(None, hosts=['foo'])
