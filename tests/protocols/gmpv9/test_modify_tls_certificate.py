@@ -18,6 +18,34 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument
 
 from . import Gmpv9TestCase
+
+
+class GmpModifyTLSCertificateTestCase(Gmpv9TestCase):
+    def test_modify_tls_certificate(self):
+        self.gmp.modify_tls_certificate('c1')
+
+        self.connection.send.has_been_called_with(
+            '<modify_tls_certificate tls_certificate_id="c1"/>'
+        )
+
+    def test_modify_tls_certificate_with_name(self):
+        self.gmp.modify_tls_certificate('c1', name='foo')
+
+        self.connection.send.has_been_called_with(
+            '<modify_tls_certificate tls_certificate_id="c1">'
+            '<name>foo</name>'
+            '</modify_tls_certificate>'
+        )
+
+    def test_missing_tls_certificate_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_tls_certificate(name='foo', tls_certificate_id='')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_tls_certificate(name='foo', tls_certificate_id=None)
+
+if __name__ == '__main__':
+    unittest.main()
