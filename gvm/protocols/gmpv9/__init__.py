@@ -99,7 +99,7 @@ class Gmp(Gmpv8):
             config_id=config_id,
             target_id=target_id,
             scanner_id=scanner_id,
-            usage_type=types._UsageType.AUDIT, # pylint: disable=W0212
+            usage_type=types._UsageType.AUDIT,  # pylint: disable=W0212
             function=self.create_audit.__name__,
             alterable=alterable,
             hosts_ordering=hosts_ordering,
@@ -118,7 +118,7 @@ class Gmp(Gmpv8):
         self.__create_config(
             config_id=config_id,
             name=name,
-            usage_type=types._UsageType.SCAN, # pylint: disable=W0212
+            usage_type=types._UsageType.SCAN,  # pylint: disable=W0212
             function=self.create_config.__name__,
         )
 
@@ -129,7 +129,7 @@ class Gmp(Gmpv8):
         self.__create_config(
             config_id=config_id,
             name=name,
-            usage_type=types._UsageType.POLICY, # pylint: disable=W0212
+            usage_type=types._UsageType.POLICY,  # pylint: disable=W0212
             function=self.create_policy.__name__,
         )
 
@@ -175,7 +175,7 @@ class Gmp(Gmpv8):
             config_id=config_id,
             target_id=target_id,
             scanner_id=scanner_id,
-            usage_type=types._UsageType.SCAN, # pylint: disable=W0212
+            usage_type=types._UsageType.SCAN,  # pylint: disable=W0212
             function=self.create_task.__name__,
             alterable=alterable,
             hosts_ordering=hosts_ordering,
@@ -312,7 +312,7 @@ class Gmp(Gmpv8):
         config_id: str,
         target_id: str,
         scanner_id: str,
-        usage_type: types._UsageType, # pylint: disable=W0212
+        usage_type: types._UsageType,  # pylint: disable=W0212
         function: str,
         *,
         alterable: Optional[bool] = None,
@@ -424,7 +424,7 @@ class Gmp(Gmpv8):
         self,
         config_id: str,
         name: str,
-        usage_type: types._UsageType, # pylint: disable=W0212
+        usage_type: types._UsageType,  # pylint: disable=W0212
         function: str,
     ) -> Any:
         if not name:
