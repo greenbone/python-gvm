@@ -25,6 +25,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 9`_
     https://docs.greenbone.net/API/GMP/gmp-9.0.html
 """
 import collections
+import numbers
 
 from enum import Enum
 from typing import Any, List, Optional
@@ -32,7 +33,8 @@ from typing import Any, List, Optional
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.xml import XmlCommand
 
-from gvm.protocols.gmpv8 import Gmp as Gmpv8, _to_bool
+from gvm.protocols.gmpv8 import Gmp as Gmpv8, _to_bool, _add_filter
+from gvm.protocols.gmpv7 import _is_list_like, _to_comma_list
 
 from . import types
 from .types import *
@@ -96,7 +98,7 @@ class Gmp(Gmpv8):
             config_id=config_id, 
             target_id=target_id,
             scanner_id=scanner_id,
-            usage_type=_UsageType.AUDIT,
+            usage_type=types._UsageType.AUDIT,
             function=self.create_audit.__name__,
             alterable=alterable,
             hosts_ordering=hosts_ordering,
@@ -108,6 +110,19 @@ class Gmp(Gmpv8):
             preferences=preferences
         )
         
+    def create_config(self, config_id: str, name: str) -> Any:
+        """Create a new scan config
+
+        """
+        self.__create_config(config_id=config_id, name=name, usage_type=types._UsageType.SCAN, function=self.create_config.__name__)
+
+
+    def create_policy(self, config_id: str, name: str) -> Any:
+        """Create a new policy config
+
+        """
+        self.__create_config(config_id=config_id, name=name, usage_type=types._UsageType.POLICY, function=self.create_policy.__name__)
+
     def create_task(
         self,
         name: str,
@@ -150,7 +165,7 @@ class Gmp(Gmpv8):
             config_id=config_id, 
             target_id=target_id,
             scanner_id=scanner_id,
-            usage_type=_UsageType.SCAN,
+            usage_type=types._UsageType.SCAN,
             function=self.create_task.__name__,
             alterable=alterable,
             hosts_ordering=hosts_ordering,
@@ -161,19 +176,6 @@ class Gmp(Gmpv8):
             observers=observers,
             preferences=preferences
         )
-
-    def create_config(self, config_id: str, name: str) -> Any:
-        """Create a new scan config
-
-        """
-        __create_config(config_id=config_id, name=name, usage_type=_UsageType.SCAN, function=self.create_config.__name__)
-
-
-    def create_policy(self, config_id: str, name: str) -> Any:
-        """Create a new policy config
-
-        """
-        __create_config(config_id=config_id, name=name, usage_type=_UsageType.POLICY, function=self.create_policy.__name__)
 
     def create_tls_certificate(self, name: str, certificate: str) -> Any:
         """Create a new TLS certificate
@@ -271,7 +273,7 @@ class Gmp(Gmpv8):
         config_id: str,
         target_id: str,
         scanner_id: str,
-        usage_type: _UsageType,
+        usage_type: types._UsageType,
         function: str,
         *,
         alterable: Optional[bool] = None,
@@ -324,9 +326,9 @@ class Gmp(Gmpv8):
         if alert_ids:
             if isinstance(alert_ids, str):
                 deprecation(
-                    "Please pass a list as alert_ids parameter to {}. ".format(function)
+                    "Please pass a list as alert_ids parameter to {}. "
                     "Passing a string is deprecated and will be removed in "
-                    "future."
+                    "future.".format(function)
                 )
 
                 # if a single id is given as a string wrap it into a list
@@ -375,7 +377,7 @@ class Gmp(Gmpv8):
         self, 
         config_id: str, 
         name: str, 
-        usage_type: _UsageType, 
+        usage_type: types._UsageType, 
         function: str
     ) -> Any:
         if not name:
