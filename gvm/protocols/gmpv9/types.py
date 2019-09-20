@@ -107,8 +107,9 @@ __all__ = [
 ]
 
 
+
 class _UsageType(Enum):
-    """ Enum for entity types """
+    """ Enum for usage types """
 
     AUDIT = "audit"
     POLICY = "policy"
@@ -118,10 +119,10 @@ class _UsageType(Enum):
 def __get_usage_type_from_string(
     usage_type: Optional[str]
 ) -> Optional[_UsageType]:
-    """ Convert a entity type string to an actual EntityType instance
+    """ Convert a usage type string to an actual _UsageType instance
 
     Arguments:
-        entity_type: Entity type string to convert to a EntityType
+        entity_type: Usage type string to convert to a _UsageType
     """
     if not usage_type:
         return None
