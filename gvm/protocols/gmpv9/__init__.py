@@ -39,6 +39,7 @@ from gvm.protocols.gmpv7 import _is_list_like, _to_comma_list
 
 from . import types
 from .types import *
+from .types import _UsageType as UsageType
 
 PROTOCOL_VERSION = (9,)
 
@@ -99,7 +100,7 @@ class Gmp(Gmpv8):
             config_id=config_id,
             target_id=target_id,
             scanner_id=scanner_id,
-            usage_type=types._UsageType.AUDIT,  # pylint: disable=W0212
+            usage_type=UsageType.AUDIT,  # pylint: disable=W0212
             function=self.create_audit.__name__,
             alterable=alterable,
             hosts_ordering=hosts_ordering,
@@ -118,7 +119,7 @@ class Gmp(Gmpv8):
         self.__create_config(
             config_id=config_id,
             name=name,
-            usage_type=types._UsageType.SCAN,  # pylint: disable=W0212
+            usage_type=UsageType.SCAN,  # pylint: disable=W0212
             function=self.create_config.__name__,
         )
 
@@ -129,7 +130,7 @@ class Gmp(Gmpv8):
         self.__create_config(
             config_id=config_id,
             name=name,
-            usage_type=types._UsageType.POLICY,  # pylint: disable=W0212
+            usage_type=UsageType.POLICY,  # pylint: disable=W0212
             function=self.create_policy.__name__,
         )
 
@@ -175,7 +176,7 @@ class Gmp(Gmpv8):
             config_id=config_id,
             target_id=target_id,
             scanner_id=scanner_id,
-            usage_type=types._UsageType.SCAN,  # pylint: disable=W0212
+            usage_type=UsageType.SCAN,  # pylint: disable=W0212
             function=self.create_task.__name__,
             alterable=alterable,
             hosts_ordering=hosts_ordering,
