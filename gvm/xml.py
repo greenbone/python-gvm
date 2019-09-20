@@ -18,8 +18,6 @@
 
 from typing import Optional
 
-import defusedxml.lxml as secET
-
 from defusedxml import DefusedXmlException
 from lxml import etree
 
@@ -62,7 +60,7 @@ class XmlCommandElement:
 
     def append_xml_str(self, xml_text: str):
         """Append a xml element in string format."""
-        node = secET.fromstring(xml_text)
+        node = etree.fromstring(xml_text)
         self._element.append(node)
 
     def to_string(self) -> str:
@@ -100,7 +98,7 @@ def pretty_print(xml):
     elif etree.iselement(xml):
         print(etree.tostring(xml, pretty_print=True).decode("utf-8"))
     elif isinstance(xml, str):
-        tree = secET.fromstring(xml)
+        tree = etree.fromstring(xml)
         print(etree.tostring(tree, pretty_print=True).decode("utf-8"))
 
 
@@ -118,6 +116,6 @@ def validate_xml_string(xml_string: str):
 
     """
     try:
-        secET.fromstring(xml_string)
+        etree.fromstring(xml_string)
     except (DefusedXmlException, etree.LxmlError) as e:
         raise GvmError("Invalid XML", e) from e
