@@ -107,7 +107,6 @@ __all__ = [
 ]
 
 
-
 class _UsageType(Enum):
     """ Enum for usage types """
 
