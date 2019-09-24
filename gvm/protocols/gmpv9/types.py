@@ -102,6 +102,7 @@ __all__ = [
     "get_ticket_status_from_string",
 ]
 
+
 class EntityType(Enum):
     """ Enum for entity types """
 
@@ -176,6 +177,7 @@ def get_entity_type_from_string(
             function=get_entity_type_from_string.__name__,
         )
 
+
 class FilterType(Enum):
     """ Enum for filter types """
 
@@ -193,7 +195,7 @@ class FilterType(Enum):
     OVERRIDE = "override"
     PERMISSION = "permission"
     PORT_LIST = "port_list"
-    POLICY_CONFIG ="policy"
+    POLICY_CONFIG = "policy"
     REPORT = "report"
     REPORT_FORMAT = "report_format"
     RESULT = "result"
@@ -207,6 +209,7 @@ class FilterType(Enum):
     TLS_CERTIFICATE = "tls_certificate"
     USER = "user"
     VULNERABILITY = "vuln"
+
 
 def get_filter_type_from_string(
     filter_type: Optional[str]
@@ -245,12 +248,14 @@ def get_filter_type_from_string(
             function=get_filter_type_from_string.__name__,
         )
 
+
 class _UsageType(Enum):
     """ Enum for usage types """
 
     AUDIT = "audit"
     POLICY = "policy"
     SCAN = "scan"
+
 
 def __get_usage_type_from_string(
     usage_type: Optional[str]
