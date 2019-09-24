@@ -280,7 +280,6 @@ class Gmp(Gmpv8):
         *,
         name: Optional[str] = None,
         comment: Optional[str] = None,
-        copy: Optional[str] = None,
         trust: Optional[bool] = None
     ) -> Any:
         """Modifies an existing TLS certificate.
@@ -290,7 +289,6 @@ class Gmp(Gmpv8):
             name: Name of the TLS certificate, defaulting to the MD5 fingerprint
             comment: Comment for the TLS certificate.
             trust: Whether the certificate is trusted.
-            copy: The UUID of an existing TLS certificate
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -307,9 +305,6 @@ class Gmp(Gmpv8):
         if comment:
             cmd.add_element("comment", comment)
 
-        if copy:
-            cmd.add_element("copy", copy)
-
         if name:
             cmd.add_element("name", name)
 
@@ -317,6 +312,29 @@ class Gmp(Gmpv8):
             cmd.add_element("trust", _to_bool(trust))
 
         return self._send_xml_command(cmd)
+
+    def clone_tls_certificate(self, tls_certificate_id: str,
+    ) -> Any:
+        """Modifies an existing TLS certificate.
+
+        Arguments:
+            tls_certificate_id: The UUID of an existing TLS certificate
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not tls_certificate_id:
+            raise RequiredArgument(
+                argument="tls_certificate_id",
+                function=self.modify_tls_certificate.__name__,
+            )
+
+        cmd = XmlCommand("create_tls_certificate")
+
+        cmd.add_element("copy", tls_certificate_id)
+
+        return self._send_xml_command(cmd)
+
 
     def __create_task(
         self,
