@@ -1,3 +1,5 @@
+
+
 # -*- coding: utf-8 -*-
 # Copyright (C) 2018 Greenbone Networks GmbH
 #
@@ -35,19 +37,19 @@ class GmpCreatePolicyTestCase(Gmpv9TestCase):
             '</create_config>'
         )
 
-    def test_missing_config_id(self):
+    def test_missing_policy_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_policy(config_id='', name='foo')
+            self.gmp.create_policy(policy_id='', name='foo')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_policy(config_id=None, name='foo')
+            self.gmp.create_policy(policy_id=None, name='foo')
 
     def test_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_policy(config_id='c1', name=None)
+            self.gmp.create_policy(policy_id='c1', name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_policy(config_id='c1', name='')
+            self.gmp.create_policy(policy_id='c1', name='')
 
 
 if __name__ == '__main__':
