@@ -38,7 +38,8 @@ from gvm.protocols.gmpv8 import Gmp as Gmpv8, _to_bool, _add_filter
 from gvm.protocols.gmpv7 import _is_list_like, _to_comma_list
 
 from . import types
-from .types import *
+from .types import HostsOrdering, EntityType, FilterType
+from .types import get_entity_type_from_string, get_filter_type_from_string
 from .types import _UsageType as UsageType
 
 PROTOCOL_VERSION = (9,)
