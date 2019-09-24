@@ -60,7 +60,7 @@ class Gmp(Gmpv8):
     def create_audit(
         self,
         name: str,
-        config_id: str,
+        audit_id: str,
         target_id: str,
         scanner_id: str,
         *,
@@ -76,19 +76,19 @@ class Gmp(Gmpv8):
         """Create a new audit task
 
         Arguments:
-            name: Name of the task
-            config_id: UUID of scan config to use by the task
+            name: Name of the new audit
+            audit_id: UUID of scan config to use by the audit
             target_id: UUID of target to be scanned
             scanner_id: UUID of scanner to use for scanning the target
-            comment: Comment for the task
+            comment: Comment for the audit
             alterable: Whether the task should be alterable
-            alert_ids: List of UUIDs for alerts to be applied to the task
+            alert_ids: List of UUIDs for alerts to be applied to the audit
             hosts_ordering: The order hosts are scanned in
-            schedule_id: UUID of a schedule when the task should be run.
-            schedule_periods: A limit to the number of times the task will be
+            schedule_id: UUID of a schedule when the audit should be run.
+            schedule_periods: A limit to the number of times the audit will be
                 scheduled, or 0 for no limit
             observers: List of names or ids of users which should be allowed to
-                observe this task
+                observe this audit
             preferences: Name/Value pairs of scanner preferences.
 
         Returns:
@@ -97,7 +97,7 @@ class Gmp(Gmpv8):
 
         self.__create_task(
             name=name,
-            config_id=config_id,
+            config_id=audit_id,
             target_id=target_id,
             scanner_id=scanner_id,
             usage_type=UsageType.AUDIT,  # pylint: disable=W0212
@@ -114,7 +114,12 @@ class Gmp(Gmpv8):
 
     def create_config(self, config_id: str, name: str) -> Any:
         """Create a new scan config
+        Arguments:
+            config_id: UUID of the existing scan config
+            name: Name of the new scan config
 
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         self.__create_config(
             config_id=config_id,
@@ -123,12 +128,17 @@ class Gmp(Gmpv8):
             function=self.create_config.__name__,
         )
 
-    def create_policy(self, config_id: str, name: str) -> Any:
+    def create_policy(self, policy_id: str, name: str) -> Any:
         """Create a new policy config
+        Arguments:
+            policy_id: UUID of the existing policy config
+            name: Name of the new scan config
 
+        Returns:
+            The response. See :py:meth:`send_command` for details.
         """
         self.__create_config(
-            config_id=config_id,
+            config_id=policy_id,
             name=name,
             usage_type=UsageType.POLICY,  # pylint: disable=W0212
             function=self.create_policy.__name__,
