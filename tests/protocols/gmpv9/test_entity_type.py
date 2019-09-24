@@ -108,12 +108,12 @@ class GetEntityTypeFromStringTestCase(unittest.TestCase):
         ct = get_entity_type_from_string('permission')
         self.assertEqual(ct, EntityType.PERMISSION)
 
-    def test_policy_config(self):
+    def test_policy(self):
         ct = get_entity_type_from_string('policy')
-        self.assertEqual(ct, EntityType.POLICY_CONFIG)
+        self.assertEqual(ct, EntityType.POLICY)
 
         ct = get_entity_type_from_string('policy_config')
-        self.assertEqual(ct, EntityType.POLICY_CONFIG)
+        self.assertEqual(ct, EntityType.POLICY)
 
     def test_port_list(self):
         ct = get_entity_type_from_string('port_list')

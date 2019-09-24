@@ -43,12 +43,12 @@ class GetFilterTypeFomStringTestCase(unittest.TestCase):
         ft = get_filter_type_from_string('credential')
         self.assertEqual(ft, FilterType.CREDENTIAL)
 
-    def test_filter_type_policy_config(self):
+    def test_filter_type_policy(self):
         ct = get_filter_type_from_string('policy')
-        self.assertEqual(ct, FilterType.POLICY_CONFIG)
+        self.assertEqual(ct, FilterType.POLICY)
 
         ct = get_filter_type_from_string('policy_config')
-        self.assertEqual(ct, FilterType.POLICY_CONFIG)
+        self.assertEqual(ct, FilterType.POLICY)
 
     def test_filter_type_filter(self):
         ft = get_filter_type_from_string('filter')
