@@ -7,8 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
+* Introducing Gmpv9 [PR 157](https://github.com/greenbone/python-gvm/pull/157)
+* Added new `create_audit` method, to create a task with the `usage_type` `audit` [PR 157](https://github.com/greenbone/python-gvm/pull/157)
+* Added new `create_policy` method, to create a config with the `usage_type` `policy` [PR 157](https://github.com/greenbone/python-gvm/pull/157)
+* Added the new methods `create_tls_certificate`, `modify_tls_certificate` and `clone_tls_certificate` to create, modify and copy TLS certificates [PR 157](https://github.com/greenbone/python-gvm/pull/157)
+* Added the new method `get_tls_certificates`, to request TLS certificates from the server [PR 157](https://github.com/greenbone/python-gvm/pull/157)
 
 ### Changed
+* Added `usage_type` `scan` to `create_task` method [PR 157](https://github.com/greenbone/python-gvm/pull/157)
+* Added `usage_type` `scan` to `create_config` method [PR 157](https://github.com/greenbone/python-gvm/pull/157)
+* Added type `TLS_CERTIFICATE` to `EntityType` and `FilterType` [PR 157](https://github.com/greenbone/python-gvm/pull/157)
 
 ### Fixed
 
