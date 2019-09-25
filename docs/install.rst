@@ -3,6 +3,10 @@
 Installation of python-gvm
 ==========================
 
+.. note:: All commands listed here use the general tool names. If some of these
+  tools are provided by your distribution, you may need to explicitly use the
+  Python 3 version of the tool, e.g. :program:`pip3`.
+
 Using pip
 ---------
 
