@@ -23,6 +23,7 @@ from gvm.protocols.gmpv8 import EntityType
 
 from . import Gmpv8TestCase
 
+
 class GmpCreateTagTestCase(Gmpv8TestCase):
     def test_create_tag_missing_name(self):
         with self.assertRaises(RequiredArgument):
@@ -112,7 +113,9 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
 
     def test_create_tag_with_resource_filter(self):
         self.gmp.create_tag(
-            name='foo', resource_filter='name=foo', resource_type=EntityType.TASK
+            name='foo',
+            resource_filter='name=foo',
+            resource_type=EntityType.TASK,
         )
 
         self.connection.send.has_been_called_with(
@@ -140,7 +143,9 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
         )
 
         self.gmp.create_tag(
-            name='foo', resource_ids=['foo', 'bar'], resource_type=EntityType.TASK
+            name='foo',
+            resource_ids=['foo', 'bar'],
+            resource_type=EntityType.TASK,
         )
 
         self.connection.send.has_been_called_with(
@@ -175,7 +180,10 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
 
     def test_create_tag_with_value(self):
         self.gmp.create_tag(
-            name='foo', resource_ids=['foo'], resource_type=EntityType.TASK, value='bar'
+            name='foo',
+            resource_ids=['foo'],
+            resource_type=EntityType.TASK,
+            value='bar',
         )
 
         self.connection.send.has_been_called_with(
@@ -191,7 +199,10 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
 
     def test_create_tag_with_active(self):
         self.gmp.create_tag(
-            name='foo', resource_ids=['foo'], resource_type=EntityType.TASK, active=True
+            name='foo',
+            resource_ids=['foo'],
+            resource_type=EntityType.TASK,
+            active=True,
         )
 
         self.connection.send.has_been_called_with(
@@ -206,7 +217,10 @@ class GmpCreateTagTestCase(Gmpv8TestCase):
         )
 
         self.gmp.create_tag(
-            name='foo', resource_ids=['foo'], resource_type=EntityType.TASK, active=False
+            name='foo',
+            resource_ids=['foo'],
+            resource_type=EntityType.TASK,
+            active=False,
         )
 
         self.connection.send.has_been_called_with(

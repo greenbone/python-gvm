@@ -73,7 +73,9 @@ class GmpModifyTagTestCase(Gmpv8TestCase):
 
     def test_modify_tag_with_resource_filter_and_type(self):
         self.gmp.modify_tag(
-            tag_id='t1', resource_filter='name=foo', resource_type=EntityType.TASK
+            tag_id='t1',
+            resource_filter='name=foo',
+            resource_type=EntityType.TASK,
         )
 
         self.connection.send.has_been_called_with(
