@@ -313,8 +313,7 @@ class Gmp(Gmpv8):
 
         return self._send_xml_command(cmd)
 
-    def clone_tls_certificate(self, tls_certificate_id: str,
-    ) -> Any:
+    def clone_tls_certificate(self, tls_certificate_id: str) -> Any:
         """Modifies an existing TLS certificate.
 
         Arguments:
@@ -334,7 +333,6 @@ class Gmp(Gmpv8):
         cmd.add_element("copy", tls_certificate_id)
 
         return self._send_xml_command(cmd)
-
 
     def __create_task(
         self,
