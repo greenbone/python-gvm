@@ -14,8 +14,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added the new method `get_tls_certificates`, to request TLS certificates from the server [PR 157](https://github.com/greenbone/python-gvm/pull/157)
 
 ### Changed
-* Added `usage_type` `scan` to `create_task` method [PR 157](https://github.com/greenbone/python-gvm/pull/157)
-* Added `usage_type` `scan` to `create_config` method [PR 157](https://github.com/greenbone/python-gvm/pull/157)
 * Added type `TLS_CERTIFICATE` to `EntityType` and `FilterType` [PR 157](https://github.com/greenbone/python-gvm/pull/157)
 
 ### Fixed
