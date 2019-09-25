@@ -109,7 +109,6 @@ class EntityType(Enum):
     AGENT = "note"
     ALERT = "alert"
     ASSET = "asset"
-    AUDIT = "audit"
     CERT_BUND_ADV = "cert_bund_adv"
     CPE = "cpe"
     CREDENTIAL = "credential"
@@ -125,7 +124,6 @@ class EntityType(Enum):
     OVALDEF = "ovaldef"
     OVERRIDE = "override"
     PERMISSION = "permission"
-    POLICY = "policy"
     PORT_LIST = "port_list"
     REPORT = "report"
     REPORT_FORMAT = "report_format"
@@ -163,9 +161,6 @@ def get_entity_type_from_string(
     if entity_type == 'config':
         return EntityType.SCAN_CONFIG
 
-    if entity_type == 'policy_config':
-        return EntityType.POLICY
-
     if entity_type == 'tls_certificate':
         return EntityType.TLS_CERTIFICATE
 
@@ -184,7 +179,6 @@ class FilterType(Enum):
     AGENT = "agent"
     ALERT = "alert"
     ASSET = "asset"
-    AUDIT = "audit"
     SCAN_CONFIG = "config"
     CREDENTIAL = "credential"
     FILTER = "filter"
@@ -195,7 +189,6 @@ class FilterType(Enum):
     OVERRIDE = "override"
     PERMISSION = "permission"
     PORT_LIST = "port_list"
-    POLICY = "policy"
     REPORT = "report"
     REPORT_FORMAT = "report_format"
     RESULT = "result"
@@ -233,9 +226,6 @@ def get_filter_type_from_string(
 
     if filter_type == 'secinfo':
         return FilterType.ALL_SECINFO
-
-    if filter_type == 'policy_config':
-        return FilterType.POLICY
 
     if filter_type == 'tls_certificate':
         return FilterType.TLS_CERTIFICATE

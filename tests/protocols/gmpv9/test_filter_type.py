@@ -35,20 +35,9 @@ class GetFilterTypeFomStringTestCase(unittest.TestCase):
         ft = get_filter_type_from_string('asset')
         self.assertEqual(ft, FilterType.ASSET)
 
-    def test_filter_type_audit(self):
-        ft = get_filter_type_from_string('audit')
-        self.assertEqual(ft, FilterType.AUDIT)
-
     def test_filter_type_credential(self):
         ft = get_filter_type_from_string('credential')
         self.assertEqual(ft, FilterType.CREDENTIAL)
-
-    def test_filter_type_policy(self):
-        ct = get_filter_type_from_string('policy')
-        self.assertEqual(ct, FilterType.POLICY)
-
-        ct = get_filter_type_from_string('policy_config')
-        self.assertEqual(ct, FilterType.POLICY)
 
     def test_filter_type_filter(self):
         ft = get_filter_type_from_string('filter')
