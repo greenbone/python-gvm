@@ -38,7 +38,7 @@ BUF_SIZE = 16 * 1024
 DEFAULT_READ_TIMEOUT = 60  # in seconds
 DEFAULT_TIMEOUT = 60  # in seconds
 DEFAULT_GVM_PORT = 9390
-DEFAULT_UNIX_SOCKET_PATH = "/usr/local/var/run/gvmd.sock"
+DEFAULT_UNIX_SOCKET_PATH = "/var/run/gvmd.sock"
 MAX_SSH_DATA_LENGTH = 4095
 
 
@@ -324,7 +324,7 @@ class UnixSocketConnection(GvmConnection):
     direct communicating UNIX-Socket
 
     Arguments:
-        path: Path to the socket. Default is "/usr/local/var/run/gvmd.sock".
+        path: Path to the socket. Default is "/var/run/gvmd.sock".
         timeout: Timeout in seconds for the connection. Default is 60 seconds.
     """
 

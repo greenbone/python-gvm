@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Added type `TLS_CERTIFICATE` to `EntityType` and `FilterType` [PR 157](https://github.com/greenbone/python-gvm/pull/157)
+* Changed the `DEFAULT_UNIX_SOCKET_PATH` [PR 119](https://github.com/greenbone/python-gvm/pull/162)
 
 ### Fixed
 
