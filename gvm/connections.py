@@ -324,7 +324,7 @@ class UnixSocketConnection(GvmConnection):
     direct communicating UNIX-Socket
 
     Arguments:
-        path: Path to the socket. Default is "/usr/local/var/run/gvmd.sock".
+        path: Path to the socket. Default is "/var/run/gvmd.sock".
         timeout: Timeout in seconds for the connection. Default is 60 seconds.
     """
 
