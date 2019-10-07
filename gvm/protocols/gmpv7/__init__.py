@@ -3408,7 +3408,8 @@ class Gmp(GvmProtocol):
         filter_id: Optional[str] = None,
         delta_report_id: Optional[str] = None,
         report_format_id: Optional[str] = None,
-        ignore_pagination: Optional[bool] = None
+        ignore_pagination: Optional[bool] = None,
+        details: Optional[bool] = None
     ) -> Any:
         """Request a single report
 
@@ -3420,6 +3421,7 @@ class Gmp(GvmProtocol):
             report_format_id: UUID of report format to use
             ignore_pagination: Whether to ignore the filter terms "first" and
                 "rows".
+            details: Request addititional report information details
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3440,6 +3442,9 @@ class Gmp(GvmProtocol):
 
         if ignore_pagination is not None:
             cmd.set_attribute("ignore_pagination", _to_bool(ignore_pagination))
+
+        if details is not None:
+            cmd.set_attribute("details", _to_bool(details))
 
         return self._send_xml_command(cmd)
 
