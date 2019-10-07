@@ -59,6 +59,19 @@ class GmpGetReportTestCase(Gmpv7TestCase):
             '<get_reports report_id="r1" delta_report_id="r2"/>'
         )
 
+    def test_get_report_with_ignore_pagination(self):
+        self.gmp.get_report(report_id='r1', ignore_pagination=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_reports report_id="r1" ignore_pagination="1"/>'
+        )
+
+        self.gmp.get_report(report_id='r1', ignore_pagination=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_reports report_id="r1" ignore_pagination="0"/>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
