@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [unreleased]
 
 ### Added
+* Added ignore_pagination and details arguments for get_report [PR 163](https://github.com/greenbone/python-gvm/pull/163)
 * Introducing Gmpv9 [PR 157](https://github.com/greenbone/python-gvm/pull/157)
 * Added new `create_audit` method, to create a task with the `usage_type` `audit` [PR 157](https://github.com/greenbone/python-gvm/pull/157)
 * Added new `create_policy` method, to create a config with the `usage_type` `policy` [PR 157](https://github.com/greenbone/python-gvm/pull/157)
