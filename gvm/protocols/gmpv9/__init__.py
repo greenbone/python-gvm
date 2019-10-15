@@ -205,7 +205,6 @@ class Gmp(Gmpv8):
         certificate: str,
         *,
         comment: Optional[str] = None,
-        copy: Optional[str] = None,
         trust: Optional[bool] = None
     ) -> Any:
         """Create a new TLS certificate
@@ -213,7 +212,6 @@ class Gmp(Gmpv8):
         Arguments:
             comment: Comment for the TLS certificate.
             name: Name of the TLS certificate, defaulting to the MD5 fingerprint
-            copy: The UUID of an existing TLS certificate
             trust: Whether the certificate is trusted.
             certificate: The Base64 encoded certificate data (x.509 DER or PEM).
 
@@ -234,9 +232,6 @@ class Gmp(Gmpv8):
 
         if comment:
             cmd.add_element("comment", comment)
-
-        if copy:
-            cmd.add_element("copy", copy)
 
         cmd.add_element("name", name)
         cmd.add_element("certificate", certificate)
