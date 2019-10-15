@@ -215,7 +215,7 @@ class Gmp(Gmpv8):
             certificate: The Base64 encoded certificate data (x.509 DER or PEM).
 
         Returns:
-            The response. See :py:meth:`send_command`for details.
+            The response. See :py:meth:`send_command` for details.
         """
         if not name:
             raise RequiredArgument(
