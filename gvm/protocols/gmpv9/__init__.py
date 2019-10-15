@@ -96,7 +96,7 @@ class Gmp(Gmpv8):
             The response. See :py:meth:`send_command` for details.
         """
 
-        self.__create_task(
+        return self.__create_task(
             name=name,
             config_id=audit_id,
             target_id=target_id,
@@ -122,7 +122,7 @@ class Gmp(Gmpv8):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        self.__create_config(
+        return self.__create_config(
             config_id=config_id,
             name=name,
             usage_type=UsageType.SCAN,  # pylint: disable=W0212
@@ -138,7 +138,7 @@ class Gmp(Gmpv8):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        self.__create_config(
+        return self.__create_config(
             config_id=policy_id,
             name=name,
             usage_type=UsageType.POLICY,  # pylint: disable=W0212
@@ -182,7 +182,7 @@ class Gmp(Gmpv8):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        self.__create_task(
+        return self.__create_task(
             name=name,
             config_id=config_id,
             target_id=target_id,
