@@ -114,6 +114,7 @@ class Gmp(Gmpv8):
 
     def create_config(self, config_id: str, name: str) -> Any:
         """Create a new scan config
+
         Arguments:
             config_id: UUID of the existing scan config
             name: Name of the new scan config
@@ -130,6 +131,7 @@ class Gmp(Gmpv8):
 
     def create_policy(self, policy_id: str, name: str) -> Any:
         """Create a new policy config
+
         Arguments:
             policy_id: UUID of the existing policy config
             name: Name of the new scan config
@@ -210,7 +212,8 @@ class Gmp(Gmpv8):
 
         Arguments:
             comment: Comment for the TLS certificate.
-            name: Name of the TLS certificate, defaulting to the MD5 fingerprint
+            name: Name of the TLS certificate, defaulting to the MD5
+                fingerprint.
             trust: Whether the certificate is trusted.
             certificate: The Base64 encoded certificate data (x.509 DER or PEM).
 
