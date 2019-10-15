@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added the new method `get_tls_certificates`, to request TLS certificates from the server [#157](https://github.com/greenbone/python-gvm/pull/157)
 
 ### Changed
+* Use Gmpv9 in gvm.protocols.latest module [#165](https://github.com/greenbone/python-gvm/pull/165)
 * Added type `TLS_CERTIFICATE` to `EntityType` and `FilterType` [#157](https://github.com/greenbone/python-gvm/pull/157)
 * Changed the `DEFAULT_UNIX_SOCKET_PATH` [#119](https://github.com/greenbone/python-gvm/pull/162)
 
