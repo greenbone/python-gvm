@@ -216,11 +216,11 @@ class Gmp(Gmpv8):
         """Create a new TLS certificate
 
         Arguments:
-            comment: Comment for the TLS certificate.
             name: Name of the TLS certificate, defaulting to the MD5
                 fingerprint.
-            trust: Whether the certificate is trusted.
             certificate: The Base64 encoded certificate data (x.509 DER or PEM).
+            comment: Comment for the TLS certificate.
+            trust: Whether the certificate is trusted.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -260,6 +260,8 @@ class Gmp(Gmpv8):
         Arguments:
             filter: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
+            include_certificate_data: Wether to include the certifacte data in
+                the response
 
         Returns:
             The response. See :py:meth:`send_command` for details.
