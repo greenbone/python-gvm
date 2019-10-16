@@ -10,11 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added ignore_pagination and details arguments for get_report [#163](https://github.com/greenbone/python-gvm/pull/163)
 * Introduced Gmpv9 for [GMP 9](https://docs.greenbone.net/API/GMP/gmp-9.0.html)
   support [#157](https://github.com/greenbone/python-gvm/pull/157),
-  [#165](https://github.com/greenbone/python-gvm/pull/165)
+  [#165](https://github.com/greenbone/python-gvm/pull/165),
+  [#166](https://github.com/greenbone/python-gvm/pull/166)
 * Added new `create_audit` method, to create a task with the `usage_type` `audit` [#157](https://github.com/greenbone/python-gvm/pull/157)
 * Added new `create_policy` method, to create a config with the `usage_type` `policy` [#157](https://github.com/greenbone/python-gvm/pull/157)
 * Added the new methods `create_tls_certificate`, `modify_tls_certificate` and `clone_tls_certificate` to create, modify and copy TLS certificates [#157](https://github.com/greenbone/python-gvm/pull/157)
 * Added the new method `get_tls_certificates`, to request TLS certificates from the server [#157](https://github.com/greenbone/python-gvm/pull/157)
+* Added the new method `get_tls_certificate`, to request a single TLS certificate
+  from the server [#166](https://github.com/greenbone/python-gvm/pull/166)
 
 ### Changed
 * Use Gmpv9 in gvm.protocols.latest module [#165](https://github.com/greenbone/python-gvm/pull/165)
