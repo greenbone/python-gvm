@@ -41,6 +41,8 @@ from . import types
 from .types import *
 from .types import _UsageType as UsageType
 
+_EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
+
 PROTOCOL_VERSION = (9,)
 
 
@@ -129,16 +131,19 @@ class Gmp(Gmpv8):
             function=self.create_config.__name__,
         )
 
-    def create_policy(self, policy_id: str, name: str) -> Any:
+    def create_policy(self, name: str, *, policy_id: str = None) -> Any:
         """Create a new policy config
 
         Arguments:
-            policy_id: UUID of the existing policy config
-            name: Name of the new scan config
+            name: Name of the new policy
+            policy_id: UUID of an existing policy as base. By default the empty
+                policy is used.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if policy_id is None:
+            policy_id = _EMPTY_POLICY_ID
         return self.__create_config(
             config_id=policy_id,
             name=name,
