@@ -278,6 +278,27 @@ class Gmp(Gmpv8):
 
         return self._send_xml_command(cmd)
 
+    def get_tls_certificate(self, tls_certificate_id: str) -> Any:
+        """Request a single TLS certificate
+
+        Arguments:
+            tls_certificate_id: UUID of an existing TLS certificate
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not tls_certificate_id:
+            raise RequiredArgument(
+                "get_tls_certificate requires tls_certificate_id argument"
+            )
+
+        cmd = XmlCommand("get_tls_certificates")
+        cmd.set_attribute("tls_certificate_id", tls_certificate_id)
+
+        # for single tls certificate always request cert data
+        cmd.set_attribute("include_certificate_data", "1")
+        return self._send_xml_command(cmd)
+
     def modify_tls_certificate(
         self,
         tls_certificate_id: str,
