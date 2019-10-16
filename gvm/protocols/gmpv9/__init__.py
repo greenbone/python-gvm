@@ -41,6 +41,8 @@ from . import types
 from .types import *
 from .types import _UsageType as UsageType
 
+_EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
+
 PROTOCOL_VERSION = (9,)
 
 
@@ -60,7 +62,7 @@ class Gmp(Gmpv8):
     def create_audit(
         self,
         name: str,
-        audit_id: str,
+        policy_id: str,
         target_id: str,
         scanner_id: str,
         *,
@@ -77,7 +79,7 @@ class Gmp(Gmpv8):
 
         Arguments:
             name: Name of the new audit
-            audit_id: UUID of scan config to use by the audit
+            policy_id: UUID of policy to use by the audit
             target_id: UUID of target to be scanned
             scanner_id: UUID of scanner to use for scanning the target
             comment: Comment for the audit
@@ -97,10 +99,10 @@ class Gmp(Gmpv8):
 
         return self.__create_task(
             name=name,
-            config_id=audit_id,
+            config_id=policy_id,
             target_id=target_id,
             scanner_id=scanner_id,
-            usage_type=UsageType.AUDIT,  # pylint: disable=W0212
+            usage_type=UsageType.AUDIT,
             function=self.create_audit.__name__,
             alterable=alterable,
             hosts_ordering=hosts_ordering,
@@ -129,16 +131,19 @@ class Gmp(Gmpv8):
             function=self.create_config.__name__,
         )
 
-    def create_policy(self, policy_id: str, name: str) -> Any:
+    def create_policy(self, name: str, *, policy_id: str = None) -> Any:
         """Create a new policy config
 
         Arguments:
-            policy_id: UUID of the existing policy config
-            name: Name of the new scan config
+            name: Name of the new policy
+            policy_id: UUID of an existing policy as base. By default the empty
+                policy is used.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        if policy_id is None:
+            policy_id = _EMPTY_POLICY_ID
         return self.__create_config(
             config_id=policy_id,
             name=name,
@@ -211,11 +216,11 @@ class Gmp(Gmpv8):
         """Create a new TLS certificate
 
         Arguments:
-            comment: Comment for the TLS certificate.
             name: Name of the TLS certificate, defaulting to the MD5
                 fingerprint.
-            trust: Whether the certificate is trusted.
             certificate: The Base64 encoded certificate data (x.509 DER or PEM).
+            comment: Comment for the TLS certificate.
+            trust: Whether the certificate is trusted.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -255,6 +260,8 @@ class Gmp(Gmpv8):
         Arguments:
             filter: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
+            include_certificate_data: Wether to include the certifacte data in
+                the response
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -269,6 +276,27 @@ class Gmp(Gmpv8):
                 "include_certificate_data", _to_bool(include_certificate_data)
             )
 
+        return self._send_xml_command(cmd)
+
+    def get_tls_certificate(self, tls_certificate_id: str) -> Any:
+        """Request a single TLS certificate
+
+        Arguments:
+            tls_certificate_id: UUID of an existing TLS certificate
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not tls_certificate_id:
+            raise RequiredArgument(
+                "get_tls_certificate requires tls_certificate_id argument"
+            )
+
+        cmd = XmlCommand("get_tls_certificates")
+        cmd.set_attribute("tls_certificate_id", tls_certificate_id)
+
+        # for single tls certificate always request cert data
+        cmd.set_attribute("include_certificate_data", "1")
         return self._send_xml_command(cmd)
 
     def modify_tls_certificate(

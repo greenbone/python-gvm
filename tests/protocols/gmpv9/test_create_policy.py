@@ -25,22 +25,26 @@ from . import Gmpv9TestCase
 
 class GmpCreatePolicyTestCase(Gmpv9TestCase):
     def test_create_policy(self):
-        self.gmp.create_policy('a1', 'foo')
+        self.gmp.create_policy('foo')
 
         self.connection.send.has_been_called_with(
             '<create_config>'
-            '<copy>a1</copy>'
+            '<copy>085569ce-73ed-11df-83c3-002264764cea</copy>'
             '<name>foo</name>'
             '<usage_type>policy</usage_type>'
             '</create_config>'
         )
 
-    def test_missing_policy_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.create_policy(policy_id='', name='foo')
+    def test_create_with_policy_id(self):
+        self.gmp.create_policy('foo', policy_id='p1')
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.create_policy(policy_id=None, name='foo')
+        self.connection.send.has_been_called_with(
+            '<create_config>'
+            '<copy>p1</copy>'
+            '<name>foo</name>'
+            '<usage_type>policy</usage_type>'
+            '</create_config>'
+        )
 
     def test_missing_name(self):
         with self.assertRaises(RequiredArgument):
