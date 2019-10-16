@@ -31,7 +31,7 @@ from . import Gmpv9TestCase
 class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_task(self):
         self.gmp.create_audit(
-            name='foo', audit_id='c1', target_id='t1', scanner_id='s1'
+            name='foo', policy_id='c1', target_id='t1', scanner_id='s1'
         )
 
         self.connection.send.has_been_called_with(
@@ -47,51 +47,51 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_audit_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_audit(
-                name=None, audit_id='c1', target_id='t1', scanner_id='s1'
+                name=None, policy_id='c1', target_id='t1', scanner_id='s1'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_audit(
-                name='', audit_id='c1', target_id='t1', scanner_id='s1'
+                name='', policy_id='c1', target_id='t1', scanner_id='s1'
             )
 
-    def test_create_audit_missing_audit_id(self):
+    def test_create_audit_missing_policy_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_audit(
-                name='foo', audit_id=None, target_id='t1', scanner_id='s1'
+                name='foo', policy_id=None, target_id='t1', scanner_id='s1'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_audit(
-                name='foo', audit_id='', target_id='t1', scanner_id='s1'
+                name='foo', policy_id='', target_id='t1', scanner_id='s1'
             )
 
     def test_create_audit_missing_target_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_audit(
-                name='foo', audit_id='c1', target_id=None, scanner_id='s1'
+                name='foo', policy_id='c1', target_id=None, scanner_id='s1'
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_audit(
-                name='foo', audit_id='c1', target_id='', scanner_id='s1'
+                name='foo', policy_id='c1', target_id='', scanner_id='s1'
             )
 
     def test_create_audit_missing_scanner_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_audit(
-                name='foo', audit_id='c1', target_id='t1', scanner_id=None
+                name='foo', policy_id='c1', target_id='t1', scanner_id=None
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_audit(
-                name='foo', audit_id='c1', target_id='t1', scanner_id=''
+                name='foo', policy_id='c1', target_id='t1', scanner_id=''
             )
 
     def test_create_audit_with_comment(self):
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             comment='bar',
@@ -115,7 +115,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
 
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id='t1',
                 scanner_id='s1',
                 alert_ids='a1',  # will be removed in future
@@ -137,7 +137,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
 
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             alert_ids=['a1'],
@@ -157,7 +157,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_audit_multiple_alerts(self):
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             alert_ids=['a1', 'a2', 'a3'],
@@ -179,7 +179,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_audit_with_alterable(self):
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             alterable=True,
@@ -198,7 +198,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
 
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             alterable=False,
@@ -218,7 +218,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_audit_with_hosts_ordering(self):
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             hosts_ordering=HostsOrdering.REVERSE,
@@ -239,7 +239,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id='t1',
                 scanner_id='s1',
                 hosts_ordering='foo',
@@ -248,7 +248,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_audit_with_schedule(self):
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             schedule_id='s1',
@@ -268,7 +268,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_audit_with_schedule_and_schedule_periods(self):
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             schedule_id='s1',
@@ -289,7 +289,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
 
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             schedule_id='s1',
@@ -312,7 +312,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id='t1',
                 scanner_id='s1',
                 schedule_id='s1',
@@ -322,7 +322,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id='t1',
                 scanner_id='s1',
                 schedule_id='s1',
@@ -332,7 +332,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_audit_with_observers(self):
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             observers=['u1', 'u2'],
@@ -353,7 +353,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id='t1',
                 scanner_id='s1',
                 observers='',
@@ -362,7 +362,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id='t1',
                 scanner_id='s1',
                 observers='foo',
@@ -371,7 +371,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
     def test_create_audit_with_preferences(self):
         self.gmp.create_audit(
             name='foo',
-            audit_id='c1',
+            policy_id='c1',
             target_id='t1',
             scanner_id='s1',
             preferences=OrderedDict([('foo', 'bar'), ('lorem', 'ipsum')]),
@@ -401,7 +401,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id='t1',
                 scanner_id='s1',
                 preferences='',
@@ -410,7 +410,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id='t1',
                 scanner_id='s1',
                 preferences=['foo', 'bar'],
@@ -420,7 +420,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id='0',
                 scanner_id='s1',
                 observers='',
@@ -430,7 +430,7 @@ class GmpCreateAuditCommandTestCase(Gmpv9TestCase):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_audit(
                 name='foo',
-                audit_id='c1',
+                policy_id='c1',
                 target_id=0,
                 scanner_id='s1',
                 observers='',

@@ -60,7 +60,7 @@ class Gmp(Gmpv8):
     def create_audit(
         self,
         name: str,
-        audit_id: str,
+        policy_id: str,
         target_id: str,
         scanner_id: str,
         *,
@@ -77,7 +77,7 @@ class Gmp(Gmpv8):
 
         Arguments:
             name: Name of the new audit
-            audit_id: UUID of scan config to use by the audit
+            policy_id: UUID of policy to use by the audit
             target_id: UUID of target to be scanned
             scanner_id: UUID of scanner to use for scanning the target
             comment: Comment for the audit
@@ -97,10 +97,10 @@ class Gmp(Gmpv8):
 
         return self.__create_task(
             name=name,
-            config_id=audit_id,
+            config_id=policy_id,
             target_id=target_id,
             scanner_id=scanner_id,
-            usage_type=UsageType.AUDIT,  # pylint: disable=W0212
+            usage_type=UsageType.AUDIT,
             function=self.create_audit.__name__,
             alterable=alterable,
             hosts_ordering=hosts_ordering,
