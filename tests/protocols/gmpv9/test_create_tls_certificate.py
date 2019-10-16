@@ -25,12 +25,11 @@ from . import Gmpv9TestCase
 
 class GmpCreateTLSCertificateTestCase(Gmpv9TestCase):
     def test_create_tls_certificate(self):
-        self.gmp.create_tls_certificate('foo', 'c1', copy='a1', comment='bar')
+        self.gmp.create_tls_certificate('foo', 'c1', comment='bar')
 
         self.connection.send.has_been_called_with(
             '<create_tls_certificate>'
             '<comment>bar</comment>'
-            '<copy>a1</copy>'
             '<name>foo</name>'
             '<certificate>c1</certificate>'
             '</create_tls_certificate>'

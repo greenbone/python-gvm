@@ -27,6 +27,7 @@ from gvm.protocols.base import GvmProtocol, GvmConnection
 
 from gvm.protocols.gmpv7 import Gmp as Gmpv7
 from gvm.protocols.gmpv8 import Gmp as Gmpv8
+from gvm.protocols.gmpv9 import Gmp as Gmpv9
 
 from gvm.transforms import EtreeCheckCommandTransform
 
@@ -46,9 +47,9 @@ class Gmp(GvmProtocol):
             from gvm.protocols.gmp import Gmp
 
             with Gmp(connection) as gmp:
-                # gmp can be an instance of gvm.protocols.gmpv7.Gmp or
-                # gvm.protocols.gmpv8.Gmp depending on the supported GMP
-                # version of the remote manager daemon
+                # gmp can be an instance of gvm.protocols.gmpv7.Gmp,
+                # gvm.protocols.gmpv8.Gmp or gvm.protocols.gmpv9.Gmp depending
+                # on the supported GMP version of the remote manager daemon
                 resp = gmp.get_tasks()
 
     Attributes:
@@ -91,8 +92,10 @@ class Gmp(GvmProtocol):
 
         if major_version == 7:
             gmp_class = Gmpv7
-        elif major_version >= 8:
+        elif major_version == 8:
             gmp_class = Gmpv8
+        elif major_version >= 9:
+            gmp_class = Gmpv9
         else:
             raise GvmError(
                 'Remote manager daemon uses an unsupported version of GMP. '

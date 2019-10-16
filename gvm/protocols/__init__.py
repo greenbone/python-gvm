@@ -18,12 +18,15 @@
 """
 Package for supported Greenbone Protocol versions.
 
-Currently `GMP version 7`_, `GMP version 8`_ and `OSP version 1`_ are supported.
+Currently `GMP version 7`_, `GMP version 8`_, `GMP version 9`_ and
+`OSP version 1`_ are supported.
 
 .. _GMP version 7:
     https://docs.greenbone.net/API/GMP/gmp-7.0.html
 .. _GMP version 8:
     https://docs.greenbone.net/API/GMP/gmp-8.0.html
+.. _GMP version 9:
+    https://docs.greenbone.net/API/GMP/gmp-9.0.html
 .. _OSP version 1:
-    https://docs.greenbone.net/API/OSP/osp-1.1.html
+    https://docs.greenbone.net/API/OSP/osp-1.2.html
 """

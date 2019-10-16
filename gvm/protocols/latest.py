@@ -27,14 +27,14 @@ For details about the possible supported protocol versions please take a look at
 :py:mod:`gvm.protocols`.
 
 Exports:
-  - :py:class:`gvm.protocols.gmpv8.Gmp`
+  - :py:class:`gvm.protocols.gmpv9.Gmp`
   - :py:class:`gvm.protocols.ospv1.Osp`
 
 .. _Greenbone Management Protocol:
     https://docs.greenbone.net/API/GMP/gmp.html
 """
 
-from .gmpv8 import (
+from .gmpv9 import (
     Gmp,
     AlertCondition,
     AlertEvent,

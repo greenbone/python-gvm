@@ -38,8 +38,7 @@ from gvm.protocols.gmpv8 import Gmp as Gmpv8, _to_bool, _add_filter
 from gvm.protocols.gmpv7 import _is_list_like, _to_comma_list
 
 from . import types
-from .types import HostsOrdering, EntityType, FilterType
-from .types import get_entity_type_from_string, get_filter_type_from_string
+from .types import *
 from .types import _UsageType as UsageType
 
 PROTOCOL_VERSION = (9,)
@@ -96,7 +95,7 @@ class Gmp(Gmpv8):
             The response. See :py:meth:`send_command` for details.
         """
 
-        self.__create_task(
+        return self.__create_task(
             name=name,
             config_id=audit_id,
             target_id=target_id,
@@ -115,6 +114,7 @@ class Gmp(Gmpv8):
 
     def create_config(self, config_id: str, name: str) -> Any:
         """Create a new scan config
+
         Arguments:
             config_id: UUID of the existing scan config
             name: Name of the new scan config
@@ -122,15 +122,16 @@ class Gmp(Gmpv8):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        self.__create_config(
+        return self.__create_config(
             config_id=config_id,
             name=name,
-            usage_type=UsageType.SCAN,  # pylint: disable=W0212
+            usage_type=UsageType.SCAN,
             function=self.create_config.__name__,
         )
 
     def create_policy(self, policy_id: str, name: str) -> Any:
         """Create a new policy config
+
         Arguments:
             policy_id: UUID of the existing policy config
             name: Name of the new scan config
@@ -138,10 +139,10 @@ class Gmp(Gmpv8):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        self.__create_config(
+        return self.__create_config(
             config_id=policy_id,
             name=name,
-            usage_type=UsageType.POLICY,  # pylint: disable=W0212
+            usage_type=UsageType.POLICY,
             function=self.create_policy.__name__,
         )
 
@@ -182,12 +183,12 @@ class Gmp(Gmpv8):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        self.__create_task(
+        return self.__create_task(
             name=name,
             config_id=config_id,
             target_id=target_id,
             scanner_id=scanner_id,
-            usage_type=UsageType.SCAN,  # pylint: disable=W0212
+            usage_type=UsageType.SCAN,
             function=self.create_task.__name__,
             alterable=alterable,
             hosts_ordering=hosts_ordering,
@@ -205,20 +206,19 @@ class Gmp(Gmpv8):
         certificate: str,
         *,
         comment: Optional[str] = None,
-        copy: Optional[str] = None,
         trust: Optional[bool] = None
     ) -> Any:
         """Create a new TLS certificate
 
         Arguments:
             comment: Comment for the TLS certificate.
-            name: Name of the TLS certificate, defaulting to the MD5 fingerprint
-            copy: The UUID of an existing TLS certificate
+            name: Name of the TLS certificate, defaulting to the MD5
+                fingerprint.
             trust: Whether the certificate is trusted.
             certificate: The Base64 encoded certificate data (x.509 DER or PEM).
 
         Returns:
-            The response. See :py:meth:`send_command`for details.
+            The response. See :py:meth:`send_command` for details.
         """
         if not name:
             raise RequiredArgument(
@@ -234,9 +234,6 @@ class Gmp(Gmpv8):
 
         if comment:
             cmd.add_element("comment", comment)
-
-        if copy:
-            cmd.add_element("copy", copy)
 
         cmd.add_element("name", name)
         cmd.add_element("certificate", certificate)
@@ -340,7 +337,7 @@ class Gmp(Gmpv8):
         config_id: str,
         target_id: str,
         scanner_id: str,
-        usage_type: types._UsageType,  # pylint: disable=W0212
+        usage_type: UsageType,
         function: str,
         *,
         alterable: Optional[bool] = None,
@@ -449,11 +446,7 @@ class Gmp(Gmpv8):
         return self._send_xml_command(cmd)
 
     def __create_config(
-        self,
-        config_id: str,
-        name: str,
-        usage_type: types._UsageType,  # pylint: disable=W0212
-        function: str,
+        self, config_id: str, name: str, usage_type: UsageType, function: str
     ) -> Any:
         if not name:
             raise RequiredArgument("{} requires name argument".format(function))
