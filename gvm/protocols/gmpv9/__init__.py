@@ -260,7 +260,7 @@ class Gmp(Gmpv8):
         Arguments:
             filter: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
-            include_certificate_data: Wether to include the certifacte data in
+            include_certificate_data: Whether to include the certificate data in
                 the response
 
         Returns:
