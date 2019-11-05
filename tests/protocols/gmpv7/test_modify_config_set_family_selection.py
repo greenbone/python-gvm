@@ -115,7 +115,7 @@ class GmpModifyConfigSetFamilySelectionTestCase(Gmpv7TestCase):
             self.gmp.modify_config_set_family_selection('c1', '')
 
     def test_modify_config_set_family_selection_with_auto_add_new_families(
-        self
+        self,
     ):
         self.gmp.modify_config_set_family_selection(
             config_id='c1', families=['foo'], auto_add_new_families=True

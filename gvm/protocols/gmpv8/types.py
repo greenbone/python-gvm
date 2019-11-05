@@ -138,7 +138,7 @@ class EntityType(Enum):
 
 
 def get_entity_type_from_string(
-    entity_type: Optional[str]
+    entity_type: Optional[str],
 ) -> Optional[EntityType]:
     """ Convert a entity type string to an actual EntityType instance
 
@@ -197,7 +197,7 @@ class FilterType(Enum):
 
 
 def get_filter_type_from_string(
-    filter_type: Optional[str]
+    filter_type: Optional[str],
 ) -> Optional[FilterType]:
     """ Convert a filter type string to an actual FilterType instance
 
@@ -241,7 +241,7 @@ class CredentialType(Enum):
 
 
 def get_credential_type_from_string(
-    credential_type: Optional[str]
+    credential_type: Optional[str],
 ) -> Optional[CredentialType]:
     """ Convert a credential type string into a CredentialType instance
     """
@@ -266,7 +266,7 @@ class TicketStatus(Enum):
 
 
 def get_ticket_status_from_string(
-    ticket_status: Optional[str]
+    ticket_status: Optional[str],
 ) -> Optional[TicketStatus]:
     """ Convert a ticket status string into a TicketStatus instance
     """
