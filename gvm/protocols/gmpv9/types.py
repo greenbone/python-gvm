@@ -142,7 +142,7 @@ class EntityType(Enum):
 
 
 def get_entity_type_from_string(
-    entity_type: Optional[str]
+    entity_type: Optional[str],
 ) -> Optional[EntityType]:
     """ Convert a entity type string to an actual EntityType instance
 
@@ -205,7 +205,7 @@ class FilterType(Enum):
 
 
 def get_filter_type_from_string(
-    filter_type: Optional[str]
+    filter_type: Optional[str],
 ) -> Optional[FilterType]:
     """ Convert a filter type string to an actual FilterType instance
 
@@ -248,7 +248,7 @@ class _UsageType(Enum):
 
 
 def __get_usage_type_from_string(
-    usage_type: Optional[str]
+    usage_type: Optional[str],
 ) -> Optional[_UsageType]:
     """ Convert a usage type string to an actual _UsageType instance
 

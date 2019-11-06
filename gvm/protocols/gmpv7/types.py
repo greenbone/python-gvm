@@ -73,7 +73,7 @@ class AlertEvent(Enum):
 
 
 def get_alert_event_from_string(
-    alert_event: Optional[str]
+    alert_event: Optional[str],
 ) -> Optional[AlertEvent]:
     """ Convert an alert event string into a AlertEvent instance """
     if not alert_event:
@@ -105,7 +105,7 @@ class AlertCondition(Enum):
 
 
 def get_alert_condition_from_string(
-    alert_condition: Optional[str]
+    alert_condition: Optional[str],
 ) -> Optional[AlertCondition]:
     """ Convert an alert condition string into a AlertCondition instance """
     if not alert_condition:
@@ -144,7 +144,7 @@ class AlertMethod(Enum):
 
 
 def get_alert_method_from_string(
-    alert_method: Optional[str]
+    alert_method: Optional[str],
 ) -> Optional[AlertMethod]:
     """ Convert an alert method string into a AlertCondition instance """
     if not alert_method:
@@ -190,7 +190,7 @@ class AliveTest(Enum):
 
 
 def get_alive_test_from_string(
-    alive_test: Optional[str]
+    alive_test: Optional[str],
 ) -> Optional[AliveTest]:
     """ Convert an alive test string into a AliveTest instance """
     if not alive_test:
@@ -238,7 +238,7 @@ class AssetType(Enum):
 
 
 def get_asset_type_from_string(
-    asset_type: Optional[str]
+    asset_type: Optional[str],
 ) -> Optional[AssetType]:
     if not asset_type:
         return None
@@ -265,7 +265,7 @@ class CredentialFormat(Enum):
 
 
 def get_credential_format_from_string(
-    credential_format: Optional[str]
+    credential_format: Optional[str],
 ) -> Optional[CredentialFormat]:
     if not credential_format:
         return None
@@ -289,7 +289,7 @@ class CredentialType(Enum):
 
 
 def get_credential_type_from_string(
-    credential_type: Optional[str]
+    credential_type: Optional[str],
 ) -> Optional[CredentialType]:
     """ Convert a credential type string into a CredentialType instance
     """
@@ -341,7 +341,7 @@ class EntityType(Enum):
 
 
 def get_entity_type_from_string(
-    entity_type: Optional[str]
+    entity_type: Optional[str],
 ) -> Optional[EntityType]:
     """ Convert a entity type string to an actual EntityType instance
 
@@ -416,7 +416,7 @@ class FilterType(Enum):
 
 
 def get_filter_type_from_string(
-    filter_type: Optional[str]
+    filter_type: Optional[str],
 ) -> Optional[FilterType]:
     """ Convert a filter type string to an actual FilterType instance
 
@@ -453,7 +453,7 @@ class HostsOrdering(Enum):
 
 
 def get_hosts_ordering_from_string(
-    hosts_ordering: Optional[str]
+    hosts_ordering: Optional[str],
 ) -> Optional[HostsOrdering]:
     """ Convert a hosts ordering string to an actual HostsOrdering instance
 
@@ -508,7 +508,7 @@ class PermissionSubjectType(Enum):
 
 
 def get_permission_subject_type_from_string(
-    subject_type: Optional[str]
+    subject_type: Optional[str],
 ) -> Optional[PermissionSubjectType]:
     """ Convert a permission subject type string to an actual
     PermissionSubjectType instance
@@ -537,7 +537,7 @@ class PortRangeType(Enum):
 
 
 def get_port_range_type_from_string(
-    port_range_type: Optional[str]
+    port_range_type: Optional[str],
 ) -> Optional[PortRangeType]:
     """ Convert a port range type string to an actual PortRangeType instance
 
@@ -566,7 +566,7 @@ class ScannerType(Enum):
 
 
 def get_scanner_type_from_string(
-    scanner_type: Optional[str]
+    scanner_type: Optional[str],
 ) -> Optional[ScannerType]:
     """ Convert a scanner type string to an actual ScannerType instance
 
@@ -615,7 +615,7 @@ class SnmpAuthAlgorithm(Enum):
 
 
 def get_snmp_auth_algorithm_from_string(
-    algorithm: Optional[str]
+    algorithm: Optional[str],
 ) -> Optional[SnmpAuthAlgorithm]:
     """ Convert a SNMP auth algorithm string into a SnmpAuthAlgorithm instance
     """
@@ -639,7 +639,7 @@ class SnmpPrivacyAlgorithm(Enum):
 
 
 def get_snmp_privacy_algorithm_from_string(
-    algorithm: Optional[str]
+    algorithm: Optional[str],
 ) -> Optional[SnmpPrivacyAlgorithm]:
     """ Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
         instance
@@ -668,7 +668,7 @@ class SeverityLevel(Enum):
 
 
 def get_severity_level_from_string(
-    severity_level: Optional[str]
+    severity_level: Optional[str],
 ) -> Optional[SeverityLevel]:
     """ Convert a severity level string into a SeverityLevel instance """
     if not severity_level:
