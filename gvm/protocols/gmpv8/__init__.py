@@ -24,6 +24,8 @@ Module for communication with gvmd in `Greenbone Management Protocol version 8`_
 .. _Greenbone Management Protocol version 8:
     https://docs.greenbone.net/API/GMP/gmp-8.0.html
 """
+import warnings
+
 from enum import Enum
 from typing import Any, List, Optional
 
@@ -627,8 +629,6 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if make_unique is not None:
-            import warnings
-
             warnings.warn(
                 'create_target make_unique argument is deprecated '
                 'and will be ignored.',
