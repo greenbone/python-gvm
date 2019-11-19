@@ -12,8 +12,8 @@ Installation of python-gvm
   tools are provided by the distribution, the Python 3 version of the tool may 
   have to be used, e.g. :program:`pip3`.
   
-Installing the Latest Stable Release of phython-gvm
----------------------------------------------------
+Installing the Latest Stable Release of python-gvm
+--------------------------------------------------
 
 For installing the latest stable release of **python-gvm**, `pip`_ or `pipenv`_
 can be used.
