@@ -11,29 +11,29 @@ Usage
 Introduction
 ------------
 
-To communicate with a remote server speaking one of the
-:ref:`GVM Protocols <protocols>` it is required to decide which transport
-protocol to use for the :ref:`connection <connections>`. Currently two protocols
-- namely
+To communicate with a remote server via one of the
+:ref:`GVM protocols <Protocols>` it is required to decide which transport
+protocol should be used for the :ref:`connection <Connections>`. Currently two protocols
+– namely
 :py:class:`GMP <gvm.protocols.gmpv7.Gmp>` and
-:py:class:`OSP <gvm.protocols.ospv1.Osp>` - and three connection types - namely
+:py:class:`OSP <gvm.protocols.ospv1.Osp>` – and three connection types – namely
 :py:class:`TLS <gvm.connections.TLSConnection>`,
 :py:class:`SSH <gvm.connections.SSHConnection>` and
-:py:class:`Unix domain socket <gvm.connections.UnixSocketConnection>` -
+:py:class:`Unix domain socket <gvm.connections.UnixSocketConnection>` –
 are available.
 
-GMP
----
+Using GMP
+---------
 
-The **Greenbone Management Protocol - GMP** is the protocol implemented by the
-`Greenbone Vulnerability Manager Daemon - gvmd <https://github.com/greenbone/gvmd>`_.
+The **Greenbone Management Protocol (GMP)** is the protocol implemented by the
+`Greenbone Vulnerability Manager Daemon – gvmd <https://github.com/greenbone/gvmd>`_.
 It is also used by the `Greenbone Security Assistant Daemon <https://github.com/greenbone/gsa>`_
 to request all of its information from **gvmd**.
 
-Make a simple request
-^^^^^^^^^^^^^^^^^^^^^
+Making a Simple Request
+^^^^^^^^^^^^^^^^^^^^^^^
 
-To create a request you have to choose a :ref:`connection <connections>` type.
+To create a request, a :ref:`connection <Connections>` type has to be chosen.
 The decision depends on the location and configuration of the remote **gvmd**
 server. For local communication :py:class:`Unix domain socket <gvm.connections.UnixSocketConnection>`
 fits best. The simplest command is to request the **GMP** version used by the
@@ -42,46 +42,46 @@ remote **gvmd**.
 Step by Step
 """"""""""""
 
-Beginning by importing the necessary classes
+The following shows the process of a simple request in more detail. 
+
+1. Import the necessary classes:
 
 .. code-block:: python
 
     from gvm.connections import UnixSocketConnection
     from gvm.protocols.latest import Gmp
 
-Afterwards we have to specify the path to the Unix domain socket in the
-filesystem. If **gvmd** is provided by a package of your distribution it should
-be ``/var/run/gvmd.sock``. If you did build **gvmd** from source and did not set
-a prefix you can use the default path by setting ``path = None``.
+2. Specify the path to the Unix domain socket in the file system: 
+
+.. note:: If **gvmd** is provided by a package of the distribution, it should
+    be ``/var/run/gvmd.sock``. If **gvmd** was built from source and did not set
+    a prefix, the default path can be used by setting ``path = None``.
 
 .. code-block:: python
 
     path = '/var/run/gvmd.sock'
 
-Now we can create a connection and a gmp object:
+3. Create a connection and a gmp object:
 
 .. code-block:: python
 
     connection = UnixSocketConnection(path=path)
     gmp = Gmp(connection=connection)
+    
+4. Establish a connection to be able to make a request on **gvmd**. To automatically connect and disconnect, a Python 
+   `with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_ should be used.
 
-To be able to make a request on **gvmd** a connection must be established. To
-automatically connect and disconnect a Python
-`with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_
-should be used.
+.. note:: By default all request methods of the :py:class:`gmp <gvm.protocols.gmpv7.Gmp>`
+    object return the response as UTF-8 encoded string.
 
-By default all request methods of the :py:class:`gmp <gvm.protocols.gmpv7.Gmp>`
-object return the response as utf-8 encoded string.
-
-To get the protocol version of the **gvmd** we can print the response of the
-unprivileged *get_version* command
+5. Obtain the protocol version of the **gvmd** by printing the response of the unprivileged command ``*get_version*``:
 
 .. code-block:: python
 
     with gmp:
         print(gmp.get_version())
 
-Full example
+Full Example
 """"""""""""
 
 .. code-block:: python
@@ -102,13 +102,13 @@ Full example
         # print the response message
         print(response)
 
-On success the response will look like:
+On success the response will look as follows:
 
 .. code-block:: xml
 
     <get_version_response status="200" status_text="OK"><version>7.0</version></get_version_response>
 
-Privileged request
+Privileged Request
 ^^^^^^^^^^^^^^^^^^
 
 Most requests to **gvmd** require permissions to access data. Therefore it is
@@ -117,26 +117,26 @@ required to authenticate against **gvmd**.
 Step by Step
 """"""""""""
 
-Beginning by importing the necessary classes
+1. Import the necessary classes:
 
 .. code-block:: python
 
     from gvm.connections import UnixSocketConnection
     from gvm.protocols.latest import Gmp
 
-and creating the connection
+2. Create a connection:
 
 .. code-block:: python
 
     path = '/var/run/gvmd.sock'
     connection = UnixSocketConnection(path=path)
 
-This time we want to get an `Etree Element`_ from the response to be able to
-extract specific information. Therefore we need to pass a
-:py:mod:`transform <gvm.transforms>` to the :py:class:`Gmp <gvm.protocols.gmpv7.Gmp>`
-constructor. Additionally we want to raise a :py:class:`GvmError <gvm.errors.GvmError>`
-if the status of the response was not *ok*. Therefore we choose a
-:py:class:`EtreeCheckCommandTransform <gvm.transforms.EtreeCheckCommandTransform>`.
+3. In this case, an `Etree Element`_ should be obtained from the response to be able to
+   extract specific information. 
+   
+   To do so, pass a :py:mod:`transform <gvm.transforms>` to the :py:class:`Gmp <gvm.protocols.gmpv7.Gmp>`
+   constructor. Additionally, a :py:class:`GvmError <gvm.errors.GvmError>` should be raised if the status of the 
+   response was not *ok*. Therefore choose a :py:class:`EtreeCheckCommandTransform <gvm.transforms.EtreeCheckCommandTransform>`:
 
 .. code-block:: python
 
@@ -145,24 +145,23 @@ if the status of the response was not *ok*. Therefore we choose a
     transform = EtreeCheckCommandTransform()
     gmp = Gmp(connection=connection, transform=transform)
 
-By choosing a :py:class:`EtreeCheckCommandTransform <gvm.transforms.EtreeCheckCommandTransform>`
-we ensure that calling a privileged command always fails. E.g. calling
+.. note:: By choosing a :py:class:`EtreeCheckCommandTransform <gvm.transforms.EtreeCheckCommandTransform>` it is ensured that calling a privileged command always fails, e.g. calling
 
-.. code-block:: python
+   .. code-block:: python
 
-    gmp.get_task()
+       gmp.get_task()
 
-without being authenticated will throw an error now. For authentication we need
-to set a username and password.
+   without being authenticated will throw an error now. 
 
+5. Set a user name and a password for authentication:
 
 .. code-block:: python
 
     username = 'foo'
     password = 'bar'
 
-Afterwards we can create a connection, do the authentication, request all tasks
-with 'weekly' in their name and list their full names.
+6. Create a connection, do the authentication, request all tasks
+   with 'weekly' in their name and list their full names:
 
 .. code-block:: python
 
@@ -183,7 +182,7 @@ with 'weekly' in their name and list their full names.
 .. _Etree Element:
     https://docs.python.org/3/library/xml.etree.elementtree.html#element-objects
 
-Full example
+Full Example
 """"""""""""
 
 .. code-block:: python
@@ -217,19 +216,19 @@ Full example
     except GvmError as e:
         print('An error occurred', e, file=sys.stderr)
 
-OSP
----
+Using OSP
+---------
 
-The **Open Scanner Protocol - OSP** is a communication protocol implemented by
-a base class for scanner wrappers `Open Scanner Protocol Daemon- ospd <https://github.com/greenbone/ospd>`_.
+The **Open Scanner Protocol (OSP)** is a communication protocol implemented by
+a base class for scanner wrappers `Open Scanner Protocol Daemon – ospd <https://github.com/greenbone/ospd>`_.
 **OSP** creates a unified interface for different security scanners and makes
 their control flow and scan results consistently available under the
-`Greenbone Vulnerability Manager Daemon - gvmd <https://github.com/greenbone/gvmd>`_.
-**OSP** is similar in many ways to **Greenbone Management Protocol -GMP** :
-XML-based, stateless and non-permanent connection.
+`Greenbone Vulnerability Manager Daemon – gvmd <https://github.com/greenbone/gvmd>`_.
+In many ways, **OSP** is similar to **Greenbone Management Protocol (GMP)**:
+XML-based, stateless and with a non-permanent connection.
 
-Make a simple request
-^^^^^^^^^^^^^^^^^^^^^
+Making a Simple Request
+^^^^^^^^^^^^^^^^^^^^^^^ 
 
 To create a request you have to choose a :ref:`connection <connections>` type.
 The decision depends on the location and configuration of the remote
@@ -241,45 +240,45 @@ The simplest command is to request the server version.
 Step by Step
 """"""""""""
 
-Beginning by importing the necessary classes
+1. Import the necessary classes:
 
 .. code-block:: python
 
     from gvm.connections import UnixSocketConnection
     from gvm.protocols.latest import Osp
 
-Afterwards we have to specify the path to the Unix domain socket in the
-filesystem. This is the path given during the start of the ospd-wrapper.
+2. The path to the Unix domain socket in the file system is given during the start
+   of the ospd-wrapper. 
+   
+   Specify the path to the Unix domain socket in the file system:
 
 .. code-block:: python
 
     path = '/tmp/ospd-wrapper.sock'
 
-Now we can create a connection and a osp object:
+3. Create a connection and an osp object:
 
 .. code-block:: python
 
     connection = UnixSocketConnection(path=path)
     osp = Osp(connection=connection)
 
-To be able to make a request on **ospd-wrapper** a connection must be
-established. To automatically connect and disconnect, a Python
-`with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_
-should be used.
+4. Establish a connection to be able to make a request on **ospd-wrapper**. 
+   To automatically connect and disconnect, a Python `with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_
+   should be used.
 
-By default all request methods of the :py:class:`osp <gvm.protocols.ospv1.Osp>`
-object return the response as utf-8 encoded string.
+.. note:: By default all request methods of the :py:class:`osp <gvm.protocols.ospv1.Osp>`
+    object return the response as UTF-8 encoded string.
 
-It is possible to get the **OSP** protocol version, the
-**ospd** base implementation class and the **ospd-wrapper** server version,
-printing the response of the *get_version* command.
+5. Obtain the **OSP** protocol version, the **ospd** base implementation class and 
+   the **ospd-wrapper** server version by printing the response of the command ``get_version``:
 
 .. code-block:: python
 
     with osp:
         print(osp.get_version())
 
-Full example
+Full Example
 """"""""""""
 
 .. code-block:: python
@@ -300,7 +299,7 @@ Full example
         # print the response message
         print(response)
 
-On success the response will look like:
+On success the response will look as follows:
 
 .. code-block:: xml
 
@@ -311,10 +310,10 @@ Debugging
 
 Sometimes networking setups can be complex and hard to follow. Connections may
 be aborted randomly or an invalid command may have arrived at the server side.
-Therefore it may be necessary to debug the connection handling and especially
+Because of this, it may be necessary to debug the connection handling and especially
 the protocol commands.
 
-**python-gvm** uses the `logging`_ package internally. Therefore to enable
+**python-gvm** uses the `logging`_ package internally. To enable a
 simple debug output appended to a *debug.log* file the following code can be
 used:
 
@@ -325,13 +324,15 @@ used:
     logging.basicConfig(filename='debug.log', level=logging.DEBUG)
 
 
-With this simple addition you will be able to debug ssh connection problems
-already. But what if a response did not contain the expected data and you need to
-know which command has been send to the server in detail? In this case it is
-necessary to wrap the actual connection in a
+With this simple addition it is already possible to debug ssh connection problems. 
+
+But what if a response did not contain the expected data and it is important to know 
+in detail which command has been send to the server? 
+
+In this case it is necessary to wrap the actual connection in a
 :py:class:`DebugConnection <gvm.connections.DebugConnection>` class.
 
-Example using the GMP protocol:
+Example using GMP:
 
 .. code-block:: python
 
@@ -343,7 +344,7 @@ Example using the GMP protocol:
     connection = DebugConnection(socketconnection)
     gmp = Gmp(connection=connection)
 
-With this change your *debug.log* file will contain something like::
+With this change the file *debug.log* will contain something as follows::
 
     DEBUG:gvm.connections:Sending 14 characters. Data <get_version/>
     DEBUG:gvm.connections:Read 97 characters. Data <get_version_response status="200" status_text="OK"><version>7.0</version></get_version_response>
