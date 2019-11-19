@@ -1,15 +1,15 @@
-python-gvm: Python API for Greenbone Vulnerability Manager
-==========================================================
+python-gvm: Python API for the Greenbone Vulnerability Manager
+==============================================================
 
-**python-gvm** is the official python library to remote control your Greenbone
-Vulnerability Manager (GVM).
+**python-gvm** is the official python library to control the Greenbone
+Vulnerability Manager (GVM) remotely.
 
 .. note:: **python-gvm** requires at least Python 3.5. Python 2 is not supported.
 
 User Guide
 ----------
 
-This sections explains how to install python-gvm and shows example use cases.
+This sections explains how to install **python-gvm** and shows example use cases.
 
 .. toctree::
    :maxdepth: 2
@@ -20,8 +20,8 @@ This sections explains how to install python-gvm and shows example use cases.
 The API Documentation
 ---------------------
 
-If you are looking for information on a specific function, class, or method,
-this part of the documentation is for you.
+Information about specific functions, classes, or methods
+can be found in this part of the documentation.
 
 .. toctree::
    :maxdepth: 2
@@ -29,7 +29,7 @@ this part of the documentation is for you.
    api/api
 
 
-Indices and tables
+Indices and Tables
 ==================
 
 * :ref:`genindex`
