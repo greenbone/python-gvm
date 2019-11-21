@@ -54,4 +54,4 @@ Once there is a copy of the source, it can be embedded it the own application as
     pip install -e /path/to/python-gvm
 
 .. _pip: https://pip.pypa.io/en/stable/
-.. _pipenv: http://pipenv.org/
+.. _pipenv: https://pipenv.readthedocs.io/en/latest/
