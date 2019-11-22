@@ -24,6 +24,7 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   * Change [unreleased] to new release version
   * Add a release date
   * Update reference to Github diff
+  * Remove empty sub sections like e.g. Deprecated
 
 * Create a source and wheel distribution
 
@@ -38,6 +39,7 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   git add .
   git commit -m "Prepare release <version>"
   ```
+
 * Create a pypi configuration file
 
   ```sh
@@ -99,11 +101,11 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   ```
   Open GitHub and create a PR against https://github.com/greenbone/python-gvm
 
-* Update after PR is merged
+* Update your master branch after PR is merged
 
   ```sh
   git fetch upstream
-  git rebase upstream/master
+  git rebase upstream/master master
   ```
 
 * Create a git tag
