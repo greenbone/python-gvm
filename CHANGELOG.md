@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.1.0] - unreleased
+## [1.1.0] - 2019-11-22
 
 ### Added
 * Added ignore_pagination and details arguments for get_report [#163](https://github.com/greenbone/python-gvm/pull/163)
@@ -24,15 +24,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added type `TLS_CERTIFICATE` to `EntityType` and `FilterType` [#157](https://github.com/greenbone/python-gvm/pull/157)
 * Changed the `DEFAULT_UNIX_SOCKET_PATH` [#119](https://github.com/greenbone/python-gvm/pull/162)
 
-### Fixed
-
-### Removed
-
 ### Deprecated
 * Mark make_unique argument of create_target Gmpv8 as deprecated and ignore it.
   It is already ignored by gvmd with GMP 8 [#156](https://github.com/greenbone/python-gvm/pull/156)
 
-[1.1.0]: https://github.com/greenbone/python-gvm/compare/v1.0.0...master
+[1.1.0]: https://github.com/greenbone/python-gvm/compare/v1.0.0...v1.1.0
 
 ## [1.0.0] - 2019-09-18
 
