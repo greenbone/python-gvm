@@ -1,52 +1,54 @@
-# Release instructions
+# Release Instructions
 
-Before creating a new release please do a careful consideration about the
-version number for the new release. We are following [Semantic Versioning](https://semver.org/)
-and [PEP440](https://www.python.org/dev/peps/pep-0440/).
+Before creating a new release carefully consider the version number of the new
+release.  We are following [Semantic Versioning](https://semver.org/) and
+[PEP440](https://www.python.org/dev/peps/pep-0440/).
 
-* Install twine for pypi package uploads and update setuptools, pipenv and wheel packages
+## Preparing the Required Python Packages
+
+* Install twine for pypi package uploads and update setuptools, pipenv and wheel packages:
 
   ```sh
   python3 -m pip install --user --upgrade twine setuptools wheel pipenv
   ```
 
-* Fetch upstream changes and create release branch
+## Preparing the Release
+
+* Fetch upstream changes and create a branch:
 
   ```sh
   git fetch upstream
   git checkout -b create-new-release upstream/master
   ```
 
-* Open [gvm/__init__.py](https://github.com/greenbone/python-gvm/blob/master/gvm/__init__.py)
-  and increment the version number.
+* Open `gvm/__init__.py` and increment the version number. For example, if the
+  file contains `VERSION = (2, 1, 0, 'dev', 1)`, the line should be changed to
+  `VERSION = (2, 1, 0)`.
 
-* Update [CHANGELOG.md](https://github.com/greenbone/python-gvm/blob/master/CHANGELOG.md)
-  * Change [unreleased] to new release version
-  * Add a release date
-  * Update reference to Github diff
-  * Remove empty sub sections like e.g. Deprecated
+* Update the `CHANGELOG.md` file:
+  * Change `[unreleased]` to new release version.
+  * Add a release date.
+  * Update reference to Github diff.
+  * Remove empty sub sections like *Deprecated*.
 
-* Create a source and wheel distribution
-
-  ```sh
-  rm -rf dist build python_gvm.egg-info
-  python3 setup.py sdist bdist_wheel
-  ```
-
-* Create a git commit
+* Create a git commit:
 
   ```sh
   git add .
   git commit -m "Prepare release <version>"
   ```
 
-* Create a pypi configuration file
+## Configuring the Access to the Python Package Index (PyPI)
 
-  ```sh
-  vim ~/.pypirc
-  ```
+*Note:* This is only necessary for users performing the release process for the
+first time.
 
-  with the following content (Note: `<username>` must be replaced)
+* Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/).
+
+* Create an account at [PyPI](https://pypi.org/).
+
+* Create a pypi configuration file `~/.pypirc` with the following content (Note:
+  `<username>` must be replaced):
 
   ```ini
   [distutils]
@@ -62,17 +64,26 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   username = <username>
   ```
 
-* Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/)
+## Uploading to the PyPI Test Instance
 
-* Upload the archives in dist to [Test PyPI](https://test.pypi.org/)
+* Create a source and wheel distribution:
+
+  ```sh
+  rm -rf dist build python_gvm.egg-info
+  python3 setup.py sdist bdist_wheel
+  ```
+
+* Upload the archives in `dist` to [Test PyPI](https://test.pypi.org/):
 
   ```sh
   twine upload -r testpypi dist/*
   ```
 
-* Check if the package is available at https://test.pypi.org/project/python-gvm
+* Check if the package is available at <https://test.pypi.org/project/python-gvm>.
 
-* Create a test directory
+## Testing the Uploaded Package
+
+* Create a test directory:
 
   ```sh
   mkdir python-gvm-install-test
@@ -80,13 +91,13 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   pipenv run pip install --pre -I --extra-index-url https://test.pypi.org/simple/ python-gvm
   ```
 
-* Check install version with a python script
+* Check install version with a Python script:
 
   ```sh
   pipenv run python -c "from gvm import get_version; print(get_version())"
   ```
 
-* Remove test environment
+* Remove test environment:
 
   ```sh
   pipenv --rm
@@ -94,65 +105,74 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   rm -rf python-gvm-install-test
   ```
 
-* Create a release PR
+## Performing the Release on GitHub
+
+* Create a pull request (PR) for the earlier commit:
 
   ```sh
   git push origin
   ```
-  Open GitHub and create a PR against https://github.com/greenbone/python-gvm
+  Open GitHub and create a PR against <https://github.com/greenbone/python-gvm>.
 
-* Update your master branch after PR is merged
+* Ask another developer/maintainer to review and merge the PR.
+
+* Once the PR is merged, update the local `master` branch:
 
   ```sh
   git fetch upstream
   git rebase upstream/master master
   ```
 
-* Create a git tag
+* Create a git tag:
 
   ```sh
   git tag v<version>
   ```
 
-  or even signed with your gpg key
+  Or even a tag signed with a personal GPG key:
 
   ```sh
-  git tag -s v<version>
+  git tag --sign --message "Tagging the <version> release" v<version>
   ```
 
-* Create final distribution files
+## Uploading to the 'real' PyPI
+
+* Create the final distribution files:
 
   ```sh
   rm -rf dist build python_gvm.egg-info
   python3 setup.py sdist bdist_wheel
   ```
-* Create an account at [PyPI](https://pypi.org/) if not exist already
 
-* Upload to real [PyPI](https://pypi.org/)
+* Upload the archives in `dist` to [PyPI](https://pypi.org/):
 
   ```sh
   twine upload dist/*
   ```
 
-* Check if new version is available at https://pypi.org/project/python-gvm
+* Check if new version is available at <https://pypi.org/project/python-gvm>.
 
-* Update version in [gvm/__init__.py](https://github.com/greenbone/python-gvm/blob/master/gvm/__init__.py)
+## Bumping `master` Branch to the Next Version
 
-  Use a development version like `(1, 0, 0, 'beta', 1, 'dev', 1)` or
-  `(1, 1, 0, 'dev', 1)`
+* Open `gvm/__init__.py` and increment the version number to the next
+  *development* version number. For example, if the file contains
+  `VERSION = (2, 1, 0)`, it should be changed to `VERSION = (2, 2, 0, 'dev', 1)`.
 
-* Create a commit
+* Create a commit for the version bump:
 
   ```sh
+  git add gvm/__init__.py
   git commit -m "Update version after <version> release"
   ```
 
-* Push changes and tag to Github
+## Announcing the Release
+
+* Push changes and tag to the `master` branch on Github:
 
   ```sh
   git push --tags upstream master
   ```
 
-* Create a Github release
+* Create a Github release:
 
   See https://help.github.com/articles/creating-releases/
