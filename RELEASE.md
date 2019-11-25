@@ -26,7 +26,7 @@ release.  We are following [Semantic Versioning](https://semver.org/) and
   `VERSION = (2, 1, 0)`.
 
 * Update the `CHANGELOG.md` file:
-  * Change [unreleased] to new release version.
+  * Change `[unreleased]` to new release version.
   * Add a release date.
   * Update reference to Github diff.
   * Remove empty sub sections like *Deprecated*.
@@ -79,7 +79,7 @@ first time.
   twine upload -r testpypi dist/*
   ```
 
-* Check if the package is available at https://test.pypi.org/project/python-gvm.
+* Check if the package is available at <https://test.pypi.org/project/python-gvm>.
 
 ## Testing the Uploaded Package
 
@@ -112,7 +112,7 @@ first time.
   ```sh
   git push origin
   ```
-  Open GitHub and create a PR against https://github.com/greenbone/python-gvm.
+  Open GitHub and create a PR against <https://github.com/greenbone/python-gvm>.
 
 * Ask another developer/maintainer to review and merge the PR.
 
@@ -150,7 +150,7 @@ first time.
   twine upload dist/*
   ```
 
-* Check if new version is available at https://pypi.org/project/python-gvm.
+* Check if new version is available at <https://pypi.org/project/python-gvm>.
 
 ## Bumping `master` Branch to the Next Version
 
