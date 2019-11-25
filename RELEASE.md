@@ -64,7 +64,7 @@ first time.
   username = <username>
   ```
 
-## Upload to the PyPI Test Instance
+## Uploading to the PyPI Test Instance
 
 * Create a source and wheel distribution:
 
@@ -81,7 +81,7 @@ first time.
 
 * Check if the package is available at https://test.pypi.org/project/python-gvm.
 
-## Test the uploaded package
+## Testing the Uploaded Package
 
 * Create a test directory:
 
@@ -105,7 +105,7 @@ first time.
   rm -rf python-gvm-install-test
   ```
 
-## Perform the Release on GitHub
+## Performing the Release on GitHub
 
 * Create a pull request (PR) for the earlier commit:
 
@@ -116,7 +116,7 @@ first time.
 
 * Ask another developer/maintainer to review and merge the PR.
 
-* Once the PR is merged, update your local `master` branch:
+* Once the PR is merged, update the local `master` branch:
 
   ```sh
   git fetch upstream
