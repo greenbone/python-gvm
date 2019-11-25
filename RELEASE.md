@@ -1,10 +1,10 @@
 # Release Instructions
 
-Before creating a new release please do a careful consideration about the
-version number for the new release. We are following [Semantic Versioning](https://semver.org/)
-and [PEP440](https://www.python.org/dev/peps/pep-0440/).
+Before creating a new release carefully consider the version number of the new
+release.  We are following [Semantic Versioning](https://semver.org/) and
+[PEP440](https://www.python.org/dev/peps/pep-0440/).
 
-## Install required Python Packages
+## Preparing the Required Python Packages
 
 * Install twine for pypi package uploads and update setuptools, pipenv and wheel packages:
 
@@ -12,7 +12,7 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   python3 -m pip install --user --upgrade twine setuptools wheel pipenv
   ```
 
-## Prepare Release
+## Preparing the Release
 
 * Fetch upstream changes and create a branch:
 
@@ -26,10 +26,10 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   `VERSION = (2, 1, 0)`.
 
 * Update the `CHANGELOG.md` file:
-  * Change [unreleased] to new release version
-  * Add a release date
-  * Update reference to Github diff
-  * Remove empty sub sections like *Deprecated*
+  * Change [unreleased] to new release version.
+  * Add a release date.
+  * Update reference to Github diff.
+  * Remove empty sub sections like *Deprecated*.
 
 * Create a git commit:
 
@@ -38,14 +38,14 @@ and [PEP440](https://www.python.org/dev/peps/pep-0440/).
   git commit -m "Prepare release <version>"
   ```
 
-## Configure Access to the Python Package Index (PyPI)
+## Configuring the Access to the Python Package Index (PyPI)
 
 *Note:* This is only necessary for users performing the release process for the
 first time.
 
-* Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/)
+* Create an account at [Test PyPI](https://packaging.python.org/guides/using-testpypi/).
 
-* Create an account at [PyPI](https://pypi.org/)
+* Create an account at [PyPI](https://pypi.org/).
 
 * Create a pypi configuration file `~/.pypirc` with the following content (Note:
   `<username>` must be replaced):
@@ -107,7 +107,7 @@ first time.
 
 ## Perform the Release on GitHub
 
-* Create a pull request (PR) for your earlier commit:
+* Create a pull request (PR) for the earlier commit:
 
   ```sh
   git push origin
@@ -129,13 +129,13 @@ first time.
   git tag v<version>
   ```
 
-  Or even a tag signed with your GPG key:
+  Or even a tag signed with a personal GPG key:
 
   ```sh
   git tag --sign --message "Tagging the <version> release" v<version>
   ```
 
-## Upload to the 'real' PyPI
+## Uploading to the 'real' PyPI
 
 * Create the final distribution files:
 
@@ -152,7 +152,7 @@ first time.
 
 * Check if new version is available at https://pypi.org/project/python-gvm.
 
-## Bump `master` branch to the next version
+## Bumping `master` Branch to the Next Version
 
 * Open `gvm/__init__.py` and increment the version number to the next
   *development* version number. For example, if the file contains
@@ -165,7 +165,7 @@ first time.
   git commit -m "Update version after <version> release"
   ```
 
-## Announce the Release
+## Announcing the Release
 
 * Push changes and tag to the `master` branch on Github:
 
