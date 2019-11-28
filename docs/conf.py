@@ -46,7 +46,7 @@ release = gvm.get_version()
 extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.githubpages',
-    'sphinxcontrib.napoleon',
+    'sphinx.ext.napoleon',
     'sphinx_autodoc_typehints',
 ]
 
