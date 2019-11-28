@@ -23,6 +23,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Use Gmpv9 in gvm.protocols.latest module [#165](https://github.com/greenbone/python-gvm/pull/165)
 * Added type `TLS_CERTIFICATE` to `EntityType` and `FilterType` [#157](https://github.com/greenbone/python-gvm/pull/157)
 * Changed the `DEFAULT_UNIX_SOCKET_PATH` [#119](https://github.com/greenbone/python-gvm/pull/162)
+* ospv1.py: Don't half shutdown the TLS socket. [#180](https://github.com/greenbone/python-gvm/pull/180)
 
 ### Deprecated
 * Mark make_unique argument of create_target Gmpv8 as deprecated and ignore it.

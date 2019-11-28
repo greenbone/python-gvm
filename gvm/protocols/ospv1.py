@@ -92,12 +92,6 @@ class Osp(GvmProtocol):
         self.disconnect()
         return data
 
-    def _send(self, data):
-        # OSP is stateless. Therefore we can shutdown the socket if we are done
-        # with sending
-        super()._send(data)
-        self._connection.finish_send()
-
     def get_version(self):
         """Get the version of the OSPD server which is connected to."""
         cmd = XmlCommand("get_version")
