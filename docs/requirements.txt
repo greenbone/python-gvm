@@ -2,5 +2,4 @@ lxml
 paramiko
 defusedxml
 sphinx
-sphinxcontrib-napoleon
 sphinx-autodoc-typehints
