@@ -16,15 +16,15 @@ Greenbone Management Protocol (GMP) and Open Scanner Protocol (OSP).
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Documentation](#Documentation)
-- [Installation](#Installation)
-  - [Requirements](#Requirements)
-  - [Install using pip](#Install-using-pip)
-- [Example](#Example)
-- [Support](#Support)
-- [Maintainer](#Maintainer)
-- [Contributing](#Contributing)
-- [License](#License)
+- [Documentation](#documentation)
+- [Installation](#installation)
+  - [Requirements](#requirements)
+  - [Install using pip](#install-using-pip)
+- [Example](#example)
+- [Support](#support)
+- [Maintainer](#maintainer)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Documentation
 
@@ -52,29 +52,29 @@ Index using [pip](https://pip.pypa.io/):
 
 ```python3
 from gvm.connections import UnixSocketConnection
-from gvm.protocols.latest import Gmp
+from gvm.protocols.gmp import Gmp
 from gvm.transforms import EtreeTransform
 from gvm.xml import pretty_print
 
 connection = UnixSocketConnection()
 transform = EtreeTransform()
-gmp = Gmp(connection, transform=transform)
 
-# Retrieve GMP version supported by the remote daemon
-version = gmp.get_version()
+with Gmp(connection, transform=transform) as gmp:
+    # Retrieve GMP version supported by the remote daemon
+    version = gmp.get_version()
 
-# Prints the XML in beautiful form
-pretty_print(version)
+    # Prints the XML in beautiful form
+    pretty_print(version)
 
-# Login
-gmp.authenticate('foo', 'bar')
+    # Login
+    gmp.authenticate('foo', 'bar')
 
-# Retrieve all tasks
-tasks = gmp.get_tasks()
+    # Retrieve all tasks
+    tasks = gmp.get_tasks()
 
-# Get names of tasks
-task_names = tasks.xpath('task/name/text()')
-pretty_print(task_names)
+    # Get names of tasks
+    task_names = tasks.xpath('task/name/text()')
+    pretty_print(task_names)
 ```
 
 ## Support
@@ -110,12 +110,13 @@ in the checkout directory of python-gvm (the directory containing the Pipfile)
 to install all dependencies including the packages only required for
 development.
 
-Please create your git commits from within the Python environment to apply our
-[git hooks](https://github.com/greenbone/autohooks).
+The python-gvm repository used [autohooks](https://github.com/greenbone/autohooks)
+to apply linting and auto formatting via git hooks. Please ensure the git hooks
+are active.
 
     $ pipenv install --dev
     $ pipenv shell
-    (python-gvm)$ git commit
+    (python-gvm)$ autohooks activate
 
 ## License
 
