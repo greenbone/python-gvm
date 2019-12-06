@@ -15,7 +15,7 @@ To communicate with a remote server via one of the
 :ref:`GVM protocols <Protocols>` it is required to decide which transport
 protocol should be used for the :ref:`connection <Connections>`. Currently two protocols
 – namely
-:py:class:`GMP <gvm.protocols.gmpv7.Gmp>` and
+:py:class:`GMP <gvm.protocols.gmpv9.Gmp>` and
 :py:class:`OSP <gvm.protocols.ospv1.Osp>` – and three connection types – namely
 :py:class:`TLS <gvm.connections.TLSConnection>`,
 :py:class:`SSH <gvm.connections.SSHConnection>` and
@@ -49,7 +49,7 @@ The following shows the process of a simple request in more detail.
 .. code-block:: python
 
     from gvm.connections import UnixSocketConnection
-    from gvm.protocols.latest import Gmp
+    from gvm.protocols.gmp import Gmp
 
 2. Specify the path to the Unix domain socket in the file system: 
 
@@ -66,7 +66,6 @@ The following shows the process of a simple request in more detail.
 .. code-block:: python
 
     connection = UnixSocketConnection(path=path)
-    gmp = Gmp(connection=connection)
     
 4. Establish a connection to be able to make a request on **gvmd**. To automatically connect and disconnect, a Python 
    `with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_ should be used.
@@ -78,7 +77,7 @@ The following shows the process of a simple request in more detail.
 
 .. code-block:: python
 
-    with gmp:
+    with Gmp(connection=connection) as gmp:
         print(gmp.get_version())
 
 Full Example
@@ -87,15 +86,14 @@ Full Example
 .. code-block:: python
 
     from gvm.connections import UnixSocketConnection
-    from gvm.protocols.latest import Gmp
+    from gvm.protocols.gmp import Gmp
 
     # path to unix socket
     path = '/var/run/gvmd.sock'
     connection = UnixSocketConnection(path=path)
-    gmp = Gmp(connection=connection)
 
     # using the with statement to automatically connect and disconnect to gvmd
-    with gmp:
+    with Gmp(connection=connection) as gmp:
         # get the response message returned as a utf-8 encoded string
         response = gmp.get_version()
 
@@ -106,7 +104,7 @@ On success the response will look as follows:
 
 .. code-block:: xml
 
-    <get_version_response status="200" status_text="OK"><version>7.0</version></get_version_response>
+    <get_version_response status="200" status_text="OK"><version>9.0</version></get_version_response>
 
 Privileged Request
 ^^^^^^^^^^^^^^^^^^
@@ -122,7 +120,7 @@ Step by Step
 .. code-block:: python
 
     from gvm.connections import UnixSocketConnection
-    from gvm.protocols.latest import Gmp
+    from gvm.protocols.gmp import Gmp
 
 2. Create a connection:
 
@@ -134,7 +132,7 @@ Step by Step
 3. In this case, an `Etree Element`_ should be obtained from the response to be able to
    extract specific information. 
    
-   To do so, pass a :py:mod:`transform <gvm.transforms>` to the :py:class:`Gmp <gvm.protocols.gmpv7.Gmp>`
+   To do so, pass a :py:mod:`transform <gvm.transforms>` to the :py:class:`Gmp <gvm.protocols.gmpv9.Gmp>`
    constructor. Additionally, a :py:class:`GvmError <gvm.errors.GvmError>` should be raised if the status of the 
    response was not *ok*. Therefore choose a :py:class:`EtreeCheckCommandTransform <gvm.transforms.EtreeCheckCommandTransform>`:
 
@@ -143,12 +141,12 @@ Step by Step
     from gvm.transforms import EtreeCheckCommandTransform
 
     transform = EtreeCheckCommandTransform()
-    gmp = Gmp(connection=connection, transform=transform)
 
 .. note:: By choosing a :py:class:`EtreeCheckCommandTransform <gvm.transforms.EtreeCheckCommandTransform>` it is ensured that calling a privileged command always fails, e.g. calling
 
    .. code-block:: python
 
+    with Gmp(connection=connection, transform=transform) as gmp:
        gmp.get_task()
 
    without being authenticated will throw an error now. 
@@ -168,7 +166,7 @@ Step by Step
     from gvm.errors import GvmError
 
     try:
-        with gmp:
+        with Gmp(connection=connection, transform=transform) as gmp:
             gmp.authenticate(username, password)
 
             tasks = gmp.get_tasks(filter='name~weekly')
@@ -191,13 +189,12 @@ Full Example
 
     from gvm.connections import UnixSocketConnection
     from gvm.errors import GvmError
-    from gvm.protocols.latest import Gmp
+    from gvm.protocols.gmp import Gmp
     from gvm.transforms import EtreeCheckCommandTransform
 
     path = '/var/run/gvmd.sock'
     connection = UnixSocketConnection(path=path)
     transform = EtreeCheckCommandTransform()
-    gmp = Gmp(connection=connection, transform=transform)
 
     username = 'foo'
     password = 'bar'
@@ -205,7 +202,7 @@ Full Example
     try:
         tasks = []
 
-        with gmp:
+        with Gmp(connection=connection, transform=transform) as gmp:
             gmp.authenticate(username, password)
 
             tasks = gmp.get_tasks(filter='name~weekly')
@@ -337,17 +334,19 @@ Example using GMP:
 .. code-block:: python
 
     from gvm.connections import UnixSocketConnection, DebugConnection
-    from gvm.protocols.latest import Gmp
+    from gvm.protocols.gmp import Gmp
 
     path = '/var/run/gvmd.sock'
     socketconnection = UnixSocketConnection(path=path)
     connection = DebugConnection(socketconnection)
-    gmp = Gmp(connection=connection)
+
+    with Gmp(connection=connection) as gmp:
+        gmp.get_version()
 
 With this change the file *debug.log* will contain something as follows::
 
     DEBUG:gvm.connections:Sending 14 characters. Data <get_version/>
-    DEBUG:gvm.connections:Read 97 characters. Data <get_version_response status="200" status_text="OK"><version>7.0</version></get_version_response>
+    DEBUG:gvm.connections:Read 97 characters. Data <get_version_response status="200" status_text="OK"><version>9.0</version></get_version_response>
 
 .. _logging:
     https://docs.python.org/3/library/logging.html
