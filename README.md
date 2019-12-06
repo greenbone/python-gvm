@@ -110,12 +110,13 @@ in the checkout directory of python-gvm (the directory containing the Pipfile)
 to install all dependencies including the packages only required for
 development.
 
-Please create your git commits from within the Python environment to apply our
-[git hooks](https://github.com/greenbone/autohooks).
+The python-gvm repository used [autohooks](https://github.com/greenbone/autohooks)
+to apply linting and auto formatting via git hooks. Please ensure the git hooks
+are active.
 
     $ pipenv install --dev
     $ pipenv shell
-    (python-gvm)$ git commit
+    (python-gvm)$ autohooks activate
 
 ## License
 
