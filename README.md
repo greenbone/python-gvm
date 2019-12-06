@@ -16,15 +16,15 @@ Greenbone Management Protocol (GMP) and Open Scanner Protocol (OSP).
 
 ## Table of Contents <!-- omit in toc -->
 
-- [Documentation](#Documentation)
-- [Installation](#Installation)
-  - [Requirements](#Requirements)
-  - [Install using pip](#Install-using-pip)
-- [Example](#Example)
-- [Support](#Support)
-- [Maintainer](#Maintainer)
-- [Contributing](#Contributing)
-- [License](#License)
+- [Documentation](#documentation)
+- [Installation](#installation)
+  - [Requirements](#requirements)
+  - [Install using pip](#install-using-pip)
+- [Example](#example)
+- [Support](#support)
+- [Maintainer](#maintainer)
+- [Contributing](#contributing)
+- [License](#license)
 
 ## Documentation
 
