@@ -19,7 +19,7 @@
 """
 Module for communication with gvmd
 """
-from typing import Any, Optional, Callable
+from typing import Any, Optional, Callable, Union
 
 from gvm.errors import GvmError
 
@@ -32,6 +32,8 @@ from gvm.protocols.gmpv9 import Gmp as Gmpv9
 from gvm.transforms import EtreeCheckCommandTransform
 
 from gvm.xml import XmlCommand
+
+SupportedGmpVersion = Union[Gmpv7, Gmpv8, Gmpv9]
 
 
 class Gmp(GvmProtocol):
@@ -75,7 +77,9 @@ class Gmp(GvmProtocol):
         super().__init__(connection, transform=EtreeCheckCommandTransform())
         self._gmp_transform = transform
 
-    def __enter__(self):
+    def determine_remote_gmp_version(self) -> str:
+        """ Determine the supported GMP version of the remote deamon
+        """
         self.connect()
         resp = self._send_xml_command(XmlCommand("get_version"))
         self.disconnect()
@@ -87,9 +91,14 @@ class Gmp(GvmProtocol):
                 'version information.'
             )
 
-        version = version_el.text
-        major_version = int(version[0])
+        return version_el.text
 
+    def determine_supported_gmp(self) -> SupportedGmpVersion:
+        """ Determine supported GMP version of the remote deamon and return a
+            corresponding Gmp class instance
+        """
+        version = self.determine_remote_gmp_version()
+        major_version = int(version[0])
         if major_version == 7:
             gmp_class = Gmpv7
         elif major_version == 8:
@@ -102,7 +111,11 @@ class Gmp(GvmProtocol):
                 'The GMP version was {}.'.format(version)
             )
 
-        gmp = gmp_class(self._connection, transform=self._gmp_transform)
+        return gmp_class(self._connection, transform=self._gmp_transform)
+
+    def __enter__(self):
+        gmp = self.determine_supported_gmp()
+
         gmp.connect()
 
         return gmp
