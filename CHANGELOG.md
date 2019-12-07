@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+* Added DEFAULT_SSH_PORT and DEFAULT_HOSTNAME constants to `gmp.connection` [#185](https://github.com/greenbone/python-gvm/pull/185)
+
 ### Changed
 ### Fixed
 
