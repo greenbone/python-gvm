@@ -25,6 +25,7 @@ from gvm.errors import GvmError
 from gvm.protocols.gmp import Gmp
 from gvm.protocols.gmpv7 import Gmp as Gmpv7
 from gvm.protocols.gmpv8 import Gmp as Gmpv8
+from gvm.protocols.gmpv9 import Gmp as Gmpv9
 
 
 class GmpContextManagerTestCase(GmpTestCase):
@@ -52,6 +53,17 @@ class GmpContextManagerTestCase(GmpTestCase):
         with self.gmp as gmp:
             self.assertEqual(gmp.get_protocol_version(), (8,))
             self.assertIsInstance(gmp, Gmpv8)
+
+    def test_select_gmpv9(self):
+        self.connection.read.return_value(
+            '<get_version_response status="200" status_text="OK">'
+            '<version>9.0</version>'
+            '</get_version_response>'
+        )
+
+        with self.gmp as gmp:
+            self.assertEqual(gmp.get_protocol_version(), (9,))
+            self.assertIsInstance(gmp, Gmpv9)
 
     def test_unknown_protocol(self):
         self.connection.read.return_value(
