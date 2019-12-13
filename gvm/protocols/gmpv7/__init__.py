@@ -5418,6 +5418,8 @@ class Gmp(GvmProtocol):
 
         if hosts:
             cmd.add_element("hosts", _to_comma_list(hosts))
+            if exclude_hosts is None:
+                exclude_hosts = ['']
 
         if exclude_hosts:
             cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
