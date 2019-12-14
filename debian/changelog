@@ -1,3 +1,9 @@
+python-gvm (1.0.0-gos2004~4) gos20.04; urgency=medium
+
+  * Add python3-setuptools as depends for autopkgtest.
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Sat, 14 Dec 2019 21:19:42 +0100
+
 python-gvm (1.0.0-gos2004~3) gos20.04; urgency=medium
 
   * Bump release cause we must setup CI settings at gitlab before. Build
