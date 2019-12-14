@@ -1,1 +1,2 @@
 Test-Command: python3 -m gvm.connections
+Depends: @, python3-setuptools
