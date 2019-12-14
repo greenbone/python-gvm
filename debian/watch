@@ -1,0 +1,3 @@
+version=3
+opts=filenamemangle=s/.+\/v?(\d\S*)\.tar\.gz/python-gvm-$1\.tar\.gz/ \
+  https://github.com/greenbone/python-gvm/tags .*/v?(\d\S*)\.tar\.gz

@@ -1,0 +1,43 @@
+python-gvm (1.0.0-gos2004~1) gos20.04; urgency=medium
+
+  * New release for GOS 20.04
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Sat, 14 Dec 2019 20:39:06 +0100
+
+python-gvm (1.0.0-6) gos4.3; urgency=medium
+
+  * New libs should replace the old ones.
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Tue, 29 Oct 2019 11:52:02 +0100
+
+python-gvm (1.0.0-5) gos4.3; urgency=medium
+
+  * Wrong! The modules are called
+    gvm.{connections,errors,transforms,utils,xml}. Test gvm.connections.
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Mon, 28 Oct 2019 17:44:18 +0100
+
+python-gvm (1.0.0-4) gos4.3; urgency=medium
+
+  * Fix tests. Upstream module is called python-gvm.
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Mon, 28 Oct 2019 17:18:16 +0100
+
+python-gvm (1.0.0-3) gos4.3; urgency=medium
+
+  * Fixed ImportError: No module named 'paramiko'
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Mon, 28 Oct 2019 16:03:37 +0100
+
+python-gvm (1.0.0-2) gos4.3; urgency=medium
+
+  * python-gvm needs xml libs for testing.
+  * Updated uploaders.
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Mon, 28 Oct 2019 15:54:04 +0100
+
+python-gvm (1.0.0-1) gos4.3; urgency=medium
+
+  * Initial release. (Closes: #123417)
+
+ -- Sascha Howey <sascha.howey@greenbone.net>  Wed, 09 Oct 2019 15:11:12 +0200

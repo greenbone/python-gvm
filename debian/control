@@ -1,0 +1,25 @@
+Source: python-gvm
+Section: admin
+Priority: optional
+Maintainer: Greenbone Networks GmbH <info@greenbone.net>
+Uploaders: Sascha Howey <sascha.howey@greenbone.net>,
+ Raphael Grewe <raphael.grewe@greenbone.net>
+Build-Depends:
+  debhelper (>= 12),
+  python3-all,
+  python3-setuptools,
+  python3-lxml,
+  python3-defusedxml,
+  python3-paramiko,
+  dh-python
+Standards-Version: 4.4.1
+X-Python3-Version: >= 3.7
+
+Package: python3-gvm
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}
+Conflicts: python3-gvm-tools
+Replaces:  python3-gvm-tools
+Description: Library for gvm-tools
+ This package installs the library necessary for the gvm-tools.
+ So that it can be used from inside another python program.

@@ -1,0 +1,10 @@
+---
+include:
+  - project: 'gos-dev/gos-ci'
+    file: 'gos-ci.yml'
+
+  - project: 'gos-dev/gos-ci'
+    file: 'pipeline-jobs.yml'
+
+variables:
+  RELEASE: '20.04'
