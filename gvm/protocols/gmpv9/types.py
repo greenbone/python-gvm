@@ -106,7 +106,7 @@ __all__ = [
 class EntityType(Enum):
     """ Enum for entity types """
 
-    AGENT = "note"
+    AGENT = "agent"
     ALERT = "alert"
     ASSET = "asset"
     CERT_BUND_ADV = "cert_bund_adv"
