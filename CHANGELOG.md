@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 ### Fixed
+* Fixed value of `EntityType.AGENT` enum [#190](https://github.com/greenbone/python-gvm/pull/190)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.1.0...master
 
