@@ -13,7 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `gmp.protocols.gmp` module [#186](https://github.com/greenbone/python-gvm/pull/186)
 
 ### Changed
+
 ### Fixed
+* Added a workaround that fixes the `exclude_hosts`-bug in the method `modify_target`. 
+  See [#187](https://github.com/greenbone/python-gvm/issues/187) for more details [#188](https://github.com/greenbone/python-gvm/pull/188)
 * Fixed value of `EntityType.AGENT` enum [#190](https://github.com/greenbone/python-gvm/pull/190)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.1.0...master

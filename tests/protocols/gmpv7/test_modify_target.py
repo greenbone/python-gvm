@@ -55,6 +55,7 @@ class GmpModifyTargetTestCase(Gmpv7TestCase):
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
             '<hosts>foo</hosts>'
+            '<exclude_hosts></exclude_hosts>'
             '</modify_target>'
         )
 
@@ -63,6 +64,7 @@ class GmpModifyTargetTestCase(Gmpv7TestCase):
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
             '<hosts>foo,bar</hosts>'
+            '<exclude_hosts></exclude_hosts>'
             '</modify_target>'
         )
 
