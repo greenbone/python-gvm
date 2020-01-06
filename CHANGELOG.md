@@ -5,21 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.2.0]
 
 ### Added
 * Added DEFAULT_SSH_PORT and DEFAULT_HOSTNAME constants to `gmp.connection` [#185](https://github.com/greenbone/python-gvm/pull/185)
 * Added `determine_remote_gmp_version` and `determine_supported_gmp` methods to
   `gmp.protocols.gmp` module [#186](https://github.com/greenbone/python-gvm/pull/186)
 
-### Changed
-
 ### Fixed
-* Added a workaround that fixes the `exclude_hosts`-bug in the method `modify_target`. 
+* Added a workaround that fixes the `exclude_hosts`-bug in the method `modify_target`.
   See [#187](https://github.com/greenbone/python-gvm/issues/187) for more details [#188](https://github.com/greenbone/python-gvm/pull/188)
 * Fixed value of `EntityType.AGENT` enum [#190](https://github.com/greenbone/python-gvm/pull/190)
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.1.0...master
+[1.2.0]: https://github.com/greenbone/python-gvm/compare/v1.1.0...v1.2.0
 
 ## [1.1.0] - 2019-11-22
 
