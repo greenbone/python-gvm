@@ -98,7 +98,7 @@ class Gmp(GvmProtocol):
             corresponding Gmp class instance
         """
         version = self.determine_remote_gmp_version()
-        major_version = int(version[0])
+        major_version = int(version.split('.')[0])
         if major_version == 7:
             gmp_class = Gmpv7
         elif major_version == 8:
