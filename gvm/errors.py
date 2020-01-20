@@ -34,9 +34,6 @@ class GvmServerError(GvmError):
 
     Base class for all exceptions originating in python-gvm.
     """
-
-
-class GvmResponseError(GvmError):
     def __init__(
         self, status: str = None, message: str = None,
     ):
@@ -57,7 +54,21 @@ class GvmClientError(GvmError):
     """
 
 
-class InvalidArgument(GvmClientError):
+class GvmResponseError(GvmClientError):
+    def __init__(
+        self, status: str = None, message: str = None,
+    ):
+        # pylint: disable=super-init-not-called
+        self.status = status
+        self.message = message
+
+    def __str__(self):
+        return (
+            self.__class__.__name__ + ': ' + self.status + ' - ' + self.message
+        )
+
+
+class InvalidArgument(GvmError):
     """Raised if an invalid argument/parameter is passed
 
     Derives from :py:class:`GvmError`
@@ -94,7 +105,7 @@ class InvalidArgument(GvmClientError):
         return "Invalid argument {} for {}".format(self.argument, self.function)
 
 
-class InvalidArgumentType(GvmClientError):
+class InvalidArgumentType(GvmError):
     def __init__(
         self,
         argument: str = None,
@@ -117,7 +128,7 @@ class InvalidArgumentType(GvmClientError):
         )
 
 
-class RequiredArgument(GvmClientError):
+class RequiredArgument(GvmError):
     """Raised if a required argument/parameter is missing
 
     Derives from :py:class:`GvmError`
