@@ -368,7 +368,7 @@ class Gmp(Gmpv7):
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("phrase", key_phrase)
             _xmlkey.add_element("private", private_key)
-        else:
+        elif (not key_phrase and private_key) or (key_phrase and not private_key):
             raise RequiredArgument(
                 function=self.modify_credential.__name__,
                 argument='key_phrase and private_key',
@@ -1049,7 +1049,7 @@ class Gmp(Gmpv7):
                 missing timezone information this timezone gets applied.
                 Otherwise the datetime values from the icalendar data are
                 displayed in this timezone
-            comment: Comment on schedule.
+            commenhedule.
 
         Returns:
             The response. See :py:meth:`send_command` for details.

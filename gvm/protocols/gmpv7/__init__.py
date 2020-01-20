@@ -361,22 +361,22 @@ class Gmp(GvmProtocol):
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_alert.__name, argument='name'
+                function=self.create_alert.__name__, argument='name'
             )
 
         if not condition:
             raise RequiredArgument(
-                function=self.create_alert.__name, argument='condition'
+                function=self.create_alert.__name__, argument='condition'
             )
 
         if not event:
             raise RequiredArgument(
-                function=self.create_alert.__name, argument='event'
+                function=self.create_alert.__name__, argument='event'
             )
 
         if not method:
             raise RequiredArgument(
-                function=self.create_alert.__name, argument='method'
+                function=self.create_alert.__name__, argument='method'
             )
 
         if not isinstance(condition, AlertCondition):
@@ -832,7 +832,7 @@ class Gmp(GvmProtocol):
         """
         if not group_id:
             raise RequiredArgument(
-                fuction=self.clone_group.__name__, argument='group_id'
+                function=self.clone_group.__name__, argument='group_id'
             )
 
         cmd = XmlCommand("create_group")
@@ -851,7 +851,7 @@ class Gmp(GvmProtocol):
         """
         if not name:
             raise RequiredArgument(
-                fuction=self.create_host.__name__, argument='name'
+                function=self.create_host.__name__, argument='name'
             )
 
         cmd = XmlCommand("create_asset")
@@ -4699,7 +4699,7 @@ class Gmp(GvmProtocol):
         if certificate:
             cmd.add_element("certificate", certificate)
 
-        if key_phrase and not private_key:
+        if key_phrase is not None and not private_key:
             raise RequiredArgument(
                 function=self.modify_credential.__name__, argument='private_key'
             )
@@ -4708,7 +4708,7 @@ class Gmp(GvmProtocol):
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("private", private_key)
 
-            if key_phrase:
+            if key_phrase is not None:
                 _xmlkey.add_element("phrase", key_phrase)
 
         if login:
@@ -5141,7 +5141,7 @@ class Gmp(GvmProtocol):
         """
         if not report_format_id:
             raise RequiredArgument(
-                function=self.modify_report.__name__,
+                function=self.modify_report_format.__name__,
                 argument='report_format_id',
             )
 
