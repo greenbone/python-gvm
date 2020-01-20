@@ -34,7 +34,7 @@ from typing import Any, List, Optional, Callable
 from lxml import etree
 
 from gvm.connections import GvmConnection
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import deprecation
 from gvm.xml import XmlCommand, create_parser
 
@@ -380,13 +380,13 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(condition, AlertCondition):
-            raise InvalidArgument(function="create_alert", argument="condition")
+            raise InvalidArgumentType(function=self.create_alert.__name__, argument='condition', arg_type=AlertCondition.__name__)
 
         if not isinstance(event, AlertEvent):
-            raise InvalidArgument(function="create_alert", argument="event")
+            raise InvalidArgumentType(function=self.create_alert.__name__, argument='even', arg_type=AlertEvent.__name__)
 
         if not isinstance(method, AlertMethod):
-            raise InvalidArgument(function="create_alert", argument="method")
+            raise InvalidArgumentType(function=self.create_alert.__name__, argument='method', arg_type=AlertMethod.__name__)
 
         _check_event(event, condition, method)
 
@@ -502,7 +502,7 @@ class Gmp(GvmProtocol):
 
         try:
             cmd.append_xml_str(config)
-        except etree.XMLSyntaxError as e:
+        except etree.XMLSyntaxError:
             raise InvalidArgument(
                 function=self.import_config.__name__, argument='config'
             )
@@ -596,11 +596,10 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(credential_type, CredentialType):
-            raise InvalidArgument(
-                "create_credential requires type to be a CredentialType "
-                "instance",
-                function="create_credential",
+            raise InvalidArgumentType(
+                function=self.create_credential.__name__,
                 argument="credential_type",
+                arg_type=CredentialType.__name__
             )
 
         cmd = XmlCommand("create_credential")
@@ -660,11 +659,11 @@ class Gmp(GvmProtocol):
 
         if credential_type == CredentialType.SNMP:
             if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
-                raise InvalidArgument(
-                    "create_credential requires auth_algorithm to be a "
-                    "SnmpAuthAlgorithm instance",
-                    function="create_credential",
+                raise InvalidArgumentType(
+                    function=self.create_credential.__name__,
                     argument="auth_algorithm",
+                    arg_type=SnmpAuthAlgorithm.__name__
+
                 )
 
             cmd.add_element("auth_algorithm", auth_algorithm.value)
@@ -677,11 +676,10 @@ class Gmp(GvmProtocol):
 
                 if privacy_algorithm is not None:
                     if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
-                        raise InvalidArgument(
-                            "create_credential requires algorithm to be a "
-                            "SnmpPrivacyAlgorithm instance",
-                            function="create_credential",
+                        raise InvalidArgumentType(
+                            function=self.create_credential.__name__,
                             argument="privacy_algorithm",
+                            arg_type=SnmpPrivacyAlgorithm.__name__
                         )
 
                     _xmlprivacy.add_element(
@@ -752,11 +750,10 @@ class Gmp(GvmProtocol):
 
         if filter_type:
             if not isinstance(filter_type, self.types.FilterType):
-                raise InvalidArgument(
-                    "create_filter requires filter_type to be a FilterType "
-                    "instance. was {}".format(filter_type),
-                    function="create_filter",
+                raise InvalidArgumentType(
+                    function=self.create_filter.__name__,
                     argument="filter_type",
+                    arg_type=self.types.FilterType.__name__
                 )
 
             cmd.add_element("type", filter_type.value)
@@ -929,11 +926,10 @@ class Gmp(GvmProtocol):
 
         if threat is not None:
             if not isinstance(threat, SeverityLevel):
-                raise InvalidArgument(
-                    "create_note threat argument {0} is invalid. threat must "
-                    "be a SeverityLevel instance",
+                raise InvalidArgumentType(
                     function="create_note",
                     argument="threat",
+                    arg_type=SeverityLevel.__name__
                 )
 
             cmd.add_element("threat", threat.value)
@@ -1030,22 +1026,20 @@ class Gmp(GvmProtocol):
 
         if threat is not None:
             if not isinstance(threat, SeverityLevel):
-                raise InvalidArgument(
-                    "create_override threat argument {0} is invalid. threat "
-                    "must be a SeverityLevel instance".format(threat),
-                    function="create_override",
+                raise InvalidArgumentType(
+                    function=self.create_override.__name__,
                     argument="threat",
+                    arg_type=SeverityLevel.__name__
                 )
 
             cmd.add_element("threat", threat.value)
 
         if new_threat is not None:
             if not isinstance(new_threat, SeverityLevel):
-                raise InvalidArgument(
-                    "create_override new_threat argument {0} is invalid. "
-                    "new_threat be a SeverityLevel instance".format(new_threat),
-                    function="create_override",
+                raise InvalidArgumentType(
+                    function=self.create_override.__name__,
                     argument="new_threat",
+                    arg_type=SeverityLevel.__name__
                 )
 
             cmd.add_element("new_threat", new_threat.value)
@@ -1105,11 +1099,10 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(subject_type, PermissionSubjectType):
-            raise InvalidArgument(
-                "create_permission requires subject_type to be a "
-                "PermissionSubjectType instance",
-                function="create_permission",
-                argument="subject_type",
+            raise InvalidArgumentType(
+                function=self.create_permission.__name__,
+                argument='subject_type',
+                arg_type=PermissionSubjectType.__name__
             )
 
         cmd = XmlCommand("create_permission")
@@ -1135,8 +1128,10 @@ class Gmp(GvmProtocol):
                 )
 
             if not isinstance(resource_type, self.types.EntityType):
-                raise InvalidArgument(
-                    function="create_permission", argument="resource_type"
+                raise InvalidArgumentType(
+                    function=self.create_permission.__name__, 
+                    argument='resource_type',
+                    arg_type=self.types.EntityType.__name__
                 )
 
             _xmlresource = cmd.add_element(
@@ -1260,8 +1255,10 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(port_range_type, PortRangeType):
-            raise InvalidArgument(
-                function="create_port_range", argument="port_range_type"
+            raise InvalidArgumentType(
+                function=self.create_port_range.__name__,
+                argument='port_range_type',
+                arg_type=PortRangeType.__name__
             )
 
         cmd = XmlCommand("create_port_range")
@@ -1436,8 +1433,8 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(scanner_type, ScannerType):
-            raise InvalidArgument(
-                function="create_scanner", argument="scanner_type"
+            raise InvalidArgumentType(
+                function=self.create_scanner.__name__, argument='scanner_type', arg_type=ScannerType.__name__
             )
 
         cmd = XmlCommand("create_scanner")
@@ -1626,8 +1623,10 @@ class Gmp(GvmProtocol):
                 )
 
             if not isinstance(duration_unit, TimeUnit):
-                raise InvalidArgument(
-                    function="create_schedule", argument="duration_unit"
+                raise InvalidArgumentType(
+                    function=self.create_schedule.__name__,
+                    argument='duration_unit',
+                    arg_type=TimeUnit.__name__
                 )
 
             if not isinstance(duration, numbers.Integral) or duration < 1:
@@ -1646,8 +1645,10 @@ class Gmp(GvmProtocol):
                 )
 
             if not isinstance(period_unit, TimeUnit):
-                raise InvalidArgument(
-                    function="create_schedule", argument="period_unit"
+                raise InvalidArgumentType(
+                    function=self.create_schedule.__name__,
+                    argument='period_unit',
+                    arg_type=TimeUnit.__name__
                 )
 
             if not isinstance(period, numbers.Integral) or period < 0:
@@ -1716,8 +1717,8 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(resource_type, self.types.EntityType):
-            raise InvalidArgument(
-                function="create_tag", argument="resource_type"
+            raise InvalidArgumentType(
+                function=self.create_tag.__name__, argument='resource_type', arg_type=self.types.EntityType.__name__
             )
 
         cmd = XmlCommand("create_tag")
@@ -1854,8 +1855,8 @@ class Gmp(GvmProtocol):
 
         if alive_test:
             if not isinstance(alive_test, AliveTest):
-                raise InvalidArgument(
-                    function="create_target", argument="alive_test"
+                raise InvalidArgumentType(
+                    function=self.create_target.__name__, argument='alive_test', arg_type=AliveTest.__name__
                 )
 
             cmd.add_element("alive_tests", alive_test.value)
@@ -1973,8 +1974,8 @@ class Gmp(GvmProtocol):
 
         if hosts_ordering:
             if not isinstance(hosts_ordering, HostsOrdering):
-                raise InvalidArgument(
-                    function="create_task", argument="hosts_ordering"
+                raise InvalidArgumentType(
+                    function=self.create_task.__name__, argument='hosts_ordering', arg_type=HostsOrdering.__name__
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
@@ -2009,7 +2010,7 @@ class Gmp(GvmProtocol):
 
         if observers is not None:
             if not _is_list_like(observers):
-                raise InvalidArgument("obeservers argument must be a list")
+                raise InvalidArgumentType(function=self.create_task.__name__, argument='obeservers', arg_type='list')
 
             # gvmd splits by comma and space
             # gvmd tries to lookup each value as user name and afterwards as
@@ -2018,7 +2019,7 @@ class Gmp(GvmProtocol):
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
-                raise InvalidArgument('preferences argument must be a dict')
+                raise InvalidArgumentType(function=self.create_task.__name__, argument='preferences', arg_type=collections.abc.Mapping.__name__)
 
             _xmlprefs = cmd.add_element("preferences")
             for pref_name, pref_value in preferences.items():
@@ -2696,8 +2697,8 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(resource_type, self.types.EntityType):
-            raise InvalidArgument(
-                function="get_aggregate", argument="resource_type"
+            raise InvalidArgumentType(
+                function=self.get_aggregates.__name__, argument='resource_type', arg_type=self.types.EntityType.__name__
             )
 
         cmd = XmlCommand("get_aggregates")
@@ -2773,7 +2774,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not isinstance(asset_type, AssetType):
-            raise InvalidArgument(function="get_assets", argument="asset_type")
+            raise InvalidArgumentType(function=self.get_assets.__name__, argument='asset_type', arg_type=AssetType.__name__)
 
         cmd = XmlCommand("get_assets")
 
@@ -2794,7 +2795,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not isinstance(asset_type, AssetType):
-            raise InvalidArgument(function="get_asset", argument="asset_type")
+            raise InvalidArgumentType(function=self.get_asset.__name__, argument='asset_type', arg_type=AssetType.__name__)
 
         if not asset_id:
             raise RequiredArgument(
@@ -2869,8 +2870,8 @@ class Gmp(GvmProtocol):
 
         if credential_format:
             if not isinstance(credential_format, CredentialFormat):
-                raise InvalidArgument(
-                    function="get_credential", argument="credential_format"
+                raise InvalidArgumentType(
+                    function=self.get_credential.__name__, argument='credential_format', arg_type=CredentialFormat.__name__
                 )
 
             cmd.set_attribute("format", credential_format.value)
@@ -2969,8 +2970,8 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(feed_type, FeedType):
-            raise InvalidArgument(
-                "get_feed type arguments must be one of NVT, CERT or SCAP"
+            raise InvalidArgumentType(
+                function=self.get_feed.__name__, argument='feed_type', arg_type=FeedType.__name__
             )
 
         cmd = XmlCommand("get_feeds")
@@ -3100,8 +3101,8 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(info_type, InfoType):
-            raise InvalidArgument(
-                function="get_info_list", argument="info_type"
+            raise InvalidArgumentType(
+                function=self.get_info_list.__name__, argument='info_type', arg_type=InfoType.__name__
             )
 
         cmd = XmlCommand("get_info")
@@ -3135,7 +3136,7 @@ class Gmp(GvmProtocol):
             )
 
         if not isinstance(info_type, InfoType):
-            raise InvalidArgument(function="get_info", argument="info_type")
+            raise InvalidArgumentType(function=self.get_info.__name__, argument='info_type', arg_type=InfoType.__name__)
 
         if not info_id:
             raise RequiredArgument(
@@ -4278,8 +4279,8 @@ class Gmp(GvmProtocol):
 
         if condition:
             if not isinstance(condition, AlertCondition):
-                raise InvalidArgument(
-                    function="modify_alert", argument="condition"
+                raise InvalidArgumentType(
+                    function=self.modify_alert.__name__, argument='condition', arg_type=AlertCondition.__name__
                 )
 
             conditions = cmd.add_element("condition", condition.value)
@@ -4291,8 +4292,8 @@ class Gmp(GvmProtocol):
 
         if method:
             if not isinstance(method, AlertMethod):
-                raise InvalidArgument(
-                    function="modify_alert", argument="method"
+                raise InvalidArgumentType(
+                    function=self.modify_alert.__name__, argument='method', arg_type=AlertMethod.__name__
                 )
 
             methods = cmd.add_element("method", method.value)
@@ -4304,7 +4305,7 @@ class Gmp(GvmProtocol):
 
         if event:
             if not isinstance(event, AlertEvent):
-                raise InvalidArgument(function="modify_alert", argument="event")
+                raise InvalidArgumentType(function=self.modify_alert.__name__, argument='event', arg_type=AlertEvent.__name__)
 
             _check_event(event, condition, method)
 
@@ -4499,9 +4500,8 @@ class Gmp(GvmProtocol):
             )
 
         if not _is_list_like(nvt_oids):
-            raise InvalidArgument(
-                "modify_config_set_nvt_selection requires an iterable as "
-                "nvt_oids argument"
+            raise InvalidArgumentType(
+                function=self.modify_config_set_nvt_selection.__name__,  argument='nvt_oids', arg_type='list'
             )
 
         cmd = XmlCommand("modify_config")
@@ -4541,9 +4541,8 @@ class Gmp(GvmProtocol):
             )
 
         if not _is_list_like(families):
-            raise InvalidArgument(
-                "modify_config_set_family_selection.__name__, argument='list as "
-                "families argument"
+            raise InvalidArgumentType(
+                function=self.modify_config_set_family_selection.__name__,  argument='families', arg_type='list'
             )
 
         cmd = XmlCommand("modify_config")
@@ -4719,8 +4718,8 @@ class Gmp(GvmProtocol):
 
         if auth_algorithm is not None:
             if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
-                raise InvalidArgument(
-                    function="modify_credential", argument="auth_algorithm"
+                raise InvalidArgumentType(
+                    function=self.modify_credential.__name__, argument='auth_algorithm', arg_type=SnmpAuthAlgorithm.__name__)
                 )
             cmd.add_element("auth_algorithm", auth_algorithm.value)
 
@@ -4729,8 +4728,8 @@ class Gmp(GvmProtocol):
 
         if privacy_algorithm is not None:
             if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
-                raise InvalidArgument(
-                    function="modify_credential", argument="privacy_algorithm"
+                raise InvalidArgumentType(
+                    function=self.modify_credential.__name__, argument='privacy_algorithm', arg_type=SnmpPrivacyAlgorithm.__name__
                 )
 
             _xmlprivacy = cmd.add_element("privacy")
@@ -4781,11 +4780,10 @@ class Gmp(GvmProtocol):
 
         if filter_type:
             if not isinstance(filter_type, self.types.FilterType):
-                raise InvalidArgument(
-                    "modify_filter requires filter_type to be a FilterType "
-                    "instance. was {}".format(filter_type),
-                    function="modify_filter",
-                    argument="filter_type",
+                raise InvalidArgumentType(
+                    function=self.modify_filter.__name__,
+                    argument='filter_type',
+                    arg_type=self.types.FilterType.__name__
                 )
             cmd.add_element("type", filter_type.value)
 
@@ -4894,11 +4892,10 @@ class Gmp(GvmProtocol):
         if threat is not None:
 
             if not isinstance(threat, SeverityLevel):
-                raise InvalidArgument(
-                    "modify_note threat argument {} is invalid. threat must "
-                    "be a SeverityLevel instance".format(threat),
-                    function="modify_note",
-                    argument="threat",
+                raise InvalidArgumentType(
+                    function=self.modify_note.__name__,
+                    argument='threat',
+                    arg_type=SeverityLevel.__name__
                 )
 
             cmd.add_element("threat", threat.value)
@@ -4977,23 +4974,19 @@ class Gmp(GvmProtocol):
 
         if threat is not None:
             if not isinstance(threat, SeverityLevel):
-                raise InvalidArgument(
-                    "modify_override threat argument {} is invalid. threat "
-                    "must be a SeverityLevel instance".format(threat),
-                    function="modify_override",
-                    argument="threat",
+                raise InvalidArgumentType(
+                    function=self.modify_override.__name__,
+                    argument='threat',
+                    arg_type=SeverityLevel.__name__
                 )
             cmd.add_element("threat", threat.value)
 
         if new_threat is not None:
             if not isinstance(new_threat, SeverityLevel):
-                raise InvalidArgument(
-                    "modify_override new_threat argument {} is invalid. "
-                    "new_threat must be a SeverityLevel instance".format(
-                        new_threat
-                    ),
-                    function="modify_override",
-                    argument="new_threat",
+                raise InvalidArgumentType(
+                    function=self.modify_override.__name__,
+                    argument='new_threat',
+                    arg_type=SeverityLevel.__name__
                 )
 
             cmd.add_element("new_threat", new_threat.value)
@@ -5055,8 +5048,8 @@ class Gmp(GvmProtocol):
                 )
 
             if not isinstance(resource_type, self.types.EntityType):
-                raise InvalidArgument(
-                    function="modify_permission", argument="resource_type"
+                raise InvalidArgumentType(
+                    function=self.modify_permission.__name__, argument='resource_type', arg_type=self.types.EntityType.__name__
                 )
 
             _xmlresource = cmd.add_element(
@@ -5072,11 +5065,10 @@ class Gmp(GvmProtocol):
                 )
 
             if not isinstance(subject_type, PermissionSubjectType):
-                raise InvalidArgument(
-                    "modify_permission requires subject_type to be a "
-                    "PermissionSubjectType instance",
-                    function="modify_permission",
-                    argument="subject_type",
+                raise InvalidArgumentType(
+                    function=self.modify_permission.__name__,
+                    argument='subject_type',
+                    arg_type=PermissionSubjectType.__name__
                 )
 
             _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
@@ -5243,8 +5235,8 @@ class Gmp(GvmProtocol):
 
         if scanner_type is not None:
             if not isinstance(scanner_type, ScannerType):
-                raise InvalidArgument(
-                    function="modify_scanner", argument="scanner_type"
+                raise InvalidArgumentType(
+                    function=self.modify_scanner.__name__, argument='scanner_type', arg_type=ScannerType.__name__
                 )
 
             cmd.add_element("type", scanner_type.value)
@@ -5423,8 +5415,8 @@ class Gmp(GvmProtocol):
                 )
 
             if not isinstance(duration_unit, TimeUnit):
-                raise InvalidArgument(
-                    function="modify_schedule", argument="duration_unit"
+                raise InvalidArgumentType(
+                    function=self.modify_schedule.__name__, argument='duration_unit', arg_type=TimeUnit.__name__
                 )
 
             if not isinstance(duration, numbers.Integral) or duration < 1:
@@ -5443,8 +5435,8 @@ class Gmp(GvmProtocol):
                 )
 
             if not isinstance(period_unit, TimeUnit):
-                raise InvalidArgument(
-                    function="modify_schedule", argument="period_unit"
+                raise InvalidArgumentType(
+                    function=self.modify_schedule.__name__, argument='period_unit', arg_type=TimeUnit.__name__
                 )
 
             if not isinstance(period, numbers.Integral) or period < 1:
@@ -5558,8 +5550,8 @@ class Gmp(GvmProtocol):
                 )
 
             if not isinstance(resource_type, self.types.EntityType):
-                raise InvalidArgument(
-                    function="modify_tag", argument="resource_type"
+                raise InvalidArgumentType(
+                    function=self.modify_tag.__name__, argument='resource_type', arg_type=self.types.EntityType.__name__
                 )
 
             _xmlresource = cmd.add_element(
@@ -5633,8 +5625,8 @@ class Gmp(GvmProtocol):
 
         if alive_test:
             if not isinstance(alive_test, AliveTest):
-                raise InvalidArgument(
-                    function="modify_target", argument="alive_test"
+                raise InvalidArgumentType(
+                    function=self.modify_target.__name__, argument='alive_test', arg_type=AliveTest.__name__
                 )
             cmd.add_element("alive_tests", alive_test.value)
 
@@ -5733,8 +5725,8 @@ class Gmp(GvmProtocol):
 
         if hosts_ordering:
             if not isinstance(hosts_ordering, HostsOrdering):
-                raise InvalidArgument(
-                    function="modify_tasks", argument="hosts_ordering"
+                raise InvalidArgumentType(
+                    function=self.modify_task.__name__, argument='hosts_ordering', arg_type=HostsOrdering.__name__
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
@@ -5757,20 +5749,20 @@ class Gmp(GvmProtocol):
 
         if alert_ids is not None:
             if not _is_list_like(alert_ids):
-                raise InvalidArgument("alert_ids argument must be a list")
+                raise InvalidArgumentType(function=self.modify_task.__name__, argument='alert_ids', arg_type='list')
 
             for alert in alert_ids:
                 cmd.add_element("alert", attrs={"id": str(alert)})
 
         if observers is not None:
             if not _is_list_like(observers):
-                raise InvalidArgument("obeservers argument must be a list")
+                raise InvalidArgumentType(function=self.modify_task.__name__, argument='obeservers', arg_type='list')
 
             cmd.add_element("observers", _to_comma_list(observers))
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
-                raise InvalidArgument('preferences argument must be a dict')
+                raise InvalidArgumentType(function=self.modify_task.__name__, argument='preferences', arg_type=collections.abc.Mapping.__name__)
 
             _xmlprefs = cmd.add_element("preferences")
             for pref_name, pref_value in preferences.items():
@@ -5860,7 +5852,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise InvalidArgument("move_task requires an task_id argument")
+            raise RequiredArgument(function=self.move_task.__name__, argument='task_id')
 
         cmd = XmlCommand("move_task")
         cmd.set_attribute("task_id", task_id)
@@ -5880,7 +5872,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not entity_id:
-            raise InvalidArgument("restore requires an entity_id argument")
+            raise RequiredArgument(function=self.restore.__name__, argument='entity_id')
 
         cmd = XmlCommand("restore")
         cmd.set_attribute("id", entity_id)
@@ -5897,7 +5889,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise InvalidArgument("resume_task requires an task_id argument")
+            raise RequiredArgument(function=self.resume_task.__name__, argument='task_id')
 
         cmd = XmlCommand("resume_task")
         cmd.set_attribute("task_id", task_id)
@@ -5914,7 +5906,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise InvalidArgument("start_task requires an task_id argument")
+            raise RequiredArgument(function=self.start_task.__name__, argument='task_id')
 
         cmd = XmlCommand("start_task")
         cmd.set_attribute("task_id", task_id)
@@ -5931,7 +5923,7 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise InvalidArgument("stop_task requires an task_id argument")
+            raise RequiredArgument(function=self.stop_task.__name__, argument='task_id')
 
         cmd = XmlCommand("stop_task")
         cmd.set_attribute("task_id", task_id)
@@ -6083,8 +6075,8 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not report_format_id:
-            raise InvalidArgument(
-                "verify_report_format argument='report_format_id argument"
+            raise RequiredArgument(
+                function=self.verify_report_format.__name__, argument='report_format_id'
             )
 
         cmd = XmlCommand("verify_report_format")
@@ -6105,8 +6097,8 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not scanner_id:
-            raise InvalidArgument(
-                "verify_scanner argument='scanner_id argument"
+            raise RequiredArgument(
+                function=self.verify_scanner.__name__, argument='scanner_id'
             )
 
         cmd = XmlCommand("verify_scanner")
