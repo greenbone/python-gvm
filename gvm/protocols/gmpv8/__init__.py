@@ -184,7 +184,7 @@ class Gmp(Gmpv7):
         """
         if not name:
             raise RequiredArgument(
-                function="create_credential", argument="name"
+                function=self.create_credential.__name__, argument='name'
             )
 
         if not isinstance(credential_type, CredentialType):
@@ -212,10 +212,8 @@ class Gmp(Gmpv7):
         ):
             if not certificate:
                 raise RequiredArgument(
-                    "create_credential requires certificate argument for "
-                    "credential_type {0}".format(credential_type.name),
-                    function="create_credential",
-                    argument="certificate",
+                    function=self.create_credential.__name__,
+                    argument='certificate',
                 )
 
             cmd.add_element("certificate", certificate)
@@ -227,20 +225,16 @@ class Gmp(Gmpv7):
         ):
             if not login:
                 raise RequiredArgument(
-                    "create_credential requires login argument for "
-                    "credential_type {0}".format(credential_type.name),
-                    function="create_credential",
-                    argument="login",
+                    function=self.create_credential.__name__,
+                    argument='login',
                 )
 
             cmd.add_element("login", login)
 
         if credential_type == CredentialType.PASSWORD_ONLY and not password:
             raise RequiredArgument(
-                "create_credential requires password argument for "
-                "credential_type {0}".format(credential_type.name),
-                function="create_credential",
-                argument="password",
+                function=self.create_credential.__name__,
+                argument='password',
             )
 
         if (
@@ -253,10 +247,8 @@ class Gmp(Gmpv7):
         if credential_type == CredentialType.USERNAME_SSH_KEY:
             if not private_key:
                 raise RequiredArgument(
-                    "create_credential requires private_key argument for "
-                    "credential_type {0}".format(credential_type.name),
-                    function="create_credential",
-                    argument="private_key",
+                    function=self.create_credential.__name__,
+                    argument='private_key',
                 )
 
             _xmlkey = cmd.add_element("key")
@@ -305,9 +297,8 @@ class Gmp(Gmpv7):
         if credential_type == CredentialType.PGP_ENCRYPTION_KEY:
             if not public_key:
                 raise RequiredArgument(
-                    "Creating a pgp credential requires a public_key argument",
-                    argument="public_key",
-                    function="create_credential",
+                    function=self.create_credential.__name__,
+                    argument='public_key',
                 )
 
             _xmlkey = cmd.add_element("key")
@@ -356,7 +347,7 @@ class Gmp(Gmpv7):
         """
         if not credential_id:
             raise RequiredArgument(
-                argument="credential_id", function="modify_credential"
+                function=self.modify_credential.__name__, argument='credential_id'
             )
 
         cmd = XmlCommand("modify_credential")
@@ -374,16 +365,15 @@ class Gmp(Gmpv7):
         if certificate:
             cmd.add_element("certificate", certificate)
 
-        if key_phrase or private_key:
-            if not key_phrase or not private_key:
-                raise RequiredArgument(
-                    "modify_credential requires "
-                    "a key_phrase and private_key arguments",
-                    function="modify_credential",
-                )
+        if key_phrase and private_key:
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("phrase", key_phrase)
             _xmlkey.add_element("private", private_key)
+        else:
+            raise RequiredArgument(
+                function=self.modify_credential.__name__,
+                argument='key_phrase and private_key'
+            )
 
         if login:
             cmd.add_element("login", login)
@@ -457,23 +447,23 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function="create_tag", argument="name")
+            raise RequiredArgument(function=self.create_tag.__name__, argument='name')
 
         if resource_filter and resource_ids:
             raise InvalidArgument(
                 "create_tag accepts either resource_filter or resource_ids "
                 "argument",
-                function="create_tag",
+                function=self.create_tag.__name__,
             )
 
         if not resource_type:
             raise RequiredArgument(
-                function="create_tag", argument="resource_type"
+                function=self.create_tag.__name__, argument='resource_type'
             )
 
         if not isinstance(resource_type, EntityType):
             raise InvalidArgument(
-                function="create_tag", argument="resource_type"
+                function=self.create_tag.__name__, argument='resource_type'
             )
 
         cmd = XmlCommand('create_tag')
@@ -537,7 +527,7 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not tag_id:
-            raise RequiredArgument("modify_tag requires a tag_id element")
+            raise RequiredArgument(function=self.modify_tag.__name__, argument='tag_id')
 
         cmd = XmlCommand("modify_tag")
         cmd.set_attribute("tag_id", str(tag_id))
@@ -557,10 +547,8 @@ class Gmp(Gmpv7):
         if resource_action or resource_filter or resource_ids or resource_type:
             if resource_filter and not resource_type:
                 raise RequiredArgument(
-                    "modify_tag requires resource_type argument when "
-                    "resource_filter is set",
-                    function="modify_tag",
-                    argument="resource_type",
+                    function=self.modify_tag.__name__,
+                    argument='resource_type',
                 )
 
             _xmlresources = cmd.add_element("resources")
@@ -578,7 +566,7 @@ class Gmp(Gmpv7):
             if resource_type is not None:
                 if not isinstance(resource_type, EntityType):
                     raise InvalidArgument(
-                        function="modify_tag", argument="resource_type"
+                        function=self.modify_tag.__name__, argument="resource_type"
                     )
                 _xmlresources.add_element("type", resource_type.value)
 
@@ -664,7 +652,7 @@ class Gmp(Gmpv7):
         """
         if not ticket_id:
             raise RequiredArgument(
-                function="clone_ticket", argument="ticket_id"
+                function=self.clone_ticket.__name__, argument='ticket_id'
             )
 
         cmd = XmlCommand("create_ticket")
@@ -694,16 +682,16 @@ class Gmp(Gmpv7):
         """
         if not result_id:
             raise RequiredArgument(
-                function="create_ticket", argument="result_id"
+                function=self.create_ticket.__name__, argument='result_id'
             )
 
         if not assigned_to_user_id:
             raise RequiredArgument(
-                function="create_ticket", argument="assigned_to_user_id"
+                function=self.create_ticket.__name__, argument='assigned_to_user_id'
             )
 
         if not note:
-            raise RequiredArgument(function="create_ticket", argument="note")
+            raise RequiredArgument(function=self.create_ticket.__name__, argument='note')
 
         cmd = XmlCommand("create_ticket")
 
@@ -732,7 +720,7 @@ class Gmp(Gmpv7):
         """
         if not ticket_id:
             raise RequiredArgument(
-                function="delete_ticket", argument="ticket_id"
+                function=self.delete_ticket.__name__, argument='ticket_id'
             )
 
         cmd = XmlCommand("delete_ticket")
@@ -777,7 +765,7 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not ticket_id:
-            raise RequiredArgument(function="get_ticket", argument="ticket_id")
+            raise RequiredArgument(function=self.get_ticket.__name__, argument='ticket_id')
 
         cmd = XmlCommand("get_tickets")
         cmd.set_attribute("ticket_id", ticket_id)
@@ -811,7 +799,7 @@ class Gmp(Gmpv7):
         """
         if not vulnerability_id:
             raise RequiredArgument(
-                function="get_vulnerability", argument="vulnerability_id"
+                function=self.get_vulnerability.__name__, argument='vulnerability_id'
             )
 
         cmd = XmlCommand("get_vulns")
@@ -842,21 +830,19 @@ class Gmp(Gmpv7):
         """
         if not ticket_id:
             raise RequiredArgument(
-                function="modify_ticket", argument="ticket_id"
+                function=self.modify_ticket.__name__, argument='ticket_id'
             )
 
         if status and not note:
             raise RequiredArgument(
-                "setting a status in modify_ticket requires a note argument",
-                function="modify_ticket",
-                argument="note",
+                function=self.modify_ticket.__name__,
+                argument='note',
             )
 
         if note and not status:
             raise RequiredArgument(
-                "setting a note in modify_ticket requires a status argument",
-                function="modify_ticket",
-                argument="status",
+                function=self.modify_ticket.__name__,
+                argument='status',
             )
 
         cmd = XmlCommand("modify_ticket")
@@ -930,7 +916,7 @@ class Gmp(Gmpv7):
         """
         if not filter_id:
             raise RequiredArgument(
-                function="modify_filter", argument="filter_id"
+                function=self.modify_filter.__name__, argument='filter_id'
             )
 
         cmd = XmlCommand("modify_filter")
@@ -1013,14 +999,14 @@ class Gmp(Gmpv7):
             https://tools.ietf.org/html/rfc5545
         """
         if not name:
-            raise RequiredArgument(function="create_schedule", argument="name")
+            raise RequiredArgument(function=self.create_schedule.__name__, argument='name')
         if not icalendar:
             raise RequiredArgument(
-                function="create_schedule", argument="icalendar"
+                function=self.create_schedule.__name__, argument='icalendar'
             )
         if not timezone:
             raise RequiredArgument(
-                function="create_schedule", argument="timezone"
+                function=self.create_schedule.__name__, argument='timezone'
             )
 
         cmd = XmlCommand("create_schedule")
@@ -1064,7 +1050,7 @@ class Gmp(Gmpv7):
         """
         if not schedule_id:
             raise RequiredArgument(
-                function="modify_schedule", argument="schedule_id"
+                function=self.modify_schedule.__name__, argument='schedule_id'
             )
 
         cmd = XmlCommand("modify_schedule")

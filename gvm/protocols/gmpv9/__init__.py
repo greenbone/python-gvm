@@ -227,12 +227,12 @@ class Gmp(Gmpv8):
         """
         if not name:
             raise RequiredArgument(
-                argument='name', function=self.create_tls_certificate.__name__
+                function=self.create_tls_certificate.__name__, argument='name'
             )
         if not certificate:
             raise RequiredArgument(
-                argument="certificate",
                 function=self.create_tls_certificate.__name__,
+                argument='certificate',
             )
 
         cmd = XmlCommand("create_tls_certificate")
@@ -289,7 +289,7 @@ class Gmp(Gmpv8):
         """
         if not tls_certificate_id:
             raise RequiredArgument(
-                "get_tls_certificate requires tls_certificate_id argument"
+                function=self.get_tls_certificate.__name__, argument='tls_certificate_id'
             )
 
         cmd = XmlCommand("get_tls_certificates")
@@ -320,8 +320,8 @@ class Gmp(Gmpv8):
         """
         if not tls_certificate_id:
             raise RequiredArgument(
-                argument="tls_certificate_id",
                 function=self.modify_tls_certificate.__name__,
+                argument='tls_certificate_id',
             )
 
         cmd = XmlCommand("modify_tls_certificate")
@@ -349,8 +349,8 @@ class Gmp(Gmpv8):
         """
         if not tls_certificate_id:
             raise RequiredArgument(
-                argument="tls_certificate_id",
                 function=self.modify_tls_certificate.__name__,
+                argument='tls_certificate_id',
             )
 
         cmd = XmlCommand("create_tls_certificate")
@@ -379,28 +379,28 @@ class Gmp(Gmpv8):
     ) -> Any:
         if not name:
             raise RequiredArgument(
-                "{} requires a name argument".format(function)
+                function=function, argument='name'
             )
 
         if not config_id:
             raise RequiredArgument(
-                "{} requires a config_id argument".format(function)
+                function=function, argument='config_id'
             )
 
         if not target_id:
             raise RequiredArgument(
-                "{} requires a target_id argument".format(function)
+                function=function, argument='target_id'
             )
 
         if not scanner_id:
             raise RequiredArgument(
-                "{} requires a scanner_id argument".format(function)
+                function=function, argument='scanner_id'
             )
 
         # don't allow to create a container task with create_task
         if target_id == '0':
             raise InvalidArgument(
-                'Invalid argument {} for target_id'.format(target_id)
+                function=function, argument='target_id'
             )
 
         cmd = XmlCommand("create_task")
@@ -419,7 +419,7 @@ class Gmp(Gmpv8):
         if hosts_ordering:
             if not isinstance(hosts_ordering, HostsOrdering):
                 raise InvalidArgument(
-                    function="create_task", argument="hosts_ordering"
+                    function=function, argument="hosts_ordering"
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
@@ -477,11 +477,11 @@ class Gmp(Gmpv8):
         self, config_id: str, name: str, usage_type: UsageType, function: str
     ) -> Any:
         if not name:
-            raise RequiredArgument("{} requires name argument".format(function))
+            raise RequiredArgument(function=function, argument='name')
 
         if not config_id:
             raise RequiredArgument(
-                "{} requires config_id argument".format(function)
+                function=function, argument='config_id'
             )
 
         cmd = XmlCommand("create_config")
