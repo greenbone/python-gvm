@@ -289,7 +289,8 @@ class Gmp(Gmpv8):
         """
         if not tls_certificate_id:
             raise RequiredArgument(
-                function=self.get_tls_certificate.__name__, argument='tls_certificate_id'
+                function=self.get_tls_certificate.__name__,
+                argument='tls_certificate_id',
             )
 
         cmd = XmlCommand("get_tls_certificates")
@@ -378,30 +379,20 @@ class Gmp(Gmpv8):
         preferences: Optional[dict] = None
     ) -> Any:
         if not name:
-            raise RequiredArgument(
-                function=function, argument='name'
-            )
+            raise RequiredArgument(function=function, argument='name')
 
         if not config_id:
-            raise RequiredArgument(
-                function=function, argument='config_id'
-            )
+            raise RequiredArgument(function=function, argument='config_id')
 
         if not target_id:
-            raise RequiredArgument(
-                function=function, argument='target_id'
-            )
+            raise RequiredArgument(function=function, argument='target_id')
 
         if not scanner_id:
-            raise RequiredArgument(
-                function=function, argument='scanner_id'
-            )
+            raise RequiredArgument(function=function, argument='scanner_id')
 
         # don't allow to create a container task with create_task
         if target_id == '0':
-            raise InvalidArgument(
-                function=function, argument='target_id'
-            )
+            raise InvalidArgument(function=function, argument='target_id')
 
         cmd = XmlCommand("create_task")
         cmd.add_element("name", name)
@@ -480,9 +471,7 @@ class Gmp(Gmpv8):
             raise RequiredArgument(function=function, argument='name')
 
         if not config_id:
-            raise RequiredArgument(
-                function=function, argument='config_id'
-            )
+            raise RequiredArgument(function=function, argument='config_id')
 
         cmd = XmlCommand("create_config")
         cmd.add_element("copy", config_id)

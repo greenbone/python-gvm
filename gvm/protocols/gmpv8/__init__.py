@@ -225,16 +225,14 @@ class Gmp(Gmpv7):
         ):
             if not login:
                 raise RequiredArgument(
-                    function=self.create_credential.__name__,
-                    argument='login',
+                    function=self.create_credential.__name__, argument='login',
                 )
 
             cmd.add_element("login", login)
 
         if credential_type == CredentialType.PASSWORD_ONLY and not password:
             raise RequiredArgument(
-                function=self.create_credential.__name__,
-                argument='password',
+                function=self.create_credential.__name__, argument='password',
             )
 
         if (
@@ -347,7 +345,8 @@ class Gmp(Gmpv7):
         """
         if not credential_id:
             raise RequiredArgument(
-                function=self.modify_credential.__name__, argument='credential_id'
+                function=self.modify_credential.__name__,
+                argument='credential_id',
             )
 
         cmd = XmlCommand("modify_credential")
@@ -372,7 +371,7 @@ class Gmp(Gmpv7):
         else:
             raise RequiredArgument(
                 function=self.modify_credential.__name__,
-                argument='key_phrase and private_key'
+                argument='key_phrase and private_key',
             )
 
         if login:
@@ -447,7 +446,9 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_tag.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_tag.__name__, argument='name'
+            )
 
         if resource_filter and resource_ids:
             raise InvalidArgument(
@@ -527,7 +528,9 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not tag_id:
-            raise RequiredArgument(function=self.modify_tag.__name__, argument='tag_id')
+            raise RequiredArgument(
+                function=self.modify_tag.__name__, argument='tag_id'
+            )
 
         cmd = XmlCommand("modify_tag")
         cmd.set_attribute("tag_id", str(tag_id))
@@ -547,8 +550,7 @@ class Gmp(Gmpv7):
         if resource_action or resource_filter or resource_ids or resource_type:
             if resource_filter and not resource_type:
                 raise RequiredArgument(
-                    function=self.modify_tag.__name__,
-                    argument='resource_type',
+                    function=self.modify_tag.__name__, argument='resource_type',
                 )
 
             _xmlresources = cmd.add_element("resources")
@@ -566,7 +568,8 @@ class Gmp(Gmpv7):
             if resource_type is not None:
                 if not isinstance(resource_type, EntityType):
                     raise InvalidArgument(
-                        function=self.modify_tag.__name__, argument="resource_type"
+                        function=self.modify_tag.__name__,
+                        argument="resource_type",
                     )
                 _xmlresources.add_element("type", resource_type.value)
 
@@ -687,11 +690,14 @@ class Gmp(Gmpv7):
 
         if not assigned_to_user_id:
             raise RequiredArgument(
-                function=self.create_ticket.__name__, argument='assigned_to_user_id'
+                function=self.create_ticket.__name__,
+                argument='assigned_to_user_id',
             )
 
         if not note:
-            raise RequiredArgument(function=self.create_ticket.__name__, argument='note')
+            raise RequiredArgument(
+                function=self.create_ticket.__name__, argument='note'
+            )
 
         cmd = XmlCommand("create_ticket")
 
@@ -765,7 +771,9 @@ class Gmp(Gmpv7):
             The response. See :py:meth:`send_command` for details.
         """
         if not ticket_id:
-            raise RequiredArgument(function=self.get_ticket.__name__, argument='ticket_id')
+            raise RequiredArgument(
+                function=self.get_ticket.__name__, argument='ticket_id'
+            )
 
         cmd = XmlCommand("get_tickets")
         cmd.set_attribute("ticket_id", ticket_id)
@@ -799,7 +807,8 @@ class Gmp(Gmpv7):
         """
         if not vulnerability_id:
             raise RequiredArgument(
-                function=self.get_vulnerability.__name__, argument='vulnerability_id'
+                function=self.get_vulnerability.__name__,
+                argument='vulnerability_id',
             )
 
         cmd = XmlCommand("get_vulns")
@@ -835,14 +844,12 @@ class Gmp(Gmpv7):
 
         if status and not note:
             raise RequiredArgument(
-                function=self.modify_ticket.__name__,
-                argument='note',
+                function=self.modify_ticket.__name__, argument='note',
             )
 
         if note and not status:
             raise RequiredArgument(
-                function=self.modify_ticket.__name__,
-                argument='status',
+                function=self.modify_ticket.__name__, argument='status',
             )
 
         cmd = XmlCommand("modify_ticket")
@@ -999,7 +1006,9 @@ class Gmp(Gmpv7):
             https://tools.ietf.org/html/rfc5545
         """
         if not name:
-            raise RequiredArgument(function=self.create_schedule.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_schedule.__name__, argument='name'
+            )
         if not icalendar:
             raise RequiredArgument(
                 function=self.create_schedule.__name__, argument='icalendar'
