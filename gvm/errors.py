@@ -73,20 +73,13 @@ class InvalidArgument(GvmClientError):
         *,
         argument: Optional[str] = None,
         function: Optional[str] = None,
-        arg_type: Optional[str] = None
     ):
         # pylint: disable=super-init-not-called
         self.message = message
         self.argument = argument
         self.function = function
-        self.arg_type = arg_type
 
     def __str__(self):
-        if self.arg_type and self.argument:
-            if self.function:
-                return "In {} the argument {} must be of type {}.".format(self.function, self.argument, self.arg_type)
-            return "The argument {} must be of type {}.".format(self.argument, self.arg_type)
-        
         if self.message:
             return self.message
 
