@@ -20,7 +20,7 @@ Module for transforming responses
 """
 from lxml import etree
 
-from .errors import GvmServerError, GvmResponseError
+from .errors import GvmError, GvmServerError, GvmResponseError
 from .xml import create_parser
 
 
@@ -47,10 +47,10 @@ def _check_command_status(root: etree.Element):
 
     if status[0] == "4":
         raise GvmResponseError(status=status, message=root.get("status_text"))
-        #raise GvmResponseError(root.get("status_text"))
+    elif status[0] == "5":
+        raise GvmServerError(status=status, message=root.get("status_text"))
     elif status[0] != "2":
-        raise GvmServerError("Error in response. {0}".format(root.get("status_text")), root)
-
+        raise GvmError("Error in response. {0}".format(root.get("status_text")), root)
 
 class CheckCommandTransform(EtreeTransform):
     """
