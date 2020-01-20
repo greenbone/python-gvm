@@ -29,7 +29,7 @@ import warnings
 from enum import Enum
 from typing import Any, List, Optional
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.xml import XmlCommand
 
 from gvm.protocols.gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
@@ -188,11 +188,10 @@ class Gmp(Gmpv7):
             )
 
         if not isinstance(credential_type, CredentialType):
-            raise InvalidArgument(
-                "create_credential requires type to be a CredentialType "
-                "instance",
-                function="create_credential",
-                argument="credential_type",
+            raise InvalidArgumentType(
+                function=self.create_credential.__name__,
+                argument='credential_type',
+                arg_type=CredentialType.__name__
             )
 
         cmd = XmlCommand("create_credential")
@@ -261,11 +260,10 @@ class Gmp(Gmpv7):
 
         if credential_type == CredentialType.SNMP:
             if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
-                raise InvalidArgument(
-                    "create_credential requires auth_algorithm to be a "
-                    "SnmpAuthAlgorithm instance",
-                    function="create_credential",
-                    argument="auth_algorithm",
+                raise InvalidArgumentType(
+                    function=self.create_credential.__name__,
+                    argument='auth_algorithm',
+                    arg_type=SnmpAuthAlgorithm.__name__
                 )
 
             cmd.add_element("auth_algorithm", auth_algorithm.value)
@@ -278,11 +276,10 @@ class Gmp(Gmpv7):
 
                 if privacy_algorithm is not None:
                     if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
-                        raise InvalidArgument(
-                            "create_credential requires algorithm to be a "
-                            "SnmpPrivacyAlgorithm instance",
-                            function="create_credential",
-                            argument="privacy_algorithm",
+                        raise InvalidArgumentType(
+                            function=self.create_credential.__name__,
+                            argument='privacy_algorithm',
+                            arg_type=SnmpPrivacyAlgorithm.__name__
                         )
 
                     _xmlprivacy.add_element(
@@ -382,11 +379,10 @@ class Gmp(Gmpv7):
 
         if auth_algorithm:
             if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
-                raise InvalidArgument(
-                    "modify_credential requires auth_algorithm to be a "
-                    "SnmpAuthAlgorithm instance",
-                    argument="auth_algorithm",
-                    function="modify_credential",
+                raise InvalidArgumentType(
+                    function=self.modify_credential.__name__,
+                    argument='auth_algorithm',
+                    arg_type=SnmpAuthAlgorithm.__name__
                 )
             cmd.add_element("auth_algorithm", auth_algorithm.value)
 
@@ -398,11 +394,10 @@ class Gmp(Gmpv7):
 
             if privacy_algorithm is not None:
                 if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
-                    raise InvalidArgument(
-                        "modify_credential requires privacy_algorithm to be "
-                        "a SnmpPrivacyAlgorithm instance",
-                        argument="privacy_algorithm",
-                        function="modify_credential",
+                    raise InvalidArgumentType(
+                        function=self.modify_credential.__name__,
+                        argument='privacy_algorithm',
+                        arg_type=SnmpPrivacyAlgorithm.__name__
                     )
 
                 _xmlprivacy.add_element("algorithm", privacy_algorithm.value)
@@ -463,8 +458,8 @@ class Gmp(Gmpv7):
             )
 
         if not isinstance(resource_type, EntityType):
-            raise InvalidArgument(
-                function=self.create_tag.__name__, argument='resource_type'
+            raise InvalidArgumentType(
+                function=self.create_tag.__name__, argument='resource_type', arg_type=EntityType.__name__
             )
 
         cmd = XmlCommand('create_tag')
@@ -567,9 +562,10 @@ class Gmp(Gmpv7):
 
             if resource_type is not None:
                 if not isinstance(resource_type, EntityType):
-                    raise InvalidArgument(
+                    raise InvalidArgumentType(
                         function=self.modify_tag.__name__,
                         argument="resource_type",
+                        arg_type=EntityType.__name__
                     )
                 _xmlresources.add_element("type", resource_type.value)
 
@@ -862,11 +858,10 @@ class Gmp(Gmpv7):
 
         if status:
             if not isinstance(status, TicketStatus):
-                raise InvalidArgument(
-                    "status argument of modify_ticket needs to be a "
-                    "TicketStatus",
-                    function="modify_ticket",
-                    argument="status",
+                raise InvalidArgumentType(
+                    function=self.modify_ticket.__name__,
+                    argument='status',
+                    arg_type=TicketStatus.__name__
                 )
 
             cmd.add_element('status', status.value)
@@ -940,11 +935,10 @@ class Gmp(Gmpv7):
 
         if filter_type:
             if not isinstance(filter_type, FilterType):
-                raise InvalidArgument(
-                    "modify_filter requires type to be a FilterType instance. "
-                    "was {}".format(filter_type),
-                    function="modify_filter",
-                    argument="filter_type",
+                raise InvalidArgumentType(
+                    function=self.modify_filter.__name__,
+                    argument='filter_type',
+                    arg_type=FilterType.__name__
                 )
             cmd.add_element("type", filter_type.value)
 
