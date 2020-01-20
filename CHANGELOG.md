@@ -8,8 +8,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+* Added `GvmServerError`, `GvmClientError`, `GvmResponseError` and `InvalidArgumentType` error type classes [#192](https://github.com/greenbone/python-gvm/pull/192)
 
 ### Changed
+* Refactored the `InvalidArgument` and `RequiredArgument` errors in the gmp classes [#192](https://github.com/greenbone/python-gvm/pull/192)
 
 ### Fixed
 
