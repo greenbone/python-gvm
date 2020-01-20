@@ -29,32 +29,25 @@ class GvmError(Exception):
     """
 
 
+class GvmServerError(GvmError):
+    """An exception for gvm server errors
+
+    Base class for all exceptions originating in python-gvm.
+    """
+
+
 class GvmResponseError(GvmError):
     def __init__(
-        self,
-        status: Optional[str] = None,
-        message: Optional[str] = None,
-        *,
-        argument: Optional[str] = None,
-        function: Optional[str] = None
+        self, status: str = None, message: str = None,
     ):
         # pylint: disable=super-init-not-called
         self.status = status
         self.message = message
-        self.argument = argument
-        self.function = function
 
     def __str__(self):
-        if self.status and self.message:
-            return (
-                self.__class__.__name__
-                + ': '
-                + self.status
-                + ' - '
-                + self.message
-            )
-        else:
-            return self.__class__.__name__ + ': ' + getattr(self, 'args')[0]
+        return (
+            self.__class__.__name__ + ': ' + self.status + ' - ' + self.message
+        )
 
 
 class GvmClientError(GvmError):
