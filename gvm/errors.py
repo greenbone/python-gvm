@@ -72,14 +72,21 @@ class InvalidArgument(GvmClientError):
         message: Optional[str] = None,
         *,
         argument: Optional[str] = None,
-        function: Optional[str] = None
+        function: Optional[str] = None,
+        arg_type: Optional[str] = None
     ):
         # pylint: disable=super-init-not-called
         self.message = message
         self.argument = argument
         self.function = function
+        self.arg_type = arg_type
 
     def __str__(self):
+        if self.arg_type and self.argument:
+            if self.function:
+                return "In {} the argument {} must be of type {}.".format(self.function, self.argument, self.arg_type)
+            return "The argument {} must be of type {}.".format(self.argument, self.arg_type)
+        
         if self.message:
             return self.message
 
@@ -91,6 +98,23 @@ class InvalidArgument(GvmClientError):
 
         return "Invalid argument {} for {}".format(self.argument, self.function)
 
+class InvalidArgumentType(GvmClientError):
+    def __init__(
+        self,
+        argument: str = None,
+        arg_type: str = None,
+        *,
+        function: Optional[str] = None,
+    ):
+        # pylint: disable=super-init-not-called
+        self.argument = argument
+        self.function = function
+        self.arg_type = arg_type
+
+    def __str__(self):
+        if self.function:
+            return "In {} the argument {} must be of type {}.".format(self.function, self.argument, self.arg_type)
+        return "The argument {} must be of type {}.".format(self.argument, self.arg_type)
 
 class RequiredArgument(GvmClientError):
     """Raised if a required argument/parameter is missing
