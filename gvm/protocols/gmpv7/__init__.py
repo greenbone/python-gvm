@@ -226,10 +226,14 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand("authenticate")
 
         if not username:
-            raise RequiredArgument(function=self.authenticate.__name__, argument='username')
+            raise RequiredArgument(
+                function=self.authenticate.__name__, argument='username'
+            )
 
         if not password:
-            raise RequiredArgument(function=self.authenticate.__name__, argument='password')
+            raise RequiredArgument(
+                function=self.authenticate.__name__, argument='password'
+            )
 
         credentials = cmd.add_element("credentials")
         credentials.add_element("username", username)
@@ -268,13 +272,19 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_agent.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_agent.__name__, argument='name'
+            )
 
         if not installer:
-            raise RequiredArgument(function=self.create_agent.__name__, argument='installer')
+            raise RequiredArgument(
+                function=self.create_agent.__name__, argument='installer'
+            )
 
         if not signature:
-            raise RequiredArgument(function=self.create_agent.__name__, argument='signature')
+            raise RequiredArgument(
+                function=self.create_agent.__name__, argument='signature'
+            )
 
         cmd = XmlCommand("create_agent")
         cmd.add_element("installer", installer)
@@ -302,7 +312,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
-            raise RequiredArgument(function=self.clone_agent.__name__, argument='agent_id')
+            raise RequiredArgument(
+                function=self.clone_agent.__name__, argument='agent_id'
+            )
 
         cmd = XmlCommand("create_agent")
         cmd.add_element("copy", agent_id)
@@ -348,16 +360,24 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_alert.__name, argument='name')
+            raise RequiredArgument(
+                function=self.create_alert.__name, argument='name'
+            )
 
         if not condition:
-            raise RequiredArgument(function=self.create_alert.__name, argument='condition')
+            raise RequiredArgument(
+                function=self.create_alert.__name, argument='condition'
+            )
 
         if not event:
-            raise RequiredArgument(function=self.create_alert.__name, argument='event')
+            raise RequiredArgument(
+                function=self.create_alert.__name, argument='event'
+            )
 
         if not method:
-            raise RequiredArgument(function=self.create_alert.__name, argument='method')
+            raise RequiredArgument(
+                function=self.create_alert.__name, argument='method'
+            )
 
         if not isinstance(condition, AlertCondition):
             raise InvalidArgument(function="create_alert", argument="condition")
@@ -412,7 +432,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not alert_id:
-            raise RequiredArgument(function=self.clone_alert.__name__, argument='alert_id')
+            raise RequiredArgument(
+                function=self.clone_alert.__name__, argument='alert_id'
+            )
 
         cmd = XmlCommand("create_alert")
         cmd.add_element("copy", alert_id)
@@ -429,10 +451,14 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_config.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_config.__name__, argument='name'
+            )
 
         if not config_id:
-            raise RequiredArgument(function=self.create_config.__name__, argument='config_id')
+            raise RequiredArgument(
+                function=self.create_config.__name__, argument='config_id'
+            )
 
         cmd = XmlCommand("create_config")
         cmd.add_element("copy", config_id)
@@ -449,7 +475,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not config_id:
-            raise RequiredArgument(function=self.clone_config.__name__, argument='config_id')
+            raise RequiredArgument(
+                function=self.clone_config.__name__, argument='config_id'
+            )
 
         cmd = XmlCommand("create_config")
         cmd.add_element("copy", config_id)
@@ -466,7 +494,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not config:
-            raise RequiredArgument(function=self.import_config.__name__, argument='config')
+            raise RequiredArgument(
+                function=self.import_config.__name__, argument='config'
+            )
 
         cmd = XmlCommand("create_config")
 
@@ -561,7 +591,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_credential.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_credential.__name__, argument='name'
+            )
 
         if not isinstance(credential_type, CredentialType):
             raise InvalidArgument(
@@ -598,8 +630,7 @@ class Gmp(GvmProtocol):
         ):
             if not login:
                 raise RequiredArgument(
-                    function=self.create_credential.__name__,
-                    argument="login",
+                    function=self.create_credential.__name__, argument="login",
                 )
 
             cmd.add_element("login", login)
@@ -673,7 +704,8 @@ class Gmp(GvmProtocol):
         """
         if not credential_id:
             raise RequiredArgument(
-                function=self.clone_credential.__name__, argument='credential_id'
+                function=self.clone_credential.__name__,
+                argument='credential_id',
             )
 
         cmd = XmlCommand("create_credential")
@@ -702,7 +734,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_filter.__name__, argument="name")
+            raise RequiredArgument(
+                function=self.create_filter.__name__, argument="name"
+            )
 
         cmd = XmlCommand("create_filter")
         _xmlname = cmd.add_element("name", name)
@@ -739,7 +773,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not filter_id:
-            raise RequiredArgument(function=self.clone_filter.__name__, argument='filter_id')
+            raise RequiredArgument(
+                function=self.clone_filter.__name__, argument='filter_id'
+            )
 
         cmd = XmlCommand("create_filter")
         cmd.add_element("copy", filter_id)
@@ -766,7 +802,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_group.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_group.__name__, argument='name'
+            )
 
         cmd = XmlCommand("create_group")
         cmd.add_element("name", name)
@@ -793,7 +831,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not group_id:
-            raise RequiredArgument(fuction=self.clone_group.__name__, argument='group_id')
+            raise RequiredArgument(
+                fuction=self.clone_group.__name__, argument='group_id'
+            )
 
         cmd = XmlCommand("create_group")
         cmd.add_element("copy", group_id)
@@ -810,7 +850,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(fuction=self.create_host.__name__, argument='name')
+            raise RequiredArgument(
+                fuction=self.create_host.__name__, argument='name'
+            )
 
         cmd = XmlCommand("create_asset")
         asset = cmd.add_element("asset")
@@ -854,10 +896,14 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not text:
-            raise RequiredArgument(function=self.create_note.__name__, argument='text")
+            raise RequiredArgument(
+                function=self.create_note.__name__, argument='text'
+            )
 
         if not nvt_oid:
-            raise RequiredArgument(function=self.create_note.__name__, argument='nvt_oid")
+            raise RequiredArgument(
+                function=self.create_note.__name__, argument='nvt_oid'
+            )
 
         cmd = XmlCommand("create_note")
         cmd.add_element("text", text)
@@ -904,7 +950,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not note_id:
-            raise RequiredArgument(function=self.clone_note.__name__, argument='note_id')
+            raise RequiredArgument(
+                function=self.clone_note.__name__, argument='note_id'
+            )
 
         cmd = XmlCommand("create_note")
         cmd.add_element("copy", note_id)
@@ -946,7 +994,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not text:
-            raise RequiredArgument(function=self.create_override.__name__, argument='text')
+            raise RequiredArgument(
+                function=self.create_override.__name__, argument='text'
+            )
 
         if not nvt_oid:
             raise RequiredArgument(
@@ -1045,7 +1095,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_permission.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_permission.__name__, argument='name'
+            )
 
         if not subject_id:
             raise RequiredArgument(
@@ -1072,12 +1124,14 @@ class Gmp(GvmProtocol):
         if resource_id or resource_type:
             if not resource_id:
                 raise RequiredArgument(
-                    function=self.create_permission.__name__, argument='resource_id'
+                    function=self.create_permission.__name__,
+                    argument='resource_id',
                 )
 
             if not resource_type:
                 raise RequiredArgument(
-                    function=self.create_permission.__name__, argument='resource_type'
+                    function=self.create_permission.__name__,
+                    argument='resource_type',
                 )
 
             if not isinstance(resource_type, self.types.EntityType):
@@ -1103,7 +1157,8 @@ class Gmp(GvmProtocol):
         """
         if not permission_id:
             raise RequiredArgument(
-                function=self.clone_permission.__name__, argument='permission_id'
+                function=self.clone_permission.__name__,
+                argument='permission_id',
             )
 
         cmd = XmlCommand("create_permission")
@@ -1125,7 +1180,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_port_list.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_port_list.__name__, argument='name'
+            )
 
         if not port_range:
             raise RequiredArgument(
@@ -1182,12 +1239,14 @@ class Gmp(GvmProtocol):
         """
         if not port_list_id:
             raise RequiredArgument(
-                function=self.create_port_range.__name__, argument='port_list_id'
+                function=self.create_port_range.__name__,
+                argument='port_list_id',
             )
 
         if not port_range_type:
             raise RequiredArgument(
-                function=self.create_port_range.__name__, argument='port_range_type'
+                function=self.create_port_range.__name__,
+                argument='port_range_type',
             )
 
         if not start:
@@ -1196,7 +1255,9 @@ class Gmp(GvmProtocol):
             )
 
         if not end:
-            raise RequiredArgument(function=self.create_port_range.__name__, argument='end')
+            raise RequiredArgument(
+                function=self.create_port_range.__name__, argument='end'
+            )
 
         if not isinstance(port_range_type, PortRangeType):
             raise InvalidArgument(
@@ -1239,7 +1300,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not report:
-            raise RequiredArgument(function=self.import_report.__name__, argument='report')
+            raise RequiredArgument(
+                function=self.import_report.__name__, argument='report'
+            )
 
         cmd = XmlCommand("create_report")
 
@@ -1253,7 +1316,8 @@ class Gmp(GvmProtocol):
                 _xmltask.add_element("comment", task_comment)
         else:
             raise RequiredArgument(
-                function=self.import_report.__name__, argument='task_id or task_name'
+                function=self.import_report.__name__,
+                argument='task_id or task_name',
             )
 
         if not in_assets is None:
@@ -1287,7 +1351,9 @@ class Gmp(GvmProtocol):
         """
 
         if not name:
-            raise RequiredArgument(function=self.create_role.__name__ argument='name')
+            raise RequiredArgument(
+                function=self.create_role.__name__, argument='name'
+            )
 
         cmd = XmlCommand("create_role")
         cmd.add_element("name", name)
@@ -1310,7 +1376,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not role_id:
-            raise RequiredArgument(function=self.clone_role.__name__ argument='role_id')
+            raise RequiredArgument(
+                function=self.clone_role.__name__, argument='role_id'
+            )
 
         cmd = XmlCommand("create_role")
         cmd.add_element("copy", role_id)
@@ -1343,13 +1411,19 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_scanner.__name__ argument='name')
+            raise RequiredArgument(
+                function=self.create_scanner.__name__, argument='name'
+            )
 
         if not host:
-            raise RequiredArgument(function=self.create_scanner.__name__ argument='host')
+            raise RequiredArgument(
+                function=self.create_scanner.__name__, argument='host'
+            )
 
         if not port:
-            raise RequiredArgument(function=self.create_scanner.__name__ argument='port')
+            raise RequiredArgument(
+                function=self.create_scanner.__name__, argument='port'
+            )
 
         if not scanner_type:
             raise RequiredArgument(
@@ -1447,7 +1521,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_schedule.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_schedule.__name__, argument='name'
+            )
 
         cmd = XmlCommand("create_schedule")
         cmd.add_element("name", name)
@@ -1465,7 +1541,8 @@ class Gmp(GvmProtocol):
 
             if first_time_minute is None:
                 raise RequiredArgument(
-                    function=self.create_schedule.__name__, argument='first_time_minute'
+                    function=self.create_schedule.__name__,
+                    argument='first_time_minute',
                 )
             elif (
                 not isinstance(first_time_minute, numbers.Integral)
@@ -1478,7 +1555,8 @@ class Gmp(GvmProtocol):
 
             if first_time_hour is None:
                 raise RequiredArgument(
-                    function=self.create_schedule.__name__, argument='first_time_hour'
+                    function=self.create_schedule.__name__,
+                    argument='first_time_hour',
                 )
             elif (
                 not isinstance(first_time_hour, numbers.Integral)
@@ -1491,7 +1569,8 @@ class Gmp(GvmProtocol):
 
             if first_time_day_of_month is None:
                 raise RequiredArgument(
-                    function=self.create_schedule.__name__, argument='first_time_day_of_month'
+                    function=self.create_schedule.__name__,
+                    argument='first_time_day_of_month',
                 )
             elif (
                 not isinstance(first_time_day_of_month, numbers.Integral)
@@ -1505,7 +1584,8 @@ class Gmp(GvmProtocol):
 
             if first_time_month is None:
                 raise RequiredArgument(
-                    function=self.create_schedule.__name__, argument='first_time_month'
+                    function=self.create_schedule.__name__,
+                    argument='first_time_month',
                 )
             elif (
                 not isinstance(first_time_month, numbers.Integral)
@@ -1519,7 +1599,8 @@ class Gmp(GvmProtocol):
 
             if first_time_year is None:
                 raise RequiredArgument(
-                    function=self.create_schedule.__name__, argument='first_time_year'
+                    function=self.create_schedule.__name__,
+                    argument='first_time_year',
                 )
             elif (
                 not isinstance(first_time_year, numbers.Integral)
@@ -1540,7 +1621,8 @@ class Gmp(GvmProtocol):
         if duration is not None:
             if not duration_unit:
                 raise RequiredArgument(
-                    function=self.create_schedule.__name__, argument='duration_unit'
+                    function=self.create_schedule.__name__,
+                    argument='duration_unit',
                 )
 
             if not isinstance(duration_unit, TimeUnit):
@@ -1559,7 +1641,8 @@ class Gmp(GvmProtocol):
         if period is not None:
             if not period_unit:
                 raise RequiredArgument(
-                    function=self.create_schedule.__name__, argument='period_unit'
+                    function=self.create_schedule.__name__,
+                    argument='period_unit',
                 )
 
             if not isinstance(period_unit, TimeUnit):
@@ -1623,10 +1706,14 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_tag.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_tag.__name__, argument='name'
+            )
 
         if not resource_type:
-            raise RequiredArgument(function=self.create_tag.__name__, argument='resource_type')
+            raise RequiredArgument(
+                function=self.create_tag.__name__, argument='resource_type'
+            )
 
         if not isinstance(resource_type, self.types.EntityType):
             raise InvalidArgument(
@@ -1668,7 +1755,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not tag_id:
-            raise RequiredArgument(function=self.clone_tag.__name__, argument='tag_id')
+            raise RequiredArgument(
+                function=self.clone_tag.__name__, argument='tag_id'
+            )
 
         cmd = XmlCommand("create_tag")
         cmd.add_element("copy", tag_id)
@@ -1719,7 +1808,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_target.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_target.__name__, argument='name'
+            )
 
         cmd = XmlCommand("create_target")
         _xmlname = cmd.add_element("name", name)
@@ -1735,7 +1826,8 @@ class Gmp(GvmProtocol):
             cmd.add_element("hosts", _to_comma_list(hosts))
         else:
             raise RequiredArgument(
-                function=self.create_target.__name__, argument='hosts or asset_hosts_filter'
+                function=self.create_target.__name__,
+                argument='hosts or asset_hosts_filter',
             )
 
         if comment:
@@ -1796,7 +1888,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not target_id:
-            raise RequiredArgument(function=self.clone_target.__name__, argument='target_id')
+            raise RequiredArgument(
+                function=self.clone_target.__name__, argument='target_id'
+            )
 
         cmd = XmlCommand("create_target")
         cmd.add_element("copy", target_id)
@@ -1840,16 +1934,24 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_task.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_task.__name__, argument='name'
+            )
 
         if not config_id:
-            raise RequiredArgument(function=self.create_task.__name__, argument='config_id')
+            raise RequiredArgument(
+                function=self.create_task.__name__, argument='config_id'
+            )
 
         if not target_id:
-            raise RequiredArgument(function=self.create_task.__name__, argument='target_id')
+            raise RequiredArgument(
+                function=self.create_task.__name__, argument='target_id'
+            )
 
         if not scanner_id:
-            raise RequiredArgument(function=self.create_task.__name__, argument='scanner_id')
+            raise RequiredArgument(
+                function=self.create_task.__name__, argument='scanner_id'
+            )
 
         # don't allow to create a container task with create_task
         if target_id == '0':
@@ -1942,7 +2044,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_container_task.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_container_task.__name__, argument='name'
+            )
 
         cmd = XmlCommand("create_task")
         cmd.add_element("name", name)
@@ -1963,7 +2067,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise RequiredArgument(function=self.clone_task.__name__, argument='task_id')
+            raise RequiredArgument(
+                function=self.clone_task.__name__, argument='task_id'
+            )
 
         cmd = XmlCommand("create_task")
         cmd.add_element("copy", task_id)
@@ -1997,7 +2103,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.create_user.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.create_user.__name__, argument='name'
+            )
 
         cmd = XmlCommand("create_user")
         cmd.add_element("name", name)
@@ -2035,7 +2143,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not user_id:
-            raise RequiredArgument(function=self.clone_user.__name__, argument='user_id')
+            raise RequiredArgument(
+                function=self.clone_user.__name__, argument='user_id'
+            )
 
         cmd = XmlCommand("create_user")
         cmd.add_element("copy", user_id)
@@ -2051,7 +2161,9 @@ class Gmp(GvmProtocol):
             ultimate: Whether to remove entirely, or to the trashcan.
         """
         if not agent_id:
-            raise RequiredArgument(function=self.delete_agent.__name__, argument='agent_id')
+            raise RequiredArgument(
+                function=self.delete_agent.__name__, argument='agent_id'
+            )
 
         cmd = XmlCommand("delete_agent")
         cmd.set_attribute("agent_id", agent_id)
@@ -2069,7 +2181,9 @@ class Gmp(GvmProtocol):
             ultimate: Whether to remove entirely, or to the trashcan.
         """
         if not alert_id:
-            raise RequiredArgument(function=self.delete_alert.__name__, argument='alert_id')
+            raise RequiredArgument(
+                function=self.delete_alert.__name__, argument='alert_id'
+            )
 
         cmd = XmlCommand("delete_alert")
         cmd.set_attribute("alert_id", alert_id)
@@ -2089,7 +2203,8 @@ class Gmp(GvmProtocol):
         """
         if not asset_id and not report_id:
             raise RequiredArgument(
-                function=self.delete_asset.__name__, argument='asset_id or report_id'
+                function=self.delete_asset.__name__,
+                argument='asset_id or report_id',
             )
 
         cmd = XmlCommand("delete_asset")
@@ -2131,7 +2246,8 @@ class Gmp(GvmProtocol):
         """
         if not credential_id:
             raise RequiredArgument(
-                function=self.delete_credential.__name__, argument='credential_id'
+                function=self.delete_credential.__name__,
+                argument='credential_id',
             )
 
         cmd = XmlCommand("delete_credential")
@@ -2170,7 +2286,9 @@ class Gmp(GvmProtocol):
             ultimate: Whether to remove entirely, or to the trashcan.
         """
         if not group_id:
-            raise RequiredArgument(function=self.delete_group.__name__, argument='group_id')
+            raise RequiredArgument(
+                function=self.delete_group.__name__, argument='group_id'
+            )
 
         cmd = XmlCommand("delete_group")
         cmd.set_attribute("group_id", group_id)
@@ -2188,7 +2306,9 @@ class Gmp(GvmProtocol):
             ultimate: Whether to remove entirely,or to the trashcan.
         """
         if not note_id:
-            raise RequiredArgument(function=self.delete_note.__name__, argument='note_id')
+            raise RequiredArgument(
+                function=self.delete_note.__name__, argument='note_id'
+            )
 
         cmd = XmlCommand("delete_note")
         cmd.set_attribute("note_id", note_id)
@@ -2227,7 +2347,8 @@ class Gmp(GvmProtocol):
         """
         if not permission_id:
             raise RequiredArgument(
-                function=self.delete_permission.__name__, argument='permission_id'
+                function=self.delete_permission.__name__,
+                argument='permission_id',
             )
 
         cmd = XmlCommand("delete_permission")
@@ -2264,7 +2385,8 @@ class Gmp(GvmProtocol):
         """
         if not port_range_id:
             raise RequiredArgument(
-                function=self.delete_port_range.__name__, argument='port_range_id'
+                function=self.delete_port_range.__name__,
+                argument='port_range_id',
             )
 
         cmd = XmlCommand("delete_port_range")
@@ -2299,7 +2421,8 @@ class Gmp(GvmProtocol):
         """
         if not report_format_id:
             raise RequiredArgument(
-                function=self.delete_report_format.__name__, argument='report_format_id'
+                function=self.delete_report_format.__name__,
+                argument='report_format_id',
             )
 
         cmd = XmlCommand("delete_report_format")
@@ -2318,7 +2441,9 @@ class Gmp(GvmProtocol):
             ultimate: Whether to remove entirely, or to the trashcan.
         """
         if not role_id:
-            raise RequiredArgument(function=self.delete_role.__name__, argument='role_id')
+            raise RequiredArgument(
+                function=self.delete_role.__name__, argument='role_id'
+            )
 
         cmd = XmlCommand("delete_role")
         cmd.set_attribute("role_id", role_id)
@@ -2376,7 +2501,9 @@ class Gmp(GvmProtocol):
             ultimate: Whether to remove entirely, or to the trashcan.
         """
         if not tag_id:
-            raise RequiredArgument(function=self.delete_tag.__name__, argument='tag_id')
+            raise RequiredArgument(
+                function=self.delete_tag.__name__, argument='tag_id'
+            )
 
         cmd = XmlCommand("delete_tag")
         cmd.set_attribute("tag_id", tag_id)
@@ -2414,7 +2541,9 @@ class Gmp(GvmProtocol):
             ultimate: Whether to remove entirely, or to the trashcan.
         """
         if not task_id:
-            raise RequiredArgument(function=self.delete_task.__name__, argument='task_id')
+            raise RequiredArgument(
+                function=self.delete_task.__name__, argument='task_id'
+            )
 
         cmd = XmlCommand("delete_task")
         cmd.set_attribute("task_id", task_id)
@@ -2538,7 +2667,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
-            raise RequiredArgument(function=self.get_agent.__name__, argument='agent_id')
+            raise RequiredArgument(
+                function=self.get_agent.__name__, argument='agent_id'
+            )
 
         cmd = XmlCommand("get_agents")
         cmd.set_attribute("agent_id", agent_id)
@@ -2616,7 +2747,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not alert_id:
-            raise RequiredArgument(function=self.get_alert.__name__, argument='alert_id')
+            raise RequiredArgument(
+                function=self.get_alert.__name__, argument='alert_id'
+            )
 
         cmd = XmlCommand("get_alerts")
         cmd.set_attribute("alert_id", alert_id)
@@ -2664,7 +2797,9 @@ class Gmp(GvmProtocol):
             raise InvalidArgument(function="get_asset", argument="asset_type")
 
         if not asset_id:
-            raise RequiredArgument(function=self.get_asset.__name__, argument='asset_id')
+            raise RequiredArgument(
+                function=self.get_asset.__name__, argument='asset_id'
+            )
 
         cmd = XmlCommand("get_assets")
         cmd.set_attribute("asset_id", asset_id)
@@ -2800,7 +2935,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not config_id:
-            raise RequiredArgument(function=self.get_config.__name__, argument='config_id')
+            raise RequiredArgument(
+                function=self.get_config.__name__, argument='config_id'
+            )
 
         cmd = XmlCommand("get_configs")
         cmd.set_attribute("config_id", config_id)
@@ -2827,7 +2964,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not feed_type:
-            raise RequiredArgument(function=self.get_feed.__name__, argument='feed_type')
+            raise RequiredArgument(
+                function=self.get_feed.__name__, argument='feed_type'
+            )
 
         if not isinstance(feed_type, FeedType):
             raise InvalidArgument(
@@ -2880,7 +3019,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not filter_id:
-            raise RequiredArgument(function=self.get_filter.__name__, argument='filter_id')
+            raise RequiredArgument(
+                function=self.get_filter.__name__, argument='filter_id'
+            )
 
         cmd = XmlCommand("get_filters")
         cmd.set_attribute("filter_id", filter_id)
@@ -2922,7 +3063,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not group_id:
-            raise RequiredArgument(function=self.get_group.__name__, argument='group_id')
+            raise RequiredArgument(
+                function=self.get_group.__name__, argument='group_id'
+            )
 
         cmd = XmlCommand("get_groups")
         cmd.set_attribute("group_id", group_id)
@@ -2987,13 +3130,17 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not info_type:
-            raise RequiredArgument(function=self.get_info.__name__, argument='info_type')
+            raise RequiredArgument(
+                function=self.get_info.__name__, argument='info_type'
+            )
 
         if not isinstance(info_type, InfoType):
             raise InvalidArgument(function="get_info", argument="info_type")
 
         if not info_id:
-            raise RequiredArgument(function=self.get_info.__name__, argument='info_id')
+            raise RequiredArgument(
+                function=self.get_info.__name__, argument='info_id'
+            )
 
         cmd = XmlCommand("get_info")
         cmd.set_attribute("info_id", info_id)
@@ -3045,7 +3192,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not note_id:
-            raise RequiredArgument(function=self.get_note.__name__, argument='note_id')
+            raise RequiredArgument(
+                function=self.get_note.__name__, argument='note_id'
+            )
 
         cmd = XmlCommand("get_notes")
         cmd.set_attribute("note_id", note_id)
@@ -3125,7 +3274,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not nvt_oid:
-            raise RequiredArgument(function=self.get_nvt.__name__, argument='nvt_oid')
+            raise RequiredArgument(
+                function=self.get_nvt.__name__, argument='nvt_oid'
+            )
 
         cmd = XmlCommand("get_nvts")
         cmd.set_attribute("nvt_oid", nvt_oid)
@@ -3341,7 +3492,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not name:
-            raise RequiredArgument(function=self.get_preference.__name__, argument='name')
+            raise RequiredArgument(
+                function=self.get_preference.__name__, argument='name'
+            )
 
         cmd = XmlCommand("get_preferences")
 
@@ -3419,7 +3572,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not report_id:
-            raise RequiredArgument(function=self.get_report.__name__, argument='report_id')
+            raise RequiredArgument(
+                function=self.get_report.__name__, argument='report_id'
+            )
 
         cmd = XmlCommand("get_reports")
         cmd.set_attribute("report_id", report_id)
@@ -3492,7 +3647,8 @@ class Gmp(GvmProtocol):
         """
         if not report_format_id:
             raise RequiredArgument(
-                function=self.get_report_format.__name__, argument='report_format_id'
+                function=self.get_report_format.__name__,
+                argument='report_format_id',
             )
 
         cmd = XmlCommand("get_report_formats")
@@ -3554,7 +3710,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not result_id:
-            raise RequiredArgument(function=self.get_result.__name__, argument='result_id')
+            raise RequiredArgument(
+                function=self.get_result.__name__, argument='result_id'
+            )
 
         cmd = XmlCommand("get_results")
         cmd.set_attribute("result_id", result_id)
@@ -3599,7 +3757,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not role_id:
-            raise RequiredArgument(function=self.get_role.__name__, argument='role_id')
+            raise RequiredArgument(
+                function=self.get_role.__name__, argument='role_id'
+            )
 
         cmd = XmlCommand("get_roles")
         cmd.set_attribute("role_id", role_id)
@@ -3647,7 +3807,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not scanner_id:
-            raise RequiredArgument(function=self.get_scanner.__name__, argument='scanner_id')
+            raise RequiredArgument(
+                function=self.get_scanner.__name__, argument='scanner_id'
+            )
 
         cmd = XmlCommand("get_scanners")
         cmd.set_attribute("scanner_id", scanner_id)
@@ -3731,7 +3893,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not setting_id:
-            raise RequiredArgument(function=self.get_setting.__name__, argument='setting_id')
+            raise RequiredArgument(
+                function=self.get_setting.__name__, argument='setting_id'
+            )
 
         cmd = XmlCommand("get_settings")
         cmd.set_attribute("setting_id", setting_id)
@@ -3829,7 +3993,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not tag_id:
-            raise RequiredArgument(function=self.get_tag.__name__, argument='tag_id')
+            raise RequiredArgument(
+                function=self.get_tag.__name__, argument='tag_id'
+            )
 
         cmd = XmlCommand("get_tags")
         cmd.set_attribute("tag_id", tag_id)
@@ -3876,7 +4042,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not target_id:
-            raise RequiredArgument(function=self.get_target.__name__, argument='target_id')
+            raise RequiredArgument(
+                function=self.get_target.__name__, argument='target_id'
+            )
 
         cmd = XmlCommand("get_targets")
         cmd.set_attribute("target_id", target_id)
@@ -3929,7 +4097,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise RequiredArgument(function=self.get_task.__name__, argument='task_id')
+            raise RequiredArgument(
+                function=self.get_task.__name__, argument='task_id'
+            )
 
         cmd = XmlCommand("get_tasks")
         cmd.set_attribute("task_id", task_id)
@@ -3966,7 +4136,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not user_id:
-            raise RequiredArgument(function=self.get_user.__name__, argument='user_id')
+            raise RequiredArgument(
+                function=self.get_user.__name__, argument='user_id'
+            )
 
         cmd = XmlCommand("get_users")
         cmd.set_attribute("user_id", user_id)
@@ -4030,7 +4202,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
-            raise RequiredArgument(function=self.modify_agent.__name__, argument='agent_id')
+            raise RequiredArgument(
+                function=self.modify_agent.__name__, argument='agent_id'
+            )
 
         cmd = XmlCommand("modify_agent")
         cmd.set_attribute("agent_id", str(agent_id))
@@ -4086,7 +4260,9 @@ class Gmp(GvmProtocol):
         """
 
         if not alert_id:
-            raise RequiredArgument(function=self.modify_alert.__name__, argument='alert_id')
+            raise RequiredArgument(
+                function=self.modify_alert.__name__, argument='alert_id'
+            )
 
         cmd = XmlCommand("modify_alert")
         cmd.set_attribute("alert_id", str(alert_id))
@@ -4152,7 +4328,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not asset_id:
-            raise RequiredArgument(function=self.modify_asset.__name__, argument='asset_id')
+            raise RequiredArgument(
+                function=self.modify_asset.__name__, argument='asset_id'
+            )
 
         cmd = XmlCommand("modify_asset")
         cmd.set_attribute("asset_id", asset_id)
@@ -4171,10 +4349,13 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not group_name:
-            raise RequiredArgument(function=self.modify_auth.__name__, argument='group_name')
+            raise RequiredArgument(
+                function=self.modify_auth.__name__, argument='group_name'
+            )
         if not auth_conf_settings:
             raise RequiredArgument(
-                function=self.modify_auth.__name__, argument='auth_conf_settings'
+                function=self.modify_auth.__name__,
+                argument='auth_conf_settings',
             )
         cmd = XmlCommand("modify_auth")
         _xmlgroup = cmd.add_element("group", attrs={"name": str(group_name)})
@@ -4205,17 +4386,20 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_preference.__name__, argument='config_id'
+                function=self.modify_config_set_nvt_preference.__name__,
+                argument='config_id',
             )
 
         if not nvt_oid:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_preference.__name__, argument='nvt_oid'
+                function=self.modify_config_set_nvt_preference.__name__,
+                argument='nvt_oid',
             )
 
         if not name:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_preference.__name__, argument='name'
+                function=self.modify_config_set_nvt_preference.__name__,
+                argument='name',
             )
 
         cmd = XmlCommand("modify_config")
@@ -4242,7 +4426,8 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_comment.__name__, argument='config_id argument'
+                function=self.modify_config_set_comment.__name__,
+                argument='config_id argument',
             )
 
         cmd = XmlCommand("modify_config")
@@ -4266,12 +4451,14 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_scanner_preference.__name__, argument='config_id'
+                function=self.modify_config_set_scanner_preference.__name__,
+                argument='config_id',
             )
 
         if not name:
             raise RequiredArgument(
-                function=self.modify_config_set_scanner_preference.__name__, argument='name argument'
+                function=self.modify_config_set_scanner_preference.__name__,
+                argument='name argument',
             )
 
         cmd = XmlCommand("modify_config")
@@ -4301,12 +4488,14 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_selection.__name__, argument='config_id'
+                function=self.modify_config_set_nvt_selection.__name__,
+                argument='config_id',
             )
 
         if not family:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_selection.__name__, argument='family argument'
+                function=self.modify_config_set_nvt_selection.__name__,
+                argument='family argument',
             )
 
         if not _is_list_like(nvt_oids):
@@ -4347,7 +4536,8 @@ class Gmp(GvmProtocol):
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_family_selection.__name__, argument='config_id'
+                function=self.modify_config_set_family_selection.__name__,
+                argument='config_id',
             )
 
         if not _is_list_like(families):
@@ -4392,7 +4582,10 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not config_id:
-            raise RequiredArgument(function=self.modify_config.__name__, argument='config_id argument')
+            raise RequiredArgument(
+                function=self.modify_config.__name__,
+                argument='config_id argument',
+            )
 
         if selection is None:
             deprecation(
@@ -4487,7 +4680,8 @@ class Gmp(GvmProtocol):
         """
         if not credential_id:
             raise RequiredArgument(
-                function=self.modify_credential.__name__, argument='credential_id attribute'
+                function=self.modify_credential.__name__,
+                argument='credential_id attribute',
             )
 
         cmd = XmlCommand("modify_credential")
@@ -4617,7 +4811,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not group_id:
-            raise RequiredArgument(function=self.modify_group.__name__, argument='group_id')
+            raise RequiredArgument(
+                function=self.modify_group.__name__, argument='group_id'
+            )
 
         cmd = XmlCommand("modify_group")
         cmd.set_attribute("group_id", group_id)
@@ -4664,10 +4860,14 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not note_id:
-            raise RequiredArgument(function=self.modify_note.__name__, argument='note_id')
+            raise RequiredArgument(
+                function=self.modify_note.__name__, argument='note_id'
+            )
 
         if not text:
-            raise RequiredArgument(function=self.modify_note.__name__, argument='text')
+            raise RequiredArgument(
+                function=self.modify_note.__name__, argument='text'
+            )
 
         cmd = XmlCommand("modify_note")
         cmd.set_attribute("note_id", note_id)
@@ -4746,7 +4946,9 @@ class Gmp(GvmProtocol):
                 function=self.modify_override.__name__, argument='override_id'
             )
         if not text:
-            raise RequiredArgument(function=self.modify_override.__name__, argument='text')
+            raise RequiredArgument(
+                function=self.modify_override.__name__, argument='text'
+            )
 
         cmd = XmlCommand("modify_override")
         cmd.set_attribute("override_id", override_id)
@@ -4826,7 +5028,8 @@ class Gmp(GvmProtocol):
         """
         if not permission_id:
             raise RequiredArgument(
-                function=self.modify_permission.__name__, argument='permission_id'
+                function=self.modify_permission.__name__,
+                argument='permission_id',
             )
 
         cmd = XmlCommand("modify_permission")
@@ -4841,12 +5044,14 @@ class Gmp(GvmProtocol):
         if resource_id or resource_type:
             if not resource_id:
                 raise RequiredArgument(
-                    function=self.modify_permission.__name__, argument='resource_id'
+                    function=self.modify_permission.__name__,
+                    argument='resource_id',
                 )
 
             if not resource_type:
                 raise RequiredArgument(
-                    function=self.modify_permission.__name__, argument='resource_type'
+                    function=self.modify_permission.__name__,
+                    argument='resource_type',
                 )
 
             if not isinstance(resource_type, self.types.EntityType):
@@ -4862,7 +5067,8 @@ class Gmp(GvmProtocol):
         if subject_id or subject_type:
             if not subject_id:
                 raise RequiredArgument(
-                    function=self.modify_permission.__name__, argument='subject_id'
+                    function=self.modify_permission.__name__,
+                    argument='subject_id',
                 )
 
             if not isinstance(subject_type, PermissionSubjectType):
@@ -4935,7 +5141,8 @@ class Gmp(GvmProtocol):
         """
         if not report_format_id:
             raise RequiredArgument(
-                function=self.modify_report.__name__, argument='report_format_id'
+                function=self.modify_report.__name__,
+                argument='report_format_id',
             )
 
         cmd = XmlCommand("modify_report_format")
@@ -4979,7 +5186,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not role_id:
-            raise RequiredArgument(function=self.modify_role.__name__, argument='role_id argument')
+            raise RequiredArgument(
+                function=self.modify_role.__name__, argument='role_id argument'
+            )
 
         cmd = XmlCommand("modify_role")
         cmd.set_attribute("role_id", role_id)
@@ -5025,7 +5234,8 @@ class Gmp(GvmProtocol):
         """
         if not scanner_id:
             raise RequiredArgument(
-                function=self.modify_scanner.__name__, argument='scanner_id argument'
+                function=self.modify_scanner.__name__,
+                argument='scanner_id argument',
             )
 
         cmd = XmlCommand("modify_scanner")
@@ -5128,7 +5338,8 @@ class Gmp(GvmProtocol):
 
             if first_time_minute is None:
                 raise RequiredArgument(
-                    function=self.modify_schedule.__name__, argument='first_time_minute'
+                    function=self.modify_schedule.__name__,
+                    argument='first_time_minute',
                 )
             elif (
                 not isinstance(first_time_minute, numbers.Integral)
@@ -5141,7 +5352,8 @@ class Gmp(GvmProtocol):
 
             if first_time_hour is None:
                 raise RequiredArgument(
-                    function=self.modify_schedule.__name__, argument='first_time_hour'
+                    function=self.modify_schedule.__name__,
+                    argument='first_time_hour',
                 )
             elif (
                 not isinstance(first_time_hour, numbers.Integral)
@@ -5154,7 +5366,8 @@ class Gmp(GvmProtocol):
 
             if first_time_day_of_month is None:
                 raise RequiredArgument(
-                    function=self.modify_schedule.__name__, argument='first_time_day_of_month'
+                    function=self.modify_schedule.__name__,
+                    argument='first_time_day_of_month',
                 )
             elif (
                 not isinstance(first_time_day_of_month, numbers.Integral)
@@ -5168,7 +5381,8 @@ class Gmp(GvmProtocol):
 
             if first_time_month is None:
                 raise RequiredArgument(
-                    function=self.modify_schedule.__name__, argument='first_time_month'
+                    function=self.modify_schedule.__name__,
+                    argument='first_time_month',
                 )
             elif (
                 not isinstance(first_time_month, numbers.Integral)
@@ -5182,7 +5396,8 @@ class Gmp(GvmProtocol):
 
             if first_time_year is None:
                 raise RequiredArgument(
-                    function=self.modify_schedule.__name__, argument='first_time_year'
+                    function=self.modify_schedule.__name__,
+                    argument='first_time_year',
                 )
             elif (
                 not isinstance(first_time_year, numbers.Integral)
@@ -5203,7 +5418,8 @@ class Gmp(GvmProtocol):
         if duration is not None:
             if not duration_unit:
                 raise RequiredArgument(
-                    function=self.modify_schedule.__name__, argument='duration_unit'
+                    function=self.modify_schedule.__name__,
+                    argument='duration_unit',
                 )
 
             if not isinstance(duration_unit, TimeUnit):
@@ -5222,7 +5438,8 @@ class Gmp(GvmProtocol):
         if period is not None:
             if not period_unit:
                 raise RequiredArgument(
-                    function=self.modify_schedule.__name__, argument='period_unit'
+                    function=self.modify_schedule.__name__,
+                    argument='period_unit',
                 )
 
             if not isinstance(period_unit, TimeUnit):
@@ -5262,11 +5479,14 @@ class Gmp(GvmProtocol):
         """
         if not setting_id and not name:
             raise RequiredArgument(
-                function=self.modify_setting.__name__, argument='setting_id or name argument'
+                function=self.modify_setting.__name__,
+                argument='setting_id or name argument',
             )
 
         if value is None:
-            raise RequiredArgument(function=self.modify_setting.__name__, argument='value argument')
+            raise RequiredArgument(
+                function=self.modify_setting.__name__, argument='value argument'
+            )
 
         cmd = XmlCommand("modify_setting")
 
@@ -5307,7 +5527,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not tag_id:
-            raise RequiredArgument(function=self.modify_tag.__name__, argument='tag_id')
+            raise RequiredArgument(
+                function=self.modify_tag.__name__, argument='tag_id'
+            )
 
         cmd = XmlCommand("modify_tag")
         cmd.set_attribute("tag_id", str(tag_id))
@@ -5487,7 +5709,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not task_id:
-            raise RequiredArgument(function=self.modify_task.__name__, argument='task_id argument')
+            raise RequiredArgument(
+                function=self.modify_task.__name__, argument='task_id argument'
+            )
 
         cmd = XmlCommand("modify_task")
         cmd.set_attribute("task_id", task_id)
@@ -5792,10 +6016,16 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not alert_id:
-            raise RequiredArgument(function=self.trigger_alert.__name__, argument='alert_id argument')
+            raise RequiredArgument(
+                function=self.trigger_alert.__name__,
+                argument='alert_id argument',
+            )
 
         if not report_id:
-            raise RequiredArgument(function=self.trigger_alert.__name__, argument='report_id argument')
+            raise RequiredArgument(
+                function=self.trigger_alert.__name__,
+                argument='report_id argument',
+            )
 
         cmd = XmlCommand("get_reports")
         cmd.set_attribute("report_id", report_id)
