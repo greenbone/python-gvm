@@ -36,7 +36,7 @@ class GvmServerError(GvmError):
     """
 
     def __init__(
-        self, status: str = None, message: str = None,
+        self, status: str = None, message: str = None
     ):
         # pylint: disable=super-init-not-called
         self.status = status
@@ -57,7 +57,7 @@ class GvmClientError(GvmError):
 
 class GvmResponseError(GvmClientError):
     def __init__(
-        self, status: str = None, message: str = None,
+        self, status: str = None, message: str = None
     ):
         # pylint: disable=super-init-not-called
         self.status = status
@@ -86,7 +86,7 @@ class InvalidArgument(GvmError):
         message: Optional[str] = None,
         *,
         argument: Optional[str] = None,
-        function: Optional[str] = None,
+        function: Optional[str] = None
     ):
         # pylint: disable=super-init-not-called
         self.message = message
@@ -112,7 +112,7 @@ class InvalidArgumentType(GvmError):
         argument: str = None,
         arg_type: str = None,
         *,
-        function: Optional[str] = None,
+        function: Optional[str] = None
     ):
         # pylint: disable=super-init-not-called
         self.argument = argument
@@ -145,7 +145,7 @@ class RequiredArgument(GvmError):
         self,
         message: Optional[str] = None,
         argument: Optional[str] = None,
-        function: Optional[str] = None,
+        function: Optional[str] = None
     ):
         # pylint: disable=super-init-not-called
         self.message = message
