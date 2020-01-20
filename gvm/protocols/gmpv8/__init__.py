@@ -191,7 +191,7 @@ class Gmp(Gmpv7):
             raise InvalidArgumentType(
                 function=self.create_credential.__name__,
                 argument='credential_type',
-                arg_type=CredentialType.__name__
+                arg_type=CredentialType.__name__,
             )
 
         cmd = XmlCommand("create_credential")
@@ -263,7 +263,7 @@ class Gmp(Gmpv7):
                 raise InvalidArgumentType(
                     function=self.create_credential.__name__,
                     argument='auth_algorithm',
-                    arg_type=SnmpAuthAlgorithm.__name__
+                    arg_type=SnmpAuthAlgorithm.__name__,
                 )
 
             cmd.add_element("auth_algorithm", auth_algorithm.value)
@@ -279,7 +279,7 @@ class Gmp(Gmpv7):
                         raise InvalidArgumentType(
                             function=self.create_credential.__name__,
                             argument='privacy_algorithm',
-                            arg_type=SnmpPrivacyAlgorithm.__name__
+                            arg_type=SnmpPrivacyAlgorithm.__name__,
                         )
 
                     _xmlprivacy.add_element(
@@ -365,7 +365,9 @@ class Gmp(Gmpv7):
             _xmlkey = cmd.add_element("key")
             _xmlkey.add_element("phrase", key_phrase)
             _xmlkey.add_element("private", private_key)
-        elif (not key_phrase and private_key) or (key_phrase and not private_key):
+        elif (not key_phrase and private_key) or (
+            key_phrase and not private_key
+        ):
             raise RequiredArgument(
                 function=self.modify_credential.__name__,
                 argument='key_phrase and private_key',
@@ -382,7 +384,7 @@ class Gmp(Gmpv7):
                 raise InvalidArgumentType(
                     function=self.modify_credential.__name__,
                     argument='auth_algorithm',
-                    arg_type=SnmpAuthAlgorithm.__name__
+                    arg_type=SnmpAuthAlgorithm.__name__,
                 )
             cmd.add_element("auth_algorithm", auth_algorithm.value)
 
@@ -397,7 +399,7 @@ class Gmp(Gmpv7):
                     raise InvalidArgumentType(
                         function=self.modify_credential.__name__,
                         argument='privacy_algorithm',
-                        arg_type=SnmpPrivacyAlgorithm.__name__
+                        arg_type=SnmpPrivacyAlgorithm.__name__,
                     )
 
                 _xmlprivacy.add_element("algorithm", privacy_algorithm.value)
@@ -459,7 +461,9 @@ class Gmp(Gmpv7):
 
         if not isinstance(resource_type, EntityType):
             raise InvalidArgumentType(
-                function=self.create_tag.__name__, argument='resource_type', arg_type=EntityType.__name__
+                function=self.create_tag.__name__,
+                argument='resource_type',
+                arg_type=EntityType.__name__,
             )
 
         cmd = XmlCommand('create_tag')
@@ -565,7 +569,7 @@ class Gmp(Gmpv7):
                     raise InvalidArgumentType(
                         function=self.modify_tag.__name__,
                         argument="resource_type",
-                        arg_type=EntityType.__name__
+                        arg_type=EntityType.__name__,
                     )
                 _xmlresources.add_element("type", resource_type.value)
 
@@ -861,7 +865,7 @@ class Gmp(Gmpv7):
                 raise InvalidArgumentType(
                     function=self.modify_ticket.__name__,
                     argument='status',
-                    arg_type=TicketStatus.__name__
+                    arg_type=TicketStatus.__name__,
                 )
 
             cmd.add_element('status', status.value)
@@ -938,7 +942,7 @@ class Gmp(Gmpv7):
                 raise InvalidArgumentType(
                     function=self.modify_filter.__name__,
                     argument='filter_type',
-                    arg_type=FilterType.__name__
+                    arg_type=FilterType.__name__,
                 )
             cmd.add_element("type", filter_type.value)
 
