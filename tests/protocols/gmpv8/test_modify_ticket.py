@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 from gvm.protocols.gmpv8 import TicketStatus
 
 from . import Gmpv8TestCase
@@ -69,7 +69,7 @@ class GmpModifyTicketTestCase(Gmpv8TestCase):
         )
 
     def test_modify_ticket_invalid_status(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_ticket(ticket_id='t1', status='foobar', note='bar')
 
     def test_modify_ticket_open(self):

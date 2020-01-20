@@ -20,7 +20,7 @@ import unittest
 
 from decimal import Decimal
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import SeverityLevel
 
@@ -182,10 +182,10 @@ class GmpModifyNoteTestCase(Gmpv7TestCase):
         )
 
     def test_modify_note_invalid_threat(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_note(note_id='n1', text='foo', threat='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_note(note_id='n1', text='foo', threat='foo')
 
 

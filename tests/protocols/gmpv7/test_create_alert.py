@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import AlertCondition, AlertEvent, AlertMethod
 
@@ -77,7 +77,7 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
             )
 
     def test_invalid_condition(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_alert(
                 name='foo',
                 condition='bar',
@@ -86,7 +86,7 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
             )
 
     def test_invalid_event(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_alert(
                 name='foo',
                 condition=AlertCondition.ALWAYS,
@@ -95,7 +95,7 @@ class GmpCreateAlertTestCase(Gmpv7TestCase):
             )
 
     def test_invalid_method(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_alert(
                 name='foo',
                 condition=AlertCondition.ALWAYS,

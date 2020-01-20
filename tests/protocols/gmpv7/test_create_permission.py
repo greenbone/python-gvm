@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import PermissionSubjectType, EntityType
 
@@ -67,17 +67,17 @@ class GmpCreatePermissionTestCase(Gmpv7TestCase):
             )
 
     def test_create_permission_invalid_subject_type(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_permission(
                 'create_task', subject_id='u1', subject_type=''
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_permission(
                 'create_task', subject_id='u1', subject_type=None
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_permission(
                 'create_task', subject_id='u1', subject_type='foo'
             )

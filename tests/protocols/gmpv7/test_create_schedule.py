@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import TimeUnit
 
@@ -288,7 +288,7 @@ class GmpCreateScheduleTestCase(Gmpv7TestCase):
             self.gmp.create_schedule(name='foo', duration=1)
 
     def test_create_schedule_with_duration_invalid_unit(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_schedule(
                 name='foo', duration=1, duration_unit='foo'
             )
@@ -312,7 +312,7 @@ class GmpCreateScheduleTestCase(Gmpv7TestCase):
             self.gmp.create_schedule(name='foo', period=1)
 
     def test_create_schedule_with_period_invalid_unit(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_schedule(name='foo', period=1, period_unit='foo')
 
     def test_create_schedule_invalid_period(self):

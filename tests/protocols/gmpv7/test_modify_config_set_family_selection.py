@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from . import Gmpv7TestCase
 
@@ -101,17 +101,17 @@ class GmpModifyConfigSetFamilySelectionTestCase(Gmpv7TestCase):
             self.gmp.modify_config_set_family_selection('', ['foo'])
 
     def test_modify_config_set_family_selection_invalid_families(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_config_set_family_selection(
                 config_id='c1', families=None
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_config_set_family_selection(
                 config_id='c1', families=''
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_config_set_family_selection('c1', '')
 
     def test_modify_config_set_family_selection_with_auto_add_new_families(

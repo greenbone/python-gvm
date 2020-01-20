@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv7 import ScannerType
 
 from . import Gmpv7TestCase
@@ -143,13 +143,13 @@ class GmpModifyScannerTestCase(Gmpv7TestCase):
         )
 
     def test_modify_scanner_invalid_scanner_type(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_scanner(scanner_id='s1', scanner_type='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_scanner(scanner_id='s1', scanner_type='-1')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_scanner(scanner_id='s1', scanner_type=1)
 
 

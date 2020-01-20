@@ -20,7 +20,7 @@ import unittest
 
 from collections import OrderedDict
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import HostsOrdering
 
@@ -99,10 +99,10 @@ class GmpModifyTaskCommandTestCase(Gmpv7TestCase):
         )
 
     def test_modify_task_invalid_alerts_ids(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', alert_ids='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', alert_ids='a1')
 
     def test_modify_task_with_alterable(self):
@@ -132,7 +132,7 @@ class GmpModifyTaskCommandTestCase(Gmpv7TestCase):
         )
 
     def test_modify_task_invalid_hosts_ordering(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', hosts_ordering='foo')
 
     def test_modify_task_with_schedule(self):
@@ -176,10 +176,10 @@ class GmpModifyTaskCommandTestCase(Gmpv7TestCase):
         )
 
     def test_modify_task_invalid_observers(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', observers='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', observers='foo')
 
     def test_modify_task_with_preferences(self):
@@ -204,10 +204,10 @@ class GmpModifyTaskCommandTestCase(Gmpv7TestCase):
         )
 
     def test_modify_task_invalid_preferences(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', preferences='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', preferences=['foo', 'bar'])
 
 

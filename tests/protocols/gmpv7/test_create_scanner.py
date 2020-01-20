@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import ScannerType
 
@@ -141,7 +141,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
             )
 
     def test_create_scanner_invalid_scanner_type(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_scanner(
                 name='foo',
                 host='localhost',
@@ -150,7 +150,7 @@ class GmpCreateScannerTestCase(Gmpv7TestCase):
                 credential_id='c1',
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_scanner(
                 name='foo',
                 host='localhost',

@@ -20,7 +20,7 @@ import unittest
 
 from decimal import Decimal
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import SeverityLevel
 
@@ -158,10 +158,10 @@ class GmpCreateNoteTestCase(Gmpv7TestCase):
         )
 
     def test_create_note_invalid_threat(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_note('foo', nvt_oid='oid1', threat='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_note('foo', nvt_oid='oid1', threat='foo')
 
     def test_create_note_with_seconds_active(self):
