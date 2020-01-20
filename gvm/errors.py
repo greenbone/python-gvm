@@ -34,6 +34,7 @@ class GvmServerError(GvmError):
 
     Base class for all exceptions originating in python-gvm.
     """
+
     def __init__(
         self, status: str = None, message: str = None,
     ):
