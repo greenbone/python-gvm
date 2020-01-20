@@ -30,7 +30,7 @@ import numbers
 from enum import Enum
 from typing import Any, List, Optional
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import deprecation
 from gvm.xml import XmlCommand
 
@@ -409,8 +409,10 @@ class Gmp(Gmpv8):
 
         if hosts_ordering:
             if not isinstance(hosts_ordering, HostsOrdering):
-                raise InvalidArgument(
-                    function=function, argument="hosts_ordering"
+                raise InvalidArgumentType(
+                    function=function,
+                    argument='hosts_ordering',
+                    arg_type=HostsOrdering.__name__,
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
@@ -445,7 +447,9 @@ class Gmp(Gmpv8):
 
         if observers is not None:
             if not _is_list_like(observers):
-                raise InvalidArgument("obeservers argument must be a list")
+                raise InvalidArgumentType(
+                    function=function, argument='obeservers', arg_type='list'
+                )
 
             # gvmd splits by comma and space
             # gvmd tries to lookup each value as user name and afterwards as
@@ -454,7 +458,11 @@ class Gmp(Gmpv8):
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
-                raise InvalidArgument('preferences argument must be a dict')
+                raise InvalidArgumentType(
+                    function=function,
+                    argument='preferences',
+                    arg_type=collections.abc.Mapping.__name__,
+                )
 
             _xmlprefs = cmd.add_element("preferences")
             for pref_name, pref_value in preferences.items():
