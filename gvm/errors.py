@@ -49,7 +49,13 @@ class GvmResponseError(GvmError):
         else:
             return self.__class__.__name__ + ': ' + getattr(self, 'args')[0]
 
-class InvalidArgument(GvmError):
+class GvmClientError(GvmError):
+    """An exception for gvm client errors
+
+    Base class for all exceptions originating in python-gvm.
+    """
+
+class InvalidArgument(GvmClientError):
     """Raised if an invalid argument/parameter is passed
 
     Derives from :py:class:`GvmError`
@@ -86,7 +92,7 @@ class InvalidArgument(GvmError):
         return "Invalid argument {} for {}".format(self.argument, self.function)
 
 
-class RequiredArgument(GvmError):
+class RequiredArgument(GvmClientError):
     """Raised if a required argument/parameter is missing
 
     Derives from :py:class:`GvmError`
