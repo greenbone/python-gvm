@@ -28,6 +28,7 @@ class GvmError(Exception):
     Base class for all exceptions originating in python-gvm.
     """
 
+
 class GvmResponseError(GvmError):
     def __init__(
         self,
@@ -45,15 +46,23 @@ class GvmResponseError(GvmError):
 
     def __str__(self):
         if self.status and self.message:
-            return self.__class__.__name__ + ': ' + self.status + ' - ' + self.message
+            return (
+                self.__class__.__name__
+                + ': '
+                + self.status
+                + ' - '
+                + self.message
+            )
         else:
             return self.__class__.__name__ + ': ' + getattr(self, 'args')[0]
+
 
 class GvmClientError(GvmError):
     """An exception for gvm client errors
 
     Base class for all exceptions originating in python-gvm.
     """
+
 
 class InvalidArgument(GvmClientError):
     """Raised if an invalid argument/parameter is passed
@@ -91,6 +100,7 @@ class InvalidArgument(GvmClientError):
 
         return "Invalid argument {} for {}".format(self.argument, self.function)
 
+
 class InvalidArgumentType(GvmClientError):
     def __init__(
         self,
@@ -106,8 +116,13 @@ class InvalidArgumentType(GvmClientError):
 
     def __str__(self):
         if self.function:
-            return "In {} the argument {} must be of type {}.".format(self.function, self.argument, self.arg_type)
-        return "The argument {} must be of type {}.".format(self.argument, self.arg_type)
+            return "In {} the argument {} must be of type {}.".format(
+                self.function, self.argument, self.arg_type
+            )
+        return "The argument {} must be of type {}.".format(
+            self.argument, self.arg_type
+        )
+
 
 class RequiredArgument(GvmClientError):
     """Raised if a required argument/parameter is missing
