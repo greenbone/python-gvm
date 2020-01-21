@@ -35,9 +35,7 @@ class GvmServerError(GvmError):
     Base class for all exceptions originating in python-gvm.
     """
 
-    def __init__(
-        self, status: str = None, message: str = None
-    ):
+    def __init__(self, status: str = None, message: str = None):
         # pylint: disable=super-init-not-called
         self.status = status
         self.message = message
@@ -56,9 +54,7 @@ class GvmClientError(GvmError):
 
 
 class GvmResponseError(GvmClientError):
-    def __init__(
-        self, status: str = None, message: str = None
-    ):
+    def __init__(self, status: str = None, message: str = None):
         # pylint: disable=super-init-not-called
         self.status = status
         self.message = message
@@ -144,6 +140,7 @@ class RequiredArgument(GvmError):
     def __init__(
         self,
         message: Optional[str] = None,
+        *,
         argument: Optional[str] = None,
         function: Optional[str] = None
     ):
