@@ -18,7 +18,14 @@
 
 import unittest
 
-from gvm.errors import InvalidArgument, RequiredArgument, GvmError
+from gvm.errors import (
+    InvalidArgument,
+    InvalidArgumentType,
+    RequiredArgument,
+    GvmError,
+    GvmServerError,
+    GvmResponseError,
+)
 
 
 class InvalidArgumentTestCase(unittest.TestCase):
@@ -157,6 +164,65 @@ class RequiredArgumentTestCase(unittest.TestCase):
     def test_is_gvm_error(self):
         with self.assertRaises(GvmError):
             raise RequiredArgument('foo bar')
+
+
+class GvmServerErrorTestCase(unittest.TestCase):
+    def test_raise_with_message_and_status(self):
+        with self.assertRaisesRegex(
+            GvmServerError, '^GvmServerError: foo - bar$'
+        ):
+            raise GvmServerError('foo', 'bar')
+
+    def test_is_gvm_error(self):
+        with self.assertRaises(GvmError):
+            raise GvmServerError('foo', 'bar')
+
+
+class GvmResponseErrorTestCase(unittest.TestCase):
+    def test_raise_with_message_and_status(self):
+        with self.assertRaisesRegex(
+            GvmResponseError, '^GvmResponseError: foo - bar$'
+        ):
+            raise GvmResponseError('foo', 'bar')
+
+    def test_is_gvm_error(self):
+        with self.assertRaises(GvmError):
+            raise GvmResponseError('foo', 'bar')
+
+
+class InvalidArgumentTypeTestCase(unittest.TestCase):
+    def test_raise_with_argument_and_arg_type(self):
+        with self.assertRaisesRegex(
+            InvalidArgumentType, '^The argument foo must be of type bar.$'
+        ):
+            raise InvalidArgumentType('foo', 'bar')
+
+    def test_raise_with_function(self):
+        with self.assertRaisesRegex(
+            InvalidArgumentType,
+            '^In baz the argument foo must be of type bar.$',
+        ):
+            raise InvalidArgumentType('foo', 'bar', function='baz')
+
+    def test_string_conversion(self):
+        with self.assertRaises(InvalidArgumentType) as cm:
+            raise InvalidArgumentType('foo', 'bar')
+
+        ex = cm.exception
+        self.assertEqual(str(ex), 'The argument foo must be of type bar.')
+        self.assertIsNone(ex.function)
+
+        with self.assertRaises(InvalidArgumentType) as cm:
+            raise InvalidArgumentType('foo', 'bar', function='baz')
+
+        ex = cm.exception
+        self.assertEqual(
+            str(ex), 'In baz the argument foo must be of type bar.'
+        )
+
+    def test_is_gvm_error(self):
+        with self.assertRaises(GvmError):
+            raise InvalidArgumentType('foo', 'bar')
 
 
 if __name__ == '__main__':
