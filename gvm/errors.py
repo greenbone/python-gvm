@@ -29,10 +29,22 @@ class GvmError(Exception):
     """
 
 
+class GvmClientError(GvmError):
+    """An exception for gvm client errors
+
+    Base class for all exceptions originating in python-gvm.
+    """
+
+
 class GvmServerError(GvmError):
     """An exception for gvm server errors
 
-    Base class for all exceptions originating in python-gvm.
+    Derives from :py:class:`GvmError`
+
+    Arguments:
+        status:  The HTTP response status
+        message: Error message to be displayed. Takes precedence over argument
+            and function
     """
 
     def __init__(self, status: str = None, message: str = None):
@@ -46,14 +58,17 @@ class GvmServerError(GvmError):
         )
 
 
-class GvmClientError(GvmError):
-    """An exception for gvm client errors
+class GvmResponseError(GvmClientError):
+    """An exception for gvm server errors
 
-    Base class for all exceptions originating in python-gvm.
+    Derives from :py:class:`GvmClientError`
+
+    Arguments:
+        status:  The HTTP response status
+        message: Error message to be displayed. Takes precedence over argument
+            and function
     """
 
-
-class GvmResponseError(GvmClientError):
     def __init__(self, status: str = None, message: str = None):
         # pylint: disable=super-init-not-called
         self.status = status
@@ -103,6 +118,16 @@ class InvalidArgument(GvmError):
 
 
 class InvalidArgumentType(GvmError):
+    """Raised if a passed argument has an invalid type
+
+    Derives from :py:class:`GvmError`
+
+    Arguments:
+        argument: Name of the invalid argument
+        arg_type: The correct argument type
+        function: Optional name of the called function
+    """
+
     def __init__(
         self,
         argument: str = None,
