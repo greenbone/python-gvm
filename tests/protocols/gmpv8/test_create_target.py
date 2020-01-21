@@ -19,7 +19,7 @@
 import unittest
 import warnings
 
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv8 import AliveTest
 

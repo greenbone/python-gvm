@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv7 import FilterType
 
 from . import Gmpv7TestCase
