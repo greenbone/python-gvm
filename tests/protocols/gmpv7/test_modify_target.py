@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import AliveTest
 
@@ -153,7 +153,7 @@ class GmpModifyTargetTestCase(Gmpv7TestCase):
         )
 
     def test_modify_target_invalid_alive_tests(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_target(target_id='t1', alive_test='foo')
 
     def test_modify_target_with_reverse_lookup_only(self):

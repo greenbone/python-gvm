@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgumentType, RequiredArgument
 
 from gvm.protocols.gmpv7 import CredentialFormat
 
@@ -76,7 +76,7 @@ class GmpGetCredentialTestCase(Gmpv7TestCase):
         )
 
     def test_get_credential_with_invalid_credential_format(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.get_credential('id', credential_format='foo')
 
 

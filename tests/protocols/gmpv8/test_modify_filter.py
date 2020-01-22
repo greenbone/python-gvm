@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv8 import FilterType
 
 from . import Gmpv8TestCase
@@ -42,7 +42,7 @@ class GmpModifyFilterTestCase(Gmpv8TestCase):
         )
 
     def test_modify_filter_invalid_filter_type(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_filter(filter_id='f1', filter_type='foo')
 
     def test_modify_filter_missing_filter_id(self):

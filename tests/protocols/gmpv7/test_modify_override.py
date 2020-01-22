@@ -20,7 +20,7 @@ import unittest
 
 from decimal import Decimal
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import SeverityLevel
 
@@ -224,10 +224,10 @@ class GmpModifyOverrideTestCase(Gmpv7TestCase):
         )
 
     def test_modify_override_invalid_threat(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_override(override_id='o1', text='foo', threat='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_override(override_id='o1', text='foo', threat='foo')
 
     def test_modify_override_with_new_threat(self):
@@ -243,12 +243,12 @@ class GmpModifyOverrideTestCase(Gmpv7TestCase):
         )
 
     def test_modify_override_invalid_new_threat(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_override(
                 override_id='o1', text='foo', new_threat=''
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_override(
                 override_id='o1', text='foo', new_threat='foo'
             )

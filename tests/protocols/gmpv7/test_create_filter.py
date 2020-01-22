@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv7 import FilterType
 
 from . import Gmpv7TestCase
@@ -42,7 +42,7 @@ class GmpCreateFilterCommandTestCase(Gmpv7TestCase):
             )
 
     def test_create_filter_invalid_filter_type(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_filter(
                 name='f1',
                 term='sort-reverse=threat result_hosts_only=1 '

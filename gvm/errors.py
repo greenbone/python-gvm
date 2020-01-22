@@ -29,6 +29,57 @@ class GvmError(Exception):
     """
 
 
+class GvmClientError(GvmError):
+    """An exception for gvm client errors
+
+    Base class for all exceptions originating in python-gvm.
+    """
+
+
+class GvmServerError(GvmError):
+    """An exception for gvm server errors
+
+    Derives from :py:class:`GvmError`
+
+    Arguments:
+        status:  The HTTP response status
+        message: Error message to be displayed. Takes precedence over argument
+            and function
+    """
+
+    def __init__(self, status: str = None, message: str = None):
+        # pylint: disable=super-init-not-called
+        self.status = status
+        self.message = message
+
+    def __str__(self):
+        return (
+            self.__class__.__name__ + ': ' + self.status + ' - ' + self.message
+        )
+
+
+class GvmResponseError(GvmClientError):
+    """An exception for gvm server errors
+
+    Derives from :py:class:`GvmClientError`
+
+    Arguments:
+        status:  The HTTP response status
+        message: Error message to be displayed. Takes precedence over argument
+            and function
+    """
+
+    def __init__(self, status: str = None, message: str = None):
+        # pylint: disable=super-init-not-called
+        self.status = status
+        self.message = message
+
+    def __str__(self):
+        return (
+            self.__class__.__name__ + ': ' + self.status + ' - ' + self.message
+        )
+
+
 class InvalidArgument(GvmError):
     """Raised if an invalid argument/parameter is passed
 
@@ -66,6 +117,39 @@ class InvalidArgument(GvmError):
         return "Invalid argument {} for {}".format(self.argument, self.function)
 
 
+class InvalidArgumentType(GvmError):
+    """Raised if a passed argument has an invalid type
+
+    Derives from :py:class:`GvmError`
+
+    Arguments:
+        argument: Name of the invalid argument
+        arg_type: The correct argument type
+        function: Optional name of the called function
+    """
+
+    def __init__(
+        self,
+        argument: str = None,
+        arg_type: str = None,
+        *,
+        function: Optional[str] = None
+    ):
+        # pylint: disable=super-init-not-called
+        self.argument = argument
+        self.function = function
+        self.arg_type = arg_type
+
+    def __str__(self):
+        if self.function:
+            return "In {} the argument {} must be of type {}.".format(
+                self.function, self.argument, self.arg_type
+            )
+        return "The argument {} must be of type {}.".format(
+            self.argument, self.arg_type
+        )
+
+
 class RequiredArgument(GvmError):
     """Raised if a required argument/parameter is missing
 
@@ -81,8 +165,9 @@ class RequiredArgument(GvmError):
     def __init__(
         self,
         message: Optional[str] = None,
+        *,
         argument: Optional[str] = None,
-        function: Optional[str] = None,
+        function: Optional[str] = None
     ):
         # pylint: disable=super-init-not-called
         self.message = message

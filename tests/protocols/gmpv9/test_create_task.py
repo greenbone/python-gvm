@@ -21,7 +21,7 @@ import warnings
 
 from collections import OrderedDict
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv9 import HostsOrdering
 
@@ -236,7 +236,7 @@ class GmpCreateTaskCommandTestCase(Gmpv9TestCase):
         )
 
     def test_create_task_invalid_hosts_ordering(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_task(
                 name='foo',
                 config_id='c1',
@@ -350,7 +350,7 @@ class GmpCreateTaskCommandTestCase(Gmpv9TestCase):
         )
 
     def test_create_task_invalid_observers(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_task(
                 name='foo',
                 config_id='c1',
@@ -359,7 +359,7 @@ class GmpCreateTaskCommandTestCase(Gmpv9TestCase):
                 observers='',
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_task(
                 name='foo',
                 config_id='c1',
@@ -398,7 +398,7 @@ class GmpCreateTaskCommandTestCase(Gmpv9TestCase):
         )
 
     def test_create_task_invalid_preferences(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_task(
                 name='foo',
                 config_id='c1',
@@ -407,7 +407,7 @@ class GmpCreateTaskCommandTestCase(Gmpv9TestCase):
                 preferences='',
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_task(
                 name='foo',
                 config_id='c1',

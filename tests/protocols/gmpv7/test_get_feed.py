@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import FeedType
 
@@ -51,7 +51,7 @@ class GmpGetFeedTestCase(Gmpv7TestCase):
             self.gmp.get_feed('')
 
     def test_get_feed_invalid_feed_type(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.get_feed(feed_type='foo')
 
 

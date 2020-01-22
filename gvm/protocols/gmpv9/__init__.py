@@ -30,7 +30,7 @@ import numbers
 from enum import Enum
 from typing import Any, List, Optional
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import deprecation
 from gvm.xml import XmlCommand
 
@@ -227,12 +227,12 @@ class Gmp(Gmpv8):
         """
         if not name:
             raise RequiredArgument(
-                argument='name', function=self.create_tls_certificate.__name__
+                function=self.create_tls_certificate.__name__, argument='name'
             )
         if not certificate:
             raise RequiredArgument(
-                argument="certificate",
                 function=self.create_tls_certificate.__name__,
+                argument='certificate',
             )
 
         cmd = XmlCommand("create_tls_certificate")
@@ -289,7 +289,8 @@ class Gmp(Gmpv8):
         """
         if not tls_certificate_id:
             raise RequiredArgument(
-                "get_tls_certificate requires tls_certificate_id argument"
+                function=self.get_tls_certificate.__name__,
+                argument='tls_certificate_id',
             )
 
         cmd = XmlCommand("get_tls_certificates")
@@ -320,8 +321,8 @@ class Gmp(Gmpv8):
         """
         if not tls_certificate_id:
             raise RequiredArgument(
-                argument="tls_certificate_id",
                 function=self.modify_tls_certificate.__name__,
+                argument='tls_certificate_id',
             )
 
         cmd = XmlCommand("modify_tls_certificate")
@@ -349,8 +350,8 @@ class Gmp(Gmpv8):
         """
         if not tls_certificate_id:
             raise RequiredArgument(
-                argument="tls_certificate_id",
                 function=self.modify_tls_certificate.__name__,
+                argument='tls_certificate_id',
             )
 
         cmd = XmlCommand("create_tls_certificate")
@@ -378,30 +379,20 @@ class Gmp(Gmpv8):
         preferences: Optional[dict] = None
     ) -> Any:
         if not name:
-            raise RequiredArgument(
-                "{} requires a name argument".format(function)
-            )
+            raise RequiredArgument(function=function, argument='name')
 
         if not config_id:
-            raise RequiredArgument(
-                "{} requires a config_id argument".format(function)
-            )
+            raise RequiredArgument(function=function, argument='config_id')
 
         if not target_id:
-            raise RequiredArgument(
-                "{} requires a target_id argument".format(function)
-            )
+            raise RequiredArgument(function=function, argument='target_id')
 
         if not scanner_id:
-            raise RequiredArgument(
-                "{} requires a scanner_id argument".format(function)
-            )
+            raise RequiredArgument(function=function, argument='scanner_id')
 
         # don't allow to create a container task with create_task
         if target_id == '0':
-            raise InvalidArgument(
-                'Invalid argument {} for target_id'.format(target_id)
-            )
+            raise InvalidArgument(function=function, argument='target_id')
 
         cmd = XmlCommand("create_task")
         cmd.add_element("name", name)
@@ -418,8 +409,10 @@ class Gmp(Gmpv8):
 
         if hosts_ordering:
             if not isinstance(hosts_ordering, HostsOrdering):
-                raise InvalidArgument(
-                    function="create_task", argument="hosts_ordering"
+                raise InvalidArgumentType(
+                    function=function,
+                    argument='hosts_ordering',
+                    arg_type=HostsOrdering.__name__,
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
@@ -454,7 +447,9 @@ class Gmp(Gmpv8):
 
         if observers is not None:
             if not _is_list_like(observers):
-                raise InvalidArgument("obeservers argument must be a list")
+                raise InvalidArgumentType(
+                    function=function, argument='obeservers', arg_type='list'
+                )
 
             # gvmd splits by comma and space
             # gvmd tries to lookup each value as user name and afterwards as
@@ -463,7 +458,11 @@ class Gmp(Gmpv8):
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
-                raise InvalidArgument('preferences argument must be a dict')
+                raise InvalidArgumentType(
+                    function=function,
+                    argument='preferences',
+                    arg_type=collections.abc.Mapping.__name__,
+                )
 
             _xmlprefs = cmd.add_element("preferences")
             for pref_name, pref_value in preferences.items():
@@ -477,12 +476,10 @@ class Gmp(Gmpv8):
         self, config_id: str, name: str, usage_type: UsageType, function: str
     ) -> Any:
         if not name:
-            raise RequiredArgument("{} requires name argument".format(function))
+            raise RequiredArgument(function=function, argument='name')
 
         if not config_id:
-            raise RequiredArgument(
-                "{} requires config_id argument".format(function)
-            )
+            raise RequiredArgument(function=function, argument='config_id')
 
         cmd = XmlCommand("create_config")
         cmd.add_element("copy", config_id)

@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from . import Gmpv7TestCase
 
@@ -116,17 +116,17 @@ class GmpModifyConfigSetNvtSelectionTestCase(Gmpv7TestCase):
             self.gmp.modify_config_set_nvt_selection('c1', '', ['o1'])
 
     def test_modify_config_set_nvt_selection_invalid_nvt_oids(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_config_set_nvt_selection(
                 config_id='c1', family='foo', nvt_oids=None
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_config_set_nvt_selection(
                 config_id='c1', family='foo', nvt_oids=''
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_config_set_nvt_selection('c1', 'foo', '')
 
 

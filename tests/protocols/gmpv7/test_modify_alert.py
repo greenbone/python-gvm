@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import AlertCondition, AlertEvent, AlertMethod
 
@@ -69,7 +69,7 @@ class GmpModifyAlertTestCase(Gmpv7TestCase):
         )
 
     def test_modify_alert_invalid_condition(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
                 alert_id='a1',
                 condition='bar',
@@ -78,13 +78,13 @@ class GmpModifyAlertTestCase(Gmpv7TestCase):
             )
 
     def test_modify_alert_invalid_event(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
                 alert_id='a1', condition='Always', event='lorem', method='Email'
             )
 
     def test_modify_alert_invalid_method(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
                 alert_id='a1',
                 condition='Always',
@@ -93,7 +93,7 @@ class GmpModifyAlertTestCase(Gmpv7TestCase):
             )
 
     def test_modify_alert_invalid_condition_for_secinfo(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
                 alert_id='a1',
                 condition='Severity at least',
@@ -102,7 +102,7 @@ class GmpModifyAlertTestCase(Gmpv7TestCase):
             )
 
     def test_modify_alert_invalid_method_for_secinfo(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
                 alert_id='a1',
                 condition='Always',

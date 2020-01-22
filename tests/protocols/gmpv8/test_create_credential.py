@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv8 import (
     CredentialType,
     SnmpAuthAlgorithm,
@@ -201,12 +201,12 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
         )
 
     def test_create_snmp_credential_invalid_auth_algorithm(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_credential(
                 name='foo', credential_type=CredentialType.SNMP, login='foo'
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_credential(
                 name='foo',
                 credential_type=CredentialType.SNMP,
@@ -214,7 +214,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
                 auth_algorithm='',
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_credential(
                 name='foo',
                 credential_type=CredentialType.SNMP,
@@ -276,7 +276,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
         )
 
     def test_create_snmp_credential_invalid_privacy_algorithm(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_credential(
                 name='foo',
                 credential_type=CredentialType.SNMP,
@@ -285,7 +285,7 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
                 privacy_algorithm='',
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_credential(
                 name='foo',
                 credential_type=CredentialType.SNMP,
@@ -402,13 +402,13 @@ class GmpCreateCredentialTestCase(Gmpv8TestCase):
             )
 
     def test_create_credential_invalid_credential_type(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_credential(name='foo', credential_type=None)
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_credential(name='foo', credential_type='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.create_credential(name='foo', credential_type='bar')
 
     def test_create_pw_credential_missing_password(self):

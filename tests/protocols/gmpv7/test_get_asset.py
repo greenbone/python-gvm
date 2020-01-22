@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import AssetType
 
@@ -63,13 +63,13 @@ class GmpGetAssetTestCase(Gmpv7TestCase):
             )
 
     def test_get_asset_invalid_asset_type(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.get_asset(asset_id='a1', asset_type='foo')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.get_asset(asset_id='a1', asset_type=None)
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.get_asset(asset_id='a1', asset_type='')
 
 

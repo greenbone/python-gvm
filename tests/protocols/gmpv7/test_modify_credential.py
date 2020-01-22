@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import SnmpAuthAlgorithm, SnmpPrivacyAlgorithm
 
@@ -216,10 +216,10 @@ class GmpModifyCredentialTestCase(Gmpv7TestCase):
         )
 
     def test_modify_credential_invalid_privacy_alogorithm(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_credential(credential_id='c1', privacy_algorithm='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_credential(
                 credential_id='c1', privacy_algorithm='foo'
             )
@@ -246,10 +246,10 @@ class GmpModifyCredentialTestCase(Gmpv7TestCase):
         )
 
     def test_modify_credential_invalid_auth_alogorithm(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_credential(credential_id='c1', auth_algorithm='')
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_credential(credential_id='c1', auth_algorithm='foo')
 
 
