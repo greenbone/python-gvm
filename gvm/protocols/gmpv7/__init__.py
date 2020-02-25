@@ -406,21 +406,21 @@ class Gmp(GvmProtocol):
 
         conditions = cmd.add_element("condition", condition.value)
 
-        if not condition_data is None:
+        if condition_data is not None:
             for key, value in condition_data.items():
                 _data = conditions.add_element("data", value)
                 _data.add_element("name", key)
 
         events = cmd.add_element("event", event.value)
 
-        if not event_data is None:
+        if event_data is not None:
             for key, value in event_data.items():
                 _data = events.add_element("data", value)
                 _data.add_element("name", key)
 
         methods = cmd.add_element("method", method.value)
 
-        if not method_data is None:
+        if method_data is not None:
             for key, value in method_data.items():
                 _data = methods.add_element("data", value)
                 _data.add_element("name", key)
@@ -916,7 +916,7 @@ class Gmp(GvmProtocol):
         cmd.add_element("text", text)
         cmd.add_element("nvt", attrs={"oid": nvt_oid})
 
-        if not seconds_active is None:
+        if seconds_active is not None:
             cmd.add_element("active", str(seconds_active))
 
         if hosts:
@@ -1013,7 +1013,7 @@ class Gmp(GvmProtocol):
         cmd.add_element("text", text)
         cmd.add_element("nvt", attrs={"oid": nvt_oid})
 
-        if not seconds_active is None:
+        if seconds_active is not None:
             cmd.add_element("active", str(seconds_active))
 
         if hosts:
@@ -1327,7 +1327,7 @@ class Gmp(GvmProtocol):
                 argument='task_id or task_name',
             )
 
-        if not in_assets is None:
+        if in_assets is not None:
             cmd.add_element("in_assets", _to_bool(in_assets))
 
         try:
@@ -1752,7 +1752,7 @@ class Gmp(GvmProtocol):
         if value:
             cmd.add_element("value", value)
 
-        if not active is None:
+        if active is not None:
             if active:
                 cmd.add_element("active", "1")
             else:
@@ -1877,12 +1877,12 @@ class Gmp(GvmProtocol):
 
             cmd.add_element("alive_tests", alive_test.value)
 
-        if not reverse_lookup_only is None:
+        if reverse_lookup_only is not None:
             cmd.add_element(
                 "reverse_lookup_only", _to_bool(reverse_lookup_only)
             )
 
-        if not reverse_lookup_unify is None:
+        if reverse_lookup_unify is not None:
             cmd.add_element(
                 "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
             )
@@ -1985,7 +1985,7 @@ class Gmp(GvmProtocol):
         if comment:
             cmd.add_element("comment", comment)
 
-        if not alterable is None:
+        if alterable is not None:
             cmd.add_element("alterable", _to_bool(alterable))
 
         if hosts_ordering:
@@ -2667,14 +2667,14 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
         if format:
-            if not format in ("installer", "howto_install", "howto_use"):
+            if format not in ("installer", "howto_install", "howto_use"):
                 raise InvalidArgument(
                     "installer argument needs to be one of installer, "
                     "howto_install or howto_use"
@@ -2758,10 +2758,10 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not tasks is None:
+        if tasks is not None:
             cmd.set_attribute("tasks", _to_bool(tasks))
 
         return self._send_xml_command(cmd)
@@ -2870,13 +2870,13 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not scanners is None:
+        if scanners is not None:
             cmd.set_attribute("scanners", _to_bool(scanners))
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not targets is None:
+        if targets is not None:
             cmd.set_attribute("targets", _to_bool(targets))
 
         return self._send_xml_command(cmd)
@@ -2947,19 +2947,19 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
-        if not families is None:
+        if families is not None:
             cmd.set_attribute("families", _to_bool(families))
 
-        if not preferences is None:
+        if preferences is not None:
             cmd.set_attribute("preferences", _to_bool(preferences))
 
-        if not tasks is None:
+        if tasks is not None:
             cmd.set_attribute("tasks", _to_bool(tasks))
 
         return self._send_xml_command(cmd)
@@ -3042,10 +3042,10 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not alerts is None:
+        if alerts is not None:
             cmd.set_attribute("alerts", _to_bool(alerts))
 
         return self._send_xml_command(cmd)
@@ -3089,7 +3089,7 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
@@ -3156,7 +3156,7 @@ class Gmp(GvmProtocol):
         if name:
             cmd.set_attribute("name", name)
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
         return self._send_xml_command(cmd)
@@ -3221,10 +3221,10 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
-        if not result is None:
+        if result is not None:
             cmd.set_attribute("result", _to_bool(result))
 
         return self._send_xml_command(cmd)
@@ -3282,16 +3282,16 @@ class Gmp(GvmProtocol):
         """
         cmd = XmlCommand("get_nvts")
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
-        if not preferences is None:
+        if preferences is not None:
             cmd.set_attribute("preferences", _to_bool(preferences))
 
-        if not preference_count is None:
+        if preference_count is not None:
             cmd.set_attribute("preference_count", _to_bool(preference_count))
 
-        if not timeout is None:
+        if timeout is not None:
             cmd.set_attribute("timeout", _to_bool(timeout))
 
         if config_id:
@@ -3371,10 +3371,10 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
-        if not result is None:
+        if result is not None:
             cmd.set_attribute("result", _to_bool(result))
 
         return self._send_xml_command(cmd)
@@ -3421,7 +3421,7 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
@@ -3469,13 +3469,13 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
-        if not targets is None:
+        if targets is not None:
             cmd.set_attribute("targets", _to_bool(targets))
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
@@ -3579,13 +3579,13 @@ class Gmp(GvmProtocol):
         if filter_id:
             cmd.set_attribute("report_filt_id", filter_id)
 
-        if not note_details is None:
+        if note_details is not None:
             cmd.set_attribute("note_details", _to_bool(note_details))
 
-        if not override_details is None:
+        if override_details is not None:
             cmd.set_attribute("override_details", _to_bool(override_details))
 
-        if not no_details is None:
+        if no_details is not None:
             cmd.set_attribute("details", _to_bool(not no_details))
 
         cmd.set_attribute("ignore_pagination", "1")
@@ -3669,16 +3669,16 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
-        if not alerts is None:
+        if alerts is not None:
             cmd.set_attribute("alerts", _to_bool(alerts))
 
-        if not params is None:
+        if params is not None:
             cmd.set_attribute("params", _to_bool(params))
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
@@ -3736,13 +3736,13 @@ class Gmp(GvmProtocol):
         if task_id:
             cmd.set_attribute("task_id", task_id)
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
-        if not note_details is None:
+        if note_details is not None:
             cmd.set_attribute("note_details", _to_bool(note_details))
 
-        if not override_details is None:
+        if override_details is not None:
             cmd.set_attribute("override_details", _to_bool(override_details))
 
         return self._send_xml_command(cmd)
@@ -3789,7 +3789,7 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)
@@ -3836,10 +3836,10 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
         return self._send_xml_command(cmd)
@@ -3888,10 +3888,10 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not tasks is None:
+        if tasks is not None:
             cmd.set_attribute("tasks", _to_bool(tasks))
 
         return self._send_xml_command(cmd)
@@ -3979,7 +3979,7 @@ class Gmp(GvmProtocol):
         if name:
             cmd.set_attribute("name", name)
 
-        if not duration is None:
+        if duration is not None:
             if not isinstance(duration, numbers.Integral):
                 raise InvalidArgument("duration needs to be an integer number")
 
@@ -3991,7 +3991,7 @@ class Gmp(GvmProtocol):
         if end_time:
             cmd.set_attribute("end_time", str(end_time))
 
-        if not brief is None:
+        if brief is not None:
             cmd.set_attribute("brief", _to_bool(brief))
 
         if slave_id:
@@ -4022,10 +4022,10 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not names_only is None:
+        if names_only is not None:
             cmd.set_attribute("names_only", _to_bool(names_only))
 
         return self._send_xml_command(cmd)
@@ -4071,10 +4071,10 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not tasks is None:
+        if tasks is not None:
             cmd.set_attribute("tasks", _to_bool(tasks))
 
         return self._send_xml_command(cmd)
@@ -4123,13 +4123,13 @@ class Gmp(GvmProtocol):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
-        if not details is None:
+        if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
-        if not schedules_only is None:
+        if schedules_only is not None:
             cmd.set_attribute("schedules_only", _to_bool(schedules_only))
 
         return self._send_xml_command(cmd)
@@ -4333,7 +4333,7 @@ class Gmp(GvmProtocol):
 
             conditions = cmd.add_element("condition", condition.value)
 
-            if not condition_data is None:
+            if condition_data is not None:
                 for key, value in condition_data.items():
                     _data = conditions.add_element("data", value)
                     _data.add_element("name", key)
@@ -4348,7 +4348,7 @@ class Gmp(GvmProtocol):
 
             methods = cmd.add_element("method", method.value)
 
-            if not method_data is None:
+            if method_data is not None:
                 for key, value in method_data.items():
                     _data = methods.add_element("data", value)
                     _data.add_element("name", key)
@@ -4365,7 +4365,7 @@ class Gmp(GvmProtocol):
 
             events = cmd.add_element("event", event.value)
 
-            if not event_data is None:
+            if event_data is not None:
                 for key, value in event_data.items():
                     _data = events.add_element("data", value)
                     _data.add_element("name", key)
@@ -4933,7 +4933,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute("note_id", note_id)
         cmd.add_element("text", text)
 
-        if not seconds_active is None:
+        if seconds_active is not None:
             cmd.add_element("active", str(seconds_active))
 
         if hosts:
@@ -5013,7 +5013,7 @@ class Gmp(GvmProtocol):
         cmd.set_attribute("override_id", override_id)
         cmd.add_element("text", text)
 
-        if not seconds_active is None:
+        if seconds_active is not None:
             cmd.add_element("active", str(seconds_active))
 
         if hosts:
@@ -5721,12 +5721,12 @@ class Gmp(GvmProtocol):
         if snmp_credential_id:
             cmd.add_element("snmp_credential", attrs={"id": snmp_credential_id})
 
-        if not reverse_lookup_only is None:
+        if reverse_lookup_only is not None:
             cmd.add_element(
                 "reverse_lookup_only", _to_bool(reverse_lookup_only)
             )
 
-        if not reverse_lookup_unify is None:
+        if reverse_lookup_unify is not None:
             cmd.add_element(
                 "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
             )
@@ -5794,7 +5794,7 @@ class Gmp(GvmProtocol):
         if target_id:
             cmd.add_element("target", attrs={"id": target_id})
 
-        if not alterable is None:
+        if alterable is not None:
             cmd.add_element("alterable", _to_bool(alterable))
 
         if hosts_ordering:
@@ -5947,7 +5947,7 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand("move_task")
         cmd.set_attribute("task_id", task_id)
 
-        if not slave_id is None:
+        if slave_id is not None:
             cmd.set_attribute("slave_id", slave_id)
 
         return self._send_xml_command(cmd)

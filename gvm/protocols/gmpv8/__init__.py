@@ -755,7 +755,7 @@ class Gmp(Gmpv7):
 
         _add_filter(cmd, filter, filter_id)
 
-        if not trash is None:
+        if trash is not None:
             cmd.set_attribute("trash", _to_bool(trash))
 
         return self._send_xml_command(cmd)

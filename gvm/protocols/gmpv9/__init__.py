@@ -403,7 +403,7 @@ class Gmp(Gmpv8):
         if comment:
             cmd.add_element("comment", comment)
 
-        if not alterable is None:
+        if alterable is not None:
             cmd.add_element("alterable", _to_bool(alterable))
 
         if hosts_ordering:
