@@ -28,7 +28,6 @@ import collections
 import logging
 import numbers
 
-from enum import Enum
 from typing import Any, List, Optional, Callable
 
 from lxml import etree
