@@ -27,7 +27,6 @@ Module for communication with gvmd in `Greenbone Management Protocol version 9`_
 import collections
 import numbers
 
-from enum import Enum
 from typing import Any, List, Optional
 
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
