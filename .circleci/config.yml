@@ -93,7 +93,7 @@ commands:
           command: |
             echo -e "[distutils]" >> ~/.pypirc
             echo -e "index-servers = pypi" >> ~/.pypirc
-            echo -e "[pypi]"
+            echo -e "[pypi]" >> ~/.pypirc
             echo -e "username = __token__" >> ~/.pypirc
             echo -e "password = $PYPI_TOKEN" >> ~/.pypirc
       - run:
