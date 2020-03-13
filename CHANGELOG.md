@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.3.0]
 
 ### Added
 * Added `GvmServerError`, `GvmClientError`, `GvmResponseError` and `InvalidArgumentType` error type classes [#192](https://github.com/greenbone/python-gvm/pull/192)
@@ -14,11 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Refactored the `InvalidArgument` and `RequiredArgument` errors in the gmp classes [#192](https://github.com/greenbone/python-gvm/pull/192)
 * Refactored the status response errors in case of a failure in the communication with the server in `transform.py` [#192](https://github.com/greenbone/python-gvm/pull/192)
 
-### Fixed
-
-### Removed
-
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.2.0...master
+[1.3.0]: https://github.com/greenbone/python-gvm/compare/v1.2.0...v1.3.0
 
 ## [1.2.0]
 

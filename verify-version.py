@@ -21,12 +21,20 @@ import sys
 from gvm import get_version
 
 
+def strip_version(version: str) -> str:
+    if not version:
+        return version
+
+    if version[0] == 'v':
+        return version[1:]
+
+
 def main():
     if len(sys.argv) < 2:
         sys.exit('Missing argument for version.')
         return
 
-    p_version = sys.argv[1]
+    p_version = strip_version(sys.argv[1])
     version = get_version()
     if p_version != version:
         sys.exit(
