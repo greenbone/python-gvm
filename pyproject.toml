@@ -2,6 +2,51 @@
 requires = ["setuptools>=36.6.0", "wheel"]
 build-backend = "setuptools.build_meta"
 
+[tool.poetry]
+name = "python-gvm"
+version = "20.4dev1"
+description = "Library to communicate with remote servers over GMP or OSP" 
+license = "GPL-3.0-or-later"
+authors = ["Greenbone Networks GmbH <info@greenbone.net>"]
+readme = "README.md"
+homepage = "https://github.com/greenbone/python-gvm"
+repository = "https://github.com/greenbone/python-gvm"
+documentation = "https://python-gvm.readthedocs.io/"
+classifiers = [
+  # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
+  "Development Status :: 5 - Production/Stable",
+  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "Programming Language :: Python :: 3.5",
+  "Programming Language :: Python :: 3.6",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Operating System :: OS Independent",
+  "Topic :: Software Development :: Libraries :: Python Modules",
+]
+packages = [
+  { include = "gvm" },
+  { include = "tests", format = "sdist" }, 
+]
+
+[tool.poetry.dependencies]
+python = "^3.5.2"
+paramiko = "^2.7.1"
+lxml = "^4.5.0"
+defusedxml = "^0.6.0"
+
+
+[tool.poetry.dev-dependencies]
+coverage = "^5.0.4"
+pylint = "^2.4.4"
+sphinx = "^2.4.4"
+sphinx-autodoc-typehints = "^1.10.3"
+autohooks = "^2.0.0"
+autohooks-plugin-pylint = "^1.2.0"
+autohooks-plugin-black = {version = "^1.2.0", python = "^3.6"}
+black = {version = "19.10b0", python = "^3.6"}
+
 [tool.black]
 line-length = 80
 target-version = ['py35', 'py36', 'py37', 'py38']
@@ -22,5 +67,5 @@ exclude = '''
 '''
 
 [tool.autohooks]
-mode = "pipenv"
+mode = "poetry"
 pre-commit = ['autohooks.plugins.black', 'autohooks.plugins.pylint']
