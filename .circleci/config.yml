@@ -4,20 +4,14 @@ executors:
   python-35:
     docker:
       - image: circleci/python:3.5
-        environment:
-            PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
   python-36:
     docker:
       - image: circleci/python:3.6
-        environment:
-            PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
   python-37:
     docker:
       - image: circleci/python:3.7
-        environment:
-            PIPENV_VENV_IN_PROJECT: true
     working_directory: ~/repo
 
 commands:
@@ -27,67 +21,59 @@ commands:
       - checkout
       - run:
           name: Install dependencies
-          command: |
-            pipenv install
-      - run:
-          name: Install python-gvm
-          command: |
-            pipenv run pip install .
+          command: poetry install --no-dev
   test:
     description: "Download and run tests"
     steps:
       - checkout
       - run:
           name: Install dependencies
-          command: pipenv install
+          command: poetry install --no-dev
       - run:
           name: Run unit tests
-          command: |
-            pipenv run python -m unittest
+          command: poetry run python -m unittest
   test-with-codecov:
     description: "Download and run tests with code coverage"
     steps:
       - checkout
       - run:
           name: Install dependencies
-          command: pipenv install
+          command: poetry install
       - run:
           name: Install codecov
-          command: |
-            pipenv run pip install codecov
+          command: poetry run pip install codecov
       - run:
           name: Run unit tests
-          command: |
-            pipenv run coverage run -m unittest
+          command: poetry run coverage run -m unittest
       - run:
           name: Upload coverage to Codecov
-          command: pipenv run codecov
+          command: poetry run codecov
   lint:
     description: "Lint python files"
     steps:
       - checkout
       - run:
           name: Install dependencies
-          command: pipenv install --dev
+          command: poetry install
       - run:
           name: Check with black
-          command: pipenv run black --check gvm
+          command: poetry run black --check gvm
       - run:
           name: Check with pylint
-          command: pipenv run pylint --disable=R gvm
+          command: poetry run pylint --disable=R gvm
   deploy:
     description: "Upload package to PyPI"
     steps:
       - checkout
       - run:
           name: Install dependencies
-          command: pipenv install
+          command: poetry install --no-dev
       - run:
           name: Verify tag version
-          command: pipenv run python verify-version.py ${CIRCLE_TAG}
+          command: poetry run python verify-version.py ${CIRCLE_TAG}
       - run:
           name: Install twine
-          command: pipenv run pip install twine
+          command: poetry run pip install twine
       - run:
           name: Initialize .pypirc
           command: |
@@ -100,8 +86,8 @@ commands:
           name: Create and upload distribution to pypi
           command: |
             rm -rf dist build python_gvm.egg-info
-            pipenv run python setup.py sdist bdist_wheel
-            pipenv run twine upload dist/*
+            poetry build
+            poetry run twine upload dist/*
 
 jobs:
   build-35:
