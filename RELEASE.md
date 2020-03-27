@@ -1,15 +1,15 @@
 # Release Instructions
 
 Before creating a new release carefully consider the version number of the new
-release.  We are following [Semantic Versioning](https://semver.org/) and
+release. We are following [Semantic Versioning](https://semver.org/) and
 [PEP440](https://www.python.org/dev/peps/pep-0440/).
 
 ## Preparing the Required Python Packages
 
-* Install twine for pypi package uploads and update setuptools, pipenv and wheel packages:
+* Install twine for pypi package uploads
 
   ```sh
-  python3 -m pip install --user --upgrade twine setuptools wheel pipenv
+  python3 -m pip install --user --upgrade twine
   ```
 
 ## Preparing the Release
@@ -21,9 +21,9 @@ release.  We are following [Semantic Versioning](https://semver.org/) and
   git checkout -b create-new-release upstream/master
   ```
 
-* Open `gvm/__init__.py` and increment the version number. For example, if the
-  file contains `VERSION = (2, 1, 0, 'dev', 1)`, the line should be changed to
-  `VERSION = (2, 1, 0)`.
+* Open `pyproject.toml` and increment the version number. For example, if the
+  file contains `version = 22.4dev1`, the line should be changed to
+  `version = 22.4`.
 
 * Update the `CHANGELOG.md` file:
   * Change `[unreleased]` to new release version.
@@ -70,7 +70,7 @@ first time.
 
   ```sh
   rm -rf dist build python_gvm.egg-info
-  python3 setup.py sdist bdist_wheel
+  poetry build
   ```
 
 * Upload the archives in `dist` to [Test PyPI](https://test.pypi.org/):
@@ -88,19 +88,18 @@ first time.
   ```sh
   mkdir python-gvm-install-test
   cd python-gvm-install-test
-  pipenv run pip install --pre -I --extra-index-url https://test.pypi.org/simple/ python-gvm
+  poetry run pip install --pre -I --extra-index-url https://test.pypi.org/simple/ python-gvm
   ```
 
 * Check install version with a Python script:
 
   ```sh
-  pipenv run python -c "from gvm import get_version; print(get_version())"
+  poetry run python -c "from gvm import get_version; print(get_version())"
   ```
 
 * Remove test environment:
 
   ```sh
-  pipenv --rm
   cd ..
   rm -rf python-gvm-install-test
   ```
@@ -135,43 +134,33 @@ first time.
   git tag --sign --message "Tagging the <version> release" v<version>
   ```
 
+* Push changes and tag to Github:
+
+  ```sh
+  git push --tags upstream
+  ```
+
 ## Uploading to the 'real' PyPI
 
-* Create the final distribution files:
-
-  ```sh
-  rm -rf dist build python_gvm.egg-info
-  python3 setup.py sdist bdist_wheel
-  ```
-
-* Upload the archives in `dist` to [PyPI](https://pypi.org/):
-
-  ```sh
-  twine upload dist/*
-  ```
+* Uploading to PyPI is done automatically by pushing a git tag via CircleCI
 
 * Check if new version is available at <https://pypi.org/project/python-gvm>.
 
 ## Bumping `master` Branch to the Next Version
 
-* Open `gvm/__init__.py` and increment the version number to the next
+* Open `pyproject.toml` and increment the version number to the next
   *development* version number. For example, if the file contains
-  `VERSION = (2, 1, 0)`, it should be changed to `VERSION = (2, 2, 0, 'dev', 1)`.
+  `version = 22.4`, it should be changed to `version = 22.10dev1`.
 
 * Create a commit for the version bump:
 
   ```sh
-  git add gvm/__init__.py
+  git add pyproject.toml
   git commit -m "Update version after <version> release"
+  git push upstream
   ```
 
 ## Announcing the Release
-
-* Push changes and tag to the `master` branch on Github:
-
-  ```sh
-  git push --tags upstream master
-  ```
 
 * Create a Github release:
 
