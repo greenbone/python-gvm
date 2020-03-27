@@ -41,6 +41,8 @@ Python 3.5 and later is supported.
 
 ### Install using pip
 
+pip 19.0 or later is required.
+
 > **Note**: All commands listed here use the general tool names. If some of these tools are provided by your distribution, you may need to explicitly use the Python 3 version of the tool, e.g. **`pip3`**.
 
 You can install the latest stable release of python-gvm from the Python Package
@@ -96,27 +98,26 @@ Your contributions are highly appreciated. Please
 For bigger changes, please discuss it first in the
 [issues](https://github.com/greenbone/python-gvm/issues).
 
-For development you should use [pipenv](https://pipenv.readthedocs.io/en/latest/)
+For development you should use [poetry](https://python-poetry.org)
 to keep you python packages separated in different environments. First install
-pipenv via pip
+poetry via pip
 
-    pip install --user pipenv
+    pip install --user poetry
 
 Afterwards run
 
-    pipenv install --dev
+    poetry install
 
-in the checkout directory of python-gvm (the directory containing the Pipfile)
-to install all dependencies including the packages only required for
-development.
+in the checkout directory of python-gvm (the directory containing the
+`pyproject.toml` file) to install all dependencies including the packages only
+required for development.
 
-The python-gvm repository used [autohooks](https://github.com/greenbone/autohooks)
+The python-gvm repository uses [autohooks](https://github.com/greenbone/autohooks)
 to apply linting and auto formatting via git hooks. Please ensure the git hooks
 are active.
 
-    $ pipenv install --dev
-    $ pipenv shell
-    (python-gvm)$ autohooks activate
+    $ poetry install
+    $ poetry run autohooks activate --force
 
 ## License
 
