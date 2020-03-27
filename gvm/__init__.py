@@ -18,13 +18,23 @@
 """
 Main module of python-gvm.
 """
+from pathlib import Path
 
 from pkg_resources import safe_version
 
-VERSION = (1, 3, 0)
-"""
-Current Version of python-gvm as a tuple
-"""
+import toml
+
+
+def get_version_from_pyproject_toml() -> str:
+    path = Path(__file__)
+    pyproject_toml_path = path.parent.parent / 'pyproject.toml'
+
+    if pyproject_toml_path.exists():
+        pyproject_toml = toml.loads(pyproject_toml_path.read_text())
+        if 'tool' in pyproject_toml and 'poetry' in pyproject_toml['tool']:
+            return pyproject_toml['tool']['poetry']['version']
+
+    raise RuntimeError('Version information not found in pyproject.toml file.')
 
 
 def get_version() -> str:
@@ -37,5 +47,5 @@ def get_version() -> str:
     .. _PEP440:
        https://www.python.org/dev/peps/pep-0440
     """
-    str_version = '.'.join([str(v) for v in VERSION])
+    str_version = get_version_from_pyproject_toml()
     return safe_version(str_version)
