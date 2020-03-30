@@ -15,11 +15,11 @@ Installation of python-gvm
 Installing the Latest Stable Release of python-gvm
 --------------------------------------------------
 
-For installing the latest stable release of **python-gvm**, `pip`_ or `pipenv`_
-can be used.
+For installing the latest stable release of **python-gvm**, `pip`_, `poetry`_
+or `pipenv`_ can be used.
 
-If an appliacation or library that uses **python-gvm** internally is developed,
-it is often better to choose `pipenv`_ for handling the dependencies.
+If an application or library that uses **python-gvm** internally is developed,
+it is often better to choose `poetry`_ for handling the dependencies.
 
 Using pip
 ^^^^^^^^^
@@ -28,6 +28,15 @@ For installing **python-gvm** using `pip`_ run::
 
     pip install python-gvm
 
+Using poetry
+^^^^^^^^^^^^
+
+For installing **python-gvm** using `poetry`_ run::
+
+    poetry add python-gvm
+
+If the usage of `poetry`_ is not familiar, its documentation can be found at
+https://python-poetry.org/docs/.
 
 Using pipenv
 ^^^^^^^^^^^^
@@ -55,3 +64,4 @@ Once there is a copy of the source, it can be embedded it the own application as
 
 .. _pip: https://pip.pypa.io/en/stable/
 .. _pipenv: https://pipenv.readthedocs.io/en/latest/
+.. _poetry: https://python-poetry.org/
