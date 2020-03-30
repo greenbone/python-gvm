@@ -88,13 +88,15 @@ first time.
   ```sh
   mkdir python-gvm-install-test
   cd python-gvm-install-test
-  poetry run pip install --pre -I --extra-index-url https://test.pypi.org/simple/ python-gvm
+  python3 -m venv test-env
+  source test-env/bin/activate
+  pip install --pre -I --extra-index-url https://test.pypi.org/simple/ python-gvm
   ```
 
 * Check install version with a Python script:
 
   ```sh
-  poetry run python -c "from gvm import get_version; print(get_version())"
+  python3 -c "from gvm import get_version; print(get_version())"
   ```
 
 * Remove test environment:
