@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2019 Greenbone Networks GmbH
+# Copyright (C) 2018 - 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,11 +16,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import re
 import warnings
+
+from packaging.version import Version, InvalidVersion
 
 
 def deprecation(message: str):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
+
+
+def safe_version(version: str) -> str:
+    """
+    Returns the version as a string in `PEP440`_ compliant
+    format.
+
+    .. _PEP440:
+       https://www.python.org/dev/peps/pep-0440
+    """
+    try:
+        return str(Version(version))
+    except InvalidVersion:
+        version = version.replace(' ', '.')
+        return re.sub('[^A-Za-z0-9.]+', '-', version)
 
 
 def get_version_string(version: tuple) -> str:
