@@ -54,6 +54,8 @@ def verfiy(args):
                 "version \"{}\"".format(provided_version, version)
             )
 
+    print('OK')
+
 
 def show(_args):
     pyproject_version = safe_version(get_version_from_pyproject_toml())
@@ -119,6 +121,11 @@ def main():
     update_parser.set_defaults(func=update)
 
     args = parser.parse_args()
+
+    if not hasattr(args, 'func'):
+        parser.print_usage()
+        sys.exit(0)
+
     args.func(args)
 
 
