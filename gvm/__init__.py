@@ -18,6 +18,7 @@
 """
 Main module of python-gvm.
 """
+from .__version__ import __version__
 
 
 def get_version() -> str:
@@ -30,4 +31,4 @@ def get_version() -> str:
     .. _PEP440:
        https://www.python.org/dev/peps/pep-0440
     """
-    return ""
+    return __version__
