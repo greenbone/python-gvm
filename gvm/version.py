@@ -119,7 +119,7 @@ def check_version_equal(new_version: str, old_version: str) -> bool:
     return safe_version(old_version) == safe_version(new_version)
 
 
-def check_version_is_pep440_compliant(version: str) -> bool:
+def is_version_pep440_compliant(version: str) -> bool:
     """
     Checks if the provided version is a PEP 440 compliant version string
     """
@@ -206,7 +206,7 @@ def _verify_version(version: str, pyproject_toml_path: Path) -> None:
     pyproject_version = get_version_from_pyproject_toml(
         pyproject_toml_path=pyproject_toml_path
     )
-    if not check_version_is_pep440_compliant(python_gvm_version):
+    if not is_version_pep440_compliant(python_gvm_version):
         sys.exit("The version in gvm/__version__.py is not PEP 440 compliant.")
 
     if pyproject_version != python_gvm_version:
