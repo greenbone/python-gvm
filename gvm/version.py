@@ -18,11 +18,9 @@
 
 import argparse
 import re
-import subprocess
 import sys
 
 from pathlib import Path
-from typing import Union
 
 import tomlkit
 
@@ -127,19 +125,26 @@ def is_version_pep440_compliant(version: str) -> bool:
 
 
 def update_pyproject_version(
-    new_version: str, cwd: Union[Path, str] = None,
+    new_version: str, pyproject_toml_path: Path,
 ) -> None:
     """
     Update the version in the pyproject.toml file
     """
     version = safe_version(new_version)
 
-    subprocess.check_call(
-        ['poetry', 'version', version],
-        stdout=subprocess.DEVNULL,
-        timeout=120,  # wait 2 min and don't wait forever
-        cwd=str(cwd),
-    )
+    pyproject_toml = tomlkit.parse(pyproject_toml_path.read_text())
+
+    if 'tool' not in pyproject_toml:
+        tool_table = tomlkit.table()
+        pyproject_toml['tool'] = tool_table
+
+    if 'poetry' not in pyproject_toml['tool']:
+        poetry_table = tomlkit.table()
+        pyproject_toml['tool'].add('poetry', poetry_table)
+
+    pyproject_toml['tool']['poetry']['version'] = version
+
+    pyproject_toml_path.write_text(tomlkit.dumps(pyproject_toml))
 
 
 def update_version_file(new_version: str, version_file_path: Path) -> None:
@@ -184,10 +189,9 @@ def _update_python_gvm_version(
         print('Version is already up-to-date.')
         sys.exit(0)
 
-    try:
-        update_pyproject_version(new_version=new_version, cwd=cwd_path)
-    except subprocess.SubprocessError as e:
-        sys.exit(e)
+    update_pyproject_version(
+        new_version=new_version, pyproject_toml_path=pyproject_toml_path
+    )
 
     update_version_file(
         new_version=new_version, version_file_path=version_file_path,
