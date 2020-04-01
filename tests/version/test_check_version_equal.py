@@ -34,3 +34,4 @@ class CheckVersionEqualTestCase(unittest.TestCase):
         self.assertFalse(check_version_equal('1.2.3a0', '1.2.3.a1'))
         self.assertFalse(check_version_equal('1.2.3dev', '1.2.3dev1'))
         self.assertFalse(check_version_equal('1.2.3dev', '1.2.3.dev1'))
+        self.assertFalse(check_version_equal('1.2.3.dev1', '1.2.3.dev2'))
