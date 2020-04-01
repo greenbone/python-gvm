@@ -33,6 +33,11 @@ from gvm import get_version
 
 
 def strip_version(version: str) -> str:
+    """
+    Strips a leading 'v' from a version string
+
+    E.g. v1.2.3 will be converted to 1.2.3
+    """
     if version and version[0] == 'v':
         return version[1:]
 
