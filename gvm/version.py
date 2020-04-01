@@ -185,7 +185,7 @@ def _update_python_gvm_version(
             )
         )
 
-    if not force and not check_version_equal(new_version, python_gvm_version):
+    if not force and check_version_equal(new_version, python_gvm_version):
         print('Version is already up-to-date.')
         sys.exit(0)
 
