@@ -24,7 +24,7 @@ import sys
 from pathlib import Path
 from typing import Union
 
-import toml
+import tomlkit
 
 from packaging.version import Version, InvalidVersion
 
@@ -71,7 +71,7 @@ def get_version_from_pyproject_toml(pyproject_toml_path: Path = None) -> str:
     if not pyproject_toml_path.exists():
         raise RuntimeError('pyproject.toml file not found.')
 
-    pyproject_toml = toml.loads(pyproject_toml_path.read_text())
+    pyproject_toml = tomlkit.parse(pyproject_toml_path.read_text())
     if (
         'tool' in pyproject_toml
         and 'poetry' in pyproject_toml['tool']
