@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.utils import get_version_string
+from gvm.version import get_version_string
 
 
 class TestGetVersionString(unittest.TestCase):
