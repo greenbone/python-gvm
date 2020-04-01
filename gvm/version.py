@@ -72,7 +72,11 @@ def get_version_from_pyproject_toml(pyproject_toml_path: Path = None) -> str:
         raise RuntimeError('pyproject.toml file not found.')
 
     pyproject_toml = toml.loads(pyproject_toml_path.read_text())
-    if 'tool' in pyproject_toml and 'poetry' in pyproject_toml['tool']:
+    if (
+        'tool' in pyproject_toml
+        and 'poetry' in pyproject_toml['tool']
+        and 'version' in pyproject_toml['tool']['poetry']
+    ):
         return pyproject_toml['tool']['poetry']['version']
 
     raise RuntimeError('Version information not found in pyproject.toml file.')
