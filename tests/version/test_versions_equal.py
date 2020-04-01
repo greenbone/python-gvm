@@ -18,20 +18,20 @@
 
 import unittest
 
-from gvm.version import check_version_equal
+from gvm.version import versions_equal
 
 
-class CheckVersionEqualTestCase(unittest.TestCase):
+class VersionEqualTestCase(unittest.TestCase):
     def test_version_equal(self):
-        self.assertTrue(check_version_equal('1.2.3', '1.2.3'))
-        self.assertTrue(check_version_equal('1.2.3a', '1.2.3a0'))
-        self.assertTrue(check_version_equal('1.2.3a0', '1.2.3.a0'))
-        self.assertTrue(check_version_equal('1.2.3dev1', '1.2.3.dev1'))
+        self.assertTrue(versions_equal('1.2.3', '1.2.3'))
+        self.assertTrue(versions_equal('1.2.3a', '1.2.3a0'))
+        self.assertTrue(versions_equal('1.2.3a0', '1.2.3.a0'))
+        self.assertTrue(versions_equal('1.2.3dev1', '1.2.3.dev1'))
 
     def test_version_not_equal(self):
-        self.assertFalse(check_version_equal('1.2.3', '1.2'))
-        self.assertFalse(check_version_equal('1.2.3a', '1.2.3a1'))
-        self.assertFalse(check_version_equal('1.2.3a0', '1.2.3.a1'))
-        self.assertFalse(check_version_equal('1.2.3dev', '1.2.3dev1'))
-        self.assertFalse(check_version_equal('1.2.3dev', '1.2.3.dev1'))
-        self.assertFalse(check_version_equal('1.2.3.dev1', '1.2.3.dev2'))
+        self.assertFalse(versions_equal('1.2.3', '1.2'))
+        self.assertFalse(versions_equal('1.2.3a', '1.2.3a1'))
+        self.assertFalse(versions_equal('1.2.3a0', '1.2.3.a1'))
+        self.assertFalse(versions_equal('1.2.3dev', '1.2.3dev1'))
+        self.assertFalse(versions_equal('1.2.3dev', '1.2.3.dev1'))
+        self.assertFalse(versions_equal('1.2.3.dev1', '1.2.3.dev2'))

@@ -110,9 +110,9 @@ def print_version(pyproject_toml_path: Path = None) -> None:
     print(pyproject_version)
 
 
-def check_version_equal(new_version: str, old_version: str) -> bool:
+def versions_equal(new_version: str, old_version: str) -> bool:
     """
-    Checks if new_version and old_version equal
+    Checks if new_version and old_version are equal
     """
     return safe_version(old_version) == safe_version(new_version)
 
@@ -185,7 +185,7 @@ def _update_python_gvm_version(
             )
         )
 
-    if not force and check_version_equal(new_version, python_gvm_version):
+    if not force and versions_equal(new_version, python_gvm_version):
         print('Version is already up-to-date.')
         sys.exit(0)
 
