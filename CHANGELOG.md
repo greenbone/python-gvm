@@ -17,6 +17,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   default and also python-gvm in editable mode. This means after running
   `poetry install` gvm will directly be importable in the virtual python
   environment. [#197](https://github.com/greenbone/python-gvm/pull/197)
+* Update error classes to always have meaningful `__str__` and `__repr__`
+  method. This allows for easier error printing
+  [#199](https://github.com/greenbone/python-gvm/pull/199)
 
 [unreleased]: https://github.com/greenbone/python-gvm/compare/v1.3.0...master
 
