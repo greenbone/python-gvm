@@ -21,9 +21,23 @@ release. We are following [Semantic Versioning](https://semver.org/) and
   git checkout -b create-new-release upstream/master
   ```
 
-* Open `pyproject.toml` and increment the version number. For example, if the
-  file contains `version = 22.4dev1`, the line should be changed to
-  `version = 22.4`.
+* Get the current version number
+
+  ```sh
+  poetry run python -m gvm.version show
+  ```
+
+* Determine new release version number
+
+  If the output is something like  `22.4.dev1` or `21.10a1`, the new version
+  should be `22.4` or `21.10` respectively.
+
+* Update to new version number (`<new-version>` must be replaced by the version
+  from the last step)
+
+  ```sh
+  poetry run python -m gvm.version update <new-version>
+  ```
 
 * Update the `CHANGELOG.md` file:
   * Change `[unreleased]` to new release version.

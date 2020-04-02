@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2020 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,8 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import warnings
+import unittest
+
+from gvm.version import strip_version
 
 
-def deprecation(message: str):
-    warnings.warn(message, DeprecationWarning, stacklevel=2)
+class StripVersionTestCase(unittest.TestCase):
+    def test_version_string_without_v(self):
+        self.assertEqual(strip_version('1.2.3'), '1.2.3')
+        self.assertEqual(strip_version('1.2.3dev'), '1.2.3dev')
+
+    def test_version_string_with_v(self):
+        self.assertEqual(strip_version('v1.2.3'), '1.2.3')
+        self.assertEqual(strip_version('v1.2.3dev'), '1.2.3dev')

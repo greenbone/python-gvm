@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [unreleased]
 
+### Added
+* Added an API and CLI utilities for the version handling in python-gvm
+  [#198](https://github.com/greenbone/python-gvm/pull/198)
+
 ### Changed
-- Replaced `pipenv` with `poetry` for dependency management. `poetry install`
+* Replaced `pipenv` with `poetry` for dependency management. `poetry install`
   works a bit different then `pipenv install`. It installs dev packages by
   default and also python-gvm in editable mode. This means after running
   `poetry install` gvm will directly be importable in the virtual python

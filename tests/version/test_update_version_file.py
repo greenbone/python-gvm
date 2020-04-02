@@ -16,32 +16,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import sys
+import unittest
 
-from gvm import get_version
+from pathlib import Path
+from unittest.mock import MagicMock
 
-
-def strip_version(version: str) -> str:
-    if not version:
-        return version
-
-    if version[0] == 'v':
-        return version[1:]
+from gvm.version import update_version_file
 
 
-def main():
-    if len(sys.argv) < 2:
-        sys.exit('Missing argument for version.')
-        return
+class UpdateVersionFileTestCase(unittest.TestCase):
+    def test_update_version_file(self):
+        fake_path_class = MagicMock(spec=Path)
+        fake_path = fake_path_class.return_value
 
-    p_version = strip_version(sys.argv[1])
-    version = get_version()
-    if p_version != version:
-        sys.exit(
-            "Provided version: {} does not match the python-gvm "
-            "version: {}".format(p_version, version)
-        )
+        update_version_file('22.04dev1', fake_path)
 
+        text = fake_path.write_text.call_args[0][0]
 
-if __name__ == '__main__':
-    main()
+        *_, version_line, _last_line = text.split('\n')
+
+        self.assertEqual(version_line, '__version__ = "22.4.dev1"')
