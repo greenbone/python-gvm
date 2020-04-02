@@ -28,6 +28,16 @@ class GvmError(Exception):
     Base class for all exceptions originating in python-gvm.
     """
 
+    def __init__(self, message: str, *args):
+        super().__init__(message, *args)
+        self.message = message
+
+    def __repr__(self):
+        return '<{} message="{}">'.format(self.__class__.__name__, self.message)
+
+    def __str__(self):
+        return self.message
+
 
 class GvmClientError(GvmError):
     """An exception for gvm client errors
@@ -48,13 +58,15 @@ class GvmServerError(GvmError):
     """
 
     def __init__(self, status: str = None, message: str = None):
-        # pylint: disable=super-init-not-called
+        super().__init__(message, status)
         self.status = status
-        self.message = message
 
     def __str__(self):
-        return (
-            self.__class__.__name__ + ': ' + self.status + ' - ' + self.message
+        return 'Server Error {}. {}'.format(self.status, self.message)
+
+    def __repr__(self):
+        return '<{} status="{}" message="{}">'.format(
+            self.__class__.__name__, self.status, self.message
         )
 
 
@@ -70,13 +82,15 @@ class GvmResponseError(GvmClientError):
     """
 
     def __init__(self, status: str = None, message: str = None):
-        # pylint: disable=super-init-not-called
+        super().__init__(message, status)
         self.status = status
-        self.message = message
 
     def __str__(self):
-        return (
-            self.__class__.__name__ + ': ' + self.status + ' - ' + self.message
+        return 'Response Error {}. {}'.format(self.status, self.message)
+
+    def __repr__(self):
+        return '<{} status="{}" message="{}">'.format(
+            self.__class__.__name__, self.status, self.message
         )
 
 
@@ -99,8 +113,7 @@ class InvalidArgument(GvmError):
         argument: Optional[str] = None,
         function: Optional[str] = None
     ):
-        # pylint: disable=super-init-not-called
-        self.message = message
+        super().__init__(message, argument, function)
         self.argument = argument
         self.function = function
 
@@ -169,8 +182,7 @@ class RequiredArgument(GvmError):
         argument: Optional[str] = None,
         function: Optional[str] = None
     ):
-        # pylint: disable=super-init-not-called
-        self.message = message
+        super().__init__(message, argument, function)
         self.argument = argument
         self.function = function
 
