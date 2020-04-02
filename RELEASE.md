@@ -12,46 +12,6 @@ release. We are following [Semantic Versioning](https://semver.org/) and
   python3 -m pip install --user --upgrade twine
   ```
 
-## Preparing the Release
-
-* Fetch upstream changes and create a branch:
-
-  ```sh
-  git fetch upstream
-  git checkout -b create-new-release upstream/master
-  ```
-
-* Get the current version number
-
-  ```sh
-  poetry run python -m gvm.version show
-  ```
-
-* Determine new release version number
-
-  If the output is something like  `22.4.dev1` or `21.10a1`, the new version
-  should be `22.4` or `21.10` respectively.
-
-* Update to new version number (`<new-version>` must be replaced by the version
-  from the last step)
-
-  ```sh
-  poetry run python -m gvm.version update <new-version>
-  ```
-
-* Update the `CHANGELOG.md` file:
-  * Change `[unreleased]` to new release version.
-  * Add a release date.
-  * Update reference to Github diff.
-  * Remove empty sub sections like *Deprecated*.
-
-* Create a git commit:
-
-  ```sh
-  git add .
-  git commit -m "Prepare release <version>"
-  ```
-
 ## Configuring the Access to the Python Package Index (PyPI)
 
 *Note:* This is only necessary for users performing the release process for the
@@ -76,6 +36,27 @@ first time.
   [testpypi]
   repository = https://test.pypi.org/legacy/
   username = <username>
+  ```
+
+## Prepare testing the Release
+
+* Fetch upstream changes and create a branch:
+
+  ```sh
+  git fetch upstream
+  git checkout -b create-new-release upstream/master
+  ```
+
+* Get the current version number
+
+  ```sh
+  poetry run python -m gvm.version show
+  ```
+
+* Update the version number to some alpha version e.g.
+
+  ```sh
+  poetry run python -m gvm.version update 1.2.3a1
   ```
 
 ## Uploading to the PyPI Test Instance
@@ -104,6 +85,7 @@ first time.
   cd python-gvm-install-test
   python3 -m venv test-env
   source test-env/bin/activate
+  pip install -U pip  # ensure the environment uses a recent version of pip
   pip install --pre -I --extra-index-url https://test.pypi.org/simple/ python-gvm
   ```
 
@@ -116,8 +98,37 @@ first time.
 * Remove test environment:
 
   ```sh
+  deactivate
   cd ..
   rm -rf python-gvm-install-test
+  ```
+
+## Prepare the Release
+
+* Determine new release version number
+
+  If the output is something like  `1.2.3.dev1` or `1.2.3a1`, the new version
+  should be `1.2.3`.
+
+* Update to new version number (`<new-version>` must be replaced by the version
+  from the last step)
+
+  ```sh
+  cd path/to/git/clone/of/python-gvm
+  poetry run python -m gvm.version update <new-version>
+  ```
+
+* Update the `CHANGELOG.md` file:
+  * Change `[unreleased]` to new release version.
+  * Add a release date.
+  * Update reference to Github diff.
+  * Remove empty sub sections like *Deprecated*.
+
+* Create a git commit:
+
+  ```sh
+  git add .
+  git commit -m "Prepare release <version>"
   ```
 
 ## Performing the Release on GitHub
