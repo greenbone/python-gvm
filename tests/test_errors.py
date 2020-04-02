@@ -168,9 +168,7 @@ class RequiredArgumentTestCase(unittest.TestCase):
 
 class GvmServerErrorTestCase(unittest.TestCase):
     def test_raise_with_message_and_status(self):
-        with self.assertRaisesRegex(
-            GvmServerError, '^GvmServerError: foo - bar$'
-        ):
+        with self.assertRaisesRegex(GvmServerError, '^Server Error foo. bar$'):
             raise GvmServerError('foo', 'bar')
 
     def test_is_gvm_error(self):
@@ -181,7 +179,7 @@ class GvmServerErrorTestCase(unittest.TestCase):
 class GvmResponseErrorTestCase(unittest.TestCase):
     def test_raise_with_message_and_status(self):
         with self.assertRaisesRegex(
-            GvmResponseError, '^GvmResponseError: foo - bar$'
+            GvmResponseError, '^Response Error foo. bar$'
         ):
             raise GvmResponseError('foo', 'bar')
 
