@@ -42,7 +42,7 @@ tomlkit = "^0.5.11"
 [tool.poetry.dev-dependencies]
 coverage = "^5.0.4"
 pylint = "^2.4.4"
-sphinx = "^3.0.0"
+sphinx = "^3.0.1"
 sphinx-autodoc-typehints = "^1.10.3"
 autohooks = "^2.1.0"
 autohooks-plugin-pylint = "^1.2.0"

@@ -350,6 +350,7 @@ invoke = ["invoke (>=1.3)"]
 [[package]]
 category = "dev"
 description = "Utility library for gitignore style pattern matching of file paths."
+marker = "python_version >= \"3.6\" and python_version < \"4.0\""
 name = "pathspec"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -466,7 +467,7 @@ description = "Python documentation generator"
 name = "sphinx"
 optional = false
 python-versions = ">=3.5"
-version = "3.0.0"
+version = "3.0.1"
 
 [package.dependencies]
 Jinja2 = ">=2.3"
@@ -626,7 +627,7 @@ python-versions = "*"
 version = "1.11.2"
 
 [metadata]
-content-hash = "b2f14e59cee65940d9709e61e41c9da7307a790016a413e13226186897142e2a"
+content-hash = "da45b61653f998cfe055037ffcb332e5e07a929cf450a415b28614ccbb93f5b1"
 python-versions = "^3.5.2"
 
 [metadata.files]
@@ -996,8 +997,8 @@ snowballstemmer = [
     {file = "snowballstemmer-2.0.0.tar.gz", hash = "sha256:df3bac3df4c2c01363f3dd2cfa78cce2840a79b9f1c2d2de9ce8d31683992f52"},
 ]
 sphinx = [
-    {file = "Sphinx-3.0.0-py3-none-any.whl", hash = "sha256:b63a0c879c4ff9a4dffcb05217fa55672ce07abdeb81e33c73303a563f8d8901"},
-    {file = "Sphinx-3.0.0.tar.gz", hash = "sha256:6a099e6faffdc3ceba99ca8c2d09982d43022245e409249375edf111caf79ed3"},
+    {file = "Sphinx-3.0.1-py3-none-any.whl", hash = "sha256:8411878f4768ec2a8896b844d68070204f9354a831b37937989c2e559d29dffc"},
+    {file = "Sphinx-3.0.1.tar.gz", hash = "sha256:50972d83b78990fd61d0d3fe8620814cae53db29443e92c13661bc43dff46ec8"},
 ]
 sphinx-autodoc-typehints = [
     {file = "sphinx-autodoc-typehints-1.10.3.tar.gz", hash = "sha256:a6b3180167479aca2c4d1ed3b5cb044a70a76cccd6b38662d39288ebd9f0dff0"},
