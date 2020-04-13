@@ -40,7 +40,7 @@ tomlkit = "^0.5.11"
 
 
 [tool.poetry.dev-dependencies]
-coverage = "^5.0.4"
+coverage = "^5.1"
 pylint = "^2.4.4"
 sphinx = "^3.0.1"
 sphinx-autodoc-typehints = "^1.10.3"
