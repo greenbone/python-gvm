@@ -353,6 +353,10 @@ class UnixSocketConnection(GvmConnection):
             raise GvmError(
                 "Socket {path} does not exist".format(path=self.path)
             ) from None
+        except ConnectionError:
+            raise GvmError(
+                "Could not connect to socket {}".format(self.path)
+            ) from None
 
 
 class DebugConnection:
