@@ -317,7 +317,7 @@ python-versions = "*"
 version = "0.6.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Core utilities for Python packages"
 name = "packaging"
 optional = false
@@ -415,7 +415,7 @@ docs = ["sphinx (>=1.6.5)", "sphinx-rtd-theme"]
 tests = ["pytest (>=3.2.1,<3.3.0 || >3.3.0)", "hypothesis (>=3.27.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Python parsing module"
 name = "pyparsing"
 optional = false
@@ -639,7 +639,7 @@ python-versions = "*"
 version = "1.11.2"
 
 [metadata]
-content-hash = "dc05b5a21ab5c25392c40d093f9a589983c7b1644788c5054179a7ab72ea4a68"
+content-hash = "109ff98ca599ccb8673bcd670e04108a792e3fd0b3cb24f527fdf4275b12a1be"
 python-versions = "^3.5.2"
 
 [metadata.files]
