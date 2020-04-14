@@ -171,7 +171,7 @@ version = "7.1.1"
 [[package]]
 category = "dev"
 description = "Cross-platform colored terminal text."
-marker = "platform_system == \"Windows\" or sys_platform == \"win32\" or python_version >= \"3.6\" and python_version < \"4.0\" and platform_system == \"Windows\""
+marker = "sys_platform == \"win32\" or platform_system == \"Windows\" or python_version >= \"3.6\" and python_version < \"4.0\" and platform_system == \"Windows\""
 name = "colorama"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -355,6 +355,18 @@ name = "pathspec"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "0.8.0"
+
+[[package]]
+category = "dev"
+description = "Common utilities and tools maintained by Greenbone Networks"
+name = "pontos"
+optional = false
+python-versions = ">=3.5,<4.0"
+version = "0.2.0"
+
+[package.dependencies]
+packaging = ">=20.3,<21.0"
+tomlkit = ">=0.5.11,<0.6.0"
 
 [[package]]
 category = "main"
@@ -627,7 +639,7 @@ python-versions = "*"
 version = "1.11.2"
 
 [metadata]
-content-hash = "eaaf5aac34a4d717822aa0e36f4da2188340e99997b2b975c8b575c5c51aaf0b"
+content-hash = "dc05b5a21ab5c25392c40d093f9a589983c7b1644788c5054179a7ab72ea4a68"
 python-versions = "^3.5.2"
 
 [metadata.files]
@@ -917,6 +929,10 @@ paramiko = [
 pathspec = [
     {file = "pathspec-0.8.0-py2.py3-none-any.whl", hash = "sha256:7d91249d21749788d07a2d0f94147accd8f845507400749ea19c1ec9054a12b0"},
     {file = "pathspec-0.8.0.tar.gz", hash = "sha256:da45173eb3a6f2a5a487efba21f050af2b41948be6ab52b6a1e3ff22bb8b7061"},
+]
+pontos = [
+    {file = "pontos-0.2.0-py3-none-any.whl", hash = "sha256:6f2778efce3374ab91834845c4ef6176bb455cb2fb3f7653f1518cab7008f65e"},
+    {file = "pontos-0.2.0.tar.gz", hash = "sha256:eb94a5af108f99ff32ff63614296835b7343c00fbc7fd6f30c9f78798d2ae217"},
 ]
 pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
