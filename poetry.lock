@@ -601,7 +601,7 @@ python-versions = "*"
 version = "0.10.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Style preserving TOML library"
 name = "tomlkit"
 optional = false
@@ -639,7 +639,7 @@ python-versions = "*"
 version = "1.11.2"
 
 [metadata]
-content-hash = "109ff98ca599ccb8673bcd670e04108a792e3fd0b3cb24f527fdf4275b12a1be"
+content-hash = "656327f76af8dd67f9802eb34392ec9f172a4fcf00ee83a6327b7ff66f3fc3b0"
 python-versions = "^3.5.2"
 
 [metadata.files]
