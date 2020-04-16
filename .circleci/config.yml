@@ -67,17 +67,17 @@ commands:
           command: poetry run pylint --disable=R gvm
       - run:
           name: Check version information
-          command: poetry run python -m gvm.version verify current
+          command: poetry run python -m pontos.version verify current
   deploy:
     description: "Upload package to PyPI"
     steps:
       - checkout
       - run:
           name: Install dependencies
-          command: poetry install --no-dev
+          command: poetry install
       - run:
           name: Verify tag version
-          command: poetry run python -m gvm.version verify ${CIRCLE_TAG}
+          command: poetry run python -m pontos.version verify ${CIRCLE_TAG}
       - run:
           name: Install twine
           command: poetry run pip install twine

@@ -18,6 +18,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Removed
 
+* Dropped version handling code from python-gvm and replaced it with using
+  pontos.version [#213](https://github.com/greenbone/python-gvm/pull/213)
+
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.4.0...master
 
 ## [1.4.0]

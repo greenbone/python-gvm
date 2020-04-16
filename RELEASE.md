@@ -50,13 +50,13 @@ first time.
 * Get the current version number
 
   ```sh
-  poetry run python -m gvm.version show
+  poetry run python -m pontos.version show
   ```
 
 * Update the version number to some alpha version e.g.
 
   ```sh
-  poetry run python -m gvm.version update 1.2.3a1
+  poetry run python -m pontos.version update 1.2.3a1
   ```
 
 ## Uploading to the PyPI Test Instance
@@ -92,7 +92,7 @@ first time.
 * Check install version with a Python script:
 
   ```sh
-  python3 -c "from gvm import get_version; print(get_version())"
+  python3 -c "from gvm import __version__; print(__version__)"
   ```
 
 * Remove test environment:
@@ -115,7 +115,7 @@ first time.
 
   ```sh
   cd path/to/git/clone/of/python-gvm
-  poetry run python -m gvm.version update <new-version>
+  poetry run python -m pontos.version update <new-version>
   ```
 
 * Update the `CHANGELOG.md` file:
@@ -175,14 +175,20 @@ first time.
 
 ## Bumping `master` Branch to the Next Version
 
-* Open `pyproject.toml` and increment the version number to the next
-  *development* version number. For example, if the file contains
-  `version = 22.4`, it should be changed to `version = 22.10dev1`.
+
+* Update to a Development Version
+
+  The next version should contain an incremented minor version and a dev suffix
+  e.g. 2.3.0.dev1
+
+  ```sh
+  poetry run python -m pontos.version update <next-dev-version>
+  ```
 
 * Create a commit for the version bump:
 
   ```sh
-  git add pyproject.toml
+  git add .
   git commit -m "Update version after <version> release"
   git push upstream
   ```
