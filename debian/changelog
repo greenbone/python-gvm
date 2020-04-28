@@ -1,3 +1,10 @@
+python-gvm (1.0.0-gos2008~1) gos20.08; urgency=medium
+
+  * Update debian/gbp.conf for 20.08
+  * Update .gitlab-ci.yml
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Tue, 28 Apr 2020 18:15:37 +0200
+
 python-gvm (1.0.0-gos2004~4) gos20.04; urgency=medium
 
   * Add python3-setuptools as depends for autopkgtest.
