@@ -2030,7 +2030,7 @@ class Gmp(GvmProtocol):
             if not _is_list_like(observers):
                 raise InvalidArgumentType(
                     function=self.create_task.__name__,
-                    argument='obeservers',
+                    argument='observers',
                     arg_type='list',
                 )
 
@@ -3613,7 +3613,7 @@ class Gmp(GvmProtocol):
             report_format_id: UUID of report format to use
             ignore_pagination: Whether to ignore the filter terms "first" and
                 "rows".
-            details: Request addititional report information details
+            details: Request additional report information details
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -5838,7 +5838,7 @@ class Gmp(GvmProtocol):
             if not _is_list_like(observers):
                 raise InvalidArgumentType(
                     function=self.modify_task.__name__,
-                    argument='obeservers',
+                    argument='observers',
                     arg_type='list',
                 )
 
