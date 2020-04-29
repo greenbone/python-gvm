@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add full support for audits and policies. Add `get_policy`, `get_policies`,
+  `clone_policy`, `delete_policy`, `get_audit`, `get_audits`, `clone_audit` and
+  `delete_audit` methods to GMPv9 class. Also do not return policies for config
+  requests and audits for task requests [#223](https://github.com/greenbone/python-gvm/pull/223)
+
 ### Changed
 
 * If it isn't possible to connect to a Unix Domain Socket a GvmError is raised
