@@ -631,7 +631,7 @@ class Gmp(Gmpv8):
         if observers is not None:
             if not _is_list_like(observers):
                 raise InvalidArgumentType(
-                    function=function, argument='obeservers', arg_type='list'
+                    function=function, argument='observers', arg_type='list'
                 )
 
             # gvmd splits by comma and space
