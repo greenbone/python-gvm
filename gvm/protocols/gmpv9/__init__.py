@@ -543,6 +543,82 @@ class Gmp(Gmpv8):
         """
         return self.__get_task(audit_id, UsageType.AUDIT)
 
+    def clone_audit(self, audit_id: str) -> Any:
+        """Clone an existing audit
+
+        Arguments:
+            audit_id: UUID of existing audit to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not audit_id:
+            raise RequiredArgument(
+                function=self.clone_audit.__name__, argument='audit_id'
+            )
+
+        cmd = XmlCommand("create_task")
+        cmd.add_element("copy", audit_id)
+        return self._send_xml_command(cmd)
+
+    def clone_policy(self, policy_id: str) -> Any:
+        """Clone a policy from an existing one
+
+        Arguments:
+            policy_id: UUID of the existing policy
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not policy_id:
+            raise RequiredArgument(
+                function=self.clone_policy.__name__, argument='policy_id'
+            )
+
+        cmd = XmlCommand("create_config")
+        cmd.add_element("copy", policy_id)
+        return self._send_xml_command(cmd)
+
+    def delete_audit(
+        self, audit_id: str, *, ultimate: Optional[bool] = False
+    ) -> Any:
+        """Deletes an existing audit
+
+        Arguments:
+            audit_id: UUID of the audit to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        if not audit_id:
+            raise RequiredArgument(
+                function=self.delete_audit.__name__, argument='audit_id'
+            )
+
+        cmd = XmlCommand("delete_task")
+        cmd.set_attribute("task_id", audit_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_policy(
+        self, policy_id: str, *, ultimate: Optional[bool] = False
+    ) -> Any:
+        """Deletes an existing policy
+
+        Arguments:
+            policy_id: UUID of the policy to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        if not policy_id:
+            raise RequiredArgument(
+                function=self.delete_policy.__name__, argument='policy_id'
+            )
+
+        cmd = XmlCommand("delete_config")
+        cmd.set_attribute("config_id", policy_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
     def __create_task(
         self,
         name: str,
