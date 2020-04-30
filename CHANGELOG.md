@@ -9,6 +9,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
+* Add full support for audits and policies. Add `get_policy`, `get_policies`,
+  `clone_policy`, `delete_policy`, `get_audit`, `get_audits`, `clone_audit` and
+  `delete_audit` methods to GMPv9 class. Also do not return policies for config
+  requests and audits for task requests [#223](https://github.com/greenbone/python-gvm/pull/223)
+
 ### Changed
 
 * If it isn't possible to connect to a Unix Domain Socket a GvmError is raised
@@ -121,7 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added Gmpv8 version of modify_tag with resource_action parameter,
   resource_filter parameter, plural resource_ids parameter [#115](https://github.com/greenbone/python-gvm/pull/115)
 * Added no_details argument to `get_reports` method [#129](https://github.com/greenbone/python-gvm/pull/129)
-* Added `get_vulnerabilites` method [#132](https://github.com/greenbone/python-gvm/pull/132)
+* Added `get_vulnerabilities` method [#132](https://github.com/greenbone/python-gvm/pull/132)
 * Added `get_ticket`, `get_tickets`, `create_ticket`, `clone_ticket`, `modify_ticket` and `delete_ticket`
   APIs to GMPv8 [#132](https://github.com/greenbone/python-gvm/pull/132)
 * Added filter types for `host`, `operating system`, `ticket` and `vulnerability`

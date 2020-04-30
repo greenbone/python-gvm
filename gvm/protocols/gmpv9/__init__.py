@@ -359,6 +359,266 @@ class Gmp(Gmpv8):
 
         return self._send_xml_command(cmd)
 
+    def get_configs(
+        self,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        families: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        tasks: Optional[bool] = None
+    ) -> Any:
+        """Request a list of scan configs
+
+        Arguments:
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan scan configs instead
+            details: Whether to get config families, preferences, nvt selectors
+                and tasks.
+            families: Whether to include the families if no details are
+                requested
+            preferences: Whether to include the preferences if no details are
+                requested
+            tasks: Whether to get tasks using this config
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self.__get_configs(
+            UsageType.SCAN,
+            filter=filter,
+            filter_id=filter_id,
+            trash=trash,
+            details=details,
+            families=families,
+            preferences=preferences,
+            tasks=tasks,
+        )
+
+    def get_policies(
+        self,
+        *,
+        audits: Optional[bool] = None,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        details: Optional[bool] = None,
+        families: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        trash: Optional[bool] = None
+    ) -> Any:
+        """Request a list of policies
+
+        Arguments:
+            audits: Whether to get audits using the policy
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            details: Whether to get  families, preferences, nvt selectors
+                and tasks.
+            families: Whether to include the families if no details are
+                requested
+            preferences: Whether to include the preferences if no details are
+                requested
+            trash: Whether to get the trashcan audits instead
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self.__get_configs(
+            UsageType.POLICY,
+            filter=filter,
+            filter_id=filter_id,
+            details=details,
+            families=families,
+            preferences=preferences,
+            tasks=audits,
+            trash=trash,
+        )
+
+    def get_config(self, config_id: str) -> Any:
+        """Request a single scan config
+
+        Arguments:
+            config_id: UUID of an existing scan config
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self.__get_config(config_id, UsageType.SCAN)
+
+    def get_policy(self, policy_id: str) -> Any:
+        """Request a single policy
+
+        Arguments:
+            policy_id: UUID of an existing policy
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self.__get_config(policy_id, UsageType.POLICY)
+
+    def get_tasks(
+        self,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        schedules_only: Optional[bool] = None
+    ) -> Any:
+        """Request a list of tasks
+
+        Arguments:
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan tasks instead
+            details: Whether to include full task details
+            schedules_only: Whether to only include id, name and schedule
+                details
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self.__get_tasks(
+            UsageType.SCAN,
+            filter=filter,
+            filter_id=filter_id,
+            trash=trash,
+            details=details,
+            schedules_only=schedules_only,
+        )
+
+    def get_audits(
+        self,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        schedules_only: Optional[bool] = None
+    ) -> Any:
+        """Request a list of audits
+
+        Arguments:
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan audits instead
+            details: Whether to include full audit details
+            schedules_only: Whether to only include id, name and schedule
+                details
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self.__get_tasks(
+            UsageType.AUDIT,
+            filter=filter,
+            filter_id=filter_id,
+            trash=trash,
+            details=details,
+            schedules_only=schedules_only,
+        )
+
+    def get_task(self, task_id: str) -> Any:
+        """Request a single task
+
+        Arguments:
+            task_id: UUID of an existing task
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self.__get_task(task_id, UsageType.SCAN)
+
+    def get_audit(self, audit_id: str) -> Any:
+        """Request a single audit
+
+        Arguments:
+            audit_id: UUID of an existing audit
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self.__get_task(audit_id, UsageType.AUDIT)
+
+    def clone_audit(self, audit_id: str) -> Any:
+        """Clone an existing audit
+
+        Arguments:
+            audit_id: UUID of existing audit to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not audit_id:
+            raise RequiredArgument(
+                function=self.clone_audit.__name__, argument='audit_id'
+            )
+
+        cmd = XmlCommand("create_task")
+        cmd.add_element("copy", audit_id)
+        return self._send_xml_command(cmd)
+
+    def clone_policy(self, policy_id: str) -> Any:
+        """Clone a policy from an existing one
+
+        Arguments:
+            policy_id: UUID of the existing policy
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not policy_id:
+            raise RequiredArgument(
+                function=self.clone_policy.__name__, argument='policy_id'
+            )
+
+        cmd = XmlCommand("create_config")
+        cmd.add_element("copy", policy_id)
+        return self._send_xml_command(cmd)
+
+    def delete_audit(
+        self, audit_id: str, *, ultimate: Optional[bool] = False
+    ) -> Any:
+        """Deletes an existing audit
+
+        Arguments:
+            audit_id: UUID of the audit to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        if not audit_id:
+            raise RequiredArgument(
+                function=self.delete_audit.__name__, argument='audit_id'
+            )
+
+        cmd = XmlCommand("delete_task")
+        cmd.set_attribute("task_id", audit_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
+    def delete_policy(
+        self, policy_id: str, *, ultimate: Optional[bool] = False
+    ) -> Any:
+        """Deletes an existing policy
+
+        Arguments:
+            policy_id: UUID of the policy to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        if not policy_id:
+            raise RequiredArgument(
+                function=self.delete_policy.__name__, argument='policy_id'
+            )
+
+        cmd = XmlCommand("delete_config")
+        cmd.set_attribute("config_id", policy_id)
+        cmd.set_attribute("ultimate", _to_bool(ultimate))
+
+        return self._send_xml_command(cmd)
+
     def __create_task(
         self,
         name: str,
@@ -447,7 +707,7 @@ class Gmp(Gmpv8):
         if observers is not None:
             if not _is_list_like(observers):
                 raise InvalidArgumentType(
-                    function=function, argument='obeservers', arg_type='list'
+                    function=function, argument='observers', arg_type='list'
                 )
 
             # gvmd splits by comma and space
@@ -484,4 +744,93 @@ class Gmp(Gmpv8):
         cmd.add_element("copy", config_id)
         cmd.add_element("name", name)
         cmd.add_element("usage_type", usage_type.value)
+        return self._send_xml_command(cmd)
+
+    def __get_configs(
+        self,
+        usage_type: UsageType,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        families: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        tasks: Optional[bool] = None
+    ) -> Any:
+        cmd = XmlCommand("get_configs")
+        cmd.set_attribute("usage_type", usage_type.value)
+
+        _add_filter(cmd, filter, filter_id)
+
+        if trash is not None:
+            cmd.set_attribute("trash", _to_bool(trash))
+
+        if details is not None:
+            cmd.set_attribute("details", _to_bool(details))
+
+        if families is not None:
+            cmd.set_attribute("families", _to_bool(families))
+
+        if preferences is not None:
+            cmd.set_attribute("preferences", _to_bool(preferences))
+
+        if tasks is not None:
+            cmd.set_attribute("tasks", _to_bool(tasks))
+
+        return self._send_xml_command(cmd)
+
+    def __get_config(self, config_id: str, usage_type: UsageType) -> Any:
+        if not config_id:
+            raise RequiredArgument(
+                function=self.get_config.__name__, argument='config_id'
+            )
+
+        cmd = XmlCommand("get_configs")
+        cmd.set_attribute("config_id", config_id)
+        cmd.set_attribute("usage_type", usage_type.value)
+
+        # for single entity always request all details
+        cmd.set_attribute("details", "1")
+
+        return self._send_xml_command(cmd)
+
+    def __get_tasks(
+        self,
+        usage_type: UsageType,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        schedules_only: Optional[bool] = None
+    ) -> Any:
+        cmd = XmlCommand("get_tasks")
+        cmd.set_attribute("usage_type", usage_type.value)
+
+        _add_filter(cmd, filter, filter_id)
+
+        if trash is not None:
+            cmd.set_attribute("trash", _to_bool(trash))
+
+        if details is not None:
+            cmd.set_attribute("details", _to_bool(details))
+
+        if schedules_only is not None:
+            cmd.set_attribute("schedules_only", _to_bool(schedules_only))
+
+        return self._send_xml_command(cmd)
+
+    def __get_task(self, task_id: str, usage_type: UsageType) -> Any:
+        if not task_id:
+            raise RequiredArgument(
+                function=self.get_task.__name__, argument='task_id'
+            )
+
+        cmd = XmlCommand("get_tasks")
+        cmd.set_attribute("task_id", task_id)
+        cmd.set_attribute("usage_type", usage_type.value)
+
+        # for single entity always request all details
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
