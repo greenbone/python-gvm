@@ -43,12 +43,10 @@ Python 3.5 and later is supported.
 
 pip 19.0 or later is required.
 
-> **Note**: All commands listed here use the general tool names. If some of these tools are provided by your distribution, you may need to explicitly use the Python 3 version of the tool, e.g. **`pip3`**.
-
 You can install the latest stable release of python-gvm from the Python Package
 Index using [pip](https://pip.pypa.io/):
 
-    pip install --user python-gvm
+    python3 -m pip install --user python-gvm
 
 ## Example
 
@@ -102,7 +100,7 @@ For development you should use [poetry](https://python-poetry.org)
 to keep you python packages separated in different environments. First install
 poetry via pip
 
-    pip install --user poetry
+    python3 -m pip install --user poetry
 
 Afterwards run
 
