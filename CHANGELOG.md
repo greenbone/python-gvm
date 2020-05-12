@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.5.0] - 2020-05-12
 
 ### Added
 
@@ -19,14 +19,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * If it isn't possible to connect to a Unix Domain Socket a GvmError is raised
   now [#207](https://github.com/greenbone/python-gvm/pull/207)
 
-### Fixed
-
 ### Removed
 
 * Dropped version handling code from python-gvm and replaced it with using
   pontos.version [#213](https://github.com/greenbone/python-gvm/pull/213)
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.4.0...master
+[1.5.0]: https://github.com/greenbone/python-gvm/compare/v1.4.0...v1.5.0
 
 ## [1.4.0]
 
