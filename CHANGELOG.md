@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Add Scan Config Default as AliveTest type.
+* Extend AliveTest and ScannerType enums.
   [#235](https://github.com/greenbone/python-gvm/pull/235)
 
 ### Changed
