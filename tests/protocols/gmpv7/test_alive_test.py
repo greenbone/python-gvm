@@ -33,6 +33,10 @@ class GetAliveTestFromStringTestCase(unittest.TestCase):
         ct = get_alive_test_from_string('')
         self.assertIsNone(ct)
 
+    def test_scan_config_default(self):
+        ct = get_alive_test_from_string('Scan Config Default')
+        self.assertEqual(ct, AliveTest.SCAN_CONFIG_DEFAULT)
+
     def test_icmp_ping(self):
         ct = get_alive_test_from_string('ICMP Ping')
         self.assertEqual(ct, AliveTest.ICMP_PING)
