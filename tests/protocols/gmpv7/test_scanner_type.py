@@ -61,6 +61,13 @@ class GetScannerTypeFromStringTestCase(unittest.TestCase):
         ct = get_scanner_type_from_string('gmp')
         self.assertEqual(ct, ScannerType.GMP_SCANNER_TYPE)
 
+    def test_greenbone_sensor_scanner(self):
+        ct = get_scanner_type_from_string('5')
+        self.assertEqual(ct, ScannerType.GREENBONE_SENSOR_SCANNER_TYPE)
+
+        ct = get_scanner_type_from_string('greenbone')
+        self.assertEqual(ct, ScannerType.GREENBONE_SENSOR_SCANNER_TYPE)
+
 
 if __name__ == '__main__':
     unittest.main()
