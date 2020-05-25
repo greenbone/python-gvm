@@ -567,7 +567,6 @@ class ScannerType(Enum):
     OPENVAS_SCANNER_TYPE = "2"
     CVE_SCANNER_TYPE = "3"
     GMP_SCANNER_TYPE = "4"  # formerly slave scanner
-    GREENBONE_SENSOR_SCANNER_TYPE = "5"
 
 
 def get_scanner_type_from_string(
@@ -606,12 +605,6 @@ def get_scanner_type_from_string(
         or scanner_type == 'gmp'
     ):
         return ScannerType.GMP_SCANNER_TYPE
-
-    if (
-        scanner_type == ScannerType.GREENBONE_SENSOR_SCANNER_TYPE.value
-        or scanner_type == 'greenbone'
-    ):
-        return ScannerType.GREENBONE_SENSOR_SCANNER_TYPE
 
     raise InvalidArgument(
         argument='scanner_type', function=get_scanner_type_from_string.__name__
