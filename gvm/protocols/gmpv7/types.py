@@ -176,6 +176,7 @@ def get_alert_method_from_string(
 class AliveTest(Enum):
     """ Enum for choosing an alive test """
 
+    SCAN_CONFIG_DEFAULT = 'Scan Config Default'
     ICMP_PING = 'ICMP Ping'
     TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
     TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
@@ -197,6 +198,9 @@ def get_alive_test_from_string(
         return None
 
     alive_test = alive_test.lower()
+
+    if alive_test == 'scan config default':
+        return AliveTest.SCAN_CONFIG_DEFAULT
 
     if alive_test == 'icmp ping':
         return AliveTest.ICMP_PING
