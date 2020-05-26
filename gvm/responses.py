@@ -17,7 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gvm.classes import *
-from gvm.resolve import *
 from dataclasses import dataclass
 from lxml import etree
 
