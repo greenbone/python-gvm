@@ -21,7 +21,7 @@ Module for transforming responses
 import time
 import datetime
 
-from lxml import etree, objectify
+from lxml import etree
 from gvm.responses import *
 from .errors import GvmError, GvmServerError, GvmResponseError
 from .xml import create_parser
@@ -111,7 +111,7 @@ class ObjectTransform:
 
         response_object = None
         try:
-            response_class = CLASSDICT[root.tag]
+            response_class = get_response_class(root.tag)
             response_object = response_class(root)
         except KeyError:
             print(f'The "{root.tag}" is not supported yet.')
