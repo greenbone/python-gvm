@@ -114,6 +114,6 @@ class ObjectTransform:
             response_class = CLASSDICT[root.tag]
             response_object = response_class(root)
         except KeyError:
-            print(f'The function "{root.tag}" is not supported yet.')
+            print(f'The "{root.tag}" is not supported yet.')
 
         return response_object

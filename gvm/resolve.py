@@ -25,24 +25,46 @@ def resolve_role(root: etree.Element) -> Role:
 
 
 def resolve_owner(root: etree.Element) -> Owner:
-    # print(etree.tostring(root))
     name = root.find('name').text
     if name is None:
         return None
     else:
         return Owner(name)
+def resolve_port_count(root: etree.Element) -> PortCount:
+    return PortCount(
+        int(root.find("all").text),
+        int(root.find("tcp").text),
+        int(root.find("udp").text)
+    )
 
+def resolve_port_ranges(root: etree.Element) -> list:
+    if root is None: return None
+    port_ranges = []
+    for port_range in root:
+        port_ranges.append(
+            PortRange(
+                port_range.get("id"),
+                int(port_range.find("start").text),
+                int(port_range.find("end").text),
+                port_range.find("type").text,
+                port_range.find("comment").text
+            )
+        )
+    return port_ranges
 
 def resolve_port_lists(root: etree.Element):
     result_list = []
 
     for child in root:
         if child.tag == "port_list":
-            result_list.append(resolve_port_list(child))
+            port_list = resolve_port_list(child)
+            result_list.append(port_list)
+
     return result_list
 
 
 def resolve_port_list(root: etree.Element) -> PortList:
+    port_list_id = root.get("id")
     owner = resolve_owner(root.find("owner"))
     name = root.find("name").text
     comment = root.find("comment").text
@@ -52,11 +74,34 @@ def resolve_port_list(root: etree.Element) -> PortList:
     )
     modification_time_text = root.find("modification_time").text
     modification_time = datetime.datetime.strptime(
-        creation_time_text, "%Y-%m-%dT%H:%M:%SZ"
+        modification_time_text, "%Y-%m-%dT%H:%M:%SZ"
     )
     writable = False if root.find("writable").text == "0" else True
-    print(writable)
+    in_use = False if root.find("in_use").text == "0" else True
+    permissions = resolve_permissions(root.find("permissions"))
+    port_count = resolve_port_count(root.find("port_count"))
+    port_ranges = resolve_port_ranges(root.find("port_ranges"))
 
-    # print(time.strftime("%D %H:%M:%S", time.localtime(creation_time)))
-    # print(etree.tostring(creation_time))
-    # print(comment)
+    port_list = PortList(
+        port_list_id,
+        owner,
+        name,
+        comment,
+        creation_time,
+        modification_time,
+        writable,
+        in_use,
+        permissions,
+        port_count,
+        port_ranges
+    )
+    return port_list
+
+def resolve_permissions(root: etree.Element) -> list:
+    permissions = []
+    for permission in root:
+        permissions.append(
+            Permission(permission.find("name").text)
+            )
+
+    return permissions

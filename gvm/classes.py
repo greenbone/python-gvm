@@ -14,8 +14,22 @@ class Role:
 
 
 @dataclass
+class PortCount:
+    all: int
+    tcp: int
+    udp: int
+
+@dataclass
+class PortRange:
+    port_range_id: str
+    start: int
+    end: int
+    port_range_type: str
+    comment: str
+
+@dataclass
 class PortList:
-    id: str
+    port_list_id: str
     owner: Owner
     name: str
     comment: str
@@ -24,9 +38,9 @@ class PortList:
     writable: bool
     in_use: bool
     permissions: list
-    # port_count: int
-    # port_ranges: list
+    port_count: PortCount
+    port_ranges: list
 
-
-class Permission:
+@dataclass
+class Permission: 
     name: str

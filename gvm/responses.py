@@ -47,12 +47,10 @@ class GetPortListsResponse(Response):
 
     def __init__(self, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
-        # print(etree.tostring(root))
-
         self.port_lists = resolve_port_lists(root)
 
 
 CLASSDICT = {
     "authenticate_response": AuthenticateResponse,
-    "get_port_lists_response": GetPortListsResponse,
+    "get_port_lists_response": GetPortListsResponse
 }
