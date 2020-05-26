@@ -90,24 +90,13 @@ class PortList:
     owner: Owner
     name: str
     comment: str
-    creation_time: datetime
-    modification_time: datetime
+    creation_time: datetime.datetime
+    modification_time: datetime.datetime
     writable: bool
     in_use: bool
     permissions: list
     port_count: PortCount
     port_ranges: list
-
-    @staticmethod
-    def resolve_port_lists(root: etree.Element):
-        result_list = []
-
-        for child in root:
-            if child.tag == "port_list":
-                port_list = resolve_port_list(child)
-                result_list.append(port_list)
-
-        return result_list
 
     @staticmethod
     def resolve_port_list(root: etree.Element) -> "PortList":
@@ -144,6 +133,17 @@ class PortList:
         )
         return port_list
 
+    @staticmethod
+    def resolve_port_lists(root: etree.Element):
+        result_list = []
+
+        for child in root:
+            if child.tag == "port_list":
+                port_list = PortList.resolve_port_list(child)
+                result_list.append(port_list)
+
+        return result_list
+
 
 @dataclass
 class Permission:
@@ -156,3 +156,30 @@ class Permission:
             permissions.append(Permission(permission.find("name").text))
 
         return permissions
+
+
+@dataclass
+class Task:
+    task_id: str
+    owner: Owner
+    name: str
+    comment: str
+    creation_time: datetime.datetime
+    modification_time: datetime.datetime
+    writable: bool
+    in_use: bool
+    permissions: list
+    alterable: bool
+    usage_type: str
+    # config: Config
+    # target: Target
+    # host_ordering: ??
+    # scanner: Scanner
+    status: str
+    progress: int
+    # report_count: ReportCount
+    # trend: ??
+    # schedule: Schedule
+    # last_report: Report
+    # observers: ??
+    # preferences: list

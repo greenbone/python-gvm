@@ -64,12 +64,27 @@ class GetPortListsResponse(Response):
 
     def __init__(self, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
-        self.port_lists = resolve_port_lists(root)
+        self.port_lists = PortList.resolve_port_lists(root)
+
+
+@dataclass
+class GetTasksResponse(Response):
+    """
+    Response Object for a get_tasks command
+    """
+
+    apply_overrides: bool
+    tasks: list
+
+    def __init__(self, root: etree.Element):
+        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        # print(etree.tostring(root))
 
 
 CLASSDICT = {
     "authenticate_response": AuthenticateResponse,
     "get_port_lists_response": GetPortListsResponse,
+    "get_tasks_response": GetTasksResponse,
 }
 
 
