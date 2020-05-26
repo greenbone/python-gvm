@@ -18,8 +18,11 @@
 """
 Module for transforming responses
 """
-from lxml import etree
+import time
+import datetime
 
+from lxml import etree, objectify
+from gvm.responses import *
 from .errors import GvmError, GvmServerError, GvmResponseError
 from .xml import create_parser
 
@@ -55,6 +58,13 @@ def _check_command_status(root: etree.Element):
         )
 
 
+def etree_to_dict(t: etree.XML):
+    d = {t.tag: map(etree_to_dict, t.iterchildren())}
+    d.update(('@' + k, v) for k, v in t.attrib.iteritems())
+    d['text'] = t.text
+    return d
+
+
 class CheckCommandTransform(EtreeTransform):
     """
     Check the response code of a response and raise GmpError if
@@ -81,3 +91,29 @@ class EtreeCheckCommandTransform(EtreeTransform):
         _check_command_status(root)
 
         return root
+
+
+class ObjectTransform:
+    """
+    Transform a response into a Python Object and raise GmpError if response
+    was an error response
+    """
+
+    def __init__(self):
+        self._parser = create_parser()
+
+    def _convert_response(self, response: str) -> etree.Element:
+        return etree.XML(response, parser=self._parser)
+
+    def __call__(self, response: str):
+        root = self._convert_response(response)
+        _check_command_status(root)
+
+        response_object = None
+        try:
+            response_class = CLASSDICT[root.tag]
+            response_object = response_class(root)
+        except KeyError:
+            print(f'The function "{root.tag}" is not supported yet.')
+
+        return response_object
