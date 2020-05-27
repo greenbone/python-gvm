@@ -75,7 +75,7 @@ def _check_command_status(xml: str) -> bool:
         return False
 
 
-def _to_bool(value: bool=None) -> str:
+def _to_bool(value: bool = None) -> str:
     return "1" if value else "0"
 
 
@@ -96,7 +96,9 @@ def _add_filter(cmd, filter, filter_id):
 
 
 def _check_event(
-    event: AlertEvent, condition: Optional[AlertCondition], method: Optional[AlertMethod]
+    event: AlertEvent,
+    condition: Optional[AlertCondition],
+    method: Optional[AlertMethod],
 ):
     if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
         if condition not in (
@@ -108,7 +110,7 @@ def _check_event(
             raise InvalidArgumentType(
                 argument='condition',
                 arg_type='AlertCondition',
-                function=_check_event.__name__
+                function=_check_event.__name__,
             )
         if method not in (
             AlertMethod.SCP,
@@ -125,7 +127,7 @@ def _check_event(
             raise InvalidArgumentType(
                 argument='method',
                 arg_type='AlertCondition',
-                function=_check_event.__name__
+                function=_check_event.__name__,
             )
     elif event in (
         AlertEvent.NEW_SECINFO_ARRIVED,
@@ -135,7 +137,7 @@ def _check_event(
             raise InvalidArgumentType(
                 argument='condition',
                 arg_type='AlertCondition',
-                function=_check_event.__name__
+                function=_check_event.__name__,
             )
         if method not in (
             AlertMethod.SCP,
@@ -148,13 +150,10 @@ def _check_event(
             raise InvalidArgumentType(
                 argument='method',
                 arg_type='AlertCondition',
-                function=_check_event.__name__
+                function=_check_event.__name__,
             )
     elif event is not None:
-        raise RequiredArgument(
-            argument='event',
-            function=_check_event.__name__
-        )
+        raise RequiredArgument(argument='event', function=_check_event.__name__)
 
 
 def _is_list_like(value: Any) -> bool:
@@ -1570,8 +1569,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_minute",
                     arg_type='int >= 0',
-                    function=self.create_schedule.__name__
-
+                    function=self.create_schedule.__name__,
                 )
 
             if first_time_hour is None:
@@ -1586,8 +1584,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_hour",
                     arg_type='int >= 0',
-                    function=self.create_schedule.__name__
-
+                    function=self.create_schedule.__name__,
                 )
 
             if first_time_day_of_month is None:
@@ -1603,8 +1600,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_day_of_month",
                     arg_type='int in range [1,31]',
-                    function=self.create_schedule.__name__
-
+                    function=self.create_schedule.__name__,
                 )
 
             if first_time_month is None:
@@ -1620,8 +1616,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_month",
                     arg_type='int in range [1,12]',
-                    function=self.create_schedule.__name__
-
+                    function=self.create_schedule.__name__,
                 )
 
             if first_time_year is None:
@@ -1636,7 +1631,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_year",
                     arg_type='int >= 1970',
-                    function=self.create_schedule.__name__
+                    function=self.create_schedule.__name__,
                 )
 
             _xmlftime = cmd.add_element("first_time")
@@ -1664,7 +1659,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="duration",
                     arg_type='int >= 0',
-                    function=self.create_schedule.__name__
+                    function=self.create_schedule.__name__,
                 )
 
             _xmlduration = cmd.add_element("duration", str(duration))
@@ -1688,7 +1683,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="period",
                     arg_type='int >= 0',
-                    function=self.create_schedule.__name__
+                    function=self.create_schedule.__name__,
                 )
 
             _xmlperiod = cmd.add_element("period", str(period))
@@ -1998,7 +1993,7 @@ class Gmp(GvmProtocol):
             raise InvalidArgument(
                 argument='target_id',
                 arg_type='str (but not "0")',
-                function=self.create_task.__name__
+                function=self.create_task.__name__,
             )
 
         cmd = XmlCommand("create_task")
@@ -2048,7 +2043,7 @@ class Gmp(GvmProtocol):
                     raise InvalidArgumentType(
                         argument="schedule_periods",
                         arg_type='int >= 0',
-                        function=self.create_task.__name__
+                        function=self.create_task.__name__,
                     )
                 cmd.add_element("schedule_periods", str(schedule_periods))
 
@@ -2704,7 +2699,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument='format',
                     arg_type='str ("installer", "howto_install" or "howto_use")',
-                    function=self.get_agents.__name__
+                    function=self.get_agents.__name__,
                 )
 
             cmd.set_attribute("format", format)
@@ -4008,7 +4003,11 @@ class Gmp(GvmProtocol):
 
         if duration is not None:
             if not isinstance(duration, numbers.Integral):
-                raise InvalidArgumentType(argument = "duration", arg_type='int', function=self.get_system_reports.__name__)
+                raise InvalidArgumentType(
+                    argument="duration",
+                    arg_type='int',
+                    function=self.get_system_reports.__name__,
+                )
 
             cmd.set_attribute("duration", str(duration))
 
@@ -4244,7 +4243,7 @@ class Gmp(GvmProtocol):
             raise InvalidArgument(
                 argument='help_type',
                 arg_type="'' or 'brief'",
-                function=self.help.__name__
+                function=self.help.__name__,
             )
 
         cmd.set_attribute("type", help_type)
@@ -4254,7 +4253,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument='format',
                     arg_type='html, rnc, text or xml',
-                    function=self.help.__name__
+                    function=self.help.__name__,
                 )
 
             cmd.set_attribute("format", format)
@@ -4691,8 +4690,8 @@ class Gmp(GvmProtocol):
         ):
             raise InvalidArgumentType(
                 function=self.modify_config.__name__,
-                argument = "selection",
-                arg_type='str: ("nvt_pref", "scan_pref", "family_selection" or "nvt_selection")'
+                argument="selection",
+                arg_type='str: ("nvt_pref", "scan_pref", "family_selection" or "nvt_selection")',
             )
 
         if selection == "nvt_pref":
@@ -5436,7 +5435,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_minute",
                     arg_type='int >= 0',
-                    function=self.modify_schedule.__name__
+                    function=self.modify_schedule.__name__,
                 )
 
             if first_time_hour is None:
@@ -5451,7 +5450,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_minute",
                     arg_type='int >= 0',
-                    function=self.modify_schedule.__name__
+                    function=self.modify_schedule.__name__,
                 )
 
             if first_time_day_of_month is None:
@@ -5467,7 +5466,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_day_of_month",
                     arg_type='int in range [1,31]',
-                    function=self.modify_schedule.__name__
+                    function=self.modify_schedule.__name__,
                 )
 
             if first_time_month is None:
@@ -5483,7 +5482,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_month",
                     arg_type='int in range [1,12]',
-                    function=self.modify_schedule.__name__
+                    function=self.modify_schedule.__name__,
                 )
 
             if first_time_year is None:
@@ -5498,7 +5497,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="first_time_year",
                     arg_type='int >= 1970',
-                    function=self.modify_schedule.__name__
+                    function=self.modify_schedule.__name__,
                 )
 
             _xmlftime = cmd.add_element("first_time")
@@ -5526,7 +5525,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="duration",
                     arg_type='int >= 0',
-                    function=self.modify_schedule.__name__
+                    function=self.modify_schedule.__name__,
                 )
 
             _xmlduration = cmd.add_element("duration", str(duration))
@@ -5550,7 +5549,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument="period",
                     arg_type='int >= 0',
-                    function=self.modify_schedule.__name__
+                    function=self.modify_schedule.__name__,
                 )
 
             _xmlperiod = cmd.add_element("period", str(period))
@@ -5859,7 +5858,7 @@ class Gmp(GvmProtocol):
                 raise InvalidArgumentType(
                     argument='schedule_periods',
                     arg_type='int >= 0',
-                    function=self.modify_task.__name__
+                    function=self.modify_task.__name__,
                 )
             cmd.add_element("schedule_periods", str(schedule_periods))
 
@@ -6112,7 +6111,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not alert_id:
-            raise RequiredArgument(argument="alert_id", function=self.test_alert.__name__)
+            raise RequiredArgument(
+                argument="alert_id", function=self.test_alert.__name__
+            )
 
         cmd = XmlCommand("test_alert")
         cmd.set_attribute("alert_id", alert_id)
@@ -6190,7 +6191,9 @@ class Gmp(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         if not agent_id:
-            raise RequiredArgument(argument="agent_id", function=self.verify_agent.__name__)
+            raise RequiredArgument(
+                argument="agent_id", function=self.verify_agent.__name__
+            )
 
         cmd = XmlCommand("verify_agent")
         cmd.set_attribute("agent_id", agent_id)
