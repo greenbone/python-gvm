@@ -78,6 +78,21 @@ class GetTasksResponse(Response):
 
     def __init__(self, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        apply_overrides = root.find("apply_overrides")
+        self.apply_overrides = False if apply_overrides.text == "0" else True
+        root.remove(apply_overrides)
+        self.tasks = Task.resolve_tasks(root)
+        # print(etree.tostring(root))
+
+
+@dataclass
+class GetConfigsResponse(Response):
+
+    configs: list
+
+    def __init__(self, root: etree.Element):
+        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        self.configs = Config.resolve_configs(root)
         # print(etree.tostring(root))
 
 
@@ -85,6 +100,7 @@ CLASSDICT = {
     "authenticate_response": AuthenticateResponse,
     "get_port_lists_response": GetPortListsResponse,
     "get_tasks_response": GetTasksResponse,
+    "get_configs_response": GetConfigsResponse,
 }
 
 
