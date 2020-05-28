@@ -168,6 +168,30 @@ class Permission:
 
 
 @dataclass
+class FamilyCount:
+    current: int
+    growing: int
+
+    @staticmethod
+    def resolve_family_count(root: etree.Element) -> "FamilyCount":
+        return FamilyCount(
+            current=int(root.text), growing=int(root.find("growing").text)
+        )
+
+
+@dataclass
+class NvtCount:
+    current: int
+    growing: int
+
+    @staticmethod
+    def resolve_nvt_count(root: etree.Element) -> "Nvt_Count":
+        return NvtCount(
+            current=int(root.text), growing=int(root.find("growing").text)
+        )
+
+
+@dataclass
 class Config:
     config_id: str
     owner: Owner
@@ -178,8 +202,8 @@ class Config:
     writable: bool
     in_use: bool
     permissions: list
-    # family_count: FamilyCount
-    # nvt_count: NvtCount
+    family_count: FamilyCount
+    nvt_count: NvtCount
     config_type: int
     usage_type: str
     # was bedeutet <trash> in der get Tasks antwort für configs??
@@ -198,7 +222,6 @@ class Config:
         config_id = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
-        # comment = root.find("comment").text
 
         comment = root.find("comment")
         if comment is not None:
@@ -225,8 +248,10 @@ class Config:
             in_use = False if in_use.text == "0" else True
 
         permissions = Permission.resolve_permissions(root.find("permissions"))
-        # family_count = resolve...
-        # nvt_count = resolve...
+        family_count = FamilyCount.resolve_family_count(
+            root.find("family_count")
+        )
+        nvt_count = NvtCount.resolve_nvt_count(root.find("nvt_count"))
         config_type = int(root.find("type").text)
 
         usage_type = root.find("usage_type")
@@ -243,8 +268,8 @@ class Config:
             writable,
             in_use,
             permissions,
-            # family_count,
-            # nvt_count,
+            family_count,
+            nvt_count,
             config_type,
             usage_type,
         )
