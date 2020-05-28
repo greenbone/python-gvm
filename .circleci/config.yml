@@ -68,6 +68,12 @@ commands:
       - run:
           name: Check version information
           command: poetry run python -m pontos.version verify current
+      - run:
+          name: Check MyPy
+          command: poetry run pip install mypy==0.770  # Pinned version avoids surprises
+      - run:
+          name: Run MyPy
+          command: poetry run mypy -m gvmtools
   deploy:
     description: "Upload package to PyPI"
     steps:
