@@ -26,7 +26,6 @@ def resolve_datetime(time: str) -> datetime.datetime:
     takes a time String like: 2020-03-05T15:35:21Z
     and forms a datetime object from it.
     """
-
     return datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
 
 
@@ -62,6 +61,8 @@ class PortCount:
 
     @staticmethod
     def resolve_port_count(root: etree.Element) -> "PortCount":
+        if root is None:
+            return None
         return PortCount(
             int(root.find("all").text),
             int(root.find("tcp").text),
@@ -111,16 +112,30 @@ class PortList:
 
     @staticmethod
     def resolve_port_list(root: etree.Element) -> "PortList":
+        if root is None:
+            return None
         port_list_id = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
-        comment = root.find("comment").text
-        creation_time = resolve_datetime(root.find("creation_time").text)
-        modification_time = resolve_datetime(
-            root.find("modification_time").text
-        )
-        writable = False if root.find("writable").text == "0" else True
-        in_use = False if root.find("in_use").text == "0" else True
+        comment = root.find("comment")
+        if comment is not None:
+            comment = comment.text
+        creation_time = root.find("creation_time")
+        if creation_time is not None:
+            creation_time = resolve_datetime(creation_time.text)
+
+        modification_time = root.find("modification_time")
+        if modification_time is not None:
+            modification_time = resolve_datetime(modification_time.text)
+
+        writable = root.find("writable")
+        if writable is not None:
+            writable = False if writable.text == "0" else True
+
+        in_use = root.find("in_use")
+        if in_use is not None:
+            in_use = False if in_use.text == "0" else True
+
         permissions = Permission.resolve_permissions(root.find("permissions"))
         port_count = PortCount.resolve_port_count(root.find("port_count"))
         port_ranges = PortRange.resolve_port_ranges(root.find("port_ranges"))
@@ -174,6 +189,8 @@ class FamilyCount:
 
     @staticmethod
     def resolve_family_count(root: etree.Element) -> "FamilyCount":
+        if root is None:
+            return None
         return FamilyCount(
             current=int(root.text), growing=int(root.find("growing").text)
         )
@@ -186,6 +203,8 @@ class NvtCount:
 
     @staticmethod
     def resolve_nvt_count(root: etree.Element) -> "Nvt_Count":
+        if root is None:
+            return None
         return NvtCount(
             current=int(root.text), growing=int(root.find("growing").text)
         )
@@ -276,6 +295,104 @@ class Config:
 
 
 @dataclass
+class Target:
+    target_id: str
+    owner: Owner
+    name: str
+    comment: str
+    creation_time: datetime.datetime
+    modification_time: datetime.datetime
+    writable: bool
+    in_use: bool
+    permissions: list
+    # hosts
+    # exclude_hosts
+    port_list: PortList
+    # ssh_credential
+    # smb_credential
+    # esxi_credential
+    # snmp_credential
+    reverse_lookup_only: bool
+    reverse_lookup_unify: bool
+    # alive_tests: str ?
+
+    @staticmethod
+    def resolve_targets(root: etree.Element) -> list:
+        targets = []
+        for child in root:
+            if child.tag == "target":
+                targets.append(Target.resolve_target(child))
+        return targets
+
+    @staticmethod
+    def resolve_target(root: etree.Element) -> "Target":
+        target_id = root.get("id")
+        owner = Owner.resolve_owner(root.find("owner"))
+        name = root.find("name").text
+        comment = root.find("comment")
+        if comment is not None:
+            comment = comment.text
+        creation_time = root.find("creation_time")
+        if creation_time is not None:
+            creation_time = resolve_datetime(creation_time.text)
+
+        modification_time = root.find("modification_time")
+        if modification_time is not None:
+            modification_time = resolve_datetime(modification_time.text)
+
+        writable = root.find("writable")
+        if writable is not None:
+            writable = False if writable.text == "0" else True
+
+        in_use = root.find("in_use")
+        if in_use is not None:
+            in_use = False if in_use.text == "0" else True
+
+        permessions = Permission.resolve_permissions(root.find("permissions"))
+        # hosts
+        # exclude_hosts
+        port_list = PortList.resolve_port_list(root.find("port_list"))
+        # ssh_credential
+        # smb_credential
+        # esxi_credential
+        # snmp_credential
+        reverse_lookup_only = root.find("reverse_lookup_only")
+        if reverse_lookup_only is not None:
+            reverse_lookup_only = (
+                False if reverse_lookup_only.text == "0" else True
+            )
+
+        reverse_lookup_unify = root.find("reverse_lookup_unify")
+        if reverse_lookup_unify is not None:
+            reverse_lookup_unify = (
+                False if reverse_lookup_unify.text == "0" else True
+            )
+
+        # alive_tests: str ?
+
+        return Target(
+            target_id,
+            owner,
+            name,
+            comment,
+            creation_time,
+            modification_time,
+            writable,
+            in_use,
+            permessions,
+            # hosts,
+            # exclude_hosts,
+            port_list,
+            # ssh_credential,
+            # smb_credential,
+            # esxi_credential,
+            # snmp_credential,
+            reverse_lookup_only,
+            reverse_lookup_unify,
+        )
+
+
+@dataclass
 class Task:
     task_id: str
     owner: Owner
@@ -289,7 +406,7 @@ class Task:
     alterable: bool
     usage_type: str
     config: Config
-    # target: Target
+    target: Target
     # host_ordering: ??
     # scanner: Scanner
     status: str
@@ -325,7 +442,7 @@ class Task:
         alterable = False if root.find("alterable").text == "0" else True
         usage_type = root.find("usage_type").text
         config = Config.resolve_config(root.find("config"))
-        # target =
+        target = Target.resolve_target(root.find("target"))
         # host_ordering =
         # scanner =
         status = root.find("status").text
@@ -344,7 +461,7 @@ class Task:
             alterable,
             usage_type,
             config,
-            # target,
+            target,
             # host_ordering,
             # scanner,
             status,

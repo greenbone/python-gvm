@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.classes import *
 from dataclasses import dataclass
 from lxml import etree
+from gvm.classes import *
 
 
 @dataclass
@@ -96,11 +96,22 @@ class GetConfigsResponse(Response):
         # print(etree.tostring(root))
 
 
+@dataclass
+class GetTargetsResponse(Response):
+
+    targets: list
+
+    def __init__(self, root: etree.Element):
+        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        self.targets = Target.resolve_targets(root)
+
+
 CLASSDICT = {
     "authenticate_response": AuthenticateResponse,
     "get_port_lists_response": GetPortListsResponse,
     "get_tasks_response": GetTasksResponse,
     "get_configs_response": GetConfigsResponse,
+    "get_targets_response": GetTargetsResponse,
 }
 
 
