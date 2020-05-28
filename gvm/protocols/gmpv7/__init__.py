@@ -2259,7 +2259,7 @@ class Gmp(GvmProtocol):
         if asset_id:
             cmd.set_attribute("asset_id", asset_id)
         elif report_id:
-                cmd.set_attribute("report_id", report_id)
+            cmd.set_attribute("report_id", report_id)
 
         return self._send_xml_command(cmd)
 

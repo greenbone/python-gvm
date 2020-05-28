@@ -22,6 +22,7 @@ from typing import Optional
 Module for GVM errors
 """
 
+
 class GvmError(Exception):
     """An exception for gvm errors
 
@@ -57,10 +58,13 @@ class GvmServerError(GvmError):
             and function
     """
 
-    def __init__(self, *args: Optional[tuple], status: str = None, message: str = None):
+    def __init__(
+        self, *args: Optional[tuple], status: str = None, message: str = None
+    ):
         message = f'Server Error "{status}": {message}'
         super().__init__(*args, message=message)
         self.status = status
+
 
 class GvmResponseError(GvmClientError):
     """An exception for gvm response errors
@@ -73,7 +77,9 @@ class GvmResponseError(GvmClientError):
             and function
     """
 
-    def __init__(self, *args: Optional[tuple], status: str = None, message: str = None):
+    def __init__(
+        self, *args: Optional[tuple], status: str = None, message: str = None
+    ):
         message = f'Response Error "{status}": {message}'
         super().__init__(*args, message=message)
         self.status = status
@@ -89,7 +95,9 @@ class InvalidArgument(GvmError):
         function: Optional name of the called function
     """
 
-    def __init__(self, *args: Optional[tuple], argument: str = None, function: str = None):
+    def __init__(
+        self, *args: Optional[tuple], argument: str = None, function: str = None
+    ):
         message = f'Invalid argument: "{argument}" is invalid in {function}'
         super().__init__(*args, message=message)
 
@@ -105,10 +113,15 @@ class InvalidArgumentType(GvmError):
         function: Optional name of the called function
     """
 
-    def __init__(self, *args: Optional[tuple], argument: str = None, arg_type: str = None, function: str = None):
+    def __init__(
+        self,
+        *args: Optional[tuple],
+        argument: str = None,
+        arg_type: str = None,
+        function: str = None
+    ):
         message = f'Invalid argument type: "{argument}" must be of type "{arg_type}" in {function}.'
         super().__init__(*args, message=message)
-
 
 
 class RequiredArgument(GvmError):
@@ -121,6 +134,8 @@ class RequiredArgument(GvmError):
         function: Optional name of the called function.
     """
 
-    def __init__(self, *args: Optional[tuple], argument: str = None, function: str = None):
+    def __init__(
+        self, *args: Optional[tuple], argument: str = None, function: str = None
+    ):
         message = f'Required argument: "{argument}" is required in {function}'
         super().__init__(*args, message=message)

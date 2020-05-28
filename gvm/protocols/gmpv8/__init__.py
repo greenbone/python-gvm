@@ -30,7 +30,12 @@ import warnings
 
 from typing import Any, List, Optional
 
-from gvm.errors import GvmError, InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.errors import (
+    GvmError,
+    InvalidArgument,
+    InvalidArgumentType,
+    RequiredArgument,
+)
 from gvm.xml import XmlCommand
 
 from gvm.protocols.gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
@@ -70,8 +75,8 @@ class Gmp(Gmpv7):
         community: Optional[str] = None,
         privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
         privacy_password: Optional[str] = None,
-        public_key: Optional[str] = None 
-    ) -> Any: 
+        public_key: Optional[str] = None
+    ) -> Any:
         """Create a new credential
 
         Create a new credential e.g. to be used in the method of an alert.
