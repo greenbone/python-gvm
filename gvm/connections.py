@@ -110,7 +110,7 @@ class GvmConnection(XmlReader):
                 bytes.
         """
         if self._socket is None:
-            raise GvmError("Socket is not connected")
+            raise GvmError(message="Socket is not connected")
 
         if isinstance(data, str):
             self._socket.sendall(data.encode())
@@ -137,7 +137,7 @@ class GvmConnection(XmlReader):
 
             if not data:
                 # Connection was closed by server
-                raise GvmError("Remote closed the connection")
+                raise GvmError(message="Remote closed the connection")
 
             self._feed_xml(data)
 
@@ -150,7 +150,7 @@ class GvmConnection(XmlReader):
                 now = time.time()
 
                 if now > break_timeout:
-                    raise GvmError("Timeout while reading the response")
+                    raise GvmError(message="Timeout while reading the response")
 
         return response
 
@@ -186,16 +186,17 @@ class SSHConnection(GvmConnection):
     def __init__(
         self,
         *,
-        timeout: Optional[int] = DEFAULT_TIMEOUT,
-        hostname: Optional[str] = DEFAULT_HOSTNAME,
-        port: Optional[int] = DEFAULT_SSH_PORT,
-        username: Optional[str] = "gmp",
-        password: Optional[str] = ""
+        timeout: int = DEFAULT_TIMEOUT,
+        hostname: str = DEFAULT_HOSTNAME,
+        port: int = DEFAULT_SSH_PORT,
+        username: str = "gmp",
+        password: str = ""
     ):
         super().__init__(timeout=timeout)
 
         self.hostname = hostname
-        self.port = int(port)
+        if port and isinstance(port, int):
+            self.port = port
         self.username = username
         self.password = password
 
@@ -205,7 +206,7 @@ class SSHConnection(GvmConnection):
 
             if not sent:
                 # Connection was closed by server
-                raise GvmError("Remote closed the connection")
+                raise GvmError(message="Remote closed the connection")
 
             data = data[sent:]
 
@@ -235,7 +236,7 @@ class SSHConnection(GvmConnection):
             paramiko.AuthenticationException,
             paramiko.SSHException,
         ) as e:
-            raise GvmError("SSH Connection failed", e)
+            raise GvmError(e, "SSH Connection failed")
 
     def _read(self):
         return self._stdout.channel.recv(BUF_SIZE)
@@ -351,11 +352,11 @@ class UnixSocketConnection(GvmConnection):
             self._socket.connect(self.path)
         except FileNotFoundError:
             raise GvmError(
-                "Socket {path} does not exist".format(path=self.path)
+                message="Socket {path} does not exist".format(path=self.path)
             ) from None
         except ConnectionError:
             raise GvmError(
-                "Could not connect to socket {}".format(self.path)
+                message="Could not connect to socket {}".format(self.path)
             ) from None
 
 

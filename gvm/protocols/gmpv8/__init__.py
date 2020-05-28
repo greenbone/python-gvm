@@ -1,3 +1,5 @@
+# type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright (C) 2018 - 2019 Greenbone Networks GmbH
 #
@@ -28,7 +30,7 @@ import warnings
 
 from typing import Any, List, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.errors import GvmError, InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.xml import XmlCommand
 
 from gvm.protocols.gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
@@ -68,8 +70,8 @@ class Gmp(Gmpv7):
         community: Optional[str] = None,
         privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
         privacy_password: Optional[str] = None,
-        public_key: Optional[str] = None
-    ) -> Any:
+        public_key: Optional[str] = None 
+    ) -> Any: 
         """Create a new credential
 
         Create a new credential e.g. to be used in the method of an alert.
@@ -447,10 +449,8 @@ class Gmp(Gmpv7):
             )
 
         if resource_filter and resource_ids:
-            raise InvalidArgument(
-                "create_tag accepts either resource_filter or resource_ids "
-                "argument",
-                function=self.create_tag.__name__,
+            raise GvmError(
+                message='create_tag accepts either resource_filter or resource_ids argument'
             )
 
         if not resource_type:

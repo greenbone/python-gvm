@@ -1990,7 +1990,7 @@ class Gmp(GvmProtocol):
 
         # don't allow to create a container task with create_task
         if target_id == '0':
-            raise InvalidArgument(
+            raise InvalidArgumentType(
                 argument='target_id',
                 arg_type='str (but not "0")',
                 function=self.create_task.__name__,
@@ -2258,8 +2258,8 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand("delete_asset")
         if asset_id:
             cmd.set_attribute("asset_id", asset_id)
-        else:
-            cmd.set_attribute("report_id", report_id)
+        elif report_id:
+                cmd.set_attribute("report_id", report_id)
 
         return self._send_xml_command(cmd)
 
@@ -4240,9 +4240,9 @@ class Gmp(GvmProtocol):
         cmd = XmlCommand("help")
 
         if help_type not in ("", "brief"):
-            raise InvalidArgument(
+            raise InvalidArgumentType(
                 argument='help_type',
-                arg_type="'' or 'brief'",
+                arg_type="str: ('' or 'brief')",
                 function=self.help.__name__,
             )
 
@@ -5595,7 +5595,7 @@ class Gmp(GvmProtocol):
         else:
             cmd.add_element("name", name)
 
-        cmd.add_element("value", _to_base64(value))
+        cmd.add_element("value", _to_base64(value).decode())
 
         return self._send_xml_command(cmd)
 

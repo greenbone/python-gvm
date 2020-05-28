@@ -120,4 +120,4 @@ def validate_xml_string(xml_string: str):
     try:
         secET.fromstring(xml_string)
     except (DefusedXmlException, etree.LxmlError) as e:
-        raise GvmError("Invalid XML", e) from e
+        raise GvmError(e, message="Invalid XML") from e

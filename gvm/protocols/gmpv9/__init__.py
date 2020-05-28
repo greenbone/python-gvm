@@ -18,6 +18,8 @@
 
 # pylint: disable=arguments-differ, redefined-builtin, too-many-lines
 
+# type: ignore
+
 """
 Module for communication with gvmd in `Greenbone Management Protocol version 9`_
 

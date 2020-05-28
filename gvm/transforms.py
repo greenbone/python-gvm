@@ -43,7 +43,7 @@ def _check_command_status(root: etree.Element):
     status = root.get("status")
 
     if status is None:
-        raise GvmServerError("No status in response.", root)
+        raise GvmServerError(root, message="No status in response.")
 
     if status[0] == "4":
         raise GvmResponseError(status=status, message=root.get("status_text"))
@@ -51,7 +51,7 @@ def _check_command_status(root: etree.Element):
         raise GvmServerError(status=status, message=root.get("status_text"))
     elif status[0] != "2":
         raise GvmError(
-            "Error in response. {0}".format(root.get("status_text")), root
+            root, message="Error in response. {0}".format(root.get("status_text"))
         )
 
 

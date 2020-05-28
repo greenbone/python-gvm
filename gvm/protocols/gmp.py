@@ -1,3 +1,5 @@
+# type: ignore
+
 # -*- coding: utf-8 -*-
 # Copyright (C) 2019 Greenbone Networks GmbH
 #
@@ -87,7 +89,7 @@ class Gmp(GvmProtocol):
         version_el = resp.find('version')
         if version_el is None:
             raise GvmError(
-                'Invalid response from manager daemon while requesting the '
+                message='Invalid response from manager daemon while requesting the '
                 'version information.'
             )
 
@@ -107,7 +109,7 @@ class Gmp(GvmProtocol):
             gmp_class = Gmpv9
         else:
             raise GvmError(
-                'Remote manager daemon uses an unsupported version of GMP. '
+                message='Remote manager daemon uses an unsupported version of GMP. '
                 'The GMP version was {}.'.format(version)
             )
 

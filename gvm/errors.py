@@ -15,12 +15,12 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-"""
-Module for GVM errors
-"""
 
 from typing import Optional
 
+"""
+Module for GVM errors
+"""
 
 class GvmError(Exception):
     """An exception for gvm errors
@@ -28,12 +28,12 @@ class GvmError(Exception):
     Base class for all exceptions originating in python-gvm.
     """
 
-    def __init__(self, message: str, *args):
-        super().__init__(message, *args)
+    def __init__(self, *args: Optional[tuple], message: str = None):
+        super().__init__(*args, message)
         self.message = message
 
     def __repr__(self):
-        return '<{} message="{}">'.format(self.__class__.__name__, self.message)
+        return f'<{self.__class__.__name__} message="{self.message}">'
 
     def __str__(self):
         return self.message
@@ -57,21 +57,13 @@ class GvmServerError(GvmError):
             and function
     """
 
-    def __init__(self, status: str = None, message: str = None):
-        super().__init__(message, status)
+    def __init__(self, *args: Optional[tuple], status: str = None, message: str = None):
+        message = f'Server Error "{status}": {message}'
+        super().__init__(*args, message=message)
         self.status = status
 
-    def __str__(self):
-        return 'Server Error {}. {}'.format(self.status, self.message)
-
-    def __repr__(self):
-        return '<{} status="{}" message="{}">'.format(
-            self.__class__.__name__, self.status, self.message
-        )
-
-
 class GvmResponseError(GvmClientError):
-    """An exception for gvm server errors
+    """An exception for gvm response errors
 
     Derives from :py:class:`GvmClientError`
 
@@ -81,17 +73,10 @@ class GvmResponseError(GvmClientError):
             and function
     """
 
-    def __init__(self, status: str = None, message: str = None):
-        super().__init__(message, status)
+    def __init__(self, *args: Optional[tuple], status: str = None, message: str = None):
+        message = f'Response Error "{status}": {message}'
+        super().__init__(*args, message=message)
         self.status = status
-
-    def __str__(self):
-        return 'Response Error {}. {}'.format(self.status, self.message)
-
-    def __repr__(self):
-        return '<{} status="{}" message="{}">'.format(
-            self.__class__.__name__, self.status, self.message
-        )
 
 
 class InvalidArgument(GvmError):
@@ -100,34 +85,13 @@ class InvalidArgument(GvmError):
     Derives from :py:class:`GvmError`
 
     Arguments:
-        message: Error message to be displayed. Takes precedence over argument
-            and function
         argument: Optional name of the invalid argument
         function: Optional name of the called function
     """
 
-    def __init__(
-        self,
-        message: Optional[str] = None,
-        *,
-        argument: Optional[str] = None,
-        function: Optional[str] = None
-    ):
-        super().__init__(message, argument, function)
-        self.argument = argument
-        self.function = function
-
-    def __str__(self):
-        if self.message:
-            return self.message
-
-        if not self.function:
-            return "Invalid argument {}".format(self.argument)
-
-        if not self.argument:
-            return "Invalid argument for {}".format(self.function)
-
-        return "Invalid argument {} for {}".format(self.argument, self.function)
+    def __init__(self, *args: Optional[tuple], argument: str = None, function: str = None):
+        message = f'Invalid argument: "{argument}" is invalid in {function}'
+        super().__init__(*args, message=message)
 
 
 class InvalidArgumentType(GvmError):
@@ -141,26 +105,10 @@ class InvalidArgumentType(GvmError):
         function: Optional name of the called function
     """
 
-    def __init__(
-        self,
-        argument: str = None,
-        arg_type: str = None,
-        *,
-        function: Optional[str] = None
-    ):
-        # pylint: disable=super-init-not-called
-        self.argument = argument
-        self.function = function
-        self.arg_type = arg_type
+    def __init__(self, *args: Optional[tuple], argument: str = None, arg_type: str = None, function: str = None):
+        message = f'Invalid argument type: "{argument}" must be of type "{arg_type}" in {function}.'
+        super().__init__(*args, message=message)
 
-    def __str__(self):
-        if self.function:
-            return "In {} the argument {} must be of type {}.".format(
-                self.function, self.argument, self.arg_type
-            )
-        return "The argument {} must be of type {}.".format(
-            self.argument, self.arg_type
-        )
 
 
 class RequiredArgument(GvmError):
@@ -169,31 +117,10 @@ class RequiredArgument(GvmError):
     Derives from :py:class:`GvmError`
 
     Arguments:
-        message: Error message to be displayed. Takes precedence over argument
-            and function.
         argument: Optional name of the required argument.
         function: Optional name of the called function.
     """
 
-    def __init__(
-        self,
-        message: Optional[str] = None,
-        *,
-        argument: Optional[str] = None,
-        function: Optional[str] = None
-    ):
-        super().__init__(message, argument, function)
-        self.argument = argument
-        self.function = function
-
-    def __str__(self):
-        if self.message:
-            return self.message
-
-        if not self.function:
-            return "Required argument {}".format(self.argument)
-
-        if not self.argument:
-            return "Required argument missing for {}".format(self.function)
-
-        return "{} requires a {} argument".format(self.function, self.argument)
+    def __init__(self, *args: Optional[tuple], argument: str = None, function: str = None):
+        message = f'Required argument: "{argument}" is required in {function}'
+        super().__init__(*args, message=message)
