@@ -20,6 +20,8 @@ import datetime
 from dataclasses import dataclass
 from lxml import etree
 
+LOAD_MORE = True  # just temporary
+
 
 def resolve_datetime(time: str) -> datetime.datetime:
     """
@@ -164,7 +166,10 @@ class PortList:
                 port_list = PortList.resolve_port_list(child)
                 result_list.append(port_list)
 
-        return result_list
+        if len(result_list) == 1:
+            return result_list[0]
+        else:
+            return result_list
 
 
 @dataclass
@@ -179,7 +184,10 @@ class Permission:
         for permission in root:
             permissions.append(Permission(permission.find("name").text))
 
-        return permissions
+        if len(permissions) == 1:
+            return permissions[0]
+        else:
+            return permissions
 
 
 @dataclass
@@ -234,7 +242,10 @@ class Config:
             if child.tag == "config":
                 configs.append(Config.resolve_config(child))
 
-        return configs
+        if len(configs) == 1:
+            return configs[0]
+        else:
+            return configs
 
     @staticmethod
     def resolve_config(root: etree.Element) -> "Config":
@@ -322,7 +333,11 @@ class Target:
         for child in root:
             if child.tag == "target":
                 targets.append(Target.resolve_target(child))
-        return targets
+
+        if len(targets) == 1:
+            return targets[0]
+        else:
+            return targets
 
     @staticmethod
     def resolve_target(root: etree.Element) -> "Target":
@@ -348,7 +363,7 @@ class Target:
         if in_use is not None:
             in_use = False if in_use.text == "0" else True
 
-        permessions = Permission.resolve_permissions(root.find("permissions"))
+        permissions = Permission.resolve_permissions(root.find("permissions"))
         # hosts
         # exclude_hosts
         port_list = PortList.resolve_port_list(root.find("port_list"))
@@ -379,7 +394,7 @@ class Target:
             modification_time,
             writable,
             in_use,
-            permessions,
+            permissions,
             # hosts,
             # exclude_hosts,
             port_list,
@@ -390,6 +405,88 @@ class Target:
             reverse_lookup_only,
             reverse_lookup_unify,
         )
+
+
+@dataclass
+class Scanner:
+    scanner_id: str
+    owner: Owner
+    name: str
+    comment: str
+    creation_time: datetime.datetime
+    modification_time: datetime.datetime
+    writable: bool
+    in_use: bool
+    permissions: list
+    # hosts
+    port: int
+    scanner_type: int
+    # ca_pub
+    # credential
+
+    @staticmethod
+    def resolve_scanners(root: etree.Element) -> list:
+        scanners = []
+
+        for child in root:
+            if child.tag == "scanner":
+                scanners.append(Scanner.resolve_scanner(child))
+
+        if len(scanners) == 1:
+            return scanners[0]
+        else:
+            return scanners
+
+    @staticmethod
+    def resolve_scanner(root: etree.Element) -> "Scanner":
+        scanner_id = root.get("id")
+        owner = Owner.resolve_owner(root.find("owner"))
+        name = root.find("name").text
+        comment = root.find("comment")
+        if comment is not None:
+            comment = comment.text
+
+        creation_time = root.find("creation_time")
+        if creation_time is not None:
+            creation_time = resolve_datetime(creation_time.text)
+
+        modification_time = root.find("modification_time")
+        if modification_time is not None:
+            modification_time = resolve_datetime(modification_time.text)
+
+        writable = root.find("writable")
+        if writable is not None:
+            writable = False if writable.text == "0" else True
+
+        in_use = root.find("in_use")
+        if in_use is not None:
+            in_use = False if in_use.text == "0" else True
+
+        permissions = Permission.resolve_permissions(root.find("permissions"))
+        # host
+        port = root.find("port")
+        if port is not None:
+            port = int(port.text)
+
+        scanner_type = root.find("type")
+        if scanner_type is not None:
+            scanner_type = int(scanner_type.text)
+
+        scanner = Scanner(
+            scanner_id,
+            owner,
+            name,
+            comment,
+            creation_time,
+            modification_time,
+            writable,
+            in_use,
+            permissions,
+            # host,
+            port,
+            scanner_type,
+        )
+        return scanner
 
 
 @dataclass
@@ -407,8 +504,8 @@ class Task:
     usage_type: str
     config: Config
     target: Target
-    # host_ordering: ??
-    # scanner: Scanner
+    host_ordering: str
+    scanner: Scanner
     status: str
     progress: int
     # report_count: ReportCount
@@ -419,15 +516,18 @@ class Task:
     # preferences: list
 
     @staticmethod
-    def resolve_tasks(root: etree.Element) -> list:
+    def resolve_tasks(gmp, root: etree.Element) -> list:
         tasks = []
         for child in root:
             if child.tag == "task":
-                tasks.append(Task.resolve_task(child))
-        return tasks
+                tasks.append(Task.resolve_task(gmp, child))
+        if len(tasks) == 1:
+            return tasks[0]
+        else:
+            return tasks
 
     @staticmethod
-    def resolve_task(root: etree.Element) -> "Task":
+    def resolve_task(gmp, root: etree.Element) -> "Task":
         task_id = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
@@ -443,12 +543,12 @@ class Task:
         usage_type = root.find("usage_type").text
         config = Config.resolve_config(root.find("config"))
         target = Target.resolve_target(root.find("target"))
-        # host_ordering =
-        # scanner =
+        host_ordering = root.find("hosts_ordering").text
+        scanner = Scanner.resolve_scanner(root.find("scanner"))
         status = root.find("status").text
         progress = int(root.find("progress").text)
 
-        return Task(
+        task = Task(
             task_id,
             owner,
             name,
@@ -462,8 +562,25 @@ class Task:
             usage_type,
             config,
             target,
-            # host_ordering,
-            # scanner,
+            host_ordering,
+            scanner,
             status,
             progress,
         )
+
+        if LOAD_MORE:
+            task.load_config(gmp)
+            task.load_target(gmp)
+            task.load_scanner(gmp)
+
+        return task
+
+    def load_config(self, gmp):
+        self.config = gmp.get_config(self.config.config_id).configs
+
+    def load_target(self, gmp):
+        self.target = gmp.get_target(self.target.target_id).targets
+
+    def load_scanner(self, gmp):
+        # das Abfragen von Informationen zu einem Scanner dauert sehr lange.
+        self.scanner = gmp.get_scanner(self.scanner.scanner_id).scanners

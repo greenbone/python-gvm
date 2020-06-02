@@ -75,7 +75,7 @@ class GvmProtocol:
         transform = self._transform_callable
         if transform is None:
             return data
-        return transform(data)
+        return transform(self, data)
 
     def _send_xml_command(self, xmlcmd):
         """Send a xml command to the remote server

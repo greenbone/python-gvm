@@ -18,11 +18,9 @@
 """
 Module for transforming responses
 """
-import time
-import datetime
 
 from lxml import etree
-from gvm.responses import *
+from gvm.responses import get_response_class
 from .errors import GvmError, GvmServerError, GvmResponseError
 from .xml import create_parser
 
@@ -38,7 +36,7 @@ class EtreeTransform:
     def _convert_response(self, response: str) -> etree.Element:
         return etree.XML(response, parser=self._parser)
 
-    def __call__(self, response: str) -> etree.Element:
+    def __call__(self, gmp, response: str) -> etree.Element:
         return self._convert_response(response)
 
 
@@ -58,20 +56,13 @@ def _check_command_status(root: etree.Element):
         )
 
 
-def etree_to_dict(t: etree.XML):
-    d = {t.tag: map(etree_to_dict, t.iterchildren())}
-    d.update(('@' + k, v) for k, v in t.attrib.iteritems())
-    d['text'] = t.text
-    return d
-
-
 class CheckCommandTransform(EtreeTransform):
     """
     Check the response code of a response and raise GmpError if
     response was an error response
     """
 
-    def __call__(self, response: str) -> str:
+    def __call__(self, gmp, response: str) -> str:
         root = self._convert_response(response)
 
         _check_command_status(root)
@@ -85,7 +76,7 @@ class EtreeCheckCommandTransform(EtreeTransform):
     response was an error response
     """
 
-    def __call__(self, response: str) -> etree.Element:
+    def __call__(self, gmp, response: str) -> etree.Element:
         root = self._convert_response(response)
 
         _check_command_status(root)
@@ -105,14 +96,14 @@ class ObjectTransform:
     def _convert_response(self, response: str) -> etree.Element:
         return etree.XML(response, parser=self._parser)
 
-    def __call__(self, response: str):
+    def __call__(self, gmp, response: str):
         root = self._convert_response(response)
         _check_command_status(root)
 
         response_object = None
         try:
             response_class = get_response_class(root.tag)
-            response_object = response_class(root)
+            response_object = response_class(gmp, root)
         except KeyError:
             print(f'The "{root.tag}" is not supported yet.')
 

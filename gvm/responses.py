@@ -18,7 +18,7 @@
 
 from dataclasses import dataclass
 from lxml import etree
-from gvm.classes import *
+from gvm.classes import Role, Task, Target, PortList, Config, Scanner
 
 
 @dataclass
@@ -47,7 +47,7 @@ class AuthenticateResponse(Response):
     timezone: str
     severity: str
 
-    def __init__(self, root: etree.Element):
+    def __init__(self, gmp, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
         self.role = Role.resolve_role(root.find("role"))
         self.timezone = root.find("timezone").text
@@ -62,7 +62,7 @@ class GetPortListsResponse(Response):
 
     port_lists: list
 
-    def __init__(self, root: etree.Element):
+    def __init__(self, gmp, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
         self.port_lists = PortList.resolve_port_lists(root)
 
@@ -76,12 +76,12 @@ class GetTasksResponse(Response):
     apply_overrides: bool
     tasks: list
 
-    def __init__(self, root: etree.Element):
+    def __init__(self, gmp, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
         apply_overrides = root.find("apply_overrides")
         self.apply_overrides = False if apply_overrides.text == "0" else True
         root.remove(apply_overrides)
-        self.tasks = Task.resolve_tasks(root)
+        self.tasks = Task.resolve_tasks(gmp, root)
         # print(etree.tostring(root))
 
 
@@ -90,7 +90,7 @@ class GetConfigsResponse(Response):
 
     configs: list
 
-    def __init__(self, root: etree.Element):
+    def __init__(self, gmp, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
         self.configs = Config.resolve_configs(root)
         # print(etree.tostring(root))
@@ -101,9 +101,18 @@ class GetTargetsResponse(Response):
 
     targets: list
 
-    def __init__(self, root: etree.Element):
+    def __init__(self, gmp, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
         self.targets = Target.resolve_targets(root)
+
+
+@dataclass
+class GetScannersResponse(Response):
+    scanners: list
+
+    def __init__(self, gmp, root: etree.Element):
+        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        self.scanners = Scanner.resolve_scanners(root)
 
 
 CLASSDICT = {
@@ -112,6 +121,7 @@ CLASSDICT = {
     "get_tasks_response": GetTasksResponse,
     "get_configs_response": GetConfigsResponse,
     "get_targets_response": GetTargetsResponse,
+    "get_scanners_response": GetScannersResponse,
 }
 
 
