@@ -20,15 +20,14 @@ import datetime
 from dataclasses import dataclass
 from lxml import etree
 
+from gvm.object_transform.utils import (
+    get_bool_from_element,
+    get_int_from_element,
+    get_text_from_element,
+    get_datetime_from_element,
+)
+
 LOAD_MORE = True  # just temporary
-
-
-def resolve_datetime(time: str) -> datetime.datetime:
-    """
-    takes a time String like: 2020-03-05T15:35:21Z
-    and forms a datetime object from it.
-    """
-    return datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
 
 
 @dataclass
@@ -118,25 +117,14 @@ class PortList:
             return None
         port_list_id = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
-        name = root.find("name").text
-        comment = root.find("comment")
-        if comment is not None:
-            comment = comment.text
-        creation_time = root.find("creation_time")
-        if creation_time is not None:
-            creation_time = resolve_datetime(creation_time.text)
+        name = get_text_from_element(root, "name")
+        comment = get_text_from_element(root, "comment")
 
-        modification_time = root.find("modification_time")
-        if modification_time is not None:
-            modification_time = resolve_datetime(modification_time.text)
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
 
-        writable = root.find("writable")
-        if writable is not None:
-            writable = False if writable.text == "0" else True
-
-        in_use = root.find("in_use")
-        if in_use is not None:
-            in_use = False if in_use.text == "0" else True
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
 
         permissions = Permission.resolve_permissions(root.find("permissions"))
         port_count = PortCount.resolve_port_count(root.find("port_count"))
@@ -233,7 +221,7 @@ class Config:
     nvt_count: NvtCount
     config_type: int
     usage_type: str
-    # was bedeutet <trash> in der get Tasks antwort für configs??
+    trash: bool
 
     @staticmethod
     def resolve_configs(root: etree.Element) -> list:
@@ -252,41 +240,23 @@ class Config:
         config_id = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
+        comment = get_text_from_element(root, "comment")
 
-        comment = root.find("comment")
-        if comment is not None:
-            comment = comment.text
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
 
-        if root.find("creation_time") is not None:
-            creation_time = resolve_datetime(root.find("creation_time").text)
-        else:
-            creation_time = None
-
-        if root.find("modification_time") is not None:
-            modification_time = resolve_datetime(
-                root.find("modification_time").text
-            )
-        else:
-            modification_time = None
-
-        writable = root.find("writable")
-        if writable is not None:
-            writable = False if writable.text == "0" else True
-
-        in_use = root.find("in_use")
-        if in_use is not None:
-            in_use = False if in_use.text == "0" else True
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
 
         permissions = Permission.resolve_permissions(root.find("permissions"))
         family_count = FamilyCount.resolve_family_count(
             root.find("family_count")
         )
         nvt_count = NvtCount.resolve_nvt_count(root.find("nvt_count"))
-        config_type = int(root.find("type").text)
+        config_type = get_int_from_element(root, "type")
+        usage_type = get_text_from_element(root, "usage_type")
 
-        usage_type = root.find("usage_type")
-        if usage_type is not None:
-            usage_type = usage_type.text
+        trash = get_bool_from_element(root, "trash")
 
         return Config(
             config_id,
@@ -302,6 +272,7 @@ class Config:
             nvt_count,
             config_type,
             usage_type,
+            trash,
         )
 
 
@@ -326,6 +297,7 @@ class Target:
     reverse_lookup_only: bool
     reverse_lookup_unify: bool
     # alive_tests: str ?
+    trash: bool
 
     @staticmethod
     def resolve_targets(root: etree.Element) -> list:
@@ -344,24 +316,13 @@ class Target:
         target_id = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
-        comment = root.find("comment")
-        if comment is not None:
-            comment = comment.text
-        creation_time = root.find("creation_time")
-        if creation_time is not None:
-            creation_time = resolve_datetime(creation_time.text)
+        comment = get_text_from_element(root, "comment")
 
-        modification_time = root.find("modification_time")
-        if modification_time is not None:
-            modification_time = resolve_datetime(modification_time.text)
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
 
-        writable = root.find("writable")
-        if writable is not None:
-            writable = False if writable.text == "0" else True
-
-        in_use = root.find("in_use")
-        if in_use is not None:
-            in_use = False if in_use.text == "0" else True
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
 
         permissions = Permission.resolve_permissions(root.find("permissions"))
         # hosts
@@ -371,19 +332,14 @@ class Target:
         # smb_credential
         # esxi_credential
         # snmp_credential
-        reverse_lookup_only = root.find("reverse_lookup_only")
-        if reverse_lookup_only is not None:
-            reverse_lookup_only = (
-                False if reverse_lookup_only.text == "0" else True
-            )
 
-        reverse_lookup_unify = root.find("reverse_lookup_unify")
-        if reverse_lookup_unify is not None:
-            reverse_lookup_unify = (
-                False if reverse_lookup_unify.text == "0" else True
-            )
+        reverse_lookup_only = get_bool_from_element(root, "reverse_lookup_only")
+        reverse_lookup_unify = get_bool_from_element(
+            root, "reverse_lookup_unify"
+        )
 
         # alive_tests: str ?
+        trash = get_bool_from_element(root, "trash")
 
         return Target(
             target_id,
@@ -404,6 +360,7 @@ class Target:
             # snmp_credential,
             reverse_lookup_only,
             reverse_lookup_unify,
+            trash,
         )
 
 
@@ -423,6 +380,7 @@ class Scanner:
     scanner_type: int
     # ca_pub
     # credential
+    trash: bool
 
     @staticmethod
     def resolve_scanners(root: etree.Element) -> list:
@@ -442,35 +400,20 @@ class Scanner:
         scanner_id = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
-        comment = root.find("comment")
-        if comment is not None:
-            comment = comment.text
+        comment = get_text_from_element(root, "comment")
 
-        creation_time = root.find("creation_time")
-        if creation_time is not None:
-            creation_time = resolve_datetime(creation_time.text)
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
 
-        modification_time = root.find("modification_time")
-        if modification_time is not None:
-            modification_time = resolve_datetime(modification_time.text)
-
-        writable = root.find("writable")
-        if writable is not None:
-            writable = False if writable.text == "0" else True
-
-        in_use = root.find("in_use")
-        if in_use is not None:
-            in_use = False if in_use.text == "0" else True
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
 
         permissions = Permission.resolve_permissions(root.find("permissions"))
         # host
-        port = root.find("port")
-        if port is not None:
-            port = int(port.text)
+        port = get_int_from_element(root, "port")
+        scanner_type = get_int_from_element(root, "type")
 
-        scanner_type = root.find("type")
-        if scanner_type is not None:
-            scanner_type = int(scanner_type.text)
+        trash = get_bool_from_element(root, "trash")
 
         scanner = Scanner(
             scanner_id,
@@ -485,6 +428,7 @@ class Scanner:
             # host,
             port,
             scanner_type,
+            trash,
         )
         return scanner
 
@@ -504,7 +448,7 @@ class Task:
     usage_type: str
     config: Config
     target: Target
-    host_ordering: str
+    hosts_ordering: str
     scanner: Scanner
     status: str
     progress: int
@@ -531,22 +475,23 @@ class Task:
         task_id = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
-        comment = root.find("comment").text
-        creation_time = resolve_datetime(root.find("creation_time").text)
-        modification_time = resolve_datetime(
-            root.find("modification_time").text
-        )
-        writable = False if root.find("writable").text == "0" else True
-        in_use = False if root.find("in_use").text == "0" else True
+        comment = get_text_from_element(root, "comment")
+
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
+
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
+
         permissions = Permission.resolve_permissions(root.find("permissions"))
-        alterable = False if root.find("alterable").text == "0" else True
-        usage_type = root.find("usage_type").text
+        alterable = get_bool_from_element(root, "alterable")
+        usage_type = get_text_from_element(root, "usage_type")
         config = Config.resolve_config(root.find("config"))
         target = Target.resolve_target(root.find("target"))
-        host_ordering = root.find("hosts_ordering").text
+        hosts_ordering = get_text_from_element(root, "hosts_ordering")
         scanner = Scanner.resolve_scanner(root.find("scanner"))
-        status = root.find("status").text
-        progress = int(root.find("progress").text)
+        status = get_text_from_element(root, "status")
+        progress = get_int_from_element(root, "progress")
 
         task = Task(
             task_id,
@@ -562,7 +507,7 @@ class Task:
             usage_type,
             config,
             target,
-            host_ordering,
+            hosts_ordering,
             scanner,
             status,
             progress,
@@ -571,15 +516,17 @@ class Task:
         if LOAD_MORE:
             task.load_config(gmp)
             task.load_target(gmp)
-            task.load_scanner(gmp)
+            # task.load_scanner(gmp)
 
         return task
 
     def load_config(self, gmp):
-        self.config = gmp.get_config(self.config.config_id).configs
+        if self.config.config_id != "":
+            self.config = gmp.get_config(self.config.config_id).configs
 
     def load_target(self, gmp):
-        self.target = gmp.get_target(self.target.target_id).targets
+        if self.target.target_id != "":
+            self.target = gmp.get_target(self.target.target_id).targets
 
     def load_scanner(self, gmp):
         # das Abfragen von Informationen zu einem Scanner dauert sehr lange.

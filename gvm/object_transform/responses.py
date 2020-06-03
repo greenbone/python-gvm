@@ -18,7 +18,14 @@
 
 from dataclasses import dataclass
 from lxml import etree
-from gvm.classes import Role, Task, Target, PortList, Config, Scanner
+from gvm.object_transform.classes import (
+    Role,
+    Task,
+    Target,
+    PortList,
+    Config,
+    Scanner,
+)
 
 
 @dataclass
