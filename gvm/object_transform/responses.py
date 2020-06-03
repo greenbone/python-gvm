@@ -25,6 +25,7 @@ from gvm.object_transform.classes import (
     PortList,
     Config,
     Scanner,
+    Preference,
 )
 
 
@@ -115,11 +116,22 @@ class GetTargetsResponse(Response):
 
 @dataclass
 class GetScannersResponse(Response):
+
     scanners: list
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
         self.scanners = Scanner.resolve_scanners(root)
+
+
+@dataclass
+class GetPreferencesResponse(Response):
+
+    preferences: list
+
+    def __init__(self, gmp, root: etree.Element):
+        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        self.preferences = Preference.resolve_preferences(root)
 
 
 CLASSDICT = {
@@ -129,6 +141,7 @@ CLASSDICT = {
     "get_configs_response": GetConfigsResponse,
     "get_targets_response": GetTargetsResponse,
     "get_scanners_response": GetScannersResponse,
+    "get_preferences_response": GetPreferencesResponse,
 }
 
 

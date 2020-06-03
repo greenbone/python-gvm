@@ -25,6 +25,7 @@ from gvm.object_transform.utils import (
     get_int_from_element,
     get_text_from_element,
     get_datetime_from_element,
+    get_text,
 )
 
 LOAD_MORE = True  # just temporary
@@ -73,7 +74,7 @@ class PortCount:
 
 @dataclass
 class PortRange:
-    port_range_id: str
+    uuid: str
     start: int
     end: int
     port_range_type: str
@@ -99,7 +100,7 @@ class PortRange:
 
 @dataclass
 class PortList:
-    port_list_id: str
+    uuid: str
     owner: Owner
     name: str
     comment: str
@@ -115,7 +116,7 @@ class PortList:
     def resolve_port_list(root: etree.Element) -> "PortList":
         if root is None:
             return None
-        port_list_id = root.get("id")
+        uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = get_text_from_element(root, "name")
         comment = get_text_from_element(root, "comment")
@@ -131,7 +132,7 @@ class PortList:
         port_ranges = PortRange.resolve_port_ranges(root.find("port_ranges"))
 
         port_list = PortList(
-            port_list_id,
+            uuid,
             owner,
             name,
             comment,
@@ -208,7 +209,7 @@ class NvtCount:
 
 @dataclass
 class Config:
-    config_id: str
+    uuid: str
     owner: Owner
     name: str
     comment: str
@@ -237,7 +238,7 @@ class Config:
 
     @staticmethod
     def resolve_config(root: etree.Element) -> "Config":
-        config_id = root.get("id")
+        uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
         comment = get_text_from_element(root, "comment")
@@ -259,7 +260,7 @@ class Config:
         trash = get_bool_from_element(root, "trash")
 
         return Config(
-            config_id,
+            uuid,
             owner,
             name,
             comment,
@@ -278,7 +279,7 @@ class Config:
 
 @dataclass
 class Target:
-    target_id: str
+    uuid: str
     owner: Owner
     name: str
     comment: str
@@ -313,7 +314,7 @@ class Target:
 
     @staticmethod
     def resolve_target(root: etree.Element) -> "Target":
-        target_id = root.get("id")
+        uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
         comment = get_text_from_element(root, "comment")
@@ -342,7 +343,7 @@ class Target:
         trash = get_bool_from_element(root, "trash")
 
         return Target(
-            target_id,
+            uuid,
             owner,
             name,
             comment,
@@ -366,7 +367,7 @@ class Target:
 
 @dataclass
 class Scanner:
-    scanner_id: str
+    uuid: str
     owner: Owner
     name: str
     comment: str
@@ -397,7 +398,7 @@ class Scanner:
 
     @staticmethod
     def resolve_scanner(root: etree.Element) -> "Scanner":
-        scanner_id = root.get("id")
+        uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
         comment = get_text_from_element(root, "comment")
@@ -416,7 +417,7 @@ class Scanner:
         trash = get_bool_from_element(root, "trash")
 
         scanner = Scanner(
-            scanner_id,
+            uuid,
             owner,
             name,
             comment,
@@ -434,8 +435,100 @@ class Scanner:
 
 
 @dataclass
+class Schedule:
+    name: str
+    next_time: str
+    trash: bool
+
+    @staticmethod
+    def resolve_schedule(root: etree.Element) -> "Schedule":
+        name = get_text_from_element(root, "name")
+        next_time = get_text_from_element(root, "next_time")
+        trash = get_bool_from_element(root, "trash")
+
+        schedule = Schedule(name, next_time, trash)
+        return schedule
+
+
+@dataclass
+class Nvt:
+    oid: str
+    name: str
+
+    @staticmethod
+    def resolve_nvt(root: etree.Element) -> "Nvt":
+        if root is None:
+            return None
+        oid = root.get("oid")
+        name = get_text_from_element(root, "name")
+
+        nvt = Nvt(oid, name)
+
+        return nvt
+
+
+@dataclass
+class Preference:
+    nvt: Nvt
+    preference_id: int
+    hr_name: str
+    name: str
+    scanner_name: str
+    preference_type: str
+    value: str
+    alternatives: list
+    default: str
+
+    @staticmethod
+    def resolve_preferences(root: etree.Element) -> list:
+        if root is None:
+            return None
+        preferences = []
+        for child in root:
+            if child.tag == "preference":
+                preferences.append(Preference.resolve_preference(child))
+        if len(preferences) == 0:
+            return None
+        return preferences
+
+    @staticmethod
+    def resolve_preference(root: etree.Element) -> "Preference":
+        nvt = Nvt.resolve_nvt(root.find("nvt"))
+        preference_id = get_int_from_element(root, "id")
+        hr_name = get_text_from_element(root, "hr_name")
+        name = get_text_from_element(root, "name")
+        scanner_name = get_text_from_element(root, "scanner_name")
+        preference_type = get_text_from_element(root, "type")
+        value = get_text_from_element(root, "value")
+
+        alternatives_xml = root.findall("alt")
+        alternatives = []
+        for alt in alternatives_xml:
+            alternatives.append(get_text(alt))
+
+        if len(alternatives) == 0:
+            alternatives = None
+
+        default = get_text_from_element(root, "default")
+
+        preference = Preference(
+            nvt,
+            preference_id,
+            hr_name,
+            name,
+            scanner_name,
+            preference_type,
+            value,
+            alternatives,
+            default,
+        )
+
+        return preference
+
+
+@dataclass
 class Task:
-    task_id: str
+    uuid: str
     owner: Owner
     name: str
     comment: str
@@ -454,10 +547,10 @@ class Task:
     progress: int
     # report_count: ReportCount
     # trend: ??
-    # schedule: Schedule
+    schedule: Schedule
     # last_report: Report
     # observers: ??
-    # preferences: list
+    preferences: list
 
     @staticmethod
     def resolve_tasks(gmp, root: etree.Element) -> list:
@@ -472,7 +565,7 @@ class Task:
 
     @staticmethod
     def resolve_task(gmp, root: etree.Element) -> "Task":
-        task_id = root.get("id")
+        uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
         comment = get_text_from_element(root, "comment")
@@ -493,8 +586,17 @@ class Task:
         status = get_text_from_element(root, "status")
         progress = get_int_from_element(root, "progress")
 
+        # report_count: ReportCount
+        # trend: ??
+
+        schedule = Schedule.resolve_schedule(root.find("schedule"))
+
+        # last_report: Report
+        # observers: ??
+        preferences = Preference.resolve_preferences(root.find("preferences"))
+
         task = Task(
-            task_id,
+            uuid,
             owner,
             name,
             comment,
@@ -511,23 +613,29 @@ class Task:
             scanner,
             status,
             progress,
+            # report_count,
+            # trend,
+            schedule,
+            # last_report,
+            # obervers,
+            preferences,
         )
 
         if LOAD_MORE:
             task.load_config(gmp)
-            task.load_target(gmp)
+            # task.load_target(gmp)
             # task.load_scanner(gmp)
 
         return task
 
     def load_config(self, gmp):
-        if self.config.config_id != "":
-            self.config = gmp.get_config(self.config.config_id).configs
+        if self.config.uuid != "":
+            self.config = gmp.get_config(self.config.uuid).configs
 
     def load_target(self, gmp):
-        if self.target.target_id != "":
-            self.target = gmp.get_target(self.target.target_id).targets
+        if self.target.uuid != "":
+            self.target = gmp.get_target(self.target.uuid).targets
 
     def load_scanner(self, gmp):
         # das Abfragen von Informationen zu einem Scanner dauert sehr lange.
-        self.scanner = gmp.get_scanner(self.scanner.scanner_id).scanners
+        self.scanner = gmp.get_scanner(self.scanner.uuid).scanners
