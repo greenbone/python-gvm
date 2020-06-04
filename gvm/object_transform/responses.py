@@ -26,6 +26,7 @@ from gvm.object_transform.classes import (
     Config,
     Scanner,
     Preference,
+    User,
 )
 
 
@@ -135,14 +136,33 @@ class GetPreferencesResponse(Response):
 
 
 @dataclass
+class GetUsersResponse(Response):
+
+    users: list
+
+    def __init__(self, gmp, root: etree.Element):
+        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        self.users = User.resolve_users(root)
+        print(etree.tostring(root))
+
+
+@dataclass
 class CreateTaskResponse(Response):
 
     task: Task
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
-        # print(etree.tostring(root))
         self.task = gmp.get_task(root.get("id")).tasks
+
+
+@dataclass
+class StartTaskResponse(Response):
+
+    # report: Report
+
+    def __init__(self, gmp, root: etree.Element):
+        super().__init__(root.tag, root.get("status"), root.get("status_text"))
 
 
 CLASSDICT = {
@@ -153,7 +173,9 @@ CLASSDICT = {
     "get_targets_response": GetTargetsResponse,
     "get_scanners_response": GetScannersResponse,
     "get_preferences_response": GetPreferencesResponse,
+    "get_users_response": GetUsersResponse,
     "create_task_response": CreateTaskResponse,
+    "start_task_response": StartTaskResponse,
 }
 
 

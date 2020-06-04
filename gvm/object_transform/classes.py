@@ -48,6 +48,76 @@ class Owner:
 
 
 @dataclass
+class User:
+    uuid: str
+    owner: Owner
+    name: str
+    comment: str
+    creation_time: datetime.datetime
+    modification_time: datetime.datetime
+    writable: bool
+    in_use: bool
+    # role
+    # groups
+    # hosts
+    # ifaces
+    permissions: list
+    # user_tasgs
+    # sources
+
+    @staticmethod
+    def resolve_users(root: etree.Element) -> list:
+        if root is None:
+            return None
+
+        users = []
+
+        for child in root:
+            if child.tag == "user":
+                users.append(User.resolve_user(child))
+
+        return users
+
+    @staticmethod
+    def resolve_user(root: etree.Element) -> "User":
+        uuid = root.get("id")
+        owner = Owner.resolve_owner(root.find("owner"))
+        name = get_text_from_element(root, "name")
+        comment = get_text_from_element(root, "comment")
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
+        # role
+        # groups
+        # hosts
+        # ifaces
+        permissions = Permission.resolve_permissions(root.find("permissions"))
+        # user_tasgs
+        # sources
+
+        user = User(
+            uuid,
+            owner,
+            name,
+            comment,
+            creation_time,
+            modification_time,
+            writable,
+            in_use,
+            # role,
+            # groups,
+            # hosts,
+            # ifaces,
+            permissions,
+            # user_tasgs
+            # sources
+        )
+
+        return user
+
+
+@dataclass
 class Role:
     name: str
 
@@ -543,6 +613,21 @@ class Preference:
 
 
 @dataclass
+class Observers:
+    users: list
+    # groups: list
+    # roles: list
+
+    @staticmethod
+    def resolve_observers(root: etree.Element) -> "Observers":
+        users = User.resolve_users(root)
+
+        observers = Observers(users)
+
+        return observers
+
+
+@dataclass
 class Task:
     uuid: str
     owner: Owner
@@ -553,19 +638,24 @@ class Task:
     writable: bool
     in_use: bool
     permissions: list
+    # user_tags
     alterable: bool
     usage_type: str
     config: Config
     target: Target
     hosts_ordering: str
     scanner: Scanner
+    # alert
     status: str
     progress: int
     report_count: ReportCount
     trend: str
     schedule: Schedule
+    # schedule_periods
+    # current_report
     # last_report: Report
-    # observers: ??
+    # reports
+    observers: Observers
     preferences: list
 
     @staticmethod
@@ -610,7 +700,7 @@ class Task:
         schedule = Schedule.resolve_schedule(root.find("schedule"))
 
         # last_report: Report
-        # observers: ??
+        observers = Observers.resolve_observers(root.find("observers"))
         preferences = Preference.resolve_preferences(root.find("preferences"))
 
         task = Task(
@@ -635,7 +725,7 @@ class Task:
             trend,
             schedule,
             # last_report,
-            # obervers,
+            observers,
             preferences,
         )
 
@@ -656,4 +746,5 @@ class Task:
 
     def load_scanner(self, gmp):
         # das Abfragen von Informationen zu einem Scanner dauert sehr lange.
-        self.scanner = gmp.get_scanner(self.scanner.uuid).scanners
+        if self.scanner.uuid != "":
+            self.scanner = gmp.get_scanner(self.scanner.uuid).scanners
