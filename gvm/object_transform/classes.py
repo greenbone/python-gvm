@@ -26,6 +26,7 @@ from gvm.object_transform.utils import (
     get_text_from_element,
     get_datetime_from_element,
     get_text,
+    get_int,
 )
 
 LOAD_MORE = True  # just temporary
@@ -199,11 +200,26 @@ class NvtCount:
     growing: int
 
     @staticmethod
-    def resolve_nvt_count(root: etree.Element) -> "Nvt_Count":
+    def resolve_nvt_count(root: etree.Element) -> "NvtCount":
         if root is None:
             return None
         return NvtCount(
             current=int(root.text), growing=int(root.find("growing").text)
+        )
+
+
+@dataclass
+class ReportCount:
+    current: int
+    finished: int
+
+    @staticmethod
+    def resolve_report_count(root: etree.Element) -> "ReportCount":
+        if root is None:
+            return None
+        return ReportCount(
+            current=get_int(root.text),
+            finished=get_int_from_element(root, "finished"),
         )
 
 
@@ -487,8 +503,8 @@ class Preference:
         for child in root:
             if child.tag == "preference":
                 preferences.append(Preference.resolve_preference(child))
-        if len(preferences) == 0:
-            return None
+        if len(preferences) == 1:
+            return preferences[0]
         return preferences
 
     @staticmethod
@@ -545,8 +561,8 @@ class Task:
     scanner: Scanner
     status: str
     progress: int
-    # report_count: ReportCount
-    # trend: ??
+    report_count: ReportCount
+    trend: str
     schedule: Schedule
     # last_report: Report
     # observers: ??
@@ -586,8 +602,10 @@ class Task:
         status = get_text_from_element(root, "status")
         progress = get_int_from_element(root, "progress")
 
-        # report_count: ReportCount
-        # trend: ??
+        report_count = ReportCount.resolve_report_count(
+            root.find("report_count")
+        )
+        trend = get_text_from_element(root, "trend")
 
         schedule = Schedule.resolve_schedule(root.find("schedule"))
 
@@ -613,8 +631,8 @@ class Task:
             scanner,
             status,
             progress,
-            # report_count,
-            # trend,
+            report_count,
+            trend,
             schedule,
             # last_report,
             # obervers,
@@ -623,8 +641,8 @@ class Task:
 
         if LOAD_MORE:
             task.load_config(gmp)
-            # task.load_target(gmp)
-            # task.load_scanner(gmp)
+            task.load_target(gmp)
+            task.load_scanner(gmp)
 
         return task
 

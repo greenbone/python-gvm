@@ -134,6 +134,17 @@ class GetPreferencesResponse(Response):
         self.preferences = Preference.resolve_preferences(root)
 
 
+@dataclass
+class CreateTaskResponse(Response):
+
+    task: Task
+
+    def __init__(self, gmp, root: etree.Element):
+        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        # print(etree.tostring(root))
+        self.task = gmp.get_task(root.get("id")).tasks
+
+
 CLASSDICT = {
     "authenticate_response": AuthenticateResponse,
     "get_port_lists_response": GetPortListsResponse,
@@ -142,6 +153,7 @@ CLASSDICT = {
     "get_targets_response": GetTargetsResponse,
     "get_scanners_response": GetScannersResponse,
     "get_preferences_response": GetPreferencesResponse,
+    "create_task_response": CreateTaskResponse,
 }
 
 
