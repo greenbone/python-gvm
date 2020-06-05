@@ -29,7 +29,7 @@ from gvm.protocols.gmpv7 import Gmp as Gmpv7
 from gvm.protocols.gmpv8 import Gmp as Gmpv8
 from gvm.protocols.gmpv9 import Gmp as Gmpv9
 
-from gvm.transforms import EtreeCheckCommandTransform
+from gvm.transform import EtreeCheckCommandTransform
 
 from gvm.xml import XmlCommand
 

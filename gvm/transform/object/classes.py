@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2019 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -20,7 +20,7 @@ import datetime
 from dataclasses import dataclass
 from lxml import etree
 
-from gvm.object_transform.utils import (
+from .utils import (
     get_bool_from_element,
     get_int_from_element,
     get_text_from_element,

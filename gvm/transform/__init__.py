@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2019 Greenbone Networks GmbH
+# Copyright (C) 2018 - 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -20,9 +20,9 @@ Module for transforming responses
 """
 
 from lxml import etree
-from gvm.object_transform.responses import get_response_class
-from .errors import GvmError, GvmServerError, GvmResponseError
-from .xml import create_parser
+from gvm.transform.object.responses import get_response_class
+from gvm.errors import GvmError, GvmServerError, GvmResponseError
+from gvm.xml import create_parser
 
 
 class EtreeTransform:

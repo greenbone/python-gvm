@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2019 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -18,7 +18,7 @@
 
 from dataclasses import dataclass
 from lxml import etree
-from gvm.object_transform.classes import (
+from .classes import (
     Role,
     Task,
     Target,
