@@ -27,6 +27,7 @@ from .classes import (
     Scanner,
     Preference,
     User,
+    Report,
 )
 
 
@@ -112,7 +113,7 @@ class GetTargetsResponse(Response):
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root.tag, root.get("status"), root.get("status_text"))
-        self.targets = Target.resolve_targets(root)
+        self.targets = Target.resolve_targets(root, gmp)
 
 
 @dataclass
@@ -147,6 +148,17 @@ class GetUsersResponse(Response):
 
 
 @dataclass
+class GetReportsResponse(Response):
+
+    reports: list
+
+    def __init__(self, gmp, root: etree.Element):
+        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        # print(etree.tostring(root))
+        self.reports = Report.resolve_reports(root, gmp)
+
+
+@dataclass
 class CreateTaskResponse(Response):
 
     task: Task
@@ -174,6 +186,7 @@ CLASSDICT = {
     "get_scanners_response": GetScannersResponse,
     "get_preferences_response": GetPreferencesResponse,
     "get_users_response": GetUsersResponse,
+    "get_reports_response": GetReportsResponse,
     "create_task_response": CreateTaskResponse,
     "start_task_response": StartTaskResponse,
 }

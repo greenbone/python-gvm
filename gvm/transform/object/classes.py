@@ -20,6 +20,8 @@ import datetime
 from dataclasses import dataclass
 from lxml import etree
 
+# from gvm.protocols.gmp import Gmp
+
 from .utils import (
     get_bool_from_element,
     get_int_from_element,
@@ -28,8 +30,6 @@ from .utils import (
     get_text,
     get_int,
 )
-
-LOAD_MORE = True  # just temporary
 
 
 @dataclass
@@ -309,6 +309,7 @@ class Config:
     config_type: int
     usage_type: str
     trash: bool
+    all_info_loaded: bool
 
     @staticmethod
     def resolve_configs(root: etree.Element) -> list:
@@ -360,11 +361,13 @@ class Config:
             config_type,
             usage_type,
             trash,
+            False,
         )
 
 
 @dataclass
 class Target:
+    gmp: "Gmp"
     uuid: str
     owner: Owner
     name: str
@@ -376,7 +379,6 @@ class Target:
     permissions: list
     # hosts
     # exclude_hosts
-    port_list: PortList
     # ssh_credential
     # smb_credential
     # esxi_credential
@@ -385,13 +387,15 @@ class Target:
     reverse_lookup_unify: bool
     # alive_tests: str ?
     trash: bool
+    all_info_loaded: bool
+    _port_list: PortList
 
     @staticmethod
-    def resolve_targets(root: etree.Element) -> list:
+    def resolve_targets(root: etree.Element, gmp) -> list:
         targets = []
         for child in root:
             if child.tag == "target":
-                targets.append(Target.resolve_target(child))
+                targets.append(Target.resolve_target(child, gmp))
 
         if len(targets) == 1:
             return targets[0]
@@ -399,7 +403,7 @@ class Target:
             return targets
 
     @staticmethod
-    def resolve_target(root: etree.Element) -> "Target":
+    def resolve_target(root: etree.Element, gmp) -> "Target":
         uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
@@ -429,6 +433,7 @@ class Target:
         trash = get_bool_from_element(root, "trash")
 
         return Target(
+            gmp,
             uuid,
             owner,
             name,
@@ -440,7 +445,6 @@ class Target:
             permissions,
             # hosts,
             # exclude_hosts,
-            port_list,
             # ssh_credential,
             # smb_credential,
             # esxi_credential,
@@ -448,7 +452,21 @@ class Target:
             reverse_lookup_only,
             reverse_lookup_unify,
             trash,
+            False,
+            port_list,
         )
+
+    def load_port_list(self, gmp):
+        self._port_list = gmp.get_port_list(self._port_list.uuid).port_lists
+
+    @property
+    def port_list(self) -> PortList:
+        self.load_port_list(self.gmp)
+        return self._port_list
+
+    @port_list.setter
+    def port_list(self, port_list: PortList):
+        self._port_list = port_list
 
 
 @dataclass
@@ -468,6 +486,7 @@ class Scanner:
     # ca_pub
     # credential
     trash: bool
+    all_info_loaded: bool
 
     @staticmethod
     def resolve_scanners(root: etree.Element) -> list:
@@ -516,6 +535,7 @@ class Scanner:
             port,
             scanner_type,
             trash,
+            False,
         )
         return scanner
 
@@ -628,7 +648,182 @@ class Observers:
 
 
 @dataclass
+class ReportTask:
+    uuid: str
+    all_info_loaded: bool
+
+
+@dataclass
+class Report:
+    gmp: "Gmp"
+    uuid: str
+    format_id: str
+    extension: str
+    content_type: str
+    owner: Owner
+    name: str
+    comment: str
+    creation_time: datetime.datetime
+    modification_time: datetime.datetime
+    writable: bool
+    in_use: bool
+    gmp_version: str
+    # sort
+    # filters
+    # severity_class
+    scan_run_status: str
+    # hosts
+    # closed_cves
+    # vulns
+    # os
+    # apps
+    # ssl_certs
+    # scan
+    timestamp: datetime.datetime
+    scan_start: datetime.datetime
+    scan_end: datetime.datetime
+    timezone: str
+    timezone_abbrev: str
+    # result_count
+    # severity
+    # errors
+    all_info_loaded: bool
+    _task: "Task"
+
+    @staticmethod
+    def resolve_reports(root: etree.Element, gmp):
+        reports = []
+        for child in root:
+            if child.tag == "report":
+                reports.append(Report.resolve_report(child, gmp))
+        if len(reports) == 1:
+            return reports[0]
+        return reports
+
+    @staticmethod
+    def resolve_report(root: etree.Element, gmp) -> "Report":
+        uuid = root.get("id")
+        format_id = root.get("format_id")
+        extension = root.get("extension")
+        content_type = root.get("content_type")
+        owner = Owner.resolve_owner(root.find("owner"))
+        name = get_text_from_element(root, "name")
+        comment = get_text_from_element(root, "comment")
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
+        task = ReportTask(root.find("task").get("id"), False)
+
+        gmp_version = None
+        # sort = None
+        # filters = None
+        # severity_class = None
+        scan_run_status = None
+        # hosts = None
+        # closed_cves = None
+        # vulns = None
+        # os = None
+        # apps = None
+        # ssl_certs = None
+        # scan  = None
+        timestamp = None
+        scan_start = None
+        scan_end = None
+        timezone = None
+        timezone_abbrev = None
+        # result_count = None
+        # severity = None
+        # errors = None
+
+        second_level = root.find("report")
+
+        if second_level is not None:
+            gmp_version = get_text_from_element(
+                second_level.find("gmp"), "version"
+            )
+            # sort
+            # filters
+            # severity_class
+            scan_run_status = get_text_from_element(
+                second_level, "scan_run_status"
+            )
+            # hosts
+            # closed_cves
+            # vulns
+            # os
+            # apps
+            # ssl_certs
+            # scan
+            timestamp = get_datetime_from_element(second_level, "timestamp")
+            scan_start = get_datetime_from_element(second_level, "scan_start")
+            scan_end = get_datetime_from_element(second_level, "scan_end")
+            timezone = get_text_from_element(second_level, "timezone")
+            timezone_abbrev = get_text_from_element(
+                second_level, "timezone_abbrev"
+            )
+            # result_count
+            # severity
+            # errors
+
+        report = Report(
+            gmp,
+            uuid,
+            format_id,
+            extension,
+            content_type,
+            owner,
+            name,
+            comment,
+            creation_time,
+            modification_time,
+            writable,
+            in_use,
+            gmp_version,
+            # sort,
+            # filters,
+            # severity_class,
+            scan_run_status,
+            # hosts,
+            # closed_cves,
+            # vulns,
+            # os,
+            # apps,
+            # ssl_certs,
+            # scan,
+            timestamp,
+            scan_start,
+            scan_end,
+            timezone,
+            timezone_abbrev,
+            # result_count,
+            # severity,
+            # errors,
+            False,
+            task,
+        )
+
+        return report
+
+    def load_task(self, gmp) -> "Task":
+        if self._task.uuid != "":
+            if not self._task.all_info_loaded:
+                self._task = gmp.get_task(self._task.uuid).tasks
+                self._task.all_info_loaded = True
+
+    @property
+    def task(self) -> "Task":
+        self.load_task(self.gmp)
+        return self._task
+
+    @task.setter
+    def task(self, task: "Task"):
+        self._task = task
+
+
+@dataclass
 class Task:
+    gmp: "Gmp"
     uuid: str
     owner: Owner
     name: str
@@ -641,10 +836,8 @@ class Task:
     # user_tags
     alterable: bool
     usage_type: str
-    config: Config
-    target: Target
     hosts_ordering: str
-    scanner: Scanner
+
     # alert
     status: str
     progress: int
@@ -652,11 +845,15 @@ class Task:
     trend: str
     schedule: Schedule
     # schedule_periods
-    # current_report
-    # last_report: Report
     # reports
     observers: Observers
     preferences: list
+    # current_report
+    # last_report: Report
+    all_info_loaded: bool
+    _config: Config
+    _target: Target
+    _scanner: Scanner
 
     @staticmethod
     def resolve_tasks(gmp, root: etree.Element) -> list:
@@ -686,7 +883,7 @@ class Task:
         alterable = get_bool_from_element(root, "alterable")
         usage_type = get_text_from_element(root, "usage_type")
         config = Config.resolve_config(root.find("config"))
-        target = Target.resolve_target(root.find("target"))
+        target = Target.resolve_target(root.find("target"), gmp)
         hosts_ordering = get_text_from_element(root, "hosts_ordering")
         scanner = Scanner.resolve_scanner(root.find("scanner"))
         status = get_text_from_element(root, "status")
@@ -704,6 +901,7 @@ class Task:
         preferences = Preference.resolve_preferences(root.find("preferences"))
 
         task = Task(
+            gmp,
             uuid,
             owner,
             name,
@@ -715,10 +913,7 @@ class Task:
             permissions,
             alterable,
             usage_type,
-            config,
-            target,
             hosts_ordering,
-            scanner,
             status,
             progress,
             report_count,
@@ -727,24 +922,64 @@ class Task:
             # last_report,
             observers,
             preferences,
+            False,
+            config,
+            target,
+            scanner,
         )
-
-        if LOAD_MORE:
-            task.load_config(gmp)
-            task.load_target(gmp)
-            task.load_scanner(gmp)
 
         return task
 
     def load_config(self, gmp):
-        if self.config.uuid != "":
-            self.config = gmp.get_config(self.config.uuid).configs
+        if self._config.uuid != "":
+            if not self._config.all_info_loaded:
+                trash = self._config.trash
+                self._config = gmp.get_config(self._config.uuid).configs
+                self._config.trash = trash
+                self._config.all_info_loaded = True
 
     def load_target(self, gmp):
-        if self.target.uuid != "":
-            self.target = gmp.get_target(self.target.uuid).targets
+        if self._target.uuid != "":
+            if not self._target.all_info_loaded:
+                trash = self._target.trash
+                self._target = gmp.get_target(self._target.uuid).targets
+                self._target.trash = trash
+                self._target.all_info_loaded = True
 
     def load_scanner(self, gmp):
         # das Abfragen von Informationen zu einem Scanner dauert sehr lange.
-        if self.scanner.uuid != "":
-            self.scanner = gmp.get_scanner(self.scanner.uuid).scanners
+        if self._scanner.uuid != "":
+            if not self._scanner.all_info_loaded:
+                # safe this information, because it's always None in get_scanner
+                trash = self._scanner.trash
+                self._scanner = gmp.get_scanner(self._scanner.uuid).scanners
+                self._scanner.trash = trash
+                self._scanner.all_info_loaded = True
+
+    # Load additional Information when needed
+    @property
+    def config(self) -> Config:
+        self.load_config(self.gmp)
+        return self._config
+
+    @config.setter
+    def config(self, config: Config):
+        self._config = config
+
+    @property
+    def target(self) -> Target:
+        self.load_target(self.gmp)
+        return self._target
+
+    @target.setter
+    def target(self, target: Target):
+        self._target = target
+
+    @property
+    def scanner(self) -> Scanner:
+        self.load_scanner(self.gmp)
+        return self._scanner
+
+    @scanner.setter
+    def scanner(self, scanner: Scanner):
+        self._scanner = scanner
