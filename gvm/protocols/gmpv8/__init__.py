@@ -186,7 +186,7 @@ class Gmp(Gmpv7):
                 function=self.create_credential.__name__, argument='name'
             )
 
-        if not isinstance(credential_type, CredentialType):
+        if not isinstance(credential_type, self.types.CredentialType):
             raise InvalidArgumentType(
                 function=self.create_credential.__name__,
                 argument='credential_type',
@@ -258,7 +258,7 @@ class Gmp(Gmpv7):
             _xmlkey.add_element("private", private_key)
 
         if credential_type == CredentialType.SNMP:
-            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
+            if not isinstance(auth_algorithm, self.types.SnmpAuthAlgorithm):
                 raise InvalidArgumentType(
                     function=self.create_credential.__name__,
                     argument='auth_algorithm',
@@ -274,7 +274,9 @@ class Gmp(Gmpv7):
                 _xmlprivacy = cmd.add_element("privacy")
 
                 if privacy_algorithm is not None:
-                    if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
+                    if not isinstance(
+                        privacy_algorithm, self.types.SnmpPrivacyAlgorithm
+                    ):
                         raise InvalidArgumentType(
                             function=self.create_credential.__name__,
                             argument='privacy_algorithm',
@@ -379,7 +381,7 @@ class Gmp(Gmpv7):
             cmd.add_element("password", password)
 
         if auth_algorithm:
-            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
+            if not isinstance(auth_algorithm, self.types.SnmpAuthAlgorithm):
                 raise InvalidArgumentType(
                     function=self.modify_credential.__name__,
                     argument='auth_algorithm',
@@ -394,7 +396,9 @@ class Gmp(Gmpv7):
             _xmlprivacy = cmd.add_element("privacy")
 
             if privacy_algorithm is not None:
-                if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
+                if not isinstance(
+                    privacy_algorithm, self.types.SnmpPrivacyAlgorithm
+                ):
                     raise InvalidArgumentType(
                         function=self.modify_credential.__name__,
                         argument='privacy_algorithm',
@@ -458,7 +462,7 @@ class Gmp(Gmpv7):
                 function=self.create_tag.__name__, argument='resource_type'
             )
 
-        if not isinstance(resource_type, EntityType):
+        if not isinstance(resource_type, self.types.EntityType):
             raise InvalidArgumentType(
                 function=self.create_tag.__name__,
                 argument='resource_type',
@@ -564,7 +568,7 @@ class Gmp(Gmpv7):
                 )
 
             if resource_type is not None:
-                if not isinstance(resource_type, EntityType):
+                if not isinstance(resource_type, self.types.EntityType):
                     raise InvalidArgumentType(
                         function=self.modify_tag.__name__,
                         argument="resource_type",
@@ -860,7 +864,7 @@ class Gmp(Gmpv7):
             _user.set_attribute("id", assigned_to_user_id)
 
         if status:
-            if not isinstance(status, TicketStatus):
+            if not isinstance(status, self.types.TicketStatus):
                 raise InvalidArgumentType(
                     function=self.modify_ticket.__name__,
                     argument='status',
@@ -937,7 +941,7 @@ class Gmp(Gmpv7):
             cmd.add_element("term", term)
 
         if filter_type:
-            if not isinstance(filter_type, FilterType):
+            if not isinstance(filter_type, self.types.FilterType):
                 raise InvalidArgumentType(
                     function=self.modify_filter.__name__,
                     argument='filter_type',
