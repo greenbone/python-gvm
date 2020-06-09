@@ -702,6 +702,8 @@ class Report:
 
     @staticmethod
     def resolve_report(root: etree.Element, gmp) -> "Report":
+        if root is None:
+            return None
         uuid = root.get("id")
         format_id = root.get("format_id")
         extension = root.get("extension")
@@ -713,7 +715,9 @@ class Report:
         modification_time = get_datetime_from_element(root, "modification_time")
         writable = get_bool_from_element(root, "writable")
         in_use = get_bool_from_element(root, "in_use")
-        task = ReportTask(root.find("task").get("id"), False)
+        task = root.find("task")
+        if task is not None:
+            task = ReportTask(task.get("id"), False)
 
         gmp_version = None
         # sort = None
@@ -845,12 +849,11 @@ class Task:
     trend: str
     schedule: Schedule
     # schedule_periods
-    # reports
     observers: Observers
     preferences: list
-    # current_report
-    # last_report: Report
     all_info_loaded: bool
+    _current_report: Report
+    _last_report: Report
     _config: Config
     _target: Target
     _scanner: Scanner
@@ -895,8 +898,16 @@ class Task:
         trend = get_text_from_element(root, "trend")
 
         schedule = Schedule.resolve_schedule(root.find("schedule"))
+        current_report = root.find("current_report")
+        if current_report is not None:
+            current_report = Report.resolve_report(
+                current_report.find("report"), gmp
+            )
 
-        # last_report: Report
+        last_report = root.find("last_report")
+        if last_report is not None:
+            last_report = Report.resolve_report(last_report.find("report"), gmp)
+
         observers = Observers.resolve_observers(root.find("observers"))
         preferences = Preference.resolve_preferences(root.find("preferences"))
 
@@ -919,10 +930,11 @@ class Task:
             report_count,
             trend,
             schedule,
-            # last_report,
             observers,
             preferences,
             False,
+            current_report,
+            last_report,
             config,
             target,
             scanner,
@@ -930,7 +942,28 @@ class Task:
 
         return task
 
+    def load_current_report(self, gmp):
+        if self._current_report is None:
+            return None
+
+        if self._current_report.uuid != "":
+            self._current_report = gmp.get_report(
+                self._current_report.uuid
+            ).reports
+            self._current_report.all_info_loaded = True
+
+    def load_last_report(self, gmp):
+        if self._last_report is None:
+            return None
+
+        if self._last_report.uuid != "":
+            self._last_report = gmp.get_report(self._last_report.uuid).reports
+            self._last_report.all_info_loaded = True
+
     def load_config(self, gmp):
+        if self._last_report is None:
+            return None
+
         if self._config.uuid != "":
             if not self._config.all_info_loaded:
                 trash = self._config.trash
@@ -957,6 +990,24 @@ class Task:
                 self._scanner.all_info_loaded = True
 
     # Load additional Information when needed
+    @property
+    def current_report(self) -> Report:
+        self.load_current_report(self.gmp)
+        return self._current_report
+
+    @current_report.setter
+    def current_report(self, report: Report):
+        self._current_report = report
+
+    @property
+    def last_report(self) -> Report:
+        self.load_last_report(self.gmp)
+        return self._last_report
+
+    @last_report.setter
+    def last_report(self, report: Report):
+        self._last_report = report
+
     @property
     def config(self) -> Config:
         self.load_config(self.gmp)
