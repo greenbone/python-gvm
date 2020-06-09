@@ -667,7 +667,7 @@ class Gmp(Gmpv8):
             cmd.add_element("alterable", _to_bool(alterable))
 
         if hosts_ordering:
-            if not isinstance(hosts_ordering, HostsOrdering):
+            if not isinstance(hosts_ordering, self.types.HostsOrdering):
                 raise InvalidArgumentType(
                     function=function,
                     argument='hosts_ordering',
