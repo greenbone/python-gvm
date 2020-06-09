@@ -15,6 +15,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 ### Fixed
+* Fix python-gvm v8/v9 type checks. [#244](https://github.com/greenbone/python-gvm/pull/244)
 
 ### Removed
 
