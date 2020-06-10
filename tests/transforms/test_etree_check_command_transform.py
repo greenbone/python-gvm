@@ -21,7 +21,7 @@ import unittest
 from lxml import etree
 
 from gvm.errors import GvmError
-from gvm.transforms import EtreeCheckCommandTransform
+from gvm.transform import EtreeCheckCommandTransform
 
 
 class EtreeCheckCommandTransformTestCase(unittest.TestCase):

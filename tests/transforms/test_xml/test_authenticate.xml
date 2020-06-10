@@ -1,0 +1,5 @@
+<authenticate_response status="200" status_text="OK">
+    <role>Test</role>
+    <timezone>UTC</timezone>
+    <severity>nist</severity>
+</authenticate_response>

@@ -41,10 +41,10 @@ class Response:
     status: int
     status_text: str
 
-    def __init__(self, response_name: str, status: int, status_text: str):
-        self.response_name = response_name
-        self.status = status
-        self.status_text = status_text
+    def __init__(self, root: etree.Element):
+        self.response_name = root.tag
+        self.status = root.get("status")
+        self.status_text = root.get("status_text")
 
 
 @dataclass
@@ -58,7 +58,7 @@ class AuthenticateResponse(Response):
     severity: str
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         self.role = Role.resolve_role(root.find("role"))
         self.timezone = root.find("timezone").text
         self.severity = root.find("severity").text
@@ -73,7 +73,7 @@ class GetPortListsResponse(Response):
     port_lists: list
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         self.port_lists = PortList.resolve_port_lists(root)
 
 
@@ -87,7 +87,7 @@ class GetTasksResponse(Response):
     tasks: list
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         apply_overrides = root.find("apply_overrides")
         self.apply_overrides = False if apply_overrides.text == "0" else True
         root.remove(apply_overrides)
@@ -101,7 +101,7 @@ class GetConfigsResponse(Response):
     configs: list
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         self.configs = Config.resolve_configs(root)
         # print(etree.tostring(root))
 
@@ -112,7 +112,7 @@ class GetTargetsResponse(Response):
     targets: list
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         self.targets = Target.resolve_targets(root, gmp)
 
 
@@ -122,7 +122,7 @@ class GetScannersResponse(Response):
     scanners: list
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         self.scanners = Scanner.resolve_scanners(root)
 
 
@@ -132,7 +132,7 @@ class GetPreferencesResponse(Response):
     preferences: list
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         self.preferences = Preference.resolve_preferences(root)
 
 
@@ -142,7 +142,7 @@ class GetUsersResponse(Response):
     users: list
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         self.users = User.resolve_users(root)
         print(etree.tostring(root))
 
@@ -153,7 +153,7 @@ class GetReportsResponse(Response):
     reports: list
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         # print(etree.tostring(root))
         self.reports = Report.resolve_reports(root, gmp)
 
@@ -164,7 +164,7 @@ class CreateTaskResponse(Response):
     task: Task
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
         self.task = gmp.get_task(root.get("id")).tasks
 
 
@@ -174,7 +174,7 @@ class StartTaskResponse(Response):
     # report: Report
 
     def __init__(self, gmp, root: etree.Element):
-        super().__init__(root.tag, root.get("status"), root.get("status_text"))
+        super().__init__(root)
 
 
 CLASSDICT = {

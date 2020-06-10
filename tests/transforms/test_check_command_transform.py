@@ -21,7 +21,7 @@ import unittest
 from lxml import etree
 
 from gvm.errors import GvmError, GvmResponseError, GvmServerError
-from gvm.transforms import CheckCommandTransform
+from gvm.transform import CheckCommandTransform
 
 
 class CheckCommandTransformTestCase(unittest.TestCase):
