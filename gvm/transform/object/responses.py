@@ -93,7 +93,7 @@ class GetTasksResponse(Response):
         self.apply_overrides = False if apply_overrides.text == "0" else True
         root.remove(apply_overrides)
         self.tasks = Task.resolve_tasks(gmp, root)
-        # print(etree.tostring(root))
+        print(etree.tostring(root))
 
 
 @dataclass
@@ -144,8 +144,8 @@ class GetUsersResponse(Response):
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
-        self.users = User.resolve_users(root)
-        print(etree.tostring(root))
+        self.users = User.resolve_users(root, gmp)
+        # print(etree.tostring(root))
 
 
 @dataclass

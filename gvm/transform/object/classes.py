@@ -93,6 +93,72 @@ class UserTags:
 
 
 @dataclass
+class Group:
+    gmp: "Gmp"
+    uuid: str
+    owner: Owner
+    name: str
+    comment: str
+    creation_time: datetime.datetime
+    modification_time: datetime.datetime
+    writable: bool
+    in_use: bool
+    permissions: list
+    user_tags: UserTags
+    users: list
+
+    @staticmethod
+    def resolve_groups(root: etree.Element, gmp):
+        if root is None:
+            return None
+
+        groups = []
+        for child in root:
+            if child.tag == "group":
+                groups.append(Group.resolve_group(child, gmp))
+
+        if len(groups) == 1:
+            return groups[0]
+        return groups
+
+    @staticmethod
+    def resolve_group(root: etree.Element, gmp):
+        if root is None:
+            return None
+
+        uuid = root.get("id")
+        owner = Owner.resolve_owner(root.find("owner"))
+        name = get_text_from_element(root, "name")
+        comment = get_text_from_element(root, "comment")
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
+        permissions = Permission.resolve_permissions(root.find("permissions"))
+        user_tags = UserTags.resolve_user_tags(root.find("user_tags"))
+
+        users = get_text_from_element(root, "users")
+        if users is not None:
+            users = users.replace(" ", "")
+            users = users.split(",")
+
+        return Group(
+            gmp,
+            uuid,
+            owner,
+            name,
+            comment,
+            creation_time,
+            modification_time,
+            writable,
+            in_use,
+            permissions,
+            user_tags,
+            users,
+        )
+
+
+@dataclass
 class User:
     uuid: str
     owner: Owner
@@ -103,15 +169,15 @@ class User:
     writable: bool
     in_use: bool
     # role
-    # groups
+    groups: Group
     # hosts
     # ifaces
     permissions: list
-    # user_tasgs
+    user_tasgs: UserTags
     # sources
 
     @staticmethod
-    def resolve_users(root: etree.Element) -> list:
+    def resolve_users(root: etree.Element, gmp) -> list:
         if root is None:
             return None
 
@@ -119,12 +185,12 @@ class User:
 
         for child in root:
             if child.tag == "user":
-                users.append(User.resolve_user(child))
+                users.append(User.resolve_user(child, gmp))
 
         return users
 
     @staticmethod
-    def resolve_user(root: etree.Element) -> "User":
+    def resolve_user(root: etree.Element, gmp) -> "User":
         uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = get_text_from_element(root, "name")
@@ -134,11 +200,11 @@ class User:
         writable = get_bool_from_element(root, "writable")
         in_use = get_bool_from_element(root, "in_use")
         # role
-        # groups
+        groups = Group.resolve_groups(root.find("groups"), gmp)
         # hosts
         # ifaces
         permissions = Permission.resolve_permissions(root.find("permissions"))
-        # user_tasgs
+        user_tasgs = UserTags.resolve_user_tags(root.find("user_tags"))
         # sources
 
         user = User(
@@ -151,11 +217,11 @@ class User:
             writable,
             in_use,
             # role,
-            # groups,
+            groups,
             # hosts,
             # ifaces,
             permissions,
-            # user_tasgs
+            user_tasgs,
             # sources
         )
 
@@ -681,72 +747,6 @@ class Preference:
         )
 
         return preference
-
-
-@dataclass
-class Group:
-    gmp: "Gmp"
-    uuid: str
-    owner: Owner
-    name: str
-    comment: str
-    creation_time: datetime.datetime
-    modification_time: datetime.datetime
-    writable: bool
-    in_use: bool
-    permissions: list
-    user_tags: UserTags
-    users: list
-
-    @staticmethod
-    def resolve_groups(root: etree.Element, gmp):
-        if root is None:
-            return None
-
-        groups = []
-        for child in root:
-            if child.tag == "group":
-                groups.append(Group.resolve_group(child, gmp))
-
-        if len(groups) == 1:
-            return groups[0]
-        return groups
-
-    @staticmethod
-    def resolve_group(root: etree.Element, gmp):
-        if root is None:
-            return None
-
-        uuid = root.get("id")
-        owner = Owner.resolve_owner(root.find("owner"))
-        name = get_text_from_element(root, "name")
-        comment = get_text_from_element(root, "comment")
-        creation_time = get_datetime_from_element(root, "creation_time")
-        modification_time = get_datetime_from_element(root, "modification_time")
-        writable = get_bool_from_element(root, "writable")
-        in_use = get_bool_from_element(root, "in_use")
-        permissions = Permission.resolve_permissions(root.find("permissions"))
-        user_tags = UserTags.resolve_user_tags(root.find("user_tags"))
-
-        users = get_text_from_element(root, "users")
-        if users is not None:
-            users = users.replace(" ", "")
-            users = users.split(",")
-
-        return Group(
-            gmp,
-            uuid,
-            owner,
-            name,
-            comment,
-            creation_time,
-            modification_time,
-            writable,
-            in_use,
-            permissions,
-            user_tags,
-            users,
-        )
 
 
 @dataclass
