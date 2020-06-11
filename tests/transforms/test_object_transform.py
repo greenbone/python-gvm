@@ -102,8 +102,8 @@ class ObjectTransformGetTaskTestCase(unittest.TestCase):
             ReportCount(1, 1),
             "Test Trend",
             Schedule("Test Schedule", "over", False),
-            # schedule_periods,
-            None,  # Muss noch weiter implementiert werden
+            0,
+            None,
             None,
             False,
             None,

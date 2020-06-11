@@ -44,37 +44,9 @@
 		<usage_type>
 			scan
 		</usage_type>
-		<config id="8715c877-47a0-438d-98a3-27c7a6ab2196">
-			<name>
-				Discovery
-			</name>
-			<type>
-				0
-			</type>
-			<trash>
-				0
-			</trash>
-		</config>
-		<target id="392eaaee-af4d-4a59-a389-e092a9b3366f">
-			<name>
-				Target for Discovery - 2020-03-05 15:35:20
-			</name>
-			<trash>
-				0
-			</trash>
-		</target>
-		<hosts_ordering Test Ordering />
-		<scanner id="08b69003-5fc2-4037-a479-93b440211c73">
-			<name>
-				OpenVAS Default
-			</name>
-			<type>
-				2
-			</type>
-			<trash>
-				0
-			</trash>
-		</scanner>
+		<hosts_ordering>
+			Test Ordering
+		</hosts_ordering>
 		<status>
 			Done
 		</status>
@@ -87,9 +59,13 @@
 				1
 			</finished>
 		</report_count>
-		<trend Test Trend />
+		<trend>
+			Test Trend
+		</trend>
 		<schedule id="">
-			<name Test Schedule />
+			<name>
+				Test Schedule
+			</name>
 			<next_time>
 				over
 			</next_time>
@@ -97,51 +73,26 @@
 				0
 			</trash>
 		</schedule>
-		<last_report>
-			<report id="59410ab0-ebf4-419e-9c85-3c344d7c4794">
-				<timestamp>
-					2020-03-05T15:35:20Z
-				</timestamp>
-				<scan_start>
-					2020-03-05T15:35:31Z
-				</scan_start>
-				<scan_end>
-					2020-03-05T15:36:44Z
-				</scan_end>
-				<result_count>
-					<debug>
-						0
-					</debug>
-					<hole>
-						0
-					</hole>
-					<info>
-						0
-					</info>
-					<log>
-						3
-					</log>
-					<warning>
-						0
-					</warning>
-					<false_positive>
-						0
-					</false_positive>
-				</result_count>
-				<severity>
-					0.0
-				</severity>
-			</report>
-		</last_report>
-		<observers />
+		<schedule_periods>0</schedule_periods>
 		<average_duration>
 			73
 		</average_duration>
 		<result_count>
 			3
 		</result_count>
-		<preferences>
-		</preferences>
+		<observers>
+			admin admin_Clone_4
+			<group id="44ff149f-8817-4419-9d5c-b6c3a8655ab2">
+				<name>
+					plebeians
+				</name>
+			</group>
+			<role id="7a8cb5b4-b74d-11e2-8187-406186ea4fc5">
+				<name>
+					Admin
+				</name>
+			</role>
+		</observers>
 	</task>
 	<filters id="">
 		<term>

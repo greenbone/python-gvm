@@ -48,6 +48,51 @@ class Owner:
 
 
 @dataclass
+class Tag:
+    uuid: str
+    name: str
+    value: str
+    comment: str
+
+    @staticmethod
+    def resolve_tags(root: etree.Element) -> list:
+        if root is None:
+            return None
+
+        tags = []
+        for child in root:
+            if child.tag == "tag":
+                tags.append(Tag.resolve_tag(child))
+
+        return tags
+
+    @staticmethod
+    def resolve_tag(root: etree.Element) -> "Tag":
+        if root is None:
+            return None
+
+        uuid = root.get("id")
+        name = get_text_from_element(root, "name")
+        value = get_text_from_element(root, "value")
+        comment = get_text_from_element(root, "comment")
+
+        return Tag(uuid, name, value, comment)
+
+
+@dataclass
+class UserTags:
+    count: int
+    tags: list
+
+    @staticmethod
+    def resolve_user_tags(root: etree.Element) -> "UserTags":
+        count = get_int_from_element(root, "count")
+        tags = Tag.resolve_tags(root)
+
+        return UserTags(count, tags)
+
+
+@dataclass
 class User:
     uuid: str
     owner: Owner
@@ -325,6 +370,8 @@ class Config:
 
     @staticmethod
     def resolve_config(root: etree.Element) -> "Config":
+        if root is None:
+            return None
         uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
@@ -404,6 +451,8 @@ class Target:
 
     @staticmethod
     def resolve_target(root: etree.Element, gmp) -> "Target":
+        if root is None:
+            return None
         uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
@@ -503,6 +552,8 @@ class Scanner:
 
     @staticmethod
     def resolve_scanner(root: etree.Element) -> "Scanner":
+        if root is None:
+            return None
         uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
@@ -633,16 +684,89 @@ class Preference:
 
 
 @dataclass
+class Group:
+    gmp: "Gmp"
+    uuid: str
+    owner: Owner
+    name: str
+    comment: str
+    creation_time: datetime.datetime
+    modification_time: datetime.datetime
+    writable: bool
+    in_use: bool
+    permissions: list
+    user_tags: UserTags
+    users: list
+
+    @staticmethod
+    def resolve_groups(root: etree.Element, gmp):
+        if root is None:
+            return None
+
+        groups = []
+        for child in root:
+            if child.tag == "group":
+                groups.append(Group.resolve_group(child, gmp))
+
+        if len(groups) == 1:
+            return groups[0]
+        return groups
+
+    @staticmethod
+    def resolve_group(root: etree.Element, gmp):
+        if root is None:
+            return None
+
+        uuid = root.get("id")
+        owner = Owner.resolve_owner(root.find("owner"))
+        name = get_text_from_element(root, "name")
+        comment = get_text_from_element(root, "comment")
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
+        permissions = Permission.resolve_permissions(root.find("permissions"))
+        user_tags = UserTags.resolve_user_tags(root.find("user_tags"))
+
+        users = get_text_from_element(root, "users")
+        if users is not None:
+            users = users.replace(" ", "")
+            users = users.split(",")
+
+        return Group(
+            gmp,
+            uuid,
+            owner,
+            name,
+            comment,
+            creation_time,
+            modification_time,
+            writable,
+            in_use,
+            permissions,
+            user_tags,
+            users,
+        )
+
+
+@dataclass
 class Observers:
     users: list
-    # groups: list
+    groups: list
     # roles: list
 
     @staticmethod
-    def resolve_observers(root: etree.Element) -> "Observers":
-        users = User.resolve_users(root)
+    def resolve_observers(root: etree.Element, gmp) -> "Observers":
+        if root is None:
+            return None
+        users = root.text
+        if users is not None:
+            users = users.split(' ')
 
-        observers = Observers(users)
+        groups = Group.resolve_groups(root, gmp)
+        # roles = Role.resolve_roles(root)
+
+        observers = Observers(users, groups)
 
         return observers
 
@@ -837,7 +961,7 @@ class Task:
     writable: bool
     in_use: bool
     permissions: list
-    # user_tags
+    user_tags: UserTags
     alterable: bool
     usage_type: str
     hosts_ordering: str
@@ -848,7 +972,7 @@ class Task:
     report_count: ReportCount
     trend: str
     schedule: Schedule
-    # schedule_periods
+    schedule_periods: int
     observers: Observers
     preferences: list
     all_info_loaded: bool
@@ -883,6 +1007,8 @@ class Task:
         in_use = get_bool_from_element(root, "in_use")
 
         permissions = Permission.resolve_permissions(root.find("permissions"))
+        user_tags = UserTags.resolve_user_tags(root.find("user_tags"))
+
         alterable = get_bool_from_element(root, "alterable")
         usage_type = get_text_from_element(root, "usage_type")
         config = Config.resolve_config(root.find("config"))
@@ -898,6 +1024,7 @@ class Task:
         trend = get_text_from_element(root, "trend")
 
         schedule = Schedule.resolve_schedule(root.find("schedule"))
+        schedule_periods = get_int_from_element(root, "schedule_periods")
         current_report = root.find("current_report")
         if current_report is not None:
             current_report = Report.resolve_report(
@@ -908,7 +1035,7 @@ class Task:
         if last_report is not None:
             last_report = Report.resolve_report(last_report.find("report"), gmp)
 
-        observers = Observers.resolve_observers(root.find("observers"))
+        observers = Observers.resolve_observers(root.find("observers"), gmp)
         preferences = Preference.resolve_preferences(root.find("preferences"))
 
         task = Task(
@@ -922,6 +1049,7 @@ class Task:
             writable,
             in_use,
             permissions,
+            user_tags,
             alterable,
             usage_type,
             hosts_ordering,
@@ -930,6 +1058,7 @@ class Task:
             report_count,
             trend,
             schedule,
+            schedule_periods,
             observers,
             preferences,
             False,

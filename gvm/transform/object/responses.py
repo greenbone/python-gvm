@@ -28,6 +28,7 @@ from .classes import (
     Preference,
     User,
     Report,
+    Group,
 )
 
 
@@ -159,6 +160,17 @@ class GetReportsResponse(Response):
 
 
 @dataclass
+class GetGroupsResponse(Response):
+
+    groups: list
+
+    def __init__(self, gmp, root: etree.Element):
+        super().__init__(root)
+        # print(etree.tostring(root))
+        self.groups = Group.resolve_groups(root, gmp)
+
+
+@dataclass
 class CreateTaskResponse(Response):
 
     task: Task
@@ -187,6 +199,7 @@ CLASSDICT = {
     "get_preferences_response": GetPreferencesResponse,
     "get_users_response": GetUsersResponse,
     "get_reports_response": GetReportsResponse,
+    "get_groups_response": GetGroupsResponse,
     "create_task_response": CreateTaskResponse,
     "start_task_response": StartTaskResponse,
 }
