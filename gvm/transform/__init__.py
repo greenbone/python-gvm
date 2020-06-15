@@ -36,7 +36,7 @@ class EtreeTransform:
     def _convert_response(self, response: str) -> etree.Element:
         return etree.XML(response, parser=self._parser)
 
-    def __call__(self, response: str, gmp=None) -> etree.Element:
+    def __call__(self, response: str, protocol: GvmProtocol) -> etree.Element:
         return self._convert_response(response)
 
 
