@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from dataclasses import dataclass
+from typing import List
 from lxml import etree
 from .classes import (
     Role,
@@ -71,7 +72,7 @@ class GetPortListsResponse(Response):
     Response Object for a get_port_lists command
     """
 
-    port_lists: list
+    port_lists: List[PortList]
 
     def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
@@ -85,7 +86,7 @@ class GetTasksResponse(Response):
     """
 
     apply_overrides: bool
-    tasks: list
+    tasks: List[Task]
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
@@ -99,7 +100,7 @@ class GetTasksResponse(Response):
 @dataclass
 class GetConfigsResponse(Response):
 
-    scan_configs: list
+    scan_configs: List[ScanConfig]
 
     def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
@@ -110,7 +111,7 @@ class GetConfigsResponse(Response):
 @dataclass
 class GetTargetsResponse(Response):
 
-    targets: list
+    targets: List[Target]
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
@@ -120,7 +121,7 @@ class GetTargetsResponse(Response):
 @dataclass
 class GetScannersResponse(Response):
 
-    scanners: list
+    scanners: List[Scanner]
 
     def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
@@ -130,7 +131,7 @@ class GetScannersResponse(Response):
 @dataclass
 class GetPreferencesResponse(Response):
 
-    preferences: list
+    preferences: List[Preference]
 
     def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
@@ -140,7 +141,7 @@ class GetPreferencesResponse(Response):
 @dataclass
 class GetUsersResponse(Response):
 
-    users: list
+    users: List[User]
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
@@ -151,7 +152,7 @@ class GetUsersResponse(Response):
 @dataclass
 class GetReportsResponse(Response):
 
-    reports: list
+    reports: List[Report]
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
@@ -162,7 +163,7 @@ class GetReportsResponse(Response):
 @dataclass
 class GetGroupsResponse(Response):
 
-    groups: list
+    groups: List[Group]
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
