@@ -20,7 +20,7 @@ import unittest
 
 from lxml import etree
 
-from gvm.transform import EtreeTransform
+from gvm.transforms import EtreeTransform
 
 
 class EtreeTransformTestCase(unittest.TestCase):

@@ -22,10 +22,10 @@ import datetime
 
 from lxml import etree
 
-from gvm.transform import ObjectTransform
-from gvm.transform.object.responses import Response, AuthenticateResponse
+from gvm.transforms import ObjectTransform
+from gvm.transforms.object.responses import Response, AuthenticateResponse
 
-from gvm.transform.object.classes import (
+from gvm.transforms.object.classes import (
     Role,
     Task,
     Owner,

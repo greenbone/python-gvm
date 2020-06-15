@@ -173,7 +173,7 @@ class User:
     # hosts
     # ifaces
     permissions: list
-    user_tasgs: UserTags
+    user_tags: UserTags
     # sources
 
     @staticmethod
@@ -204,7 +204,7 @@ class User:
         # hosts
         # ifaces
         permissions = Permission.resolve_permissions(root.find("permissions"))
-        user_tasgs = UserTags.resolve_user_tags(root.find("user_tags"))
+        user_tags = UserTags.resolve_user_tags(root.find("user_tags"))
         # sources
 
         user = User(
@@ -221,7 +221,7 @@ class User:
             # hosts,
             # ifaces,
             permissions,
-            user_tasgs,
+            user_tags,
             # sources
         )
 

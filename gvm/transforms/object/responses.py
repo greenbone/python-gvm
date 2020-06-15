@@ -58,7 +58,7 @@ class AuthenticateResponse(Response):
     timezone: str
     severity: str
 
-    def __init__(self, gmp, root: etree.Element):
+    def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
         self.role = Role.resolve_role(root.find("role"))
         self.timezone = root.find("timezone").text
@@ -73,7 +73,7 @@ class GetPortListsResponse(Response):
 
     port_lists: list
 
-    def __init__(self, gmp, root: etree.Element):
+    def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
         self.port_lists = PortList.resolve_port_lists(root)
 
@@ -101,7 +101,7 @@ class GetConfigsResponse(Response):
 
     configs: list
 
-    def __init__(self, gmp, root: etree.Element):
+    def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
         self.configs = Config.resolve_configs(root)
         # print(etree.tostring(root))
@@ -122,7 +122,7 @@ class GetScannersResponse(Response):
 
     scanners: list
 
-    def __init__(self, gmp, root: etree.Element):
+    def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
         self.scanners = Scanner.resolve_scanners(root)
 
@@ -132,7 +132,7 @@ class GetPreferencesResponse(Response):
 
     preferences: list
 
-    def __init__(self, gmp, root: etree.Element):
+    def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
         self.preferences = Preference.resolve_preferences(root)
 
@@ -185,7 +185,7 @@ class StartTaskResponse(Response):
 
     # report: Report
 
-    def __init__(self, gmp, root: etree.Element):
+    def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
 
 

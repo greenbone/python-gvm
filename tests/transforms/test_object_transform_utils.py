@@ -20,7 +20,7 @@ import unittest
 import datetime
 
 from lxml import etree
-from gvm.transform.object.utils import (
+from gvm.transforms.object.utils import (
     resolve_datetime,
     get_text,
     get_int,
