@@ -23,7 +23,7 @@ from .classes import (
     Task,
     Target,
     PortList,
-    Config,
+    ScanConfig,
     Scanner,
     Preference,
     User,
@@ -99,11 +99,11 @@ class GetTasksResponse(Response):
 @dataclass
 class GetConfigsResponse(Response):
 
-    configs: list
+    scan_configs: list
 
     def __init__(self, _gmp, root: etree.Element):
         super().__init__(root)
-        self.configs = Config.resolve_configs(root)
+        self.scan_configs = ScanConfig.resolve_configs(root)
         # print(etree.tostring(root))
 
 

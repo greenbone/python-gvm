@@ -405,7 +405,7 @@ class ReportCount:
 
 
 @dataclass
-class Config:
+class ScanConfig:
     uuid: str
     owner: Owner
     name: str
@@ -427,7 +427,7 @@ class Config:
         configs = []
         for child in root:
             if child.tag == "config":
-                configs.append(Config.resolve_config(child))
+                configs.append(ScanConfig.resolve_config(child))
 
         if len(configs) == 1:
             return configs[0]
@@ -435,7 +435,7 @@ class Config:
             return configs
 
     @staticmethod
-    def resolve_config(root: etree.Element) -> "Config":
+    def resolve_config(root: etree.Element) -> "ScanConfig":
         if root is None:
             return None
         uuid = root.get("id")
@@ -459,7 +459,7 @@ class Config:
 
         trash = get_bool_from_element(root, "trash")
 
-        return Config(
+        return ScanConfig(
             uuid,
             owner,
             name,
@@ -978,7 +978,7 @@ class Task:
     all_info_loaded: bool
     _current_report: Report
     _last_report: Report
-    _config: Config
+    _scan_config: ScanConfig
     _target: Target
     _scanner: Scanner
 
@@ -1011,7 +1011,7 @@ class Task:
 
         alterable = get_bool_from_element(root, "alterable")
         usage_type = get_text_from_element(root, "usage_type")
-        config = Config.resolve_config(root.find("config"))
+        scan_config = ScanConfig.resolve_config(root.find("config"))
         target = Target.resolve_target(root.find("target"), gmp)
         hosts_ordering = get_text_from_element(root, "hosts_ordering")
         scanner = Scanner.resolve_scanner(root.find("scanner"))
@@ -1064,7 +1064,7 @@ class Task:
             False,
             current_report,
             last_report,
-            config,
+            scan_config,
             target,
             scanner,
         )
@@ -1089,16 +1089,18 @@ class Task:
             self._last_report = gmp.get_report(self._last_report.uuid).reports
             self._last_report.all_info_loaded = True
 
-    def load_config(self, gmp):
+    def load_scan_config(self, gmp):
         if self._last_report is None:
             return None
 
-        if self._config.uuid != "":
-            if not self._config.all_info_loaded:
-                trash = self._config.trash
-                self._config = gmp.get_config(self._config.uuid).configs
-                self._config.trash = trash
-                self._config.all_info_loaded = True
+        if self._scan_config.uuid != "":
+            if not self._scan_config.all_info_loaded:
+                trash = self._scan_config.trash
+                self._scan_config = gmp.get_config(
+                    self._scan_config.uuid
+                ).scan_configs
+                self._scan_config.trash = trash
+                self._scan_config.all_info_loaded = True
 
     def load_target(self, gmp):
         if self._target.uuid != "":
@@ -1138,13 +1140,13 @@ class Task:
         self._last_report = report
 
     @property
-    def config(self) -> Config:
-        self.load_config(self.gmp)
-        return self._config
+    def scan_config(self) -> ScanConfig:
+        self.load_scan_config(self.gmp)
+        return self._scan_config
 
-    @config.setter
-    def config(self, config: Config):
-        self._config = config
+    @scan_config.setter
+    def scan_config(self, scan_config: ScanConfig):
+        self._scan_config = scan_config
 
     @property
     def target(self) -> Target:
