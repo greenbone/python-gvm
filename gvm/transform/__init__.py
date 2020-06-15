@@ -96,7 +96,7 @@ class ObjectTransform:
     def _convert_response(self, response: str) -> etree.Element:
         return etree.XML(response, parser=self._parser)
 
-    def __call__(self, response: str, gmp=None):
+    def __call__(self, response: str, gmp: GvmProtocol):
         root = self._convert_response(response)
         _check_command_status(root)
 
