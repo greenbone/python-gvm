@@ -23,6 +23,7 @@ from lxml import etree
 from gvm.transforms.object.responses import get_response_class
 from gvm.errors import GvmError, GvmServerError, GvmResponseError
 from gvm.xml import create_parser
+from gvm.protocols.base import GvmProtocol
 
 
 class EtreeTransform:

@@ -19,18 +19,10 @@
 from dataclasses import dataclass
 from typing import List
 from lxml import etree
-from .classes import (
-    Role,
-    Task,
-    Target,
-    PortList,
-    ScanConfig,
-    Scanner,
-    Preference,
-    User,
-    Report,
-    Group,
-)
+from .user_classes import Role, User, Group
+from .task_classes import Task, Target, Report, Preference
+from .scan_classes import Scanner, ScanConfig
+from .port_classes import PortList
 
 
 @dataclass
