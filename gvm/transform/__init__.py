@@ -62,7 +62,7 @@ class CheckCommandTransform(EtreeTransform):
     response was an error response
     """
 
-    def __call__(self, response: str, gmp=None) -> str:
+    def __call__(self, response: str, protocol: GvmProtocol) -> str:
         root = self._convert_response(response)
 
         _check_command_status(root)
