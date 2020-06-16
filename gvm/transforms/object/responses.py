@@ -20,8 +20,8 @@ from dataclasses import dataclass
 from typing import List
 from lxml import etree
 from .user_classes import Role, User, Group
-from .task_classes import Task, Target, Report, Preference
-from .scan_classes import Scanner, ScanConfig
+from .task_classes import Task, Target, Report, Preference, ScanConfig
+from .scan_classes import Scanner
 from .port_classes import PortList
 
 
@@ -85,8 +85,8 @@ class GetTasksResponse(Response):
         apply_overrides = root.find("apply_overrides")
         self.apply_overrides = False if apply_overrides.text == "0" else True
         root.remove(apply_overrides)
-        self.tasks = Task.resolve_tasks(gmp, root)
-        print(etree.tostring(root))
+        self.tasks = Task.resolve_tasks(root, gmp)
+        # print(etree.tostring(root))
 
 
 @dataclass
@@ -94,9 +94,9 @@ class GetConfigsResponse(Response):
 
     scan_configs: List[ScanConfig]
 
-    def __init__(self, _gmp, root: etree.Element):
+    def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
-        self.scan_configs = ScanConfig.resolve_configs(root)
+        self.scan_configs = ScanConfig.resolve_configs(root, gmp)
         # print(etree.tostring(root))
 
 
@@ -166,20 +166,27 @@ class GetGroupsResponse(Response):
 @dataclass
 class CreateTaskResponse(Response):
 
+    task_id: str
     task: Task
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
-        self.task = gmp.get_task(root.get("id")).tasks
+        self.task_id = root.get("id")
+        if gmp is not None:
+            self.task = gmp.get_task(root.get("id")).tasks
 
 
 @dataclass
 class StartTaskResponse(Response):
 
-    # report: Report
+    report_id: str
+    report: Report
 
-    def __init__(self, _gmp, root: etree.Element):
+    def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
+        self.report_id = root.find("report_id").text
+        if gmp is not None:
+            self.report = gmp.get_report(self.report_id)
 
 
 CLASSDICT = {

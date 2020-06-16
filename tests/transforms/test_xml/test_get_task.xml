@@ -38,6 +38,13 @@
 				</name>
 			</permission>
 		</permissions>
+		<user_tags>
+			<count>
+				1
+			</count>
+			<tag id="6e6f1411-c2ba-4fe6-99bf-470dc67ccade">
+			</tag>
+		</user_tags>
 		<alterable>
 			0
 		</alterable>

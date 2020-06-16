@@ -2,7 +2,6 @@ import datetime
 from dataclasses import dataclass
 from lxml import etree
 from .user_classes import Owner, Permission
-from .count_classes import FamilyCount, NvtCount
 from .port_classes import PortList
 
 from .utils import (
@@ -11,80 +10,6 @@ from .utils import (
     get_text_from_element,
     get_datetime_from_element,
 )
-
-
-@dataclass
-class ScanConfig:
-    uuid: str
-    owner: Owner
-    name: str
-    comment: str
-    creation_time: datetime.datetime
-    modification_time: datetime.datetime
-    writable: bool
-    in_use: bool
-    permissions: list
-    family_count: FamilyCount
-    nvt_count: NvtCount
-    config_type: int
-    usage_type: str
-    trash: bool
-    all_info_loaded: bool
-
-    @staticmethod
-    def resolve_configs(root: etree.Element) -> list:
-        configs = []
-        for child in root:
-            if child.tag == "config":
-                configs.append(ScanConfig.resolve_config(child))
-
-        if len(configs) == 1:
-            return configs[0]
-        else:
-            return configs
-
-    @staticmethod
-    def resolve_config(root: etree.Element) -> "ScanConfig":
-        if root is None:
-            return None
-        uuid = root.get("id")
-        owner = Owner.resolve_owner(root.find("owner"))
-        name = root.find("name").text
-        comment = get_text_from_element(root, "comment")
-
-        creation_time = get_datetime_from_element(root, "creation_time")
-        modification_time = get_datetime_from_element(root, "modification_time")
-
-        writable = get_bool_from_element(root, "writable")
-        in_use = get_bool_from_element(root, "in_use")
-
-        permissions = Permission.resolve_permissions(root.find("permissions"))
-        family_count = FamilyCount.resolve_family_count(
-            root.find("family_count")
-        )
-        nvt_count = NvtCount.resolve_nvt_count(root.find("nvt_count"))
-        config_type = get_int_from_element(root, "type")
-        usage_type = get_text_from_element(root, "usage_type")
-
-        trash = get_bool_from_element(root, "trash")
-
-        return ScanConfig(
-            uuid,
-            owner,
-            name,
-            comment,
-            creation_time,
-            modification_time,
-            writable,
-            in_use,
-            permissions,
-            family_count,
-            nvt_count,
-            config_type,
-            usage_type,
-            trash,
-            False,
-        )
 
 
 @dataclass

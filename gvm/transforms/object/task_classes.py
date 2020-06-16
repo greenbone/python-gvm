@@ -3,8 +3,8 @@ import datetime
 from dataclasses import dataclass
 from lxml import etree
 from .user_classes import Owner, UserTags, Observers, Permission
-from .count_classes import ReportCount
-from .scan_classes import ScanConfig, Target, Scanner
+from .count_classes import ReportCount, FamilyCount, NvtCount
+from .scan_classes import Target, Scanner
 
 from .utils import (
     get_bool_from_element,
@@ -286,6 +286,13 @@ class Preference:
 
 
 @dataclass
+class TaskScanConfig:
+    uuid: str
+    trash: bool
+    all_info_loaded: bool
+
+
+@dataclass
 class Task:
     gmp: "Gmp"
     uuid: str
@@ -314,23 +321,26 @@ class Task:
     all_info_loaded: bool
     _current_report: Report
     _last_report: Report
-    _scan_config: ScanConfig
+    _scan_config: TaskScanConfig
     _target: Target
     _scanner: Scanner
 
     @staticmethod
-    def resolve_tasks(gmp, root: etree.Element) -> list:
+    def resolve_tasks(root: etree.Element, gmp) -> list:
+        if root is None:
+            return None
+
         tasks = []
         for child in root:
             if child.tag == "task":
-                tasks.append(Task.resolve_task(gmp, child))
+                tasks.append(Task.resolve_task(child, gmp))
         if len(tasks) == 1:
             return tasks[0]
         else:
             return tasks
 
     @staticmethod
-    def resolve_task(gmp, root: etree.Element) -> "Task":
+    def resolve_task(root: etree.Element, gmp) -> "Task":
         uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
@@ -347,7 +357,15 @@ class Task:
 
         alterable = get_bool_from_element(root, "alterable")
         usage_type = get_text_from_element(root, "usage_type")
-        scan_config = ScanConfig.resolve_config(root.find("config"))
+
+        scan_config = root.find("config")
+        if scan_config is not None:
+            scan_config = TaskScanConfig(
+                scan_config.get("id"),
+                get_bool_from_element(scan_config, "trash"),
+                False,
+            )
+
         target = Target.resolve_target(root.find("target"), gmp)
         hosts_ordering = get_text_from_element(root, "hosts_ordering")
         scanner = Scanner.resolve_scanner(root.find("scanner"))
@@ -426,7 +444,7 @@ class Task:
             self._last_report.all_info_loaded = True
 
     def load_scan_config(self, gmp):
-        if self._last_report is None:
+        if self._scan_config is None:
             return None
 
         if self._scan_config.uuid != "":
@@ -476,12 +494,12 @@ class Task:
         self._last_report = report
 
     @property
-    def scan_config(self) -> ScanConfig:
+    def scan_config(self) -> "ScanConfig":
         self.load_scan_config(self.gmp)
         return self._scan_config
 
     @scan_config.setter
-    def scan_config(self, scan_config: ScanConfig):
+    def scan_config(self, scan_config: "ScanConfig"):
         self._scan_config = scan_config
 
     @property
@@ -501,3 +519,95 @@ class Task:
     @scanner.setter
     def scanner(self, scanner: Scanner):
         self._scanner = scanner
+
+
+@dataclass
+class ScanConfig:
+    uuid: str
+    owner: Owner
+    name: str
+    comment: str
+    creation_time: datetime.datetime
+    modification_time: datetime.datetime
+    writable: bool
+    in_use: bool
+    permissions: list
+    family_count: FamilyCount
+    nvt_count: NvtCount
+    config_type: int
+    usage_type: str
+    max_nvt_count: int
+    known_nvt_count: int
+    scanner: Scanner
+    user_tags: UserTags
+    tasks: list
+    # families
+    # preferences
+    # nvt_selectors
+    trash: bool
+    all_info_loaded: bool
+
+    @staticmethod
+    def resolve_configs(root: etree.Element, gmp) -> list:
+        configs = []
+        for child in root:
+            if child.tag == "config":
+                configs.append(ScanConfig.resolve_config(child, gmp))
+
+        if len(configs) == 1:
+            return configs[0]
+        else:
+            return configs
+
+    @staticmethod
+    def resolve_config(root: etree.Element, gmp) -> "ScanConfig":
+        if root is None:
+            return None
+        uuid = root.get("id")
+        owner = Owner.resolve_owner(root.find("owner"))
+        name = root.find("name").text
+        comment = get_text_from_element(root, "comment")
+
+        creation_time = get_datetime_from_element(root, "creation_time")
+        modification_time = get_datetime_from_element(root, "modification_time")
+
+        writable = get_bool_from_element(root, "writable")
+        in_use = get_bool_from_element(root, "in_use")
+
+        permissions = Permission.resolve_permissions(root.find("permissions"))
+        family_count = FamilyCount.resolve_family_count(
+            root.find("family_count")
+        )
+        nvt_count = NvtCount.resolve_nvt_count(root.find("nvt_count"))
+        config_type = get_int_from_element(root, "type")
+        usage_type = get_text_from_element(root, "usage_type")
+        max_nvt_count = get_int_from_element(root, "max_nvt_count")
+        known_nvt_count = get_int_from_element(root, "known_nvt_count")
+        scanner = Scanner.resolve_scanner(root.find("scanner"))
+        user_tags = UserTags.resolve_user_tags(root.find("user_tags"))
+        tasks = Task.resolve_tasks(root.find("tasks"), gmp)
+
+        trash = get_bool_from_element(root, "trash")
+
+        return ScanConfig(
+            uuid,
+            owner,
+            name,
+            comment,
+            creation_time,
+            modification_time,
+            writable,
+            in_use,
+            permissions,
+            family_count,
+            nvt_count,
+            config_type,
+            usage_type,
+            max_nvt_count,
+            known_nvt_count,
+            scanner,
+            user_tags,
+            tasks,
+            trash,
+            False,
+        )

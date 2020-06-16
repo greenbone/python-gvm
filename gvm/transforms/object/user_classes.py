@@ -44,6 +44,9 @@ class Tag:
             if child.tag == "tag":
                 tags.append(Tag.resolve_tag(child))
 
+        if len(tags) == 1:
+            return tags[0]
+
         return tags
 
     @staticmethod
@@ -68,6 +71,9 @@ class UserTags:
     def resolve_user_tags(root: etree.Element) -> "UserTags":
         count = get_int_from_element(root, "count")
         tags = Tag.resolve_tags(root)
+
+        if count is None and tags is None:
+            return None
 
         return UserTags(count, tags)
 
