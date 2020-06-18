@@ -11,6 +11,7 @@ from .utils import (
     get_int_from_element,
     get_text_from_element,
     get_datetime_from_element,
+    get_float_from_element,
     get_text,
 )
 
@@ -35,6 +36,19 @@ class Schedule:
 class ReportTask:
     uuid: str
     all_info_loaded: bool
+
+
+@dataclass
+class Severity:
+    full: float
+    filtered: float
+
+    @staticmethod
+    def resolve_severity(root: etree.Element):
+        full = get_float_from_element(root, "full")
+        filtered = get_float_from_element(root, "filtered")
+
+        return Severity(full, filtered)
 
 
 @dataclass
@@ -69,7 +83,7 @@ class Report:
     timezone: str
     timezone_abbrev: str
     # result_count
-    # severity
+    severity: Severity
     # errors
     all_info_loaded: bool
     _task: "Task"
@@ -121,7 +135,7 @@ class Report:
         timezone = None
         timezone_abbrev = None
         # result_count = None
-        # severity = None
+        severity = None
         # errors = None
 
         second_level = root.find("report")
@@ -151,7 +165,7 @@ class Report:
                 second_level, "timezone_abbrev"
             )
             # result_count
-            # severity
+            severity = Severity.resolve_severity(second_level.find("severity"))
             # errors
 
         report = Report(
@@ -185,7 +199,7 @@ class Report:
             timezone,
             timezone_abbrev,
             # result_count,
-            # severity,
+            severity,
             # errors,
             False,
             task,

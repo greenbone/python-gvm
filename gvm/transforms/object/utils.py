@@ -49,6 +49,15 @@ def get_int(number: str) -> int:
     return None
 
 
+def get_float(number: str):
+    if number is None:
+        return None
+    try:
+        return float(number)
+    except ValueError:
+        return None
+
+
 def get_bool(bool_str: str) -> bool:
     if bool_str is not None:
         return False if bool_str == "0" else True
@@ -71,6 +80,10 @@ def get_int_from_element(element: etree.Element, name: str) -> int:
 
 def get_bool_from_element(element: etree.Element, name: str) -> bool:
     return get_bool(get_text_from_element(element, name))
+
+
+def get_float_from_element(element: etree.Element, name: str) -> float:
+    return get_float(get_text_from_element(element, name))
 
 
 def get_datetime_from_element(
