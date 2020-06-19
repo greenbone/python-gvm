@@ -28,7 +28,7 @@ from .port_classes import PortList
 @dataclass
 class Response:
     """
-    standard Python Response Object
+    standard Python response object
     """
 
     response_name: str
@@ -44,7 +44,7 @@ class Response:
 @dataclass
 class AuthenticateResponse(Response):
     """
-    Response Object for authenticate command
+    Response object for authenticate command
     """
 
     role: Role
@@ -61,7 +61,7 @@ class AuthenticateResponse(Response):
 @dataclass
 class GetPortListsResponse(Response):
     """
-    Response Object for a get_port_lists command
+    Response object for a get_port_lists command
     """
 
     port_lists: List[PortList]
@@ -74,7 +74,7 @@ class GetPortListsResponse(Response):
 @dataclass
 class GetTasksResponse(Response):
     """
-    Response Object for a get_tasks command
+    Response object for a get_tasks command
     """
 
     apply_overrides: bool

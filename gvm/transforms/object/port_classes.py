@@ -20,6 +20,9 @@ class PortCount:
 
     @staticmethod
     def resolve_port_count(root: etree.Element) -> "PortCount":
+        """
+        resolve information from an etree.Element and forms a PortCount object.
+        """
         if root is None:
             return None
         return PortCount(
@@ -39,6 +42,10 @@ class PortRange:
 
     @staticmethod
     def resolve_port_ranges(root: etree.Element) -> list:
+        """
+        resolve information from an etree.Element and forms a list of
+        PortRange objects.
+        """
         if root is None:
             return None
         port_ranges = []
@@ -71,6 +78,9 @@ class PortList:
 
     @staticmethod
     def resolve_port_list(root: etree.Element) -> "PortList":
+        """
+        resolve information from an etree.Element and forms a PortList object.
+        """
         if root is None:
             return None
         uuid = root.get("id")

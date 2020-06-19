@@ -21,9 +21,10 @@ from lxml import etree
 
 
 def resolve_datetime(time: str) -> datetime.datetime:
-    """
-    takes a time String like: 2020-03-05T15:35:21Z
-    and forms a datetime object from it.
+    """takes a time String and forms a datetime object from it.
+
+    Arguments:
+        time: Timestring eg. '2020-03-05T15:35:21Z'
     """
     if time is not None:
         return datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
@@ -32,6 +33,9 @@ def resolve_datetime(time: str) -> datetime.datetime:
 
 def get_text(element: etree.Element) -> str:
     """ Get the text from an etree.Element
+
+    Arguments:
+        element: Element which contains the text
     """
     if element is not None:
         return element.text
@@ -40,6 +44,9 @@ def get_text(element: etree.Element) -> str:
 
 def get_int(number: str) -> int:
     """ Forms a string into an integer
+
+    Arguments:
+        number: Integer in form of a string
     """
     if number is not None:
         try:
@@ -50,6 +57,11 @@ def get_int(number: str) -> int:
 
 
 def get_float(number: str):
+    """Forms a string into a float
+
+    Arguments:
+        number: Float in form of a string
+    """
     if number is None:
         return None
     try:
@@ -59,34 +71,75 @@ def get_float(number: str):
 
 
 def get_bool(bool_str: str) -> bool:
+    """Forms a string into a bool
+
+    Arguments:
+        bool_str: should be '1' or '0'
+    """
     if bool_str is not None:
         return False if bool_str == "0" else True
     return None
 
 
-def get_subelement(element: etree.Element, name: str) -> str:
+def get_subelement(element: etree.Element, name: str) -> etree.Element:
+    """ Get a subelement from an etree.Element.
+
+    Arguments:
+        element: Element which contains the subelement.
+        name: Name of the subelement.
+    """
     if element is not None:
         return element.find(name)
     return None
 
 
 def get_text_from_element(element: etree.Element, name: str) -> str:
+    """ Get the text from an etree.Element.
+
+    Arguments:
+        element: Element which contains the subelement with text in it.
+        name: Name of the subelement.
+    """
     return get_text(get_subelement(element, name))
 
 
 def get_int_from_element(element: etree.Element, name: str) -> int:
+    """ Get an integer from an etree.Element.
+
+    Arguments:
+        element: Element which contains the subelement with an integer in it.
+        name: Name of the subelement.
+    """
     return get_int(get_text_from_element(element, name))
 
 
 def get_bool_from_element(element: etree.Element, name: str) -> bool:
+    """ Get a bool from an etree.Element.
+
+    Arguments:
+        element: Element which contains the subelement with a '1' or '0' in it.
+        name: Name of the subelement.
+    """
     return get_bool(get_text_from_element(element, name))
 
 
 def get_float_from_element(element: etree.Element, name: str) -> float:
+    """ Get a float from an etree.Element.
+
+    Arguments:
+        element: Element which contains the subelement with a float in it.
+        name: Name of the subelement.
+    """
     return get_float(get_text_from_element(element, name))
 
 
 def get_datetime_from_element(
     element: etree.Element, name: str
 ) -> datetime.datetime:
+    """ Get a datetime from an etree.Element.
+
+    Arguments:
+        element: Element which contains the subelement with a datetime string.
+        name: Name of the subelement.
+    """
     return resolve_datetime(get_text_from_element(element, name))
