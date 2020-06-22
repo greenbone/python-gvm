@@ -61,7 +61,8 @@ class AuthenticateResponse(Response):
 @dataclass
 class GetPortListsResponse(Response):
     """
-    Response object for a get_port_lists command
+    Response object for a get_port_lists command\n
+    (see also: :class:`.port_classes.PortList`)
     """
 
     port_lists: List[PortList]
@@ -74,7 +75,8 @@ class GetPortListsResponse(Response):
 @dataclass
 class GetTasksResponse(Response):
     """
-    Response object for a get_tasks command
+    Response object for a get_tasks command\n
+    (see also: :class:`.task_classes.Task`)
     """
 
     apply_overrides: bool
@@ -91,6 +93,9 @@ class GetTasksResponse(Response):
 
 @dataclass
 class GetConfigsResponse(Response):
+    """Response object for a get_configs command\n
+    (see also: :class:`.task_classes.ScanConfig`)
+    """
 
     scan_configs: List[ScanConfig]
 
@@ -102,6 +107,9 @@ class GetConfigsResponse(Response):
 
 @dataclass
 class GetTargetsResponse(Response):
+    """Response object for a get_targets command\n
+    (see also: :class:`.task_classes.Target`)
+    """
 
     targets: List[Target]
 
@@ -112,6 +120,9 @@ class GetTargetsResponse(Response):
 
 @dataclass
 class GetScannersResponse(Response):
+    """Response object for a get_configs command\n
+    (see also: :class:`.scan_classes.Scanner`)
+    """
 
     scanners: List[Scanner]
 
@@ -122,6 +133,9 @@ class GetScannersResponse(Response):
 
 @dataclass
 class GetPreferencesResponse(Response):
+    """Response object for a get_preferences command\n
+    (see also: :class:`.task_classes.Preference`)
+    """
 
     preferences: List[Preference]
 
@@ -132,6 +146,9 @@ class GetPreferencesResponse(Response):
 
 @dataclass
 class GetUsersResponse(Response):
+    """Response object for a get_users command\n
+    (see also: :class:`.user_classes.User`)
+    """
 
     users: List[User]
 
@@ -143,6 +160,9 @@ class GetUsersResponse(Response):
 
 @dataclass
 class GetReportsResponse(Response):
+    """Response object for a get_reports command\n
+    (see also: :class:`.task_classes.Report`)
+    """
 
     reports: List[Report]
 
@@ -154,6 +174,9 @@ class GetReportsResponse(Response):
 
 @dataclass
 class GetGroupsResponse(Response):
+    """Response object for a get_groups command\n
+    (see also: :class:`.user_classes.Group`)
+    """
 
     groups: List[Group]
 
@@ -165,6 +188,9 @@ class GetGroupsResponse(Response):
 
 @dataclass
 class CreateTaskResponse(Response):
+    """Response object for a create_task command\n
+    (see also: :class:`.task_classes.Task`)
+    """
 
     task_id: str
     task: Task
@@ -178,6 +204,9 @@ class CreateTaskResponse(Response):
 
 @dataclass
 class StartTaskResponse(Response):
+    """Response object for a start_task command\n
+    (see also: :class:`.task_classes.Report`)
+    """
 
     report_id: str
     report: Report

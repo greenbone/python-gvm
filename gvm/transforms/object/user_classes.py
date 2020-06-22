@@ -1,6 +1,7 @@
 import datetime
 from dataclasses import dataclass
 from lxml import etree
+from gvm.protocols.base import GvmProtocol
 
 # from gvm.protocols.gmp import Gmp
 
@@ -98,7 +99,7 @@ class Permission:
 
 @dataclass
 class Group:
-    gmp: "Gmp"
+    gmp: GvmProtocol
     uuid: str
     owner: Owner
     name: str
