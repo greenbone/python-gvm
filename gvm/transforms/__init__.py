@@ -37,7 +37,9 @@ class EtreeTransform:
     def _convert_response(self, response: str) -> etree.Element:
         return etree.XML(response, parser=self._parser)
 
-    def __call__(self, response: str, protocol: GvmProtocol) -> etree.Element:
+    def __call__(
+        self, response: str, protocol: GvmProtocol = None
+    ) -> etree.Element:
         return self._convert_response(response)
 
 
@@ -63,7 +65,7 @@ class CheckCommandTransform(EtreeTransform):
     response was an error response
     """
 
-    def __call__(self, response: str, protocol: GvmProtocol) -> str:
+    def __call__(self, response: str, protocol: GvmProtocol = None) -> str:
         root = self._convert_response(response)
 
         _check_command_status(root)
@@ -77,7 +79,9 @@ class EtreeCheckCommandTransform(EtreeTransform):
     response was an error response
     """
 
-    def __call__(self, response: str, protocol: GvmProtocol) -> etree.Element:
+    def __call__(
+        self, response: str, protocol: GvmProtocol = None
+    ) -> etree.Element:
         root = self._convert_response(response)
 
         _check_command_status(root)
@@ -97,14 +101,14 @@ class ObjectTransform:
     def _convert_response(self, response: str) -> etree.Element:
         return etree.XML(response, parser=self._parser)
 
-    def __call__(self, response: str, gmp: GvmProtocol):
+    def __call__(self, response: str, protocol: GvmProtocol = None):
         root = self._convert_response(response)
         _check_command_status(root)
 
         response_object = None
         try:
             response_class = get_response_class(root.tag)
-            response_object = response_class(gmp, root)
+            response_object = response_class(protocol, root)
         except KeyError:
             print(f'The "{root.tag}" is not supported yet.')
 
