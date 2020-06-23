@@ -15,10 +15,19 @@ from .utils import (
 
 @dataclass
 class Owner:
+    """
+    Arguments:
+        name: The name of the owner.
+    """
+
     name: str
 
     @staticmethod
     def resolve_owner(root: etree.Element) -> "Owner":
+        """ Resolve information of a owner.
+
+        :param root: owner XML element from GMP.
+        """
         if root is None:
             return None
         name = root.find('name').text
@@ -30,6 +39,15 @@ class Owner:
 
 @dataclass
 class Tag:
+    """Information on a single tag.
+
+    Arguments:
+        uuid: uuid of the tag (omitted when using names_only).
+        name: Name of the tag (usually namespace:predicate).
+        value: Value associated with the tag.
+        comment: Comment for the tag.
+    """
+
     uuid: str
     name: str
     value: str
@@ -37,6 +55,11 @@ class Tag:
 
     @staticmethod
     def resolve_tags(root: etree.Element) -> list:
+        """ Resolve a list of tags.
+        If there is just one tag, it returns the Tag.
+
+        :param root: XML element from GMP with a list of tag elements.
+        """
         if root is None:
             return None
 
@@ -52,6 +75,10 @@ class Tag:
 
     @staticmethod
     def resolve_tag(root: etree.Element) -> "Tag":
+        """ Resolve information of a single tag.
+
+        :param root: tag XML element from GMP.
+        """
         if root is None:
             return None
 
@@ -65,11 +92,21 @@ class Tag:
 
 @dataclass
 class UserTags:
+    """
+    Arguments:
+        count: Number of attached tags.
+        tags: attached tags
+    """
+
     count: int
     tags: list
 
     @staticmethod
     def resolve_user_tags(root: etree.Element) -> "UserTags":
+        """ resolve information of user tags
+
+        :param root: user_tags XML element from GMP.
+        """
         count = get_int_from_element(root, "count")
         tags = Tag.resolve_tags(root)
 
@@ -81,10 +118,21 @@ class UserTags:
 
 @dataclass
 class Permission:
+    """ Permissions that the current user has.
+
+    Arguments:
+        name: The name of the permission.
+    """
+
     name: str
 
     @staticmethod
     def resolve_permissions(root: etree.Element) -> list:
+        """ Resolve a list of permissions.
+        If there is just one Permission it returns the Permission.
+
+        :param root: permissions XML element from GMP.
+        """
         if root is None:
             return None
         permissions = []
@@ -99,6 +147,22 @@ class Permission:
 
 @dataclass
 class Group:
+    """
+    Arguments:
+        gmp:
+        uuid: uuid of the group.
+        owner: Owner of the group.
+        name: The name of the group.
+        comment: The comment on the group.
+        creation_time: Date and time the group was created.
+        modification_time: Date and time the group was last modified.
+        writable: Whether the group is writable.
+        in_use: Whether the group is in use.
+        permissions: Permissions that the current user has on the group.
+        user_tags: Tags attached to the group.
+        users: List of the users in the group.
+    """
+
     gmp: GvmProtocol
     uuid: str
     owner: Owner
@@ -114,6 +178,11 @@ class Group:
 
     @staticmethod
     def resolve_groups(root: etree.Element, gmp):
+        """ Resolve a list of groups.
+        If there is just one group.
+
+        :param root: XML element from GMP with a list of group elements.
+        """
         if root is None:
             return None
 
@@ -128,6 +197,10 @@ class Group:
 
     @staticmethod
     def resolve_group(root: etree.Element, gmp):
+        """ Resolve information of a group.
+
+        :param root: group XML element from GMP.
+        """
         if root is None:
             return None
 
@@ -165,6 +238,21 @@ class Group:
 
 @dataclass
 class User:
+    """
+    Arguments:
+        uuid: ID of user.
+        owner: Owner of the user.
+        name: The name of the user.
+        comment: The comment on the user.
+        creation_time: Creation time of the user.
+        modification_time: Last time the user was modified.
+        writable: Whether the user is writable.
+        in_use: Whether this user is currently in use.
+        groups: The groups the user belongs to.
+        permissions: Permissions that the current user has on the user.
+        user_tags: Tags attached to the user.
+    """
+
     uuid: str
     owner: Owner
     name: str
@@ -183,6 +271,10 @@ class User:
 
     @staticmethod
     def resolve_users(root: etree.Element, gmp) -> list:
+        """ Resolve a list of users.
+
+        :param root: XML element from GMP with a list of users.
+        """
         if root is None:
             return None
 
@@ -196,6 +288,10 @@ class User:
 
     @staticmethod
     def resolve_user(root: etree.Element, gmp) -> "User":
+        """ Resolve information of a single user.
+
+        :param root: user XML element from GMP.
+        """
         uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = get_text_from_element(root, "name")
@@ -235,21 +331,40 @@ class User:
 
 @dataclass
 class Role:
+    """
+    Arguments:
+        name: Name of the role.
+    """
+
     name: str
 
     @staticmethod
     def resolve_role(root: etree.Element) -> "Role":
+        """ Resolve information of a role.
+
+        :param root: role XML element from GMP.
+        """
         return Role(root.text)
 
 
 @dataclass
 class Observers:
+    """
+    Arguments:
+        users: Users allowed to observe the task.
+        groups: Group allowed to observe the task.
+    """
+
     users: list
     groups: list
     # roles: list
 
     @staticmethod
     def resolve_observers(root: etree.Element, gmp) -> "Observers":
+        """ Resolve a list of observers.
+
+        :param root: observers XML element from GMP.
+        """
         if root is None:
             return None
         users = root.text

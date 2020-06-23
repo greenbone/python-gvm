@@ -235,4 +235,9 @@ CLASSDICT = {
 
 
 def get_response_class(tag_name: str) -> Response:
+    """ Finds the matching response class from the respose tag name.
+
+    Arguments:
+        tag_name: The tag name of a GMP response.
+    """
     return CLASSDICT[tag_name]

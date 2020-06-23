@@ -30,46 +30,55 @@ User Classes
 
 .. autoclass:: Owner
     :members:
-    :undoc-members:
 
 |
 
 .. autoclass:: Tag
     :members:
-    :undoc-members:
 
 |
 
 .. autoclass:: UserTags
     :members:
-    :undoc-members:
 
 |
 
 .. autoclass:: Permission
     :members:
-    :undoc-members:
 
 |
 
 .. autoclass:: Group
     :members:
-    :undoc-members:
 
 |
 
 .. autoclass:: User
     :members:
-    :undoc-members:
 
 |
 
 .. autoclass:: Role
     :members:
-    :undoc-members:
 
 |
 
 .. autoclass:: Observers
     :members:
-    :undoc-members:
+
+Count Classes
+-------------
+.. automodule:: gvm.transforms.object.count_classes
+
+.. autoclass:: FamilyCount
+    :members:
+
+|
+
+.. autoclass:: NvtCount
+    :members:
+
+|
+
+.. autoclass:: ReportCount
+    :members:

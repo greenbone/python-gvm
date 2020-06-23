@@ -10,7 +10,7 @@ Object Transform
 ^^^^^^^^^^^^^^^^
 .. automodule:: gvm.transforms.object
     :members:
-    :inherited-members:
+
 
 .. toctree::
     :maxdepth: 2
