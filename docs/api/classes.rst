@@ -9,19 +9,16 @@ Port Classes
 
 .. autoclass:: PortCount
     :members:
-    :undoc-members:
 
 |
 
 .. autoclass:: PortRange
     :members:
-    :undoc-members:
 
 |
 
 .. autoclass:: PortList
     :members:
-    :undoc-members:
 
 
 User Classes
@@ -81,4 +78,51 @@ Count Classes
 |
 
 .. autoclass:: ReportCount
+    :members:
+
+Task Classes
+------------
+.. automodule:: gvm.transforms.object.task_classes
+
+.. autoclass:: Schedule
+    :members:
+
+|
+
+.. autoclass:: ReportTask
+    :members:
+
+|
+
+.. autoclass:: Severity
+    :members:
+
+|
+
+.. autoclass:: Report
+    :members:
+
+|
+
+.. autoclass:: Nvt
+    :members:
+
+|
+
+.. autoclass:: Preference
+    :members:
+
+|
+
+.. autoclass:: TaskScanConfig
+    :members:
+
+|
+
+.. autoclass:: Task
+    :members:
+
+|
+
+.. autoclass:: ScanConfig
     :members:

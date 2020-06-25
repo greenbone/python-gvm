@@ -1,7 +1,8 @@
 import datetime
-
+from typing import List
 from dataclasses import dataclass
 from lxml import etree
+from gvm.protocols.base import GvmProtocol
 from .user_classes import Owner, UserTags, Observers, Permission
 from .count_classes import ReportCount, FamilyCount, NvtCount
 from .scan_classes import Target, Scanner
@@ -18,12 +19,22 @@ from .utils import (
 
 @dataclass
 class Schedule:
+    """
+    Arguments:
+        name: The name of the schedule.
+        next_time: The next date and time the schedule
+            will be run in ISO format or "over"..
+        trash: Whether the schedule is in the trashcan.
+    """
+
     name: str
     next_time: str
     trash: bool
 
     @staticmethod
     def resolve_schedule(root: etree.Element) -> "Schedule":
+        """ Resolve information of a 'schedule' element from GMP.
+        """
         name = get_text_from_element(root, "name")
         next_time = get_text_from_element(root, "next_time")
         trash = get_bool_from_element(root, "trash")
@@ -34,17 +45,34 @@ class Schedule:
 
 @dataclass
 class ReportTask:
+    """ Helper Report, only with uuid, to load all information when needed.
+
+    Arguments:
+        uuid: uuid of the report.
+        all_info_loaded: Whether all information is loaded.
+    """
+
     uuid: str
     all_info_loaded: bool
 
 
 @dataclass
 class Severity:
+    """
+    Arguments:
+        full: Maximum severity.
+        filtered: Maximum severity after filtering.
+    """
+
     full: float
     filtered: float
 
     @staticmethod
-    def resolve_severity(root: etree.Element):
+    def resolve_severity(root: etree.Element) -> "Severity":
+        """ Resolve information of a 'severity' element from GMP.
+
+        :param root: severity XML element from GMP.
+        """
         full = get_float_from_element(root, "full")
         filtered = get_float_from_element(root, "filtered")
 
@@ -53,7 +81,34 @@ class Severity:
 
 @dataclass
 class Report:
-    gmp: "Gmp"
+    """
+    Arguments:
+        gmp:
+        uuid: uuid of the report.
+        format_id:
+        extension:
+        content_type:
+        owner: Owner of the report.
+        name: Creation time as compatibility placeholder.
+        comment: The comment on the report.
+        creation_time: Date and time the report was created.
+        modification_time: Date and time the report was last modified.
+        writable: Whether the report is writable.
+        in_use: Whether the report is in use.
+        gmp_version: The GMP version.
+        scan_run_status: Run status of task scan at time of report.
+        timestamp: The time the scan was requested.
+        scan_start: Start time of scan.
+        scan_end: End time of scan.
+        timezone: Name of timezone used for dates.
+        timezone_abbrev: Abbreviation used for timezone.
+        severity: Severity of the Report
+        all_info_loaded: Whether all information is loaded.
+        _task: The task the report belongs to.
+
+    """
+
+    gmp: GvmProtocol
     uuid: str
     format_id: str
     extension: str
@@ -86,10 +141,16 @@ class Report:
     severity: Severity
     # errors
     all_info_loaded: bool
-    _task: "Task"
+    _task: ReportTask
 
     @staticmethod
-    def resolve_reports(root: etree.Element, gmp):
+    def resolve_reports(root: etree.Element, gmp) -> List["Report"]:
+        """ Resolve information of a 'reports' element from GMP
+
+        :param root: reports XML element from GMP.
+        :param gmp: Gmp object, to automatically load more
+            information when needed.
+        """
         reports = []
         for child in root:
             if child.tag == "report":
@@ -100,6 +161,12 @@ class Report:
 
     @staticmethod
     def resolve_report(root: etree.Element, gmp) -> "Report":
+        """ Resolve information of a 'report' element from GMP.
+
+        :param root: report XML element from GMP.
+        :param gmp: Gmp object, to automatically load more
+            information when needed.
+        """
         if root is None:
             return None
         uuid = root.get("id")
@@ -207,29 +274,47 @@ class Report:
 
         return report
 
-    def load_task(self, gmp) -> "Task":
+    def load_task(self, gmp):
+        """ Loads more information of the task, based on the uuid.
+        """
         if self._task.uuid != "":
+            # check if all information is already loaded
             if not self._task.all_info_loaded:
                 self._task = gmp.get_task(self._task.uuid).tasks
                 self._task.all_info_loaded = True
 
     @property
     def task(self) -> "Task":
+        """Is called when the task is accessed.
+        Loads more information of the task.
+        """
         self.load_task(self.gmp)
         return self._task
 
     @task.setter
     def task(self, task: "Task"):
+        """Setter for the task.
+        """
         self._task = task
 
 
 @dataclass
 class Nvt:
+    """
+    Arguments:
+        oid: oid of the NVT
+        name: The name of the NVT.
+    """
+
     oid: str
     name: str
 
     @staticmethod
     def resolve_nvt(root: etree.Element) -> "Nvt":
+        """Resolve information of a 'nvt' element from GMP.
+
+        :param root: nvt XML element from GMP.
+        """
         if root is None:
             return None
         oid = root.get("oid")
@@ -242,6 +327,19 @@ class Nvt:
 
 @dataclass
 class Preference:
+    """
+    Arguments:
+        nvt: NVT to which preference applies.
+        preference_id: The ID of the preference.
+        hr_name: The full, more "human readable" name of the preference.
+        name: Full name of preference.
+        scanner_name: Compact name of preference, from scanner.
+        preference_type: The type of the preference.
+        value: The value of the preference.
+        alternatives: Alternative values for the preference.
+        default: The default value of the preference.
+    """
+
     nvt: Nvt
     preference_id: int
     hr_name: str
@@ -249,11 +347,15 @@ class Preference:
     scanner_name: str
     preference_type: str
     value: str
-    alternatives: list
+    alternatives: List[str]
     default: str
 
     @staticmethod
-    def resolve_preferences(root: etree.Element) -> list:
+    def resolve_preferences(root: etree.Element) -> List["Preference"]:
+        """ Resolve information of a 'preferences' element from GMP.
+
+        :param root: preferences XML element from GMP.
+        """
         if root is None:
             return None
         preferences = []
@@ -266,6 +368,10 @@ class Preference:
 
     @staticmethod
     def resolve_preference(root: etree.Element) -> "Preference":
+        """ Resolve information of a 'preference' element from GMP.
+
+        :param root: preference XML element from GMP.
+        """
         nvt = Nvt.resolve_nvt(root.find("nvt"))
         preference_id = get_int_from_element(root, "id")
         hr_name = get_text_from_element(root, "hr_name")
@@ -301,6 +407,14 @@ class Preference:
 
 @dataclass
 class TaskScanConfig:
+    """ Helper scan config, only with uuid, to load all information when needed.
+
+    Arguments:
+        uuid: uuid of the scan config.
+        trash: Whether the scan config is in the trash.
+        all_info_loaded: Whether all information is loaded.
+    """
+
     uuid: str
     trash: bool
     all_info_loaded: bool
@@ -308,7 +422,40 @@ class TaskScanConfig:
 
 @dataclass
 class Task:
-    gmp: "Gmp"
+    """
+    Arguments:
+        gmp:
+        uuid: uuid of the task
+        owner: Owner of the task.
+        name: The name of the task.
+        comment: The comment on the task.
+        creation_time: Creation time of the task.
+        modification_time: Last time the task was modified.
+        writable: Whether the task is writable.
+        in_use: Whether this task is currently in use.
+        permissions: Permissions that the current user has on the task.
+        user_tags: Info on tags attached to the task.
+        alterable: Whether the task is an Alterable Task.
+        usage_type: The usage type of the task (scan or audit).
+        hosts_ordering: The order hosts are scanned in.
+        status: The run status of the task.
+        progress: The percentage of the task that is complete.
+        report_count: Number of reports.
+        trend:
+        schedule: When the task will run.
+        schedule_periods: A limit to the number of times the task
+            will be scheduled, or 0 for no limit.
+        oberservers: Users, groups and roles allowed to observe this task.
+        preferences: preferences of the task.
+        all_info_loaded: Whether all information is loaded.
+        _current_report:
+        _last_report:
+        _scan_config: The scan configuration used by the task.
+        _target: The hosts scanned by the task.
+        _scanner: The scanner used to scan the target.
+    """
+
+    gmp: GvmProtocol
     uuid: str
     owner: Owner
     name: str
@@ -340,7 +487,13 @@ class Task:
     _scanner: Scanner
 
     @staticmethod
-    def resolve_tasks(root: etree.Element, gmp) -> list:
+    def resolve_tasks(root: etree.Element, gmp) -> List["Task"]:
+        """ Resolve information of a 'tasks' element from GMP.
+
+        :param root: tasks XML element from GMP.
+        :param gmp: Gmp object, to automatically load more
+            information when needed.
+        """
         if root is None:
             return None
 
@@ -355,6 +508,12 @@ class Task:
 
     @staticmethod
     def resolve_task(root: etree.Element, gmp) -> "Task":
+        """ Resolve infromation from a 'task' element from GMP.
+
+        :param root: task XML elemnt from GMP.
+        :param gmp: Gmp object, to automatically load more
+            information when needed.
+        """
         uuid = root.get("id")
         owner = Owner.resolve_owner(root.find("owner"))
         name = root.find("name").text
@@ -440,6 +599,8 @@ class Task:
         return task
 
     def load_current_report(self, gmp):
+        """ Loads more information of the current report, based on the uuid.
+        """
         if self._current_report is None:
             return None
 
@@ -450,6 +611,8 @@ class Task:
             self._current_report.all_info_loaded = True
 
     def load_last_report(self, gmp):
+        """ Loads more information of the last report, based on the uuid.
+        """
         if self._last_report is None:
             return None
 
@@ -458,6 +621,8 @@ class Task:
             self._last_report.all_info_loaded = True
 
     def load_scan_config(self, gmp):
+        """ Loads more information of the scan config, based on the uuid.
+        """
         if self._scan_config is None:
             return None
 
@@ -471,6 +636,8 @@ class Task:
                 self._scan_config.all_info_loaded = True
 
     def load_target(self, gmp):
+        """ Loads more information of the target, based on the uuid.
+        """
         if self._target.uuid != "":
             if not self._target.all_info_loaded:
                 trash = self._target.trash
@@ -479,6 +646,8 @@ class Task:
                 self._target.all_info_loaded = True
 
     def load_scanner(self, gmp):
+        """ Loads more information of the scanner, based on the uuid.
+        """
         # das Abfragen von Informationen zu einem Scanner dauert sehr lange.
         if self._scanner.uuid != "":
             if not self._scanner.all_info_loaded:
@@ -491,6 +660,10 @@ class Task:
     # Load additional Information when needed
     @property
     def current_report(self) -> Report:
+        """
+        Is called when the current report is accessed.
+        Loads more information of the current report.
+        """
         self.load_current_report(self.gmp)
         return self._current_report
 
@@ -500,6 +673,10 @@ class Task:
 
     @property
     def last_report(self) -> Report:
+        """
+        Is called when the last report is accessed.
+        Loads more information of the last report.
+        """
         self.load_last_report(self.gmp)
         return self._last_report
 
@@ -509,6 +686,10 @@ class Task:
 
     @property
     def scan_config(self) -> "ScanConfig":
+        """
+        Is called when the scan config is accessed.
+        Loads more information of the scan config.
+        """
         self.load_scan_config(self.gmp)
         return self._scan_config
 
@@ -518,6 +699,10 @@ class Task:
 
     @property
     def target(self) -> Target:
+        """
+        Is called when the target is accessed.
+        Loads more information of the target.
+        """
         self.load_target(self.gmp)
         return self._target
 
@@ -527,6 +712,10 @@ class Task:
 
     @property
     def scanner(self) -> Scanner:
+        """
+        Is called when the scanner is accessed.
+        Loads more information of the scanner.
+        """
         self.load_scanner(self.gmp)
         return self._scanner
 

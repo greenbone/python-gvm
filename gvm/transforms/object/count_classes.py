@@ -1,6 +1,6 @@
 from dataclasses import dataclass
-from gvm.transforms.object.utils import get_bool_from_element
 from lxml import etree
+from gvm.transforms.object.utils import get_bool_from_element
 from .utils import (
     get_int_from_element,
     get_int,

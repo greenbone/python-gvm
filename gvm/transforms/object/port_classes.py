@@ -1,5 +1,5 @@
 import datetime
-
+from typing import List
 from dataclasses import dataclass
 
 from lxml import etree
@@ -14,6 +14,13 @@ from .utils import (
 
 @dataclass
 class PortCount:
+    """
+    Arguments:
+        all: Total number of ports.
+        tcp: Total number of TCP ports.
+        udp: Total number of UDP ports.
+    """
+
     all: int
     tcp: int
     udp: int
@@ -21,7 +28,7 @@ class PortCount:
     @staticmethod
     def resolve_port_count(root: etree.Element) -> "PortCount":
         """
-        resolve information from an etree.Element and forms a PortCount object.
+        Resolve information of a port_count Element from GMP.
         """
         if root is None:
             return None
@@ -34,6 +41,15 @@ class PortCount:
 
 @dataclass
 class PortRange:
+    """
+    Arguments:
+        uuid: uuid of the PortRange
+        start: First port in range.
+        end: Last port in range.
+        port_range_type: The type of port: TCP, UDP, ....
+        comment: The comment on the port range.
+    """
+
     uuid: str
     start: int
     end: int
@@ -41,10 +57,9 @@ class PortRange:
     comment: str
 
     @staticmethod
-    def resolve_port_ranges(root: etree.Element) -> list:
+    def resolve_port_ranges(root: etree.Element) -> List["PortRange"]:
         """
-        resolve information from an etree.Element and forms a list of
-        PortRange objects.
+        resolve information of a port_ranges Element from GMP.
         """
         if root is None:
             return None
@@ -64,6 +79,21 @@ class PortRange:
 
 @dataclass
 class PortList:
+    """
+    Arguments:
+        uuid: uuid of the port list
+        owner: Owner of the port list.
+        name: The name of the port list.
+        comment: The comment on the port list.
+        creation_time: Date and time the port list was created.
+        modification_time:  Date and time the port list was last modified.
+        writable: Whether the port list is writable.
+        in_use: Whether any targets are using the port list.
+        permissions: Permissions that the current user has on the port list.
+        port_count: Port count in port list.
+        port_ranges: port ranges in port list.
+    """
+
     uuid: str
     owner: Owner
     name: str
@@ -72,14 +102,14 @@ class PortList:
     modification_time: datetime.datetime
     writable: bool
     in_use: bool
-    permissions: list
+    permissions: List[Permission]
     port_count: PortCount
-    port_ranges: list
+    port_ranges: List[PortRange]
 
     @staticmethod
     def resolve_port_list(root: etree.Element) -> "PortList":
         """
-        resolve information from an etree.Element and forms a PortList object.
+        Resolve information from a port_list Element from GMP.
         """
         if root is None:
             return None
@@ -114,7 +144,9 @@ class PortList:
         return port_list
 
     @staticmethod
-    def resolve_port_lists(root: etree.Element):
+    def resolve_port_lists(root: etree.Element) -> List["PortList"]:
+        """ Resolve information of a port_lists Element from GMP.
+        """
         result_list = []
 
         for child in root:
