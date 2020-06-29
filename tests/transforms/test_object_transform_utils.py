@@ -25,6 +25,7 @@ from gvm.transforms.object.utils import (
     get_text,
     get_int,
     get_bool,
+    get_float,
     get_subelement,
     get_text_from_element,
     get_int_from_element,
@@ -56,10 +57,10 @@ class ObjectTransformUtilsTestCase(unittest.TestCase):
 
     def test_get_int(self):
         int_string = "1"
-        false_string = "qwe23"
+        false_int_string = "qwe23"
 
         result1 = get_int(int_string)
-        result2 = get_int(false_string)
+        result2 = get_int(false_int_string)
         result3 = get_int(None)
 
         self.assertEqual(result1, 1)
@@ -76,6 +77,18 @@ class ObjectTransformUtilsTestCase(unittest.TestCase):
 
         self.assertEqual(result1, True)
         self.assertEqual(result2, False)
+        self.assertEqual(result3, None)
+
+    def test_get_float(self):
+        float_string = "3.0"
+        false_float_string = "tcfzvubhjn"
+
+        result1 = get_float(float_string)
+        result2 = get_float(false_float_string)
+        result3 = get_float(None)
+
+        self.assertEqual(result1, float(3.0))
+        self.assertEqual(result2, None)
         self.assertEqual(result3, None)
 
     def test_get_subelement(self):

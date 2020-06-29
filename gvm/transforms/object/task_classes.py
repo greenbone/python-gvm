@@ -344,7 +344,7 @@ class Preference:
     preference_id: int
     hr_name: str
     name: str
-    scanner_name: str
+    # scanner_name: str
     preference_type: str
     value: str
     alternatives: List[str]
@@ -376,7 +376,7 @@ class Preference:
         preference_id = get_int_from_element(root, "id")
         hr_name = get_text_from_element(root, "hr_name")
         name = get_text_from_element(root, "name")
-        scanner_name = get_text_from_element(root, "scanner_name")
+        # scanner_name = get_text_from_element(root, "scanner_name")
         preference_type = get_text_from_element(root, "type")
         value = get_text_from_element(root, "value")
 
@@ -395,7 +395,7 @@ class Preference:
             preference_id,
             hr_name,
             name,
-            scanner_name,
+            # scanner_name,
             preference_type,
             value,
             alternatives,
@@ -743,9 +743,9 @@ class ScanConfig:
     known_nvt_count: int
     scanner: Scanner
     user_tags: UserTags
-    tasks: list
+    tasks: List[Task]
     # families
-    # preferences
+    preferences: List[Preference]
     # nvt_selectors
     trash: bool
     all_info_loaded: bool
@@ -789,6 +789,7 @@ class ScanConfig:
         scanner = Scanner.resolve_scanner(root.find("scanner"))
         user_tags = UserTags.resolve_user_tags(root.find("user_tags"))
         tasks = Task.resolve_tasks(root.find("tasks"), gmp)
+        preferences = Preference.resolve_preferences(root.find("preferences"))
 
         trash = get_bool_from_element(root, "trash")
 
@@ -811,6 +812,7 @@ class ScanConfig:
             scanner,
             user_tags,
             tasks,
+            preferences,
             trash,
             False,
         )

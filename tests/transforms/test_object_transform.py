@@ -42,8 +42,23 @@ from gvm.transforms.object.user_classes import (
     UserTags,
     Tag,
 )
-from gvm.transforms.object.task_classes import Task, Schedule
-from gvm.transforms.object.count_classes import ReportCount
+from gvm.transforms.object.scan_classes import Scanner
+from gvm.transforms.object.task_classes import (
+    Task,
+    Schedule,
+    ScanConfig,
+    Preference,
+    Nvt,
+    TaskScanConfig,
+    Severity,
+    Report,
+    ReportTask,
+)
+from gvm.transforms.object.count_classes import (
+    ReportCount,
+    FamilyCount,
+    NvtCount,
+)
 
 
 FILEPATH = os.path.dirname(os.path.realpath(__file__)) + '/test_xml/'
@@ -88,7 +103,7 @@ class ObjectTransformAuthenticateTestCase(unittest.TestCase):
 
 class ObjectTransformPortClassesTestCase(unittest.TestCase):
 
-    # This tests also PortRange and Permission,
+    # This tests also PortRange, PortCount and Permission,
     # because they are part of the get_port_lists_response
     def test_get_port_list(self):
         transform = ObjectTransform()
@@ -139,14 +154,166 @@ class ObjectTransformPortClassesTestCase(unittest.TestCase):
         self.assertEqual(response.port_lists, port_list)
 
 
-"""
 class ObjectTransformScanClassesTestCase(unittest.TestCase):
-
-    def test_get_config(self):
+    def test_get_scanners(self):
         transform = ObjectTransform()
 
-        root = get_root_from_file("test_get_config.xml")
-"""
+        root = get_root_from_file("test_get_scanners.xml")
+        permissions = [Permission("get_scanners"), Permission("get_scanners")]
+        scanner_mock1 = Scanner(
+            uuid="6acd0832-df90-11e4-b9d5-28d24461215b",
+            owner=None,
+            name="CVE",
+            comment=None,
+            creation_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+            modification_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+            writable=True,
+            in_use=False,
+            permissions=permissions,
+            port=0,
+            scanner_type=3,
+            trash=None,
+            all_info_loaded=False,
+        )
+
+        scanner_mock2 = Scanner(
+            uuid="08b69003-5fc2-4037-a479-93b440211c73",
+            owner=None,
+            name="OpenVAS Default",
+            comment=None,
+            creation_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+            modification_time=datetime.datetime(2020, 3, 2, 10, 48, 39),
+            writable=True,
+            in_use=True,
+            permissions=permissions,
+            port=0,
+            scanner_type=2,
+            trash=None,
+            all_info_loaded=False,
+        )
+
+        scanners = [scanner_mock1, scanner_mock2]
+
+        response = transform(root)
+
+        self.assertEqual(response.scanners, scanners)
+
+    def test_get_configs(self):
+        """
+        This tests also Preferences,
+        because they are part of the get_configs_response
+        """
+        transform = ObjectTransform()
+
+        root = get_root_from_file("test_get_configs.xml")
+        permissions = [Permission("get_configs"), Permission("get_configs")]
+
+        preference_mock1 = Preference(
+            nvt=Nvt("1.3.6.1.4.1.25623.1.0.100151", "PostgreSQL Detection"),
+            preference_id=1,
+            hr_name="Postgres Username:",
+            name="Postgres Username:",
+            preference_type="entry",
+            value="postgres",
+            alternatives=None,
+            default="postgres",
+        )
+
+        preference_mock2 = Preference(
+            nvt=Nvt("1.3.6.1.4.1.25623.1.0.97001", "PCI-DSS Version 2.0"),
+            preference_id=1,
+            hr_name="Berichtformat/Report Format",
+            name="Berichtformat/Report Format",
+            preference_type="radio",
+            value="Text",
+            alternatives=[
+                "Tabellarisch/Tabular",
+                "Text und/and Tabellarisch/Tabular",
+            ],
+            default="Text",
+        )
+
+        preferences = [preference_mock1, preference_mock2]
+
+        config_mock1 = ScanConfig(
+            uuid="d21f6c81-2b88-4ac1-b7b4-a2a9f2ad4663",
+            owner=None,
+            name="Base",
+            comment="Basic configuration template.",
+            creation_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+            modification_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+            writable=False,
+            in_use=False,
+            permissions=permissions,
+            family_count=FamilyCount(2, False),
+            nvt_count=NvtCount(3, False),
+            config_type=0,
+            usage_type="scan",
+            max_nvt_count=None,
+            known_nvt_count=None,
+            scanner=None,
+            user_tags=None,
+            tasks=None,
+            preferences=None,
+            trash=None,
+            all_info_loaded=False,
+        )
+
+        config_mock2 = ScanConfig(
+            uuid="8715c877-47a0-438d-98a3-27c7a6ab2196",
+            owner=Owner("TestName"),
+            name="Discovery",
+            comment="Network Discovery scan configuration.",
+            creation_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+            modification_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+            writable=False,
+            in_use=True,
+            permissions=permissions,
+            family_count=FamilyCount(16, False),
+            nvt_count=NvtCount(3023, True),
+            config_type=0,
+            usage_type="scan",
+            max_nvt_count=239,
+            known_nvt_count=3,
+            scanner=None,
+            user_tags=None,
+            tasks=None,
+            preferences=preferences,
+            trash=None,
+            all_info_loaded=False,
+        )
+        scan_configs = [config_mock1, config_mock2]
+        response = transform(root)
+
+        self.assertEqual(response.scan_configs, scan_configs)
+
+
+class ObjectTransformCountClassesTestCase(unittest.TestCase):
+    def test_resolve_family_count(self):
+        family_count1 = FamilyCount.resolve_family_count(None)
+        xml = "<family_count>2<growing>0</growing></family_count>"
+        parser = etree.XMLParser(encoding="utf-8", recover=True, huge_tree=True)
+
+        root = etree.XML(xml, parser)
+
+        family_count_mock = FamilyCount(2, False)
+        family_count2 = FamilyCount.resolve_family_count(root)
+
+        self.assertEqual(family_count1, None)
+        self.assertEqual(family_count2, family_count_mock)
+
+    def test_resolve_nvt_count(self):
+        nvt_count1 = NvtCount.resolve_nvt_count(None)
+        xml = "<nvt_count>5<growing>1</growing></nvt_count>"
+        parser = etree.XMLParser(encoding="utf-8", recover=True, huge_tree=True)
+
+        root = etree.XML(xml, parser)
+
+        nvt_count_mock = NvtCount(5, True)
+        nvt_count2 = NvtCount.resolve_nvt_count(root)
+
+        self.assertEqual(nvt_count1, None)
+        self.assertEqual(nvt_count2, nvt_count_mock)
 
 
 class ObjectTransformTaskTestCase(unittest.TestCase):
@@ -174,6 +341,10 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
             None,
             None,
             None,
+        )
+
+        task_scan_config_mock = TaskScanConfig(
+            "8715c877-47a0-438d-98a3-27c7a6ab2196", False, False
         )
 
         observers = Observers(users, groups)
@@ -209,7 +380,7 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
             False,
             None,
             None,
-            None,
+            task_scan_config_mock,
             None,
             None,
         )
@@ -242,6 +413,82 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
         self.assertEqual(
             response.report_id, "9cdadab8-d28e-4a29-a2b7-bd63380515e3"
         )
+
+    def test_resolve_severity(self):
+        xml = (
+            "<severity>"
+            "<full>-99.0</full>"
+            "<filtered>10.0</filtered>"
+            "</severity>"
+        )
+        parser = etree.XMLParser(encoding="utf-8", recover=True, huge_tree=True)
+
+        root = etree.XML(xml, parser)
+        severity_mock = Severity(float(-99.0), float(10.0))
+        response = Severity.resolve_severity(root)
+
+        self.assertEqual(response, severity_mock)
+
+    def test_get_reports(self):
+        transform = ObjectTransform()
+
+        root = get_root_from_file("test_get_reports.xml")
+
+        report_mock1 = Report(
+            gmp=None,
+            uuid="c96b26fb-22df-4a79-9d20-c579a5fa5533",
+            format_id="",
+            extension="",
+            content_type="application/xml",
+            owner=Owner("admin"),
+            name="2020-03-03T10:05:42Z",
+            comment="Test Comment",
+            creation_time=datetime.datetime(2020, 3, 3, 10, 5, 42),
+            modification_time=datetime.datetime(2020, 3, 3, 10, 6, 22),
+            writable=False,
+            in_use=False,
+            gmp_version="9.0",
+            scan_run_status="Done",
+            timestamp=datetime.datetime(2020, 3, 3, 10, 5, 26),
+            scan_start=datetime.datetime(2020, 3, 3, 10, 5, 42),
+            scan_end=datetime.datetime(2020, 3, 3, 10, 6, 22),
+            timezone="Coordinated Universal Time",
+            timezone_abbrev="UTC",
+            severity=Severity(float(-99.0), float(-99.0)),
+            all_info_loaded=False,
+            _task=ReportTask("1e9844ab-9918-44db-b7d8-9bc32c0b1cee", False),
+        )
+
+        report_mock2 = Report(
+            gmp=None,
+            uuid="0f7c7734-e33c-45ef-a9e4-f624e39312cf",
+            format_id="Test_ID",
+            extension="Test_EXT",
+            content_type="application/xml",
+            owner=Owner("admin"),
+            name="2020-03-03T10:38:05Z",
+            comment=None,
+            creation_time=datetime.datetime(2020, 3, 3, 10, 38, 5),
+            modification_time=datetime.datetime(2020, 3, 3, 10, 39, 47),
+            writable=False,
+            in_use=True,
+            gmp_version="9.0",
+            scan_run_status="Done",
+            timestamp=datetime.datetime(2020, 3, 3, 10, 37, 49),
+            scan_start=datetime.datetime(2020, 3, 3, 10, 38, 5),
+            scan_end=datetime.datetime(2020, 3, 3, 10, 39, 47),
+            timezone="Coordinated Universal Time",
+            timezone_abbrev="UTC",
+            severity=Severity(float(0.0), float(0.0)),
+            all_info_loaded=False,
+            _task=ReportTask("a16aec9e-9c53-4fde-b42f-3c20311c0afc", False),
+        )
+
+        reports = [report_mock1, report_mock2]
+
+        response = transform(root)
+
+        self.assertEqual(response.reports, reports)
 
 
 if __name__ == "__main__":

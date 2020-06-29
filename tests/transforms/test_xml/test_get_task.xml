@@ -51,6 +51,17 @@
 		<usage_type>
 			scan
 		</usage_type>
+		<config id="8715c877-47a0-438d-98a3-27c7a6ab2196">
+			<name>
+				Discovery
+			</name>
+			<type>
+				0
+			</type>
+			<trash>
+				0
+			</trash>
+		</config>
 		<hosts_ordering>
 			Test Ordering
 		</hosts_ordering>
