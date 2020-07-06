@@ -34,7 +34,12 @@ from gvm.utils import deprecation
 from gvm.xml import XmlCommand
 
 from gvm.protocols.base import GvmProtocol
-from gvm.protocols.gmpv7 import _to_bool, _add_filter, _is_list_like, _to_comma_list
+from gvm.protocols.gmpv7 import (
+    _to_bool,
+    _add_filter,
+    _is_list_like,
+    _to_comma_list,
+)
 from gvm.connections import GvmConnection
 
 from . import types

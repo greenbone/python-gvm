@@ -35,6 +35,7 @@ from gvm.xml import XmlCommand
 
 SupportedGmpVersion = Union[Gmpv7, Gmpv8, Gmpv9]
 
+
 class Gmp(GvmProtocol):
     """Dynamically select supported GMP protocol of the remote manager daemon.
 
