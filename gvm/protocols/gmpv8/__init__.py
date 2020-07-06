@@ -912,9 +912,31 @@ class GmpV8Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return super().create_filter(
-            name, filter_type=filter_type, comment=comment, term=term
-        )
+        if not name:
+            raise RequiredArgument(
+                function=self.create_filter.__name__, argument="name"
+            )
+
+        cmd = XmlCommand("create_filter")
+        _xmlname = cmd.add_element("name", name)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if term:
+            cmd.add_element("term", term)
+
+        if filter_type:
+            if not isinstance(filter_type, self.types.FilterType):
+                raise InvalidArgumentType(
+                    function=self.create_filter.__name__,
+                    argument="filter_type",
+                    arg_type=self.types.FilterType.__name__,
+                )
+
+            cmd.add_element("type", filter_type.value)
+
+        return self._send_xml_command(cmd)
 
     def modify_filter(
         self,

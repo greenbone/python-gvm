@@ -20,8 +20,8 @@
 """
 Module for communication with gvmd in `Greenbone Management Protocol version 7`_
 
-.. _Greenbone Management Protocol version 7:
-    https://docs.greenbone.net/API/GMP/gmp-7.0.html
+.. _Greenbone Management Protocol version 9:
+    https://docs.greenbone.net/API/GMP/gmp-9.0.html
 """
 
 from typing import Any, Callable, Optional

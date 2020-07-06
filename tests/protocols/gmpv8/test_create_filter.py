@@ -69,6 +69,17 @@ class GmpCreateFilterTestCase(Gmpv8TestCase):
             '</create_filter>'
         )
 
+    def test_create_filter_make_unique(self):
+        with self.assertRaises(TypeError):
+            self.gmp.create_filter(
+                name='f1',
+                term='sort-reverse=threat result_hosts_only=1 '
+                'notes=1 overrides=1 levels=hml first=1 rows=1000',
+                filter_type=FilterType.TASK,
+                make_unique=True,
+                comment='foo',
+            )
+
     def test_create_filter_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_filter('')
