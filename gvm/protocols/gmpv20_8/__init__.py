@@ -43,7 +43,6 @@ from gvm.connections import GvmConnection
 
 from . import types
 from .types import *
-from .types import _UsageType as UsageType
 
 _EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
 
