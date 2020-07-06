@@ -22,22 +22,31 @@ from . import Gmpv208TestCase
 
 
 class GmpCloneAgentTestCase(Gmpv208TestCase):
-    def test_deprecation_clone_agent(self):
-        self.gmp.clone_agent('a1')
-
-        self.assertWarns(DeprecationWarning)
-
     def test_deprecation_create_agent(self):
-        self.gmp.create_agent(
-            installer='foo', signature='bar', name='ipsum', comment='lorem'
-        )
+        with self.assertWarns(DeprecationWarning):
+            self.gmp.create_agent(
+                installer='foo', signature='bar', name='ipsum', comment='lorem'
+            )
 
-        self.assertWarns(DeprecationWarning)
+    def test_deprecation_clone_agent(self):
+        with self.assertWarns(DeprecationWarning):
+            self.gmp.clone_agent('a1')
 
     def test_deprecation_delete_agent(self):
-        self.gmp.delete_agent('a1')
+        with self.assertWarns(DeprecationWarning):
+            self.gmp.delete_agent('a1')
 
-        self.assertWarns(DeprecationWarning)
+    def test_deprecation_modify_agent(self):
+        with self.assertWarns(DeprecationWarning):
+            self.gmp.modify_agent('a1')
+
+    def test_deprecation_verify_agent(self):
+        with self.assertWarns(DeprecationWarning):
+            self.gmp.verify_agent('a1')
+
+    def test_deprecation_get_agent(self):
+        with self.assertWarns(DeprecationWarning):
+            self.gmp.get_agent('a1')
 
 
 if __name__ == '__main__':

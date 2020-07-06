@@ -17,11 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from enum import Enum
 
-from typing import Optional
-
-from gvm.errors import InvalidArgument
-
-from gvm.protocols.gmpv8.types import (
+from gvm.protocols.gmpv9.types import (
     AlertCondition,
     AlertEvent,
     AlertMethod,
@@ -31,10 +27,10 @@ from gvm.protocols.gmpv8.types import (
     CredentialType,
     FeedType,
     HostsOrdering,
-    InfoType,
     PermissionSubjectType,
     PortRangeType,
     SeverityLevel,
+    ScannerType,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
     TicketStatus,
@@ -46,11 +42,14 @@ from gvm.protocols.gmpv8.types import (
     get_asset_type_from_string,
     get_credential_format_from_string,
     get_credential_type_from_string,
+    get_entity_type_from_string,
     get_feed_type_from_string,
+    get_filter_type_from_string,
     get_hosts_ordering_from_string,
     get_info_type_from_string,
     get_permission_subject_type_from_string,
     get_port_range_type_from_string,
+    get_scanner_type_from_string,
     get_severity_level_from_string,
     get_snmp_auth_algorithm_from_string,
     get_snmp_privacy_algorithm_from_string,
@@ -104,7 +103,6 @@ __all__ = [
 class EntityType(Enum):
     """ Enum for entity types """
 
-    AGENT = "agent"
     ALERT = "alert"
     ASSET = "asset"
     CERT_BUND_ADV = "cert_bund_adv"
@@ -139,42 +137,9 @@ class EntityType(Enum):
     VULNERABILITY = "vuln"
 
 
-def get_entity_type_from_string(
-    entity_type: Optional[str],
-) -> Optional[EntityType]:
-    """ Convert a entity type string to an actual EntityType instance
-
-    Arguments:
-        entity_type: Entity type string to convert to a EntityType
-    """
-    if not entity_type:
-        return None
-
-    if entity_type == 'vuln':
-        return EntityType.VULNERABILITY
-
-    if entity_type == 'os':
-        return EntityType.OPERATING_SYSTEM
-
-    if entity_type == 'config':
-        return EntityType.SCAN_CONFIG
-
-    if entity_type == 'tls_certificate':
-        return EntityType.TLS_CERTIFICATE
-
-    try:
-        return EntityType[entity_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='entity_type',
-            function=get_entity_type_from_string.__name__,
-        )
-
-
 class FilterType(Enum):
     """ Enum for filter types """
 
-    AGENT = "agent"
     ALERT = "alert"
     ASSET = "asset"
     SCAN_CONFIG = "config"
@@ -202,122 +167,12 @@ class FilterType(Enum):
     VULNERABILITY = "vuln"
 
 
-def get_filter_type_from_string(
-    filter_type: Optional[str],
-) -> Optional[FilterType]:
-    """ Convert a filter type string to an actual FilterType instance
+class InfoType(Enum):
+    """ Enum for info types """
 
-    Arguments:
-        filter_type (str): Filter type string to convert to a FilterType
-    """
-    if not filter_type:
-        return None
-
-    if filter_type == 'vuln':
-        return FilterType.VULNERABILITY
-
-    if filter_type == 'os':
-        return FilterType.OPERATING_SYSTEM
-
-    if filter_type == 'config':
-        return FilterType.SCAN_CONFIG
-
-    if filter_type == 'secinfo':
-        return FilterType.ALL_SECINFO
-
-    if filter_type == 'tls_certificate':
-        return FilterType.TLS_CERTIFICATE
-
-    try:
-        return FilterType[filter_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='filter_type',
-            function=get_filter_type_from_string.__name__,
-        )
-
-
-class ScannerType(Enum):
-    """ Enum for scanner type """
-
-    OSP_SCANNER_TYPE = "1"
-    OPENVAS_SCANNER_TYPE = "2"
-    CVE_SCANNER_TYPE = "3"
-    GMP_SCANNER_TYPE = "4"  # formerly slave scanner
-    GREENBONE_SENSOR_SCANNER_TYPE = "5"
-
-
-def get_scanner_type_from_string(
-    scanner_type: Optional[str],
-) -> Optional[ScannerType]:
-    """ Convert a scanner type string to an actual ScannerType instance
-
-    Arguments:
-        scanner_type: Scanner type string to convert to a ScannerType
-    """
-    if not scanner_type:
-        return None
-
-    scanner_type = scanner_type.lower()
-
-    if (
-        scanner_type == ScannerType.OSP_SCANNER_TYPE.value
-        or scanner_type == 'osp'
-    ):
-        return ScannerType.OSP_SCANNER_TYPE
-
-    if (
-        scanner_type == ScannerType.OPENVAS_SCANNER_TYPE.value
-        or scanner_type == 'openvas'
-    ):
-        return ScannerType.OPENVAS_SCANNER_TYPE
-
-    if (
-        scanner_type == ScannerType.CVE_SCANNER_TYPE.value
-        or scanner_type == 'cve'
-    ):
-        return ScannerType.CVE_SCANNER_TYPE
-
-    if (
-        scanner_type == ScannerType.GMP_SCANNER_TYPE.value
-        or scanner_type == 'gmp'
-    ):
-        return ScannerType.GMP_SCANNER_TYPE
-
-    if (
-        scanner_type == ScannerType.GREENBONE_SENSOR_SCANNER_TYPE.value
-        or scanner_type == 'greenbone'
-    ):
-        return ScannerType.GREENBONE_SENSOR_SCANNER_TYPE
-
-    raise InvalidArgument(
-        argument='scanner_type', function=get_scanner_type_from_string.__name__
-    )
-
-
-class _UsageType(Enum):
-    """ Enum for usage types """
-
-    AUDIT = "audit"
-    POLICY = "policy"
-    SCAN = "scan"
-
-
-def __get_usage_type_from_string(
-    usage_type: Optional[str],
-) -> Optional[_UsageType]:
-    """ Convert a usage type string to an actual _UsageType instance
-
-    Arguments:
-        entity_type: Usage type string to convert to a _UsageType
-    """
-    if not usage_type:
-        return None
-
-    try:
-        return _UsageType[usage_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='usage_type',
-            function=__get_usage_type_from_string.__name__,
-        )
+    CERT_BUND_ADV = "CERT_BUND_ADV"
+    CPE = "CPE"
+    CVE = "CVE"
+    DFN_CERT_ADV = "DFN_CERT_ADV"
+    OVALDEF = "OVALDEF"
+    NVT = "NVT"
