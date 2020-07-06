@@ -26,11 +26,12 @@ Module for communication with gvmd in `Greenbone Management Protocol version 7`_
 
 from typing import Any, Callable, Optional
 
+from gvm.protocols.gmpv7 import GmpV7Mixin
 from gvm.protocols.gmpv8 import GmpV8Mixin
 from gvm.connections import GvmConnection
 
 
-class Gmp(GmpV8Mixin):
+class Gmp(GmpV8Mixin, GmpV7Mixin):
     def __init__(
         self,
         connection: GvmConnection,
