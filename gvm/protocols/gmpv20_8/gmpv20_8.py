@@ -32,6 +32,8 @@ from gvm.protocols.gmpv8 import GmpV8Mixin
 from gvm.protocols.gmpv7 import GmpV7Mixin
 from gvm.connections import GvmConnection
 
+PROTOCOL_VERSION = (20, 8)
+
 
 class Gmp(GmpV208Mixin, GmpV9Mixin, GmpV8Mixin, GmpV7Mixin):
     def __init__(
@@ -44,3 +46,12 @@ class Gmp(GmpV208Mixin, GmpV9Mixin, GmpV8Mixin, GmpV7Mixin):
 
         # Is authenticated on gvmd
         self._authenticated = False
+
+    @staticmethod
+    def get_protocol_version() -> tuple:
+        """Determine the Greenbone Management Protocol version.
+
+        Returns:
+            tuple: Implemented version of the Greenbone Management Protocol
+        """
+        return PROTOCOL_VERSION

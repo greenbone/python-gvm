@@ -48,8 +48,6 @@ from .types import _UsageType as UsageType
 
 _EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
 
-PROTOCOL_VERSION = (9,)
-
 
 class GmpV9Mixin(GvmProtocol):
 
@@ -65,15 +63,6 @@ class GmpV9Mixin(GvmProtocol):
 
         # Is authenticated on gvmd
         self._authenticated = False
-
-    @staticmethod
-    def get_protocol_version() -> tuple:
-        """Determine the Greenbone Management Protocol version.
-
-        Returns:
-            tuple: Implemented version of the Greenbone Management Protocol
-        """
-        return PROTOCOL_VERSION
 
     def create_audit(
         self,

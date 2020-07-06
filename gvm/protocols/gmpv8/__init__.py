@@ -39,8 +39,6 @@ from gvm.connections import GvmConnection
 from . import types
 from .types import *
 
-PROTOCOL_VERSION = (8,)
-
 
 class GmpV8Mixin(GvmProtocol):
 
@@ -56,15 +54,6 @@ class GmpV8Mixin(GvmProtocol):
 
         # Is authenticated on gvmd
         self._authenticated = False
-
-    @staticmethod
-    def get_protocol_version() -> tuple:
-        """Determine the Greenbone Management Protocol version.
-
-        Returns:
-            tuple: Implemented version of the Greenbone Management Protocol
-        """
-        return PROTOCOL_VERSION
 
     def create_credential(
         self,

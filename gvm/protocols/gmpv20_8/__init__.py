@@ -32,7 +32,6 @@ from typing import Any, List, Optional, Callable
 from gvm.utils import deprecation
 from gvm.xml import XmlCommand
 
-from gvm.protocols.base import GvmProtocol
 from gvm.protocols.gmpv7 import (
     _to_bool,
     _add_filter,
@@ -40,6 +39,9 @@ from gvm.protocols.gmpv7 import (
     _to_comma_list,
 )
 from gvm.connections import GvmConnection
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+
+from gvm.protocols.base import GvmProtocol
 
 from . import types
 from .types import *
@@ -63,15 +65,6 @@ class GmpV208Mixin(GvmProtocol):
 
         # Is authenticated on gvmd
         self._authenticated = False
-
-    @staticmethod
-    def get_protocol_version() -> tuple:
-        """Determine the Greenbone Management Protocol version.
-
-        Returns:
-            tuple: Implemented version of the Greenbone Management Protocol
-        """
-        return PROTOCOL_VERSION
 
     def create_agent(
         self,
@@ -152,3 +145,40 @@ class GmpV208Mixin(GvmProtocol):
                 self.get_protocol_version()[1],
             )
         )
+
+    def get_info(self, info_id: str, info_type: InfoType) -> Any:
+        """Request a single secinfo
+
+        Arguments:
+            info_id: UUID of an existing secinfo
+            info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
+                DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not info_type:
+            raise RequiredArgument(
+                function=self.get_info.__name__, argument='info_type'
+            )
+
+        if not isinstance(info_type, InfoType):
+            raise InvalidArgumentType(
+                function=self.get_info.__name__,
+                argument='info_type',
+                arg_type=InfoType.__name__,
+            )
+
+        if not info_id:
+            raise RequiredArgument(
+                function=self.get_info.__name__, argument='info_id'
+            )
+
+        cmd = XmlCommand("get_info")
+        cmd.set_attribute("info_id", info_id)
+
+        cmd.set_attribute("type", info_type.value)
+
+        # for single entity always request all details
+        cmd.set_attribute("details", "1")
+        return self._send_xml_command(cmd)

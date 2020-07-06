@@ -46,8 +46,6 @@ logger = logging.getLogger(__name__)
 
 Severity = numbers.Real
 
-PROTOCOL_VERSION = (7,)
-
 
 def _check_command_status(xml: str) -> bool:
     """Check gmp response
@@ -187,15 +185,6 @@ class GmpV7Mixin(GvmProtocol):
 
         # Is authenticated on gvmd
         self._authenticated = False
-
-    @staticmethod
-    def get_protocol_version() -> tuple:
-        """Determine the Greenbone Management Protocol version.
-
-        Returns:
-            Implemented version of the Greenbone Management Protocol
-        """
-        return PROTOCOL_VERSION
 
     def is_authenticated(self) -> bool:
         """Checks if the user is authenticated
