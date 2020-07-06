@@ -34,7 +34,9 @@ from gvm.transforms import EtreeCheckCommandTransform
 
 from gvm.xml import XmlCommand
 
-SupportedGmpVersion = Union[Gmpv7, Gmpv8, Gmpv9, Gmpv208]
+SUPPORTED_GMP_VERSIONS = Union[  # pylint: disable=invalid-name
+    Gmpv7, Gmpv8, Gmpv9, Gmpv208
+]
 
 
 class Gmp(GvmProtocol):
@@ -94,7 +96,7 @@ class Gmp(GvmProtocol):
 
         return version_el.text
 
-    def determine_supported_gmp(self) -> SupportedGmpVersion:
+    def determine_supported_gmp(self) -> SUPPORTED_GMP_VERSIONS:
         """ Determine supported GMP version of the remote daemon and return a
             corresponding Gmp class instance
         """
