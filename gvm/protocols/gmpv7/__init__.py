@@ -154,7 +154,7 @@ def _is_list_like(value: Any) -> bool:
     return isinstance(value, (list, tuple))
 
 
-class Gmp(GvmProtocol):
+class GmpV7Mixin(GvmProtocol):
     """Python interface for Greenbone Management Protocol
 
     This class implements the `Greenbone Management Protocol version 7`_

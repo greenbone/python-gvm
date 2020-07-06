@@ -26,12 +26,15 @@ Module for communication with gvmd in `Greenbone Management Protocol version 8`_
 """
 import warnings
 
-from typing import Any, List, Optional
+from typing import Any, List, Optional, Callable
 
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.xml import XmlCommand
 
-from gvm.protocols.gmpv7 import Gmp as Gmpv7, _to_bool, _add_filter
+from gvm.protocols.base import GvmProtocol
+from gvm.protocols.gmpv7 import _to_bool, _add_filter
+from gvm.connections import GvmConnection
+
 
 from . import types
 from .types import *
@@ -39,9 +42,20 @@ from .types import *
 PROTOCOL_VERSION = (8,)
 
 
-class Gmp(Gmpv7):
+class GmpV8Mixin(GvmProtocol):
 
     types = types
+
+    def __init__(
+        self,
+        connection: GvmConnection,
+        *,
+        transform: Optional[Callable[[str], Any]] = None
+    ):
+        super().__init__(connection, transform=transform)
+
+        # Is authenticated on gvmd
+        self._authenticated = False
 
     @staticmethod
     def get_protocol_version() -> tuple:
