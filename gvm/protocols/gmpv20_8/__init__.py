@@ -26,6 +26,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 9`_
 """
 import collections
 import numbers
+import warnings
 
 from typing import Any, List, Optional, Callable
 
@@ -152,7 +153,7 @@ class GmpV208Mixin(GvmProtocol):
         Arguments:
             info_id: UUID of an existing secinfo
             info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
-                DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
+                DFN_CERT_ADV, OVALDEF, NVT
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -181,4 +182,182 @@ class GmpV208Mixin(GvmProtocol):
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
+        return self._send_xml_command(cmd)
+
+    def modify_schedule(
+        self,
+        schedule_id: str,
+        *,
+        name: Optional[str] = None,
+        icalendar: Optional[str] = None,
+        timezone: Optional[str] = None,
+        comment: Optional[str] = None
+    ) -> Any:
+        """Modifies an existing schedule
+
+        Arguments:
+            schedule_id: UUID of the schedule to be modified
+            name: Name of the schedule
+            icalendar: `iCalendar`_ (RFC 5545) based data.
+            timezone: Timezone to use for the icalender events e.g
+                Europe/Berlin. If the datetime values in the icalendar data are
+                missing timezone information this timezone gets applied.
+                Otherwise the datetime values from the icalendar data are
+                displayed in this timezone
+            commenhedule.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+
+        .. _iCalendar:
+            https://tools.ietf.org/html/rfc5545
+        """
+        if not schedule_id:
+            raise RequiredArgument(
+                function=self.modify_schedule.__name__, argument='schedule_id'
+            )
+
+        cmd = XmlCommand("modify_schedule")
+        cmd.set_attribute("schedule_id", schedule_id)
+
+        if name:
+            cmd.add_element("name", name)
+
+        if icalendar:
+            cmd.add_element("icalendar", icalendar)
+
+        if timezone:
+            cmd.add_element("timezone", timezone)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        return self._send_xml_command(cmd)
+
+    def create_target(
+        self,
+        name: str,
+        *,
+        make_unique: Optional[bool] = None,
+        asset_hosts_filter: Optional[str] = None,
+        hosts: Optional[List[str]] = None,
+        comment: Optional[str] = None,
+        exclude_hosts: Optional[List[str]] = None,
+        ssh_credential_id: Optional[str] = None,
+        ssh_credential_port: Optional[int] = None,
+        smb_credential_id: Optional[str] = None,
+        esxi_credential_id: Optional[str] = None,
+        snmp_credential_id: Optional[str] = None,
+        alive_test: Optional[AliveTest] = None,
+        reverse_lookup_only: Optional[bool] = None,
+        reverse_lookup_unify: Optional[bool] = None,
+        port_range: Optional[str] = None,
+        port_list_id: Optional[str] = None
+    ) -> Any:
+        """Create a new target
+
+        Arguments:
+            name: Name of the target
+            make_unique: Deprecated. Will be ignored.
+            asset_hosts_filter: Filter to select target host from assets hosts
+            hosts: List of hosts addresses to scan
+            exclude_hosts: List of hosts addresses to exclude from scan
+            comment: Comment for the target
+            ssh_credential_id: UUID of a ssh credential to use on target
+            ssh_credential_port: The port to use for ssh credential
+            smb_credential_id: UUID of a smb credential to use on target
+            snmp_credential_id: UUID of a snmp credential to use on target
+            esxi_credential_id: UUID of a esxi credential to use on target
+            alive_test: Which alive test to use
+            reverse_lookup_only: Whether to scan only hosts that have names
+            reverse_lookup_unify: Whether to scan only one IP when multiple IPs
+                have the same name.
+            port_range: Port range for the target
+            port_list_id: UUID of the port list to use on target
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if make_unique is not None:
+            warnings.warn(
+                'create_target make_unique argument is deprecated '
+                'and will be ignored.',
+                DeprecationWarning,
+            )
+
+        if not name:
+            raise RequiredArgument(
+                function=self.create_target.__name__, argument='name'
+            )
+
+        # since 20.08 one of port_range or port_list_id is required!
+        if not port_range and not port_list_id:
+            raise RequiredArgument(
+                function=self.create_target.__name__,
+                argument='port_range or port_list_id',
+            )
+
+        cmd = XmlCommand("create_target")
+        _xmlname = cmd.add_element("name", name)
+
+        if asset_hosts_filter:
+            cmd.add_element(
+                "asset_hosts", attrs={"filter": str(asset_hosts_filter)}
+            )
+        elif hosts:
+            cmd.add_element("hosts", _to_comma_list(hosts))
+        else:
+            raise RequiredArgument(
+                function=self.create_target.__name__,
+                argument='hosts or asset_hosts_filter',
+            )
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if exclude_hosts:
+            cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
+
+        if ssh_credential_id:
+            _xmlssh = cmd.add_element(
+                "ssh_credential", attrs={"id": ssh_credential_id}
+            )
+            if ssh_credential_port:
+                _xmlssh.add_element("port", str(ssh_credential_port))
+
+        if smb_credential_id:
+            cmd.add_element("smb_credential", attrs={"id": smb_credential_id})
+
+        if esxi_credential_id:
+            cmd.add_element("esxi_credential", attrs={"id": esxi_credential_id})
+
+        if snmp_credential_id:
+            cmd.add_element("snmp_credential", attrs={"id": snmp_credential_id})
+
+        if alive_test:
+            if not isinstance(alive_test, AliveTest):
+                raise InvalidArgumentType(
+                    function=self.create_target.__name__,
+                    argument='alive_test',
+                    arg_type=AliveTest.__name__,
+                )
+
+            cmd.add_element("alive_tests", alive_test.value)
+
+        if reverse_lookup_only is not None:
+            cmd.add_element(
+                "reverse_lookup_only", _to_bool(reverse_lookup_only)
+            )
+
+        if reverse_lookup_unify is not None:
+            cmd.add_element(
+                "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
+            )
+
+        if port_range:
+            cmd.add_element("port_range", port_range)
+
+        if port_list_id:
+            cmd.add_element("port_list", attrs={"id": port_list_id})
+
         return self._send_xml_command(cmd)
