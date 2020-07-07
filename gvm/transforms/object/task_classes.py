@@ -108,23 +108,22 @@ class Report:
 
     """
 
-    gmp: GvmProtocol
-    uuid: str
-    format_id: str
-    extension: str
-    content_type: str
-    owner: Owner
-    name: str
-    comment: str
-    creation_time: datetime.datetime
-    modification_time: datetime.datetime
-    writable: bool
-    in_use: bool
-    gmp_version: str
+    gmp: GvmProtocol = None
+    uuid: str = None
+    format_id: str = None
+    content_type: str = None
+    owner: Owner = None
+    name: str = None
+    comment: str = None
+    creation_time: datetime.datetime = None
+    modification_time: datetime.datetime = None
+    writable: bool = None
+    in_use: bool = None
+    gmp_version: str = None
     # sort
     # filters
     # severity_class
-    scan_run_status: str
+    scan_run_status: str = None
     # hosts
     # closed_cves
     # vulns
@@ -132,16 +131,16 @@ class Report:
     # apps
     # ssl_certs
     # scan
-    timestamp: datetime.datetime
-    scan_start: datetime.datetime
-    scan_end: datetime.datetime
-    timezone: str
-    timezone_abbrev: str
-    # result_count
-    severity: Severity
+    timestamp: datetime.datetime = None
+    scan_start: datetime.datetime = None
+    scan_end: datetime.datetime = None
+    timezone: str = None
+    timezone_abbrev: str = None
+    # result_count = None
+    severity: Severity = None
     # errors
-    all_info_loaded: bool
-    _task: ReportTask
+    all_info_loaded: bool = False
+    _task: ReportTask = None
 
     @staticmethod
     def resolve_reports(root: etree.Element, gmp) -> List["Report"]:
@@ -171,7 +170,6 @@ class Report:
             return None
         uuid = root.get("id")
         format_id = root.get("format_id")
-        extension = root.get("extension")
         content_type = root.get("content_type")
         owner = Owner.resolve_owner(root.find("owner"))
         name = get_text_from_element(root, "name")
@@ -239,7 +237,6 @@ class Report:
             gmp,
             uuid,
             format_id,
-            extension,
             content_type,
             owner,
             name,
@@ -455,36 +452,36 @@ class Task:
         _scanner: The scanner used to scan the target.
     """
 
-    gmp: GvmProtocol
-    uuid: str
-    owner: Owner
-    name: str
-    comment: str
-    creation_time: datetime.datetime
-    modification_time: datetime.datetime
-    writable: bool
-    in_use: bool
-    permissions: list
-    user_tags: UserTags
-    alterable: bool
-    usage_type: str
-    hosts_ordering: str
+    gmp: GvmProtocol = None
+    uuid: str = None
+    owner: Owner = None
+    name: str = None
+    comment: str = None
+    creation_time: datetime.datetime = None
+    modification_time: datetime.datetime = None
+    writable: bool = None
+    in_use: bool = None
+    permissions: list = None
+    user_tags: UserTags = None
+    alterable: bool = None
+    usage_type: str = None
+    hosts_ordering: str = None
 
     # alert
-    status: str
-    progress: int
-    report_count: ReportCount
-    trend: str
-    schedule: Schedule
-    schedule_periods: int
-    observers: Observers
-    preferences: list
-    all_info_loaded: bool
-    _current_report: Report
-    _last_report: Report
-    _scan_config: TaskScanConfig
-    _target: Target
-    _scanner: Scanner
+    status: str = None
+    progress: int = None
+    report_count: ReportCount = None
+    trend: str = None
+    schedule: Schedule = None
+    schedule_periods: int = None
+    observers: Observers = None
+    preferences: list = None
+    all_info_loaded: bool = None
+    _current_report: Report = None
+    _last_report: Report = None
+    _scan_config: TaskScanConfig = None
+    _target: Target = None
+    _scanner: Scanner = None
 
     @staticmethod
     def resolve_tasks(root: etree.Element, gmp) -> List["Task"]:
@@ -605,10 +602,11 @@ class Task:
             return None
 
         if self._current_report.uuid != "":
-            self._current_report = gmp.get_report(
-                self._current_report.uuid
-            ).reports
-            self._current_report.all_info_loaded = True
+            if not self._current_report.all_info_loaded:
+                self._current_report = gmp.get_report(
+                    self._current_report.uuid
+                ).reports
+                self._current_report.all_info_loaded = True
 
     def load_last_report(self, gmp):
         """ Loads more information of the last report, based on the uuid.
@@ -617,8 +615,11 @@ class Task:
             return None
 
         if self._last_report.uuid != "":
-            self._last_report = gmp.get_report(self._last_report.uuid).reports
-            self._last_report.all_info_loaded = True
+            if not self._last_report.all_info_loaded:
+                self._last_report = gmp.get_report(
+                    self._last_report.uuid
+                ).reports
+                self._last_report.all_info_loaded = True
 
     def load_scan_config(self, gmp):
         """ Loads more information of the scan config, based on the uuid.
@@ -638,6 +639,9 @@ class Task:
     def load_target(self, gmp):
         """ Loads more information of the target, based on the uuid.
         """
+        if self._target is None:
+            return None
+
         if self._target.uuid != "":
             if not self._target.all_info_loaded:
                 trash = self._target.trash
@@ -648,6 +652,9 @@ class Task:
     def load_scanner(self, gmp):
         """ Loads more information of the scanner, based on the uuid.
         """
+        if self._scanner is None:
+            return None
+
         # das Abfragen von Informationen zu einem Scanner dauert sehr lange.
         if self._scanner.uuid != "":
             if not self._scanner.all_info_loaded:
@@ -726,29 +733,29 @@ class Task:
 
 @dataclass
 class ScanConfig:
-    uuid: str
-    owner: Owner
-    name: str
-    comment: str
-    creation_time: datetime.datetime
-    modification_time: datetime.datetime
-    writable: bool
-    in_use: bool
-    permissions: list
-    family_count: FamilyCount
-    nvt_count: NvtCount
-    config_type: int
-    usage_type: str
-    max_nvt_count: int
-    known_nvt_count: int
-    scanner: Scanner
-    user_tags: UserTags
-    tasks: List[Task]
+    uuid: str = None
+    owner: Owner = None
+    name: str = None
+    comment: str = None
+    creation_time: datetime.datetime = None
+    modification_time: datetime.datetime = None
+    writable: bool = None
+    in_use: bool = None
+    permissions: list = None
+    family_count: FamilyCount = None
+    nvt_count: NvtCount = None
+    config_type: int = None
+    usage_type: str = None
+    max_nvt_count: int = None
+    known_nvt_count: int = None
+    scanner: Scanner = None
+    user_tags: UserTags = None
+    tasks: List[Task] = None
     # families
-    preferences: List[Preference]
+    preferences: List[Preference] = None
     # nvt_selectors
-    trash: bool
-    all_info_loaded: bool
+    trash: bool = None
+    all_info_loaded: bool = False
 
     @staticmethod
     def resolve_configs(root: etree.Element, gmp) -> list:

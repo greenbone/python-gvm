@@ -1,0 +1,43 @@
+<get_configs_response status="200" status_text="OK">
+	<config id="d21f6c81-2b88-4ac1-b7b4-a2a9f2ad4663">
+		<owner>
+			<name />
+		</owner>
+		<name>
+			Base
+		</name>
+		<comment>
+			Basic configuration template.
+		</comment>
+		<creation_time>
+			2020-03-02T10:48:37Z
+		</creation_time>
+		<modification_time>
+			2020-03-02T10:48:37Z
+		</modification_time>
+		<writable>
+			0
+		</writable>
+		<in_use>
+			0
+		</in_use>
+		<family_count>
+			2
+			<growing>
+				0
+			</growing>
+		</family_count>
+		<nvt_count>
+			3
+			<growing>
+				0
+			</growing>
+		</nvt_count>
+		<type>
+			0
+		</type>
+		<usage_type>
+			scan
+		</usage_type>
+	</config>
+</get_configs_response>

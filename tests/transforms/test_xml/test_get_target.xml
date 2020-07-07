@@ -1,0 +1,74 @@
+<get_targets_response status="200" status_text="OK">
+	<target id="f8fac1da-de4f-461a-b4cc-7aff71734ec7">
+		<owner>
+			<name>
+				admin
+			</name>
+		</owner>
+		<name>
+			Test target
+		</name>
+		<comment>
+			Test comment
+		</comment>
+		<creation_time>
+			2020-03-03T10:05:26Z
+		</creation_time>
+		<modification_time>
+			2020-03-03T10:05:26Z
+		</modification_time>
+		<writable>
+			1
+		</writable>
+		<in_use>
+			1
+		</in_use>
+		<hosts>
+			192.168.212.44
+		</hosts>
+		<exclude_hosts>
+		</exclude_hosts>
+		<max_hosts>
+			1
+		</max_hosts>
+		<ssh_credential id="">
+			<name>
+			</name>
+			<port>
+			</port>
+			<trash>
+				0
+			</trash>
+		</ssh_credential>
+		<smb_credential id="">
+			<name>
+			</name>
+			<trash>
+				0
+			</trash>
+		</smb_credential>
+		<esxi_credential id="">
+			<name>
+			</name>
+			<trash>
+				0
+			</trash>
+		</esxi_credential>
+		<snmp_credential id="">
+			<name>
+			</name>
+			<trash>
+				0
+			</trash>
+		</snmp_credential>
+		<reverse_lookup_only>
+			0
+		</reverse_lookup_only>
+		<reverse_lookup_unify>
+			0
+		</reverse_lookup_unify>
+		<alive_tests>
+			Scan Config Default
+		</alive_tests>
+	</target>
+</get_targets_response>

@@ -14,22 +14,22 @@ from .utils import (
 
 @dataclass
 class Scanner:
-    uuid: str
-    owner: Owner
-    name: str
-    comment: str
-    creation_time: datetime.datetime
-    modification_time: datetime.datetime
-    writable: bool
-    in_use: bool
-    permissions: list
+    uuid: str = None
+    owner: Owner = None
+    name: str = None
+    comment: str = None
+    creation_time: datetime.datetime = None
+    modification_time: datetime.datetime = None
+    writable: bool = None
+    in_use: bool = None
+    permissions: list = None
     # hosts
-    port: int
-    scanner_type: int
+    port: int = None
+    scanner_type: int = None
     # ca_pub
     # credential
-    trash: bool
-    all_info_loaded: bool
+    trash: bool = None
+    all_info_loaded: bool = False
 
     @staticmethod
     def resolve_scanners(root: etree.Element) -> list:
@@ -87,28 +87,28 @@ class Scanner:
 
 @dataclass
 class Target:
-    gmp: "Gmp"
-    uuid: str
-    owner: Owner
-    name: str
-    comment: str
-    creation_time: datetime.datetime
-    modification_time: datetime.datetime
-    writable: bool
-    in_use: bool
-    permissions: list
+    gmp: "Gmp" = None
+    uuid: str = None
+    owner: Owner = None
+    name: str = None
+    comment: str = None
+    creation_time: datetime.datetime = None
+    modification_time: datetime.datetime = None
+    writable: bool = None
+    in_use: bool = None
+    permissions: list = None
     # hosts
     # exclude_hosts
     # ssh_credential
     # smb_credential
     # esxi_credential
     # snmp_credential
-    reverse_lookup_only: bool
-    reverse_lookup_unify: bool
+    reverse_lookup_only: bool = None
+    reverse_lookup_unify: bool = None
     # alive_tests: str ?
-    trash: bool
-    all_info_loaded: bool
-    _port_list: PortList
+    trash: bool = None
+    all_info_loaded: bool = None
+    _port_list: PortList = None
 
     @staticmethod
     def resolve_targets(root: etree.Element, gmp) -> list:

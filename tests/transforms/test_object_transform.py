@@ -19,17 +19,22 @@
 import unittest
 import os
 import datetime
+from unittest.mock import patch
 
 from lxml import etree
 
+from gvm.transforms.object.responses import GetReportsResponse
 from gvm.transforms import ObjectTransform
 from gvm.transforms.object.responses import (
-    Response,
     AuthenticateResponse,
-    StartTaskResponse,
     CreateTaskResponse,
-    GetTasksResponse,
+    GetConfigsResponse,
     GetPortListsResponse,
+    GetScannersResponse,
+    GetTargetsResponse,
+    GetTasksResponse,
+    Response,
+    StartTaskResponse,
 )
 
 from gvm.transforms.object.port_classes import PortList, PortCount, PortRange
@@ -487,7 +492,6 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
             gmp=None,
             uuid="c96b26fb-22df-4a79-9d20-c579a5fa5533",
             format_id="",
-            extension="",
             content_type="application/xml",
             owner=Owner("admin"),
             name="2020-03-03T10:05:42Z",
@@ -512,7 +516,6 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
             gmp=None,
             uuid="0f7c7734-e33c-45ef-a9e4-f624e39312cf",
             format_id="Test_ID",
-            extension="Test_EXT",
             content_type="application/xml",
             owner=Owner("admin"),
             name="2020-03-03T10:38:05Z",
@@ -538,6 +541,219 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
         response = transform(root)
 
         self.assertEqual(response.reports, reports)
+
+    def test_task_load_current_report(self):
+        with patch('gvm.protocols.gmpv9.Gmp') as gmp_mock:
+            xml = get_root_from_file("test_get_report.xml")
+            parser = etree.XMLParser(
+                encoding="utf-8", recover=True, huge_tree=True
+            )
+            root = etree.XML(xml, parser)
+
+            gmp_mock.get_report.return_value = GetReportsResponse(None, root)
+
+            report_before = Report(
+                uuid="c96b26fb-22df-4a79-9d20-c579a5fa5533",
+                all_info_loaded=False,
+            )
+
+            report_expected = Report(
+                gmp=None,
+                uuid="c96b26fb-22df-4a79-9d20-c579a5fa5533",
+                format_id="",
+                content_type="application/xml",
+                owner=Owner("admin"),
+                name="2020-03-03T10:05:42Z",
+                comment="Test Comment",
+                creation_time=datetime.datetime(2020, 3, 3, 10, 5, 42),
+                modification_time=datetime.datetime(2020, 3, 3, 10, 6, 22),
+                writable=False,
+                in_use=False,
+                gmp_version="9.0",
+                scan_run_status="Done",
+                timestamp=datetime.datetime(2020, 3, 3, 10, 5, 26),
+                scan_start=datetime.datetime(2020, 3, 3, 10, 5, 42),
+                scan_end=datetime.datetime(2020, 3, 3, 10, 6, 22),
+                timezone="Coordinated Universal Time",
+                timezone_abbrev="UTC",
+                severity=Severity(float(-99.0), float(-99.0)),
+                all_info_loaded=True,
+                _task=ReportTask("1e9844ab-9918-44db-b7d8-9bc32c0b1cee", False),
+            )
+
+            task1 = Task(gmp=gmp_mock, _current_report=report_before)
+            report_after = task1.current_report
+            self.assertEqual(report_after, report_expected)
+
+            task2 = Task()
+            report2 = task2.current_report
+            self.assertIsNone(report2)
+
+    def test_task_load_last_report(self):
+        with patch('gvm.protocols.gmpv9.Gmp') as gmp_mock:
+            xml = get_root_from_file("test_get_report.xml")
+            parser = etree.XMLParser(
+                encoding="utf-8", recover=True, huge_tree=True
+            )
+            root = etree.XML(xml, parser)
+            gmp_mock.get_report.return_value = GetReportsResponse(None, root)
+
+            report_before = Report(
+                uuid="c96b26fb-22df-4a79-9d20-c579a5fa5533",
+                all_info_loaded=False,
+            )
+
+            report_expected = Report(
+                gmp=None,
+                uuid="c96b26fb-22df-4a79-9d20-c579a5fa5533",
+                format_id="",
+                content_type="application/xml",
+                owner=Owner("admin"),
+                name="2020-03-03T10:05:42Z",
+                comment="Test Comment",
+                creation_time=datetime.datetime(2020, 3, 3, 10, 5, 42),
+                modification_time=datetime.datetime(2020, 3, 3, 10, 6, 22),
+                writable=False,
+                in_use=False,
+                gmp_version="9.0",
+                scan_run_status="Done",
+                timestamp=datetime.datetime(2020, 3, 3, 10, 5, 26),
+                scan_start=datetime.datetime(2020, 3, 3, 10, 5, 42),
+                scan_end=datetime.datetime(2020, 3, 3, 10, 6, 22),
+                timezone="Coordinated Universal Time",
+                timezone_abbrev="UTC",
+                severity=Severity(float(-99.0), float(-99.0)),
+                all_info_loaded=True,
+                _task=ReportTask("1e9844ab-9918-44db-b7d8-9bc32c0b1cee", False),
+            )
+
+            task1 = Task(gmp=gmp_mock, _last_report=report_before)
+            report_after = task1.last_report
+            self.assertEqual(report_after, report_expected)
+
+            task2 = Task()
+            report2 = task2.last_report
+            self.assertIsNone(report2)
+
+    def test_task_load_scan_config(self):
+        with patch('gvm.protocols.gmpv9.Gmp') as gmp_mock:
+            xml = get_root_from_file("test_get_config.xml")
+            parser = etree.XMLParser(
+                encoding="utf-8", recover=True, huge_tree=True
+            )
+            root = etree.XML(xml, parser)
+            gmp_mock.get_config.return_value = GetConfigsResponse(None, root)
+
+            scan_config_before = ScanConfig(
+                uuid="d21f6c81-2b88-4ac1-b7b4-a2a9f2ad4663",
+                all_info_loaded=False,
+            )
+
+            scan_config_expected = ScanConfig(
+                uuid="d21f6c81-2b88-4ac1-b7b4-a2a9f2ad4663",
+                owner=None,
+                name="Base",
+                comment="Basic configuration template.",
+                creation_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+                modification_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+                writable=False,
+                in_use=False,
+                family_count=FamilyCount(2, False),
+                nvt_count=NvtCount(3, False),
+                config_type=0,
+                usage_type="scan",
+                max_nvt_count=None,
+                known_nvt_count=None,
+                scanner=None,
+                user_tags=None,
+                tasks=None,
+                preferences=None,
+                trash=None,
+                all_info_loaded=True,
+            )
+
+            task1 = Task(gmp=gmp_mock, _scan_config=scan_config_before)
+            scan_config_after = task1.scan_config
+            self.assertEqual(scan_config_after, scan_config_expected)
+
+            task2 = Task()
+            scan_config2 = task2.scan_config
+            self.assertIsNone(scan_config2)
+
+    def test_task_load_target(self):
+        with patch('gvm.protocols.gmpv9.Gmp') as gmp_mock:
+            xml = get_root_from_file("test_get_target.xml")
+            parser = etree.XMLParser(
+                encoding="utf-8", recover=True, huge_tree=True
+            )
+            root = etree.XML(xml, parser)
+            gmp_mock.get_target.return_value = GetTargetsResponse(None, root)
+
+            target_before = Target(
+                uuid="f8fac1da-de4f-461a-b4cc-7aff71734ec7",
+                all_info_loaded=False,
+            )
+
+            target_expected = Target(
+                uuid="f8fac1da-de4f-461a-b4cc-7aff71734ec7",
+                owner=Owner("admin"),
+                name="Test target",
+                comment="Test comment",
+                creation_time=datetime.datetime(2020, 3, 3, 10, 5, 26),
+                modification_time=datetime.datetime(2020, 3, 3, 10, 5, 26),
+                writable=True,
+                in_use=True,
+                reverse_lookup_only=False,
+                reverse_lookup_unify=False,
+                trash=None,
+                all_info_loaded=True,
+                _port_list=None,
+            )
+
+            task1 = Task(gmp=gmp_mock, _target=target_before)
+            target_after = task1.target
+            self.assertEqual(target_after, target_expected)
+
+            task2 = Task()
+            target2 = task2.target
+            self.assertIsNone(target2)
+
+    def test_task_load_scanner(self):
+        with patch('gvm.protocols.gmpv9.Gmp') as gmp_mock:
+            xml = get_root_from_file("test_get_scanner.xml")
+            parser = etree.XMLParser(
+                encoding="utf-8", recover=True, huge_tree=True
+            )
+            root = etree.XML(xml, parser)
+            gmp_mock.get_scanner.return_value = GetScannersResponse(None, root)
+
+            scanner_before = Scanner(
+                uuid="08b69003-5fc2-4037-a479-93b440211c73",
+                all_info_loaded=False,
+            )
+
+            scanner_expected = Scanner(
+                uuid="08b69003-5fc2-4037-a479-93b440211c73",
+                owner=None,
+                name="OpenVAS Default",
+                comment=None,
+                creation_time=datetime.datetime(2020, 3, 2, 10, 48, 37),
+                modification_time=datetime.datetime(2020, 3, 2, 10, 48, 39),
+                writable=True,
+                in_use=True,
+                port=0,
+                scanner_type=2,
+                trash=None,
+                all_info_loaded=True,
+            )
+
+            task1 = Task(gmp=gmp_mock, _scanner=scanner_before)
+            scanner_after = task1.scanner
+            self.assertEqual(scanner_after, scanner_expected)
+
+            task2 = Task()
+            scanner2 = task2.scanner
+            self.assertIsNone(scanner2)
 
 
 if __name__ == "__main__":

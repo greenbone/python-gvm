@@ -143,10 +143,6 @@ workflows:
   version: 2
   build_and_test:
     jobs:
-      - build-35
-      - test-35
-      - build-36
-      - test-36
       - build-37
       - test-37
       - lint-37

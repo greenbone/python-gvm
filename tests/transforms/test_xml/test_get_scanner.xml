@@ -1,0 +1,45 @@
+<get_scanners_response status="200" status_text="OK">
+	<scanner id="08b69003-5fc2-4037-a479-93b440211c73">
+		<owner>
+			<name>
+			</name>
+		</owner>
+		<name>
+			OpenVAS Default
+		</name>
+		<comment>
+		</comment>
+		<creation_time>
+			2020-03-02T10:48:37Z
+		</creation_time>
+		<modification_time>
+			2020-03-02T10:48:39Z
+		</modification_time>
+		<writable>
+			1
+		</writable>
+		<in_use>
+			1
+		</in_use>
+		<host>
+			/run/ospd/ospd-openvas.sock
+		</host>
+		<port>
+			0
+		</port>
+		<type>
+			2
+		</type>
+		<ca_pub>
+		</ca_pub>
+		<credential id="">
+			<name>
+			</name>
+			<type>
+			</type>
+			<trash>
+				0
+			</trash>
+		</credential>
+	</scanner>
+</get_scanners_response>
