@@ -34,8 +34,8 @@ Exports:
     https://docs.greenbone.net/API/GMP/gmp.html
 """
 
-from .gmpv9.gmpv9 import Gmp
-from .gmpv9 import (
+from .gmpv208 import (
+    Gmp,
     AlertCondition,
     AlertEvent,
     AlertMethod,

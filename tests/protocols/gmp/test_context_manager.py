@@ -23,10 +23,10 @@ from tests.protocols import GmpTestCase
 from gvm.errors import GvmError
 
 from gvm.protocols.gmp import Gmp
-from gvm.protocols.gmpv7.gmpv7 import Gmp as Gmpv7
-from gvm.protocols.gmpv8.gmpv8 import Gmp as Gmpv8
-from gvm.protocols.gmpv9.gmpv9 import Gmp as Gmpv9
-from gvm.protocols.gmpv208.gmpv208 import Gmp as Gmpv208
+from gvm.protocols.gmpv7 import Gmp as Gmpv7
+from gvm.protocols.gmpv8 import Gmp as Gmpv8
+from gvm.protocols.gmpv9 import Gmp as Gmpv9
+from gvm.protocols.gmpv208 import Gmp as Gmpv208
 
 
 class GmpContextManagerTestCase(GmpTestCase):
