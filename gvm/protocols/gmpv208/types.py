@@ -17,6 +17,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 from enum import Enum
 
+from typing import Optional
+
+from gvm.errors import InvalidArgument
+
+
 from gvm.protocols.gmpv9.types import (
     AlertCondition,
     AlertEvent,
@@ -42,11 +47,8 @@ from gvm.protocols.gmpv9.types import (
     get_asset_type_from_string,
     get_credential_format_from_string,
     get_credential_type_from_string,
-    get_entity_type_from_string,
     get_feed_type_from_string,
-    get_filter_type_from_string,
     get_hosts_ordering_from_string,
-    get_info_type_from_string,
     get_permission_subject_type_from_string,
     get_port_range_type_from_string,
     get_scanner_type_from_string,
@@ -139,6 +141,38 @@ class EntityType(Enum):
     VULNERABILITY = "vuln"
 
 
+def get_entity_type_from_string(
+    entity_type: Optional[str],
+) -> Optional[EntityType]:
+    """ Convert a entity type string to an actual EntityType instance
+
+    Arguments:
+        entity_type: Entity type string to convert to a EntityType
+    """
+    if not entity_type:
+        return None
+
+    if entity_type == 'vuln':
+        return EntityType.VULNERABILITY
+
+    if entity_type == 'os':
+        return EntityType.OPERATING_SYSTEM
+
+    if entity_type == 'config':
+        return EntityType.SCAN_CONFIG
+
+    if entity_type == 'tls_certificate':
+        return EntityType.TLS_CERTIFICATE
+
+    try:
+        return EntityType[entity_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='entity_type',
+            function=get_entity_type_from_string.__name__,
+        )
+
+
 class FilterType(Enum):
     """ Enum for filter types """
 
@@ -169,6 +203,41 @@ class FilterType(Enum):
     VULNERABILITY = "vuln"
 
 
+def get_filter_type_from_string(
+    filter_type: Optional[str],
+) -> Optional[FilterType]:
+    """ Convert a filter type string to an actual FilterType instance
+
+    Arguments:
+        filter_type (str): Filter type string to convert to a FilterType
+    """
+    if not filter_type:
+        return None
+
+    if filter_type == 'vuln':
+        return FilterType.VULNERABILITY
+
+    if filter_type == 'os':
+        return FilterType.OPERATING_SYSTEM
+
+    if filter_type == 'config':
+        return FilterType.SCAN_CONFIG
+
+    if filter_type == 'secinfo':
+        return FilterType.ALL_SECINFO
+
+    if filter_type == 'tls_certificate':
+        return FilterType.TLS_CERTIFICATE
+
+    try:
+        return FilterType[filter_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='filter_type',
+            function=get_filter_type_from_string.__name__,
+        )
+
+
 class InfoType(Enum):
     """ Enum for info types """
 
@@ -178,3 +247,19 @@ class InfoType(Enum):
     DFN_CERT_ADV = "DFN_CERT_ADV"
     OVALDEF = "OVALDEF"
     NVT = "NVT"
+
+
+def get_info_type_from_string(info_type: Optional[str]) -> Optional[InfoType]:
+    """ Convert a info type string to an actual InfoType instance
+
+    Arguments:
+        info_type: Info type string to convert to a InfoType
+    """
+    if not info_type:
+        return None
+    try:
+        return InfoType[info_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='info_type', function=get_info_type_from_string.__name__
+        )
