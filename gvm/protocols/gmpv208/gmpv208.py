@@ -26,7 +26,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 7`_
 
 from typing import Any, Callable, Optional
 
-from gvm.protocols.gmpv20_8 import GmpV208Mixin
+from gvm.protocols.gmpv208 import GmpV208Mixin
 from gvm.protocols.gmpv9 import GmpV9Mixin
 from gvm.protocols.gmpv8 import GmpV8Mixin
 from gvm.protocols.gmpv7 import GmpV7Mixin
