@@ -71,20 +71,20 @@ class GmpV208Mixin(GvmProtocol):
         comment: Optional[str] = None,
         howto_install: Optional[str] = None,
         howto_use: Optional[str] = None
-    ) -> Any:
+    ) -> None:
         # pylint: disable=unused-argument
         deprecation(
-            "{} is deprecated in version {}{}".format(
+            "{} has been removed in GMP version {}.{}".format(
                 self.create_agent.__name__,
                 self.get_protocol_version()[0],
                 self.get_protocol_version()[1],
             )
         )
 
-    def clone_agent(self, agent_id: str) -> Any:
+    def clone_agent(self, agent_id: str) -> None:
         # pylint: disable=unused-argument
         deprecation(
-            "{} is deprecated in version {}{}".format(
+            "{} has been removed in GMP version {}.{}".format(
                 self.clone_agent.__name__,
                 self.get_protocol_version()[0],
                 self.get_protocol_version()[1],
@@ -97,10 +97,10 @@ class GmpV208Mixin(GvmProtocol):
         *,
         name: Optional[str] = None,
         comment: Optional[str] = None
-    ) -> Any:
+    ) -> None:
         # pylint: disable=unused-argument
         deprecation(
-            "{} is deprecated in version {}{}".format(
+            "{} has been removed in GMP version {}.{}".format(
                 self.clone_agent.__name__,
                 self.get_protocol_version()[0],
                 self.get_protocol_version()[1],
@@ -113,29 +113,29 @@ class GmpV208Mixin(GvmProtocol):
         *,
         ultimate: Optional[bool] = False
         # pylint: disable=unused-argument
-    ) -> Any:
+    ) -> None:
         deprecation(
-            "{} is deprecated in version {}{}".format(
+            "{} has been removed in GMP version {}.{}".format(
                 self.delete_agent.__name__,
                 self.get_protocol_version()[0],
                 self.get_protocol_version()[1],
             )
         )
 
-    def verify_agent(self, agent_id: str) -> Any:
+    def verify_agent(self, agent_id: str) -> None:
         # pylint: disable=unused-argument
         deprecation(
-            "{} is deprecated in version {}{}".format(
+            "{} has been removed in GMP version {}.{}".format(
                 self.verify_agent.__name__,
                 self.get_protocol_version()[0],
                 self.get_protocol_version()[1],
             )
         )
 
-    def get_agent(self, agent_id: str) -> Any:
+    def get_agent(self, agent_id: str) -> None:
         # pylint: disable=unused-argument
         deprecation(
-            "{} is deprecated in version {}{}".format(
+            "{} has been removed in GMP version {}.{}".format(
                 self.get_agent.__name__,
                 self.get_protocol_version()[0],
                 self.get_protocol_version()[1],
