@@ -64,6 +64,8 @@ from gvm.transforms.object.count_classes import (
     ReportCount,
     FamilyCount,
     NvtCount,
+    ResultCount,
+    ResultCounter,
 )
 
 
@@ -488,6 +490,14 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
 
         root = get_root_from_file("test_get_reports.xml")
 
+        debug = ResultCounter(0, 0)
+        hole = ResultCounter(0, 0)
+        info = ResultCounter(0, 0)
+        log = ResultCounter(0, 0)
+        log2 = ResultCounter(5, 5)
+        warning = ResultCounter(0, 0)
+        false_positiv = ResultCounter(0, 0)
+
         report_mock1 = Report(
             gmp=None,
             uuid="c96b26fb-22df-4a79-9d20-c579a5fa5533",
@@ -507,6 +517,9 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
             scan_end=datetime.datetime(2020, 3, 3, 10, 6, 22),
             timezone="Coordinated Universal Time",
             timezone_abbrev="UTC",
+            result_count=ResultCount(
+                0, 0, 0, debug, hole, info, log, warning, false_positiv
+            ),
             severity=Severity(float(-99.0), float(-99.0)),
             all_info_loaded=False,
             _task=ReportTask("1e9844ab-9918-44db-b7d8-9bc32c0b1cee", False),
@@ -531,6 +544,9 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
             scan_end=datetime.datetime(2020, 3, 3, 10, 39, 47),
             timezone="Coordinated Universal Time",
             timezone_abbrev="UTC",
+            result_count=ResultCount(
+                5, 5, 5, debug, hole, info, log2, warning, false_positiv
+            ),
             severity=Severity(float(0.0), float(0.0)),
             all_info_loaded=False,
             _task=ReportTask("a16aec9e-9c53-4fde-b42f-3c20311c0afc", False),
@@ -557,6 +573,13 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
                 all_info_loaded=False,
             )
 
+            debug = ResultCounter(0, 0)
+            hole = ResultCounter(0, 0)
+            info = ResultCounter(0, 0)
+            log = ResultCounter(0, 0)
+            warning = ResultCounter(0, 0)
+            false_positiv = ResultCounter(0, 0)
+
             report_expected = Report(
                 gmp=None,
                 uuid="c96b26fb-22df-4a79-9d20-c579a5fa5533",
@@ -576,6 +599,9 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
                 scan_end=datetime.datetime(2020, 3, 3, 10, 6, 22),
                 timezone="Coordinated Universal Time",
                 timezone_abbrev="UTC",
+                result_count=ResultCount(
+                    0, 0, 0, debug, hole, info, log, warning, false_positiv
+                ),
                 severity=Severity(float(-99.0), float(-99.0)),
                 all_info_loaded=True,
                 _task=ReportTask("1e9844ab-9918-44db-b7d8-9bc32c0b1cee", False),
@@ -603,6 +629,13 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
                 all_info_loaded=False,
             )
 
+            debug = ResultCounter(0, 0)
+            hole = ResultCounter(0, 0)
+            info = ResultCounter(0, 0)
+            log = ResultCounter(0, 0)
+            warning = ResultCounter(0, 0)
+            false_positiv = ResultCounter(0, 0)
+
             report_expected = Report(
                 gmp=None,
                 uuid="c96b26fb-22df-4a79-9d20-c579a5fa5533",
@@ -622,6 +655,9 @@ class ObjectTransformTaskTestCase(unittest.TestCase):
                 scan_end=datetime.datetime(2020, 3, 3, 10, 6, 22),
                 timezone="Coordinated Universal Time",
                 timezone_abbrev="UTC",
+                result_count=ResultCount(
+                    0, 0, 0, debug, hole, info, log, warning, false_positiv
+                ),
                 severity=Severity(float(-99.0), float(-99.0)),
                 all_info_loaded=True,
                 _task=ReportTask("1e9844ab-9918-44db-b7d8-9bc32c0b1cee", False),

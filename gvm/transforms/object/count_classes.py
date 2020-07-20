@@ -105,7 +105,7 @@ class ResultCount:
     info: ResultCounter
     log: ResultCounter
     warning: ResultCounter
-    false_positiv: ResultCounter
+    false_positive: ResultCounter
 
     @staticmethod
     def resolve_result_count(root: etree.Element):
@@ -118,7 +118,7 @@ class ResultCount:
         log = ResultCounter.resolve_result_counter(root.find("log"))
         warning = ResultCounter.resolve_result_counter(root.find("warning"))
         false_positiv = ResultCounter.resolve_result_counter(
-            root.find("false_positiv")
+            root.find("false_positive")
         )
 
         result_count = ResultCount(
