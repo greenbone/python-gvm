@@ -80,3 +80,57 @@ class ReportCount:
             current=get_int(root.text),
             finished=get_int_from_element(root, "finished"),
         )
+
+
+@dataclass
+class ResultCounter:
+    full: int
+    filtered: int
+
+    @staticmethod
+    def resolve_result_counter(root: etree.Element) -> "ResultCounter":
+        full = get_int_from_element(root, "full")
+        filtered = get_int_from_element(root, "filtered")
+
+        return ResultCounter(full, filtered)
+
+
+@dataclass
+class ResultCount:
+    current: int
+    full: int
+    filtered: int
+    debug: ResultCounter
+    hole: ResultCounter
+    info: ResultCounter
+    log: ResultCounter
+    warning: ResultCounter
+    false_positiv: ResultCounter
+
+    @staticmethod
+    def resolve_result_count(root: etree.Element):
+        current = get_int(root.text)
+        full = get_int_from_element(root, "full")
+        filtered = get_int_from_element(root, "filtered")
+        debug = ResultCounter.resolve_result_counter(root.find("debug"))
+        hole = ResultCounter.resolve_result_counter(root.find("hole"))
+        info = ResultCounter.resolve_result_counter(root.find("info"))
+        log = ResultCounter.resolve_result_counter(root.find("log"))
+        warning = ResultCounter.resolve_result_counter(root.find("warning"))
+        false_positiv = ResultCounter.resolve_result_counter(
+            root.find("false_positiv")
+        )
+
+        result_count = ResultCount(
+            current,
+            full,
+            filtered,
+            debug,
+            hole,
+            info,
+            log,
+            warning,
+            false_positiv,
+        )
+
+        return result_count

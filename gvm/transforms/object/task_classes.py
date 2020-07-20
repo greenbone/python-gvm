@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from lxml import etree
 from gvm.protocols.base import GvmProtocol
 from .user_classes import Owner, UserTags, Observers, Permission
-from .count_classes import ReportCount, FamilyCount, NvtCount
+from .count_classes import ReportCount, FamilyCount, NvtCount, ResultCount
 from .scan_classes import Target, Scanner
 
 from .utils import (
@@ -136,7 +136,7 @@ class Report:
     scan_end: datetime.datetime = None
     timezone: str = None
     timezone_abbrev: str = None
-    # result_count = None
+    result_count: ResultCount = None
     severity: Severity = None
     # errors
     all_info_loaded: bool = False
@@ -199,7 +199,7 @@ class Report:
         scan_end = None
         timezone = None
         timezone_abbrev = None
-        # result_count = None
+        result_count = None
         severity = None
         # errors = None
 
@@ -229,7 +229,9 @@ class Report:
             timezone_abbrev = get_text_from_element(
                 second_level, "timezone_abbrev"
             )
-            # result_count
+            result_count = ResultCount.resolve_result_count(
+                second_level.find("result_count")
+            )
             severity = Severity.resolve_severity(second_level.find("severity"))
             # errors
 
@@ -262,7 +264,7 @@ class Report:
             scan_end,
             timezone,
             timezone_abbrev,
-            # result_count,
+            result_count,
             severity,
             # errors,
             False,
