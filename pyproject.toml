@@ -38,7 +38,7 @@ defusedxml = "^0.6.0"
 
 
 [tool.poetry.dev-dependencies]
-coverage = "^5.1"
+coverage = "^5.2"
 pylint = "^2.5.3"
 sphinx = "^3.1.2"
 sphinx-autodoc-typehints = "^1.11.0"
