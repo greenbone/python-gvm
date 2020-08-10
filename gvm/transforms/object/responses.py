@@ -198,6 +198,7 @@ class CreateTaskResponse(Response):
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
         self.task_id = root.get("id")
+        print(self.task_id)
         if gmp is not None:
             self.task = gmp.get_task(root.get("id")).tasks
 
@@ -218,6 +219,15 @@ class StartTaskResponse(Response):
             self.report = gmp.get_report(self.report_id)
 
 
+@dataclass
+class StopTaskResponse(Response):
+    """Response object for a stop_task command
+    """
+
+    def __init__(self, _gmp, root):
+        super().__init__(root)
+
+
 CLASSDICT = {
     "authenticate_response": AuthenticateResponse,
     "get_port_lists_response": GetPortListsResponse,
@@ -231,6 +241,7 @@ CLASSDICT = {
     "get_groups_response": GetGroupsResponse,
     "create_task_response": CreateTaskResponse,
     "start_task_response": StartTaskResponse,
+    "stop_task_response": StopTaskResponse,
 }
 
 
