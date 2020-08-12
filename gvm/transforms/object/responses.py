@@ -23,6 +23,7 @@ from .user_classes import Role, User, Group
 from .task_classes import Task, Target, Report, Preference, ScanConfig
 from .scan_classes import Scanner
 from .port_classes import PortList
+from .utils import get_int
 
 
 @dataclass
@@ -37,7 +38,7 @@ class Response:
 
     def __init__(self, root: etree.Element):
         self.response_name = root.tag
-        self.status = root.get("status")
+        self.status = get_int(root.get("status"))
         self.status_text = root.get("status_text")
 
 

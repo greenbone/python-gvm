@@ -163,18 +163,18 @@ class Group:
         users: List of the users in the group.
     """
 
-    gmp: GvmProtocol
-    uuid: str
-    owner: Owner
-    name: str
-    comment: str
-    creation_time: datetime.datetime
-    modification_time: datetime.datetime
-    writable: bool
-    in_use: bool
-    permissions: list
-    user_tags: UserTags
-    users: list
+    gmp: GvmProtocol = None
+    uuid: str = None
+    owner: Owner = None
+    name: str = None
+    comment: str = None
+    creation_time: datetime.datetime = None
+    modification_time: datetime.datetime = None
+    writable: bool = None
+    in_use: bool = None
+    permissions: list = None
+    user_tags: UserTags = None
+    users: list = None
 
     @staticmethod
     def resolve_groups(root: etree.Element, gmp):

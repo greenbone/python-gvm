@@ -1,0 +1,126 @@
+<get_users_response status="200" status_text="OK">
+	<user id="d6dcf91b-e9cf-4700-9d33-34c92ce1c3c8">
+		<owner>
+			<name />
+		</owner>
+		<name>
+			admin
+		</name>
+		<comment>
+			comment
+		</comment>
+		<creation_time>
+			2020-06-04T09:57:37Z
+		</creation_time>
+		<modification_time>
+			2020-06-04T09:57:37Z
+		</modification_time>
+		<writable>
+			1
+		</writable>
+		<in_use>
+			0
+		</in_use>
+		<permissions>
+			<permission>
+				<name>
+					get_users
+				</name>
+			</permission>
+		</permissions>
+		<hosts allow="0" />
+		<sources>
+			<source>
+				file
+			</source>
+		</sources>
+		<ifaces allow="0" />
+		<role id="7a8cb5b4-b74d-11e2-8187-406186ea4fc5">
+			<name>
+				Admin
+			</name>
+		</role>
+		<groups>
+			<group id="62d425f1-41af-4b62-b6a8-ea0201490eab">
+				<name>
+					TestGruppe1
+				</name>
+			</group>
+			<group id="62d425f1-41af-4b62-b6a8-ea0201490ebb">
+				<name>
+					TestGruppe2
+				</name>
+			</group>
+		</groups>
+	</user>
+	<user id="ec3266fd-1a35-40db-ab5a-794de9060e04">
+		<owner>
+			<name>
+				admin
+			</name>
+		</owner>
+		<name>
+			TestUser
+		</name>
+		<comment>
+			Tester
+		</comment>
+		<creation_time>
+			2020-06-04T14:35:20Z
+		</creation_time>
+		<modification_time>
+			2020-06-04T14:35:20Z
+		</modification_time>
+		<writable>
+			1
+		</writable>
+		<in_use>
+			0
+		</in_use>
+		<permissions>
+			<permission>
+				<name>
+					Everything
+				</name>
+			</permission>
+		</permissions>
+		<user_tags>
+			<count>
+				1
+			</count>
+		</user_tags>
+		<hosts allow="0" />
+		<sources>
+			<source>
+				file
+			</source>
+		</sources>
+		<ifaces allow="0" />
+		<role id="87a7ebce-b74d-11e2-a81f-406186ea4fc5">
+			<name>
+				Observer
+			</name>
+		</role>
+		<groups>
+			<group id="62d425f1-41af-4b62-b6a8-ea0201490eab">
+				<name>
+					TestGruppe1
+				</name>
+			</group>
+			<group id="62d425f1-41af-4b62-b6a8-ea0201490ebb">
+				<name>
+					TestGruppe2
+				</name>
+			</group>
+		</groups>
+	</user>
+	<user_count>
+		3
+		<filtered>
+			3
+		</filtered>
+		<page>
+			3
+		</page>
+	</user_count>
+</get_users_response>

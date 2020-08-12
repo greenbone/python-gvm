@@ -16,8 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import logging
 import datetime
 from lxml import etree
+
+logger = logging.getLogger(__name__)
 
 
 def resolve_datetime(time: str) -> datetime.datetime:
@@ -27,7 +30,11 @@ def resolve_datetime(time: str) -> datetime.datetime:
         time: Timestring eg. '2020-03-05T15:35:21Z'
     """
     if time is not None:
-        return datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
+        try:
+            return datetime.datetime.strptime(time, "%Y-%m-%dT%H:%M:%SZ")
+        except ValueError as error:
+            logger.warning(str(error))
+            return None
     return None
 
 
@@ -51,7 +58,8 @@ def get_int(number: str) -> int:
     if number is not None:
         try:
             return int(number)
-        except ValueError:
+        except ValueError as error:
+            logger.warning(str(error))
             return None
     return None
 
@@ -66,7 +74,8 @@ def get_float(number: str):
         return None
     try:
         return float(number)
-    except ValueError:
+    except ValueError as error:
+        logger.warning(str(error))
         return None
 
 

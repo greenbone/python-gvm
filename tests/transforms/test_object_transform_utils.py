@@ -37,13 +37,15 @@ from gvm.transforms.object.utils import (
 class ObjectTransformUtilsTestCase(unittest.TestCase):
     def test_resolve_datetime(self):
         datetime_string = "2020-03-05T15:35:21Z"
+        date = datetime.datetime(2020, 3, 5, 15, 35, 21)
 
         result1 = resolve_datetime(datetime_string)
         result2 = resolve_datetime(None)
-        date = datetime.datetime(2020, 3, 5, 15, 35, 21)
+        result3 = resolve_datetime("wrong_string")
 
         self.assertEqual(result1, date)
         self.assertEqual(result2, None)
+        self.assertEqual(result3, None)
 
     def test_get_text(self):
         element = etree.Element('test_text')
@@ -56,14 +58,14 @@ class ObjectTransformUtilsTestCase(unittest.TestCase):
         self.assertEqual(result2, None)
 
     def test_get_int(self):
-        int_string = "1"
+        int_string = "42"
         false_int_string = "qwe23"
 
         result1 = get_int(int_string)
         result2 = get_int(false_int_string)
         result3 = get_int(None)
 
-        self.assertEqual(result1, 1)
+        self.assertEqual(result1, 42)
         self.assertEqual(result2, None)
         self.assertEqual(result3, None)
 
@@ -81,7 +83,7 @@ class ObjectTransformUtilsTestCase(unittest.TestCase):
 
     def test_get_float(self):
         float_string = "3.0"
-        false_float_string = "tcfzvubhjn"
+        false_float_string = "42.0bcsa"
 
         result1 = get_float(float_string)
         result2 = get_float(false_float_string)

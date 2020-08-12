@@ -91,7 +91,9 @@
 				0
 			</trash>
 		</schedule>
-		<schedule_periods>0</schedule_periods>
+		<schedule_periods>
+			0
+		</schedule_periods>
 		<average_duration>
 			73
 		</average_duration>
