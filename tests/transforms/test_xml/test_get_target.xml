@@ -24,7 +24,7 @@
 			1
 		</in_use>
 		<hosts>
-			192.168.212.44
+			192.168.212.44, 192.168.212.46
 		</hosts>
 		<exclude_hosts>
 		</exclude_hosts>

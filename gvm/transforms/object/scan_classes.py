@@ -1,4 +1,5 @@
 import datetime
+from typing import List
 from dataclasses import dataclass
 from lxml import etree
 from .user_classes import Owner, Permission
@@ -97,8 +98,8 @@ class Target:
     writable: bool = None
     in_use: bool = None
     permissions: list = None
-    # hosts
-    # exclude_hosts
+    hosts: List[str] = None
+    exclude_hosts: List[str] = None
     # ssh_credential
     # smb_credential
     # esxi_credential
@@ -138,8 +139,16 @@ class Target:
         in_use = get_bool_from_element(root, "in_use")
 
         permissions = Permission.resolve_permissions(root.find("permissions"))
-        # hosts
-        # exclude_hosts
+        hosts = get_text_from_element(root, "hosts")
+        if hosts is not None:
+            hosts = hosts.replace(" ", "")
+            hosts = hosts.split(",")
+
+        exclude_hosts = get_text_from_element(root, "exclude_hosts")
+        if exclude_hosts is not None:
+            exclude_hosts = exclude_hosts.replace(" ", "")
+            exclude_hosts = exclude_hosts.split(",")
+
         port_list = PortList.resolve_port_list(root.find("port_list"))
         # ssh_credential
         # smb_credential
@@ -165,8 +174,8 @@ class Target:
             writable,
             in_use,
             permissions,
-            # hosts,
-            # exclude_hosts,
+            hosts,
+            exclude_hosts,
             # ssh_credential,
             # smb_credential,
             # esxi_credential,

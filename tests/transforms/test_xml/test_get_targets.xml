@@ -31,9 +31,10 @@
 			</permission>
 		</permissions>
 		<hosts>
-			192.168.212.44
+			192.168.212.44, 192.168.212.46
 		</hosts>
 		<exclude_hosts>
+			192.168.212.45
 		</exclude_hosts>
 		<max_hosts>
 			1
@@ -110,7 +111,6 @@
 			</permission>
 		</permissions>
 		<hosts>
-			192.168.212.44
 		</hosts>
 		<exclude_hosts>
 		</exclude_hosts>
