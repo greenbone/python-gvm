@@ -2,6 +2,7 @@ import datetime
 from typing import List
 from dataclasses import dataclass
 from lxml import etree
+from gvm.protocols.base import GvmProtocol
 from .user_classes import Owner, Permission
 from .port_classes import PortList
 
@@ -39,7 +40,7 @@ class Scanner:
     modification_time: datetime.datetime = None
     writable: bool = None
     in_use: bool = None
-    permissions: list = None
+    permissions: List[Permission] = None
     # hosts
     port: int = None
     scanner_type: int = None
@@ -49,7 +50,7 @@ class Scanner:
     all_info_loaded: bool = False
 
     @staticmethod
-    def resolve_scanners(root: etree.Element) -> list:
+    def resolve_scanners(root: etree.Element) -> List["Scanner"]:
         """ Resolve information of a 'scanners' element from GMP.
 
         Arguments:
@@ -68,6 +69,11 @@ class Scanner:
 
     @staticmethod
     def resolve_scanner(root: etree.Element) -> "Scanner":
+        """ Resolve information of a 'scanner' element from GMP.
+
+        Arguments:
+            root: scanner XML element from GMP.
+        """
         if root is None:
             return None
         uuid = root.get("id")
@@ -109,7 +115,30 @@ class Scanner:
 
 @dataclass
 class Target:
-    gmp: "Gmp" = None
+    """Target for a scan.
+
+    Arguments:
+        gmp: Gmp Object for automatical reloading of information.
+        uuid: uuid of the target.
+        owner: The owner of the target.
+        name: The name of the target.
+        comment: The comment on the target.
+        creation_time: Date and time the target was created.
+        modification_time: Date and time the target was last modified.
+        writable: Whether the target ist writable.
+        in_use: Whether any tasks are using the target.
+        permissions: Permissions the current user has on the target.
+        hosts: A list of hosts.
+        exclude_hosts: A list of hosts to exclude.
+        reverse_lookup_only: Whether to scan only hoststhat have names.
+        reverse_lookup_unify: Whether to scan only one IP when multiple IPs
+            have the same name.
+        trash: Whether the target is in the trashcan.
+        all_info_loaded: Whether all information is loaded.
+        _port_list: A port list.
+    """
+
+    gmp: GvmProtocol = None
     uuid: str = None
     owner: Owner = None
     name: str = None
@@ -133,7 +162,12 @@ class Target:
     _port_list: PortList = None
 
     @staticmethod
-    def resolve_targets(root: etree.Element, gmp) -> list:
+    def resolve_targets(root: etree.Element, gmp) -> List["Target"]:
+        """ Resolve information of a 'targets' element from GMP.
+
+        Arguments:
+            root: targets XML element from GMP.
+        """
         targets = []
         for child in root:
             if child.tag == "target":
@@ -146,6 +180,11 @@ class Target:
 
     @staticmethod
     def resolve_target(root: etree.Element, gmp) -> "Target":
+        """ Resolve information of a 'target' Element from GMP.
+
+        Arguments:
+            root: target XML element from GMP.
+        """
         if root is None:
             return None
         uuid = root.get("id")
@@ -209,13 +248,20 @@ class Target:
         )
 
     def load_port_list(self, gmp):
+        """ Loads more information of the port list, based on the uuid.
+        """
         self._port_list = gmp.get_port_list(self._port_list.uuid).port_lists
 
     @property
     def port_list(self) -> PortList:
+        """ Is called when the port list is accessed.
+        Loads more information of the port list
+        """
         self.load_port_list(self.gmp)
         return self._port_list
 
     @port_list.setter
     def port_list(self, port_list: PortList):
+        """Setter for the port list.
+        """
         self._port_list = port_list

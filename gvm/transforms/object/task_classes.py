@@ -83,7 +83,7 @@ class Severity:
 class Report:
     """
     Arguments:
-        gmp:
+        gmp: Gmp Object for automatical reloading of information.
         uuid: uuid of the report.
         format_id:
         extension:
@@ -423,7 +423,7 @@ class TaskScanConfig:
 class Task:
     """
     Arguments:
-        gmp:
+        gmp: Gmp Object for automatical reloading of information.
         uuid: uuid of the task
         owner: Owner of the task.
         name: The name of the task.
@@ -463,7 +463,7 @@ class Task:
     modification_time: datetime.datetime = None
     writable: bool = None
     in_use: bool = None
-    permissions: list = None
+    permissions: List[Permission] = None
     user_tags: UserTags = None
     alterable: bool = None
     usage_type: str = None
@@ -477,7 +477,7 @@ class Task:
     schedule: Schedule = None
     schedule_periods: int = None
     observers: Observers = None
-    preferences: list = None
+    preferences: List[Preference] = None
     all_info_loaded: bool = None
     _current_report: Report = None
     _last_report: Report = None
@@ -735,6 +735,33 @@ class Task:
 
 @dataclass
 class ScanConfig:
+    """
+    Arguments:
+        uuid: uuid of the scan config.
+        owner: The owener of the scan config.
+        name: The name of the scan config.
+        comment: The comment on the scan config.
+        creation_time: Date and time the scan config was created.
+        modification_time: Date an time the scan config was last modified.
+        writable: Whether any tasks are using the scan config, including
+            trashcan tasks.
+        in_use: Whether any tasks are using the scan config.
+        permissions: Permissions the current user has on the scan config.
+        family_count: The number of families selected by the scan config.
+        nvt_count: The number of NVTs selected by the scan config.
+        config_type: The type of the config (0 = OpenVAS, 1 OSP).
+        usage_type: The usage type of the config (scan or policy).
+        max_nvt_count: Total number of NVTs in the families selected by the
+            config
+        known_nvt_count: Total number of known NVTs selected by the config.
+        scanner: The scanner used by the config if it is an OSP one.
+        user_tags: Info on tags attached to the config.
+        tasks: All tasks using the config.
+        preferences: Preferences for all NVTs selected by the config.
+        trash: Whether the scan config is in trashcan.
+        all_info_loaded: Whether all information is loaded.
+    """
+
     uuid: str = None
     owner: Owner = None
     name: str = None
@@ -743,7 +770,7 @@ class ScanConfig:
     modification_time: datetime.datetime = None
     writable: bool = None
     in_use: bool = None
-    permissions: list = None
+    permissions: List[Permission] = None
     family_count: FamilyCount = None
     nvt_count: NvtCount = None
     config_type: int = None
@@ -760,7 +787,15 @@ class ScanConfig:
     all_info_loaded: bool = False
 
     @staticmethod
-    def resolve_configs(root: etree.Element, gmp) -> list:
+    def resolve_configs(
+        root: etree.Element, gmp: GvmProtocol
+    ) -> List["ScanConfig"]:
+        """ Resolve information of a 'configs' element from GMP.
+
+        Arguments:
+            root: configs XML element from GMP.
+            gmp: Gmp Object for automatical reloading of information.
+        """
         configs = []
         for child in root:
             if child.tag == "config":
@@ -772,7 +807,13 @@ class ScanConfig:
             return configs
 
     @staticmethod
-    def resolve_config(root: etree.Element, gmp) -> "ScanConfig":
+    def resolve_config(root: etree.Element, gmp: GvmProtocol) -> "ScanConfig":
+        """ Resolve information of a 'config' element from GMP.
+
+        Arguments:
+            root: config XML element from GMP.
+            gmp: Gmp Object for automatical reloading of information.
+        """
         if root is None:
             return None
         uuid = root.get("id")

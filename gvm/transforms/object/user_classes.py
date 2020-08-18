@@ -1,4 +1,5 @@
 import datetime
+from typing import List
 from dataclasses import dataclass
 from lxml import etree
 from gvm.protocols.base import GvmProtocol
@@ -99,7 +100,7 @@ class UserTags:
     """
 
     count: int
-    tags: list
+    tags: List[Tag]
 
     @staticmethod
     def resolve_user_tags(root: etree.Element) -> "UserTags":
@@ -149,7 +150,7 @@ class Permission:
 class Group:
     """
     Arguments:
-        gmp:
+        gmp: Gmp Object for automatical reloading of information.
         uuid: uuid of the group.
         owner: Owner of the group.
         name: The name of the group.
@@ -265,7 +266,7 @@ class User:
     groups: Group
     # hosts
     # ifaces
-    permissions: list
+    permissions: List[Permission]
     user_tags: UserTags
     # sources
 

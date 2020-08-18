@@ -84,11 +84,23 @@ class ReportCount:
 
 @dataclass
 class ResultCounter:
+    """Counter class for the ResultCount class.
+
+    Arguments:
+        full: Total number of results.
+        filtered: Number of results after filtering.
+    """
+
     full: int
     filtered: int
 
     @staticmethod
     def resolve_result_counter(root: etree.Element) -> "ResultCounter":
+        """ Resolve information about the number of results.
+
+        Arguments:
+            root: debug, hole, info, log, warning XML element from GMP.
+        """
         full = get_int_from_element(root, "full")
         filtered = get_int_from_element(root, "filtered")
 
@@ -97,6 +109,20 @@ class ResultCounter:
 
 @dataclass
 class ResultCount:
+    """ Counts of results produced by scan.
+
+    Arguments:
+        current:
+        full: Total number of results produced by scan.
+        filtered: Number of results after filtering.
+        debug: Number of "debug" results (threat level Debug).
+        hole: Number of "hole" results (threat level High).
+        info: Number of "info" results (threat level Low).
+        log: Number of "log" results (threat level Log).
+        warning: Number of "warning" results (threat level Medium).
+        false_positive: Number of "false positive" results.
+    """
+
     current: int
     full: int
     filtered: int
@@ -109,6 +135,8 @@ class ResultCount:
 
     @staticmethod
     def resolve_result_count(root: etree.Element):
+        """ Resolve information of a result_count element from GMP.
+        """
         current = get_int(root.text)
         full = get_int_from_element(root, "full")
         filtered = get_int_from_element(root, "filtered")

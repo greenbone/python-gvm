@@ -80,6 +80,16 @@ Count Classes
 .. autoclass:: ReportCount
     :members:
 
+|
+
+.. autoclass:: ResultCounter
+    :members:
+
+|
+
+.. autoclass:: ResultCount
+    :members:
+
 Task Classes
 ------------
 .. automodule:: gvm.transforms.object.task_classes
@@ -132,4 +142,9 @@ Scan Classes
 .. automodule:: gvm.transforms.object.scan_classes
 
 .. autoclass:: Scanner
+    :members:
+
+|
+
+.. autoclass:: Target
     :members:
