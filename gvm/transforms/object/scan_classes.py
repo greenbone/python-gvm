@@ -15,6 +15,22 @@ from .utils import (
 
 @dataclass
 class Scanner:
+    """
+    Arguments:
+        uuid: uuid of the scanner.
+        owner: Owner of the scanner.
+        comment: The comment on the scanner.
+        creation_time: Date and time the scanner was created.
+        modification_time: Date an time the scanner was last modified.
+        writable: Whether the scanner is writable.
+        in_use: Whether the scanner is in use.
+        permissions: Permissions that the current user has on the scanner.
+        port: Port of the scanner.
+        scanner_type: Type of the scanner.
+        trash: Whether the scanner is in the trashcan.
+        all_info_loaded: Whether all informatione is loaded.
+    """
+
     uuid: str = None
     owner: Owner = None
     name: str = None
@@ -34,6 +50,11 @@ class Scanner:
 
     @staticmethod
     def resolve_scanners(root: etree.Element) -> list:
+        """ Resolve information of a 'scanners' element from GMP.
+
+        Arguments:
+            root: scanners XML-Element from GMP.
+        """
         scanners = []
 
         for child in root:

@@ -126,3 +126,10 @@ Task Classes
 
 .. autoclass:: ScanConfig
     :members:
+
+Scan Classes
+------------
+.. automodule:: gvm.transforms.object.scan_classes
+
+.. autoclass:: Scanner
+    :members:
