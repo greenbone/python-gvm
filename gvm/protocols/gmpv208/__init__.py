@@ -18,7 +18,8 @@
 
 # pylint: disable=too-many-lines,redefined-builtin
 """
-Module for communication with gvmd in `Greenbone Management Protocol version 7`_
+Module for communication with gvmd in
+`Greenbone Management Protocol version 20.08`_
 
 .. _Greenbone Management Protocol version 20.08:
     https://docs.greenbone.net/API/GMP/gmp-20.08.html
