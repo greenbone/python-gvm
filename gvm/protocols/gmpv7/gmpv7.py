@@ -103,6 +103,16 @@ def _check_event(
     event: AlertEvent, condition: AlertCondition, method: AlertMethod
 ):
     if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
+        if not condition:
+            raise RequiredArgument(
+                "condition is required for event {}".format(event.name),
+            )
+
+        if not method:
+            raise RequiredArgument(
+                "method is required for event {}".format(event.name),
+            )
+
         if condition not in (
             AlertCondition.ALWAYS,
             AlertCondition.FILTER_COUNT_CHANGED,
@@ -133,6 +143,16 @@ def _check_event(
         AlertEvent.NEW_SECINFO_ARRIVED,
         AlertEvent.UPDATED_SECINFO_ARRIVED,
     ):
+        if not condition:
+            raise RequiredArgument(
+                "condition is required for event {}".format(event.name),
+            )
+
+        if not method:
+            raise RequiredArgument(
+                "method is required for event {}".format(event.name),
+            )
+
         if condition not in (AlertCondition.ALWAYS,):
             raise InvalidArgument(
                 "Invalid condition {} for event {}".format(

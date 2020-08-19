@@ -90,6 +90,50 @@ class GmpModifyAlertTestCase:
                 method='ipsum',
             )
 
+    def test_modify_alert_with_event_missing_method(self):
+        with self.assertRaisesRegex(RequiredArgument, "method is required"):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+                condition=AlertCondition.ALWAYS,
+            )
+
+        with self.assertRaisesRegex(RequiredArgument, "method is required"):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                event=AlertEvent.NEW_SECINFO_ARRIVED,
+                condition=AlertCondition.ALWAYS,
+            )
+
+        with self.assertRaisesRegex(RequiredArgument, "method is required"):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                event=AlertEvent.UPDATED_SECINFO_ARRIVED,
+                condition=AlertCondition.ALWAYS,
+            )
+
+    def test_modify_alert_with_event_missing_condition(self):
+        with self.assertRaisesRegex(RequiredArgument, "condition is required"):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+                method=AlertMethod.SCP,
+            )
+
+        with self.assertRaisesRegex(RequiredArgument, "condition is required"):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                event=AlertEvent.NEW_SECINFO_ARRIVED,
+                method=AlertMethod.SCP,
+            )
+
+        with self.assertRaisesRegex(RequiredArgument, "condition is required"):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                event=AlertEvent.UPDATED_SECINFO_ARRIVED,
+                method=AlertMethod.SCP,
+            )
+
     def test_modify_alert_invalid_condition_for_secinfo(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
