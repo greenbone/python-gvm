@@ -122,6 +122,9 @@ def get_alert_condition_from_string(
     if alert_condition == 'filter count at least':
         return AlertCondition.FILTER_COUNT_AT_LEAST
 
+    if alert_condition == 'severity at least':
+        return AlertCondition.SEVERITY_AT_LEAST
+
     raise InvalidArgument(
         argument='alert_condition',
         function=get_alert_condition_from_string.__name__,
