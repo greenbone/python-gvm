@@ -45,6 +45,10 @@ class GetAlertConditionFromStringTestCase(unittest.TestCase):
         ct = get_alert_condition_from_string('filter count changed')
         self.assertEqual(ct, AlertCondition.FILTER_COUNT_CHANGED)
 
+    def test_severity_at_least(self):
+        ct = get_alert_condition_from_string('severity at least')
+        self.assertEqual(ct, AlertCondition.SEVERITY_AT_LEAST)
+
 
 if __name__ == '__main__':
     unittest.main()
