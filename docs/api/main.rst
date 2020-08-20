@@ -5,6 +5,6 @@ Main
 
 .. automodule:: gvm
 
-.. autodata:: VERSION
+.. autodata:: __version__
 
 .. autofunction:: get_version
