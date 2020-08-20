@@ -4,7 +4,7 @@ python-gvm: Python API for the Greenbone Vulnerability Manager
 **python-gvm** is the official python library to control the Greenbone
 Vulnerability Manager (GVM) remotely.
 
-.. note:: **python-gvm** requires at least Python 3.7. Python 2 is not supported.
+.. note:: **python-gvm** requires at least Python 3.5. Python 2 is not supported.
 
 User Guide
 ----------
