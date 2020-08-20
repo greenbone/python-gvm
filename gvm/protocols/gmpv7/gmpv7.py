@@ -589,10 +589,10 @@ class GmpV7Mixin(GvmProtocol):
 
                 gmp.create_credential(
                     name='UP Credential',
-                    credential_type=CredentialType.USENAME_PASSWORD,
+                    credential_type=CredentialType.USERNAME_PASSWORD,
                     login='foo',
                     password='bar',
-                );
+                )
 
             Creating a Username + SSH Key credential
 
