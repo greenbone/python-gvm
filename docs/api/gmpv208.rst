@@ -1,7 +1,7 @@
 .. _gmpv208:
 
 GMP v20.8
-^^^^^^^^
+^^^^^^^^^
 
 .. automodule:: gvm.protocols.gmpv208
 
