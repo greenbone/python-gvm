@@ -11,6 +11,7 @@ Protocols
     gmpv7
     gmpv8
     gmpv9
+    gmpv208
     ospv1
 
 Dynamic
