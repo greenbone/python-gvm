@@ -89,7 +89,6 @@ class GetTasksResponse(Response):
         self.apply_overrides = False if apply_overrides.text == "0" else True
         root.remove(apply_overrides)
         self.tasks = Task.resolve_tasks(root, gmp)
-        # print(etree.tostring(root))
 
 
 @dataclass
@@ -103,7 +102,6 @@ class GetConfigsResponse(Response):
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
         self.scan_configs = ScanConfig.resolve_configs(root, gmp)
-        # print(etree.tostring(root))
 
 
 @dataclass
@@ -156,7 +154,6 @@ class GetUsersResponse(Response):
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
         self.users = User.resolve_users(root, gmp)
-        # print(etree.tostring(root))
 
 
 @dataclass
@@ -169,7 +166,6 @@ class GetReportsResponse(Response):
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
-        # print(etree.tostring(root))
         self.reports = Report.resolve_reports(root, gmp)
 
 
@@ -183,7 +179,6 @@ class GetGroupsResponse(Response):
 
     def __init__(self, gmp, root: etree.Element):
         super().__init__(root)
-        # print(etree.tostring(root))
         self.groups = Group.resolve_groups(root, gmp)
 
 

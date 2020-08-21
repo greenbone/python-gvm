@@ -4,8 +4,6 @@ from dataclasses import dataclass
 from lxml import etree
 from gvm.protocols.base import GvmProtocol
 
-# from gvm.protocols.gmp import Gmp
-
 from .utils import (
     get_bool_from_element,
     get_int_from_element,
@@ -128,7 +126,7 @@ class Permission:
     name: str
 
     @staticmethod
-    def resolve_permissions(root: etree.Element) -> list:
+    def resolve_permissions(root: etree.Element) -> List["Permission"]:
         """ Resolve a list of permissions.
         If there is just one Permission it returns the Permission.
 
@@ -173,7 +171,7 @@ class Group:
     modification_time: datetime.datetime = None
     writable: bool = None
     in_use: bool = None
-    permissions: list = None
+    permissions: List[Permission] = None
     user_tags: UserTags = None
     users: list = None
 
@@ -271,7 +269,7 @@ class User:
     # sources
 
     @staticmethod
-    def resolve_users(root: etree.Element, gmp) -> list:
+    def resolve_users(root: etree.Element, gmp) -> List["User"]:
         """ Resolve a list of users.
 
         :param root: XML element from GMP with a list of users.
@@ -356,8 +354,8 @@ class Observers:
         groups: Group allowed to observe the task.
     """
 
-    users: list
-    groups: list
+    users: List[str]
+    groups: List[Group]
     # roles: list
 
     @staticmethod
