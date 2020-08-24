@@ -29,7 +29,14 @@ class Gmpv9CloneConfigTestCase(GmpCloneConfigTestCase, Gmpv9TestCase):
 
 
 class Gmpv9ClonePolicyTestCase(GmpClonePolicyTestCase, Gmpv9TestCase):
+    pass
 
+
+class Gmpv9ModifyAlertTestCase(GmpModifyAlertTestCase, Gmpv9TestCase):
+    pass
+
+
+class Gmpv9CreateAlertTestCase(GmpCreateAlertTestCase, Gmpv9TestCase):
     pass
 
 

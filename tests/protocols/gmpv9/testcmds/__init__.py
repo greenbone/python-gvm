@@ -24,6 +24,7 @@ from .test_clone_policy import GmpClonePolicyTestCase
 from .test_clone_task import GmpCloneTaskTestCase
 from .test_clone_tls_certificate import GmpCloneTLSCertificateTestCase
 from .test_create_audit import GmpCreateAuditCommandTestCase
+from .test_create_alert import GmpCreateAlertTestCase
 from .test_create_config import GmpCreateConfigTestCase
 from .test_create_credential import GmpCreateCredentialTestCase
 from .test_create_filter import GmpCreateFilterTestCase
@@ -48,6 +49,7 @@ from .test_get_tasks import GmpGetTasksTestCase
 from .test_get_tls_certificate import GmpGetTlsCertificateTestCase
 from .test_get_tls_certificates import GmpGetTLSCertificatesTestCase
 from .test_modify_credential import GmpModifyTestCase
+from .test_modify_alert import GmpModifyAlertTestCase
 from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_permission import GmpModifyPermissionTestCase
 from .test_modify_tag import GmpModifyTagTestCase

@@ -49,6 +49,14 @@ class GetAlertConditionFromStringTestCase(unittest.TestCase):
         ct = get_alert_condition_from_string('severity at least')
         self.assertEqual(ct, AlertCondition.SEVERITY_AT_LEAST)
 
+    def test_severity_changed(self):
+        ct = get_alert_condition_from_string('severity changed')
+        self.assertEqual(ct, AlertCondition.SEVERITY_CHANGED)
+
+    def test_error(self):
+        ct = get_alert_condition_from_string('error')
+        self.assertEqual(ct, AlertCondition.ERROR)
+
 
 if __name__ == '__main__':
     unittest.main()

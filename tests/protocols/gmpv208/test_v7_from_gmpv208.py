@@ -100,10 +100,6 @@ class Gmpv208CloneUserTestCase(GmpCloneUserTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateAlertTestCase(GmpCreateAlertTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CreateContainerTaskCommandTestCase(
     GMPCreateContainerTaskCommandTestCase, Gmpv208TestCase
 ):
@@ -449,10 +445,6 @@ class Gmpv208ImportConfigTestCase(GmpImportConfigTestCase, Gmpv208TestCase):
 
 
 class Gmpv208ImportReportTestCase(GmpImportReportTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyAlertTestCase(GmpModifyAlertTestCase, Gmpv208TestCase):
     pass
 
 
