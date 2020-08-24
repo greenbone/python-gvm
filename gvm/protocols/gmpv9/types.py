@@ -196,6 +196,9 @@ def get_alert_event_from_string(
     if alert_event == 'new secinfo arrived':
         return AlertEvent.NEW_SECINFO_ARRIVED
 
+    if alert_event == 'ticket received':
+        return AlertEvent.TICKET_RECEIVED
+
     if alert_event == 'assigned ticket changed':
         return AlertEvent.ASSIGNED_TICKET_CHANGED
 
