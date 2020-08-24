@@ -73,6 +73,14 @@ class GetAlertMethodFromStringTestCase(unittest.TestCase):
         ct = get_alert_method_from_string('verinice Connector')
         self.assertEqual(ct, AlertMethod.VERINICE_CONNECTOR)
 
+    def test_tippingpoint_sms(self):
+        ct = get_alert_method_from_string('Tippingpoint SMS')
+        self.assertEqual(ct, AlertMethod.TIPPINGPOINT)
+
+    def test_alemba_vfire(self):
+        ct = get_alert_method_from_string('Alemba vFire')
+        self.assertEqual(ct, AlertMethod.ALEMBA_VFIRE)
+
 
 if __name__ == '__main__':
     unittest.main()

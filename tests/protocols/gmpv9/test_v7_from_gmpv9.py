@@ -104,10 +104,6 @@ class Gmpv9CreateAgentTestCase(GmpCreateAgentTestCase, Gmpv9TestCase):
     pass
 
 
-class Gmpv9CreateAlertTestCase(GmpCreateAlertTestCase, Gmpv9TestCase):
-    pass
-
-
 class Gmpv9CreateContainerTaskCommandTestCase(
     GMPCreateContainerTaskCommandTestCase, Gmpv9TestCase
 ):
@@ -459,10 +455,6 @@ class Gmpv9ImportReportTestCase(GmpImportReportTestCase, Gmpv9TestCase):
 
 
 class Gmpv9ModifyAgentTestCase(GmpModifyAgentTestCase, Gmpv9TestCase):
-    pass
-
-
-class Gmpv9ModifyAlertTestCase(GmpModifyAlertTestCase, Gmpv9TestCase):
     pass
 
 

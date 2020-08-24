@@ -70,6 +70,14 @@ class Gmpv208CreateTaskCommandTestCase(
     pass
 
 
+class Gmpv208ModifyAlertTestCase(GmpModifyAlertTestCase, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208CreateAlertTestCase(GmpCreateAlertTestCase, Gmpv208TestCase):
+    pass
+
+
 class Gmpv208CreateTLSCertificateTestCase(
     GmpCreateTLSCertificateTestCase, Gmpv208TestCase
 ):

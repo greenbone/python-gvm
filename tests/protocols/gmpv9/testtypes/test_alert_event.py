@@ -45,6 +45,18 @@ class GetAlertEventFromStringTestCase(unittest.TestCase):
         ct = get_alert_event_from_string('Updated SecInfo arrived')
         self.assertEqual(ct, AlertEvent.UPDATED_SECINFO_ARRIVED)
 
+    def test_ticket_received(self):
+        ct = get_alert_event_from_string('ticket received')
+        self.assertEqual(ct, AlertEvent.TICKET_RECEIVED)
+
+    def test_assigned_ticket_changed(self):
+        ct = get_alert_event_from_string('assigned ticket changed')
+        self.assertEqual(ct, AlertEvent.ASSIGNED_TICKET_CHANGED)
+
+    def test_owned_ticket_changed(self):
+        ct = get_alert_event_from_string('owned ticket changed')
+        self.assertEqual(ct, AlertEvent.OWNED_TICKET_CHANGED)
+
 
 if __name__ == '__main__':
     unittest.main()

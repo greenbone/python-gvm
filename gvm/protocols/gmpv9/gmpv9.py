@@ -49,6 +49,83 @@ from .types import _UsageType as UsageType
 _EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
 
 
+def _check_event(
+    event: AlertEvent, condition: AlertCondition, method: AlertMethod
+):
+    if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
+        if not condition:
+            raise RequiredArgument(
+                "condition is required for event {}".format(event.name),
+            )
+
+        if not method:
+            raise RequiredArgument(
+                "method is required for event {}".format(event.name),
+            )
+
+        if condition not in (
+            AlertCondition.ALWAYS,
+            AlertCondition.FILTER_COUNT_CHANGED,
+            AlertCondition.FILTER_COUNT_AT_LEAST,
+            AlertCondition.SEVERITY_AT_LEAST,
+        ):
+            raise InvalidArgument(
+                "Invalid condition {} for event {}".format(
+                    condition.name, event.name
+                )
+            )
+        if method not in (
+            AlertMethod.SCP,
+            AlertMethod.SEND,
+            AlertMethod.SMB,
+            AlertMethod.SNMP,
+            AlertMethod.SYSLOG,
+            AlertMethod.EMAIL,
+            AlertMethod.START_TASK,
+            AlertMethod.HTTP_GET,
+            AlertMethod.SOURCEFIRE_CONNECTOR,
+            AlertMethod.VERINICE_CONNECTOR,
+            AlertMethod.TIPPINGPOINT,
+            AlertMethod.ALEMBA_VFIRE,
+        ):
+            raise InvalidArgument(
+                "Invalid method {} for event {}".format(method.name, event.name)
+            )
+    elif event in (
+        AlertEvent.NEW_SECINFO_ARRIVED,
+        AlertEvent.UPDATED_SECINFO_ARRIVED,
+    ):
+        if not condition:
+            raise RequiredArgument(
+                "condition is required for event {}".format(event.name),
+            )
+
+        if not method:
+            raise RequiredArgument(
+                "method is required for event {}".format(event.name),
+            )
+
+        if condition not in (AlertCondition.ALWAYS,):
+            raise InvalidArgument(
+                "Invalid condition {} for event {}".format(
+                    condition.name, event.name
+                )
+            )
+        if method not in (
+            AlertMethod.SCP,
+            AlertMethod.SEND,
+            AlertMethod.SMB,
+            AlertMethod.SNMP,
+            AlertMethod.SYSLOG,
+            AlertMethod.EMAIL,
+        ):
+            raise InvalidArgument(
+                "Invalid method {} for event {}".format(method.name, event.name)
+            )
+    elif event is not None:
+        raise InvalidArgument('Invalid event "{}"'.format(event.name))
+
+
 class GmpV9Mixin(GvmProtocol):
 
     types = types
@@ -63,6 +140,120 @@ class GmpV9Mixin(GvmProtocol):
 
         # Is authenticated on gvmd
         self._authenticated = False
+
+    def create_alert(
+        self,
+        name: str,
+        condition: AlertCondition,
+        event: AlertEvent,
+        method: AlertMethod,
+        *,
+        method_data: Optional[dict] = None,
+        event_data: Optional[dict] = None,
+        condition_data: Optional[dict] = None,
+        filter_id: Optional[int] = None,
+        comment: Optional[str] = None
+    ) -> Any:
+        """Create a new alert
+
+        Arguments:
+            name: Name of the new Alert
+            condition: The condition that must be satisfied for the alert
+                to occur; if the event is either 'Updated SecInfo arrived' or
+                'New SecInfo arrived', condition must be 'Always'. Otherwise,
+                condition can also be on of 'Severity at least', 'Filter count
+                changed' or 'Filter count at least'.
+            event: The event that must happen for the alert to occur, one
+                of 'Task run status changed', 'Updated SecInfo arrived' or 'New
+                SecInfo arrived'
+            method: The method by which the user is alerted, one of 'SCP',
+                'Send', 'SMB', 'SNMP', 'Syslog' or 'Email'; if the event is
+                neither 'Updated SecInfo arrived' nor 'New SecInfo arrived',
+                method can also be one of 'Start Task', 'HTTP Get', 'Sourcefire
+                Connector' or 'verinice Connector'.
+            condition_data: Data that defines the condition
+            event_data: Data that defines the event
+            method_data: Data that defines the method
+            filter_id: Filter to apply when executing alert
+            comment: Comment for the alert
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument(
+                function=self.create_alert.__name__, argument='name'
+            )
+
+        if not condition:
+            raise RequiredArgument(
+                function=self.create_alert.__name__, argument='condition'
+            )
+
+        if not event:
+            raise RequiredArgument(
+                function=self.create_alert.__name__, argument='event'
+            )
+
+        if not method:
+            raise RequiredArgument(
+                function=self.create_alert.__name__, argument='method'
+            )
+
+        if not isinstance(condition, AlertCondition):
+            raise InvalidArgumentType(
+                function=self.create_alert.__name__,
+                argument='condition',
+                arg_type=AlertCondition.__name__,
+            )
+
+        if not isinstance(event, AlertEvent):
+            raise InvalidArgumentType(
+                function=self.create_alert.__name__,
+                argument='even',
+                arg_type=AlertEvent.__name__,
+            )
+
+        if not isinstance(method, AlertMethod):
+            raise InvalidArgumentType(
+                function=self.create_alert.__name__,
+                argument='method',
+                arg_type=AlertMethod.__name__,
+            )
+
+        _check_event(event, condition, method)
+
+        cmd = XmlCommand("create_alert")
+        cmd.add_element("name", name)
+
+        conditions = cmd.add_element("condition", condition.value)
+
+        if condition_data is not None:
+            for key, value in condition_data.items():
+                _data = conditions.add_element("data", value)
+                _data.add_element("name", key)
+
+        events = cmd.add_element("event", event.value)
+
+        if event_data is not None:
+            for key, value in event_data.items():
+                _data = events.add_element("data", value)
+                _data.add_element("name", key)
+
+        methods = cmd.add_element("method", method.value)
+
+        if method_data is not None:
+            for key, value in method_data.items():
+                _data = methods.add_element("data", value)
+                _data.add_element("name", key)
+
+        if filter_id:
+            cmd.add_element("filter", attrs={"id": filter_id})
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        return self._send_xml_command(cmd)
 
     def create_audit(
         self,
@@ -303,6 +494,114 @@ class GmpV9Mixin(GvmProtocol):
 
         # for single tls certificate always request cert data
         cmd.set_attribute("include_certificate_data", "1")
+        return self._send_xml_command(cmd)
+
+    def modify_alert(
+        self,
+        alert_id: str,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        event: Optional[AlertEvent] = None,
+        event_data: Optional[dict] = None,
+        condition: Optional[AlertCondition] = None,
+        condition_data: Optional[dict] = None,
+        method: Optional[AlertMethod] = None,
+        method_data: Optional[dict] = None
+    ) -> Any:
+        """Modifies an existing alert.
+
+        Arguments:
+            alert_id: UUID of the alert to be modified.
+            name: Name of the Alert.
+            condition: The condition that must be satisfied for the alert to
+                occur. If the event is either 'Updated SecInfo
+                arrived' or 'New SecInfo arrived', condition must be 'Always'.
+                Otherwise, condition can also be on of 'Severity at least',
+                'Filter count changed' or 'Filter count at least'.
+            condition_data: Data that defines the condition
+            event: The event that must happen for the alert to occur, one of
+                'Task run status changed', 'Updated SecInfo arrived' or
+                'New SecInfo arrived'
+            event_data: Data that defines the event
+            method: The method by which the user is alerted, one of 'SCP',
+                'Send', 'SMB', 'SNMP', 'Syslog' or 'Email';
+                if the event is neither 'Updated SecInfo arrived' nor
+                'New SecInfo arrived', method can also be one of 'Start Task',
+                'HTTP Get', 'Sourcefire Connector' or 'verinice Connector'.
+            method_data: Data that defines the method
+            filter_id: Filter to apply when executing alert
+            comment: Comment for the alert
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+
+        if not alert_id:
+            raise RequiredArgument(
+                function=self.modify_alert.__name__, argument='alert_id'
+            )
+
+        cmd = XmlCommand("modify_alert")
+        cmd.set_attribute("alert_id", str(alert_id))
+
+        if name:
+            cmd.add_element("name", name)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if filter_id:
+            cmd.add_element("filter", attrs={"id": filter_id})
+
+        if condition:
+            if not isinstance(condition, AlertCondition):
+                raise InvalidArgumentType(
+                    function=self.modify_alert.__name__,
+                    argument='condition',
+                    arg_type=AlertCondition.__name__,
+                )
+
+            conditions = cmd.add_element("condition", condition.value)
+
+            if condition_data is not None:
+                for key, value in condition_data.items():
+                    _data = conditions.add_element("data", value)
+                    _data.add_element("name", key)
+
+        if method:
+            if not isinstance(method, AlertMethod):
+                raise InvalidArgumentType(
+                    function=self.modify_alert.__name__,
+                    argument='method',
+                    arg_type=AlertMethod.__name__,
+                )
+
+            methods = cmd.add_element("method", method.value)
+
+            if method_data is not None:
+                for key, value in method_data.items():
+                    _data = methods.add_element("data", value)
+                    _data.add_element("name", key)
+
+        if event:
+            if not isinstance(event, AlertEvent):
+                raise InvalidArgumentType(
+                    function=self.modify_alert.__name__,
+                    argument='event',
+                    arg_type=AlertEvent.__name__,
+                )
+
+            _check_event(event, condition, method)
+
+            events = cmd.add_element("event", event.value)
+
+            if event_data is not None:
+                for key, value in event_data.items():
+                    _data = events.add_element("data", value)
+                    _data.add_element("name", key)
+
         return self._send_xml_command(cmd)
 
     def modify_tls_certificate(
