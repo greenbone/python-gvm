@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [Unreleased]
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
+[Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.8.0...HEAD
+
+
+## [20.8.0] - 2020-08-19
 
 ### Added
 
@@ -20,7 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Require method and condition arguments for modify_alert with an event [#267](https://github.com/greenbone/python-gvm/pull/267)
 * Add SEVERITY_AT_LEAST to get_alert_condition_from_string [#268](https://github.com/greenbone/python-gvm/pull/268)
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v1.6.0...master
+[20.8.0]: https://github.com/greenbone/python-gvm/compare/v1.6.0...v20.8.0
 
 ## [1.6.0] - 2020-06-10
 
