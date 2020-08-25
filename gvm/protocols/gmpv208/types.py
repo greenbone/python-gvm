@@ -170,7 +170,7 @@ def get_entity_type_from_string(
         raise InvalidArgument(
             argument='entity_type',
             function=get_entity_type_from_string.__name__,
-        )
+        ) from None
 
 
 class FilterType(Enum):
@@ -235,7 +235,7 @@ def get_filter_type_from_string(
         raise InvalidArgument(
             argument='filter_type',
             function=get_filter_type_from_string.__name__,
-        )
+        ) from None
 
 
 class InfoType(Enum):
@@ -262,4 +262,4 @@ def get_info_type_from_string(info_type: Optional[str]) -> Optional[InfoType]:
     except KeyError:
         raise InvalidArgument(
             argument='info_type', function=get_info_type_from_string.__name__
-        )
+        ) from None

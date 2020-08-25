@@ -173,7 +173,7 @@ def get_alert_method_from_string(
         raise InvalidArgument(
             argument='alert_method',
             function=get_alert_method_from_string.__name__,
-        )
+        ) from None
 
 
 class AliveTest(Enum):
@@ -258,7 +258,7 @@ def get_asset_type_from_string(
     except KeyError:
         raise InvalidArgument(
             argument='asset_type', function=get_asset_type_from_string.__name__
-        )
+        ) from None
 
 
 class CredentialFormat(Enum):
@@ -283,7 +283,7 @@ def get_credential_format_from_string(
         raise InvalidArgument(
             argument='credential_format',
             function=get_credential_format_from_string.__name__,
-        )
+        ) from None
 
 
 class CredentialType(Enum):
@@ -309,7 +309,7 @@ def get_credential_type_from_string(
         raise InvalidArgument(
             argument='credential_type',
             function=get_credential_type_from_string.__name__,
-        )
+        ) from None
 
 
 class EntityType(Enum):
@@ -369,7 +369,7 @@ def get_entity_type_from_string(
         raise InvalidArgument(
             argument='entity_type',
             function=get_entity_type_from_string.__name__,
-        )
+        ) from None
 
 
 class FeedType(Enum):
@@ -391,7 +391,7 @@ def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
     except KeyError:
         raise InvalidArgument(
             argument='feed_type', function=get_feed_type_from_string.__name__
-        )
+        ) from None
 
 
 class FilterType(Enum):
@@ -448,7 +448,7 @@ def get_filter_type_from_string(
         raise InvalidArgument(
             argument='filter_type',
             function=get_filter_type_from_string.__name__,
-        )
+        ) from None
 
 
 class HostsOrdering(Enum):
@@ -475,7 +475,7 @@ def get_hosts_ordering_from_string(
         raise InvalidArgument(
             argument='hosts_ordering',
             function=get_hosts_ordering_from_string.__name__,
-        )
+        ) from None
 
 
 class InfoType(Enum):
@@ -503,7 +503,7 @@ def get_info_type_from_string(info_type: Optional[str]) -> Optional[InfoType]:
     except KeyError:
         raise InvalidArgument(
             argument='info_type', function=get_info_type_from_string.__name__
-        )
+        ) from None
 
 
 class PermissionSubjectType(Enum):
@@ -533,7 +533,7 @@ def get_permission_subject_type_from_string(
         raise InvalidArgument(
             argument='subject_type',
             function=get_permission_subject_type_from_string.__name__,
-        )
+        ) from None
 
 
 class PortRangeType(Enum):
@@ -560,7 +560,7 @@ def get_port_range_type_from_string(
         raise InvalidArgument(
             argument='port_range_type',
             function=get_port_range_type_from_string.__name__,
-        )
+        ) from None
 
 
 class ScannerType(Enum):
@@ -635,7 +635,7 @@ def get_snmp_auth_algorithm_from_string(
         raise InvalidArgument(
             argument='algorithm',
             function=get_snmp_auth_algorithm_from_string.__name__,
-        )
+        ) from None
 
 
 class SnmpPrivacyAlgorithm(Enum):
@@ -660,7 +660,7 @@ def get_snmp_privacy_algorithm_from_string(
         raise InvalidArgument(
             argument='algorithm',
             function=get_snmp_privacy_algorithm_from_string.__name__,
-        )
+        ) from None
 
 
 class SeverityLevel(Enum):
@@ -687,7 +687,7 @@ def get_severity_level_from_string(
         raise InvalidArgument(
             argument='severity_level',
             function=get_severity_level_from_string.__name__,
-        )
+        ) from None
 
 
 class TimeUnit(Enum):
@@ -714,4 +714,4 @@ def get_time_unit_from_string(time_unit: Optional[str]) -> Optional[TimeUnit]:
         raise InvalidArgument(
             argument='severity_level',
             function=get_severity_level_from_string.__name__,
-        )
+        ) from None

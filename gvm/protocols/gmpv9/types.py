@@ -164,7 +164,7 @@ def get_entity_type_from_string(
         raise InvalidArgument(
             argument='entity_type',
             function=get_entity_type_from_string.__name__,
-        )
+        ) from None
 
 
 class AlertEvent(Enum):
@@ -304,7 +304,7 @@ def get_alert_method_from_string(
         raise InvalidArgument(
             argument='alert_method',
             function=get_alert_method_from_string.__name__,
-        )
+        ) from None
 
 
 class FilterType(Enum):
@@ -370,7 +370,7 @@ def get_filter_type_from_string(
         raise InvalidArgument(
             argument='filter_type',
             function=get_filter_type_from_string.__name__,
-        )
+        ) from None
 
 
 class ScannerType(Enum):
@@ -456,4 +456,4 @@ def __get_usage_type_from_string(
         raise InvalidArgument(
             argument='usage_type',
             function=__get_usage_type_from_string.__name__,
-        )
+        ) from None

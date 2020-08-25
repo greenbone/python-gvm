@@ -78,7 +78,7 @@ class XmlReader:
                 "Cannot parse XML response. Response data "
                 "read {0}".format(data),
                 e,
-            )
+            ) from None
 
 
 class GvmConnection(XmlReader):
@@ -235,7 +235,7 @@ class SSHConnection(GvmConnection):
             paramiko.AuthenticationException,
             paramiko.SSHException,
         ) as e:
-            raise GvmError("SSH Connection failed", e)
+            raise GvmError("SSH Connection failed", e) from None
 
     def _read(self):
         return self._stdout.channel.recv(BUF_SIZE)
