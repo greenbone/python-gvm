@@ -524,10 +524,10 @@ class GmpV7Mixin(GvmProtocol):
 
         try:
             cmd.append_xml_str(config)
-        except etree.XMLSyntaxError:
+        except etree.XMLSyntaxError as e:
             raise InvalidArgument(
                 function=self.import_config.__name__, argument='config'
-            )
+            ) from e
 
         return self._send_xml_command(cmd)
 
@@ -1346,7 +1346,7 @@ class GmpV7Mixin(GvmProtocol):
         except etree.XMLSyntaxError as e:
             raise InvalidArgument(
                 "Invalid xml passed as report to import_report {}".format(e)
-            )
+            ) from None
 
         return self._send_xml_command(cmd)
 

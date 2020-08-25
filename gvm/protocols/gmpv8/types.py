@@ -165,7 +165,7 @@ def get_entity_type_from_string(
         raise InvalidArgument(
             argument='entity_type',
             function=get_entity_type_from_string.__name__,
-        )
+        ) from None
 
 
 class FilterType(Enum):
@@ -227,7 +227,7 @@ def get_filter_type_from_string(
         raise InvalidArgument(
             argument='filter_type',
             function=get_filter_type_from_string.__name__,
-        )
+        ) from None
 
 
 class CredentialType(Enum):
@@ -256,7 +256,7 @@ def get_credential_type_from_string(
         raise InvalidArgument(
             argument='credential_type',
             function=get_credential_type_from_string.__name__,
-        )
+        ) from None
 
 
 class TicketStatus(Enum):
@@ -281,4 +281,4 @@ def get_ticket_status_from_string(
         raise InvalidArgument(
             argument='ticket_status',
             function=get_ticket_status_from_string.__name__,
-        )
+        ) from None
