@@ -483,13 +483,14 @@ class GmpV9Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        cmd = XmlCommand("get_tls_certificates")
+
         if not tls_certificate_id:
             raise RequiredArgument(
                 function=self.get_tls_certificate.__name__,
                 argument='tls_certificate_id',
             )
 
-        cmd = XmlCommand("get_tls_certificates")
         cmd.set_attribute("tls_certificate_id", tls_certificate_id)
 
         # for single tls certificate always request cert data

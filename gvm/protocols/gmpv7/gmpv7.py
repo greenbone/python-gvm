@@ -2793,10 +2793,11 @@ class GmpV7Mixin(GvmProtocol):
                 function=self.get_alert.__name__, argument='alert_id'
             )
 
+        cmd.set_attribute("alert_id", alert_id)
+
         if tasks is not None:
             cmd.set_attribute("tasks", _to_bool(tasks))
 
-        cmd.set_attribute("alert_id", alert_id)
         return self._send_xml_command(cmd)
 
     def get_assets(
@@ -2841,6 +2842,8 @@ class GmpV7Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        cmd = XmlCommand("get_assets")
+
         if not isinstance(asset_type, AssetType):
             raise InvalidArgumentType(
                 function=self.get_asset.__name__,
@@ -2853,7 +2856,6 @@ class GmpV7Mixin(GvmProtocol):
                 function=self.get_asset.__name__, argument='asset_id'
             )
 
-        cmd = XmlCommand("get_assets")
         cmd.set_attribute("asset_id", asset_id)
         cmd.set_attribute("type", asset_type.value)
 
@@ -2994,9 +2996,9 @@ class GmpV7Mixin(GvmProtocol):
     def get_config(
         self,
         config_id: str,
-        details: Optional[bool] = None,
         families: Optional[bool] = None,
         preferences: Optional[bool] = None,
+        tasks: Optional[bool] = None,
     ) -> Any:
         """Request a single scan config
 
@@ -3019,14 +3021,14 @@ class GmpV7Mixin(GvmProtocol):
                 function=self.get_config.__name__, argument='config_id'
             )
 
-        if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
-
         if families is not None:
             cmd.set_attribute("families", _to_bool(families))
 
         if preferences is not None:
             cmd.set_attribute("preferences", _to_bool(preferences))
+
+        if tasks is not None:
+            cmd.set_attribute("tasks", _to_bool(tasks))
 
         cmd.set_attribute("config_id", config_id)
 
