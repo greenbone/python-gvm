@@ -2993,23 +2993,11 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_config(
-        self,
-        config_id: str,
-        families: Optional[bool] = None,
-        preferences: Optional[bool] = None,
-        tasks: Optional[bool] = None,
-    ) -> Any:
+    def get_config(self, config_id: str,) -> Any:
         """Request a single scan config
 
         Arguments:
             config_id: UUID of an existing scan config
-            details: Whether to get config families, preferences, nvt selectors
-                and tasks.
-            families: Whether to include the families if no details are
-                requested
-            preferences: Whether to include the preferences if no details are
-                requested
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3020,15 +3008,6 @@ class GmpV7Mixin(GvmProtocol):
             raise RequiredArgument(
                 function=self.get_config.__name__, argument='config_id'
             )
-
-        if families is not None:
-            cmd.set_attribute("families", _to_bool(families))
-
-        if preferences is not None:
-            cmd.set_attribute("preferences", _to_bool(preferences))
-
-        if tasks is not None:
-            cmd.set_attribute("tasks", _to_bool(tasks))
 
         cmd.set_attribute("config_id", config_id)
 
@@ -3118,10 +3097,11 @@ class GmpV7Mixin(GvmProtocol):
                 function=self.get_filter.__name__, argument='filter_id'
             )
 
+        cmd.set_attribute("filter_id", filter_id)
+
         if alerts is not None:
             cmd.set_attribute("alerts", _to_bool(alerts))
 
-        cmd.set_attribute("filter_id", filter_id)
         return self._send_xml_command(cmd)
 
     def get_groups(
@@ -3159,12 +3139,13 @@ class GmpV7Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        cmd = XmlCommand("get_groups")
+
         if not group_id:
             raise RequiredArgument(
                 function=self.get_group.__name__, argument='group_id'
             )
 
-        cmd = XmlCommand("get_groups")
         cmd.set_attribute("group_id", group_id)
         return self._send_xml_command(cmd)
 
@@ -3217,9 +3198,7 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_info(
-        self, info_id: str, info_type: InfoType, name: Optional[str] = None,
-    ) -> Any:
+    def get_info(self, info_id: str, info_type: InfoType) -> Any:
         """Request a single secinfo
 
         Arguments:
@@ -3255,9 +3234,6 @@ class GmpV7Mixin(GvmProtocol):
         cmd.set_attribute("info_id", info_id)
 
         cmd.set_attribute("type", info_type.value)
-
-        if name:
-            cmd.set_attribute("name", name)
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
@@ -3295,13 +3271,11 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_note(self, note_id: str, result: Optional[bool] = None,) -> Any:
+    def get_note(self, note_id: str) -> Any:
         """Request a single note
 
         Arguments:
             note_id: UUID of an existing note
-            details: Add info about connected results and tasks
-            result: Return the details of possible connected results.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3313,9 +3287,6 @@ class GmpV7Mixin(GvmProtocol):
 
         cmd = XmlCommand("get_notes")
         cmd.set_attribute("note_id", note_id)
-
-        if result is not None:
-            cmd.set_attribute("result", _to_bool(result))
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
@@ -3382,28 +3353,11 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_nvt(
-        self,
-        nvt_oid: str,
-        *,
-        preferences: Optional[bool] = None,
-        preference_count: Optional[bool] = None,
-        timeout: Optional[bool] = None,
-        config_id: Optional[str] = None,
-        preferences_config_id: Optional[str] = None,
-        family: Optional[str] = None,
-    ):
+    def get_nvt(self, nvt_oid: str):
         """Request a single nvt
 
         Arguments:
             nvt_oid: OID of an existing nvt
-            preferences: Whether to include nvt preferences
-            preference_count: Whether to include preference count
-            timeout: Whether to include the special timeout preference
-            config_id: UUID of scan config to which to limit the NVT listing
-            preferences_config_id: UUID of scan config to use for preference
-                values
-            family: Family to which to limit NVT listing
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3416,24 +3370,6 @@ class GmpV7Mixin(GvmProtocol):
             )
 
         cmd.set_attribute("nvt_oid", nvt_oid)
-
-        if preferences is not None:
-            cmd.set_attribute("preferences", _to_bool(preferences))
-
-        if preference_count is not None:
-            cmd.set_attribute("preference_count", _to_bool(preference_count))
-
-        if timeout is not None:
-            cmd.set_attribute("timeout", _to_bool(timeout))
-
-        if config_id:
-            cmd.set_attribute("config_id", config_id)
-
-        if preferences_config_id:
-            cmd.set_attribute("preferences_config_id", preferences_config_id)
-
-        if family:
-            cmd.set_attribute("family", family)
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
@@ -3486,9 +3422,7 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_override(
-        self, override_id: str, result: Optional[bool] = None
-    ) -> Any:
+    def get_override(self, override_id: str) -> Any:
         """Request a single override
 
         Arguments:
@@ -3505,9 +3439,6 @@ class GmpV7Mixin(GvmProtocol):
             raise RequiredArgument(
                 function=self.get_override.__name__, argument='override_id'
             )
-
-        if result is not None:
-            cmd.set_attribute("result", _to_bool(result))
 
         cmd.set_attribute("override_id", override_id)
 
@@ -3596,7 +3527,7 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_port_list(self, port_list_id: str, targets: Optional[bool] = None):
+    def get_port_list(self, port_list_id: str):
         """Request a single port list
 
         Arguments:
@@ -3615,9 +3546,6 @@ class GmpV7Mixin(GvmProtocol):
             )
 
         cmd.set_attribute("port_list_id", port_list_id)
-
-        if targets is not None:
-            cmd.set_attribute("targets", _to_bool(targets))
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
@@ -3754,12 +3682,13 @@ class GmpV7Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        cmd = XmlCommand("get_reports")
+
         if not report_id:
             raise RequiredArgument(
                 function=self.get_report.__name__, argument='report_id'
             )
 
-        cmd = XmlCommand("get_reports")
         cmd.set_attribute("report_id", report_id)
 
         _add_filter(cmd, filter, filter_id)
@@ -3819,12 +3748,7 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_report_format(
-        self,
-        report_format_id: str,
-        alerts: Optional[bool] = None,
-        params: Optional[bool] = None,
-    ) -> Any:
+    def get_report_format(self, report_format_id: str,) -> Any:
         """Request a single report format
 
         Arguments:
@@ -3844,12 +3768,6 @@ class GmpV7Mixin(GvmProtocol):
             )
 
         cmd.set_attribute("report_format_id", report_format_id)
-
-        if alerts is not None:
-            cmd.set_attribute("alerts", _to_bool(alerts))
-
-        if params is not None:
-            cmd.set_attribute("params", _to_bool(params))
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
@@ -3897,13 +3815,7 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_result(
-        self,
-        result_id: str,
-        task_id: Optional[str] = None,
-        note_details: Optional[bool] = None,
-        override_details: Optional[bool] = None,
-    ) -> Any:
+    def get_result(self, result_id: str,) -> Any:
         """Request a single result
 
         Arguments:
@@ -3912,22 +3824,15 @@ class GmpV7Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        cmd = XmlCommand("get_results")
+
         if not result_id:
             raise RequiredArgument(
                 function=self.get_result.__name__, argument='result_id'
             )
 
-        cmd = XmlCommand("get_results")
         cmd.set_attribute("result_id", result_id)
 
-        if task_id:
-            cmd.set_attribute("task_id", task_id)
-
-        if note_details is not None:
-            cmd.set_attribute("note_details", _to_bool(note_details))
-
-        if override_details is not None:
-            cmd.set_attribute("override_details", _to_bool(override_details))
         # for single entity always request all details
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
@@ -4260,6 +4165,7 @@ class GmpV7Mixin(GvmProtocol):
 
         Arguments:
             target_id: UUID of an existing target
+            tasks: Whether to include list of tasks that use the target
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -4271,10 +4177,11 @@ class GmpV7Mixin(GvmProtocol):
                 function=self.get_target.__name__, argument='target_id'
             )
 
+        cmd.set_attribute("target_id", target_id)
+
         if tasks is not None:
             cmd.set_attribute("tasks", _to_bool(tasks))
 
-        cmd.set_attribute("target_id", target_id)
         return self._send_xml_command(cmd)
 
     def get_tasks(
@@ -4323,12 +4230,13 @@ class GmpV7Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        cmd = XmlCommand("get_tasks")
+
         if not task_id:
             raise RequiredArgument(
                 function=self.get_task.__name__, argument='task_id'
             )
 
-        cmd = XmlCommand("get_tasks")
         cmd.set_attribute("task_id", task_id)
 
         # for single entity always request all details
@@ -4362,12 +4270,13 @@ class GmpV7Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        cmd = XmlCommand("get_users")
+
         if not user_id:
             raise RequiredArgument(
                 function=self.get_user.__name__, argument='user_id'
             )
 
-        cmd = XmlCommand("get_users")
         cmd.set_attribute("user_id", user_id)
         return self._send_xml_command(cmd)
 
