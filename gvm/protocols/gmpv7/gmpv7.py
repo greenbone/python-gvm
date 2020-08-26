@@ -3989,10 +3989,11 @@ class GmpV7Mixin(GvmProtocol):
                 function=self.get_schedule.__name__, argument='schedule_id'
             )
 
+        cmd.set_attribute("schedule_id", schedule_id)
+
         if tasks is not None:
             cmd.set_attribute("tasks", _to_bool(tasks))
 
-        cmd.set_attribute("schedule_id", schedule_id)
         return self._send_xml_command(cmd)
 
     def get_settings(self, *, filter: Optional[str] = None) -> Any:
