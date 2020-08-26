@@ -91,6 +91,9 @@ def pretty_print(xml, file: Union[str, Path] = sys.stdout):
         xml (str, List[lxml.etree.Element] or lxml.etree.Element):
             xml as string,
             List[lxml.etree.Element] or directly a lxml element.
+        file:
+            A Path or string pointing to a file. Output will be
+            redirected to this file
 
     """
     if file is not sys.stdout and file is not sys.stderr:
