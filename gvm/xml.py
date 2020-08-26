@@ -93,7 +93,7 @@ def pretty_print(xml, file: Union[str, Path] = sys.stdout):
             List[lxml.etree.Element] or directly a lxml element.
 
     """
-    if file is not sys.stdout:
+    if file is not sys.stdout and file is not sys.stderr:
         if isinstance(file, str):
             file = Path(file)
         try:
@@ -130,7 +130,7 @@ def pretty_print(xml, file: Union[str, Path] = sys.stdout):
             ),
             file=file,
         )
-    if file is not sys.stdout:
+    if file is not sys.stdout and file is not sys.stderr:
         file.close()
 
 
