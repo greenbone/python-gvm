@@ -3604,13 +3604,13 @@ class GmpV7Mixin(GvmProtocol):
                 function=self.get_preference.__name__, argument='name'
             )
 
+        cmd.set_attribute("preference", name)
+
         if nvt_oid:
             cmd.set_attribute("nvt_oid", nvt_oid)
 
         if config_id:
             cmd.set_attribute("config_id", config_id)
-
-        cmd.set_attribute("preference", name)
 
         return self._send_xml_command(cmd)
 

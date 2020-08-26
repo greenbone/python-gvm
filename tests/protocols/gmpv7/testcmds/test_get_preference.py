@@ -40,17 +40,17 @@ class GmpGetPreferenceTestCase:
             self.gmp.get_preference('')
 
     def test_get_preference_with_nvt_oid(self):
-        self.gmp.get_preferences(name='foo', nvt_oid='oid')
+        self.gmp.get_preference(name='foo', nvt_oid='oid')
 
         self.connection.send.has_been_called_with(
-            '<get_preferences name="foo" nvt_oid="oid"/>'
+            '<get_preferences preference="foo" nvt_oid="oid"/>'
         )
 
     def test_get_preference_with_config_id(self):
-        self.gmp.get_preferences(name='foo', config_id='c1')
+        self.gmp.get_preference(name='foo', config_id='c1')
 
         self.connection.send.has_been_called_with(
-            '<get_preferences name="foo" config_id="c1"/>'
+            '<get_preferences preference="foo" config_id="c1"/>'
         )
 
 
