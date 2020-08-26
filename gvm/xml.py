@@ -16,7 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from typing import Optional
+import sys
+from typing import Optional, Union
+from pathlib import Path
 
 import defusedxml.lxml as secET
 
@@ -77,7 +79,7 @@ class XmlCommand(XmlCommandElement):
         super().__init__(etree.Element(name))
 
 
-def pretty_print(xml):
+def pretty_print(xml, file: Union[str, Path] = sys.stdout):
     """Prints beautiful XML-Code
 
     This function gets a string containing the xml, an object of
@@ -91,17 +93,42 @@ def pretty_print(xml):
             List[lxml.etree.Element] or directly a lxml element.
 
     """
+    if file is not sys.stdout:
+        if isinstance(file, str):
+            file = Path(file)
+        try:
+            file.is_file()
+        except IsADirectoryError as e:
+            raise e from None
+        if not file.exists():
+            file.touch()
+
     if isinstance(xml, list):
         for item in xml:
             if etree.iselement(item):
-                print(etree.tostring(item, pretty_print=True).decode("utf-8"))
+                print(
+                    etree.tostring(item, pretty_print=True).decode(
+                        sys.getdefaultencoding()
+                    ),
+                    file=file,
+                )
             else:
                 print(item)
     elif etree.iselement(xml):
-        print(etree.tostring(xml, pretty_print=True).decode("utf-8"))
+        print(
+            etree.tostring(xml, pretty_print=True).decode(
+                sys.getdefaultencoding()
+            ),
+            file=file,
+        )
     elif isinstance(xml, str):
         tree = secET.fromstring(xml)
-        print(etree.tostring(tree, pretty_print=True).decode("utf-8"))
+        print(
+            etree.tostring(tree, pretty_print=True).decode(
+                sys.getdefaultencoding()
+            ),
+            file=file,
+        )
 
 
 def validate_xml_string(xml_string: str):
