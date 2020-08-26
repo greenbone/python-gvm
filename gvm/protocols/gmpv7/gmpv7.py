@@ -3589,7 +3589,6 @@ class GmpV7Mixin(GvmProtocol):
     ) -> Any:
         """Request a nvt preference
 
-
         Arguments:
             name: name of a particular preference
             nvt_oid: OID of nvt
