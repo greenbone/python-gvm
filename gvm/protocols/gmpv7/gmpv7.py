@@ -2777,7 +2777,7 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_alert(self, alert_id: str, tasks: Optional[bool] = None) -> Any:
+    def get_alert(self, alert_id: str, *, tasks: Optional[bool] = None) -> Any:
         """Request a single alert
 
         Arguments:
@@ -2901,9 +2901,9 @@ class GmpV7Mixin(GvmProtocol):
     def get_credential(
         self,
         credential_id: str,
+        *,
         scanners: Optional[bool] = None,
         targets: Optional[bool] = None,
-        *,
         credential_format: Optional[CredentialFormat] = None
     ) -> Any:
         """Request a single credential
@@ -2993,7 +2993,7 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_config(self, config_id: str,) -> Any:
+    def get_config(self, config_id: str) -> Any:
         """Request a single scan config
 
         Arguments:
@@ -3080,7 +3080,9 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_filter(self, filter_id: str, alerts: Optional[bool] = None) -> Any:
+    def get_filter(
+        self, filter_id: str, *, alerts: Optional[bool] = None
+    ) -> Any:
         """Request a single filter
 
         Arguments:
@@ -3748,7 +3750,7 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_report_format(self, report_format_id: str,) -> Any:
+    def get_report_format(self, report_format_id: str) -> Any:
         """Request a single report format
 
         Arguments:
@@ -3815,7 +3817,7 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_result(self, result_id: str,) -> Any:
+    def get_result(self, result_id: str) -> Any:
         """Request a single result
 
         Arguments:
@@ -4160,7 +4162,9 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_target(self, target_id: str, tasks: Optional[bool] = None) -> Any:
+    def get_target(
+        self, target_id: str, *, tasks: Optional[bool] = None
+    ) -> Any:
         """Request a single target
 
         Arguments:

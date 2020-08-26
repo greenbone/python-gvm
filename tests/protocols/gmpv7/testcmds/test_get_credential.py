@@ -77,7 +77,7 @@ class GmpGetCredentialTestCase:
         with self.assertRaises(InvalidArgumentType):
             self.gmp.get_credential('id', credential_format='foo')
 
-    def test_get_credentials_with_scanners(self):
+    def test_get_credential_with_scanners(self):
         self.gmp.get_credential('id', scanners=True)
 
         self.connection.send.has_been_called_with(
