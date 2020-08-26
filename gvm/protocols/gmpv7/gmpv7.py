@@ -3971,7 +3971,7 @@ class GmpV7Mixin(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def get_schedule(
-        self, schedule_id: str, tasks: Optional[bool] = None
+        self, schedule_id: str, *, tasks: Optional[bool] = None
     ) -> Any:
         """Request a single schedule
 
