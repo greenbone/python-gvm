@@ -3207,9 +3207,6 @@ class GmpV7Mixin(GvmProtocol):
             info_id: UUID of an existing secinfo
             info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
                 DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
-            name: Name or identifier of the requested information
-            details: Whether to include information about references to this
-                information
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3429,8 +3426,6 @@ class GmpV7Mixin(GvmProtocol):
 
         Arguments:
             override_id: UUID of an existing override
-            details: Whether to include full details
-            result: Whether to include results using the override
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3534,8 +3529,6 @@ class GmpV7Mixin(GvmProtocol):
 
         Arguments:
             port_list_id: UUID of an existing port list
-            details: Whether to include full port list details
-            targets: Whether to include targets using this port list
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3754,8 +3747,6 @@ class GmpV7Mixin(GvmProtocol):
 
         Arguments:
             report_format_id: UUID of an existing report format
-            alerts: Whether to include alerts that use the report format
-            params: Whether to include report format parameters
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3919,8 +3910,6 @@ class GmpV7Mixin(GvmProtocol):
 
         Arguments:
             scanner_id: UUID of an existing scanner
-            details:  Whether to include extra details like tasks using this
-                scanner
 
         Returns:
             The response. See :py:meth:`send_command` for details.
