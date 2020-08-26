@@ -102,7 +102,7 @@ def pretty_print(xml, file: Union[str, Path] = sys.stdout):
             raise e from None
         if not file.exists():
             file.touch()
-        file = open(file, 'w')
+        file = open(str(file), 'w')
 
     if isinstance(xml, list):
         for item in xml:
