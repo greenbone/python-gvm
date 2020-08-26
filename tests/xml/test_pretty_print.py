@@ -18,7 +18,7 @@
 
 import unittest
 
-from lxml import etree
+import defusedxml.lxml as secET
 
 from gvm.xml import pretty_print
 
@@ -26,7 +26,7 @@ from gvm.xml import pretty_print
 class PrettyPrintTestCase(unittest.TestCase):
     def test_pretty_print(self):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
-        elem = etree.fromstring(xml_str)
+        elem = secET.fromstring(xml_str)
         expected_xml_string = (
             '<test>\n'
             '  <this>\n'
