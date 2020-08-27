@@ -17,8 +17,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from typing import Optional, Union
-from pathlib import Path
+from typing import Optional
+from io import IOBase
 
 import defusedxml.lxml as secET
 
@@ -79,7 +79,7 @@ class XmlCommand(XmlCommandElement):
         super().__init__(etree.Element(name))
 
 
-def pretty_print(xml, file: Union[str, Path] = sys.stdout):
+def pretty_print(xml, file: IOBase = sys.stdout):
     """Prints beautiful XML-Code
 
     This function gets a string containing the xml, an object of
@@ -92,49 +92,37 @@ def pretty_print(xml, file: Union[str, Path] = sys.stdout):
             xml as string,
             List[lxml.etree.Element] or directly a lxml element.
         file:
-            A Path or string pointing to a file. Output will be
-            redirected to this file
+            A IOBase type. Can be a File, StringIO, ...
 
     """
-    if file is not sys.stdout and file is not sys.stderr:
-        if isinstance(file, str):
-            file = Path(file)
-        try:
-            file.is_file()
-        except IsADirectoryError as e:
-            raise e from None
-        if not file.exists():
-            file.touch()
-        file = open(str(file), 'w')
+    if not isinstance(file, IOBase):
+        raise TypeError(
+            'Type needs to be from IOBase, not {}.'.format(type(file))
+        ) from None
 
     if isinstance(xml, list):
         for item in xml:
             if etree.iselement(item):
-                print(
+                file.write(
                     etree.tostring(item, pretty_print=True).decode(
-                        sys.getdefaultencoding()
-                    ),
-                    file=file,
+                        sys.getdefaultencoding() + '\n'
+                    )
                 )
             else:
-                print(item)
+                file.write(item)
     elif etree.iselement(xml):
-        print(
+        file.write(
             etree.tostring(xml, pretty_print=True).decode(
-                sys.getdefaultencoding()
-            ),
-            file=file,
+                sys.getdefaultencoding() + '\n'
+            )
         )
     elif isinstance(xml, str):
         tree = secET.fromstring(xml)
-        print(
+        file.write(
             etree.tostring(tree, pretty_print=True).decode(
-                sys.getdefaultencoding()
-            ),
-            file=file,
+                sys.getdefaultencoding() + '\n'
+            )
         )
-    if file is not sys.stdout and file is not sys.stderr:
-        file.close()
 
 
 def validate_xml_string(xml_string: str):
