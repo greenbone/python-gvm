@@ -16,7 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+import sys
 from typing import Optional
+from io import IOBase
 
 import defusedxml.lxml as secET
 
@@ -77,7 +79,7 @@ class XmlCommand(XmlCommandElement):
         super().__init__(etree.Element(name))
 
 
-def pretty_print(xml):
+def pretty_print(xml, file: IOBase = sys.stdout):
     """Prints beautiful XML-Code
 
     This function gets a string containing the xml, an object of
@@ -89,19 +91,38 @@ def pretty_print(xml):
         xml (str, List[lxml.etree.Element] or lxml.etree.Element):
             xml as string,
             List[lxml.etree.Element] or directly a lxml element.
+        file:
+            A IOBase type. Can be a File, StringIO, ...
 
     """
+    if not isinstance(file, IOBase):
+        raise TypeError(
+            'Type needs to be from IOBase, not {}.'.format(type(file))
+        ) from None
+
     if isinstance(xml, list):
         for item in xml:
             if etree.iselement(item):
-                print(etree.tostring(item, pretty_print=True).decode("utf-8"))
+                file.write(
+                    etree.tostring(item, pretty_print=True).decode(
+                        sys.getdefaultencoding() + '\n'
+                    )
+                )
             else:
-                print(item)
+                file.write(item + '\n')
     elif etree.iselement(xml):
-        print(etree.tostring(xml, pretty_print=True).decode("utf-8"))
+        file.write(
+            etree.tostring(xml, pretty_print=True).decode(
+                sys.getdefaultencoding() + '\n'
+            )
+        )
     elif isinstance(xml, str):
         tree = secET.fromstring(xml)
-        print(etree.tostring(tree, pretty_print=True).decode("utf-8"))
+        file.write(
+            etree.tostring(tree, pretty_print=True).decode(
+                sys.getdefaultencoding() + '\n'
+            )
+        )
 
 
 def validate_xml_string(xml_string: str):

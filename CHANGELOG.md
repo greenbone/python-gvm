@@ -9,11 +9,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-* Added `AlertMethods`: Alemba vFire, Tippingpoint SMS [275](https://github.com/greenbone/python-gvm/pull/275)
-* Added `AlertConditions`: Error, SeverityChanged [275](https://github.com/greenbone/python-gvm/pull/275)
-* Added `AlertEvents`: Assigned ticket changed, Owned ticket changed, Ticket received [275](https://github.com/greenbone/python-gvm/pull/275)
+* Added `AlertMethods`: Alemba vFire, Tippingpoint SMS [#275](https://github.com/greenbone/python-gvm/pull/275)
+* Added `AlertConditions`: Error, SeverityChanged [#275](https://github.com/greenbone/python-gvm/pull/275)
+* Added `AlertEvents`: Assigned ticket changed, Owned ticket changed, Ticket received [#275](https://github.com/greenbone/python-gvm/pull/275)
 
 ### Changed
+
+* `pretty_print()` has a new argument that can optionally handle a file. The output is redirected to this file. default is `sys.stdout`, as it is for build-in `print()` [#277](https://github.com/greenbone/python-gvm/pull/277)
+
 ### Deprecated
 ### Removed
 ### Fixed
