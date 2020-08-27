@@ -109,7 +109,7 @@ def pretty_print(xml, file: IOBase = sys.stdout):
                     )
                 )
             else:
-                file.write(item)
+                file.write(item + '\n')
     elif etree.iselement(xml):
         file.write(
             etree.tostring(xml, pretty_print=True).decode(

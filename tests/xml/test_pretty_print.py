@@ -101,6 +101,49 @@ class PrettyPrintTestCase(unittest.TestCase):
 
         self.assertEqual(xml_string, expected_xml_string)
 
+    def test_pretty_print_with_dict(self):
+        xml_str = '<test><this><with id="a">and text</with></this></test>'
+        elem = secET.fromstring(xml_str)
+        expected_xml_string = (
+            '<test>\n'
+            '  <this>\n'
+            '    <with id="a">and text</with>\n'
+            '  </this>\n'
+            '</test>\n'
+            '<test>\n'
+            '  <this>\n'
+            '    <with id="a">and text</with>\n'
+            '  </this>\n'
+            '</test>\n'
+        )
+
+        stringio = StringIO()
+        pretty_print([elem, elem], file=stringio)
+
+        xml_string = stringio.getvalue()
+
+        self.assertEqual(xml_string, expected_xml_string)
+
+    def test_pretty_print_with_dict_str(self):
+        xml_str = '<test><this><with id="a">and text</with></this></test>'
+        no_xml = '</test>'
+        elem = secET.fromstring(xml_str)
+        expected_xml_string = (
+            '<test>\n'
+            '  <this>\n'
+            '    <with id="a">and text</with>\n'
+            '  </this>\n'
+            '</test>\n'
+            '</test>\n'
+        )
+
+        stringio = StringIO()
+        pretty_print([elem, no_xml], file=stringio)
+
+        xml_string = stringio.getvalue()
+
+        self.assertEqual(xml_string, expected_xml_string)
+
     def test_pretty_print_type_error(self):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
         elem = secET.fromstring(xml_str)
