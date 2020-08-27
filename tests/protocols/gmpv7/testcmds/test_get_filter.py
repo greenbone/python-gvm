@@ -42,6 +42,19 @@ class GmpGetFilterTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.get_filter('')
 
+    def test_get_filter_with_alerts(self):
+        self.gmp.get_filter(filter_id='f1', alerts=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_filters filter_id="f1" alerts="1"/>'
+        )
+
+        self.gmp.get_filter(filter_id='f1', alerts=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_filters filter_id="f1" alerts="0"/>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

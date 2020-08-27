@@ -38,6 +38,19 @@ class GmpGetAlertTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.get_alert(alert_id='')
 
+    def test_get_alert_with_tasks(self):
+        self.gmp.get_alert(alert_id='a1', tasks=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_alerts alert_id="a1" tasks="1"/>'
+        )
+
+        self.gmp.get_alert(alert_id='a1', tasks=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_alerts alert_id="a1" tasks="0"/>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

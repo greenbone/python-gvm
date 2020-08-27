@@ -31,11 +31,11 @@ class GmpGetCredentialTestCase:
             '<get_credentials credential_id="id"/>'
         )
 
-    def test_get_credentials_missing_credential_id(self):
+    def test_get_credential_missing_credential_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.get_credential(None)
 
-    def test_get_credentials_invalid_credential_id(self):
+    def test_get_credential_invalid_credential_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.get_credential(credential_id=None)
 
@@ -76,6 +76,32 @@ class GmpGetCredentialTestCase:
     def test_get_credential_with_invalid_credential_format(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.get_credential('id', credential_format='foo')
+
+    def test_get_credential_with_scanners(self):
+        self.gmp.get_credential('id', scanners=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_credentials credential_id="id" scanners="1"/>'
+        )
+
+        self.gmp.get_credential('id', scanners=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_credentials credential_id="id" scanners="0"/>'
+        )
+
+    def test_get_credential_with_targets(self):
+        self.gmp.get_credential('id', targets=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_credentials credential_id="id" targets="1"/>'
+        )
+
+        self.gmp.get_credential('id', targets=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_credentials credential_id="id" targets="0"/>'
+        )
 
 
 if __name__ == '__main__':

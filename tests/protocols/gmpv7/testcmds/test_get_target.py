@@ -42,6 +42,19 @@ class GmpGetTargetTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.get_target('')
 
+    def test_get_target_with_tasks(self):
+        self.gmp.get_target(target_id='t1', tasks=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_targets target_id="t1" tasks="1"/>'
+        )
+
+        self.gmp.get_target(target_id='t1', tasks=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_targets target_id="t1" tasks="0"/>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

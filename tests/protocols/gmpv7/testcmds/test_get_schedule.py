@@ -42,6 +42,19 @@ class GmpGetScheduleTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.get_schedule('')
 
+    def test_get_schedules_with_tasks(self):
+        self.gmp.get_schedule(schedule_id='s1', tasks=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_schedules schedule_id="s1" tasks="1"/>'
+        )
+
+        self.gmp.get_schedule(schedule_id='s1', tasks=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_schedules schedule_id="s1" tasks="0"/>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
