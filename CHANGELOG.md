@@ -19,7 +19,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Deprecated
 ### Removed
+
 ### Fixed
+
+* `ARP_PING` is now a field of `AliveTypes`, the old `APR_PING` name is still available. [#281](https://github.com/greenbone/python-gvm/pull/281)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.8.0...HEAD
 

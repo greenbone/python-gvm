@@ -51,7 +51,7 @@ class GetAliveTestFromStringTestCase(unittest.TestCase):
 
     def test_arp_ping(self):
         ct = get_alive_test_from_string('ARP Ping')
-        self.assertEqual(ct, AliveTest.APR_PING)
+        self.assertEqual(ct, AliveTest.ARP_PING)
 
     def test_icmp_and_tcp_ack_service_ping(self):
         ct = get_alive_test_from_string('ICMP & TCP-ACK Service Ping')
