@@ -111,7 +111,7 @@ class InvalidArgument(GvmError):
         message: Optional[str] = None,
         *,
         argument: Optional[str] = None,
-        function: Optional[str] = None,
+        function: Optional[str] = None
     ):
         super().__init__(message, argument, function)
         self.argument = argument
