@@ -46,7 +46,7 @@ class GmpV8Mixin(GvmProtocol):
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None
+        transform: Optional[Callable[[str], Any]] = None,
     ):
         super().__init__(connection, transform=transform)
 
@@ -69,7 +69,7 @@ class GmpV8Mixin(GvmProtocol):
         community: Optional[str] = None,
         privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
         privacy_password: Optional[str] = None,
-        public_key: Optional[str] = None
+        public_key: Optional[str] = None,
     ) -> Any:
         """Create a new credential
 
@@ -224,14 +224,14 @@ class GmpV8Mixin(GvmProtocol):
         ):
             if not login:
                 raise RequiredArgument(
-                    function=self.create_credential.__name__, argument='login',
+                    function=self.create_credential.__name__, argument='login'
                 )
 
             cmd.add_element("login", login)
 
         if credential_type == CredentialType.PASSWORD_ONLY and not password:
             raise RequiredArgument(
-                function=self.create_credential.__name__, argument='password',
+                function=self.create_credential.__name__, argument='password'
             )
 
         if (
@@ -319,7 +319,7 @@ class GmpV8Mixin(GvmProtocol):
         community: Optional[str] = None,
         privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
         privacy_password: Optional[str] = None,
-        public_key: Optional[str] = None
+        public_key: Optional[str] = None,
     ) -> Any:
         """Modifies an existing credential.
 
@@ -426,7 +426,7 @@ class GmpV8Mixin(GvmProtocol):
         resource_ids: Optional[List[str]] = None,
         value: Optional[str] = None,
         comment: Optional[str] = None,
-        active: Optional[bool] = None
+        active: Optional[bool] = None,
     ) -> Any:
         """Create a tag.
 
@@ -509,7 +509,7 @@ class GmpV8Mixin(GvmProtocol):
         resource_action: Optional[str] = None,
         resource_type: Optional[EntityType] = None,
         resource_filter: Optional[str] = None,
-        resource_ids: Optional[List[str]] = None
+        resource_ids: Optional[List[str]] = None,
     ) -> Any:
         """Modifies an existing tag.
 
@@ -553,7 +553,7 @@ class GmpV8Mixin(GvmProtocol):
         if resource_action or resource_filter or resource_ids or resource_type:
             if resource_filter and not resource_type:
                 raise RequiredArgument(
-                    function=self.modify_tag.__name__, argument='resource_type',
+                    function=self.modify_tag.__name__, argument='resource_type'
                 )
 
             _xmlresources = cmd.add_element("resources")
@@ -597,7 +597,7 @@ class GmpV8Mixin(GvmProtocol):
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
         port_range: Optional[str] = None,
-        port_list_id: Optional[str] = None
+        port_list_id: Optional[str] = None,
     ) -> Any:
         """Create a new target
 
@@ -674,7 +674,7 @@ class GmpV8Mixin(GvmProtocol):
         result_id: str,
         assigned_to_user_id: str,
         note: str,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Create a new ticket
 
@@ -744,7 +744,7 @@ class GmpV8Mixin(GvmProtocol):
         *,
         trash: Optional[bool] = None,
         filter: Optional[str] = None,
-        filter_id: Optional[str] = None
+        filter_id: Optional[str] = None,
     ) -> Any:
         """Request a list of tickets
 
@@ -826,7 +826,7 @@ class GmpV8Mixin(GvmProtocol):
         status: Optional[TicketStatus] = None,
         note: Optional[str] = None,
         assigned_to_user_id: Optional[str] = None,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Modify a single ticket
 
@@ -848,12 +848,12 @@ class GmpV8Mixin(GvmProtocol):
 
         if status and not note:
             raise RequiredArgument(
-                function=self.modify_ticket.__name__, argument='note',
+                function=self.modify_ticket.__name__, argument='note'
             )
 
         if note and not status:
             raise RequiredArgument(
-                function=self.modify_ticket.__name__, argument='status',
+                function=self.modify_ticket.__name__, argument='status'
             )
 
         cmd = XmlCommand("modify_ticket")
@@ -886,7 +886,7 @@ class GmpV8Mixin(GvmProtocol):
         *,
         filter_type: Optional[FilterType] = None,
         comment: Optional[str] = None,
-        term: Optional[str] = None
+        term: Optional[str] = None,
     ) -> Any:
         """Create a new filter
 
@@ -932,7 +932,7 @@ class GmpV8Mixin(GvmProtocol):
         comment: Optional[str] = None,
         name: Optional[str] = None,
         term: Optional[str] = None,
-        filter_type: Optional[FilterType] = None
+        filter_type: Optional[FilterType] = None,
     ) -> Any:
         """Modifies an existing filter.
 
@@ -980,7 +980,7 @@ class GmpV8Mixin(GvmProtocol):
         icalendar: str,
         timezone: str,
         *,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Create a new schedule based in `iCalendar`_ data.
 
@@ -1060,7 +1060,7 @@ class GmpV8Mixin(GvmProtocol):
         name: Optional[str] = None,
         icalendar: Optional[str] = None,
         timezone: Optional[str] = None,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Modifies an existing schedule
 

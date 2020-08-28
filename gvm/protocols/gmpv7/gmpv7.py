@@ -105,12 +105,12 @@ def _check_event(
     if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
         if not condition:
             raise RequiredArgument(
-                "condition is required for event {}".format(event.name),
+                "condition is required for event {}".format(event.name)
             )
 
         if not method:
             raise RequiredArgument(
-                "method is required for event {}".format(event.name),
+                "method is required for event {}".format(event.name)
             )
 
         if condition not in (
@@ -145,12 +145,12 @@ def _check_event(
     ):
         if not condition:
             raise RequiredArgument(
-                "condition is required for event {}".format(event.name),
+                "condition is required for event {}".format(event.name)
             )
 
         if not method:
             raise RequiredArgument(
-                "method is required for event {}".format(event.name),
+                "method is required for event {}".format(event.name)
             )
 
         if condition not in (AlertCondition.ALWAYS,):
@@ -201,7 +201,7 @@ class GmpV7Mixin(GvmProtocol):
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None
+        transform: Optional[Callable[[str], Any]] = None,
     ):
         super().__init__(connection, transform=transform)
 
@@ -265,7 +265,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         comment: Optional[str] = None,
         howto_install: Optional[str] = None,
-        howto_use: Optional[str] = None
+        howto_use: Optional[str] = None,
     ) -> Any:
         """Create a new agent
 
@@ -341,7 +341,7 @@ class GmpV7Mixin(GvmProtocol):
         event_data: Optional[dict] = None,
         condition_data: Optional[dict] = None,
         filter_id: Optional[int] = None,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Create a new alert
 
@@ -546,7 +546,7 @@ class GmpV7Mixin(GvmProtocol):
         auth_algorithm: Optional[SnmpAuthAlgorithm] = None,
         community: Optional[str] = None,
         privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
-        privacy_password: Optional[str] = None
+        privacy_password: Optional[str] = None,
     ) -> Any:
         """Create a new credential
 
@@ -651,7 +651,7 @@ class GmpV7Mixin(GvmProtocol):
         ):
             if not login:
                 raise RequiredArgument(
-                    function=self.create_credential.__name__, argument="login",
+                    function=self.create_credential.__name__, argument="login"
                 )
 
             cmd.add_element("login", login)
@@ -738,7 +738,7 @@ class GmpV7Mixin(GvmProtocol):
         make_unique: Optional[bool] = None,
         filter_type: Optional[FilterType] = None,
         comment: Optional[str] = None,
-        term: Optional[str] = None
+        term: Optional[str] = None,
     ) -> Any:
         """Create a new filter
 
@@ -805,7 +805,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         comment: Optional[str] = None,
         special: Optional[bool] = False,
-        users: Optional[List[str]] = None
+        users: Optional[List[str]] = None,
     ) -> Any:
         """Create a new group
 
@@ -893,7 +893,7 @@ class GmpV7Mixin(GvmProtocol):
         result_id: Optional[str] = None,
         severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
-        threat: Optional[SeverityLevel] = None
+        threat: Optional[SeverityLevel] = None,
     ) -> Any:
         """Create a new note
 
@@ -988,7 +988,7 @@ class GmpV7Mixin(GvmProtocol):
         new_severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
         threat: Optional[SeverityLevel] = None,
-        new_threat: Optional[SeverityLevel] = None
+        new_threat: Optional[SeverityLevel] = None,
     ) -> Any:
         """Create a new override
 
@@ -1093,7 +1093,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         resource_id: Optional[str] = None,
         resource_type: Optional[EntityType] = None,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Create a new permission
 
@@ -1239,7 +1239,7 @@ class GmpV7Mixin(GvmProtocol):
         end: int,
         port_range_type: PortRangeType,
         *,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Create new port range
 
@@ -1300,7 +1300,7 @@ class GmpV7Mixin(GvmProtocol):
         task_id: Optional[str] = None,
         task_name: Optional[str] = None,
         task_comment: Optional[str] = None,
-        in_assets: Optional[bool] = None
+        in_assets: Optional[bool] = None,
     ) -> Any:
         """Import a Report from XML
 
@@ -1355,7 +1355,7 @@ class GmpV7Mixin(GvmProtocol):
         name: str,
         *,
         comment: Optional[str] = None,
-        users: Optional[List[str]] = None
+        users: Optional[List[str]] = None,
     ) -> Any:
         """Create a new role
 
@@ -1411,7 +1411,7 @@ class GmpV7Mixin(GvmProtocol):
         credential_id: str,
         *,
         ca_pub: Optional[str] = None,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Create a new scanner
 
@@ -1508,7 +1508,7 @@ class GmpV7Mixin(GvmProtocol):
         duration_unit: Optional[TimeUnit] = None,
         period: Optional[int] = None,
         period_unit: Optional[TimeUnit] = None,
-        timezone: Optional[str] = None
+        timezone: Optional[str] = None,
     ) -> Any:
         """Create a new schedule
 
@@ -1713,7 +1713,7 @@ class GmpV7Mixin(GvmProtocol):
         resource_id: Optional[str] = None,
         value: Optional[str] = None,
         comment: Optional[str] = None,
-        active: Optional[bool] = None
+        active: Optional[bool] = None,
     ) -> Any:
         """Create a new tag
 
@@ -1807,7 +1807,7 @@ class GmpV7Mixin(GvmProtocol):
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
         port_range: Optional[str] = None,
-        port_list_id: Optional[str] = None
+        port_list_id: Optional[str] = None,
     ) -> Any:
         """Create a new target
 
@@ -1938,7 +1938,7 @@ class GmpV7Mixin(GvmProtocol):
         comment: Optional[str] = None,
         schedule_periods: Optional[int] = None,
         observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None
+        preferences: Optional[dict] = None,
     ) -> Any:
         """Create a new task
 
@@ -2122,7 +2122,7 @@ class GmpV7Mixin(GvmProtocol):
         hosts_allow: Optional[bool] = False,
         ifaces: Optional[List[str]] = None,
         ifaces_allow: Optional[bool] = False,
-        role_ids: Optional[List[str]] = None
+        role_ids: Optional[List[str]] = None,
     ) -> Any:
         """Create a new user
 
@@ -2595,7 +2595,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         name: Optional[str] = None,
         inheritor_id: Optional[str] = None,
-        inheritor_name: Optional[str] = None
+        inheritor_name: Optional[str] = None,
     ) -> Any:
         """Deletes an existing user
 
@@ -2659,7 +2659,7 @@ class GmpV7Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
-        format: Optional[str] = None
+        format: Optional[str] = None,
     ) -> Any:
         """Request a list of agents
 
@@ -2753,7 +2753,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
-        tasks: Optional[bool] = None
+        tasks: Optional[bool] = None,
     ) -> Any:
         """Request a list of alerts
 
@@ -2805,7 +2805,7 @@ class GmpV7Mixin(GvmProtocol):
         asset_type: AssetType,
         *,
         filter: Optional[str] = None,
-        filter_id: Optional[str] = None
+        filter_id: Optional[str] = None,
     ) -> Any:
         """Request a list of assets
 
@@ -2868,7 +2868,7 @@ class GmpV7Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         scanners: Optional[bool] = None,
         trash: Optional[bool] = None,
-        targets: Optional[bool] = None
+        targets: Optional[bool] = None,
     ) -> Any:
         """Request a list of credentials
 
@@ -2904,7 +2904,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         scanners: Optional[bool] = None,
         targets: Optional[bool] = None,
-        credential_format: Optional[CredentialFormat] = None
+        credential_format: Optional[CredentialFormat] = None,
     ) -> Any:
         """Request a single credential
 
@@ -2953,7 +2953,7 @@ class GmpV7Mixin(GvmProtocol):
         details: Optional[bool] = None,
         families: Optional[bool] = None,
         preferences: Optional[bool] = None,
-        tasks: Optional[bool] = None
+        tasks: Optional[bool] = None,
     ) -> Any:
         """Request a list of scan configs
 
@@ -3055,7 +3055,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
-        alerts: Optional[bool] = None
+        alerts: Optional[bool] = None,
     ) -> Any:
         """Request a list of filters
 
@@ -3111,7 +3111,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
-        trash: Optional[bool] = None
+        trash: Optional[bool] = None,
     ) -> Any:
         """Request a list of groups
 
@@ -3158,7 +3158,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         name: Optional[str] = None,
-        details: Optional[bool] = None
+        details: Optional[bool] = None,
     ) -> Any:
         """Request a list of security information
 
@@ -3245,7 +3245,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         details: Optional[bool] = None,
-        result: Optional[bool] = None
+        result: Optional[bool] = None,
     ) -> Any:
         """Request a list of notes
 
@@ -3302,7 +3302,7 @@ class GmpV7Mixin(GvmProtocol):
         preferences_config_id: Optional[str] = None,
         family: Optional[str] = None,
         sort_order: Optional[str] = None,
-        sort_field: Optional[str] = None
+        sort_field: Optional[str] = None,
     ):
         """Request a list of nvts
 
@@ -3396,7 +3396,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         details: Optional[bool] = None,
-        result: Optional[bool] = None
+        result: Optional[bool] = None,
     ) -> Any:
         """Request a list of overrides
 
@@ -3448,7 +3448,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
-        trash: Optional[bool] = None
+        trash: Optional[bool] = None,
     ) -> Any:
         """Request a list of permissions
 
@@ -3495,7 +3495,7 @@ class GmpV7Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         details: Optional[bool] = None,
         targets: Optional[bool] = None,
-        trash: Optional[bool] = None
+        trash: Optional[bool] = None,
     ) -> Any:
         """Request a list of port lists
 
@@ -3578,7 +3578,7 @@ class GmpV7Mixin(GvmProtocol):
         name: str,
         *,
         nvt_oid: Optional[str] = None,
-        config_id: Optional[str] = None
+        config_id: Optional[str] = None,
     ) -> Any:
         """Request a nvt preference
 
@@ -3614,7 +3614,7 @@ class GmpV7Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         note_details: Optional[bool] = None,
         override_details: Optional[bool] = None,
-        no_details: Optional[bool] = None
+        no_details: Optional[bool] = None,
     ) -> Any:
         """Request a list of reports
 
@@ -3659,7 +3659,7 @@ class GmpV7Mixin(GvmProtocol):
         delta_report_id: Optional[str] = None,
         report_format_id: Optional[str] = None,
         ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = None
+        details: Optional[bool] = None,
     ) -> Any:
         """Request a single report
 
@@ -3709,7 +3709,7 @@ class GmpV7Mixin(GvmProtocol):
         trash: Optional[bool] = None,
         alerts: Optional[bool] = None,
         params: Optional[bool] = None,
-        details: Optional[bool] = None
+        details: Optional[bool] = None,
     ) -> Any:
         """Request a list of report formats
 
@@ -3773,7 +3773,7 @@ class GmpV7Mixin(GvmProtocol):
         task_id: Optional[str] = None,
         note_details: Optional[bool] = None,
         override_details: Optional[bool] = None,
-        details: Optional[bool] = None
+        details: Optional[bool] = None,
     ) -> Any:
         """Request a list of results
 
@@ -3834,7 +3834,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
-        trash: Optional[bool] = None
+        trash: Optional[bool] = None,
     ) -> Any:
         """Request a list of roles
 
@@ -3879,7 +3879,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
-        details: Optional[bool] = None
+        details: Optional[bool] = None,
     ) -> Any:
         """Request a list of scanners
 
@@ -3933,7 +3933,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
-        tasks: Optional[bool] = None
+        tasks: Optional[bool] = None,
     ) -> Any:
         """Request a list of schedules
 
@@ -4027,7 +4027,7 @@ class GmpV7Mixin(GvmProtocol):
         start_time: Optional[str] = None,
         end_time: Optional[str] = None,
         brief: Optional[bool] = None,
-        slave_id: Optional[str] = None
+        slave_id: Optional[str] = None,
     ) -> Any:
         """Request a list of system reports
 
@@ -4076,7 +4076,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
-        names_only: Optional[bool] = None
+        names_only: Optional[bool] = None,
     ) -> Any:
         """Request a list of tags
 
@@ -4126,7 +4126,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
-        tasks: Optional[bool] = None
+        tasks: Optional[bool] = None,
     ) -> Any:
         """Request a list of targets
 
@@ -4184,7 +4184,7 @@ class GmpV7Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None
+        schedules_only: Optional[bool] = None,
     ) -> Any:
         """Request a list of tasks
 
@@ -4318,7 +4318,7 @@ class GmpV7Mixin(GvmProtocol):
         agent_id: str,
         *,
         name: Optional[str] = None,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Modifies an existing agent
 
@@ -4358,7 +4358,7 @@ class GmpV7Mixin(GvmProtocol):
         condition: Optional[AlertCondition] = None,
         condition_data: Optional[dict] = None,
         method: Optional[AlertMethod] = None,
-        method_data: Optional[dict] = None
+        method_data: Optional[dict] = None,
     ) -> Any:
         """Modifies an existing alert.
 
@@ -4510,7 +4510,7 @@ class GmpV7Mixin(GvmProtocol):
         name: str,
         nvt_oid: str,
         *,
-        value: Optional[str] = None
+        value: Optional[str] = None,
     ) -> Any:
         """Modifies the nvt preferences of an existing scan config.
 
@@ -4659,7 +4659,7 @@ class GmpV7Mixin(GvmProtocol):
         families: List[str],
         *,
         auto_add_new_families: Optional[bool] = True,
-        auto_add_new_nvts: Optional[bool] = True
+        auto_add_new_nvts: Optional[bool] = True,
     ) -> Any:
         """
         Selected the NVTs of a scan config at a family level.
@@ -4795,7 +4795,7 @@ class GmpV7Mixin(GvmProtocol):
         auth_algorithm: Optional[SnmpAuthAlgorithm] = None,
         community: Optional[str] = None,
         privacy_algorithm: Optional[SnmpPrivacyAlgorithm] = None,
-        privacy_password: Optional[str] = None
+        privacy_password: Optional[str] = None,
     ) -> Any:
         """Modifies an existing credential.
 
@@ -4891,7 +4891,7 @@ class GmpV7Mixin(GvmProtocol):
         comment: Optional[str] = None,
         name: Optional[str] = None,
         term: Optional[str] = None,
-        filter_type: Optional[FilterType] = None
+        filter_type: Optional[FilterType] = None,
     ) -> Any:
         """Modifies an existing filter.
 
@@ -4939,7 +4939,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         comment: Optional[str] = None,
         name: Optional[str] = None,
-        users: Optional[List[str]] = None
+        users: Optional[List[str]] = None,
     ) -> Any:
         """Modifies an existing group.
 
@@ -4982,7 +4982,7 @@ class GmpV7Mixin(GvmProtocol):
         result_id: Optional[str] = None,
         severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
-        threat: Optional[SeverityLevel] = None
+        threat: Optional[SeverityLevel] = None,
     ) -> Any:
         """Modifies an existing note.
 
@@ -5059,7 +5059,7 @@ class GmpV7Mixin(GvmProtocol):
         new_severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
         threat: Optional[SeverityLevel] = None,
-        new_threat: Optional[SeverityLevel] = None
+        new_threat: Optional[SeverityLevel] = None,
     ) -> Any:
         """Modifies an existing override.
 
@@ -5146,7 +5146,7 @@ class GmpV7Mixin(GvmProtocol):
         resource_id: Optional[str] = None,
         resource_type: Optional[EntityType] = None,
         subject_id: Optional[str] = None,
-        subject_type: Optional[PermissionSubjectType] = None
+        subject_type: Optional[PermissionSubjectType] = None,
     ) -> Any:
         """Modifies an existing permission.
 
@@ -5227,7 +5227,7 @@ class GmpV7Mixin(GvmProtocol):
         port_list_id: str,
         *,
         comment: Optional[str] = None,
-        name: Optional[str] = None
+        name: Optional[str] = None,
     ) -> Any:
         """Modifies an existing port list.
 
@@ -5262,7 +5262,7 @@ class GmpV7Mixin(GvmProtocol):
         name: Optional[str] = None,
         summary: Optional[str] = None,
         param_name: Optional[str] = None,
-        param_value: Optional[str] = None
+        param_value: Optional[str] = None,
     ) -> Any:
         """Modifies an existing report format.
 
@@ -5310,7 +5310,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         comment: Optional[str] = None,
         name: Optional[str] = None,
-        users: Optional[List[str]] = None
+        users: Optional[List[str]] = None,
     ) -> Any:
         """Modifies an existing role.
 
@@ -5352,7 +5352,7 @@ class GmpV7Mixin(GvmProtocol):
         comment: Optional[str] = None,
         name: Optional[str] = None,
         ca_pub: Optional[str] = None,
-        credential_id: Optional[str] = None
+        credential_id: Optional[str] = None,
     ) -> Any:
         """Modifies an existing scanner.
 
@@ -5424,7 +5424,7 @@ class GmpV7Mixin(GvmProtocol):
         duration_unit: Optional[TimeUnit] = None,
         period: Optional[int] = None,
         period_unit: Optional[TimeUnit] = None,
-        timezone: Optional[str] = None
+        timezone: Optional[str] = None,
     ) -> Any:
         """Modifies an existing schedule.
 
@@ -5652,7 +5652,7 @@ class GmpV7Mixin(GvmProtocol):
         value: Optional[str] = None,
         active: Optional[bool] = None,
         resource_id: Optional[str] = None,
-        resource_type: Optional[EntityType] = None
+        resource_type: Optional[EntityType] = None,
     ) -> Any:
         """Modifies an existing tag.
 
@@ -5731,7 +5731,7 @@ class GmpV7Mixin(GvmProtocol):
         alive_test: Optional[AliveTest] = None,
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
-        port_list_id: Optional[str] = None
+        port_list_id: Optional[str] = None,
     ) -> Any:
         """Modifies an existing target.
 
@@ -5833,7 +5833,7 @@ class GmpV7Mixin(GvmProtocol):
         comment: Optional[str] = None,
         alert_ids: Optional[List[str]] = None,
         observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None
+        preferences: Optional[dict] = None,
     ) -> Any:
         """Modifies an existing task.
 
@@ -5953,7 +5953,7 @@ class GmpV7Mixin(GvmProtocol):
         hosts: Optional[List[str]] = None,
         hosts_allow: Optional[bool] = False,
         ifaces: Optional[List[str]] = None,
-        ifaces_allow: Optional[bool] = False
+        ifaces_allow: Optional[bool] = False,
     ) -> Any:
         """Modifies an existing user.
 
@@ -6169,7 +6169,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         report_format_id: Optional[str] = None,
-        delta_report_id: Optional[str] = None
+        delta_report_id: Optional[str] = None,
     ) -> Any:
         """Run an alert by ignoring its event and conditions
 
