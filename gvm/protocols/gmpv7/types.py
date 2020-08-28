@@ -183,7 +183,8 @@ class AliveTest(Enum):
     ICMP_PING = 'ICMP Ping'
     TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
     TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
-    APR_PING = 'ARP Ping'
+    ARP_PING = 'ARP Ping'
+    APR_PING = 'ARP Ping'  # Alias for ARP_PING
     ICMP_AND_TCP_ACK_SERVICE_PING = 'ICMP & TCP-ACK Service Ping'
     ICMP_AND_ARP_PING = 'ICMP & ARP Ping'
     TCP_ACK_SERVICE_AND_ARP_PING = 'TCP-ACK Service & ARP Ping'
@@ -215,7 +216,7 @@ def get_alive_test_from_string(
         return AliveTest.TCP_SYN_SERVICE_PING
 
     if alive_test == 'arp ping':
-        return AliveTest.APR_PING
+        return AliveTest.ARP_PING
 
     if alive_test == 'icmp & tcp-ack service ping':
         return AliveTest.ICMP_AND_TCP_ACK_SERVICE_PING
