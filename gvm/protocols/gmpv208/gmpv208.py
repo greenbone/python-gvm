@@ -53,7 +53,7 @@ class GmpV208Mixin(GvmProtocol):
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None,
+        transform: Optional[Callable[[str], Any]] = None
     ):
         super().__init__(connection, transform=transform)
 
@@ -68,7 +68,7 @@ class GmpV208Mixin(GvmProtocol):
         *,
         comment: Optional[str] = None,
         howto_install: Optional[str] = None,
-        howto_use: Optional[str] = None,
+        howto_use: Optional[str] = None
     ) -> None:
         # pylint: disable=unused-argument
         deprecation(
@@ -94,7 +94,7 @@ class GmpV208Mixin(GvmProtocol):
         agent_id: str,
         *,
         name: Optional[str] = None,
-        comment: Optional[str] = None,
+        comment: Optional[str] = None
     ) -> None:
         # pylint: disable=unused-argument
         deprecation(
@@ -184,7 +184,7 @@ class GmpV208Mixin(GvmProtocol):
         name: Optional[str] = None,
         icalendar: Optional[str] = None,
         timezone: Optional[str] = None,
-        comment: Optional[str] = None,
+        comment: Optional[str] = None
     ) -> Any:
         """Modifies an existing schedule
 
@@ -245,7 +245,7 @@ class GmpV208Mixin(GvmProtocol):
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
         port_range: Optional[str] = None,
-        port_list_id: Optional[str] = None,
+        port_list_id: Optional[str] = None
     ) -> Any:
         """Create a new target
 

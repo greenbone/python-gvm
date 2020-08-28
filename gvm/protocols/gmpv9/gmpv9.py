@@ -134,7 +134,7 @@ class GmpV9Mixin(GvmProtocol):
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None,
+        transform: Optional[Callable[[str], Any]] = None
     ):
         super().__init__(connection, transform=transform)
 
@@ -152,7 +152,7 @@ class GmpV9Mixin(GvmProtocol):
         event_data: Optional[dict] = None,
         condition_data: Optional[dict] = None,
         filter_id: Optional[int] = None,
-        comment: Optional[str] = None,
+        comment: Optional[str] = None
     ) -> Any:
         """Create a new alert
 
@@ -269,7 +269,7 @@ class GmpV9Mixin(GvmProtocol):
         comment: Optional[str] = None,
         schedule_periods: Optional[int] = None,
         observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None,
+        preferences: Optional[dict] = None
     ) -> Any:
         """Create a new audit task
 
@@ -361,7 +361,7 @@ class GmpV9Mixin(GvmProtocol):
         comment: Optional[str] = None,
         schedule_periods: Optional[int] = None,
         observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None,
+        preferences: Optional[dict] = None
     ) -> Any:
         """Create a new scan task
 
@@ -407,7 +407,7 @@ class GmpV9Mixin(GvmProtocol):
         certificate: str,
         *,
         comment: Optional[str] = None,
-        trust: Optional[bool] = None,
+        trust: Optional[bool] = None
     ) -> Any:
         """Create a new TLS certificate
 
@@ -449,7 +449,7 @@ class GmpV9Mixin(GvmProtocol):
         *,
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
-        include_certificate_data: Optional[bool] = None,
+        include_certificate_data: Optional[bool] = None
     ) -> Any:
         """Request a list of TLS certificates
 
@@ -509,7 +509,7 @@ class GmpV9Mixin(GvmProtocol):
         condition: Optional[AlertCondition] = None,
         condition_data: Optional[dict] = None,
         method: Optional[AlertMethod] = None,
-        method_data: Optional[dict] = None,
+        method_data: Optional[dict] = None
     ) -> Any:
         """Modifies an existing alert.
 
@@ -611,7 +611,7 @@ class GmpV9Mixin(GvmProtocol):
         *,
         name: Optional[str] = None,
         comment: Optional[str] = None,
-        trust: Optional[bool] = None,
+        trust: Optional[bool] = None
     ) -> Any:
         """Modifies an existing TLS certificate.
 
@@ -674,7 +674,7 @@ class GmpV9Mixin(GvmProtocol):
         details: Optional[bool] = None,
         families: Optional[bool] = None,
         preferences: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        tasks: Optional[bool] = None
     ) -> Any:
         """Request a list of scan configs
 
@@ -713,7 +713,7 @@ class GmpV9Mixin(GvmProtocol):
         details: Optional[bool] = None,
         families: Optional[bool] = None,
         preferences: Optional[bool] = None,
-        trash: Optional[bool] = None,
+        trash: Optional[bool] = None
     ) -> Any:
         """Request a list of policies
 
@@ -772,7 +772,7 @@ class GmpV9Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
+        schedules_only: Optional[bool] = None
     ) -> Any:
         """Request a list of tasks
 
@@ -803,7 +803,7 @@ class GmpV9Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
+        schedules_only: Optional[bool] = None
     ) -> Any:
         """Request a list of audits
 
@@ -941,7 +941,7 @@ class GmpV9Mixin(GvmProtocol):
         comment: Optional[str] = None,
         schedule_periods: Optional[int] = None,
         observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None,
+        preferences: Optional[dict] = None
     ) -> Any:
         if not name:
             raise RequiredArgument(function=function, argument='name')
@@ -1062,7 +1062,7 @@ class GmpV9Mixin(GvmProtocol):
         details: Optional[bool] = None,
         families: Optional[bool] = None,
         preferences: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        tasks: Optional[bool] = None
     ) -> Any:
         cmd = XmlCommand("get_configs")
         cmd.set_attribute("usage_type", usage_type.value)
@@ -1109,7 +1109,7 @@ class GmpV9Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
+        schedules_only: Optional[bool] = None
     ) -> Any:
         cmd = XmlCommand("get_tasks")
         cmd.set_attribute("usage_type", usage_type.value)
