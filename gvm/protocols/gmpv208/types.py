@@ -105,7 +105,7 @@ __all__ = [
 
 
 class EntityType(Enum):
-    """ Enum for entity types """
+    """Enum for entity types """
 
     ALERT = "alert"
     ASSET = "asset"
@@ -144,7 +144,7 @@ class EntityType(Enum):
 def get_entity_type_from_string(
     entity_type: Optional[str],
 ) -> Optional[EntityType]:
-    """ Convert a entity type string to an actual EntityType instance
+    """Convert a entity type string to an actual EntityType instance
 
     Arguments:
         entity_type: Entity type string to convert to a EntityType
@@ -174,7 +174,7 @@ def get_entity_type_from_string(
 
 
 class FilterType(Enum):
-    """ Enum for filter types """
+    """Enum for filter types """
 
     ALERT = "alert"
     ASSET = "asset"
@@ -206,7 +206,7 @@ class FilterType(Enum):
 def get_filter_type_from_string(
     filter_type: Optional[str],
 ) -> Optional[FilterType]:
-    """ Convert a filter type string to an actual FilterType instance
+    """Convert a filter type string to an actual FilterType instance
 
     Arguments:
         filter_type (str): Filter type string to convert to a FilterType
@@ -239,7 +239,7 @@ def get_filter_type_from_string(
 
 
 class InfoType(Enum):
-    """ Enum for info types """
+    """Enum for info types """
 
     CERT_BUND_ADV = "CERT_BUND_ADV"
     CPE = "CPE"
@@ -250,7 +250,7 @@ class InfoType(Enum):
 
 
 def get_info_type_from_string(info_type: Optional[str]) -> Optional[InfoType]:
-    """ Convert a info type string to an actual InfoType instance
+    """Convert a info type string to an actual InfoType instance
 
     Arguments:
         info_type: Info type string to convert to a InfoType

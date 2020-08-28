@@ -146,7 +146,7 @@ class InvalidArgumentType(GvmError):
         argument: str = None,
         arg_type: str = None,
         *,
-        function: Optional[str] = None,
+        function: Optional[str] = None
     ):
         # pylint: disable=super-init-not-called
         self.argument = argument
@@ -180,7 +180,7 @@ class RequiredArgument(GvmError):
         message: Optional[str] = None,
         *,
         argument: Optional[str] = None,
-        function: Optional[str] = None,
+        function: Optional[str] = None
     ):
         super().__init__(message, argument, function)
         self.argument = argument
