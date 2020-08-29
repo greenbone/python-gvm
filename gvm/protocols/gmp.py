@@ -81,8 +81,7 @@ class Gmp(GvmProtocol):
         self._gmp_transform = transform
 
     def determine_remote_gmp_version(self) -> str:
-        """ Determine the supported GMP version of the remote daemon
-        """
+        """Determine the supported GMP version of the remote daemon"""
         self.connect()
         resp = self._send_xml_command(XmlCommand("get_version"))
         self.disconnect()
@@ -97,8 +96,8 @@ class Gmp(GvmProtocol):
         return version_el.text
 
     def determine_supported_gmp(self) -> SUPPORTED_GMP_VERSIONS:
-        """ Determine supported GMP version of the remote daemon and return a
-            corresponding Gmp class instance
+        """Determine supported GMP version of the remote daemon and return a
+        corresponding Gmp class instance
         """
         version = self.determine_remote_gmp_version()
         major_version = int(version.split('.')[0])

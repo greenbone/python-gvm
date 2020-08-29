@@ -98,7 +98,7 @@ __all__ = [
 
 
 class EntityType(Enum):
-    """ Enum for entity types """
+    """Enum for entity types """
 
     AGENT = "agent"
     ALERT = "alert"
@@ -138,7 +138,7 @@ class EntityType(Enum):
 def get_entity_type_from_string(
     entity_type: Optional[str],
 ) -> Optional[EntityType]:
-    """ Convert a entity type string to an actual EntityType instance
+    """Convert a entity type string to an actual EntityType instance
 
     Arguments:
         entity_type: Entity type string to convert to a EntityType
@@ -168,7 +168,7 @@ def get_entity_type_from_string(
 
 
 class AlertEvent(Enum):
-    """ Enum for alert event types """
+    """Enum for alert event types """
 
     TASK_RUN_STATUS_CHANGED = 'Task run status changed'
     UPDATED_SECINFO_ARRIVED = 'Updated SecInfo arrived'
@@ -181,7 +181,7 @@ class AlertEvent(Enum):
 def get_alert_event_from_string(
     alert_event: Optional[str],
 ) -> Optional[AlertEvent]:
-    """ Convert an alert event string into a AlertEvent instance """
+    """Convert an alert event string into a AlertEvent instance """
     if not alert_event:
         return None
 
@@ -211,7 +211,7 @@ def get_alert_event_from_string(
 
 
 class AlertCondition(Enum):
-    """ Enum for alert condition types """
+    """Enum for alert condition types """
 
     ALWAYS = 'Always'
     ERROR = 'Error'
@@ -224,7 +224,7 @@ class AlertCondition(Enum):
 def get_alert_condition_from_string(
     alert_condition: Optional[str],
 ) -> Optional[AlertCondition]:
-    """ Convert an alert condition string into a AlertCondition instance """
+    """Convert an alert condition string into a AlertCondition instance """
     if not alert_condition:
         return None
 
@@ -255,7 +255,7 @@ def get_alert_condition_from_string(
 
 
 class AlertMethod(Enum):
-    """ Enum for alert method type"""
+    """Enum for alert method type"""
 
     SCP = "SCP"
     SEND = "Send"
@@ -274,7 +274,7 @@ class AlertMethod(Enum):
 def get_alert_method_from_string(
     alert_method: Optional[str],
 ) -> Optional[AlertMethod]:
-    """ Convert an alert method string into a AlertCondition instance """
+    """Convert an alert method string into a AlertCondition instance """
     if not alert_method:
         return None
 
@@ -308,7 +308,7 @@ def get_alert_method_from_string(
 
 
 class FilterType(Enum):
-    """ Enum for filter types """
+    """Enum for filter types """
 
     AGENT = "agent"
     ALERT = "alert"
@@ -341,7 +341,7 @@ class FilterType(Enum):
 def get_filter_type_from_string(
     filter_type: Optional[str],
 ) -> Optional[FilterType]:
-    """ Convert a filter type string to an actual FilterType instance
+    """Convert a filter type string to an actual FilterType instance
 
     Arguments:
         filter_type (str): Filter type string to convert to a FilterType
@@ -386,7 +386,7 @@ class ScannerType(Enum):
 def get_scanner_type_from_string(
     scanner_type: Optional[str],
 ) -> Optional[ScannerType]:
-    """ Convert a scanner type string to an actual ScannerType instance
+    """Convert a scanner type string to an actual ScannerType instance
 
     Arguments:
         scanner_type: Scanner type string to convert to a ScannerType
@@ -432,7 +432,7 @@ def get_scanner_type_from_string(
 
 
 class _UsageType(Enum):
-    """ Enum for usage types """
+    """Enum for usage types """
 
     AUDIT = "audit"
     POLICY = "policy"
@@ -442,7 +442,7 @@ class _UsageType(Enum):
 def __get_usage_type_from_string(
     usage_type: Optional[str],
 ) -> Optional[_UsageType]:
-    """ Convert a usage type string to an actual _UsageType instance
+    """Convert a usage type string to an actual _UsageType instance
 
     Arguments:
         entity_type: Usage type string to convert to a _UsageType

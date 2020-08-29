@@ -102,7 +102,7 @@ __all__ = [
 
 
 class EntityType(Enum):
-    """ Enum for entity types """
+    """Enum for entity types """
 
     AGENT = "agent"
     ALERT = "alert"
@@ -142,7 +142,7 @@ class EntityType(Enum):
 def get_entity_type_from_string(
     entity_type: Optional[str],
 ) -> Optional[EntityType]:
-    """ Convert a entity type string to an actual EntityType instance
+    """Convert a entity type string to an actual EntityType instance
 
     Arguments:
         entity_type: Entity type string to convert to a EntityType
@@ -169,7 +169,7 @@ def get_entity_type_from_string(
 
 
 class FilterType(Enum):
-    """ Enum for filter types """
+    """Enum for filter types """
 
     AGENT = "agent"
     ALERT = "alert"
@@ -201,7 +201,7 @@ class FilterType(Enum):
 def get_filter_type_from_string(
     filter_type: Optional[str],
 ) -> Optional[FilterType]:
-    """ Convert a filter type string to an actual FilterType instance
+    """Convert a filter type string to an actual FilterType instance
 
     Arguments:
         filter_type (str): Filter type string to convert to a FilterType
@@ -245,8 +245,7 @@ class CredentialType(Enum):
 def get_credential_type_from_string(
     credential_type: Optional[str],
 ) -> Optional[CredentialType]:
-    """ Convert a credential type string into a CredentialType instance
-    """
+    """Convert a credential type string into a CredentialType instance"""
     if not credential_type:
         return None
 
@@ -260,7 +259,7 @@ def get_credential_type_from_string(
 
 
 class TicketStatus(Enum):
-    """ Enum for ticket status """
+    """Enum for ticket status """
 
     OPEN = 'Open'
     FIXED = 'Fixed'
@@ -270,8 +269,7 @@ class TicketStatus(Enum):
 def get_ticket_status_from_string(
     ticket_status: Optional[str],
 ) -> Optional[TicketStatus]:
-    """ Convert a ticket status string into a TicketStatus instance
-    """
+    """Convert a ticket status string into a TicketStatus instance"""
     if not ticket_status:
         return None
 

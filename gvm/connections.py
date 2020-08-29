@@ -98,8 +98,7 @@ class GvmConnection(XmlReader):
         return self._socket.recv(BUF_SIZE)
 
     def connect(self):
-        """Establish a connection to a remote server
-        """
+        """Establish a connection to a remote server"""
         raise NotImplementedError
 
     def send(self, data: Union[bytes, str]):
@@ -155,8 +154,7 @@ class GvmConnection(XmlReader):
         return response
 
     def disconnect(self):
-        """Disconnect and close the connection to the remote server
-        """
+        """Disconnect and close the connection to the remote server"""
         try:
             if self._socket is not None:
                 self._socket.close()
@@ -164,8 +162,7 @@ class GvmConnection(XmlReader):
             logger.debug("Connection closing error: %s", e)
 
     def finish_send(self):
-        """Indicate to the remote server you are done with sending data
-        """
+        """Indicate to the remote server you are done with sending data"""
         # shutdown socket for sending. only allow reading data afterwards
         self._socket.shutdown(socketlib.SHUT_WR)
 
@@ -341,8 +338,7 @@ class UnixSocketConnection(GvmConnection):
         self.path = path
 
     def connect(self):
-        """Connect to the UNIX socket
-        """
+        """Connect to the UNIX socket"""
         self._socket = socketlib.socket(
             socketlib.AF_UNIX, socketlib.SOCK_STREAM
         )

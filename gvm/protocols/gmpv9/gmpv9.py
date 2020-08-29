@@ -55,12 +55,12 @@ def _check_event(
     if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
         if not condition:
             raise RequiredArgument(
-                "condition is required for event {}".format(event.name),
+                "condition is required for event {}".format(event.name)
             )
 
         if not method:
             raise RequiredArgument(
-                "method is required for event {}".format(event.name),
+                "method is required for event {}".format(event.name)
             )
 
         if condition not in (
@@ -97,12 +97,12 @@ def _check_event(
     ):
         if not condition:
             raise RequiredArgument(
-                "condition is required for event {}".format(event.name),
+                "condition is required for event {}".format(event.name)
             )
 
         if not method:
             raise RequiredArgument(
-                "method is required for event {}".format(event.name),
+                "method is required for event {}".format(event.name)
             )
 
         if condition not in (AlertCondition.ALWAYS,):

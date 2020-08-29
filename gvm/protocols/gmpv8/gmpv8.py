@@ -224,14 +224,14 @@ class GmpV8Mixin(GvmProtocol):
         ):
             if not login:
                 raise RequiredArgument(
-                    function=self.create_credential.__name__, argument='login',
+                    function=self.create_credential.__name__, argument='login'
                 )
 
             cmd.add_element("login", login)
 
         if credential_type == CredentialType.PASSWORD_ONLY and not password:
             raise RequiredArgument(
-                function=self.create_credential.__name__, argument='password',
+                function=self.create_credential.__name__, argument='password'
             )
 
         if (
@@ -553,7 +553,7 @@ class GmpV8Mixin(GvmProtocol):
         if resource_action or resource_filter or resource_ids or resource_type:
             if resource_filter and not resource_type:
                 raise RequiredArgument(
-                    function=self.modify_tag.__name__, argument='resource_type',
+                    function=self.modify_tag.__name__, argument='resource_type'
                 )
 
             _xmlresources = cmd.add_element("resources")
@@ -848,12 +848,12 @@ class GmpV8Mixin(GvmProtocol):
 
         if status and not note:
             raise RequiredArgument(
-                function=self.modify_ticket.__name__, argument='note',
+                function=self.modify_ticket.__name__, argument='note'
             )
 
         if note and not status:
             raise RequiredArgument(
-                function=self.modify_ticket.__name__, argument='status',
+                function=self.modify_ticket.__name__, argument='status'
             )
 
         cmd = XmlCommand("modify_ticket")

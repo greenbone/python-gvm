@@ -65,7 +65,7 @@ __all__ = [
 
 
 class AlertEvent(Enum):
-    """ Enum for alert event types """
+    """Enum for alert event types """
 
     TASK_RUN_STATUS_CHANGED = 'Task run status changed'
     UPDATED_SECINFO_ARRIVED = 'Updated SecInfo arrived'
@@ -75,7 +75,7 @@ class AlertEvent(Enum):
 def get_alert_event_from_string(
     alert_event: Optional[str],
 ) -> Optional[AlertEvent]:
-    """ Convert an alert event string into a AlertEvent instance """
+    """Convert an alert event string into a AlertEvent instance """
     if not alert_event:
         return None
 
@@ -96,7 +96,7 @@ def get_alert_event_from_string(
 
 
 class AlertCondition(Enum):
-    """ Enum for alert condition types """
+    """Enum for alert condition types """
 
     ALWAYS = 'Always'
     SEVERITY_AT_LEAST = 'Severity at least'
@@ -107,7 +107,7 @@ class AlertCondition(Enum):
 def get_alert_condition_from_string(
     alert_condition: Optional[str],
 ) -> Optional[AlertCondition]:
-    """ Convert an alert condition string into a AlertCondition instance """
+    """Convert an alert condition string into a AlertCondition instance """
     if not alert_condition:
         return None
 
@@ -132,7 +132,7 @@ def get_alert_condition_from_string(
 
 
 class AlertMethod(Enum):
-    """ Enum for alert method type"""
+    """Enum for alert method type"""
 
     SCP = "SCP"
     SEND = "Send"
@@ -149,7 +149,7 @@ class AlertMethod(Enum):
 def get_alert_method_from_string(
     alert_method: Optional[str],
 ) -> Optional[AlertMethod]:
-    """ Convert an alert method string into a AlertCondition instance """
+    """Convert an alert method string into a AlertCondition instance """
     if not alert_method:
         return None
 
@@ -177,7 +177,7 @@ def get_alert_method_from_string(
 
 
 class AliveTest(Enum):
-    """ Enum for choosing an alive test """
+    """Enum for choosing an alive test """
 
     SCAN_CONFIG_DEFAULT = 'Scan Config Default'
     ICMP_PING = 'ICMP Ping'
@@ -197,7 +197,7 @@ class AliveTest(Enum):
 def get_alive_test_from_string(
     alive_test: Optional[str],
 ) -> Optional[AliveTest]:
-    """ Convert an alive test string into a AliveTest instance """
+    """Convert an alive test string into a AliveTest instance """
     if not alive_test:
         return None
 
@@ -239,7 +239,7 @@ def get_alive_test_from_string(
 
 
 class AssetType(Enum):
-    """" Enum for asset types """
+    """"Enum for asset types """
 
     OPERATING_SYSTEM = 'os'
     HOST = 'host'
@@ -288,7 +288,7 @@ def get_credential_format_from_string(
 
 
 class CredentialType(Enum):
-    """ Enum for credential types """
+    """Enum for credential types """
 
     CLIENT_CERTIFICATE = 'cc'
     SNMP = 'snmp'
@@ -299,8 +299,7 @@ class CredentialType(Enum):
 def get_credential_type_from_string(
     credential_type: Optional[str],
 ) -> Optional[CredentialType]:
-    """ Convert a credential type string into a CredentialType instance
-    """
+    """Convert a credential type string into a CredentialType instance"""
     if not credential_type:
         return None
 
@@ -314,7 +313,7 @@ def get_credential_type_from_string(
 
 
 class EntityType(Enum):
-    """ Enum for entity types """
+    """Enum for entity types """
 
     AGENT = "agent"
     ALERT = "alert"
@@ -351,7 +350,7 @@ class EntityType(Enum):
 def get_entity_type_from_string(
     entity_type: Optional[str],
 ) -> Optional[EntityType]:
-    """ Convert a entity type string to an actual EntityType instance
+    """Convert a entity type string to an actual EntityType instance
 
     Arguments:
         entity_type: Resource type string to convert to a EntityType
@@ -374,7 +373,7 @@ def get_entity_type_from_string(
 
 
 class FeedType(Enum):
-    """ Enum for feed types """
+    """Enum for feed types """
 
     NVT = "NVT"
     CERT = "CERT"
@@ -382,8 +381,7 @@ class FeedType(Enum):
 
 
 def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
-    """ Convert a feed type string into a FeedType instance
-    """
+    """Convert a feed type string into a FeedType instance"""
     if not feed_type:
         return None
 
@@ -396,7 +394,7 @@ def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
 
 
 class FilterType(Enum):
-    """ Enum for filter types """
+    """Enum for filter types """
 
     AGENT = "agent"
     ALERT = "alert"
@@ -426,7 +424,7 @@ class FilterType(Enum):
 def get_filter_type_from_string(
     filter_type: Optional[str],
 ) -> Optional[FilterType]:
-    """ Convert a filter type string to an actual FilterType instance
+    """Convert a filter type string to an actual FilterType instance
 
     Arguments:
         filter_type: Filter type string to convert to a FilterType
@@ -463,7 +461,7 @@ class HostsOrdering(Enum):
 def get_hosts_ordering_from_string(
     hosts_ordering: Optional[str],
 ) -> Optional[HostsOrdering]:
-    """ Convert a hosts ordering string to an actual HostsOrdering instance
+    """Convert a hosts ordering string to an actual HostsOrdering instance
 
     Arguments:
         hosts_ordering: Host ordering string to convert to a HostsOrdering
@@ -492,7 +490,7 @@ class InfoType(Enum):
 
 
 def get_info_type_from_string(info_type: Optional[str]) -> Optional[InfoType]:
-    """ Convert a info type string to an actual InfoType instance
+    """Convert a info type string to an actual InfoType instance
 
     Arguments:
         info_type: Info type string to convert to a InfoType
@@ -518,7 +516,7 @@ class PermissionSubjectType(Enum):
 def get_permission_subject_type_from_string(
     subject_type: Optional[str],
 ) -> Optional[PermissionSubjectType]:
-    """ Convert a permission subject type string to an actual
+    """Convert a permission subject type string to an actual
     PermissionSubjectType instance
 
     Arguments:
@@ -547,7 +545,7 @@ class PortRangeType(Enum):
 def get_port_range_type_from_string(
     port_range_type: Optional[str],
 ) -> Optional[PortRangeType]:
-    """ Convert a port range type string to an actual PortRangeType instance
+    """Convert a port range type string to an actual PortRangeType instance
 
     Arguments:
         port_range_type: Port range type string to convert to a PortRangeType
@@ -576,7 +574,7 @@ class ScannerType(Enum):
 def get_scanner_type_from_string(
     scanner_type: Optional[str],
 ) -> Optional[ScannerType]:
-    """ Convert a scanner type string to an actual ScannerType instance
+    """Convert a scanner type string to an actual ScannerType instance
 
     Arguments:
         scanner_type: Scanner type string to convert to a ScannerType
@@ -625,8 +623,7 @@ class SnmpAuthAlgorithm(Enum):
 def get_snmp_auth_algorithm_from_string(
     algorithm: Optional[str],
 ) -> Optional[SnmpAuthAlgorithm]:
-    """ Convert a SNMP auth algorithm string into a SnmpAuthAlgorithm instance
-    """
+    """Convert a SNMP auth algorithm string into a SnmpAuthAlgorithm instance"""
     if not algorithm:
         return None
 
@@ -649,8 +646,8 @@ class SnmpPrivacyAlgorithm(Enum):
 def get_snmp_privacy_algorithm_from_string(
     algorithm: Optional[str],
 ) -> Optional[SnmpPrivacyAlgorithm]:
-    """ Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
-        instance
+    """Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
+    instance
     """
     if not algorithm:
         return None

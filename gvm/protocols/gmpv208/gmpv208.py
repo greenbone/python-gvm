@@ -32,10 +32,7 @@ from typing import Any, List, Optional, Callable
 from gvm.utils import deprecation
 from gvm.xml import XmlCommand
 
-from gvm.protocols.gmpv7.gmpv7 import (
-    _to_bool,
-    _to_comma_list,
-)
+from gvm.protocols.gmpv7.gmpv7 import _to_bool, _to_comma_list
 from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgumentType, RequiredArgument
 
