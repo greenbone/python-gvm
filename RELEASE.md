@@ -46,13 +46,13 @@ first time.
 
 ## Create a GitHub Token for uploading the release files
 
-This step is only necessary if the token has to be created for the for time or
+This step is only necessary if the token has to be created for the first time or
 if it has been lost.
 
 * Open Github Settings at https://github.com/settings/tokens
 * Create a new token
 * Copy token and store it carefully
-* Export token in your current shell
+* Export token and GitHub user name in your current shell
 
   ```sh
   export GITHUB_TOKEN=<token>
@@ -170,4 +170,4 @@ if it has been lost.
 
 * Check the Github release:
 
-   See https://github.com/greenbone/python-gvm/releases
+  See https://github.com/greenbone/python-gvm/releases
