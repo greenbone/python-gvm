@@ -126,7 +126,6 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 [[package]]
 category = "dev"
 description = "Python package for providing Mozilla's CA Bundle."
-marker = "python_version >= \"3.7\" and python_version < \"4.0\""
 name = "certifi"
 optional = false
 python-versions = "*"
@@ -146,7 +145,6 @@ pycparser = "*"
 [[package]]
 category = "dev"
 description = "Universal encoding detector for Python 2 and 3"
-marker = "python_version >= \"3.7\" and python_version < \"4.0\""
 name = "chardet"
 optional = false
 python-versions = "*"
@@ -164,7 +162,7 @@ version = "7.1.2"
 [[package]]
 category = "dev"
 description = "Cross-platform colored terminal text."
-marker = "sys_platform == \"win32\" or platform_system == \"Windows\" or python_version >= \"3.6\" and python_version < \"4.0\" and platform_system == \"Windows\""
+marker = "platform_system == \"Windows\" or sys_platform == \"win32\" or python_version >= \"3.6\" and python_version < \"4.0\" and platform_system == \"Windows\""
 name = "colorama"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
@@ -239,7 +237,6 @@ version = "0.16"
 [[package]]
 category = "dev"
 description = "Internationalized Domain Names in Applications (IDNA)"
-marker = "python_version >= \"3.7\" and python_version < \"4.0\""
 name = "idna"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
@@ -346,7 +343,7 @@ description = "SSH2 protocol library"
 name = "paramiko"
 optional = false
 python-versions = "*"
-version = "2.7.1"
+version = "2.7.2"
 
 [package.dependencies]
 bcrypt = ">=3.1.3"
@@ -432,7 +429,6 @@ tests = ["pytest (>=3.2.1,<3.3.0 || >3.3.0)", "hypothesis (>=3.27.0)"]
 [[package]]
 category = "dev"
 description = "Python parsing module"
-marker = "python_version >= \"3.7\" and python_version < \"4.0\""
 name = "pyparsing"
 optional = false
 python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
@@ -644,7 +640,6 @@ version = "3.7.4.3"
 [[package]]
 category = "dev"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
-marker = "python_version >= \"3.7\" and python_version < \"4.0\""
 name = "urllib3"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4"
@@ -665,6 +660,7 @@ version = "1.12.1"
 
 [metadata]
 content-hash = "9f59a1900687adbc316ceded214f0c6437e77dd03632376ebfd5e30d82a8c18c"
+lock-version = "1.0"
 python-versions = "^3.5.2"
 
 [metadata.files]
@@ -706,6 +702,7 @@ bcrypt = [
     {file = "bcrypt-3.1.7-cp34-abi3-manylinux1_x86_64.whl", hash = "sha256:c9457fa5c121e94a58d6505cadca8bed1c64444b83b3204928a866ca2e599105"},
     {file = "bcrypt-3.1.7-cp34-cp34m-win32.whl", hash = "sha256:8b10acde4e1919d6015e1df86d4c217d3b5b01bb7744c36113ea43d529e1c3de"},
     {file = "bcrypt-3.1.7-cp34-cp34m-win_amd64.whl", hash = "sha256:cb93f6b2ab0f6853550b74e051d297c27a638719753eb9ff66d1e4072be67133"},
+    {file = "bcrypt-3.1.7-cp35-abi3-manylinux2014_aarch64.whl", hash = "sha256:436a487dec749bca7e6e72498a75a5fa2433bda13bac91d023e18df9089ae0b8"},
     {file = "bcrypt-3.1.7-cp35-cp35m-win32.whl", hash = "sha256:6fe49a60b25b584e2f4ef175b29d3a83ba63b3a4df1b4c0605b826668d1b6be5"},
     {file = "bcrypt-3.1.7-cp35-cp35m-win_amd64.whl", hash = "sha256:a595c12c618119255c90deb4b046e1ca3bcfad64667c43d1166f2b04bc72db09"},
     {file = "bcrypt-3.1.7-cp36-cp36m-win32.whl", hash = "sha256:74a015102e877d0ccd02cdeaa18b32aa7273746914a6c5d0456dd442cb65b99c"},
@@ -962,8 +959,8 @@ packaging = [
     {file = "packaging-20.4.tar.gz", hash = "sha256:4357f74f47b9c12db93624a82154e9b120fa8293699949152b22065d556079f8"},
 ]
 paramiko = [
-    {file = "paramiko-2.7.1-py2.py3-none-any.whl", hash = "sha256:9c980875fa4d2cb751604664e9a2d0f69096643f5be4db1b99599fe114a97b2f"},
-    {file = "paramiko-2.7.1.tar.gz", hash = "sha256:920492895db8013f6cc0179293147f830b8c7b21fdfc839b6bad760c27459d9f"},
+    {file = "paramiko-2.7.2-py2.py3-none-any.whl", hash = "sha256:4f3e316fef2ac628b05097a637af35685183111d4bc1b5979bd397c2ab7b5898"},
+    {file = "paramiko-2.7.2.tar.gz", hash = "sha256:7f36f4ba2c0d81d219f4595e35f70d56cc94f9ac40a6acdf51d6ca210ce65035"},
 ]
 pathspec = [
     {file = "pathspec-0.8.0-py2.py3-none-any.whl", hash = "sha256:7d91249d21749788d07a2d0f94147accd8f845507400749ea19c1ec9054a12b0"},
