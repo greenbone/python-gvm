@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [20.8.1] - 2020-09-01
 
 ### Added
 
@@ -17,15 +17,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 * `pretty_print()` has a new argument that can optionally handle a file. The output is redirected to this file. default is `sys.stdout`, as it is for build-in `print()` [#277](https://github.com/greenbone/python-gvm/pull/277)
 
-### Deprecated
-### Removed
-
 ### Fixed
 
 * `ARP_PING` is now a field of `AliveTypes`, the old `APR_PING` name is still available. [#281](https://github.com/greenbone/python-gvm/pull/281)
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.8.0...HEAD
-
+[20.8.1]: https://github.com/greenbone/python-gvm/compare/v20.8.0...HEAD
 
 ## [20.8.0] - 2020-08-19
 
