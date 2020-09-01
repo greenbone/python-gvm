@@ -30,6 +30,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 
 * `ARP_PING` is now a field of `AliveTypes`, the old `APR_PING` name is still available. [#281](https://github.com/greenbone/python-gvm/pull/281)
+* `modify_task` adds `<alert id="0"/>` if alert_ids array is empty. [#285](https://github.com/greenbone/python-gvm/pull/285)
 
 [20.8.1]: https://github.com/greenbone/python-gvm/compare/v20.8.0...HEAD
 
