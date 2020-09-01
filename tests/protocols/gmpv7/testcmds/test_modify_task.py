@@ -103,6 +103,13 @@ class GmpModifyTaskCommandTestCase:
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', alert_ids='a1')
 
+    def test_modify_task_with_empty_alert_ids(self):
+        self.gmp.modify_task(task_id='t1', alert_ids=[])
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<alert id="0"/>' '</modify_task>'
+        )
+
     def test_modify_task_with_alterable(self):
         self.gmp.modify_task(task_id='t1', alterable=True)
 
