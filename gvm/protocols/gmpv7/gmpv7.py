@@ -5913,8 +5913,11 @@ class GmpV7Mixin(GvmProtocol):
                     arg_type='list',
                 )
 
-            for alert in alert_ids:
-                cmd.add_element("alert", attrs={"id": str(alert)})
+            if len(alert_ids) == 0:
+                cmd.add_element("alert", attrs={"id": "0"})
+            else:
+                for alert in alert_ids:
+                    cmd.add_element("alert", attrs={"id": str(alert)})
 
         if observers is not None:
             if not _is_list_like(observers):
