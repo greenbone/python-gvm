@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+- Force garbage clean up when disconnect. [#286](https://github.com/greenbone/python-gvm/pull/286)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.8.1...HEAD
 
