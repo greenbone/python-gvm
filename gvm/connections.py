@@ -244,6 +244,17 @@ class SSHConnection(GvmConnection):
         # shutdown socket for sending. only allow reading data afterwards
         self._stdout.channel.shutdown(socketlib.SHUT_WR)
 
+    def disconnect(self):
+        """Disconnect and close the connection to the remote server"""
+        try:
+            if self._socket is not None:
+                self._socket.close()
+        except OSError as e:
+            logger.debug("Connection closing error: %s", e)
+
+        if self._socket:
+            del self._socket, self._stdin, self._stdout, self._stderr
+
 
 class TLSConnection(GvmConnection):
     """
