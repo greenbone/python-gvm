@@ -750,6 +750,7 @@ class GmpV9Mixin(GvmProtocol):
 
         Arguments:
             config_id: UUID of an existing scan config
+            tasks: Whether to get tasks using this config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
