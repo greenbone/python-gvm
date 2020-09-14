@@ -177,56 +177,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def modify_schedule(
-        self,
-        schedule_id: str,
-        *,
-        name: Optional[str] = None,
-        icalendar: Optional[str] = None,
-        timezone: Optional[str] = None,
-        comment: Optional[str] = None
-    ) -> Any:
-        """Modifies an existing schedule
-
-        Arguments:
-            schedule_id: UUID of the schedule to be modified
-            name: Name of the schedule
-            icalendar: `iCalendar`_ (RFC 5545) based data.
-            timezone: Timezone to use for the icalender events e.g
-                Europe/Berlin. If the datetime values in the icalendar data are
-                missing timezone information this timezone gets applied.
-                Otherwise the datetime values from the icalendar data are
-                displayed in this timezone
-            commenhedule.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-
-        .. _iCalendar:
-            https://tools.ietf.org/html/rfc5545
-        """
-        if not schedule_id:
-            raise RequiredArgument(
-                function=self.modify_schedule.__name__, argument='schedule_id'
-            )
-
-        cmd = XmlCommand("modify_schedule")
-        cmd.set_attribute("schedule_id", schedule_id)
-
-        if name:
-            cmd.add_element("name", name)
-
-        if icalendar:
-            cmd.add_element("icalendar", icalendar)
-
-        if timezone:
-            cmd.add_element("timezone", timezone)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        return self._send_xml_command(cmd)
-
     def create_target(
         self,
         name: str,
@@ -271,6 +221,10 @@ class GmpV208Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+
+        cmd = XmlCommand("create_target")
+        _xmlname = cmd.add_element("name", name)
+
         if make_unique is not None:
             warnings.warn(
                 'create_target make_unique argument is deprecated '
@@ -282,16 +236,6 @@ class GmpV208Mixin(GvmProtocol):
             raise RequiredArgument(
                 function=self.create_target.__name__, argument='name'
             )
-
-        # since 20.08 one of port_range or port_list_id is required!
-        if not port_range and not port_list_id:
-            raise RequiredArgument(
-                function=self.create_target.__name__,
-                argument='port_range or port_list_id',
-            )
-
-        cmd = XmlCommand("create_target")
-        _xmlname = cmd.add_element("name", name)
 
         if asset_hosts_filter:
             cmd.add_element(
@@ -345,6 +289,13 @@ class GmpV208Mixin(GvmProtocol):
         if reverse_lookup_unify is not None:
             cmd.add_element(
                 "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
+            )
+
+        # since 20.08 one of port_range or port_list_id is required!
+        if not port_range and not port_list_id:
+            raise RequiredArgument(
+                function=self.create_target.__name__,
+                argument='port_range or port_list_id',
             )
 
         if port_range:

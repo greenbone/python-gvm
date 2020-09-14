@@ -29,6 +29,14 @@ class GmpGetConfigTestCase:
             '<get_configs config_id="a1" usage_type="scan" details="1"/>'
         )
 
+    def test_get_config_with_tasks(self):
+        self.gmp.get_config('a1', tasks=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_configs config_id="a1" usage_type="scan" '
+            'tasks="1" details="1"/>'
+        )
+
     def test_fail_without_config_id(self):
         with self.assertRaises(GvmError):
             self.gmp.get_config(None)
