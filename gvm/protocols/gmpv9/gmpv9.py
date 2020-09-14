@@ -743,16 +743,21 @@ class GmpV9Mixin(GvmProtocol):
             trash=trash,
         )
 
-    def get_config(self, config_id: str) -> Any:
+    def get_config(
+        self, config_id: str, *, tasks: Optional[bool] = None
+    ) -> Any:
         """Request a single scan config
 
         Arguments:
             config_id: UUID of an existing scan config
+            tasks: Whether to get tasks using this config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self.__get_config(config_id, UsageType.SCAN)
+        return self.__get_config(
+            config_id=config_id, usage_type=UsageType.SCAN, tasks=tasks
+        )
 
     def get_policy(self, policy_id: str) -> Any:
         """Request a single policy
@@ -1086,7 +1091,13 @@ class GmpV9Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def __get_config(self, config_id: str, usage_type: UsageType) -> Any:
+    def __get_config(
+        self,
+        config_id: str,
+        usage_type: UsageType,
+        *,
+        tasks: Optional[bool] = None
+    ) -> Any:
         if not config_id:
             raise RequiredArgument(
                 function=self.get_config.__name__, argument='config_id'
@@ -1094,7 +1105,11 @@ class GmpV9Mixin(GvmProtocol):
 
         cmd = XmlCommand("get_configs")
         cmd.set_attribute("config_id", config_id)
+
         cmd.set_attribute("usage_type", usage_type.value)
+
+        if tasks is not None:
+            cmd.set_attribute("tasks", _to_bool(tasks))
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")

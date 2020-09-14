@@ -2993,11 +2993,14 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_config(self, config_id: str) -> Any:
+    def get_config(
+        self, config_id: str, *, tasks: Optional[bool] = None
+    ) -> Any:
         """Request a single scan config
 
         Arguments:
             config_id: UUID of an existing scan config
+            tasks: Whether to get tasks using this config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3010,6 +3013,9 @@ class GmpV7Mixin(GvmProtocol):
             )
 
         cmd.set_attribute("config_id", config_id)
+
+        if tasks is not None:
+            cmd.set_attribute("tasks", _to_bool(tasks))
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")

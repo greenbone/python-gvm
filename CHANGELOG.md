@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 ### Changed
+* Added the `tasks` parameter to `get_config()`. [#289](https://github.com/greenbone/python-gvm/pull/289)
 ### Deprecated
 ### Removed
 ### Fixed
