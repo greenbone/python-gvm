@@ -3620,7 +3620,7 @@ class GmpV7Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         note_details: Optional[bool] = None,
         override_details: Optional[bool] = None,
-        no_details: Optional[bool] = None
+        details: Optional[bool] = None
     ) -> Any:
         """Request a list of reports
 
@@ -3630,7 +3630,7 @@ class GmpV7Mixin(GvmProtocol):
             note_details: If notes are included, whether to include note details
             override_details: If overrides are included, whether to include
                 override details
-            no_details: Whether to exclude results
+            details: Whether to exclude results
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3649,8 +3649,8 @@ class GmpV7Mixin(GvmProtocol):
         if override_details is not None:
             cmd.set_attribute("override_details", _to_bool(override_details))
 
-        if no_details is not None:
-            cmd.set_attribute("details", _to_bool(not no_details))
+        if details is not None:
+            cmd.set_attribute("details", _to_bool(details))
 
         cmd.set_attribute("ignore_pagination", "1")
 
