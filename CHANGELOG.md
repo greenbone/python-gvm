@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 ### Changed
 * Added the `tasks` parameter to `get_config()`. [#289](https://github.com/greenbone/python-gvm/pull/289)
+* Renamed `no_details` to `details` in `get_reports()` so it is uniform with all the other calls. [#290](https://github.com/greenbone/python-gvm/pull/290)
 ### Deprecated
 ### Removed
 ### Fixed
