@@ -449,7 +449,8 @@ class GmpV9Mixin(GvmProtocol):
         *,
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
-        include_certificate_data: Optional[bool] = None
+        include_certificate_data: Optional[bool] = None,
+        details: Optional[bool] = None,
     ) -> Any:
         """Request a list of TLS certificates
 
@@ -466,6 +467,9 @@ class GmpV9Mixin(GvmProtocol):
         cmd = XmlCommand("get_tls_certificates")
 
         _add_filter(cmd, filter, filter_id)
+
+        if details is not None:
+            cmd.set_attribute("details", _to_bool(details))
 
         if include_certificate_data is not None:
             cmd.set_attribute(
@@ -495,6 +499,10 @@ class GmpV9Mixin(GvmProtocol):
 
         # for single tls certificate always request cert data
         cmd.set_attribute("include_certificate_data", "1")
+
+        # for single entity always request all details
+        cmd.set_attribute("details", "1")
+
         return self._send_xml_command(cmd)
 
     def modify_alert(

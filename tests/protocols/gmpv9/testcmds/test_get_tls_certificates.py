@@ -39,6 +39,13 @@ class GmpGetTLSCertificatesTestCase:
             '<get_tls_certificates include_certificate_data="1"/>'
         )
 
+    def test_get_tls_certificates_with_details(self):
+        self.gmp.get_tls_certificates(details='1')
+
+        self.connection.send.has_been_called_with(
+            '<get_tls_certificates details="1"/>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
