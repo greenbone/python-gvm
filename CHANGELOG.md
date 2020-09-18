@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 ### Changed
+* Added the `details` parameter to `get_tls_certificate` and `get_tls_certificates`. [#293](https://github.com/greenbone/python-gvm/pull/293)
 ### Deprecated
 ### Removed
 ### Fixed
