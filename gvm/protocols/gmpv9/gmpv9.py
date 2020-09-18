@@ -450,7 +450,7 @@ class GmpV9Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         include_certificate_data: Optional[bool] = None,
-        details: Optional[bool] = None,
+        details: Optional[bool] = None
     ) -> Any:
         """Request a list of TLS certificates
 
