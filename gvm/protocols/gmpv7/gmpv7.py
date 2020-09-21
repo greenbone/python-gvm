@@ -462,12 +462,13 @@ class GmpV7Mixin(GvmProtocol):
         cmd.add_element("copy", alert_id)
         return self._send_xml_command(cmd)
 
-    def create_config(self, config_id: str, name: str) -> Any:
+    def create_config(self, config_id: str, name: str,*, comment: Optional[str] = None) -> Any:
         """Create a new scan config from an existing one
 
         Arguments:
             config_id: UUID of the existing scan config
             name: Name of the new scan config
+            comment: A comment on the config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -483,6 +484,8 @@ class GmpV7Mixin(GvmProtocol):
             )
 
         cmd = XmlCommand("create_config")
+        if comment is not None:
+            cmd.add_element("comment", comment)
         cmd.add_element("copy", config_id)
         cmd.add_element("name", name)
         return self._send_xml_command(cmd)
