@@ -4563,6 +4563,32 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def modify_config_set_name(self, config_id: str, name: str) -> Any:
+        """Modifies the name of an existing scan config
+
+        Arguments:
+            config_id: UUID of scan config to modify.
+            name: New name for the config.
+        """
+        if not config_id:
+            raise RequiredArgument(
+                function=self.modify_config_set_name.__name__,
+                argument='config_id',
+            )
+
+        if not name:
+            raise RequiredArgument(
+                function=self.modify_config_set_name.__name__,
+                argument='name',
+            )
+
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(config_id))
+
+        cmd.add_element("name", name)
+
+        return self._send_xml_command(cmd)
+
     def modify_config_set_comment(
         self, config_id: str, comment: Optional[str] = ""
     ) -> Any:
