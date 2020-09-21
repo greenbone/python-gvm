@@ -33,6 +33,18 @@ class GmpCreateConfigTestCase:
             '</create_config>'
         )
 
+    def test_create_config_with_comment(self):
+        self.gmp.create_config('a1', 'foo', comment='comment')
+
+        self.connection.send.has_been_called_with(
+            '<create_config>'
+            '<comment>comment</comment>'
+            '<copy>a1</copy>'
+            '<name>foo</name>'
+            '<usage_type>scan</usage_type>'
+            '</create_config>'
+        )
+
     def test_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_config(config_id='', name='foo')
