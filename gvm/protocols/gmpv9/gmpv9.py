@@ -68,6 +68,7 @@ def _check_event(
             AlertCondition.FILTER_COUNT_CHANGED,
             AlertCondition.FILTER_COUNT_AT_LEAST,
             AlertCondition.SEVERITY_AT_LEAST,
+            AlertCondition.SEVERITY_CHANGED,
         ):
             raise InvalidArgument(
                 "Invalid condition {} for event {}".format(
