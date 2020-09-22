@@ -54,6 +54,12 @@ class Gmpv208CreateConfigTestCase(GmpCreateConfigTestCase, Gmpv208TestCase):
     pass
 
 
+class Gmpv208CreateConfigFromOSPScannerTestCase(
+    GmpCreateConfigFromOSPScannerTestCase, Gmpv208TestCase
+):
+    pass
+
+
 class Gmpv208CreateCredentialTestCase(
     GmpCreateCredentialTestCase, Gmpv208TestCase
 ):

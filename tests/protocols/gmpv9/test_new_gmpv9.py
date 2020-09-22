@@ -60,6 +60,12 @@ class Gmpv9CreateConfigTestCase(GmpCreateConfigTestCase, Gmpv9TestCase):
     pass
 
 
+class Gmpv9CreateConfigFromOSPScannerTestCase(
+    GmpCreateConfigFromOSPScannerTestCase, Gmpv9TestCase
+):
+    pass
+
+
 class Gmpv9CreateCredentialTestCase(GmpCreateCredentialTestCase, Gmpv9TestCase):
 
     pass
