@@ -514,6 +514,12 @@ class Gmpv8ModifyConfigSetCommentTestCase(
     pass
 
 
+class Gmpv7ModifyConfigSetNameTestCase(
+    GmpModifyConfigSetNameTestCase, Gmpv8TestCase
+):
+    pass
+
+
 class Gmpv8ModifyConfigSetFamilySelectionTestCase(
     GmpModifyConfigSetFamilySelectionTestCase, Gmpv8TestCase
 ):
