@@ -75,23 +75,6 @@ def _check_event(
                     condition.name, event.name
                 )
             )
-        if method not in (
-            AlertMethod.SCP,
-            AlertMethod.SEND,
-            AlertMethod.SMB,
-            AlertMethod.SNMP,
-            AlertMethod.SYSLOG,
-            AlertMethod.EMAIL,
-            AlertMethod.START_TASK,
-            AlertMethod.HTTP_GET,
-            AlertMethod.SOURCEFIRE_CONNECTOR,
-            AlertMethod.VERINICE_CONNECTOR,
-            AlertMethod.TIPPINGPOINT,
-            AlertMethod.ALEMBA_VFIRE,
-        ):
-            raise InvalidArgument(
-                "Invalid method {} for event {}".format(method.name, event.name)
-            )
     elif event in (
         AlertEvent.NEW_SECINFO_ARRIVED,
         AlertEvent.UPDATED_SECINFO_ARRIVED,

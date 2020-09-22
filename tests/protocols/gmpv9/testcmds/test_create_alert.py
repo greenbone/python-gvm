@@ -146,6 +146,15 @@ class GmpCreateAlertTestCase:
                 method=AlertMethod.HTTP_GET,
             )
 
+    def test_invalid_condition_for_task_run_status_changed(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ERROR,
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+                method=AlertMethod.EMAIL,
+            )
+
     def test_invalid_condition_for_ticket_received(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.create_alert(
