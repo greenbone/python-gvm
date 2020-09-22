@@ -119,6 +119,42 @@ class GmpCreateAlertTestCase:
                 method=AlertMethod.HTTP_GET,
             )
 
+    def test_missing_method_for_ticket_received(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=None,
+            )
+
+    def test_missing_condition_for_ticket_received(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=None,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.EMAIL,
+            )
+
+    def test_invalid_method_for_ticket_received(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.HTTP_GET,
+            )
+
+    def test_invalid_condition_for_ticket_received(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.FILTER_COUNT_AT_LEAST,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.EMAIL,
+            )
+
     def test_create_alert(self):
         self.gmp.create_alert(
             name='foo',
