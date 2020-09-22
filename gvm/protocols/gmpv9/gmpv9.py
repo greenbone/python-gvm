@@ -68,28 +68,12 @@ def _check_event(
             AlertCondition.FILTER_COUNT_CHANGED,
             AlertCondition.FILTER_COUNT_AT_LEAST,
             AlertCondition.SEVERITY_AT_LEAST,
+            AlertCondition.SEVERITY_CHANGED,
         ):
             raise InvalidArgument(
                 "Invalid condition {} for event {}".format(
                     condition.name, event.name
                 )
-            )
-        if method not in (
-            AlertMethod.SCP,
-            AlertMethod.SEND,
-            AlertMethod.SMB,
-            AlertMethod.SNMP,
-            AlertMethod.SYSLOG,
-            AlertMethod.EMAIL,
-            AlertMethod.START_TASK,
-            AlertMethod.HTTP_GET,
-            AlertMethod.SOURCEFIRE_CONNECTOR,
-            AlertMethod.VERINICE_CONNECTOR,
-            AlertMethod.TIPPINGPOINT,
-            AlertMethod.ALEMBA_VFIRE,
-        ):
-            raise InvalidArgument(
-                "Invalid method {} for event {}".format(method.name, event.name)
             )
     elif event in (
         AlertEvent.NEW_SECINFO_ARRIVED,
@@ -105,7 +89,7 @@ def _check_event(
                 "method is required for event {}".format(event.name)
             )
 
-        if condition not in (AlertCondition.ALWAYS,):
+        if condition != AlertCondition.ALWAYS:
             raise InvalidArgument(
                 "Invalid condition {} for event {}".format(
                     condition.name, event.name
@@ -118,6 +102,34 @@ def _check_event(
             AlertMethod.SNMP,
             AlertMethod.SYSLOG,
             AlertMethod.EMAIL,
+        ):
+            raise InvalidArgument(
+                "Invalid method {} for event {}".format(method.name, event.name)
+            )
+    elif event in (
+        AlertEvent.TICKET_RECEIVED,
+        AlertEvent.OWNED_TICKET_CHANGED,
+        AlertEvent.ASSIGNED_TICKET_CHANGED,
+    ):
+        if not condition:
+            raise RequiredArgument(
+                "condition is required for event {}".format(event.name)
+            )
+
+        if not method:
+            raise RequiredArgument(
+                "method is required for event {}".format(event.name)
+            )
+        if condition != AlertCondition.ALWAYS:
+            raise InvalidArgument(
+                "Invalid condition {} for event {}".format(
+                    condition.name, event.name
+                )
+            )
+        if method not in (
+            AlertMethod.EMAIL,
+            AlertMethod.START_TASK,
+            AlertMethod.SYSLOG,
         ):
             raise InvalidArgument(
                 "Invalid method {} for event {}".format(method.name, event.name)
