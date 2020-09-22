@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 * Added `modify_config_set_name`. [#295](https://github.com/greenbone/python-gvm/pull/295)
+* Added logic to accept the new AlertEvents `TICKET_RECEIVED`, `ASSIGNED_TICKET_CHANGED` and `OWNED_TICKET_CHANGED` and the new Condition `SEVERITY_CHANGED`. [#297](https://github.com/greenbone/python-gvm/pull/297)
 ### Changed
 * Added the `details` parameter to `get_tls_certificate` and `get_tls_certificates`. [#293](https://github.com/greenbone/python-gvm/pull/293)
 * Added the `comment` parameter to `create_config`. [#294](https://github.com/greenbone/python-gvm/pull/294)
