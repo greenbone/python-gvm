@@ -144,6 +144,7 @@ from .test_modify_asset import GmpModifyAssetTestCase
 from .test_modify_auth import GmpModifyAuthTestCase
 from .test_modify_config import GmpModifyConfigTestCase
 from .test_modify_config_set_comment import GmpModifyConfigSetCommentTestCase
+from .test_modify_config_set_name import GmpModifyConfigSetNameTestCase
 from .test_modify_config_set_family_selection import (
     GmpModifyConfigSetFamilySelectionTestCase,
 )

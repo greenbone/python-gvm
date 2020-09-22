@@ -339,12 +339,15 @@ class GmpV9Mixin(GvmProtocol):
             preferences=preferences,
         )
 
-    def create_config(self, config_id: str, name: str) -> Any:
+    def create_config(
+        self, config_id: str, name: str, *, comment: Optional[str] = None
+    ) -> Any:
         """Create a new scan config
 
         Arguments:
             config_id: UUID of the existing scan config
             name: Name of the new scan config
+            comment: A comment on the config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -352,17 +355,21 @@ class GmpV9Mixin(GvmProtocol):
         return self.__create_config(
             config_id=config_id,
             name=name,
+            comment=comment,
             usage_type=UsageType.SCAN,
             function=self.create_config.__name__,
         )
 
-    def create_policy(self, name: str, *, policy_id: str = None) -> Any:
+    def create_policy(
+        self, name: str, *, policy_id: str = None, comment: Optional[str] = None
+    ) -> Any:
         """Create a new policy config
 
         Arguments:
             name: Name of the new policy
             policy_id: UUID of an existing policy as base. By default the empty
                 policy is used.
+            comment: A comment on the policy
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -372,6 +379,7 @@ class GmpV9Mixin(GvmProtocol):
         return self.__create_config(
             config_id=policy_id,
             name=name,
+            comment=comment,
             usage_type=UsageType.POLICY,
             function=self.create_policy.__name__,
         )
@@ -478,7 +486,8 @@ class GmpV9Mixin(GvmProtocol):
         *,
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
-        include_certificate_data: Optional[bool] = None
+        include_certificate_data: Optional[bool] = None,
+        details: Optional[bool] = None
     ) -> Any:
         """Request a list of TLS certificates
 
@@ -495,6 +504,9 @@ class GmpV9Mixin(GvmProtocol):
         cmd = XmlCommand("get_tls_certificates")
 
         _add_filter(cmd, filter, filter_id)
+
+        if details is not None:
+            cmd.set_attribute("details", _to_bool(details))
 
         if include_certificate_data is not None:
             cmd.set_attribute(
@@ -524,6 +536,10 @@ class GmpV9Mixin(GvmProtocol):
 
         # for single tls certificate always request cert data
         cmd.set_attribute("include_certificate_data", "1")
+
+        # for single entity always request all details
+        cmd.set_attribute("details", "1")
+
         return self._send_xml_command(cmd)
 
     def modify_alert(
@@ -1072,7 +1088,13 @@ class GmpV9Mixin(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def __create_config(
-        self, config_id: str, name: str, usage_type: UsageType, function: str
+        self,
+        config_id: str,
+        name: str,
+        usage_type: UsageType,
+        function: str,
+        *,
+        comment: Optional[str] = None
     ) -> Any:
         if not name:
             raise RequiredArgument(function=function, argument='name')
@@ -1081,6 +1103,8 @@ class GmpV9Mixin(GvmProtocol):
             raise RequiredArgument(function=function, argument='config_id')
 
         cmd = XmlCommand("create_config")
+        if comment is not None:
+            cmd.add_element("comment", comment)
         cmd.add_element("copy", config_id)
         cmd.add_element("name", name)
         cmd.add_element("usage_type", usage_type.value)

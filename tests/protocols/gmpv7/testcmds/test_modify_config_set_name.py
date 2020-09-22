@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -21,41 +21,35 @@ import unittest
 from gvm.errors import RequiredArgument
 
 
-class GmpCreateConfigTestCase:
-    def test_create_config(self):
-        self.gmp.create_config('a1', 'foo')
+class GmpModifyConfigSetNameTestCase:
+    def test_modify_config_set_name(self):
+        self.gmp.modify_config_set_name('c1', 'foo')
 
         self.connection.send.has_been_called_with(
-            '<create_config>'
-            '<copy>a1</copy>'
+            '<modify_config config_id="c1">'
             '<name>foo</name>'
-            '</create_config>'
+            '</modify_config>'
         )
 
-    def test_create_config_with_comment(self):
-        self.gmp.create_config('a1', 'foo', comment='comment')
-
-        self.connection.send.has_been_called_with(
-            '<create_config>'
-            '<comment>comment</comment>'
-            '<copy>a1</copy>'
-            '<name>foo</name>'
-            '</create_config>'
-        )
-
-    def test_missing_config_id(self):
+    def test_modify_config_set_name_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_config(config_id='', name='foo')
+            self.gmp.modify_config_set_name(config_id=None, name='name')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_config(config_id=None, name='foo')
-
-    def test_missing_name(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.create_config(config_id='c1', name=None)
+            self.gmp.modify_config_set_name('', name='name')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_config(config_id='c1', name='')
+            self.gmp.modify_config_set_name(config_id='', name='name')
+
+    def test_modify_config_set_name_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_config_set_name(config_id='c', name='')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_config_set_name(config_id='c', name=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_config_set_name('c', '')
 
 
 if __name__ == '__main__':
