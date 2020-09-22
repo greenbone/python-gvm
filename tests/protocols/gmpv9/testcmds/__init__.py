@@ -26,6 +26,9 @@ from .test_clone_tls_certificate import GmpCloneTLSCertificateTestCase
 from .test_create_audit import GmpCreateAuditCommandTestCase
 from .test_create_alert import GmpCreateAlertTestCase
 from .test_create_config import GmpCreateConfigTestCase
+from .test_create_config_from_osp_scanner import (
+    GmpCreateConfigFromOSPScannerTestCase,
+)
 from .test_create_credential import GmpCreateCredentialTestCase
 from .test_create_filter import GmpCreateFilterTestCase
 from .test_create_permission import GmpCreatePermissionTestCase

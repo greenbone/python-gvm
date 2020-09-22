@@ -343,6 +343,30 @@ class GmpV9Mixin(GvmProtocol):
             function=self.create_config.__name__,
         )
 
+    def create_config_from_osp_scanner(
+        self, scanner_id: str, name: str, *, comment: Optional[str] = None
+    ) -> Any:
+        """Create a new scan config from an ospd scanner.
+
+        Create config by retrieving the expected preferences from the given
+        scanner via OSP.
+
+        Arguments:
+            scanner_id: UUID of an OSP scanner to get config data from
+            name: Name of the new scan config
+            comment: A comment on the config
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        return self.__create_config_from_osp_scanner(
+            scanner_id=scanner_id,
+            name=name,
+            comment=comment,
+            usage_type=UsageType.SCAN,
+            function=self.create_config.__name__,
+        )
+
     def create_policy(
         self, name: str, *, policy_id: str = None, comment: Optional[str] = None
     ) -> Any:
@@ -1089,6 +1113,29 @@ class GmpV9Mixin(GvmProtocol):
         if comment is not None:
             cmd.add_element("comment", comment)
         cmd.add_element("copy", config_id)
+        cmd.add_element("name", name)
+        cmd.add_element("usage_type", usage_type.value)
+        return self._send_xml_command(cmd)
+
+    def __create_config_from_osp_scanner(
+        self,
+        scanner_id: str,
+        name: str,
+        usage_type: UsageType,
+        function: str,
+        *,
+        comment: Optional[str] = None
+    ) -> Any:
+        if not name:
+            raise RequiredArgument(function=function, argument='name')
+
+        if not scanner_id:
+            raise RequiredArgument(function=function, argument='scanner_id')
+
+        cmd = XmlCommand("create_config")
+        if comment is not None:
+            cmd.add_element("comment", comment)
+        cmd.add_element("scanner", scanner_id)
         cmd.add_element("name", name)
         cmd.add_element("usage_type", usage_type.value)
         return self._send_xml_command(cmd)
