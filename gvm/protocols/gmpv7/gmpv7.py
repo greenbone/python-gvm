@@ -1458,11 +1458,11 @@ class GmpV7Mixin(GvmProtocol):
                 function=self.create_scanner.__name__, argument='credential_id'
             )
 
-        if not isinstance(scanner_type, ScannerType):
+        if not isinstance(scanner_type, self.types.ScannerType):
             raise InvalidArgumentType(
                 function=self.create_scanner.__name__,
                 argument='scanner_type',
-                arg_type=ScannerType.__name__,
+                arg_type=self.types.ScannerType.__name__,
             )
 
         cmd = XmlCommand("create_scanner")
@@ -5417,11 +5417,11 @@ class GmpV7Mixin(GvmProtocol):
         cmd.set_attribute("scanner_id", scanner_id)
 
         if scanner_type is not None:
-            if not isinstance(scanner_type, ScannerType):
+            if not isinstance(scanner_type, self.types.ScannerType):
                 raise InvalidArgumentType(
                     function=self.modify_scanner.__name__,
                     argument='scanner_type',
-                    arg_type=ScannerType.__name__,
+                    arg_type=self.types.ScannerType.__name__,
                 )
 
             cmd.add_element("type", scanner_type.value)
