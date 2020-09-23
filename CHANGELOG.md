@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+* Fix ScannerType check for newer protocols. [#300](https://github.com/greenbone/python-gvm/pull/300)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.9.0...HEAD
 
