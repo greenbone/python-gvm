@@ -190,3 +190,15 @@ class Gmpv9ModifyTLSCertificateTestCase(
     GmpModifyTLSCertificateTestCase, Gmpv9TestCase
 ):
     pass
+
+
+class Gmpv9CreateScannerTestCase(
+    GmpCreateScannerTestCase, Gmpv9TestCase
+):
+    pass
+
+
+class Gmpv9ModifyScannerTestCase(
+    GmpModifyScannerTestCase, Gmpv9TestCase
+):
+    pass

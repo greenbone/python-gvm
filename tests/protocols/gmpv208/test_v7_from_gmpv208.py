@@ -136,10 +136,6 @@ class Gmpv208CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CreateUserTestCase(GmpCreateUserTestCase, Gmpv208TestCase):
     pass
 
@@ -513,10 +509,6 @@ class Gmpv208ModifyReportFormatTestCase(
 
 
 class Gmpv208ModifyRoleTestCase(GmpModifyRoleTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv208TestCase):
     pass
 
 
