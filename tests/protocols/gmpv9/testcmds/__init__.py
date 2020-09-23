@@ -58,3 +58,5 @@ from .test_modify_permission import GmpModifyPermissionTestCase
 from .test_modify_tag import GmpModifyTagTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
 from .test_modify_tls_certificate import GmpModifyTLSCertificateTestCase
+from .test_create_scanner import GmpCreateScannerTestCase
+from .test_modify_scanner import GmpModifyScannerTestCase

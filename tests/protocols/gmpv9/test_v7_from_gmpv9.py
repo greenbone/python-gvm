@@ -138,10 +138,6 @@ class Gmpv9CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv9TestCase):
     pass
 
 
-class Gmpv9CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv9TestCase):
-    pass
-
-
 class Gmpv9CreateUserTestCase(GmpCreateUserTestCase, Gmpv9TestCase):
     pass
 
@@ -529,10 +525,6 @@ class Gmpv9ModifyReportFormatTestCase(
 
 
 class Gmpv9ModifyRoleTestCase(GmpModifyRoleTestCase, Gmpv9TestCase):
-    pass
-
-
-class Gmpv9ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv9TestCase):
     pass
 
 
