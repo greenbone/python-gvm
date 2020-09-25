@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [20.9.1] - 2020-09-25
 ### Added
 * Added `modify_config_set_name`. [#295](https://github.com/greenbone/python-gvm/pull/295)
 * Added logic to accept the new AlertEvents `TICKET_RECEIVED`, `ASSIGNED_TICKET_CHANGED` and `OWNED_TICKET_CHANGED` and the new Condition `SEVERITY_CHANGED`. [#297](https://github.com/greenbone/python-gvm/pull/297)
@@ -13,13 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 * Added the `details` parameter to `get_tls_certificate` and `get_tls_certificates`. [#293](https://github.com/greenbone/python-gvm/pull/293)
 * Added the `comment` parameter to `create_config`. [#294](https://github.com/greenbone/python-gvm/pull/294)
-### Deprecated
-### Removed
 ### Fixed
 * Fix ScannerType check for newer protocols. [#300](https://github.com/greenbone/python-gvm/pull/300)
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.9.0...HEAD
-
+[20.9.1]: https://github.com/greenbone/python-gvm/compare/v20.9.0...HEAD
 
 ## [20.9.0] - 2020-09-17
 ### Changed
