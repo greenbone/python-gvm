@@ -310,7 +310,7 @@ class GmpV8Mixin(GvmProtocol):
         credential_id: str,
         *,
         name: Optional[str] = None,
-        comment: Optional[str] = None,
+        comment: Optional[str] = UNDEFINED_VALUE,
         allow_insecure: Optional[bool] = None,
         certificate: Optional[str] = None,
         key_phrase: Optional[str] = None,
@@ -353,8 +353,11 @@ class GmpV8Mixin(GvmProtocol):
         cmd = XmlCommand("modify_credential")
         cmd.set_attribute("credential_id", credential_id)
 
-        if comment:
-            cmd.add_element("comment", comment)
+        if comment != UNDEFINED_VALUE:
+            if comment is None:
+                cmd.add_element("comment", "")
+            else:
+                cmd.add_element("comment", comment)
 
         if name:
             cmd.add_element("name", name)
@@ -504,10 +507,10 @@ class GmpV8Mixin(GvmProtocol):
         self,
         tag_id: str,
         *,
-        comment: Optional[str] = None,
+        comment: Optional[str] = UNDEFINED_VALUE,
         name: Optional[str] = None,
-        value=None,
-        active=None,
+        value: Optional[str] = UNDEFINED_VALUE,
+        active: Optional[bool] = None,
         resource_action: Optional[str] = None,
         resource_type: Optional[EntityType] = None,
         resource_filter: Optional[str] = None,
@@ -540,14 +543,20 @@ class GmpV8Mixin(GvmProtocol):
         cmd = XmlCommand("modify_tag")
         cmd.set_attribute("tag_id", str(tag_id))
 
-        if comment:
-            cmd.add_element("comment", comment)
+        if comment != UNDEFINED_VALUE:
+            if comment is None:
+                cmd.add_element("comment", "")
+            else:
+                cmd.add_element("comment", comment)
 
         if name:
             cmd.add_element("name", name)
 
-        if value:
-            cmd.add_element("value", value)
+        if value != UNDEFINED_VALUE:
+            if value is None:
+                cmd.add_element("value", "")
+            else:
+                cmd.add_element("value", value)
 
         if active is not None:
             cmd.add_element("active", _to_bool(active))
@@ -828,7 +837,7 @@ class GmpV8Mixin(GvmProtocol):
         status: Optional[TicketStatus] = None,
         note: Optional[str] = None,
         assigned_to_user_id: Optional[str] = None,
-        comment: Optional[str] = None
+        comment: Optional[str] = UNDEFINED_VALUE
     ) -> Any:
         """Modify a single ticket
 
@@ -877,8 +886,11 @@ class GmpV8Mixin(GvmProtocol):
             cmd.add_element('status', status.value)
             cmd.add_element('{}_note'.format(status.name.lower()), note)
 
-        if comment:
-            cmd.add_element("comment", comment)
+        if comment != UNDEFINED_VALUE:
+            if comment is None:
+                cmd.add_element("comment", "")
+            else:
+                cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 
@@ -923,55 +935,6 @@ class GmpV8Mixin(GvmProtocol):
                     arg_type=self.types.FilterType.__name__,
                 )
 
-            cmd.add_element("type", filter_type.value)
-
-        return self._send_xml_command(cmd)
-
-    def modify_filter(
-        self,
-        filter_id: str,
-        *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        term: Optional[str] = None,
-        filter_type: Optional[FilterType] = None
-    ) -> Any:
-        """Modifies an existing filter.
-
-        Arguments:
-            filter_id: UUID of the filter to be modified
-            comment: Comment on filter.
-            name: Name of filter.
-            term: Filter term.
-            filter_type: Resource type filter applies to.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not filter_id:
-            raise RequiredArgument(
-                function=self.modify_filter.__name__, argument='filter_id'
-            )
-
-        cmd = XmlCommand("modify_filter")
-        cmd.set_attribute("filter_id", filter_id)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if name:
-            cmd.add_element("name", name)
-
-        if term:
-            cmd.add_element("term", term)
-
-        if filter_type:
-            if not isinstance(filter_type, self.types.FilterType):
-                raise InvalidArgumentType(
-                    function=self.modify_filter.__name__,
-                    argument='filter_type',
-                    arg_type=FilterType.__name__,
-                )
             cmd.add_element("type", filter_type.value)
 
         return self._send_xml_command(cmd)
