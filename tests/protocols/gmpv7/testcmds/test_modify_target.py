@@ -47,6 +47,22 @@ class GmpModifyTargetTestCase:
             '</modify_target>'
         )
 
+        self.gmp.modify_target(target_id='t1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<comment></comment>'
+            '</modify_target>'
+        )
+
+        self.gmp.modify_target(target_id='t1', comment="")
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<comment></comment>'
+            '</modify_target>'
+        )
+
     def test_modify_target_with_hosts(self):
         self.gmp.modify_target(target_id='t1', hosts=['foo'])
 
@@ -93,6 +109,22 @@ class GmpModifyTargetTestCase:
             '</modify_target>'
         )
 
+        self.gmp.modify_target(target_id='t1', exclude_hosts=[])
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<exclude_hosts></exclude_hosts>'
+            '</modify_target>'
+        )
+
+        self.gmp.modify_target(target_id='t1', exclude_hosts=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<exclude_hosts></exclude_hosts>'
+            '</modify_target>'
+        )
+
     def test_modify_target_with_ssh_credential(self):
         self.gmp.modify_target(target_id='t1', ssh_credential_id='c1')
 
@@ -121,6 +153,22 @@ class GmpModifyTargetTestCase:
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
             '<smb_credential id="c1"/>'
+            '</modify_target>'
+        )
+
+        self.gmp.modify_target(target_id='t1', smb_credential_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<smb_credential id="0"/>'
+            '</modify_target>'
+        )
+
+        self.gmp.modify_target(target_id='t1', smb_credential_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<smb_credential id="0"/>'
             '</modify_target>'
         )
 
