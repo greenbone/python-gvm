@@ -47,6 +47,7 @@ from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 from .types import _UsageType as UsageType
 
 _EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
+UNDEFINED_VALUE = -1
 
 
 def _check_event(
@@ -553,8 +554,8 @@ class GmpV9Mixin(GvmProtocol):
         self,
         alert_id: str,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
+        name: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = UNDEFINED_VALUE,
         filter_id: Optional[str] = None,
         event: Optional[AlertEvent] = None,
         event_data: Optional[dict] = None,
@@ -599,11 +600,17 @@ class GmpV9Mixin(GvmProtocol):
         cmd = XmlCommand("modify_alert")
         cmd.set_attribute("alert_id", str(alert_id))
 
-        if name:
-            cmd.add_element("name", name)
+        if name != UNDEFINED_VALUE:
+            if name is None:
+                cmd.add_element("name", "")
+            else:
+                cmd.add_element("name", name)
 
-        if comment:
-            cmd.add_element("comment", comment)
+        if comment != UNDEFINED_VALUE:
+            if comment is None:
+                cmd.add_element("comment", "")
+            else:
+                cmd.add_element("comment", comment)
 
         if filter_id:
             cmd.add_element("filter", attrs={"id": filter_id})
@@ -662,7 +669,7 @@ class GmpV9Mixin(GvmProtocol):
         tls_certificate_id: str,
         *,
         name: Optional[str] = None,
-        comment: Optional[str] = None,
+        comment: Optional[str] = UNDEFINED_VALUE,
         trust: Optional[bool] = None
     ) -> Any:
         """Modifies an existing TLS certificate.
@@ -685,8 +692,11 @@ class GmpV9Mixin(GvmProtocol):
         cmd = XmlCommand("modify_tls_certificate")
         cmd.set_attribute("tls_certificate_id", str(tls_certificate_id))
 
-        if comment:
-            cmd.add_element("comment", comment)
+        if comment != UNDEFINED_VALUE:
+            if comment is None:
+                cmd.add_element("comment", "")
+            else:
+                cmd.add_element("comment", comment)
 
         if name:
             cmd.add_element("name", name)
