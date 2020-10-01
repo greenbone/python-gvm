@@ -1025,7 +1025,7 @@ class GmpV8Mixin(GvmProtocol):
         name: Optional[str] = UNDEFINED_VALUE,
         comment: Optional[str] = UNDEFINED_VALUE,
         icalendar: Optional[str] = None,
-        timezone: Optional[str] = None,
+        timezone: Optional[str] = None
     ) -> Any:
         """Modifies an existing schedule
 
