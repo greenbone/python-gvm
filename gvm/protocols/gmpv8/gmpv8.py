@@ -38,6 +38,8 @@ from gvm.protocols.gmpv7.gmpv7 import _to_bool, _add_filter
 from . import types
 from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 
+UNDEFINED_VALUE = -1
+
 
 class GmpV8Mixin(GvmProtocol):
     types = types
@@ -1057,23 +1059,23 @@ class GmpV8Mixin(GvmProtocol):
         self,
         schedule_id: str,
         *,
-        name: Optional[str] = None,
+        name: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = UNDEFINED_VALUE,
         icalendar: Optional[str] = None,
         timezone: Optional[str] = None,
-        comment: Optional[str] = None
     ) -> Any:
         """Modifies an existing schedule
 
         Arguments:
             schedule_id: UUID of the schedule to be modified
             name: Name of the schedule
+            comment: comment for the schedule.
             icalendar: `iCalendar`_ (RFC 5545) based data.
             timezone: Timezone to use for the icalender events e.g
                 Europe/Berlin. If the datetime values in the icalendar data are
                 missing timezone information this timezone gets applied.
                 Otherwise the datetime values from the icalendar data are
                 displayed in this timezone
-            commenhedule.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1089,8 +1091,11 @@ class GmpV8Mixin(GvmProtocol):
         cmd = XmlCommand("modify_schedule")
         cmd.set_attribute("schedule_id", schedule_id)
 
-        if name:
-            cmd.add_element("name", name)
+        if name != UNDEFINED_VALUE:
+            if name is None:
+                cmd.add_element("name", "")
+            else:
+                cmd.add_element("name", name)
 
         if icalendar:
             cmd.add_element("icalendar", icalendar)
@@ -1098,7 +1103,10 @@ class GmpV8Mixin(GvmProtocol):
         if timezone:
             cmd.add_element("timezone", timezone)
 
-        if comment:
-            cmd.add_element("comment", comment)
+        if comment != UNDEFINED_VALUE:
+            if comment is None:
+                cmd.add_element("comment", "")
+            else:
+                cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)

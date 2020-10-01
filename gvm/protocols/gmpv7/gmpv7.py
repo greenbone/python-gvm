@@ -5866,11 +5866,11 @@ class GmpV7Mixin(GvmProtocol):
         comment: Optional[str] = UNDEFINED_VALUE,
         hosts: Optional[List[str]] = None,
         exclude_hosts: Optional[List[str]] = UNDEFINED_VALUE,
-        ssh_credential_id: Optional[str] = None,
+        ssh_credential_id: Optional[str] = UNDEFINED_VALUE,
         ssh_credential_port: Optional[bool] = None,
-        smb_credential_id: Optional[str] = None,
-        esxi_credential_id: Optional[str] = None,
-        snmp_credential_id: Optional[str] = None,
+        smb_credential_id: Optional[str] = UNDEFINED_VALUE,
+        esxi_credential_id: Optional[str] = UNDEFINED_VALUE,
+        snmp_credential_id: Optional[str] = UNDEFINED_VALUE,
         alive_test: Optional[AliveTest] = None,
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
@@ -5933,22 +5933,40 @@ class GmpV7Mixin(GvmProtocol):
                 )
             cmd.add_element("alive_tests", alive_test.value)
 
-        if ssh_credential_id:
-            _xmlssh = cmd.add_element(
-                "ssh_credential", attrs={"id": ssh_credential_id}
-            )
+        if ssh_credential_id != UNDEFINED_VALUE:
+            if ssh_credential_id is None:
+                _xmlssh = cmd.add_element("ssh_credential", attrs={"id": ""})
+            else:
+                _xmlssh = cmd.add_element(
+                    "ssh_credential", attrs={"id": ssh_credential_id}
+                )
 
             if ssh_credential_port:
                 _xmlssh.add_element("port", str(ssh_credential_port))
 
-        if smb_credential_id:
-            cmd.add_element("smb_credential", attrs={"id": smb_credential_id})
+        if smb_credential_id != UNDEFINED_VALUE:
+            if smb_credential_id is None:
+                cmd.add_element("smb_credential", attrs={"id": ""})
+            else:
+                cmd.add_element(
+                    "smb_credential", attrs={"id": smb_credential_id}
+                )
 
-        if esxi_credential_id:
-            cmd.add_element("esxi_credential", attrs={"id": esxi_credential_id})
+        if esxi_credential_id != UNDEFINED_VALUE:
+            if esxi_credential_id is None:
+                cmd.add_element("esxi_credential", attrs={"id": ""})
+            else:
+                cmd.add_element(
+                    "esxi_credential", attrs={"id": esxi_credential_id}
+                )
 
-        if snmp_credential_id:
-            cmd.add_element("snmp_credential", attrs={"id": snmp_credential_id})
+        if snmp_credential_id != UNDEFINED_VALUE:
+            if snmp_credential_id is None:
+                cmd.add_element("snmp_credential", attrs={"id": ""})
+            else:
+                cmd.add_element(
+                    "snmp_credential", attrs={"id": snmp_credential_id}
+                )
 
         if reverse_lookup_only is not None:
             cmd.add_element(
@@ -5970,12 +5988,12 @@ class GmpV7Mixin(GvmProtocol):
         task_id: str,
         *,
         name: Optional[str] = None,
-        config_id: Optional[str] = None,
-        target_id: Optional[str] = None,
-        scanner_id: Optional[str] = None,
+        config_id: Optional[str] = UNDEFINED_VALUE,
+        target_id: Optional[str] = UNDEFINED_VALUE,
+        scanner_id: Optional[str] = UNDEFINED_VALUE,
         alterable: Optional[bool] = None,
         hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[str] = None,
+        schedule_id: Optional[str] = UNDEFINED_VALUE,
         schedule_periods: Optional[int] = None,
         comment: Optional[str] = UNDEFINED_VALUE,
         alert_ids: Optional[List[str]] = None,
@@ -6020,11 +6038,17 @@ class GmpV7Mixin(GvmProtocol):
             else:
                 cmd.add_element("comment", comment)
 
-        if config_id:
-            cmd.add_element("config", attrs={"id": config_id})
+        if config_id != UNDEFINED_VALUE:
+            if config_id is None:
+                cmd.add_element("config", attrs={"id": ""})
+            else:
+                cmd.add_element("config", attrs={"id": config_id})
 
-        if target_id:
-            cmd.add_element("target", attrs={"id": target_id})
+        if target_id != UNDEFINED_VALUE:
+            if target_id is None:
+                cmd.add_element("target", attrs={"id": ""})
+            else:
+                cmd.add_element("target", attrs={"id": target_id})
 
         if alterable is not None:
             cmd.add_element("alterable", _to_bool(alterable))
@@ -6038,11 +6062,17 @@ class GmpV7Mixin(GvmProtocol):
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
-        if scanner_id:
-            cmd.add_element("scanner", attrs={"id": scanner_id})
+        if scanner_id != UNDEFINED_VALUE:
+            if scanner_id is None:
+                cmd.add_element("scanner", attrs={"id": ""})
+            else:
+                cmd.add_element("scanner", attrs={"id": scanner_id})
 
-        if schedule_id:
-            cmd.add_element("schedule", attrs={"id": schedule_id})
+        if schedule_id != UNDEFINED_VALUE:
+            if schedule_id is None:
+                cmd.add_element("schedule", attrs={"id": ""})
+            else:
+                cmd.add_element("schedule", attrs={"id": schedule_id})
 
         if schedule_periods is not None:
             if (
