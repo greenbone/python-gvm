@@ -53,11 +53,12 @@ class GmpModifyTargetTestCase:
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
             '<hosts>foo</hosts>'
-            '<exclude_hosts></exclude_hosts>'
             '</modify_target>'
         )
 
-        self.gmp.modify_target(target_id='t1', hosts=['foo', 'bar'])
+        self.gmp.modify_target(
+            target_id='t1', hosts=['foo', 'bar'], exclude_hosts=None
+        )
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'

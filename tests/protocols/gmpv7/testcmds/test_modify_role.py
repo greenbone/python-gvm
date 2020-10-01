@@ -56,7 +56,9 @@ class GmpModifyRoleTestCase:
     def test_modify_role_with_users(self):
         self.gmp.modify_role(role_id='r1', users=[])
 
-        self.connection.send.has_been_called_with('<modify_role role_id="r1"/>')
+        self.connection.send.has_been_called_with(
+            '<modify_role role_id="r1"><users></users></modify_role>'
+        )
 
         self.gmp.modify_role(role_id='r1', users=['foo'])
 

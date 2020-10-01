@@ -26,9 +26,7 @@ class GmpModifyAssetTestCase:
         self.gmp.modify_asset(asset_id='a1')
 
         self.connection.send.has_been_called_with(
-            '<modify_asset asset_id="a1">'
-            '<comment></comment>'
-            '</modify_asset>'
+            '<modify_asset asset_id="a1"/>'
         )
 
     def test_modify_asset_without_asset_id(self):
@@ -69,7 +67,9 @@ class GmpModifyAssetTestCase:
         self.gmp.modify_asset('a1', None)
 
         self.connection.send.has_been_called_with(
-            '<modify_asset asset_id="a1">' '<comment/>' '</modify_asset>'
+            '<modify_asset asset_id="a1">'
+            '<comment></comment>'
+            '</modify_asset>'
         )
 
 
