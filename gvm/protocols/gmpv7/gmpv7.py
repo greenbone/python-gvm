@@ -38,14 +38,14 @@ from gvm.utils import deprecation
 
 from gvm.xml import create_parser, XmlCommand
 
-from gvm.protocols.base import GvmProtocol
+from gvm.protocols.base import GvmProtocol, UndefinedValue
 
 from . import types
 from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 
 logger = logging.getLogger(__name__)
 Severity = numbers.Real
-UNDEFINED_VALUE = -1
+_UNDEFINED_VALUE = UndefinedValue()
 
 
 def _check_command_status(xml: str) -> bool:
@@ -4328,7 +4328,7 @@ class GmpV7Mixin(GvmProtocol):
         agent_id: str,
         *,
         name: Optional[str] = None,
-        comment: Optional[str] = UNDEFINED_VALUE
+        comment: Optional[str] = _UNDEFINED_VALUE
     ) -> Any:
         """Modifies an existing agent
 
@@ -4351,7 +4351,7 @@ class GmpV7Mixin(GvmProtocol):
         if name:
             cmd.add_element("name", name)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
@@ -4363,8 +4363,8 @@ class GmpV7Mixin(GvmProtocol):
         self,
         alert_id: str,
         *,
-        name: Optional[str] = UNDEFINED_VALUE,
-        comment: Optional[str] = UNDEFINED_VALUE,
+        name: Optional[str] = _UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
         filter_id: Optional[str] = None,
         event: Optional[AlertEvent] = None,
         event_data: Optional[dict] = None,
@@ -4409,13 +4409,13 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_alert")
         cmd.set_attribute("alert_id", str(alert_id))
 
-        if name != UNDEFINED_VALUE:
+        if name != _UNDEFINED_VALUE:
             if name is None:
                 cmd.add_element("name", "")
             else:
                 cmd.add_element("name", name)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
@@ -4474,7 +4474,7 @@ class GmpV7Mixin(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_asset(
-        self, asset_id: str, comment: Optional[str] = UNDEFINED_VALUE
+        self, asset_id: str, comment: Optional[str] = _UNDEFINED_VALUE
     ) -> Any:
         """Modifies an existing asset.
 
@@ -4493,7 +4493,7 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_asset")
         cmd.set_attribute("asset_id", asset_id)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
@@ -4536,7 +4536,7 @@ class GmpV7Mixin(GvmProtocol):
         name: str,
         nvt_oid: str,
         *,
-        value: Optional[str] = UNDEFINED_VALUE
+        value: Optional[str] = _UNDEFINED_VALUE
     ) -> Any:
         """Modifies the nvt preferences of an existing scan config.
 
@@ -4573,7 +4573,7 @@ class GmpV7Mixin(GvmProtocol):
         _xmlpref.add_element("nvt", attrs={"oid": nvt_oid})
         _xmlpref.add_element("name", name)
 
-        if value != UNDEFINED_VALUE:
+        if value != _UNDEFINED_VALUE:
             if value is None:
                 _xmlpref.add_element("value", "")
             else:
@@ -4608,7 +4608,7 @@ class GmpV7Mixin(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def modify_config_set_comment(
-        self, config_id: str, comment: Optional[str] = UNDEFINED_VALUE
+        self, config_id: str, comment: Optional[str] = _UNDEFINED_VALUE
     ) -> Any:
         """Modifies the comment of an existing scan config
 
@@ -4625,7 +4625,7 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_config")
         cmd.set_attribute("config_id", str(config_id))
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
@@ -4638,7 +4638,7 @@ class GmpV7Mixin(GvmProtocol):
         config_id: str,
         name: str,
         *,
-        value: Optional[str] = UNDEFINED_VALUE
+        value: Optional[str] = _UNDEFINED_VALUE
     ) -> Any:
         """Modifies the scanner preferences of an existing scan config
 
@@ -4668,7 +4668,7 @@ class GmpV7Mixin(GvmProtocol):
 
         _xmlpref.add_element("name", name)
 
-        if value != UNDEFINED_VALUE:
+        if value != _UNDEFINED_VALUE:
             if value is None:
                 _xmlpref.add_element("value", "")
             else:
@@ -4851,7 +4851,7 @@ class GmpV7Mixin(GvmProtocol):
         credential_id: str,
         *,
         name: Optional[str] = None,
-        comment: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
         allow_insecure: Optional[bool] = None,
         certificate: Optional[str] = None,
         key_phrase: Optional[str] = None,
@@ -4892,7 +4892,7 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_credential")
         cmd.set_attribute("credential_id", credential_id)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
@@ -4957,9 +4957,9 @@ class GmpV7Mixin(GvmProtocol):
         self,
         filter_id: str,
         *,
-        comment: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
         name: Optional[str] = None,
-        term: Optional[str] = UNDEFINED_VALUE,
+        term: Optional[str] = _UNDEFINED_VALUE,
         filter_type: Optional[FilterType] = None
     ) -> Any:
         """Modifies an existing filter.
@@ -4982,7 +4982,7 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_filter")
         cmd.set_attribute("filter_id", filter_id)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
@@ -4991,7 +4991,7 @@ class GmpV7Mixin(GvmProtocol):
         if name:
             cmd.add_element("name", name)
 
-        if term != UNDEFINED_VALUE:
+        if term != _UNDEFINED_VALUE:
             if term is None:
                 cmd.add_element("term", "")
             else:
@@ -5012,9 +5012,9 @@ class GmpV7Mixin(GvmProtocol):
         self,
         group_id: str,
         *,
-        comment: Optional[str] = UNDEFINED_VALUE,
-        name: Optional[str] = UNDEFINED_VALUE,
-        users: Optional[List[str]] = UNDEFINED_VALUE
+        comment: Optional[str] = _UNDEFINED_VALUE,
+        name: Optional[str] = _UNDEFINED_VALUE,
+        users: Optional[List[str]] = _UNDEFINED_VALUE
     ) -> Any:
         """Modifies an existing group.
 
@@ -5035,19 +5035,19 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_group")
         cmd.set_attribute("group_id", group_id)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
                 cmd.add_element("comment", comment)
 
-        if name != UNDEFINED_VALUE:
+        if name != _UNDEFINED_VALUE:
             if name is None:
                 cmd.add_element("name", "")
             else:
                 cmd.add_element("name", name)
 
-        if users != UNDEFINED_VALUE:
+        if users != _UNDEFINED_VALUE:
             if users is None:
                 cmd.add_element("users", "")
             else:
@@ -5061,11 +5061,11 @@ class GmpV7Mixin(GvmProtocol):
         text: str,
         *,
         seconds_active: Optional[int] = None,
-        hosts: Optional[List[str]] = UNDEFINED_VALUE,
+        hosts: Optional[List[str]] = _UNDEFINED_VALUE,
         port: Optional[int] = None,
-        result_id: Optional[str] = UNDEFINED_VALUE,
-        severity: Optional[Severity] = UNDEFINED_VALUE,
-        task_id: Optional[str] = UNDEFINED_VALUE,
+        result_id: Optional[str] = _UNDEFINED_VALUE,
+        severity: Optional[Severity] = _UNDEFINED_VALUE,
+        task_id: Optional[str] = _UNDEFINED_VALUE,
         threat: Optional[SeverityLevel] = None
     ) -> Any:
         """Modifies an existing note.
@@ -5102,7 +5102,7 @@ class GmpV7Mixin(GvmProtocol):
         if seconds_active is not None:
             cmd.add_element("active", str(seconds_active))
 
-        if hosts != UNDEFINED_VALUE:
+        if hosts != _UNDEFINED_VALUE:
             if hosts is None:
                 cmd.add_element("hosts", [""])
             else:
@@ -5111,19 +5111,19 @@ class GmpV7Mixin(GvmProtocol):
         if port:
             cmd.add_element("port", str(port))
 
-        if result_id != UNDEFINED_VALUE:
+        if result_id != _UNDEFINED_VALUE:
             if not result_id:
                 cmd.add_element("result", attrs={"id": '0'})
             else:
                 cmd.add_element("result", attrs={"id": result_id})
 
-        if severity != UNDEFINED_VALUE:
+        if severity != _UNDEFINED_VALUE:
             if severity is None:
                 cmd.add_element("severity", "")
             else:
                 cmd.add_element("severity", str(severity))
 
-        if task_id != UNDEFINED_VALUE:
+        if task_id != _UNDEFINED_VALUE:
             if not task_id:
                 cmd.add_element("task", attrs={"id": '0'})
             else:
@@ -5147,12 +5147,12 @@ class GmpV7Mixin(GvmProtocol):
         text: str,
         *,
         seconds_active: Optional[int] = None,
-        hosts: Optional[List[str]] = UNDEFINED_VALUE,
+        hosts: Optional[List[str]] = _UNDEFINED_VALUE,
         port: Optional[int] = None,
-        result_id: Optional[str] = UNDEFINED_VALUE,
-        severity: Optional[Severity] = UNDEFINED_VALUE,
+        result_id: Optional[str] = _UNDEFINED_VALUE,
+        severity: Optional[Severity] = _UNDEFINED_VALUE,
         new_severity: Optional[Severity] = None,
-        task_id: Optional[str] = UNDEFINED_VALUE,
+        task_id: Optional[str] = _UNDEFINED_VALUE,
         threat: Optional[SeverityLevel] = None,
         new_threat: Optional[SeverityLevel] = None
     ) -> Any:
@@ -5193,7 +5193,7 @@ class GmpV7Mixin(GvmProtocol):
         if seconds_active is not None:
             cmd.add_element("active", str(seconds_active))
 
-        if hosts != UNDEFINED_VALUE:
+        if hosts != _UNDEFINED_VALUE:
             if hosts is None:
                 cmd.add_element("hosts", [""])
             else:
@@ -5202,13 +5202,13 @@ class GmpV7Mixin(GvmProtocol):
         if port:
             cmd.add_element("port", str(port))
 
-        if result_id != UNDEFINED_VALUE:
+        if result_id != _UNDEFINED_VALUE:
             if not result_id:
                 cmd.add_element("result", attrs={"id": '0'})
             else:
                 cmd.add_element("result", attrs={"id": result_id})
 
-        if severity != UNDEFINED_VALUE:
+        if severity != _UNDEFINED_VALUE:
             if severity is None:
                 cmd.add_element("severity", "")
             else:
@@ -5217,7 +5217,7 @@ class GmpV7Mixin(GvmProtocol):
         if new_severity:
             cmd.add_element("new_severity", str(new_severity))
 
-        if task_id != UNDEFINED_VALUE:
+        if task_id != _UNDEFINED_VALUE:
             if not task_id:
                 cmd.add_element("task", attrs={"id": '0'})
             else:
@@ -5248,7 +5248,7 @@ class GmpV7Mixin(GvmProtocol):
         self,
         permission_id: str,
         *,
-        comment: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
         name: Optional[str] = None,
         resource_id: Optional[str] = None,
         resource_type: Optional[EntityType] = None,
@@ -5279,7 +5279,7 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_permission")
         cmd.set_attribute("permission_id", permission_id)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
@@ -5336,8 +5336,8 @@ class GmpV7Mixin(GvmProtocol):
         self,
         port_list_id: str,
         *,
-        comment: Optional[str] = UNDEFINED_VALUE,
-        name: Optional[str] = UNDEFINED_VALUE
+        comment: Optional[str] = _UNDEFINED_VALUE,
+        name: Optional[str] = _UNDEFINED_VALUE
     ) -> Any:
         """Modifies an existing port list.
 
@@ -5356,13 +5356,13 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_port_list")
         cmd.set_attribute("port_list_id", port_list_id)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
                 cmd.add_element("comment", comment)
 
-        if name != UNDEFINED_VALUE:
+        if name != _UNDEFINED_VALUE:
             if name is None:
                 cmd.add_element("name", "")
             else:
@@ -5424,9 +5424,9 @@ class GmpV7Mixin(GvmProtocol):
         self,
         role_id: str,
         *,
-        name: Optional[str] = UNDEFINED_VALUE,
-        comment: Optional[str] = UNDEFINED_VALUE,
-        users: Optional[List[str]] = UNDEFINED_VALUE
+        name: Optional[str] = _UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
+        users: Optional[List[str]] = _UNDEFINED_VALUE
     ) -> Any:
         """Modifies an existing role.
 
@@ -5447,19 +5447,19 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_role")
         cmd.set_attribute("role_id", role_id)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
                 cmd.add_element("comment", comment)
 
-        if name != UNDEFINED_VALUE:
+        if name != _UNDEFINED_VALUE:
             if name is None:
                 cmd.add_element("name", "")
             else:
                 cmd.add_element("name", name)
 
-        if users != UNDEFINED_VALUE:
+        if users != _UNDEFINED_VALUE:
             if users is None:
                 cmd.add_element("users", "")
             else:
@@ -5474,8 +5474,8 @@ class GmpV7Mixin(GvmProtocol):
         scanner_type: Optional[ScannerType] = None,
         host: Optional[str] = None,
         port: Optional[int] = None,
-        comment: Optional[str] = UNDEFINED_VALUE,
-        name: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
+        name: Optional[str] = _UNDEFINED_VALUE,
         ca_pub: Optional[str] = None,
         credential_id: Optional[str] = None
     ) -> Any:
@@ -5520,13 +5520,13 @@ class GmpV7Mixin(GvmProtocol):
         if port:
             cmd.add_element("port", str(port))
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
                 cmd.add_element("comment", comment)
 
-        if name != UNDEFINED_VALUE:
+        if name != _UNDEFINED_VALUE:
             if name is None:
                 cmd.add_element("name", "")
             else:
@@ -5544,8 +5544,8 @@ class GmpV7Mixin(GvmProtocol):
         self,
         schedule_id: str,
         *,
-        comment: Optional[str] = UNDEFINED_VALUE,
-        name: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
+        name: Optional[str] = _UNDEFINED_VALUE,
         first_time_minute: Optional[int] = None,
         first_time_hour: Optional[int] = None,
         first_time_day_of_month: Optional[int] = None,
@@ -5593,13 +5593,13 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_schedule")
         cmd.set_attribute("schedule_id", schedule_id)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
                 cmd.add_element("comment", comment)
 
-        if name != UNDEFINED_VALUE:
+        if name != _UNDEFINED_VALUE:
             if name is None:
                 cmd.add_element("name", "")
             else:
@@ -5784,9 +5784,9 @@ class GmpV7Mixin(GvmProtocol):
         self,
         tag_id: str,
         *,
-        comment: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
         name: Optional[str] = None,
-        value: Optional[str] = UNDEFINED_VALUE,
+        value: Optional[str] = _UNDEFINED_VALUE,
         active: Optional[bool] = None,
         resource_id: Optional[str] = None,
         resource_type: Optional[EntityType] = None
@@ -5815,7 +5815,7 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_tag")
         cmd.set_attribute("tag_id", str(tag_id))
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
@@ -5824,7 +5824,7 @@ class GmpV7Mixin(GvmProtocol):
         if name:
             cmd.add_element("name", name)
 
-        if value != UNDEFINED_VALUE:
+        if value != _UNDEFINED_VALUE:
             if value is None:
                 cmd.add_element("value", "")
             else:
@@ -5863,14 +5863,14 @@ class GmpV7Mixin(GvmProtocol):
         target_id: str,
         *,
         name: Optional[str] = None,
-        comment: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
         hosts: Optional[List[str]] = None,
-        exclude_hosts: Optional[List[str]] = UNDEFINED_VALUE,
-        ssh_credential_id: Optional[str] = UNDEFINED_VALUE,
+        exclude_hosts: Optional[List[str]] = _UNDEFINED_VALUE,
+        ssh_credential_id: Optional[str] = _UNDEFINED_VALUE,
         ssh_credential_port: Optional[bool] = None,
-        smb_credential_id: Optional[str] = UNDEFINED_VALUE,
-        esxi_credential_id: Optional[str] = UNDEFINED_VALUE,
-        snmp_credential_id: Optional[str] = UNDEFINED_VALUE,
+        smb_credential_id: Optional[str] = _UNDEFINED_VALUE,
+        esxi_credential_id: Optional[str] = _UNDEFINED_VALUE,
+        snmp_credential_id: Optional[str] = _UNDEFINED_VALUE,
         alive_test: Optional[AliveTest] = None,
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
@@ -5906,7 +5906,7 @@ class GmpV7Mixin(GvmProtocol):
         cmd = XmlCommand("modify_target")
         cmd.set_attribute("target_id", target_id)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
@@ -5918,7 +5918,7 @@ class GmpV7Mixin(GvmProtocol):
         if hosts:
             cmd.add_element("hosts", _to_comma_list(hosts))
 
-        if exclude_hosts != UNDEFINED_VALUE:
+        if exclude_hosts != _UNDEFINED_VALUE:
             if exclude_hosts is None:
                 cmd.add_element("exclude_hosts", "")
             else:
@@ -5933,18 +5933,17 @@ class GmpV7Mixin(GvmProtocol):
                 )
             cmd.add_element("alive_tests", alive_test.value)
 
-        if ssh_credential_id != UNDEFINED_VALUE:
+        if ssh_credential_id != _UNDEFINED_VALUE:
             if not ssh_credential_id:
                 _xmlssh = cmd.add_element("ssh_credential", attrs={"id": "0"})
             else:
                 _xmlssh = cmd.add_element(
                     "ssh_credential", attrs={"id": ssh_credential_id}
                 )
+                if ssh_credential_port:
+                    _xmlssh.add_element("port", str(ssh_credential_port))
 
-            if ssh_credential_port:
-                _xmlssh.add_element("port", str(ssh_credential_port))
-
-        if smb_credential_id != UNDEFINED_VALUE:
+        if smb_credential_id != _UNDEFINED_VALUE:
             if not smb_credential_id:
                 cmd.add_element("smb_credential", attrs={"id": "0"})
             else:
@@ -5952,7 +5951,7 @@ class GmpV7Mixin(GvmProtocol):
                     "smb_credential", attrs={"id": smb_credential_id}
                 )
 
-        if esxi_credential_id != UNDEFINED_VALUE:
+        if esxi_credential_id != _UNDEFINED_VALUE:
             if not esxi_credential_id:
                 cmd.add_element("esxi_credential", attrs={"id": "0"})
             else:
@@ -5960,7 +5959,7 @@ class GmpV7Mixin(GvmProtocol):
                     "esxi_credential", attrs={"id": esxi_credential_id}
                 )
 
-        if snmp_credential_id != UNDEFINED_VALUE:
+        if snmp_credential_id != _UNDEFINED_VALUE:
             if not snmp_credential_id:
                 cmd.add_element("snmp_credential", attrs={"id": "0"})
             else:
@@ -5988,14 +5987,14 @@ class GmpV7Mixin(GvmProtocol):
         task_id: str,
         *,
         name: Optional[str] = None,
-        config_id: Optional[str] = UNDEFINED_VALUE,
-        target_id: Optional[str] = UNDEFINED_VALUE,
-        scanner_id: Optional[str] = UNDEFINED_VALUE,
+        config_id: Optional[str] = _UNDEFINED_VALUE,
+        target_id: Optional[str] = _UNDEFINED_VALUE,
+        scanner_id: Optional[str] = _UNDEFINED_VALUE,
         alterable: Optional[bool] = None,
         hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[str] = UNDEFINED_VALUE,
+        schedule_id: Optional[str] = _UNDEFINED_VALUE,
         schedule_periods: Optional[int] = None,
-        comment: Optional[str] = UNDEFINED_VALUE,
+        comment: Optional[str] = _UNDEFINED_VALUE,
         alert_ids: Optional[List[str]] = None,
         observers: Optional[List[str]] = None,
         preferences: Optional[dict] = None
@@ -6032,19 +6031,19 @@ class GmpV7Mixin(GvmProtocol):
         if name:
             cmd.add_element("name", name)
 
-        if comment != UNDEFINED_VALUE:
+        if comment != _UNDEFINED_VALUE:
             if comment is None:
                 cmd.add_element("comment", "")
             else:
                 cmd.add_element("comment", comment)
 
-        if config_id != UNDEFINED_VALUE:
+        if config_id != _UNDEFINED_VALUE:
             if not config_id:
                 cmd.add_element("config", attrs={"id": "0"})
             else:
                 cmd.add_element("config", attrs={"id": config_id})
 
-        if target_id != UNDEFINED_VALUE:
+        if target_id != _UNDEFINED_VALUE:
             if not target_id:
                 cmd.add_element("target", attrs={"id": "0"})
             else:
@@ -6062,13 +6061,13 @@ class GmpV7Mixin(GvmProtocol):
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
-        if scanner_id != UNDEFINED_VALUE:
+        if scanner_id != _UNDEFINED_VALUE:
             if not scanner_id:
                 cmd.add_element("scanner", attrs={"id": "0"})
             else:
                 cmd.add_element("scanner", attrs={"id": scanner_id})
 
-        if schedule_id != UNDEFINED_VALUE:
+        if schedule_id != _UNDEFINED_VALUE:
             if not schedule_id:
                 cmd.add_element("schedule", attrs={"id": "0"})
             else:

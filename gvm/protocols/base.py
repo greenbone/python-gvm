@@ -21,6 +21,10 @@ from typing import Optional, Callable, Any
 from gvm.connections import GvmConnection
 
 
+class UndefinedValue:
+    pass
+
+
 class GvmProtocol:
     """Base class for different GVM protocols
 
