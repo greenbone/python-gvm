@@ -55,6 +55,18 @@ class GmpModifyTaskCommandTestCase:
             '<modify_task task_id="t1">' '<config id="c1"/>' '</modify_task>'
         )
 
+        self.gmp.modify_task(task_id='t1', config_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<config id="0"/>' '</modify_task>'
+        )
+
+        self.gmp.modify_task(task_id='t1', config_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<config id="0"/>' '</modify_task>'
+        )
+
     def test_modify_task_with_target_id(self):
         self.gmp.modify_task(task_id='t1', target_id='t1')
 
@@ -62,11 +74,35 @@ class GmpModifyTaskCommandTestCase:
             '<modify_task task_id="t1">' '<target id="t1"/>' '</modify_task>'
         )
 
+        self.gmp.modify_task(task_id='t1', target_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<target id="0"/>' '</modify_task>'
+        )
+
+        self.gmp.modify_task(task_id='t1', target_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<target id="0"/>' '</modify_task>'
+        )
+
     def test_modify_task_with_scanner_id(self):
         self.gmp.modify_task(task_id='t1', scanner_id='s1')
 
         self.connection.send.has_been_called_with(
             '<modify_task task_id="t1">' '<scanner id="s1"/>' '</modify_task>'
+        )
+
+        self.gmp.modify_task(task_id='t1', scanner_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<scanner id="0"/>' '</modify_task>'
+        )
+
+        self.gmp.modify_task(task_id='t1', scanner_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<scanner id="0"/>' '</modify_task>'
         )
 
     def test_modify_task_with_schedule_id(self):

@@ -147,6 +147,24 @@ class GmpModifyTargetTestCase:
             '</modify_target>'
         )
 
+        self.gmp.modify_target(
+            target_id='t1', ssh_credential_id='', ssh_credential_port=123
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<ssh_credential id="0"/>'
+            '</modify_target>'
+        )
+
+        self.gmp.modify_target(target_id='t1', ssh_credential_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<ssh_credential id="0"/>'
+            '</modify_target>'
+        )
+
     def test_modify_target_with_smb_credential_id(self):
         self.gmp.modify_target(target_id='t1', smb_credential_id='c1')
 
@@ -181,12 +199,44 @@ class GmpModifyTargetTestCase:
             '</modify_target>'
         )
 
+        self.gmp.modify_target(target_id='t1', esxi_credential_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<esxi_credential id="0"/>'
+            '</modify_target>'
+        )
+
+        self.gmp.modify_target(target_id='t1', esxi_credential_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<esxi_credential id="0"/>'
+            '</modify_target>'
+        )
+
     def test_modify_target_with_snmp_credential_id(self):
         self.gmp.modify_target(target_id='t1', snmp_credential_id='c1')
 
         self.connection.send.has_been_called_with(
             '<modify_target target_id="t1">'
             '<snmp_credential id="c1"/>'
+            '</modify_target>'
+        )
+
+        self.gmp.modify_target(target_id='t1', snmp_credential_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<snmp_credential id="0"/>'
+            '</modify_target>'
+        )
+
+        self.gmp.modify_target(target_id='t1', snmp_credential_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<snmp_credential id="0"/>'
             '</modify_target>'
         )
 
