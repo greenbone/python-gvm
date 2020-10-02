@@ -5995,7 +5995,7 @@ class GmpV7Mixin(GvmProtocol):
         schedule_id: Optional[str] = _UNDEFINED_VALUE,
         schedule_periods: Optional[int] = None,
         comment: Optional[str] = _UNDEFINED_VALUE,
-        alert_ids: Optional[List[str]] = None,
+        alert_ids: Optional[List[str]] = _UNDEFINED_VALUE,
         observers: Optional[List[str]] = None,
         preferences: Optional[dict] = None
     ) -> Any:
@@ -6084,19 +6084,21 @@ class GmpV7Mixin(GvmProtocol):
                 )
             cmd.add_element("schedule_periods", str(schedule_periods))
 
-        if alert_ids is not None:
-            if not _is_list_like(alert_ids):
-                raise InvalidArgumentType(
-                    function=self.modify_task.__name__,
-                    argument='alert_ids',
-                    arg_type='list',
-                )
-
-            if len(alert_ids) == 0:
+        if alert_ids != _UNDEFINED_VALUE:
+            if not alert_ids:
                 cmd.add_element("alert", attrs={"id": "0"})
             else:
-                for alert in alert_ids:
-                    cmd.add_element("alert", attrs={"id": str(alert)})
+                if not _is_list_like(alert_ids):
+                    raise InvalidArgumentType(
+                        function=self.modify_task.__name__,
+                        argument='alert_ids',
+                        arg_type='list',
+                    )
+                if len(alert_ids) == 0:
+                    cmd.add_element("alert", attrs={"id": "0"})
+                else:
+                    for alert in alert_ids:
+                        cmd.add_element("alert", attrs={"id": str(alert)})
 
         if observers is not None:
             if not _is_list_like(observers):

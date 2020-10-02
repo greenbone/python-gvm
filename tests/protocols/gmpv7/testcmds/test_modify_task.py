@@ -112,6 +112,18 @@ class GmpModifyTaskCommandTestCase:
             '<modify_task task_id="t1">' '<schedule id="s1"/>' '</modify_task>'
         )
 
+        self.gmp.modify_task(task_id='t1', schedule_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<schedule id="0"/>' '</modify_task>'
+        )
+
+        self.gmp.modify_task(task_id='t1', schedule_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<schedule id="0"/>' '</modify_task>'
+        )
+
     def test_modify_task_with_comment(self):
         self.gmp.modify_task(task_id='t1', comment='bar')
 
@@ -119,6 +131,18 @@ class GmpModifyTaskCommandTestCase:
             '<modify_task task_id="t1">'
             '<comment>bar</comment>'
             '</modify_task>'
+        )
+
+        self.gmp.modify_task(task_id='t1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<comment></comment>' '</modify_task>'
+        )
+
+        self.gmp.modify_task(task_id='t1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<comment></comment>' '</modify_task>'
         )
 
     def test_modify_task_with_alerts_ids(self):
@@ -132,10 +156,19 @@ class GmpModifyTaskCommandTestCase:
             '</modify_task>'
         )
 
-    def test_modify_task_invalid_alerts_ids(self):
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.modify_task(task_id='t1', alert_ids='')
+        self.gmp.modify_task(task_id='t1', alert_ids=None)
 
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<alert id="0"/>' '</modify_task>'
+        )
+
+        self.gmp.modify_task(task_id='t1', alert_ids='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<alert id="0"/>' '</modify_task>'
+        )
+
+    def test_modify_task_invalid_alerts_ids(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', alert_ids='a1')
 
