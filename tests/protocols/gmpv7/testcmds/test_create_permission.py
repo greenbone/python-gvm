@@ -116,6 +116,16 @@ class GmpCreatePermissionTestCase:
                 resource_id='t1',
             )
 
+    def test_create_permission_invalid_resource_type(self):
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.create_permission(
+                'create_task',
+                subject_id='u1',
+                subject_type=PermissionSubjectType.USER,
+                resource_id='t1',
+                resource_type="xyzxy",
+            )
+
     def test_create_permission_with_resource(self):
         self.gmp.create_permission(
             'create_task',

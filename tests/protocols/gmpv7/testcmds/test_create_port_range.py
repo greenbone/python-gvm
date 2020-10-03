@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import PortRangeType
 
@@ -84,6 +84,12 @@ class GmpCreatePortRangeTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
                 port_list_id='pl1', start=1, end=1234, port_range_type=''
+            )
+
+    def test_create_port_range_invalid_port_range_type(self):
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.create_port_range(
+                port_list_id='pl1', start=1, end=1234, port_range_type="xyzxy"
             )
 
     def test_create_port_range(self):

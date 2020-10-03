@@ -55,6 +55,7 @@ class GmpCreateFilterCommandTestCase:
             'notes=1 overrides=1 levels=hml first=1 rows=1000',
             filter_type=FilterType.TASK,
             comment='foo',
+            make_unique=True,
         )
 
         self.connection.send.has_been_called_with(
@@ -63,6 +64,7 @@ class GmpCreateFilterCommandTestCase:
             '<comment>foo</comment>'
             '<term>sort-reverse=threat result_hosts_only=1 notes=1 '
             'overrides=1 levels=hml first=1 rows=1000</term>'
+            '<make_unique>1</make_unique>'
             '<type>task</type>'
             '</create_filter>'
         )
