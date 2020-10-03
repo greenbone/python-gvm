@@ -101,31 +101,10 @@ def _is_list_like(value: Any) -> bool:
 def _check_event(
     event: AlertEvent, condition: AlertCondition, method: AlertMethod
 ):
-    if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
-        if not condition:
-            raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
-            )
-
-        if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
-
-    elif event in (
+    if event in (
         AlertEvent.NEW_SECINFO_ARRIVED,
         AlertEvent.UPDATED_SECINFO_ARRIVED,
     ):
-        if not condition:
-            raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
-            )
-
-        if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
-
         if condition not in (AlertCondition.ALWAYS,):
             raise InvalidArgument(
                 "Invalid condition {} for event {}".format(
@@ -143,8 +122,6 @@ def _check_event(
             raise InvalidArgument(
                 "Invalid method {} for event {}".format(method.name, event.name)
             )
-    elif event is not None:
-        raise InvalidArgument('Invalid event "{}"'.format(event.name))
 
 
 class GmpV7Mixin(GvmProtocol):
@@ -4434,6 +4411,16 @@ class GmpV7Mixin(GvmProtocol):
                     function=self.modify_alert.__name__,
                     argument='event',
                     arg_type=AlertEvent.__name__,
+                )
+
+            if not condition:
+                raise RequiredArgument(
+                    "condition is required for event {}".format(event.name)
+                )
+
+            if not method:
+                raise RequiredArgument(
+                    "method is required for event {}".format(event.name)
                 )
 
             _check_event(event, condition, method)
