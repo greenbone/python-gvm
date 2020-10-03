@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv7 import EntityType
 
@@ -108,6 +108,12 @@ class GmpModifyTagTestCase:
             '</resource>'
             '</modify_tag>'
         )
+
+    def test_modify_tag_with_invalid_resource_type(self):
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_tag(
+                tag_id='t1', resource_id='r1', resource_type="hehe"
+            )
 
     def test_modify_tag_with_missing_resource_type(self):
         with self.assertRaises(RequiredArgument):
