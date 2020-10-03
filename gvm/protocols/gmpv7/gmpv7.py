@@ -112,32 +112,6 @@ def _check_event(
                 "method is required for event {}".format(event.name)
             )
 
-        if condition not in (
-            AlertCondition.ALWAYS,
-            AlertCondition.FILTER_COUNT_CHANGED,
-            AlertCondition.FILTER_COUNT_AT_LEAST,
-            AlertCondition.SEVERITY_AT_LEAST,
-        ):
-            raise InvalidArgument(
-                "Invalid condition {} for event {}".format(
-                    condition.name, event.name
-                )
-            )
-        if method not in (
-            AlertMethod.SCP,
-            AlertMethod.SEND,
-            AlertMethod.SMB,
-            AlertMethod.SNMP,
-            AlertMethod.SYSLOG,
-            AlertMethod.EMAIL,
-            AlertMethod.START_TASK,
-            AlertMethod.HTTP_GET,
-            AlertMethod.SOURCEFIRE_CONNECTOR,
-            AlertMethod.VERINICE_CONNECTOR,
-        ):
-            raise InvalidArgument(
-                "Invalid method {} for event {}".format(method.name, event.name)
-            )
     elif event in (
         AlertEvent.NEW_SECINFO_ARRIVED,
         AlertEvent.UPDATED_SECINFO_ARRIVED,
