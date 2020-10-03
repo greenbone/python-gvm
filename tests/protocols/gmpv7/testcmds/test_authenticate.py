@@ -19,6 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument
+from gvm.protocols.gmpv7.gmpv7 import _check_command_status
 
 
 class GmpAuthenticateTestCase:
@@ -35,6 +36,9 @@ class GmpAuthenticateTestCase:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.authenticate('bar', '')
+
+    def test_missing_xml(self):
+        self.assertFalse(_check_command_status(None))
 
     def test_authentication_success(self):
         self.assertFalse(self.gmp.is_authenticated())
