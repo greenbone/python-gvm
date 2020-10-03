@@ -62,6 +62,35 @@ class GmpModifyConfigSetNvtPreferenceTestCase:
             '</modify_config>'
         )
 
+    def test_modify_config_set_nvt_pref_clear_value(self):
+        self.gmp.modify_config_set_nvt_preference(
+            'c1', 'foo', nvt_oid='o1', value=''
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<preference>'
+            '<nvt oid="o1"/>'
+            '<name>foo</name>'
+            '<value></value>'
+            '</preference>'
+            '</modify_config>'
+        )
+
+        self.gmp.modify_config_set_nvt_preference(
+            'c1', 'foo', nvt_oid='o1', value=None
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<preference>'
+            '<nvt oid="o1"/>'
+            '<name>foo</name>'
+            '<value></value>'
+            '</preference>'
+            '</modify_config>'
+        )
+
     def test_modify_config_set_nvt_pref_missing_nvt_oid(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_nvt_preference(

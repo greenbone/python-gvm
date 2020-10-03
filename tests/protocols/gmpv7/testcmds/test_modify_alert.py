@@ -50,6 +50,23 @@ class GmpModifyAlertTestCase:
             '</modify_alert>'
         )
 
+    def test_modify_alert_clear_comment(self):
+        self.gmp.modify_alert(alert_id='a1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_alert alert_id="a1">'
+            '<comment></comment>'
+            '</modify_alert>'
+        )
+
+        self.gmp.modify_alert(alert_id='a1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_alert alert_id="a1">'
+            '<comment></comment>'
+            '</modify_alert>'
+        )
+
     def test_modify_alert_with_name(self):
         self.gmp.modify_alert(alert_id='a1', name='lorem')
 
@@ -57,6 +74,19 @@ class GmpModifyAlertTestCase:
             '<modify_alert alert_id="a1">'
             '<name>lorem</name>'
             '</modify_alert>'
+        )
+
+    def test_modify_alert_clear_name(self):
+        self.gmp.modify_alert(alert_id='a1', name='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_alert alert_id="a1">' '<name></name>' '</modify_alert>'
+        )
+
+        self.gmp.modify_alert(alert_id='a1', name=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_alert alert_id="a1">' '<name></name>' '</modify_alert>'
         )
 
     def test_modify_alert_with_filter_id(self):

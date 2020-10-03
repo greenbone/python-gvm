@@ -57,6 +57,29 @@ class GmpModifyConfigSetScannerPreferenceTestCase:
             '</modify_config>'
         )
 
+    def test_modify_config_set_scanner_pref_clear_value(self):
+        self.gmp.modify_config_set_scanner_preference('c1', 'foo', value='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<preference>'
+            '<name>foo</name>'
+            '<value></value>'
+            '</preference>'
+            '</modify_config>'
+        )
+
+        self.gmp.modify_config_set_scanner_preference('c1', 'foo', value=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<preference>'
+            '<name>foo</name>'
+            '<value></value>'
+            '</preference>'
+            '</modify_config>'
+        )
+
     def test_modify_config_scanner_pref_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_scanner_preference(
