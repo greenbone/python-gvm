@@ -54,16 +54,6 @@ def _check_event(
     event: AlertEvent, condition: AlertCondition, method: AlertMethod
 ):
     if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
-        if not condition:
-            raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
-            )
-
-        if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
-
         if condition not in (
             AlertCondition.ALWAYS,
             AlertCondition.FILTER_COUNT_CHANGED,
@@ -80,16 +70,6 @@ def _check_event(
         AlertEvent.NEW_SECINFO_ARRIVED,
         AlertEvent.UPDATED_SECINFO_ARRIVED,
     ):
-        if not condition:
-            raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
-            )
-
-        if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
-
         if condition != AlertCondition.ALWAYS:
             raise InvalidArgument(
                 "Invalid condition {} for event {}".format(
@@ -112,15 +92,6 @@ def _check_event(
         AlertEvent.OWNED_TICKET_CHANGED,
         AlertEvent.ASSIGNED_TICKET_CHANGED,
     ):
-        if not condition:
-            raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
-            )
-
-        if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
         if condition != AlertCondition.ALWAYS:
             raise InvalidArgument(
                 "Invalid condition {} for event {}".format(
@@ -651,6 +622,16 @@ class GmpV9Mixin(GvmProtocol):
                     function=self.modify_alert.__name__,
                     argument='event',
                     arg_type=AlertEvent.__name__,
+                )
+
+            if not condition:
+                raise RequiredArgument(
+                    "condition is required for event {}".format(event.name)
+                )
+
+            if not method:
+                raise RequiredArgument(
+                    "method is required for event {}".format(event.name)
                 )
 
             _check_event(event, condition, method)
