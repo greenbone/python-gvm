@@ -216,6 +216,18 @@ class GmpModifyTaskCommandTestCase:
             '<modify_task task_id="t1">' '<schedule id="s1"/>' '</modify_task>'
         )
 
+        self.gmp.modify_task(task_id='t1', schedule_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<schedule id="0"/>' '</modify_task>'
+        )
+
+        self.gmp.modify_task(task_id='t1', schedule_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_task task_id="t1">' '<schedule id="0"/>' '</modify_task>'
+        )
+
     def test_modify_task_with_schedule_periods(self):
         self.gmp.modify_task(task_id='t1', schedule_periods=0)
 
