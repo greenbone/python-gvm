@@ -46,6 +46,22 @@ class GmpModifyScannerTestCase:
             '</modify_scanner>'
         )
 
+    def test_modify_scanner_clear_comment(self):
+        self.gmp.modify_scanner(scanner_id='s1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_scanner scanner_id="s1">'
+            '<comment></comment>'
+            '</modify_scanner>'
+        )
+        self.gmp.modify_scanner(scanner_id='s1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_scanner scanner_id="s1">'
+            '<comment></comment>'
+            '</modify_scanner>'
+        )
+
     def test_modify_scanner_with_host(self):
         self.gmp.modify_scanner(scanner_id='s1', host='foo')
 
@@ -78,6 +94,23 @@ class GmpModifyScannerTestCase:
         self.connection.send.has_been_called_with(
             '<modify_scanner scanner_id="s1">'
             '<name>foo</name>'
+            '</modify_scanner>'
+        )
+
+    def test_modify_scanner_clear_name(self):
+        self.gmp.modify_scanner(scanner_id='s1', name='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_scanner scanner_id="s1">'
+            '<name></name>'
+            '</modify_scanner>'
+        )
+
+        self.gmp.modify_scanner(scanner_id='s1', name=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_scanner scanner_id="s1">'
+            '<name></name>'
             '</modify_scanner>'
         )
 

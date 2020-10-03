@@ -50,6 +50,23 @@ class GmpModifyPermissionTestCase:
             '</modify_permission>'
         )
 
+    def test_modify_permission_clear_comment(self):
+        self.gmp.modify_permission(permission_id='p1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_permission permission_id="p1">'
+            '<comment></comment>'
+            '</modify_permission>'
+        )
+
+        self.gmp.modify_permission(permission_id='p1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_permission permission_id="p1">'
+            '<comment></comment>'
+            '</modify_permission>'
+        )
+
     def test_modify_permission_with_resource_id_and_type(self):
         self.gmp.modify_permission(
             permission_id='p1', resource_id='r1', resource_type=EntityType.TASK
@@ -89,6 +106,12 @@ class GmpModifyPermissionTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
                 permission_id='p1', resource_id='r1', resource_type=None
+            )
+
+    def test_modify_permission_with_invalid_resource_type(self):
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_permission(
+                permission_id='p1', resource_id='r1', resource_type='xyzxy'
             )
 
     def test_modify_permission_with_subject_id_and_type(self):

@@ -53,6 +53,32 @@ class GmpModifyRoleTestCase:
             '<modify_role role_id="r1">' '<name>foo</name>' '</modify_role>'
         )
 
+    def test_modify_role_clear_comment(self):
+        self.gmp.modify_role(role_id='r1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_role role_id="r1">' '<comment></comment>' '</modify_role>'
+        )
+
+        self.gmp.modify_role(role_id='r1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_role role_id="r1">' '<comment></comment>' '</modify_role>'
+        )
+
+    def test_modify_role_clear_name(self):
+        self.gmp.modify_role(role_id='r1', name='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_role role_id="r1">' '<name></name>' '</modify_role>'
+        )
+
+        self.gmp.modify_role(role_id='r1', name=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_role role_id="r1">' '<name></name>' '</modify_role>'
+        )
+
     def test_modify_role_with_users(self):
         self.gmp.modify_role(role_id='r1', users=[])
 
@@ -72,6 +98,19 @@ class GmpModifyRoleTestCase:
             '<modify_role role_id="r1">'
             '<users>foo,bar</users>'
             '</modify_role>'
+        )
+
+    def test_modify_role_clear_users(self):
+        self.gmp.modify_role(role_id='r1', users="")
+
+        self.connection.send.has_been_called_with(
+            '<modify_role role_id="r1">' '<users></users>' '</modify_role>'
+        )
+
+        self.gmp.modify_role(role_id='r1', users=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_role role_id="r1">' '<users></users>' '</modify_role>'
         )
 
 

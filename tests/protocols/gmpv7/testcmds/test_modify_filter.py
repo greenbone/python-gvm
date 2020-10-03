@@ -63,6 +63,23 @@ class GmpModifyFilterTestCase:
             '</modify_filter>'
         )
 
+    def test_modify_filter_clear_comment(self):
+        self.gmp.modify_filter(filter_id='f1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_filter filter_id="f1">'
+            '<comment></comment>'
+            '</modify_filter>'
+        )
+
+        self.gmp.modify_filter(filter_id='f1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_filter filter_id="f1">'
+            '<comment></comment>'
+            '</modify_filter>'
+        )
+
     def test_modify_filter_with_name(self):
         self.gmp.modify_filter(filter_id='f1', name='foo')
 
@@ -79,6 +96,19 @@ class GmpModifyFilterTestCase:
             '<modify_filter filter_id="f1">'
             '<term>foo=bar</term>'
             '</modify_filter>'
+        )
+
+    def test_modify_filter_clear_term(self):
+        self.gmp.modify_filter(filter_id='f1', term='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_filter filter_id="f1">' '<term></term>' '</modify_filter>'
+        )
+
+        self.gmp.modify_filter(filter_id='f1', term=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_filter filter_id="f1">' '<term></term>' '</modify_filter>'
         )
 
 

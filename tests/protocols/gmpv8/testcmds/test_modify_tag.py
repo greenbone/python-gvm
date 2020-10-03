@@ -56,6 +56,32 @@ class GmpModifyTagTestCase:
             '<modify_tag tag_id="t1"><name>foo</name></modify_tag>'
         )
 
+    def test_modify_tag_clear_comment(self):
+        self.gmp.modify_tag(tag_id='t1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">' '<comment></comment>' '</modify_tag>'
+        )
+
+        self.gmp.modify_tag(tag_id='t1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">' '<comment></comment>' '</modify_tag>'
+        )
+
+    def test_modify_tag_clear_value(self):
+        self.gmp.modify_tag(tag_id='t1', value='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">' '<value></value>' '</modify_tag>'
+        )
+
+        self.gmp.modify_tag(tag_id='t1', value=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">' '<value></value>' '</modify_tag>'
+        )
+
     def test_modify_tag_with_active(self):
         self.gmp.modify_tag(tag_id='t1', active=True)
 

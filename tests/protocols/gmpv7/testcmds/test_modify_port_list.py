@@ -57,6 +57,40 @@ class GmpModifyPortListTestCase:
             '</modify_port_list>'
         )
 
+    def test_modify_port_list_clear_comment(self):
+        self.gmp.modify_port_list(port_list_id='p1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_port_list port_list_id="p1">'
+            '<comment></comment>'
+            '</modify_port_list>'
+        )
+
+        self.gmp.modify_port_list(port_list_id='p1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_port_list port_list_id="p1">'
+            '<comment></comment>'
+            '</modify_port_list>'
+        )
+
+    def test_modify_port_list_clear_name(self):
+        self.gmp.modify_port_list(port_list_id='p1', name='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_port_list port_list_id="p1">'
+            '<name></name>'
+            '</modify_port_list>'
+        )
+
+        self.gmp.modify_port_list(port_list_id='p1', name=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_port_list port_list_id="p1">'
+            '<name></name>'
+            '</modify_port_list>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

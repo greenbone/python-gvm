@@ -5065,7 +5065,7 @@ class GmpV7Mixin(GvmProtocol):
 
         if hosts != _UNDEFINED_VALUE:
             if hosts is None:
-                cmd.add_element("hosts", [""])
+                cmd.add_element("hosts", "")
             else:
                 cmd.add_element("hosts", _to_comma_list(hosts))
 
@@ -5156,7 +5156,7 @@ class GmpV7Mixin(GvmProtocol):
 
         if hosts != _UNDEFINED_VALUE:
             if hosts is None:
-                cmd.add_element("hosts", [""])
+                cmd.add_element("hosts", "")
             else:
                 cmd.add_element("hosts", _to_comma_list(hosts))
 

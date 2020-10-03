@@ -48,11 +48,41 @@ class GmpModifyGroupTestCase:
             '</modify_group>'
         )
 
+    def test_modify_group_clear_comment(self):
+        self.gmp.modify_group(group_id='f1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_group group_id="f1">'
+            '<comment></comment>'
+            '</modify_group>'
+        )
+
+        self.gmp.modify_group(group_id='f1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_group group_id="f1">'
+            '<comment></comment>'
+            '</modify_group>'
+        )
+
     def test_modify_group_with_name(self):
         self.gmp.modify_group(group_id='f1', name='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_group group_id="f1">' '<name>foo</name>' '</modify_group>'
+        )
+
+    def test_modify_group_clear_name(self):
+        self.gmp.modify_group(group_id='f1', name='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_group group_id="f1">' '<name></name>' '</modify_group>'
+        )
+
+        self.gmp.modify_group(group_id='f1', name=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_group group_id="f1">' '<name></name>' '</modify_group>'
         )
 
     def test_modify_group_with_users(self):
@@ -70,6 +100,19 @@ class GmpModifyGroupTestCase:
             '<modify_group group_id="f1">'
             '<users>foo,bar</users>'
             '</modify_group>'
+        )
+
+    def test_modify_group_clear_users(self):
+        self.gmp.modify_group(group_id='f1', users='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_group group_id="f1">' '<users></users>' '</modify_group>'
+        )
+
+        self.gmp.modify_group(group_id='f1', users=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_group group_id="f1">' '<users></users>' '</modify_group>'
         )
 
 

@@ -66,6 +66,23 @@ class GmpModifyScheduleTestCase:
             "</modify_schedule>"
         )
 
+    def test_modify_schedule_clear_comment(self):
+        self.gmp.modify_schedule(schedule_id='s1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_schedule schedule_id="s1">'
+            '<comment></comment>'
+            '</modify_schedule>'
+        )
+
+        self.gmp.modify_schedule(schedule_id='s1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_schedule schedule_id="s1">'
+            '<comment></comment>'
+            '</modify_schedule>'
+        )
+
     def test_modify_schedule_with_icalendar(self):
         self.gmp.modify_schedule(schedule_id="s1", icalendar=ICAL)
 
@@ -73,6 +90,23 @@ class GmpModifyScheduleTestCase:
             '<modify_schedule schedule_id="s1">'
             '<icalendar>{}</icalendar>'
             "</modify_schedule>".format(ICAL)
+        )
+
+    def test_modify_schedule_clear_name(self):
+        self.gmp.modify_schedule(schedule_id='s1', name='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_schedule schedule_id="s1">'
+            '<name></name>'
+            '</modify_schedule>'
+        )
+
+        self.gmp.modify_schedule(schedule_id='s1', name=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_schedule schedule_id="s1">'
+            '<name></name>'
+            '</modify_schedule>'
         )
 
     def test_modify_schedule_with_timezone(self):

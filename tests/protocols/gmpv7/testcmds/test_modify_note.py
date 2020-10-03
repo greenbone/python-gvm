@@ -119,6 +119,24 @@ class GmpModifyNoteTestCase:
             '</modify_note>'
         )
 
+    def test_modify_note_clear_hosts(self):
+        self.gmp.modify_note(note_id='n1', text='foo', hosts='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_note note_id="n1">'
+            '<text>foo</text>'
+            '<hosts></hosts>'
+            '</modify_note>'
+        )
+        self.gmp.modify_note(note_id='n1', text='foo', hosts=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_note note_id="n1">'
+            '<text>foo</text>'
+            '<hosts></hosts>'
+            '</modify_note>'
+        )
+
     def test_modify_note_with_result_id(self):
         self.gmp.modify_note(note_id='n1', text='foo', result_id='r1')
 
@@ -129,6 +147,25 @@ class GmpModifyNoteTestCase:
             '</modify_note>'
         )
 
+    def test_modify_note_clear_result_id(self):
+        self.gmp.modify_note(note_id='n1', text='foo', result_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_note note_id="n1">'
+            '<text>foo</text>'
+            '<result id="0"/>'
+            '</modify_note>'
+        )
+
+        self.gmp.modify_note(note_id='n1', text='foo', result_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_note note_id="n1">'
+            '<text>foo</text>'
+            '<result id="0"/>'
+            '</modify_note>'
+        )
+
     def test_modify_note_with_task_id(self):
         self.gmp.modify_note(note_id='n1', text='foo', task_id='r1')
 
@@ -136,6 +173,44 @@ class GmpModifyNoteTestCase:
             '<modify_note note_id="n1">'
             '<text>foo</text>'
             '<task id="r1"/>'
+            '</modify_note>'
+        )
+
+    def test_modify_note_clear_task_id(self):
+        self.gmp.modify_note(note_id='n1', text='foo', task_id='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_note note_id="n1">'
+            '<text>foo</text>'
+            '<task id="0"/>'
+            '</modify_note>'
+        )
+
+        self.gmp.modify_note(note_id='n1', text='foo', task_id=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_note note_id="n1">'
+            '<text>foo</text>'
+            '<task id="0"/>'
+            '</modify_note>'
+        )
+
+    def test_modify_note__severity(self):
+        self.gmp.modify_note(note_id='n1', text='foo', severity='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_note note_id="n1">'
+            '<text>foo</text>'
+            '<severity></severity>'
+            '</modify_note>'
+        )
+
+        self.gmp.modify_note(note_id='n1', text='foo', severity=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_note note_id="n1">'
+            '<text>foo</text>'
+            '<severity></severity>'
             '</modify_note>'
         )
 
