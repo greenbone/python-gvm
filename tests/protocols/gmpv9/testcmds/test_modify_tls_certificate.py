@@ -30,11 +30,29 @@ class GmpModifyTLSCertificateTestCase:
         )
 
     def test_modify_tls_certificate_with_name(self):
-        self.gmp.modify_tls_certificate('c1', name='foo')
+        self.gmp.modify_tls_certificate('c1', name='foo', trust=True)
 
         self.connection.send.has_been_called_with(
             '<modify_tls_certificate tls_certificate_id="c1">'
             '<name>foo</name>'
+            '<trust>1</trust>'
+            '</modify_tls_certificate>'
+        )
+
+    def test_modify_tls_certificate_clear_comment(self):
+        self.gmp.modify_tls_certificate('c1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_tls_certificate tls_certificate_id="c1">'
+            '<comment></comment>'
+            '</modify_tls_certificate>'
+        )
+
+        self.gmp.modify_tls_certificate('c1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_tls_certificate tls_certificate_id="c1">'
+            '<comment></comment>'
             '</modify_tls_certificate>'
         )
 
