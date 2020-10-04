@@ -58,6 +58,23 @@ class GmpModifyTestCase:
             '</modify_credential>'
         )
 
+    def test_modify_credential_clear_comment(self):
+        self.gmp.modify_credential(credential_id='c1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_credential credential_id="c1">'
+            '<comment></comment>'
+            '</modify_credential>'
+        )
+
+        self.gmp.modify_credential(credential_id='c1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_credential credential_id="c1">'
+            '<comment></comment>'
+            '</modify_credential>'
+        )
+
     def test_modify_credential_with_certificate(self):
         self.gmp.modify_credential(credential_id='c1', certificate='abcdef')
 

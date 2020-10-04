@@ -55,6 +55,23 @@ class GmpModifyTicketTestCase:
             '</modify_ticket>'
         )
 
+    def test_modify_ticket_clear_comment(self):
+        self.gmp.modify_ticket(ticket_id='t1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_ticket ticket_id="t1">'
+            '<comment></comment>'
+            '</modify_ticket>'
+        )
+
+        self.gmp.modify_ticket(ticket_id='t1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_ticket ticket_id="t1">'
+            '<comment></comment>'
+            '</modify_ticket>'
+        )
+
     def test_modify_ticket_with_assigned_to_user_id(self):
         self.gmp.modify_ticket(ticket_id='t1', assigned_to_user_id='u1')
 
