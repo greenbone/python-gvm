@@ -54,13 +54,7 @@ def _check_event(
     event: AlertEvent, condition: AlertCondition, method: AlertMethod
 ):
     if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
-        if condition not in (
-            AlertCondition.ALWAYS,
-            AlertCondition.FILTER_COUNT_CHANGED,
-            AlertCondition.FILTER_COUNT_AT_LEAST,
-            AlertCondition.SEVERITY_AT_LEAST,
-            AlertCondition.SEVERITY_CHANGED,
-        ):
+        if condition == AlertCondition.ERROR:
             raise InvalidArgument(
                 "Invalid condition {} for event {}".format(
                     condition.name, event.name
@@ -106,8 +100,6 @@ def _check_event(
             raise InvalidArgument(
                 "Invalid method {} for event {}".format(method.name, event.name)
             )
-    elif event is not None:
-        raise InvalidArgument('Invalid event "{}"'.format(event.name))
 
 
 class GmpV9Mixin(GvmProtocol):
