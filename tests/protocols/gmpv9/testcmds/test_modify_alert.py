@@ -59,6 +59,36 @@ class GmpModifyAlertTestCase:
             '</modify_alert>'
         )
 
+    def test_modify_alert_clear_comment(self):
+        self.gmp.modify_alert(alert_id='a1', comment='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_alert alert_id="a1">'
+            '<comment></comment>'
+            '</modify_alert>'
+        )
+
+        self.gmp.modify_alert(alert_id='a1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_alert alert_id="a1">'
+            '<comment></comment>'
+            '</modify_alert>'
+        )
+
+    def test_modify_alert_clear_name(self):
+        self.gmp.modify_alert(alert_id='a1', name='')
+
+        self.connection.send.has_been_called_with(
+            '<modify_alert alert_id="a1">' '<name></name>' '</modify_alert>'
+        )
+
+        self.gmp.modify_alert(alert_id='a1', name=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_alert alert_id="a1">' '<name></name>' '</modify_alert>'
+        )
+
     def test_modify_alert_with_filter_id(self):
         self.gmp.modify_alert(alert_id='a1', filter_id='f1')
 
@@ -71,22 +101,25 @@ class GmpModifyAlertTestCase:
             self.gmp.modify_alert(
                 alert_id='a1',
                 condition='bar',
-                event='Task run status changed',
-                method='Email',
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+                method=AlertMethod.EMAIL,
             )
 
     def test_modify_alert_invalid_event(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
-                alert_id='a1', condition='Always', event='lorem', method='Email'
+                alert_id='a1',
+                condition=AlertCondition.ALWAYS,
+                event='lorem',
+                method=AlertMethod.EMAIL,
             )
 
     def test_modify_alert_invalid_method(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
                 alert_id='a1',
-                condition='Always',
-                event='Task run status changed',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
                 method='ipsum',
             )
 
