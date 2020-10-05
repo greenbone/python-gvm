@@ -33,7 +33,7 @@ from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import deprecation
 from gvm.xml import XmlCommand
 
-from gvm.protocols.base import GvmProtocol, UndefinedValue
+from gvm.protocols.base import GvmProtocol
 from gvm.connections import GvmConnection
 from gvm.protocols.gmpv7.gmpv7 import (
     _to_bool,
@@ -47,7 +47,6 @@ from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 from .types import _UsageType as UsageType
 
 _EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
-_UNDEFINED_VALUE = UndefinedValue()
 
 
 def _check_event(
@@ -517,8 +516,8 @@ class GmpV9Mixin(GvmProtocol):
         self,
         alert_id: str,
         *,
-        name: Optional[str] = _UNDEFINED_VALUE,
-        comment: Optional[str] = _UNDEFINED_VALUE,
+        name: Optional[str] = GvmProtocol._UNDEFINED_VALUE,
+        comment: Optional[str] = GvmProtocol._UNDEFINED_VALUE,
         filter_id: Optional[str] = None,
         event: Optional[AlertEvent] = None,
         event_data: Optional[dict] = None,
@@ -563,17 +562,9 @@ class GmpV9Mixin(GvmProtocol):
         cmd = XmlCommand("modify_alert")
         cmd.set_attribute("alert_id", str(alert_id))
 
-        if name != _UNDEFINED_VALUE:
-            if name is None:
-                cmd.add_element("name", "")
-            else:
-                cmd.add_element("name", name)
+        self._check_input('name', name, cmd)
 
-        if comment != _UNDEFINED_VALUE:
-            if comment is None:
-                cmd.add_element("comment", "")
-            else:
-                cmd.add_element("comment", comment)
+        self._check_input('comment', comment, cmd)
 
         if filter_id:
             cmd.add_element("filter", attrs={"id": filter_id})
@@ -642,7 +633,7 @@ class GmpV9Mixin(GvmProtocol):
         tls_certificate_id: str,
         *,
         name: Optional[str] = None,
-        comment: Optional[str] = _UNDEFINED_VALUE,
+        comment: Optional[str] = GvmProtocol._UNDEFINED_VALUE,
         trust: Optional[bool] = None
     ) -> Any:
         """Modifies an existing TLS certificate.
@@ -665,11 +656,7 @@ class GmpV9Mixin(GvmProtocol):
         cmd = XmlCommand("modify_tls_certificate")
         cmd.set_attribute("tls_certificate_id", str(tls_certificate_id))
 
-        if comment != _UNDEFINED_VALUE:
-            if comment is None:
-                cmd.add_element("comment", "")
-            else:
-                cmd.add_element("comment", comment)
+        self._check_input('comment', comment, cmd)
 
         if name:
             cmd.add_element("name", name)

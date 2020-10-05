@@ -31,14 +31,12 @@ from typing import Any, List, Optional, Callable
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.xml import XmlCommand
 
-from gvm.protocols.base import GvmProtocol, UndefinedValue
+from gvm.protocols.base import GvmProtocol
 from gvm.connections import GvmConnection
 from gvm.protocols.gmpv7.gmpv7 import _to_bool, _add_filter
 
 from . import types
 from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
-
-_UNDEFINED_VALUE = UndefinedValue()
 
 
 class GmpV8Mixin(GvmProtocol):
@@ -310,7 +308,7 @@ class GmpV8Mixin(GvmProtocol):
         credential_id: str,
         *,
         name: Optional[str] = None,
-        comment: Optional[str] = _UNDEFINED_VALUE,
+        comment: Optional[str] = GvmProtocol._UNDEFINED_VALUE,
         allow_insecure: Optional[bool] = None,
         certificate: Optional[str] = None,
         key_phrase: Optional[str] = None,
@@ -353,11 +351,7 @@ class GmpV8Mixin(GvmProtocol):
         cmd = XmlCommand("modify_credential")
         cmd.set_attribute("credential_id", credential_id)
 
-        if comment != _UNDEFINED_VALUE:
-            if comment is None:
-                cmd.add_element("comment", "")
-            else:
-                cmd.add_element("comment", comment)
+        self._check_input('comment', comment, cmd)
 
         if name:
             cmd.add_element("name", name)
@@ -507,9 +501,9 @@ class GmpV8Mixin(GvmProtocol):
         self,
         tag_id: str,
         *,
-        comment: Optional[str] = _UNDEFINED_VALUE,
+        comment: Optional[str] = GvmProtocol._UNDEFINED_VALUE,
         name: Optional[str] = None,
-        value: Optional[str] = _UNDEFINED_VALUE,
+        value: Optional[str] = GvmProtocol._UNDEFINED_VALUE,
         active: Optional[bool] = None,
         resource_action: Optional[str] = None,
         resource_type: Optional[EntityType] = None,
@@ -543,16 +537,12 @@ class GmpV8Mixin(GvmProtocol):
         cmd = XmlCommand("modify_tag")
         cmd.set_attribute("tag_id", str(tag_id))
 
-        if comment != _UNDEFINED_VALUE:
-            if comment is None:
-                cmd.add_element("comment", "")
-            else:
-                cmd.add_element("comment", comment)
+        self._check_input('comment', comment, cmd)
 
         if name:
             cmd.add_element("name", name)
 
-        if value != _UNDEFINED_VALUE:
+        if value != GvmProtocol._UNDEFINED_VALUE:
             if value is None:
                 cmd.add_element("value", "")
             else:
@@ -837,7 +827,7 @@ class GmpV8Mixin(GvmProtocol):
         status: Optional[TicketStatus] = None,
         note: Optional[str] = None,
         assigned_to_user_id: Optional[str] = None,
-        comment: Optional[str] = _UNDEFINED_VALUE
+        comment: Optional[str] = GvmProtocol._UNDEFINED_VALUE
     ) -> Any:
         """Modify a single ticket
 
@@ -886,11 +876,7 @@ class GmpV8Mixin(GvmProtocol):
             cmd.add_element('status', status.value)
             cmd.add_element('{}_note'.format(status.name.lower()), note)
 
-        if comment != _UNDEFINED_VALUE:
-            if comment is None:
-                cmd.add_element("comment", "")
-            else:
-                cmd.add_element("comment", comment)
+        self._check_input('comment', comment, cmd)
 
         return self._send_xml_command(cmd)
 
@@ -1022,8 +1008,8 @@ class GmpV8Mixin(GvmProtocol):
         self,
         schedule_id: str,
         *,
-        name: Optional[str] = _UNDEFINED_VALUE,
-        comment: Optional[str] = _UNDEFINED_VALUE,
+        name: Optional[str] = GvmProtocol._UNDEFINED_VALUE,
+        comment: Optional[str] = GvmProtocol._UNDEFINED_VALUE,
         icalendar: Optional[str] = None,
         timezone: Optional[str] = None
     ) -> Any:
@@ -1054,7 +1040,7 @@ class GmpV8Mixin(GvmProtocol):
         cmd = XmlCommand("modify_schedule")
         cmd.set_attribute("schedule_id", schedule_id)
 
-        if name != _UNDEFINED_VALUE:
+        if name != GvmProtocol._UNDEFINED_VALUE:
             if name is None:
                 cmd.add_element("name", "")
             else:
@@ -1066,10 +1052,6 @@ class GmpV8Mixin(GvmProtocol):
         if timezone:
             cmd.add_element("timezone", timezone)
 
-        if comment != _UNDEFINED_VALUE:
-            if comment is None:
-                cmd.add_element("comment", "")
-            else:
-                cmd.add_element("comment", comment)
+        self._check_input('comment', comment, cmd)
 
         return self._send_xml_command(cmd)

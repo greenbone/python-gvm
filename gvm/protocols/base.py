@@ -39,6 +39,8 @@ class GvmProtocol:
             See :mod:`gvm.transforms` for existing transforms.
     """
 
+    _UNDEFINED_VALUE = UndefinedValue()
+
     def __init__(
         self,
         connection: GvmConnection,
@@ -88,6 +90,20 @@ class GvmProtocol:
             xmlcmd (gvm.xml.XmlCommand): XmlCommand instance to send
         """
         return self.send_command(xmlcmd.to_string())
+
+    def _check_input(self, tag, value, cmd):
+        if value != GvmProtocol._UNDEFINED_VALUE:
+            if value is None:
+                cmd.add_element(tag, "")
+            else:
+                cmd.add_element(tag, value)
+
+    def _check_id_input(self, tag, value, cmd):
+        if value != GvmProtocol._UNDEFINED_VALUE:
+            if not value:
+                cmd.add_element(tag, attrs={"id": '0'})
+            else:
+                cmd.add_element(tag, attrs={"id": value})
 
     def is_connected(self) -> bool:
         """Status of the current connection
