@@ -217,8 +217,8 @@ class GmpCreateOverrideTestCase:
         with self.assertRaises(InvalidArgumentType):
             self.gmp.create_override('foo', nvt_oid='oid1', new_threat='foo')
 
-    def test_create_override_with_seconds_active(self):
-        self.gmp.create_override('foo', nvt_oid='oid1', seconds_active=0)
+    def test_create_override_with_days_active(self):
+        self.gmp.create_override('foo', nvt_oid='oid1', days_active=0)
 
         self.connection.send.has_been_called_with(
             '<create_override>'
@@ -228,7 +228,7 @@ class GmpCreateOverrideTestCase:
             '</create_override>'
         )
 
-        self.gmp.create_override('foo', nvt_oid='oid1', seconds_active=-1)
+        self.gmp.create_override('foo', nvt_oid='oid1', days_active=-1)
 
         self.connection.send.has_been_called_with(
             '<create_override>'
@@ -238,7 +238,7 @@ class GmpCreateOverrideTestCase:
             '</create_override>'
         )
 
-        self.gmp.create_override('foo', nvt_oid='oid1', seconds_active=3600)
+        self.gmp.create_override('foo', nvt_oid='oid1', days_active=3600)
 
         self.connection.send.has_been_called_with(
             '<create_override>'
