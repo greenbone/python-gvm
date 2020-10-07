@@ -905,7 +905,7 @@ class GmpV7Mixin(GvmProtocol):
         Arguments:
             text: Text of the new note
             nvt_id: OID of the nvt to which note applies
-            days_active: Seconds note will be active. -1 on
+            days_active: Days note will be active. -1 on
                 always, 0 off
             hosts: A list of hosts addresses
             port: Port to which the note applies
@@ -1000,7 +1000,7 @@ class GmpV7Mixin(GvmProtocol):
         Arguments:
             text: Text of the new override
             nvt_id: OID of the nvt to which override applies
-            days_active: Seconds override will be active. -1 on always, 0 off
+            days_active: Days override will be active. -1 on always, 0 off
             hosts: A list of host addresses
             port: Port to which the override applies
             result_id: UUID of a result to which override applies
@@ -5026,7 +5026,7 @@ class GmpV7Mixin(GvmProtocol):
         Arguments:
             note_id: UUID of note to modify.
             text: The text of the note.
-            days_active: Seconds note will be active. -1 on always, 0 off.
+            days_active: Days note will be active. -1 on always, 0 off.
             hosts: A list of hosts addresses
             port: Port to which note applies.
             result_id: Result to which note applies.
@@ -5103,7 +5103,7 @@ class GmpV7Mixin(GvmProtocol):
         Arguments:
             override_id: UUID of override to modify.
             text: The text of the override.
-            days_active: Seconds override will be active. -1 on always,
+            days_active: Days override will be active. -1 on always,
                 0 off.
             hosts: A list of host addresses
             port: Port to which override applies.
