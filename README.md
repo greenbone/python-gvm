@@ -35,6 +35,14 @@ Please always take a look at the documentation for further details. This
 
 ## Installation
 
+### Version
+
+Please consider to always use the **newest** version of `gvm-tools` and `python-gvm`.
+We freqently update this projects to add features and keep them free from bugs.
+This is why installing `python-gvm` using pip is recommended.
+
+The current release of `python-gvm` can be used with all supported GOS versions.
+
 ### Requirements
 
 Python 3.5 and later is supported.

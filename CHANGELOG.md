@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+* Corrected `seconds_active` parameter to `days_active` for notes and overrides. [#307](https://github.com/greenbone/python-gvm/pull/307)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.9.1...HEAD
 

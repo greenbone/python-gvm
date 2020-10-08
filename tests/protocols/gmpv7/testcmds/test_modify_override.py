@@ -55,8 +55,8 @@ class GmpModifyOverrideTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_override('o1', '')
 
-    def test_modify_override_with_seconds_active(self):
-        self.gmp.modify_override(override_id='o1', text='foo', seconds_active=0)
+    def test_modify_override_with_days_active(self):
+        self.gmp.modify_override(override_id='o1', text='foo', days_active=0)
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -65,9 +65,7 @@ class GmpModifyOverrideTestCase:
             '</modify_override>'
         )
 
-        self.gmp.modify_override(
-            override_id='o1', text='foo', seconds_active=-1
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', days_active=-1)
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
@@ -76,9 +74,7 @@ class GmpModifyOverrideTestCase:
             '</modify_override>'
         )
 
-        self.gmp.modify_override(
-            override_id='o1', text='foo', seconds_active=600
-        )
+        self.gmp.modify_override(override_id='o1', text='foo', days_active=600)
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
