@@ -53,8 +53,8 @@ class GmpModifyNoteTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_note('n1', '')
 
-    def test_modify_note_with_seconds_active(self):
-        self.gmp.modify_note(note_id='n1', text='foo', seconds_active=0)
+    def test_modify_note_with_days_active(self):
+        self.gmp.modify_note(note_id='n1', text='foo', days_active=0)
 
         self.connection.send.has_been_called_with(
             '<modify_note note_id="n1">'
@@ -63,7 +63,7 @@ class GmpModifyNoteTestCase:
             '</modify_note>'
         )
 
-        self.gmp.modify_note(note_id='n1', text='foo', seconds_active=-1)
+        self.gmp.modify_note(note_id='n1', text='foo', days_active=-1)
 
         self.connection.send.has_been_called_with(
             '<modify_note note_id="n1">'
@@ -72,7 +72,7 @@ class GmpModifyNoteTestCase:
             '</modify_note>'
         )
 
-        self.gmp.modify_note(note_id='n1', text='foo', seconds_active=600)
+        self.gmp.modify_note(note_id='n1', text='foo', days_active=600)
 
         self.connection.send.has_been_called_with(
             '<modify_note note_id="n1">'

@@ -892,7 +892,7 @@ class GmpV7Mixin(GvmProtocol):
         text: str,
         nvt_oid: str,
         *,
-        seconds_active: Optional[int] = None,
+        days_active: Optional[int] = None,
         hosts: Optional[List[str]] = None,
         port: Optional[int] = None,
         result_id: Optional[str] = None,
@@ -905,7 +905,7 @@ class GmpV7Mixin(GvmProtocol):
         Arguments:
             text: Text of the new note
             nvt_id: OID of the nvt to which note applies
-            seconds_active: Seconds note will be active. -1 on
+            days_active: Days note will be active. -1 on
                 always, 0 off
             hosts: A list of hosts addresses
             port: Port to which the note applies
@@ -932,8 +932,8 @@ class GmpV7Mixin(GvmProtocol):
         cmd.add_element("text", text)
         cmd.add_element("nvt", attrs={"oid": nvt_oid})
 
-        if seconds_active is not None:
-            cmd.add_element("active", str(seconds_active))
+        if days_active is not None:
+            cmd.add_element("active", str(days_active))
 
         if hosts:
             cmd.add_element("hosts", _to_comma_list(hosts))
@@ -985,7 +985,7 @@ class GmpV7Mixin(GvmProtocol):
         text: str,
         nvt_oid: str,
         *,
-        seconds_active: Optional[int] = None,
+        days_active: Optional[int] = None,
         hosts: Optional[List[str]] = None,
         port: Optional[int] = None,
         result_id: Optional[str] = None,
@@ -1000,7 +1000,7 @@ class GmpV7Mixin(GvmProtocol):
         Arguments:
             text: Text of the new override
             nvt_id: OID of the nvt to which override applies
-            seconds_active: Seconds override will be active. -1 on always, 0 off
+            days_active: Days override will be active. -1 on always, 0 off
             hosts: A list of host addresses
             port: Port to which the override applies
             result_id: UUID of a result to which override applies
@@ -1029,8 +1029,8 @@ class GmpV7Mixin(GvmProtocol):
         cmd.add_element("text", text)
         cmd.add_element("nvt", attrs={"oid": nvt_oid})
 
-        if seconds_active is not None:
-            cmd.add_element("active", str(seconds_active))
+        if days_active is not None:
+            cmd.add_element("active", str(days_active))
 
         if hosts:
             cmd.add_element("hosts", _to_comma_list(hosts))
@@ -5013,7 +5013,7 @@ class GmpV7Mixin(GvmProtocol):
         note_id: str,
         text: str,
         *,
-        seconds_active: Optional[int] = None,
+        days_active: Optional[int] = None,
         hosts: Optional[List[str]] = None,
         port: Optional[int] = None,
         result_id: Optional[str] = None,
@@ -5026,7 +5026,7 @@ class GmpV7Mixin(GvmProtocol):
         Arguments:
             note_id: UUID of note to modify.
             text: The text of the note.
-            seconds_active: Seconds note will be active. -1 on always, 0 off.
+            days_active: Days note will be active. -1 on always, 0 off.
             hosts: A list of hosts addresses
             port: Port to which note applies.
             result_id: Result to which note applies.
@@ -5052,8 +5052,8 @@ class GmpV7Mixin(GvmProtocol):
         cmd.set_attribute("note_id", note_id)
         cmd.add_element("text", text)
 
-        if seconds_active is not None:
-            cmd.add_element("active", str(seconds_active))
+        if days_active is not None:
+            cmd.add_element("active", str(days_active))
 
         if hosts:
             cmd.add_element("hosts", _to_comma_list(hosts))
@@ -5088,7 +5088,7 @@ class GmpV7Mixin(GvmProtocol):
         override_id: str,
         text: str,
         *,
-        seconds_active: Optional[int] = None,
+        days_active: Optional[int] = None,
         hosts: Optional[List[str]] = None,
         port: Optional[int] = None,
         result_id: Optional[str] = None,
@@ -5103,7 +5103,7 @@ class GmpV7Mixin(GvmProtocol):
         Arguments:
             override_id: UUID of override to modify.
             text: The text of the override.
-            seconds_active: Seconds override will be active. -1 on always,
+            days_active: Days override will be active. -1 on always,
                 0 off.
             hosts: A list of host addresses
             port: Port to which override applies.
@@ -5132,8 +5132,8 @@ class GmpV7Mixin(GvmProtocol):
         cmd.set_attribute("override_id", override_id)
         cmd.add_element("text", text)
 
-        if seconds_active is not None:
-            cmd.add_element("active", str(seconds_active))
+        if days_active is not None:
+            cmd.add_element("active", str(days_active))
 
         if hosts:
             cmd.add_element("hosts", _to_comma_list(hosts))

@@ -162,8 +162,8 @@ class GmpCreateNoteTestCase:
         with self.assertRaises(InvalidArgumentType):
             self.gmp.create_note('foo', nvt_oid='oid1', threat='foo')
 
-    def test_create_note_with_seconds_active(self):
-        self.gmp.create_note('foo', nvt_oid='oid1', seconds_active=0)
+    def test_create_note_with_days_active(self):
+        self.gmp.create_note('foo', nvt_oid='oid1', days_active=0)
 
         self.connection.send.has_been_called_with(
             '<create_note>'
@@ -173,7 +173,7 @@ class GmpCreateNoteTestCase:
             '</create_note>'
         )
 
-        self.gmp.create_note('foo', nvt_oid='oid1', seconds_active=-1)
+        self.gmp.create_note('foo', nvt_oid='oid1', days_active=-1)
 
         self.connection.send.has_been_called_with(
             '<create_note>'
@@ -183,7 +183,7 @@ class GmpCreateNoteTestCase:
             '</create_note>'
         )
 
-        self.gmp.create_note('foo', nvt_oid='oid1', seconds_active=3600)
+        self.gmp.create_note('foo', nvt_oid='oid1', days_active=3600)
 
         self.connection.send.has_been_called_with(
             '<create_note>'
