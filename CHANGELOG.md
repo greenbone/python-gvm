@@ -7,6 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+* Added `clone_report_format()` and `import_report_format()` [#309](https://github.com/greenbone/python-gvm/pull/309)
 ### Changed
 ### Deprecated
 ### Removed
