@@ -37,6 +37,12 @@ class Gmpv8CloneConfigTestCase(GmpCloneConfigTestCase, Gmpv8TestCase):
     pass
 
 
+class Gmpv8CloneReportFormatTestCase(
+    GmpCloneReportFormatTestCase, Gmpv8TestCase
+):
+    pass
+
+
 class Gmpv8CloneCredentialTestCase(GmpCloneCredentialTestCase, Gmpv8TestCase):
 
     pass
@@ -481,6 +487,12 @@ class Gmpv8GetVersionCommandTestCase(
 
 
 class Gmpv8ImportConfigTestCase(GmpImportConfigTestCase, Gmpv8TestCase):
+    pass
+
+
+class Gmpv8ImportReportFormatTestCase(
+    GmpImportReportFormatTestCase, Gmpv8TestCase
+):
     pass
 
 
