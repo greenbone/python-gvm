@@ -37,6 +37,7 @@ __all__ = [
     "InfoType",
     "PermissionSubjectType",
     "PortRangeType",
+    "ReportFormatType",
     "ScannerType",
     "SeverityLevel",
     "SnmpAuthAlgorithm",

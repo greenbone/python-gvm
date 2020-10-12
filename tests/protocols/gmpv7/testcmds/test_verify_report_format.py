@@ -23,7 +23,7 @@ from gvm.errors import GvmError
 
 class GmpVerifyReportFormatTestCase:
     def test_verify(self):
-        self.gmp.verify_report_format('a1')
+        self.gmp.verify_report_format(report_format_id='a1')
 
         self.connection.send.has_been_called_with(
             '<verify_report_format report_format_id="a1"/>'
@@ -31,10 +31,10 @@ class GmpVerifyReportFormatTestCase:
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):
-            self.gmp.verify_report_format(None)
+            self.gmp.verify_report_format(report_format_id=None)
 
         with self.assertRaises(GvmError):
-            self.gmp.verify_report_format('')
+            self.gmp.verify_report_format(report_format_id='')
 
 
 if __name__ == '__main__':

@@ -23,7 +23,7 @@ from gvm.errors import RequiredArgument
 
 class GmpGetReportFormatTestCase:
     def test_get_report_format(self):
-        self.gmp.get_report_format('rf1')
+        self.gmp.get_report_format(report_format_id='rf1')
 
         self.connection.send.has_been_called_with(
             '<get_report_formats report_format_id="rf1" details="1"/>'
@@ -37,10 +37,12 @@ class GmpGetReportFormatTestCase:
 
     def test_get_report_format_missing_report_format_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_report_format(report_format_id=None)
+            self.gmp.get_report_format(
+                report_format_id=None, report_format=None
+            )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_report_format('')
+            self.gmp.get_report_format(report_format_id='', report_format=None)
 
 
 if __name__ == '__main__':

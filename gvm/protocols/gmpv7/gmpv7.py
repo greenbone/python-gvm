@@ -2454,7 +2454,11 @@ class GmpV7Mixin(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def delete_report_format(
-        self, report_format_id: str, *, ultimate: Optional[bool] = False
+        self,
+        *,
+        report_format_id: Optional[str] = None,
+        report_format: Optional[ReportFormatType] = None,
+        ultimate: Optional[bool] = False
     ) -> Any:
         """Deletes an existing report format
 
@@ -2462,14 +2466,19 @@ class GmpV7Mixin(GvmProtocol):
             report_format_id: UUID of the report format to be deleted.
             ultimate: Whether to remove entirely, or to the trashcan.
         """
-        if not report_format_id:
+        if not report_format_id and not report_format:
             raise RequiredArgument(
-                function=self.delete_report_format.__name__,
-                argument='report_format_id',
+                function=self.verify_report_format.__name__,
+                argument='report_format_id or report_format',
             )
 
         cmd = XmlCommand("delete_report_format")
-        cmd.set_attribute("report_format_id", report_format_id)
+
+        if report_format_id:
+            cmd.set_attribute("report_format_id", report_format_id)
+        elif report_format:
+            cmd.set_attribute("report_format_id", report_format)
+
         cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
@@ -3669,6 +3678,7 @@ class GmpV7Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         delta_report_id: Optional[str] = None,
         report_format_id: Optional[str] = None,
+        report_format: Optional[ReportFormatType] = None,
         ignore_pagination: Optional[bool] = None,
         details: Optional[bool] = None
     ) -> Any:
@@ -3703,6 +3713,8 @@ class GmpV7Mixin(GvmProtocol):
 
         if report_format_id:
             cmd.set_attribute("format_id", report_format_id)
+        elif report_format:
+            cmd.set_attribute("format_id", report_format)
 
         if ignore_pagination is not None:
             cmd.set_attribute("ignore_pagination", _to_bool(ignore_pagination))
@@ -3753,7 +3765,12 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_report_format(self, report_format_id: str) -> Any:
+    def get_report_format(
+        self,
+        *,
+        report_format_id: Optional[str] = None,
+        report_format: Optional[ReportFormatType] = None
+    ) -> Any:
         """Request a single report format
 
         Arguments:
@@ -3764,13 +3781,16 @@ class GmpV7Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_report_formats")
 
-        if not report_format_id:
+        if not report_format_id and not report_format:
             raise RequiredArgument(
-                function=self.get_report_format.__name__,
-                argument='report_format_id',
+                function=self.verify_report_format.__name__,
+                argument='report_format_id or report_format',
             )
 
-        cmd.set_attribute("report_format_id", report_format_id)
+        if report_format_id:
+            cmd.set_attribute("report_format_id", report_format_id)
+        elif report_format:
+            cmd.set_attribute("report_format_id", report_format)
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
@@ -5293,8 +5313,9 @@ class GmpV7Mixin(GvmProtocol):
 
     def modify_report_format(
         self,
-        report_format_id: str,
         *,
+        report_format_id: Optional[str] = None,
+        report_format: Optional[ReportFormatType] = None,
         active: Optional[bool] = None,
         name: Optional[str] = None,
         summary: Optional[str] = None,
@@ -5314,10 +5335,10 @@ class GmpV7Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not report_format_id:
+        if not report_format_id and not report_format:
             raise RequiredArgument(
-                function=self.modify_report_format.__name__,
-                argument='report_format_id',
+                function=self.verify_report_format.__name__,
+                argument='report_format_id or report_format',
             )
 
         cmd = XmlCommand("modify_report_format")
@@ -6209,6 +6230,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         report_format_id: Optional[str] = None,
+        report_format: Optional[ReportFormatType] = None,
         delta_report_id: Optional[str] = None
     ) -> Any:
         """Run an alert by ignoring its event and conditions
@@ -6251,6 +6273,8 @@ class GmpV7Mixin(GvmProtocol):
 
         if report_format_id:
             cmd.set_attribute("format_id", report_format_id)
+        elif report_format:
+            cmd.set_attribute("format_id", report_format)
 
         if delta_report_id:
             cmd.set_attribute("delta_report_id", delta_report_id)
@@ -6279,7 +6303,12 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def verify_report_format(self, report_format_id: str) -> Any:
+    def verify_report_format(
+        self,
+        *,
+        report_format_id: Optional[str] = None,
+        report_format: Optional[ReportFormatType] = None
+    ) -> Any:
         """Verify an existing report format
 
         Verifies the trust level of an existing report format. It will be
@@ -6294,14 +6323,18 @@ class GmpV7Mixin(GvmProtocol):
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not report_format_id:
+        if not report_format_id and not report_format:
             raise RequiredArgument(
                 function=self.verify_report_format.__name__,
-                argument='report_format_id',
+                argument='report_format_id or report_format',
             )
 
         cmd = XmlCommand("verify_report_format")
-        cmd.set_attribute("report_format_id", report_format_id)
+
+        if report_format_id:
+            cmd.set_attribute("report_format_id", report_format_id)
+        elif report_format:
+            cmd.set_attribute("report_format_id", report_format)
 
         return self._send_xml_command(cmd)
 

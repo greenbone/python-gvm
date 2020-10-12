@@ -37,7 +37,7 @@ class GmpModifyReportFormatTestCase:
             self.gmp.modify_report_format(report_format_id='')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_report_format('')
+            self.gmp.modify_report_format(report_format='')
 
     def test_modify_report_format_with_summary(self):
         self.gmp.modify_report_format(report_format_id='rf1', summary='foo')
