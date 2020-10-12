@@ -57,6 +57,7 @@ __all__ = [
     "get_info_type_from_string",
     "get_permission_subject_type_from_string",
     "get_port_range_type_from_string",
+    "get_report_format_id_from_string",
     "get_scanner_type_from_string",
     "get_severity_level_from_string",
     "get_snmp_auth_algorithm_from_string",
@@ -566,7 +567,7 @@ def get_port_range_type_from_string(
 class ReportFormatType(Enum):
     """ Enum for builtin report formats """
 
-    ANONYMOUS_PDF = '5057e5cc-b825-11e4-9d0e-28d24461215b'
+    ANONYMOUS_XML = '5057e5cc-b825-11e4-9d0e-28d24461215b'
     ARF = '910200ca-dc05-11e1-954f-406186ea4fc5'
     CPE = '5ceff8ba-1f62-11e1-ab9f-406186ea4fc5'
     CSV_HOSTS = '9087b18c-626c-11e3-8892-406186ea4fc5"'
@@ -585,6 +586,78 @@ class ReportFormatType(Enum):
     VERINICE_ISM = 'c15ad349-bd8d-457a-880a-c7056532ee15'
     VERINICE_ITG = '50c9950a-f326-11e4-800c-28d24461215b'
     XML = 'a994b278-1f62-11e1-96ac-406186ea4fc5'
+
+
+def get_report_format_id_from_string(
+    report_format: Optional[str],
+) -> Optional[ReportFormatType]:
+    """Convert an report format name into a ReportFormatType instance """
+    if not report_format:
+        return None
+
+    report_format = report_format.lower()
+
+    if report_format == 'anonymous xml':
+        return ReportFormatType.ANONYMOUS_XML
+
+    if report_format == 'arf':
+        return ReportFormatType.ARF
+
+    if report_format == 'cpe':
+        return ReportFormatType.CPE
+
+    if report_format == 'csv hosts':
+        return ReportFormatType.CSV_HOSTS
+
+    if report_format == 'csv results':
+        return ReportFormatType.CSV_RESULTS
+
+    if report_format == 'gcr pdf':
+        return ReportFormatType.GCR_PDF
+
+    if report_format == 'gsr html':
+        return ReportFormatType.GSR_HTML
+
+    if report_format == 'gsr pdf':
+        return ReportFormatType.GSR_PDF
+
+    if report_format == 'gxcr pdf':
+        return ReportFormatType.GXCR_PDF
+
+    if report_format == 'gxr pdf':
+        return ReportFormatType.GXR_PDF
+
+    if report_format == 'itg':
+        return ReportFormatType.ITG
+
+    if report_format == 'latex':
+        return ReportFormatType.LATEX
+
+    if report_format == 'nbe':
+        return ReportFormatType.NBE
+
+    if report_format == 'pdf':
+        return ReportFormatType.PDF
+
+    if report_format == 'svg':
+        return ReportFormatType.SVG
+
+    if report_format == 'txt':
+        return ReportFormatType.TXT
+
+    if report_format == 'verinice ism':
+        return ReportFormatType.VERINICE_ISM
+
+    if report_format == 'verinice itg':
+        return ReportFormatType.VERINICE_ITG
+
+    if report_format == 'xml':
+        return ReportFormatType.XML
+
+    raise InvalidArgument(
+        argument='report_format',
+        function=get_report_format_id_from_string.__name__,
+    )
 
 
 class ScannerType(Enum):
