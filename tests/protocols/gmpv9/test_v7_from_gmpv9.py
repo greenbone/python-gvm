@@ -37,6 +37,12 @@ class Gmpv9CloneConfigTestCase(GmpCloneConfigTestCase, Gmpv9TestCase):
     pass
 
 
+class Gmpv9CloneReportFormatTestCase(
+    GmpCloneReportFormatTestCase, Gmpv9TestCase
+):
+    pass
+
+
 class Gmpv9CloneCredentialTestCase(GmpCloneCredentialTestCase, Gmpv9TestCase):
 
     pass
@@ -443,6 +449,12 @@ class Gmpv9GetVersionCommandTestCase(
 
 
 class Gmpv9ImportConfigTestCase(GmpImportConfigTestCase, Gmpv9TestCase):
+    pass
+
+
+class Gmpv9ImportReportFormatTestCase(
+    GmpImportReportFormatTestCase, Gmpv9TestCase
+):
     pass
 
 
