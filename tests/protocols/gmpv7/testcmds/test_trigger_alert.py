@@ -79,7 +79,7 @@ class GmpTriggerAlertTestCase:
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1" '
-            f'format_id="{report_format_id}"/>'
+            'format_id="{}"/>'.format(report_format_id)
         )
 
     def test_trigger_alert_with_delta_report_id(self):
