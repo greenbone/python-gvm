@@ -33,6 +33,12 @@ class Gmpv208CloneConfigTestCase(GmpCloneConfigTestCase, Gmpv208TestCase):
     pass
 
 
+class Gmpv208CloneReportFormatTestCase(
+    GmpCloneReportFormatTestCase, Gmpv208TestCase
+):
+    pass
+
+
 class Gmpv208CloneCredentialTestCase(
     GmpCloneCredentialTestCase, Gmpv208TestCase
 ):
@@ -437,6 +443,12 @@ class Gmpv208GetVersionCommandTestCase(
 
 
 class Gmpv208ImportConfigTestCase(GmpImportConfigTestCase, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208ImportReportFormatTestCase(
+    GmpImportReportFormatTestCase, Gmpv208TestCase
+):
     pass
 
 

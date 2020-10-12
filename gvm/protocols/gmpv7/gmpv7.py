@@ -1355,6 +1355,53 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def clone_report_format(self, report_format_id: str) -> Any:
+        """Clone a report format from an existing one
+
+        Arguments:
+            report_format_id: UUID of the existing report_ ormat
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not report_format_id:
+            raise RequiredArgument(
+                function=self.clone_report_format.__name__,
+                argument='report_format_id',
+            )
+
+        cmd = XmlCommand("create_report_format")
+        cmd.add_element("copy", report_format_id)
+        return self._send_xml_command(cmd)
+
+    def import_report_format(self, report_format: str) -> Any:
+        """Import a report format from XML
+
+        Arguments:
+            report_format: Report format XML as string to import. This XML must
+                contain a :code:`<get_report_formats_response>` root element.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not report_format:
+            raise RequiredArgument(
+                function=self.import_report_format.__name__,
+                argument='report_format',
+            )
+
+        cmd = XmlCommand("create_report_format")
+
+        try:
+            cmd.append_xml_str(report_format)
+        except etree.XMLSyntaxError as e:
+            raise InvalidArgument(
+                function=self.import_report_format.__name__,
+                argument='report_format',
+            ) from e
+
+        return self._send_xml_command(cmd)
+
     def create_role(
         self,
         name: str,
