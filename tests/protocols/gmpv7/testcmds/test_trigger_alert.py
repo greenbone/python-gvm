@@ -19,6 +19,10 @@
 import unittest
 
 from gvm.errors import RequiredArgument
+from gvm.protocols.gmpv7 import (
+    ReportFormatType,
+    get_report_format_id_from_string,
+)
 
 
 class GmpTriggerAlertTestCase:
@@ -64,6 +68,18 @@ class GmpTriggerAlertTestCase:
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1" format_id="bar"/>'
+        )
+
+    def test_trigger_alert_with_report_format_type(self):
+        self.gmp.trigger_alert(
+            alert_id="a1", report_id='r1', report_format_id=ReportFormatType.SVG
+        )
+
+        report_format_id = get_report_format_id_from_string('svg').value
+
+        self.connection.send.has_been_called_with(
+            '<get_reports report_id="r1" alert_id="a1" '
+            f'format_id="{report_format_id}"/>'
         )
 
     def test_trigger_alert_with_delta_report_id(self):

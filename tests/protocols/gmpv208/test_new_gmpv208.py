@@ -63,5 +63,11 @@ class Gmpv208ModifyPermissionTestCase(
     pass
 
 
+class Gmpv208ModifyReportFormatTestCase(
+    GmpModifyReportFormatTestCase, Gmpv208TestCase
+):
+    pass
+
+
 class Gmpv208ModifyTagTestCase(GmpModifyTagTestCase, Gmpv208TestCase):
     pass

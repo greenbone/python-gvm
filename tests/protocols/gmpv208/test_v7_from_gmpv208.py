@@ -502,12 +502,6 @@ class Gmpv208ModifyPortListTestCase(GmpModifyPortListTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208ModifyReportFormatTestCase(
-    GmpModifyReportFormatTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208ModifyRoleTestCase(GmpModifyRoleTestCase, Gmpv208TestCase):
     pass
 

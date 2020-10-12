@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import (
+from gvm.protocols.gmpv8 import (
     ReportFormatType,
     get_report_format_id_from_string,
 )

@@ -84,6 +84,12 @@ class Gmpv8GetVulnerabilityTestCase(GmpGetVulnerabilityTestCase, Gmpv8TestCase):
     pass
 
 
+class Gmpv8ModifyReportFormatTestCase(
+    GmpModifyReportFormatTestCase, Gmpv8TestCase
+):
+    pass
+
+
 class Gmpv8ModifyTestCase(GmpModifyTestCase, Gmpv8TestCase):
     pass
 

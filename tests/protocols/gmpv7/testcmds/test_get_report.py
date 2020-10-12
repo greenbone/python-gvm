@@ -19,6 +19,10 @@
 import unittest
 
 from gvm.errors import RequiredArgument
+from gvm.protocols.gmpv7 import (
+    ReportFormatType,
+    get_report_format_id_from_string,
+)
 
 
 class GmpGetReportTestCase:
@@ -48,6 +52,16 @@ class GmpGetReportTestCase:
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" format_id="bar"/>'
+        )
+
+    def test_get_report_with_report_format_type(self):
+        self.gmp.get_report(
+            report_id='r1', report_format_id=ReportFormatType.TXT
+        )
+        report_format_id = get_report_format_id_from_string('txt').value
+
+        self.connection.send.has_been_called_with(
+            f'<get_reports report_id="r1" format_id="{report_format_id}"/>'
         )
 
     def test_get_report_with_delta_report_id(self):
