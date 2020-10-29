@@ -19,6 +19,10 @@
 import unittest
 
 from gvm.errors import RequiredArgument
+from gvm.protocols.gmpv7 import (
+    ReportFormatType,
+    get_report_format_id_from_string,
+)
 
 
 class GmpCloneReportFormatTestCase:
@@ -35,6 +39,17 @@ class GmpCloneReportFormatTestCase:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.clone_report_format(None)
+
+    def test_clone_with_type(self):
+        self.gmp.clone_report_format(ReportFormatType.SVG)
+
+        report_format_id = get_report_format_id_from_string('svg').value
+
+        self.connection.send.has_been_called_with(
+            '<create_report_format>'
+            '<copy>{}</copy>'
+            '</create_report_format>'.format(report_format_id)
+        )
 
 
 if __name__ == '__main__':
