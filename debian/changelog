@@ -1,3 +1,10 @@
+python-gvm (20.9.1-gos2008~1) gos20.08; urgency=medium
+
+  * We need the setup.py again as Debian is a nightmare with pip and poetry packaging.
+  * Use current stable upstream tag as branch in gbp.conf.
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Thu, 29 Oct 2020 13:39:05 +0100
+
 python-gvm (1.0.0-gos2008~1) gos20.08; urgency=medium
 
   * Update debian/gbp.conf for 20.08
