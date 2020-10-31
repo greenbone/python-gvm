@@ -29,6 +29,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added the `comment` parameter to `create_config`. [#294](https://github.com/greenbone/python-gvm/pull/294)
 ### Fixed
 * Fix ScannerType check for newer protocols. [#300](https://github.com/greenbone/python-gvm/pull/300)
+* Fix SSHConnection throws TypeError if port is None [#321](https://github.com/greenbone/python-gvm/pull/321)
 
 [20.9.1]: https://github.com/greenbone/python-gvm/compare/v20.9.0...HEAD
 
