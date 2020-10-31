@@ -192,7 +192,7 @@ class SSHConnection(GvmConnection):
         super().__init__(timeout=timeout)
 
         self.hostname = hostname
-        self.port = int(port)
+        self.port = int(port) if port is not None else DEFAULT_SSH_PORT
         self.username = username
         self.password = password
 
