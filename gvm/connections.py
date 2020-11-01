@@ -352,7 +352,7 @@ class UnixSocketConnection(GvmConnection):
     ):
         super().__init__(timeout=timeout)
 
-        self.path = path
+        self.path = path if path is not None else DEFAULT_UNIX_SOCKET_PATH
 
     def connect(self):
         """Connect to the UNIX socket"""
