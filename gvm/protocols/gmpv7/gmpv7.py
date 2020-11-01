@@ -2522,7 +2522,7 @@ class GmpV7Mixin(GvmProtocol):
         """
         if not report_format_id:
             raise RequiredArgument(
-                function=self.verify_report_format.__name__,
+                function=self.delete_report_format.__name__,
                 argument='report_format_id',
             )
 
@@ -3837,7 +3837,7 @@ class GmpV7Mixin(GvmProtocol):
 
         if not report_format_id:
             raise RequiredArgument(
-                function=self.verify_report_format.__name__,
+                function=self.get_report_format.__name__,
                 argument='report_format_id',
             )
 
@@ -5391,7 +5391,7 @@ class GmpV7Mixin(GvmProtocol):
         """
         if not report_format_id:
             raise RequiredArgument(
-                function=self.verify_report_format.__name__,
+                function=self.modify_report_format.__name__,
                 argument='report_format_id ',
             )
 
