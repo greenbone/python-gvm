@@ -22,6 +22,7 @@ from .test_authenticate import GmpAuthenticateTestCase
 from .test_clone_agent import GmpCloneAgentTestCase
 from .test_clone_alert import GmpCloneAlertTestCase
 from .test_clone_config import GmpCloneConfigTestCase
+from .test_clone_report_format import GmpCloneReportFormatTestCase
 from .test_clone_credential import GmpCloneCredentialTestCase
 from .test_clone_filter import GmpCloneFilterTestCase
 from .test_clone_group import GmpCloneGroupTestCase
@@ -137,6 +138,7 @@ from .test_get_users import GmpGetUsersTestCase
 from .test_get_version import GmpGetVersionCommandTestCase
 from .test_help import GmpHelpTestCase
 from .test_import_config import GmpImportConfigTestCase
+from .test_import_report_format import GmpImportReportFormatTestCase
 from .test_import_report import GmpImportReportTestCase
 from .test_modify_agent import GmpModifyAgentTestCase
 from .test_modify_alert import GmpModifyAlertTestCase
