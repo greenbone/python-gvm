@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Added `clone_report_format()` and `import_report_format()` [#309](https://github.com/greenbone/python-gvm/pull/309)
 * Added the `get_x_from_string()` functions to `latest` [#308](https://github.com/greenbone/python-gvm/pull/308)
-* Added tests for SSHConnection and GvmConnection [#321](https://github.com/greenbone/python-gvm/pull/321)
+* Added tests for constructor of SSHConnection, TLSConnection and GvmConnection [#321](https://github.com/greenbone/python-gvm/pull/321)
 
 ### Changed
 ### Deprecated
@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Corrected `seconds_active` parameter to `days_active` for notes and overrides. [#307](https://github.com/greenbone/python-gvm/pull/307)
 * Fixed SSHConnection throws TypeError if port is None [#321](https://github.com/greenbone/python-gvm/pull/321)
 * Fixed GvmConnection timeout set to None if None is passed [#321](https://github.com/greenbone/python-gvm/pull/321)
+* Fixed TLSConnection values set to None instead of default values when None is passed for these values [#321](https://github.com/greenbone/python-gvm/pull/321)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.9.1...HEAD
 
