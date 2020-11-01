@@ -94,7 +94,7 @@ class GvmConnection(XmlReader):
 
     def __init__(self, timeout: Optional[int] = DEFAULT_TIMEOUT):
         self._socket = None
-        self._timeout = timeout
+        self._timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
 
     def _read(self):
         return self._socket.recv(BUF_SIZE)
