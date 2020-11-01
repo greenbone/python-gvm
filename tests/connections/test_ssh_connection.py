@@ -41,7 +41,7 @@ class SSHConnectionTestCase(unittest.TestCase):
         self.check_ssh_connection_for_default_values(ssh_connection)
 
     def check_ssh_connection_for_default_values(self, ssh_connection):
-        self.assertTrue(isinstance(ssh_connection, SSHConnection))
+        self.assertIsInstance(ssh_connection, SSHConnection)
         self.assertEqual(ssh_connection.hostname, DEFAULT_HOSTNAME)
         self.assertEqual(ssh_connection.port, DEFAULT_SSH_PORT)
         self.assertEqual(ssh_connection.username, DEFAULT_SSH_USERNAME)
