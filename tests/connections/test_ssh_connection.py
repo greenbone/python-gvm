@@ -31,6 +31,16 @@ class SSHConnectionTestCase(unittest.TestCase):
     def test_init_no_args(self):
         ssh_connection = SSHConnection()
 
+        self.check_ssh_connection_for_default_values(ssh_connection)
+
+    def test_init_with_none(self):
+        ssh_connection = SSHConnection(
+            timeout=None, hostname=None, port=None, username=None, password=None
+        )
+
+        self.check_ssh_connection_for_default_values(ssh_connection)
+
+    def check_ssh_connection_for_default_values(self, ssh_connection):
         self.assertTrue(isinstance(ssh_connection, SSHConnection))
         self.assertEqual(ssh_connection.hostname, DEFAULT_HOSTNAME)
         self.assertEqual(ssh_connection.port, DEFAULT_SSH_PORT)
