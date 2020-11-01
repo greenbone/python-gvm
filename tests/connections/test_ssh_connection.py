@@ -18,7 +18,13 @@
 
 import unittest
 
-from gvm.connections import SSHConnection, DEFAULT_SSH_PORT
+from gvm.connections import (
+    SSHConnection,
+    DEFAULT_SSH_PORT,
+    DEFAULT_SSH_USERNAME,
+    DEFAULT_SSH_PASSWORD,
+    DEFAULT_HOSTNAME,
+)
 
 
 class SSHConnectionTestCase(unittest.TestCase):
@@ -26,4 +32,7 @@ class SSHConnectionTestCase(unittest.TestCase):
         ssh_connection = SSHConnection()
 
         self.assertTrue(isinstance(ssh_connection, SSHConnection))
+        self.assertEqual(ssh_connection.hostname, DEFAULT_HOSTNAME)
         self.assertEqual(ssh_connection.port, DEFAULT_SSH_PORT)
+        self.assertEqual(ssh_connection.username, DEFAULT_SSH_USERNAME)
+        self.assertEqual(ssh_connection.password, DEFAULT_SSH_PASSWORD)
