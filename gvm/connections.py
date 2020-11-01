@@ -40,6 +40,8 @@ DEFAULT_TIMEOUT = 60  # in seconds
 DEFAULT_GVM_PORT = 9390
 DEFAULT_UNIX_SOCKET_PATH = "/var/run/gvmd.sock"
 DEFAULT_SSH_PORT = 22
+DEFAULT_SSH_USERNAME = "gmp"
+DEFAULT_SSH_PASSWORD = ""
 DEFAULT_HOSTNAME = '127.0.0.1'
 MAX_SSH_DATA_LENGTH = 4095
 
@@ -186,15 +188,19 @@ class SSHConnection(GvmConnection):
         timeout: Optional[int] = DEFAULT_TIMEOUT,
         hostname: Optional[str] = DEFAULT_HOSTNAME,
         port: Optional[int] = DEFAULT_SSH_PORT,
-        username: Optional[str] = "gmp",
-        password: Optional[str] = ""
+        username: Optional[str] = DEFAULT_SSH_USERNAME,
+        password: Optional[str] = DEFAULT_SSH_PASSWORD
     ):
         super().__init__(timeout=timeout)
 
-        self.hostname = hostname
+        self.hostname = hostname if hostname is not None else DEFAULT_HOSTNAME
         self.port = int(port) if port is not None else DEFAULT_SSH_PORT
-        self.username = username
-        self.password = password
+        self.username = (
+            username if username is not None else DEFAULT_SSH_USERNAME
+        )
+        self.password = (
+            password if password is not None else DEFAULT_SSH_PASSWORD
+        )
 
     def _send_all(self, data):
         while data:
