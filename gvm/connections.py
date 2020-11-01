@@ -298,8 +298,8 @@ class TLSConnection(GvmConnection):
     ):
         super().__init__(timeout=timeout)
 
-        self.hostname = hostname
-        self.port = port
+        self.hostname = hostname if hostname is not None else DEFAULT_HOSTNAME
+        self.port = port if port is not None else DEFAULT_GVM_PORT
         self.certfile = certfile
         self.cafile = cafile
         self.keyfile = keyfile
