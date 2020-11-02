@@ -28,7 +28,7 @@ import collections
 import logging
 import numbers
 
-from typing import Any, List, Optional, Callable
+from typing import Any, List, Optional, Callable, Union
 
 from lxml import etree
 
@@ -1355,11 +1355,14 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def clone_report_format(self, report_format_id: str) -> Any:
+    def clone_report_format(
+        self, report_format_id: [Union[str, ReportFormatType]]
+    ) -> Any:
         """Clone a report format from an existing one
 
         Arguments:
-            report_format_id: UUID of the existing report_ ormat
+            report_format_id: UUID of the existing report format
+                              or ReportFormatType (enum)
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -1371,6 +1374,10 @@ class GmpV7Mixin(GvmProtocol):
             )
 
         cmd = XmlCommand("create_report_format")
+
+        if isinstance(report_format_id, ReportFormatType):
+            report_format_id = report_format_id.value
+
         cmd.add_element("copy", report_format_id)
         return self._send_xml_command(cmd)
 
@@ -2501,12 +2508,16 @@ class GmpV7Mixin(GvmProtocol):
         return self._send_xml_command(cmd)
 
     def delete_report_format(
-        self, report_format_id: str, *, ultimate: Optional[bool] = False
+        self,
+        report_format_id: Optional[Union[str, ReportFormatType]] = None,
+        *,
+        ultimate: Optional[bool] = False
     ) -> Any:
         """Deletes an existing report format
 
         Arguments:
             report_format_id: UUID of the report format to be deleted.
+                              or ReportFormatType (enum)
             ultimate: Whether to remove entirely, or to the trashcan.
         """
         if not report_format_id:
@@ -2516,7 +2527,12 @@ class GmpV7Mixin(GvmProtocol):
             )
 
         cmd = XmlCommand("delete_report_format")
+
+        if isinstance(report_format_id, ReportFormatType):
+            report_format_id = report_format_id.value
+
         cmd.set_attribute("report_format_id", report_format_id)
+
         cmd.set_attribute("ultimate", _to_bool(ultimate))
 
         return self._send_xml_command(cmd)
@@ -3715,7 +3731,7 @@ class GmpV7Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         delta_report_id: Optional[str] = None,
-        report_format_id: Optional[str] = None,
+        report_format_id: Optional[Union[str, ReportFormatType]] = None,
         ignore_pagination: Optional[bool] = None,
         details: Optional[bool] = None
     ) -> Any:
@@ -3727,6 +3743,7 @@ class GmpV7Mixin(GvmProtocol):
             filter_id: UUID of filter to use to filter results in the report
             delta_report_id: UUID of an existing report to compare report to.
             report_format_id: UUID of report format to use
+                              or ReportFormatType (enum)
             ignore_pagination: Whether to ignore the filter terms "first" and
                 "rows".
             details: Request additional report information details
@@ -3749,6 +3766,9 @@ class GmpV7Mixin(GvmProtocol):
             cmd.set_attribute("delta_report_id", delta_report_id)
 
         if report_format_id:
+            if isinstance(report_format_id, ReportFormatType):
+                report_format_id = report_format_id.value
+
             cmd.set_attribute("format_id", report_format_id)
 
         if ignore_pagination is not None:
@@ -3800,11 +3820,15 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_report_format(self, report_format_id: str) -> Any:
+    def get_report_format(
+        self,
+        report_format_id: Union[str, ReportFormatType],
+    ) -> Any:
         """Request a single report format
 
         Arguments:
             report_format_id: UUID of an existing report format
+                              or ReportFormatType (enum)
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3816,6 +3840,9 @@ class GmpV7Mixin(GvmProtocol):
                 function=self.get_report_format.__name__,
                 argument='report_format_id',
             )
+
+        if isinstance(report_format_id, ReportFormatType):
+            report_format_id = report_format_id.value
 
         cmd.set_attribute("report_format_id", report_format_id)
 
@@ -5340,7 +5367,7 @@ class GmpV7Mixin(GvmProtocol):
 
     def modify_report_format(
         self,
-        report_format_id: str,
+        report_format_id: Optional[Union[str, ReportFormatType]] = None,
         *,
         active: Optional[bool] = None,
         name: Optional[str] = None,
@@ -5351,7 +5378,8 @@ class GmpV7Mixin(GvmProtocol):
         """Modifies an existing report format.
 
         Arguments:
-            report_format_id: UUID of report format to modify.
+            report_format_id: UUID of report format to modify
+                              or ReportFormatType (enum)
             active: Whether the report format is active.
             name: The name of the report format.
             summary: A summary of the report format.
@@ -5364,10 +5392,14 @@ class GmpV7Mixin(GvmProtocol):
         if not report_format_id:
             raise RequiredArgument(
                 function=self.modify_report_format.__name__,
-                argument='report_format_id',
+                argument='report_format_id ',
             )
 
         cmd = XmlCommand("modify_report_format")
+
+        if isinstance(report_format_id, ReportFormatType):
+            report_format_id = report_format_id.value
+
         cmd.set_attribute("report_format_id", report_format_id)
 
         if active is not None:
@@ -6255,7 +6287,7 @@ class GmpV7Mixin(GvmProtocol):
         *,
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
-        report_format_id: Optional[str] = None,
+        report_format_id: Optional[Union[str, ReportFormatType]] = None,
         delta_report_id: Optional[str] = None
     ) -> Any:
         """Run an alert by ignoring its event and conditions
@@ -6269,6 +6301,7 @@ class GmpV7Mixin(GvmProtocol):
             filter: Filter term to use to filter results in the report
             filter_id: UUID of filter to use to filter results in the report
             report_format_id: UUID of report format to use
+                              or ReportFormatType (enum)
             delta_report_id: UUID of an existing report to compare report to.
 
         Returns:
@@ -6297,6 +6330,9 @@ class GmpV7Mixin(GvmProtocol):
             cmd.set_attribute("filt_id", filter_id)
 
         if report_format_id:
+            if isinstance(report_format_id, ReportFormatType):
+                report_format_id = report_format_id.value
+
             cmd.set_attribute("format_id", report_format_id)
 
         if delta_report_id:
@@ -6326,7 +6362,10 @@ class GmpV7Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def verify_report_format(self, report_format_id: str) -> Any:
+    def verify_report_format(
+        self,
+        report_format_id: Union[str, ReportFormatType],
+    ) -> Any:
         """Verify an existing report format
 
         Verifies the trust level of an existing report format. It will be
@@ -6337,6 +6376,7 @@ class GmpV7Mixin(GvmProtocol):
 
         Arguments:
             report_format_id: UUID of the report format to be verified
+                              or ReportFormatType (enum)
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -6348,6 +6388,10 @@ class GmpV7Mixin(GvmProtocol):
             )
 
         cmd = XmlCommand("verify_report_format")
+
+        if isinstance(report_format_id, ReportFormatType):
+            report_format_id = report_format_id.value
+
         cmd.set_attribute("report_format_id", report_format_id)
 
         return self._send_xml_command(cmd)

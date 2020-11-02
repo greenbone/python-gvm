@@ -530,12 +530,6 @@ class Gmpv9ModifyPortListTestCase(GmpModifyPortListTestCase, Gmpv9TestCase):
     pass
 
 
-class Gmpv9ModifyReportFormatTestCase(
-    GmpModifyReportFormatTestCase, Gmpv9TestCase
-):
-    pass
-
-
 class Gmpv9ModifyRoleTestCase(GmpModifyRoleTestCase, Gmpv9TestCase):
     pass
 

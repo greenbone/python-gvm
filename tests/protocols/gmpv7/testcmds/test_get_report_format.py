@@ -19,6 +19,10 @@
 import unittest
 
 from gvm.errors import RequiredArgument
+from gvm.protocols.gmpv7 import (
+    ReportFormatType,
+    get_report_format_id_from_string,
+)
 
 
 class GmpGetReportFormatTestCase:
@@ -41,6 +45,21 @@ class GmpGetReportFormatTestCase:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.get_report_format('')
+
+    def test_get_report_format_type(self):
+        self.gmp.get_report_format(ReportFormatType.PDF)
+        report_format_id = get_report_format_id_from_string('pdf').value
+        self.connection.send.has_been_called_with(
+            '<get_report_formats '
+            'report_format_id="{}" details="1"/>'.format(report_format_id)
+        )
+
+        self.gmp.get_report_format(report_format_id=ReportFormatType.PDF)
+
+        self.connection.send.has_been_called_with(
+            '<get_report_formats '
+            'report_format_id="{}" details="1"/>'.format(report_format_id)
+        )
 
 
 if __name__ == '__main__':

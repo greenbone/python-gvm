@@ -9,6 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 * Added `clone_report_format()` and `import_report_format()` [#309](https://github.com/greenbone/python-gvm/pull/309)
 * Added the `get_x_from_string()` functions to `latest` [#308](https://github.com/greenbone/python-gvm/pull/308)
+* Added the `ReportFormatType` that can be used instead of a report_format_id [#311](https://github.com/greenbone/python-gvm/pull/311)
 * Added tests for constructor of SSHConnection, TLSConnection, UnixSocketConnection and GvmConnection [#321](https://github.com/greenbone/python-gvm/pull/321)
 
 ### Changed
