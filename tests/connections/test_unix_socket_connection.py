@@ -24,7 +24,11 @@ import tempfile
 import threading
 import uuid
 
-from gvm.connections import UnixSocketConnection, DEFAULT_TIMEOUT
+from gvm.connections import (
+    UnixSocketConnection,
+    DEFAULT_TIMEOUT,
+    DEFAULT_UNIX_SOCKET_PATH,
+)
 from gvm.errors import GvmError
 
 
@@ -43,6 +47,7 @@ class ThreadedUnixStreamServer(
 
 
 class UnixSocketConnectionTestCase(unittest.TestCase):
+    # pylint: disable=protected-access
     def setUp(self):
         self.socketname = "%s/%s.sock" % (
             tempfile.gettempdir(),
@@ -94,6 +99,18 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         )
         with self.assertRaises(GvmError):
             self.connection.send("<gmp>/")
+
+    def test_init_no_args(self):
+        connection = UnixSocketConnection()
+        self.check_default_values(connection)
+
+    def test_init_with_none(self):
+        connection = UnixSocketConnection(path=None, timeout=None)
+        self.check_default_values(connection)
+
+    def check_default_values(self, connection: UnixSocketConnection):
+        self.assertEqual(connection._timeout, DEFAULT_TIMEOUT)
+        self.assertEqual(connection.path, DEFAULT_UNIX_SOCKET_PATH)
 
 
 if __name__ == '__main__':
