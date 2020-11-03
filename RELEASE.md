@@ -56,7 +56,7 @@ if it has been lost.
 
   ```sh
   export GITHUB_TOKEN=<token>
-  export GITHUB_NAME=<name>
+  export GITHUB_USER=<name>
   ```
 
 
