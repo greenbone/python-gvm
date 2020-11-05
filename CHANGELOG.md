@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+* Added tests for `SeverityLevel` Enum and `get_severity_level_from_string()` [#327](https://github.com/greenbone/python-gvm/pull/327)
+
 ### Changed
 ### Deprecated
 ### Removed
