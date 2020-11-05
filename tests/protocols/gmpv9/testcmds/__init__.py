@@ -55,6 +55,7 @@ from .test_modify_credential import GmpModifyTestCase
 from .test_modify_alert import GmpModifyAlertTestCase
 from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_permission import GmpModifyPermissionTestCase
+from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_tag import GmpModifyTagTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
 from .test_modify_tls_certificate import GmpModifyTLSCertificateTestCase

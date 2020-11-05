@@ -178,6 +178,12 @@ class Gmpv9ModifyPermissionTestCase(GmpModifyPermissionTestCase, Gmpv9TestCase):
     pass
 
 
+class Gmpv9ModifyReportFormatTestCase(
+    GmpModifyReportFormatTestCase, Gmpv9TestCase
+):
+    pass
+
+
 class Gmpv9ModifyTagTestCase(GmpModifyTagTestCase, Gmpv9TestCase):
     pass
 
@@ -192,13 +198,9 @@ class Gmpv9ModifyTLSCertificateTestCase(
     pass
 
 
-class Gmpv9CreateScannerTestCase(
-    GmpCreateScannerTestCase, Gmpv9TestCase
-):
+class Gmpv9CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv9TestCase):
     pass
 
 
-class Gmpv9ModifyScannerTestCase(
-    GmpModifyScannerTestCase, Gmpv9TestCase
-):
+class Gmpv9ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv9TestCase):
     pass

@@ -27,4 +27,5 @@ from .test_get_aggregates import GmpGetAggregatesTestCase
 from .test_get_info import GmpGetInfoTestCase
 from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_permission import GmpModifyPermissionTestCase
+from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_tag import GmpModifyTagTestCase

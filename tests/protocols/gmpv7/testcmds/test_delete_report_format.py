@@ -19,6 +19,10 @@
 import unittest
 
 from gvm.errors import GvmError
+from gvm.protocols.gmpv7 import (
+    ReportFormatType,
+    get_report_format_id_from_string,
+)
 
 
 class GmpDeleteReportFormatTestCase:
@@ -42,6 +46,15 @@ class GmpDeleteReportFormatTestCase:
 
         with self.assertRaises(GvmError):
             self.gmp.delete_report_format('')
+
+    def test_delete_with_type(self):
+        self.gmp.delete_report_format(ReportFormatType.SVG)
+
+        report_format_id = get_report_format_id_from_string('svg').value
+        self.connection.send.has_been_called_with(
+            '<delete_report_format '
+            'report_format_id="{}" ultimate="0"/>'.format(report_format_id)
+        )
 
 
 if __name__ == '__main__':

@@ -19,6 +19,10 @@
 import unittest
 
 from gvm.errors import GvmError
+from gvm.protocols.gmpv7 import (
+    ReportFormatType,
+    get_report_format_id_from_string,
+)
 
 
 class GmpVerifyReportFormatTestCase:
@@ -35,6 +39,16 @@ class GmpVerifyReportFormatTestCase:
 
         with self.assertRaises(GvmError):
             self.gmp.verify_report_format('')
+
+    def test_verify_with_type(self):
+        self.gmp.verify_report_format(ReportFormatType.SVG)
+
+        report_format_id = get_report_format_id_from_string('svg').value
+        self.connection.send.has_been_called_with(
+            '<verify_report_format report_format_id="{}"/>'.format(
+                report_format_id
+            )
+        )
 
 
 if __name__ == '__main__':
