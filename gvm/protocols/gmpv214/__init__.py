@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2019 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -17,12 +17,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 # pylint: disable=too-many-lines,redefined-builtin
+
 """
 Module for communication with gvmd in
-`Greenbone Management Protocol version 20.08`_
+`Greenbone Management Protocol version 21.04`_
 
-.. _Greenbone Management Protocol version 20.08:
-    https://docs.greenbone.net/API/GMP/gmp-20.08.html
+.. _Greenbone Management Protocol version 21.04:
+    https://docs.greenbone.net/API/GMP/gmp-21.04.html
 """
 
 from typing import Any, Callable, Optional

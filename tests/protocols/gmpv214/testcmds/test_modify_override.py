@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -22,7 +22,7 @@ from decimal import Decimal
 
 from gvm.errors import RequiredArgument
 
-from gvm.protocols.gmpv7 import SeverityLevel
+from gvm.protocols.gmpv214 import SeverityLevel
 
 
 class GmpModifyOverrideTestCase:
