@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -20,9 +20,9 @@ import unittest
 
 from decimal import Decimal
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
+from gvm.errors import RequiredArgument
 
-from gvm.protocols.gmpv7 import SeverityLevel
+from gvm.protocols.gmpv214 import SeverityLevel
 
 
 class GmpCreateNoteTestCase:
@@ -151,16 +151,8 @@ class GmpCreateNoteTestCase:
             '<create_note>'
             '<text>foo</text>'
             '<nvt oid="oid1"/>'
-            '<threat>High</threat>'
             '</create_note>'
         )
-
-    def test_create_note_invalid_threat(self):
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_note('foo', nvt_oid='oid1', threat='')
-
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_note('foo', nvt_oid='oid1', threat='foo')
 
     def test_create_note_with_days_active(self):
         self.gmp.create_note('foo', nvt_oid='oid1', days_active=0)
