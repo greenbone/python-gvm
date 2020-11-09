@@ -43,7 +43,7 @@ class GmpCreateNoteTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.create_note('', 'oid1')
 
-    def test_create_note_missing_nvt_iod(self):
+    def test_create_note_missing_nvt_oid(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_note('foo', None)
 
