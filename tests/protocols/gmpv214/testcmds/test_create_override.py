@@ -43,7 +43,7 @@ class GmpCreateOverrideTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.create_override('', 'oid1')
 
-    def test_create_override_missing_nvt_iod(self):
+    def test_create_override_missing_nvt_oid(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_override('foo', None)
 
