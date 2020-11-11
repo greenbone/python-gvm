@@ -662,7 +662,7 @@ class GmpV9Mixin(GvmProtocol):
         audit_id: str,
         *,
         name: Optional[str] = None,
-        config_id: Optional[str] = None,
+        policy_id: Optional[str] = None,
         target_id: Optional[str] = None,
         scanner_id: Optional[str] = None,
         alterable: Optional[bool] = None,
@@ -679,7 +679,7 @@ class GmpV9Mixin(GvmProtocol):
         Arguments:
             audit_id: UUID of audit to modify.
             name: The name of the audit.
-            config_id: UUID of scan config to use by the audit
+            policy_id: UUID of policy to use by the audit
             target_id: UUID of target to be scanned
             scanner_id: UUID of scanner to use for scanning the target
             comment: The comment on the audit.
@@ -698,7 +698,7 @@ class GmpV9Mixin(GvmProtocol):
         self.modify_task(
             task_id=audit_id,
             name=name,
-            config_id=config_id,
+            config_id=policy_id,
             target_id=target_id,
             scanner_id=scanner_id,
             alterable=alterable,
@@ -722,7 +722,7 @@ class GmpV9Mixin(GvmProtocol):
         """Modifies the nvt preferences of an existing policy.
 
         Arguments:
-            config_id: UUID of policy to modify.
+            policy_id: UUID of policy to modify.
             name: Name for preference to change.
             nvt_oid: OID of the NVT associated with preference to modify
             value: New value for the preference. None to delete the preference
@@ -753,7 +753,7 @@ class GmpV9Mixin(GvmProtocol):
         """Modifies the comment of an existing policy
 
         Arguments:
-            config_id: UUID of policy to modify.
+            policy_id: UUID of policy to modify.
             comment: Comment to set on a config. Default: ''
         """
         self.modify_config_set_comment(
@@ -767,7 +767,7 @@ class GmpV9Mixin(GvmProtocol):
         """Modifies the scanner preferences of an existing policy
 
         Arguments:
-            config_id: UUID of policy to modify.
+            policy_id: UUID of policy to modify.
             name: Name of the scanner preference to change
             value: New value for the preference. None to delete the preference
                 and to use the default instead.
@@ -788,7 +788,7 @@ class GmpV9Mixin(GvmProtocol):
         given NVTs.
 
         Arguments:
-            config_id: UUID of policy to modify.
+            policy_id: UUID of policy to modify.
             family: Name of the NVT family to include NVTs from
             nvt_oids: List of NVTs to select for the family.
         """
@@ -810,7 +810,7 @@ class GmpV9Mixin(GvmProtocol):
         Selected the NVTs of a policy at a family level.
 
         Arguments:
-            config_id: UUID of policy to modify.
+            policy_id: UUID of policy to modify.
             families: List of NVT family names to select.
             auto_add_new_families: Whether new families should be added to the
                 policy automatically. Default: True.
