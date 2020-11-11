@@ -817,6 +817,12 @@ class GmpV9Mixin(GvmProtocol):
             auto_add_new_nvts: Whether new NVTs in the selected families should
                 be added to the policy automatically. Default: True.
         """
+        self.modify_config_set_family_selection(
+            config_id=policy_id,
+            families=families,
+            auto_add_new_families=auto_add_new_families,
+            auto_add_new_nvts=auto_add_new_nvts,
+        )
 
     def modify_tls_certificate(
         self,
