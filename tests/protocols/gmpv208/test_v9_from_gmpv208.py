@@ -154,7 +154,9 @@ class Gmpv208GetTLSCertificatesTestCase(
     pass
 
 
-class Gmpv208ModifyTestCase(GmpModifyTestCase, Gmpv208TestCase):
+class Gmpv208ModifyCredentialTestCase(
+    GmpModifyCredentialTestCase, Gmpv208TestCase
+):
     pass
 
 
@@ -168,12 +170,9 @@ class Gmpv208ModifyTLSCertificateTestCase(
     pass
 
 
-class Gmpv208CreateScannerTestCase(
-    GmpCreateScannerTestCase, Gmpv208TestCase
-):
+class Gmpv208CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv208TestCase):
     pass
 
-class Gmpv208ModifyScannerTestCase(
-    GmpModifyScannerTestCase, Gmpv208TestCase
-):
+
+class Gmpv208ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv208TestCase):
     pass

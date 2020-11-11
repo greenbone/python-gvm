@@ -166,7 +166,13 @@ class Gmpv9GetTLSCertificatesTestCase(
     pass
 
 
-class Gmpv9ModifyTestCase(GmpModifyTestCase, Gmpv9TestCase):
+class Gmpv9ModifyAuditCommandTestCase(
+    GmpModifyAuditCommandTestCase, Gmpv9TestCase
+):
+    pass
+
+
+class Gmpv9ModifyCredentialTestCase(GmpModifyCredentialTestCase, Gmpv9TestCase):
     pass
 
 
@@ -175,6 +181,42 @@ class Gmpv9ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv9TestCase):
 
 
 class Gmpv9ModifyPermissionTestCase(GmpModifyPermissionTestCase, Gmpv9TestCase):
+    pass
+
+
+class Gmpv9ModifyPolicySetCommentTestCase(
+    GmpModifyPolicySetCommentTestCase, Gmpv9TestCase
+):
+    pass
+
+
+class Gmpv9ModifyPolicySetNameTestCase(
+    GmpModifyPolicySetNameTestCase, Gmpv9TestCase
+):
+    pass
+
+
+class Gmpv9ModifyPolicySetFamilySelectionTestCase(
+    GmpModifyPolicySetFamilySelectionTestCase, Gmpv9TestCase
+):
+    pass
+
+
+class Gmpv9ModifyPolicySetNvtPreferenceTestCase(
+    GmpModifyPolicySetNvtPreferenceTestCase, Gmpv9TestCase
+):
+    pass
+
+
+class Gmpv9ModifyPolicySetNvtSelectionTestCase(
+    GmpModifyPolicySetNvtSelectionTestCase, Gmpv9TestCase
+):
+    pass
+
+
+class Gmpv9ModifyPolicySetScannerPreferenceTestCase(
+    GmpModifyPolicySetScannerPreferenceTestCase, Gmpv9TestCase
+):
     pass
 
 
