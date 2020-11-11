@@ -659,7 +659,7 @@ class GmpV9Mixin(GvmProtocol):
 
     def modify_audit(
         self,
-        task_id: str,
+        audit_id: str,
         *,
         name: Optional[str] = None,
         config_id: Optional[str] = None,
@@ -677,112 +677,146 @@ class GmpV9Mixin(GvmProtocol):
         """Modifies an existing task.
 
         Arguments:
-            task_id: UUID of task to modify.
-            name: The name of the task.
-            config_id: UUID of scan config to use by the task
+            audit_id: UUID of audit to modify.
+            name: The name of the audit.
+            config_id: UUID of scan config to use by the audit
             target_id: UUID of target to be scanned
             scanner_id: UUID of scanner to use for scanning the target
-            comment: The comment on the task.
-            alert_ids: List of UUIDs for alerts to be applied to the task
+            comment: The comment on the audit.
+            alert_ids: List of UUIDs for alerts to be applied to the audit
             hosts_ordering: The order hosts are scanned in
-            schedule_id: UUID of a schedule when the task should be run.
-            schedule_periods: A limit to the number of times the task will be
+            schedule_id: UUID of a schedule when the audit should be run.
+            schedule_periods: A limit to the number of times the audit will be
                 scheduled, or 0 for no limit.
             observers: List of names or ids of users which should be allowed to
-                observe this task
+                observe this audit
             preferences: Name/Value pairs of scanner preferences.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.modify_task.__name__, argument='task_id argument'
-            )
+        self.modify_task(
+            task_id=audit_id,
+            name=name,
+            config_id=config_id,
+            target_id=target_id,
+            scanner_id=scanner_id,
+            alterable=alterable,
+            hosts_ordering=hosts_ordering,
+            schedule_id=schedule_id,
+            schedule_periods=schedule_periods,
+            comment=comment,
+            alert_ids=alert_ids,
+            observers=observers,
+            preferences=preferences,
+        )
 
-        cmd = XmlCommand("modify_task")
-        cmd.set_attribute("task_id", task_id)
+    def modify_policy_set_nvt_preference(
+        self,
+        policy_id: str,
+        name: str,
+        nvt_oid: str,
+        *,
+        value: Optional[str] = None
+    ) -> Any:
+        """Modifies the nvt preferences of an existing policy.
 
-        if name:
-            cmd.add_element("name", name)
+        Arguments:
+            config_id: UUID of policy to modify.
+            name: Name for preference to change.
+            nvt_oid: OID of the NVT associated with preference to modify
+            value: New value for the preference. None to delete the preference
+                and to use the default instead.
+        """
+        self.modify_config_set_nvt_preference(
+            config_id=policy_id,
+            name=name,
+            nvt_oid=nvt_oid,
+            value=value,
+        )
 
-        if comment:
-            cmd.add_element("comment", comment)
+    def modify_policy_set_name(self, policy_id: str, name: str) -> Any:
+        """Modifies the name of an existing policy
 
-        if config_id:
-            cmd.add_element("config", attrs={"id": config_id})
+        Arguments:
+            config_id: UUID of policy to modify.
+            name: New name for the config.
+        """
+        self.modify_config_set_name(
+            config_id=policy_id,
+            name=name,
+        )
 
-        if target_id:
-            cmd.add_element("target", attrs={"id": target_id})
+    def modify_policy_set_comment(
+        self, policy_id: str, comment: Optional[str] = ""
+    ) -> Any:
+        """Modifies the comment of an existing policy
 
-        if alterable is not None:
-            cmd.add_element("alterable", _to_bool(alterable))
+        Arguments:
+            config_id: UUID of policy to modify.
+            comment: Comment to set on a config. Default: ''
+        """
+        self.modify_config_set_comment(
+            config_id=policy_id,
+            comment=comment,
+        )
 
-        if hosts_ordering:
-            if not isinstance(hosts_ordering, HostsOrdering):
-                raise InvalidArgumentType(
-                    function=self.modify_task.__name__,
-                    argument='hosts_ordering',
-                    arg_type=HostsOrdering.__name__,
-                )
-            cmd.add_element("hosts_ordering", hosts_ordering.value)
+    def modify_policy_set_scanner_preference(
+        self, policy_id: str, name: str, *, value: Optional[str] = None
+    ) -> Any:
+        """Modifies the scanner preferences of an existing policy
 
-        if scanner_id:
-            cmd.add_element("scanner", attrs={"id": scanner_id})
+        Arguments:
+            config_id: UUID of policy to modify.
+            name: Name of the scanner preference to change
+            value: New value for the preference. None to delete the preference
+                and to use the default instead.
 
-        if schedule_id:
-            cmd.add_element("schedule", attrs={"id": schedule_id})
+        """
+        self.modify_config_set_scanner_preference(
+            config_id=policy_id,
+            name=name,
+            value=value,
+        )
 
-        if schedule_periods is not None:
-            if (
-                not isinstance(schedule_periods, numbers.Integral)
-                or schedule_periods < 0
-            ):
-                raise InvalidArgument(
-                    "schedule_periods must be an integer greater or equal "
-                    "than 0"
-                )
-            cmd.add_element("schedule_periods", str(schedule_periods))
+    def modify_policy_set_nvt_selection(
+        self, policy_id: str, family: str, nvt_oids: List[str]
+    ) -> Any:
+        """Modifies the selected nvts of an existing policy
 
-        if alert_ids is not None:
-            if not _is_list_like(alert_ids):
-                raise InvalidArgumentType(
-                    function=self.modify_task.__name__,
-                    argument='alert_ids',
-                    arg_type='list',
-                )
+        The manager updates the given family in the config to include only the
+        given NVTs.
 
-            if len(alert_ids) == 0:
-                cmd.add_element("alert", attrs={"id": "0"})
-            else:
-                for alert in alert_ids:
-                    cmd.add_element("alert", attrs={"id": str(alert)})
+        Arguments:
+            config_id: UUID of policy to modify.
+            family: Name of the NVT family to include NVTs from
+            nvt_oids: List of NVTs to select for the family.
+        """
+        self.modify_config_set_nvt_selection(
+            config_id=policy_id,
+            family=family,
+            nvt_oids=nvt_oids,
+        )
 
-        if observers is not None:
-            if not _is_list_like(observers):
-                raise InvalidArgumentType(
-                    function=self.modify_task.__name__,
-                    argument='observers',
-                    arg_type='list',
-                )
+    def modify_policy_set_family_selection(
+        self,
+        policy_id: str,
+        families: List[str],
+        *,
+        auto_add_new_families: Optional[bool] = True,
+        auto_add_new_nvts: Optional[bool] = True
+    ) -> Any:
+        """
+        Selected the NVTs of a policy at a family level.
 
-            cmd.add_element("observers", _to_comma_list(observers))
-
-        if preferences is not None:
-            if not isinstance(preferences, collections.abc.Mapping):
-                raise InvalidArgumentType(
-                    function=self.modify_task.__name__,
-                    argument='preferences',
-                    arg_type=collections.abc.Mapping.__name__,
-                )
-
-            _xmlprefs = cmd.add_element("preferences")
-            for pref_name, pref_value in preferences.items():
-                _xmlpref = _xmlprefs.add_element("preference")
-                _xmlpref.add_element("scanner_name", pref_name)
-                _xmlpref.add_element("value", str(pref_value))
-
-        return self._send_xml_command(cmd)
+        Arguments:
+            config_id: UUID of policy to modify.
+            families: List of NVT family names to select.
+            auto_add_new_families: Whether new families should be added to the
+                policy automatically. Default: True.
+            auto_add_new_nvts: Whether new NVTs in the selected families should
+                be added to the policy automatically. Default: True.
+        """
 
     def modify_tls_certificate(
         self,
