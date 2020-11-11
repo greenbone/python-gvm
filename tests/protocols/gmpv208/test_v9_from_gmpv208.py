@@ -154,8 +154,50 @@ class Gmpv208GetTLSCertificatesTestCase(
     pass
 
 
+class Gmpv208ModifyAuditCommandTestCase(
+    GmpModifyAuditCommandTestCase, Gmpv208TestCase
+):
+    pass
+
+
 class Gmpv208ModifyCredentialTestCase(
     GmpModifyCredentialTestCase, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208ModifyPolicySetCommentTestCase(
+    GmpModifyPolicySetCommentTestCase, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208ModifyPolicySetNameTestCase(
+    GmpModifyPolicySetNameTestCase, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208ModifyPolicySetFamilySelectionTestCase(
+    GmpModifyPolicySetFamilySelectionTestCase, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208ModifyPolicySetNvtPreferenceTestCase(
+    GmpModifyPolicySetNvtPreferenceTestCase, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208ModifyPolicySetNvtSelectionTestCase(
+    GmpModifyPolicySetNvtSelectionTestCase, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208ModifyPolicySetScannerPreferenceTestCase(
+    GmpModifyPolicySetScannerPreferenceTestCase, Gmpv208TestCase
 ):
     pass
 
