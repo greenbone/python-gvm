@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved tests for `SeverityLevel` Enum and `get_severity_level_from_string()` [#327](https://github.com/greenbone/python-gvm/pull/327)
 
 ### Changed
+* In `get_report()` the `details` parameter is `True` on default now. [#333](https://github.com/greenbone/python-gvm/pull/333)
+
 ### Deprecated
 ### Removed
 ### Fixed
@@ -23,7 +25,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added the `get_x_from_string()` functions to `latest` [#308](https://github.com/greenbone/python-gvm/pull/308)
 * Added the `ReportFormatType` that can be used instead of a report_format_id [#311](https://github.com/greenbone/python-gvm/pull/311)
 * Added tests for constructor of SSHConnection, TLSConnection, UnixSocketConnection and GvmConnection [#321](https://github.com/greenbone/python-gvm/pull/321)
-* Added information message to `get_report()` if called without `details`. [#333](https://github.com/greenbone/python-gvm/pull/333)
 
 ### Fixed
 * Corrected `seconds_active` parameter to `days_active` for notes and overrides. [#307](https://github.com/greenbone/python-gvm/pull/307)
