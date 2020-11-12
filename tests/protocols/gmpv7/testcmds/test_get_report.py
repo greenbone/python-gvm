@@ -115,10 +115,18 @@ class GmpGetReportTestCase:
             '<get_reports report_id="r1"/>'
         )
 
+        logger_mock.reset_mock()
+
         self.gmp.get_report(report_id='r1', details=False)
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" details="0"/>'
+        )
+
+        logger_mock.info.assert_called_with(
+            msg='Your report will be without report details.'
+            'If you want a report with details, please'
+            'pass the details=True to the function call.'
         )
 
 
