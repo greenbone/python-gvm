@@ -18,8 +18,6 @@
 
 import unittest
 
-from unittest.mock import patch
-
 from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import (
     ReportFormatType,
@@ -39,21 +37,21 @@ class GmpGetReportTestCase:
         self.gmp.get_report(report_id='r1', filter='name=foo')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" filter="name=foo"/>'
+            '<get_reports report_id="r1" filter="name=foo" details="1"/>'
         )
 
     def test_get_report_with_filter_id(self):
         self.gmp.get_report(report_id='r1', filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" filt_id="f1"/>'
+            '<get_reports report_id="r1" filt_id="f1" details="1"/>'
         )
 
     def test_get_report_with_report_format_id(self):
         self.gmp.get_report(report_id='r1', report_format_id='bar')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" format_id="bar"/>'
+            '<get_reports report_id="r1" format_id="bar" details="1"/>'
         )
 
     def test_get_report_with_report_format_type(self):
@@ -63,7 +61,7 @@ class GmpGetReportTestCase:
         report_format_id = get_report_format_id_from_string('txt').value
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" format_id="{}"/>'.format(
+            '<get_reports report_id="r1" format_id="{}" details="1"/>'.format(
                 report_format_id
             )
         )
@@ -72,20 +70,20 @@ class GmpGetReportTestCase:
         self.gmp.get_report(report_id='r1', delta_report_id='r2')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" delta_report_id="r2"/>'
+            '<get_reports report_id="r1" delta_report_id="r2" details="1"/>'
         )
 
     def test_get_report_with_ignore_pagination(self):
         self.gmp.get_report(report_id='r1', ignore_pagination=True)
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" ignore_pagination="1"/>'
+            '<get_reports report_id="r1" ignore_pagination="1" details="1"/>'
         )
 
         self.gmp.get_report(report_id='r1', ignore_pagination=False)
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" ignore_pagination="0"/>'
+            '<get_reports report_id="r1" ignore_pagination="0" details="1"/>'
         )
 
     def test_get_report_with_details(self):
@@ -99,34 +97,6 @@ class GmpGetReportTestCase:
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" details="0"/>'
-        )
-
-    @patch('gvm.protocols.gmpv7.gmpv7.logger')
-    def test_get_report_without_details(self, logger_mock):
-        self.gmp.get_report(report_id='r1')
-
-        logger_mock.info.assert_called_with(
-            msg='Your report will be without report details.'
-            'If you want a report with details, please'
-            'pass the details=True to the function call.'
-        )
-
-        self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1"/>'
-        )
-
-        logger_mock.reset_mock()
-
-        self.gmp.get_report(report_id='r1', details=False)
-
-        self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" details="0"/>'
-        )
-
-        logger_mock.info.assert_called_with(
-            msg='Your report will be without report details.'
-            'If you want a report with details, please'
-            'pass the details=True to the function call.'
         )
 
 

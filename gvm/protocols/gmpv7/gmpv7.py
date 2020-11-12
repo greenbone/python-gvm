@@ -3747,6 +3747,7 @@ class GmpV7Mixin(GvmProtocol):
             ignore_pagination: Whether to ignore the filter terms "first" and
                 "rows".
             details: Request additional report information details
+                     defaults to True
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3774,14 +3775,10 @@ class GmpV7Mixin(GvmProtocol):
         if ignore_pagination is not None:
             cmd.set_attribute("ignore_pagination", _to_bool(ignore_pagination))
 
-        if not details:
-            logger.info(
-                msg='Your report will be without report details.'
-                'If you want a report with details, please'
-                'pass the details=True to the function call.'
-            )
-        if details is not None:
+        if details is False:
             cmd.set_attribute("details", _to_bool(details))
+        else:
+            cmd.set_attribute("details", _to_bool(True))
 
         return self._send_xml_command(cmd)
 
