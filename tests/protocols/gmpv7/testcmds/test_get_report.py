@@ -18,6 +18,8 @@
 
 import unittest
 
+from unittest.mock import patch
+
 from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv7 import (
     ReportFormatType,
@@ -91,6 +93,26 @@ class GmpGetReportTestCase:
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" details="1"/>'
+        )
+
+        self.gmp.get_report(report_id='r1', details=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_reports report_id="r1" details="0"/>'
+        )
+
+    @patch('gvm.protocols.gmpv7.gmpv7.logger')
+    def test_get_report_without_details(self, logger_mock):
+        self.gmp.get_report(report_id='r1')
+
+        logger_mock.info.assert_called_with(
+            msg='Your report will be without report details.'
+            'If you want a report with details, please'
+            'pass the details=True to the function call.'
+        )
+
+        self.connection.send.has_been_called_with(
+            '<get_reports report_id="r1"/>'
         )
 
         self.gmp.get_report(report_id='r1', details=False)

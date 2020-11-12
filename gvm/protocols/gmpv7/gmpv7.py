@@ -3774,6 +3774,12 @@ class GmpV7Mixin(GvmProtocol):
         if ignore_pagination is not None:
             cmd.set_attribute("ignore_pagination", _to_bool(ignore_pagination))
 
+        if not details:
+            logger.info(
+                msg='Your report will be without report details.'
+                'If you want a report with details, please'
+                'pass the details=True to the function call.'
+            )
         if details is not None:
             cmd.set_attribute("details", _to_bool(details))
 
