@@ -657,6 +657,173 @@ class GmpV9Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def modify_audit(
+        self,
+        audit_id: str,
+        *,
+        name: Optional[str] = None,
+        policy_id: Optional[str] = None,
+        target_id: Optional[str] = None,
+        scanner_id: Optional[str] = None,
+        alterable: Optional[bool] = None,
+        hosts_ordering: Optional[HostsOrdering] = None,
+        schedule_id: Optional[str] = None,
+        schedule_periods: Optional[int] = None,
+        comment: Optional[str] = None,
+        alert_ids: Optional[List[str]] = None,
+        observers: Optional[List[str]] = None,
+        preferences: Optional[dict] = None
+    ) -> Any:
+        """Modifies an existing task.
+
+        Arguments:
+            audit_id: UUID of audit to modify.
+            name: The name of the audit.
+            policy_id: UUID of policy to use by the audit
+            target_id: UUID of target to be scanned
+            scanner_id: UUID of scanner to use for scanning the target
+            comment: The comment on the audit.
+            alert_ids: List of UUIDs for alerts to be applied to the audit
+            hosts_ordering: The order hosts are scanned in
+            schedule_id: UUID of a schedule when the audit should be run.
+            schedule_periods: A limit to the number of times the audit will be
+                scheduled, or 0 for no limit.
+            observers: List of names or ids of users which should be allowed to
+                observe this audit
+            preferences: Name/Value pairs of scanner preferences.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        self.modify_task(
+            task_id=audit_id,
+            name=name,
+            config_id=policy_id,
+            target_id=target_id,
+            scanner_id=scanner_id,
+            alterable=alterable,
+            hosts_ordering=hosts_ordering,
+            schedule_id=schedule_id,
+            schedule_periods=schedule_periods,
+            comment=comment,
+            alert_ids=alert_ids,
+            observers=observers,
+            preferences=preferences,
+        )
+
+    def modify_policy_set_nvt_preference(
+        self,
+        policy_id: str,
+        name: str,
+        nvt_oid: str,
+        *,
+        value: Optional[str] = None
+    ) -> Any:
+        """Modifies the nvt preferences of an existing policy.
+
+        Arguments:
+            policy_id: UUID of policy to modify.
+            name: Name for preference to change.
+            nvt_oid: OID of the NVT associated with preference to modify
+            value: New value for the preference. None to delete the preference
+                and to use the default instead.
+        """
+        self.modify_config_set_nvt_preference(
+            config_id=policy_id,
+            name=name,
+            nvt_oid=nvt_oid,
+            value=value,
+        )
+
+    def modify_policy_set_name(self, policy_id: str, name: str) -> Any:
+        """Modifies the name of an existing policy
+
+        Arguments:
+            config_id: UUID of policy to modify.
+            name: New name for the config.
+        """
+        self.modify_config_set_name(
+            config_id=policy_id,
+            name=name,
+        )
+
+    def modify_policy_set_comment(
+        self, policy_id: str, comment: Optional[str] = ""
+    ) -> Any:
+        """Modifies the comment of an existing policy
+
+        Arguments:
+            policy_id: UUID of policy to modify.
+            comment: Comment to set on a config. Default: ''
+        """
+        self.modify_config_set_comment(
+            config_id=policy_id,
+            comment=comment,
+        )
+
+    def modify_policy_set_scanner_preference(
+        self, policy_id: str, name: str, *, value: Optional[str] = None
+    ) -> Any:
+        """Modifies the scanner preferences of an existing policy
+
+        Arguments:
+            policy_id: UUID of policy to modify.
+            name: Name of the scanner preference to change
+            value: New value for the preference. None to delete the preference
+                and to use the default instead.
+
+        """
+        self.modify_config_set_scanner_preference(
+            config_id=policy_id,
+            name=name,
+            value=value,
+        )
+
+    def modify_policy_set_nvt_selection(
+        self, policy_id: str, family: str, nvt_oids: List[str]
+    ) -> Any:
+        """Modifies the selected nvts of an existing policy
+
+        The manager updates the given family in the config to include only the
+        given NVTs.
+
+        Arguments:
+            policy_id: UUID of policy to modify.
+            family: Name of the NVT family to include NVTs from
+            nvt_oids: List of NVTs to select for the family.
+        """
+        self.modify_config_set_nvt_selection(
+            config_id=policy_id,
+            family=family,
+            nvt_oids=nvt_oids,
+        )
+
+    def modify_policy_set_family_selection(
+        self,
+        policy_id: str,
+        families: List[str],
+        *,
+        auto_add_new_families: Optional[bool] = True,
+        auto_add_new_nvts: Optional[bool] = True
+    ) -> Any:
+        """
+        Selected the NVTs of a policy at a family level.
+
+        Arguments:
+            policy_id: UUID of policy to modify.
+            families: List of NVT family names to select.
+            auto_add_new_families: Whether new families should be added to the
+                policy automatically. Default: True.
+            auto_add_new_nvts: Whether new NVTs in the selected families should
+                be added to the policy automatically. Default: True.
+        """
+        self.modify_config_set_family_selection(
+            config_id=policy_id,
+            families=families,
+            auto_add_new_families=auto_add_new_families,
+            auto_add_new_nvts=auto_add_new_nvts,
+        )
+
     def modify_tls_certificate(
         self,
         tls_certificate_id: str,

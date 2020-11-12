@@ -22,7 +22,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv9 import SnmpAuthAlgorithm, SnmpPrivacyAlgorithm
 
 
-class GmpModifyTestCase:
+class GmpModifyCredentialTestCase:
     def test_modify_credential(self):
         self.gmp.modify_credential(credential_id='c1')
 
