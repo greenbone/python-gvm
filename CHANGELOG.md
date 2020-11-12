@@ -7,9 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-* Moved tests for `SeverityLevel` Enum and `get_severity_level_from_string()` [#327](https://github.com/greenbone/python-gvm/pull/327)
+* Added the `modify_audit` function [#332](https://github.com/greenbone/python-gvm/pull/332)
+* Added the `modify_policy_set_nvt_preference` function [#332](https://github.com/greenbone/python-gvm/pull/332)
+* Added the `modify_policy_set_name` function [#332](https://github.com/greenbone/python-gvm/pull/332)
+* Added the `modify_policy_set_comment` function [#332](https://github.com/greenbone/python-gvm/pull/332)
+* Added the `modify_policy_set_scanner_preference` function [#332](https://github.com/greenbone/python-gvm/pull/332)
+* Added the `modify_policy_set_nvt_selection` function [#332](https://github.com/greenbone/python-gvm/pull/332)
+* Added the `modify_policy_set_family_selection` function [#332](https://github.com/greenbone/python-gvm/pull/332)
 
 ### Changed
+* Moved tests for `SeverityLevel` Enum and `get_severity_level_from_string()` [#327](https://github.com/greenbone/python-gvm/pull/327)
 * In `get_report()` the `details` parameter is `True` on default now. [#333](https://github.com/greenbone/python-gvm/pull/333)
 
 ### Deprecated

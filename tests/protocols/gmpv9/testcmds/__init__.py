@@ -51,10 +51,25 @@ from .test_get_task import GmpGetTaskTestCase
 from .test_get_tasks import GmpGetTasksTestCase
 from .test_get_tls_certificate import GmpGetTlsCertificateTestCase
 from .test_get_tls_certificates import GmpGetTLSCertificatesTestCase
-from .test_modify_credential import GmpModifyTestCase
+from .test_modify_credential import GmpModifyCredentialTestCase
 from .test_modify_alert import GmpModifyAlertTestCase
+from .test_modify_audit import GmpModifyAuditCommandTestCase
 from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_permission import GmpModifyPermissionTestCase
+from .test_modify_policy_set_comment import GmpModifyPolicySetCommentTestCase
+from .test_modify_policy_set_family_selection import (
+    GmpModifyPolicySetFamilySelectionTestCase,
+)
+from .test_modify_policy_set_name import GmpModifyPolicySetNameTestCase
+from .test_modify_policy_set_nvt_preference import (
+    GmpModifyPolicySetNvtPreferenceTestCase,
+)
+from .test_modify_policy_set_nvt_selection import (
+    GmpModifyPolicySetNvtSelectionTestCase,
+)
+from .test_modify_policy_set_scanner_preference import (
+    GmpModifyPolicySetScannerPreferenceTestCase,
+)
 from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_tag import GmpModifyTagTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
