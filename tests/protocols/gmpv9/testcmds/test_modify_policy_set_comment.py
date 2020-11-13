@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -22,7 +22,7 @@ from gvm.errors import RequiredArgument
 
 
 class GmpModifyPolicySetCommentTestCase:
-    def test_modify_config_set_comment(self):
+    def test_modify_policy_set_comment(self):
         self.gmp.modify_policy_set_comment('c1')
 
         self.connection.send.has_been_called_with(
@@ -45,7 +45,7 @@ class GmpModifyPolicySetCommentTestCase:
             '<modify_config config_id="c1">' '<comment/>' '</modify_config>'
         )
 
-    def test_modify_config_set_comment_missing_config_id(self):
+    def test_modify_policy_set_comment_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_comment(policy_id=None)
 
