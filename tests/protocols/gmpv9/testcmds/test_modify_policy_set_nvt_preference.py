@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -22,7 +22,7 @@ from gvm.errors import RequiredArgument
 
 
 class GmpModifyPolicySetNvtPreferenceTestCase:
-    def test_modify_config_set_nvt_pref(self):
+    def test_modify_policy_set_nvt_pref(self):
         self.gmp.modify_policy_set_nvt_preference(
             policy_id='c1', nvt_oid='o1', name='foo'
         )
@@ -47,7 +47,7 @@ class GmpModifyPolicySetNvtPreferenceTestCase:
             '</modify_config>'
         )
 
-    def test_modify_config_set_nvt_pref_with_value(self):
+    def test_modify_policy_set_nvt_pref_with_value(self):
         self.gmp.modify_policy_set_nvt_preference(
             'c1', 'foo', nvt_oid='o1', value='bar'
         )
@@ -62,7 +62,7 @@ class GmpModifyPolicySetNvtPreferenceTestCase:
             '</modify_config>'
         )
 
-    def test_modify_config_set_nvt_pref_missing_nvt_oid(self):
+    def test_modify_policy_set_nvt_pref_missing_nvt_oid(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_nvt_preference(
                 'c1', 'foo', nvt_oid=None, value='bar'
@@ -78,7 +78,7 @@ class GmpModifyPolicySetNvtPreferenceTestCase:
                 'c1', 'foo', '', value='bar'
             )
 
-    def test_modify_config_nvt_pref_missing_name(self):
+    def test_modify_policy_nvt_pref_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_nvt_preference(
                 'c1', name=None, nvt_oid='o1', value='bar'
@@ -94,7 +94,7 @@ class GmpModifyPolicySetNvtPreferenceTestCase:
                 'c1', '', nvt_oid='o1', value='bar'
             )
 
-    def test_modify_config_set_comment_missing_config_id(self):
+    def test_modify_policy_set_comment_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_nvt_preference(
                 policy_id=None, name='foo', nvt_oid='o1'

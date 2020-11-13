@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -22,7 +22,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 
 
 class GmpModifyPolicySetNvtSelectionTestCase:
-    def test_modify_config_set_nvt_selection(self):
+    def test_modify_policy_set_nvt_selection(self):
         self.gmp.modify_policy_set_nvt_selection(
             policy_id='c1', family='foo', nvt_oids=['o1']
         )
@@ -85,7 +85,7 @@ class GmpModifyPolicySetNvtSelectionTestCase:
             '</modify_config>'
         )
 
-    def test_modify_config_set_nvt_selection_missing_config_id(self):
+    def test_modify_policy_set_nvt_selection_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_nvt_selection(
                 policy_id=None, family='foo', nvt_oids=['o1']
@@ -99,7 +99,7 @@ class GmpModifyPolicySetNvtSelectionTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_nvt_selection('', 'foo', ['o1'])
 
-    def test_modify_config_set_nvt_selection_missing_family(self):
+    def test_modify_policy_set_nvt_selection_missing_family(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_nvt_selection(
                 policy_id='c1', family=None, nvt_oids=['o1']
@@ -113,7 +113,7 @@ class GmpModifyPolicySetNvtSelectionTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_nvt_selection('c1', '', ['o1'])
 
-    def test_modify_config_set_nvt_selection_invalid_nvt_oids(self):
+    def test_modify_policy_set_nvt_selection_invalid_nvt_oids(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_policy_set_nvt_selection(
                 policy_id='c1', family='foo', nvt_oids=None

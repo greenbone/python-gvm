@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -22,7 +22,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 
 
 class GmpModifyPolicySetFamilySelectionTestCase:
-    def test_modify_config_set_family_selection(self):
+    def test_modify_policy_set_family_selection(self):
         self.gmp.modify_policy_set_family_selection(
             policy_id='c1', families=['foo']
         )
@@ -84,7 +84,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
             '</modify_config>'
         )
 
-    def test_modify_config_set_family_selection_missing_config_id(self):
+    def test_modify_policy_set_family_selection_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_family_selection(
                 policy_id=None, families=['foo']
@@ -98,7 +98,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_family_selection('', ['foo'])
 
-    def test_modify_config_set_family_selection_invalid_families(self):
+    def test_modify_policy_set_family_selection_invalid_families(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_policy_set_family_selection(
                 policy_id='c1', families=None
@@ -112,7 +112,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_policy_set_family_selection('c1', '')
 
-    def test_modify_config_set_family_selection_with_auto_add_new_families(
+    def test_modify_policy_set_family_selection_with_auto_add_new_families(
         self,
     ):
         self.gmp.modify_policy_set_family_selection(
@@ -149,7 +149,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
             '</modify_config>'
         )
 
-    def test_modify_config_set_family_selection_with_auto_add_new_nvts(self):
+    def test_modify_policy_set_family_selection_with_auto_add_new_nvts(self):
         self.gmp.modify_policy_set_family_selection(
             policy_id='c1', families=['foo'], auto_add_new_nvts=True
         )
