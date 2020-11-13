@@ -1149,6 +1149,23 @@ class GmpV9Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def delete_tls_certificate(self, tls_certificate_id: str) -> Any:
+        """Deletes an existing tls certificate
+
+        Arguments:
+            tls_certificate_id: UUID of the tls certificate to be deleted.
+        """
+        if not tls_certificate_id:
+            raise RequiredArgument(
+                function=self.delete_tls_certificate.__name__,
+                argument='policy_id',
+            )
+
+        cmd = XmlCommand("delete_tls_certificate")
+        cmd.set_attribute("tls_certificate_id", tls_certificate_id)
+
+        return self._send_xml_command(cmd)
+
     def __create_task(
         self,
         name: str,
