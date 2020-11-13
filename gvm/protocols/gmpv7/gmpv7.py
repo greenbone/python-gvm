@@ -3733,7 +3733,7 @@ class GmpV7Mixin(GvmProtocol):
         delta_report_id: Optional[str] = None,
         report_format_id: Optional[Union[str, ReportFormatType]] = None,
         ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = None
+        details: Optional[bool] = True
     ) -> Any:
         """Request a single report
 
@@ -3775,10 +3775,7 @@ class GmpV7Mixin(GvmProtocol):
         if ignore_pagination is not None:
             cmd.set_attribute("ignore_pagination", _to_bool(ignore_pagination))
 
-        if details is False:
-            cmd.set_attribute("details", _to_bool(details))
-        else:
-            cmd.set_attribute("details", _to_bool(True))
+        cmd.set_attribute("details", _to_bool(details))
 
         return self._send_xml_command(cmd)
 
