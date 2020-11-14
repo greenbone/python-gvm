@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 Greenbone Networks GmbH
+# Copyright (C) 2018-2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -37,21 +37,21 @@ class GmpGetReportTestCase:
         self.gmp.get_report(report_id='r1', filter='name=foo')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" filter="name=foo"/>'
+            '<get_reports report_id="r1" filter="name=foo" details="1"/>'
         )
 
     def test_get_report_with_filter_id(self):
         self.gmp.get_report(report_id='r1', filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" filt_id="f1"/>'
+            '<get_reports report_id="r1" filt_id="f1" details="1"/>'
         )
 
     def test_get_report_with_report_format_id(self):
         self.gmp.get_report(report_id='r1', report_format_id='bar')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" format_id="bar"/>'
+            '<get_reports report_id="r1" format_id="bar" details="1"/>'
         )
 
     def test_get_report_with_report_format_type(self):
@@ -61,7 +61,7 @@ class GmpGetReportTestCase:
         report_format_id = get_report_format_id_from_string('txt').value
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" format_id="{}"/>'.format(
+            '<get_reports report_id="r1" format_id="{}" details="1"/>'.format(
                 report_format_id
             )
         )
@@ -70,20 +70,20 @@ class GmpGetReportTestCase:
         self.gmp.get_report(report_id='r1', delta_report_id='r2')
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" delta_report_id="r2"/>'
+            '<get_reports report_id="r1" delta_report_id="r2" details="1"/>'
         )
 
     def test_get_report_with_ignore_pagination(self):
         self.gmp.get_report(report_id='r1', ignore_pagination=True)
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" ignore_pagination="1"/>'
+            '<get_reports report_id="r1" ignore_pagination="1" details="1"/>'
         )
 
         self.gmp.get_report(report_id='r1', ignore_pagination=False)
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" ignore_pagination="0"/>'
+            '<get_reports report_id="r1" ignore_pagination="0" details="1"/>'
         )
 
     def test_get_report_with_details(self):
