@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2019-2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -29,13 +29,14 @@ from gvm.protocols.gmpv7 import Gmp as Gmpv7
 from gvm.protocols.gmpv8 import Gmp as Gmpv8
 from gvm.protocols.gmpv9 import Gmp as Gmpv9
 from gvm.protocols.gmpv208 import Gmp as Gmpv208
+from gvm.protocols.gmpv214 import Gmp as Gmpv214
 
 from gvm.transforms import EtreeCheckCommandTransform
 
 from gvm.xml import XmlCommand
 
 SUPPORTED_GMP_VERSIONS = Union[  # pylint: disable=invalid-name
-    Gmpv7, Gmpv8, Gmpv9, Gmpv208
+    Gmpv7, Gmpv8, Gmpv9, Gmpv208, Gmpv214
 ]
 
 
@@ -107,8 +108,10 @@ class Gmp(GvmProtocol):
             gmp_class = Gmpv8
         elif major_version == 9:
             gmp_class = Gmpv9
-        elif major_version >= 20:
+        elif major_version == 20:
             gmp_class = Gmpv208
+        elif major_version >= 21:
+            gmp_class = Gmpv214
         else:
             raise GvmError(
                 'Remote manager daemon uses an unsupported version of GMP. '
