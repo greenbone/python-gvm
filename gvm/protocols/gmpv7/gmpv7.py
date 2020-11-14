@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2019 Greenbone Networks GmbH
+# Copyright (C) 2018 - 2020 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -3733,7 +3733,7 @@ class GmpV7Mixin(GvmProtocol):
         delta_report_id: Optional[str] = None,
         report_format_id: Optional[Union[str, ReportFormatType]] = None,
         ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = None
+        details: Optional[bool] = True
     ) -> Any:
         """Request a single report
 
@@ -3747,6 +3747,7 @@ class GmpV7Mixin(GvmProtocol):
             ignore_pagination: Whether to ignore the filter terms "first" and
                 "rows".
             details: Request additional report information details
+                     defaults to True
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -3774,8 +3775,7 @@ class GmpV7Mixin(GvmProtocol):
         if ignore_pagination is not None:
             cmd.set_attribute("ignore_pagination", _to_bool(ignore_pagination))
 
-        if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+        cmd.set_attribute("details", _to_bool(details))
 
         return self._send_xml_command(cmd)
 
