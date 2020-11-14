@@ -108,6 +108,12 @@ class Gmpv208DeleteTaskTestCase(GmpDeleteTaskTestCase, Gmpv208TestCase):
     pass
 
 
+class Gmpv208DeleteTLSCertificateTestCase(
+    GmpDeleteTLSCertificateTestCase, Gmpv208TestCase
+):
+    pass
+
+
 class Gmpv208GetAuditTestCase(GmpGetAuditTestCase, Gmpv208TestCase):
     pass
 
