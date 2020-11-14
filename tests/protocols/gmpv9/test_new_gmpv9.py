@@ -116,6 +116,12 @@ class Gmpv9DeleteTaskTestCase(GmpDeleteTaskTestCase, Gmpv9TestCase):
     pass
 
 
+class Gmpv9DeleteTLSCertificateTestCase(
+    GmpDeleteTLSCertificateTestCase, Gmpv9TestCase
+):
+    pass
+
+
 class Gmpv9GetAggregatesTestCase(GmpGetAggregatesTestCase, Gmpv9TestCase):
 
     pass
