@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [20.11.1] - 2020-11-16
 ### Added
 * Added the `modify_audit` function [#332](https://github.com/greenbone/python-gvm/pull/332)
 * Added the `modify_policy_set_nvt_preference` function [#332](https://github.com/greenbone/python-gvm/pull/332)
@@ -20,12 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Moved tests for `SeverityLevel` Enum and `get_severity_level_from_string()` [#327](https://github.com/greenbone/python-gvm/pull/327)
 * In `get_report()` the `details` parameter is `True` on default now. [#333](https://github.com/greenbone/python-gvm/pull/333)
 
-### Deprecated
-### Removed
-### Fixed
-
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.11.0...HEAD
-
+[20.11.1]: https://github.com/greenbone/python-gvm/compare/v20.11.0...HEAD
 
 ## [20.11.0] - 2020-11-03
 ### Added
