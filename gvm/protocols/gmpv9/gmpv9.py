@@ -874,7 +874,7 @@ class GmpV9Mixin(GvmProtocol):
         """
         if not tls_certificate_id:
             raise RequiredArgument(
-                function=self.modify_tls_certificate.__name__,
+                function=self.clone_tls_certificate.__name__,
                 argument='tls_certificate_id',
             )
 
@@ -1158,7 +1158,7 @@ class GmpV9Mixin(GvmProtocol):
         if not tls_certificate_id:
             raise RequiredArgument(
                 function=self.delete_tls_certificate.__name__,
-                argument='policy_id',
+                argument='tls_certificate_id',
             )
 
         cmd = XmlCommand("delete_tls_certificate")
