@@ -978,16 +978,19 @@ class GmpV9Mixin(GvmProtocol):
             config_id=config_id, usage_type=UsageType.SCAN, tasks=tasks
         )
 
-    def get_policy(self, policy_id: str) -> Any:
+    def get_policy(
+        self, policy_id: str, *, audits: Optional[bool] = None
+    ) -> Any:
         """Request a single policy
 
         Arguments:
             policy_id: UUID of an existing policy
+            audits: Whether to get audits using this config
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        return self.__get_config(policy_id, UsageType.POLICY)
+        return self.__get_config(policy_id, UsageType.POLICY, tasks=audits)
 
     def get_tasks(
         self,
