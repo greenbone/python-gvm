@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 ### Changed
+* added the `audits` parameter to `get_policy` [#345](https://github.com/greenbone/python-gvm/pull/345)
 ### Deprecated
 ### Removed
 ### Fixed
