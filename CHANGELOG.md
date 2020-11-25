@@ -8,6 +8,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 * get_nvt command requests all details [#348](https://github.com/greenbone/python-gvm/pull/348)
+* Improved the `modify_user` function for gmpv7 and gmpv214. Added ability to change comment, groups and authentication method of user. Meaning of name parameter got changed for gmpv214 only. It is not intended for identifying a user anymore but for specifying the new name of the user [#347](https://github.com/greenbone/python-gvm/pull/347)
+
 ### Changed
 * added the `audits` parameter to `get_policy` [#345](https://github.com/greenbone/python-gvm/pull/345)
 ### Deprecated
