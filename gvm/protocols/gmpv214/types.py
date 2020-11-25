@@ -85,6 +85,7 @@ __all__ = [
     "SnmpPrivacyAlgorithm",
     "TicketStatus",
     "TimeUnit",
+    "UserAuthType",
     "get_alert_condition_from_string",
     "get_alert_event_from_string",
     "get_alert_method_from_string",
@@ -132,3 +133,11 @@ def get_severity_level_from_string(
             argument='severity_level',
             function=get_severity_level_from_string.__name__,
         ) from None
+
+
+class UserAuthType(Enum):
+    """Enum for Sources allowed for authentication for this use"""
+
+    FILE = 'file'
+    LDAP_CONNECT = 'ldap_connect'
+    RADIUS_CONNECT = 'radius_connect'

@@ -31,7 +31,7 @@ import numbers
 
 from gvm.utils import deprecation
 from gvm.xml import XmlCommand
-from gvm.protocols.gmpv7.gmpv7 import _to_comma_list
+from gvm.protocols.gmpv7.gmpv7 import _to_comma_list, _to_bool
 
 from gvm.connections import GvmConnection
 from gvm.errors import RequiredArgument
@@ -386,5 +386,88 @@ class GmpV214Mixin(GvmProtocol):
                     self.get_protocol_version()[1],
                 )
             )
+
+        return self._send_xml_command(cmd)
+
+    def modify_user(
+        self,
+        user_id: str = None,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        password: Optional[str] = None,
+        auth_source: Optional[UserAuthType] = None,
+        role_ids: Optional[List[str]] = None,
+        hosts: Optional[List[str]] = None,
+        hosts_allow: Optional[bool] = False,
+        ifaces: Optional[List[str]] = None,
+        ifaces_allow: Optional[bool] = False,
+        group_ids: Optional[List[str]] = None
+    ) -> Any:
+
+        """Modifies an existing user. Most of the fields need to be supplied
+        for changing a single field even if no change is wanted.
+        Else empty values are places instead.
+
+        Arguments:
+            user_id: UUID of the user to be modified.
+            name: The new name for the user.
+            password: The password for the user.
+            auth_source: Source allowed for authentication for this user.
+            roles_id: List of roles UUIDs for the user.
+            hosts: User access rules: List of hosts.
+            hosts_allow: If True, allow only listed, otherwise forbid listed.
+            ifaces: User access rules: List of ifaces.
+            ifaces_allow: If True, allow only listed, otherwise forbid listed.
+            group_ids: List of group UUIDs for the user.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not user_id:
+            raise RequiredArgument(
+                function=self.modify_user.__name__, argument='user_id'
+            )
+
+        cmd = XmlCommand("modify_user")
+
+        if user_id:
+            cmd.set_attribute("user_id", user_id)
+
+        if name:
+            cmd.add_element("new_name", name)
+
+        if role_ids:
+            for role in role_ids:
+                cmd.add_element("role", attrs={"id": role})
+
+        if hosts:
+            cmd.add_element(
+                "hosts",
+                _to_comma_list(hosts),
+                attrs={"allow": _to_bool(hosts_allow)},
+            )
+
+        if ifaces:
+            cmd.add_element(
+                "ifaces",
+                _to_comma_list(ifaces),
+                attrs={"allow": _to_bool(ifaces_allow)},
+            )
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if password:
+            cmd.add_element("password", password)
+
+        if auth_source:
+            _xmlauthsrc = cmd.add_element("sources")
+            _xmlauthsrc.add_element("source", auth_source.value)
+
+        if group_ids:
+            _xmlgroups = cmd.add_element("groups")
+            for group_id in group_ids:
+                _xmlgroups.add_element("group", attrs={"id": group_id})
 
         return self._send_xml_command(cmd)
