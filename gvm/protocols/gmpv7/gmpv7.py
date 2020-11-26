@@ -3446,6 +3446,7 @@ class GmpV7Mixin(GvmProtocol):
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
+        cmd.set_attribute("preferences", "1")
         return self._send_xml_command(cmd)
 
     def get_nvt_families(self, *, sort_order: Optional[str] = None):
