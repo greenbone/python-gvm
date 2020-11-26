@@ -56,6 +56,7 @@ from .gmpv208 import (
     SnmpPrivacyAlgorithm,
     TicketStatus,
     TimeUnit,
+    UserAuthType,
     get_alert_condition_from_string,
     get_alert_event_from_string,
     get_alert_method_from_string,
@@ -76,6 +77,7 @@ from .gmpv208 import (
     get_snmp_privacy_algorithm_from_string,
     get_ticket_status_from_string,
     get_time_unit_from_string,
+    get_user_auth_type_from_string,
 )
 from .ospv1 import Osp
 
@@ -102,6 +104,7 @@ __all__ = [
     "SnmpPrivacyAlgorithm",
     "TicketStatus",
     "TimeUnit",
+    "UserAuthType",
     "get_alert_condition_from_string",
     "get_alert_event_from_string",
     "get_alert_method_from_string",
@@ -122,4 +125,5 @@ __all__ = [
     "get_snmp_privacy_algorithm_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
+    "get_user_auth_type_from_string",
 ]

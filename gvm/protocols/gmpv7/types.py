@@ -64,6 +64,7 @@ __all__ = [
     "get_snmp_auth_algorithm_from_string",
     "get_snmp_privacy_algorithm_from_string",
     "get_time_unit_from_string",
+    "get_user_auth_type_from_string",
 ]
 
 
