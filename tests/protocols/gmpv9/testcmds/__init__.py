@@ -77,3 +77,6 @@ from .test_modify_scanner import GmpModifyScannerTestCase
 from .test_modify_tag import GmpModifyTagTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
 from .test_modify_tls_certificate import GmpModifyTLSCertificateTestCase
+from .test_resume_audit import GmpResumeAuditTestCase
+from .test_start_audit import GmpStartAuditTestCase
+from .test_stop_audit import GmpStopAuditTestCase
