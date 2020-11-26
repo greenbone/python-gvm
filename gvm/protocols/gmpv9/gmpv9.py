@@ -1425,3 +1425,60 @@ class GmpV9Mixin(GvmProtocol):
         # for single entity always request all details
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
+
+    def resume_audit(self, audit_id: str) -> Any:
+        """Resume an existing stopped audit
+
+        Arguments:
+            audit_id: UUID of the audit to be resumed
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not audit_id:
+            raise RequiredArgument(
+                function=self.resume_audit.__name__, argument='audit_id'
+            )
+
+        cmd = XmlCommand("resume_task")
+        cmd.set_attribute("task_id", audit_id)
+
+        return self._send_xml_command(cmd)
+
+    def start_audit(self, audit_id: str) -> Any:
+        """Start an existing audit
+
+        Arguments:
+            audit_id: UUID of the audit to be started
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not audit_id:
+            raise RequiredArgument(
+                function=self.start_audit.__name__, argument='audit_id'
+            )
+
+        cmd = XmlCommand("start_task")
+        cmd.set_attribute("task_id", audit_id)
+
+        return self._send_xml_command(cmd)
+
+    def stop_audit(self, audit_id: str) -> Any:
+        """Stop an existing running audit
+
+        Arguments:
+            audit_id: UUID of the audit to be stopped
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not audit_id:
+            raise RequiredArgument(
+                function=self.stop_audit.__name__, argument='audit_id'
+            )
+
+        cmd = XmlCommand("stop_task")
+        cmd.set_attribute("task_id", audit_id)
+
+        return self._send_xml_command(cmd)

@@ -252,3 +252,15 @@ class Gmpv9CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv9TestCase):
 
 class Gmpv9ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv9TestCase):
     pass
+
+
+class Gmpv9ResumeAuditTestCase(GmpResumeAuditTestCase, Gmpv9TestCase):
+    pass
+
+
+class Gmpv9StartAuditTestCase(GmpStartAuditTestCase, Gmpv9TestCase):
+    pass
+
+
+class Gmpv9StopAuditTestCase(GmpStopAuditTestCase, Gmpv9TestCase):
+    pass
