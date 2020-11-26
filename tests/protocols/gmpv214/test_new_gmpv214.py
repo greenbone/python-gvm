@@ -34,3 +34,7 @@ class Gmpv214ModifyNoteTestCase(GmpModifyNoteTestCase, Gmpv214TestCase):
 
 class Gmpv214ModifyOverrideTestCase(GmpModifyOverrideTestCase, Gmpv214TestCase):
     pass
+
+
+class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
+    pass
