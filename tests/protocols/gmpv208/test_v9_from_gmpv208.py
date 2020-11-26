@@ -224,3 +224,15 @@ class Gmpv208CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv208TestCase):
 
 class Gmpv208ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv208TestCase):
     pass
+
+
+class Gmpv208ResumeAuditTestCase(GmpResumeAuditTestCase, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208StartAuditTestCase(GmpStartAuditTestCase, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208StopAuditTestCase(GmpStopAuditTestCase, Gmpv208TestCase):
+    pass
