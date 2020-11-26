@@ -412,13 +412,24 @@ class GmpV214Mixin(GvmProtocol):
         Arguments:
             user_id: UUID of the user to be modified.
             name: The new name for the user.
+            comment: Comment on the user.
             password: The password for the user.
             auth_source: Source allowed for authentication for this user.
             roles_id: List of roles UUIDs for the user.
             hosts: User access rules: List of hosts.
-            hosts_allow: If True, allow only listed, otherwise forbid listed.
+            hosts_allow: Defines how the hosts list is to be interpreted.
+                If False (default) the list is treated as a deny list.
+                All hosts are allowed by default except those provided by
+                the hosts parameter. If True the list is treated as a
+                allow list. All hosts are denied by default except those
+                provided by the hosts parameter.
             ifaces: User access rules: List of ifaces.
-            ifaces_allow: If True, allow only listed, otherwise forbid listed.
+            ifaces_allow: Defines how the ifaces list is to be interpreted.
+                If False (default) the list is treated as a deny list.
+                All ifaces are allowed by default except those provided by
+                the ifaces parameter. If True the list is treated as a
+                allow list. All ifaces are denied by default except those
+                provided by the ifaces parameter.
             group_ids: List of group UUIDs for the user.
 
         Returns:
