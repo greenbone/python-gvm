@@ -820,3 +820,19 @@ class UserAuthType(Enum):
     FILE = 'file'
     LDAP_CONNECT = 'ldap_connect'
     RADIUS_CONNECT = 'radius_connect'
+
+
+def get_user_auth_type_from_string(
+    user_auth_type: Optional[str],
+) -> Optional[SeverityLevel]:
+    """ Convert a user auth type string into a UserAuthType instance """
+    if not user_auth_type:
+        return None
+
+    try:
+        return SeverityLevel[user_auth_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='user_auth_type',
+            function=get_user_auth_type_from_string.__name__,
+        ) from None
