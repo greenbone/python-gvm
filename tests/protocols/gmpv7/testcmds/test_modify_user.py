@@ -19,6 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument
+from gvm.protocols.gmpv7 import UserAuthType
 
 
 class GmpModifyUserTestCase:
@@ -56,6 +57,15 @@ class GmpModifyUserTestCase:
             '</modify_user>'
         )
 
+    def test_modify_user_with_new_comment(self):
+        self.gmp.modify_user(user_id='u1', comment='foo')
+
+        self.connection.send.has_been_called_with(
+            '<modify_user user_id="u1">'
+            '<comment>foo</comment>'
+            '</modify_user>'
+        )
+
     def test_modify_user_with_user_id_and_name(self):
         self.gmp.modify_user(user_id='u1', name='foo')
 
@@ -81,12 +91,47 @@ class GmpModifyUserTestCase:
             '</modify_user>'
         )
 
+    def test_modify_user_with_group_ids(self):
+        self.gmp.modify_user(user_id='u1', role_ids=[])
+
+        self.connection.send.has_been_called_with('<modify_user user_id="u1"/>')
+
+        self.gmp.modify_user(user_id='u1', group_ids=['r1'])
+
+        self.connection.send.has_been_called_with(
+            '<modify_user user_id="u1">'
+            '<groups><group id="r1"/></groups>'
+            '</modify_user>'
+        )
+
+        self.gmp.modify_user(user_id='u1', group_ids=['r1', 'r2'])
+
+        self.connection.send.has_been_called_with(
+            '<modify_user user_id="u1">'
+            '<groups>'
+            '<group id="r1"/>'
+            '<group id="r2"/>'
+            '</groups>'
+            '</modify_user>'
+        )
+
     def test_modify_user_with_password(self):
         self.gmp.modify_user(user_id='u1', password='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_user user_id="u1">'
             '<password>foo</password>'
+            '</modify_user>'
+        )
+
+    def test_modify_user_with_auth_source(self):
+        self.gmp.modify_user(
+            user_id='u1', auth_source=UserAuthType.LDAP_CONNECT
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_user user_id="u1">'
+            '<sources><source>ldap_connect</source></sources>'
             '</modify_user>'
         )
 
