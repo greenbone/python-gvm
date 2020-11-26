@@ -26,7 +26,10 @@ class GmpGetNvtTestCase:
         self.gmp.get_nvt(nvt_oid='nvt_oid')
 
         self.connection.send.has_been_called_with(
-            '<get_nvts nvt_oid="nvt_oid" details="1"/>'
+            (
+                '<get_nvts nvt_oid="nvt_oid" details="1" '
+                'preferences="1" preference_count="1" timeout="1"/>'
+            )
         )
 
     def test_get_nvt_missing_nvt_oid(self):
