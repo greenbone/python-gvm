@@ -6078,7 +6078,7 @@ class GmpV7Mixin(GvmProtocol):
         hosts_allow: Optional[bool] = False,
         ifaces: Optional[List[str]] = None,
         ifaces_allow: Optional[bool] = False,
-        group_ids: Optional[List[str]] = None,
+        group_ids: Optional[List[str]] = None
     ) -> Any:
         """Modifies an existing user. Most of the fields need to be supplied
         for changing a single field even if no change is wanted for those.
