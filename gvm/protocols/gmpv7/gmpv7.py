@@ -6080,7 +6080,9 @@ class GmpV7Mixin(GvmProtocol):
         ifaces_allow: Optional[bool] = False,
         group_ids: Optional[List[str]] = None,
     ) -> Any:
-        """Modifies an existing user.
+        """Modifies an existing user. Most of the fields need to be supplied
+        for changing a single field even if no change is wanted for those.
+        Else empty values are inserted for the missing fields instead.
 
         Arguments:
             user_id: UUID of the user to be modified. Overrides name element
