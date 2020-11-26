@@ -825,13 +825,13 @@ class UserAuthType(Enum):
 
 def get_user_auth_type_from_string(
     user_auth_type: Optional[str],
-) -> Optional[SeverityLevel]:
+) -> Optional[UserAuthType]:
     """ Convert a user auth type string into a UserAuthType instance """
     if not user_auth_type:
         return None
 
     try:
-        return SeverityLevel[user_auth_type.upper()]
+        return UserAuthType[user_auth_type.upper()]
     except KeyError:
         raise InvalidArgument(
             argument='user_auth_type',
