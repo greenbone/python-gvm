@@ -7,9 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-* get_nvt command requests all details [#348](https://github.com/greenbone/python-gvm/pull/348)
+* Adding parameters to `get_nvt command`, so it requests all details [#348](https://github.com/greenbone/python-gvm/pull/348)
+* Adding `resume_audit`, `start_audit`, `stop_audit` to gmpv9 [#349](https://github.com/greenbone/python-gvm/pull/349)
+
 ### Changed
 * added the `audits` parameter to `get_policy` [#345](https://github.com/greenbone/python-gvm/pull/345)
+
 ### Deprecated
 ### Removed
 ### Fixed
