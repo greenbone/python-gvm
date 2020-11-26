@@ -43,6 +43,7 @@ __all__ = [
     "SnmpAuthAlgorithm",
     "SnmpPrivacyAlgorithm",
     "TimeUnit",
+    "UserAuthType",
     "get_alive_test_from_string",
     "get_alert_condition_from_string",
     "get_alert_event_from_string",
@@ -63,6 +64,7 @@ __all__ = [
     "get_snmp_auth_algorithm_from_string",
     "get_snmp_privacy_algorithm_from_string",
     "get_time_unit_from_string",
+    "get_user_auth_type_from_string",
 ]
 
 
@@ -810,4 +812,28 @@ def get_time_unit_from_string(time_unit: Optional[str]) -> Optional[TimeUnit]:
         raise InvalidArgument(
             argument='severity_level',
             function=get_severity_level_from_string.__name__,
+        ) from None
+
+
+class UserAuthType(Enum):
+    """Enum for Sources allowed for authentication for the user"""
+
+    FILE = 'file'
+    LDAP_CONNECT = 'ldap_connect'
+    RADIUS_CONNECT = 'radius_connect'
+
+
+def get_user_auth_type_from_string(
+    user_auth_type: Optional[str],
+) -> Optional[UserAuthType]:
+    """ Convert a user auth type string into a UserAuthType instance """
+    if not user_auth_type:
+        return None
+
+    try:
+        return UserAuthType[user_auth_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='user_auth_type',
+            function=get_user_auth_type_from_string.__name__,
         ) from None

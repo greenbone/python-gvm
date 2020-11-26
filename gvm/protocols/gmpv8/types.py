@@ -39,6 +39,7 @@ from gvm.protocols.gmpv7.types import (
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
     TimeUnit,
+    UserAuthType,
     get_alert_condition_from_string,
     get_alert_event_from_string,
     get_alert_method_from_string,
@@ -56,6 +57,7 @@ from gvm.protocols.gmpv7.types import (
     get_snmp_auth_algorithm_from_string,
     get_snmp_privacy_algorithm_from_string,
     get_time_unit_from_string,
+    get_user_auth_type_from_string,
 )
 
 
@@ -81,6 +83,7 @@ __all__ = [
     "SnmpPrivacyAlgorithm",
     "TicketStatus",
     "TimeUnit",
+    "UserAuthType",
     "get_alert_condition_from_string",
     "get_alert_event_from_string",
     "get_alert_method_from_string",
@@ -102,6 +105,7 @@ __all__ = [
     "get_snmp_privacy_algorithm_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
+    "get_user_auth_type_from_string",
 ]
 
 
