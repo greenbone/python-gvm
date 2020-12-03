@@ -447,8 +447,7 @@ class GmpV9Mixin(GvmProtocol):
             elif resource_type == EntityType.POLICY:
                 _actual_resource_type = EntityType.SCAN_CONFIG
 
-            _xmlresource.add_element("type",
-                                     _actual_resource_type.value)
+            _xmlresource.add_element("type", _actual_resource_type.value)
 
         return self._send_xml_command(cmd)
 
