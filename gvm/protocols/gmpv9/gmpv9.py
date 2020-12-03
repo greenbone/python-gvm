@@ -367,6 +367,91 @@ class GmpV9Mixin(GvmProtocol):
             function=self.create_config.__name__,
         )
 
+    def create_permission(
+        self,
+        name: str,
+        subject_id: str,
+        subject_type: PermissionSubjectType,
+        *,
+        resource_id: Optional[str] = None,
+        resource_type: Optional[EntityType] = None,
+        comment: Optional[str] = None
+    ) -> Any:
+        """Create a new permission
+
+        Arguments:
+            name: Name of the new permission
+            subject_id: UUID of subject to whom the permission is granted
+            subject_type: Type of the subject user, group or role
+            comment: Comment for the permission
+            resource_id: UUID of entity to which the permission applies
+            resource_type: Type of the resource. For Super permissions user,
+                group or role
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument(
+                function=self.create_permission.__name__, argument='name'
+            )
+
+        if not subject_id:
+            raise RequiredArgument(
+                function=self.create_permission.__name__, argument='subject_id'
+            )
+
+        if not isinstance(subject_type, PermissionSubjectType):
+            raise InvalidArgumentType(
+                function=self.create_permission.__name__,
+                argument='subject_type',
+                arg_type=PermissionSubjectType.__name__,
+            )
+
+        cmd = XmlCommand("create_permission")
+        cmd.add_element("name", name)
+
+        _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
+        _xmlsubject.add_element("type", subject_type.value)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if resource_id or resource_type:
+            if not resource_id:
+                raise RequiredArgument(
+                    function=self.create_permission.__name__,
+                    argument='resource_id',
+                )
+
+            if not resource_type:
+                raise RequiredArgument(
+                    function=self.create_permission.__name__,
+                    argument='resource_type',
+                )
+
+            if not isinstance(resource_type, self.types.EntityType):
+                raise InvalidArgumentType(
+                    function=self.create_permission.__name__,
+                    argument='resource_type',
+                    arg_type=self.types.EntityType.__name__,
+                )
+
+            _xmlresource = cmd.add_element(
+                "resource", attrs={"id": resource_id}
+            )
+
+            _actual_resource_type = resource_type
+            if resource_type == EntityType.AUDIT:
+                _actual_resource_type = EntityType.TASK
+            elif resource_type == EntityType.POLICY:
+                _actual_resource_type = EntityType.SCAN_CONFIG
+
+            _xmlresource.add_element("type",
+                                     _actual_resource_type.value)
+
+        return self._send_xml_command(cmd)
+
     def create_policy(
         self, name: str, *, policy_id: str = None, comment: Optional[str] = None
     ) -> Any:
@@ -390,6 +475,92 @@ class GmpV9Mixin(GvmProtocol):
             usage_type=UsageType.POLICY,
             function=self.create_policy.__name__,
         )
+
+    def create_tag(
+        self,
+        name: str,
+        resource_type: EntityType,
+        *,
+        resource_filter: Optional[str] = None,
+        resource_ids: Optional[List[str]] = None,
+        value: Optional[str] = None,
+        comment: Optional[str] = None,
+        active: Optional[bool] = None
+    ) -> Any:
+        """Create a tag.
+
+        Arguments:
+            name: Name of the tag. A full tag name consisting of namespace and
+                predicate e.g. `foo:bar`.
+            resource_type: Entity type the tag is to be attached to.
+            resource_filter: Filter term to select resources the tag is to be
+                attached to. Only one of resource_filter or resource_ids can be
+                provided.
+            resource_ids: IDs of the resources the tag is to be attached to.
+                Only one of resource_filter or resource_ids can be provided.
+            value: Value associated with the tag.
+            comment: Comment for the tag.
+            active: Whether the tag should be active.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument(
+                function=self.create_tag.__name__, argument='name'
+            )
+
+        if resource_filter and resource_ids:
+            raise InvalidArgument(
+                "create_tag accepts either resource_filter or resource_ids "
+                "argument",
+                function=self.create_tag.__name__,
+            )
+
+        if not resource_type:
+            raise RequiredArgument(
+                function=self.create_tag.__name__, argument='resource_type'
+            )
+
+        if not isinstance(resource_type, self.types.EntityType):
+            raise InvalidArgumentType(
+                function=self.create_tag.__name__,
+                argument='resource_type',
+                arg_type=EntityType.__name__,
+            )
+
+        cmd = XmlCommand('create_tag')
+        cmd.add_element('name', name)
+
+        _xmlresources = cmd.add_element("resources")
+        if resource_filter is not None:
+            _xmlresources.set_attribute("filter", resource_filter)
+
+        for resource_id in resource_ids or []:
+            _xmlresources.add_element(
+                "resource", attrs={"id": str(resource_id)}
+            )
+
+        _actual_resource_type = resource_type
+        if resource_type == EntityType.AUDIT:
+            _actual_resource_type = EntityType.TASK
+        elif resource_type == EntityType.POLICY:
+            _actual_resource_type = EntityType.SCAN_CONFIG
+        _xmlresources.add_element("type", _actual_resource_type.value)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if value:
+            cmd.add_element("value", value)
+
+        if active is not None:
+            if active:
+                cmd.add_element("active", "1")
+            else:
+                cmd.add_element("active", "0")
+
+        return self._send_xml_command(cmd)
 
     def create_task(
         self,
@@ -711,6 +882,96 @@ class GmpV9Mixin(GvmProtocol):
             preferences=preferences,
         )
 
+    def modify_permission(
+        self,
+        permission_id: str,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        resource_id: Optional[str] = None,
+        resource_type: Optional[EntityType] = None,
+        subject_id: Optional[str] = None,
+        subject_type: Optional[PermissionSubjectType] = None
+    ) -> Any:
+        """Modifies an existing permission.
+
+        Arguments:
+            permission_id: UUID of permission to be modified.
+            comment: The comment on the permission.
+            name: Permission name, currently the name of a command.
+            subject_id: UUID of subject to whom the permission is granted
+            subject_type: Type of the subject user, group or role
+            resource_id: UUID of entity to which the permission applies
+            resource_type: Type of the resource. For Super permissions user,
+                group or role
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not permission_id:
+            raise RequiredArgument(
+                function=self.modify_permission.__name__,
+                argument='permission_id',
+            )
+
+        cmd = XmlCommand("modify_permission")
+        cmd.set_attribute("permission_id", permission_id)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if name:
+            cmd.add_element("name", name)
+
+        if resource_id or resource_type:
+            if not resource_id:
+                raise RequiredArgument(
+                    function=self.modify_permission.__name__,
+                    argument='resource_id',
+                )
+
+            if not resource_type:
+                raise RequiredArgument(
+                    function=self.modify_permission.__name__,
+                    argument='resource_type',
+                )
+
+            if not isinstance(resource_type, self.types.EntityType):
+                raise InvalidArgumentType(
+                    function=self.modify_permission.__name__,
+                    argument='resource_type',
+                    arg_type=self.types.EntityType.__name__,
+                )
+
+            _xmlresource = cmd.add_element(
+                "resource", attrs={"id": resource_id}
+            )
+            _actual_resource_type = resource_type
+            if resource_type == EntityType.AUDIT:
+                _actual_resource_type = EntityType.TASK
+            elif resource_type == EntityType.POLICY:
+                _actual_resource_type = EntityType.SCAN_CONFIG
+            _xmlresource.add_element("type", _actual_resource_type.value)
+
+        if subject_id or subject_type:
+            if not subject_id:
+                raise RequiredArgument(
+                    function=self.modify_permission.__name__,
+                    argument='subject_id',
+                )
+
+            if not isinstance(subject_type, PermissionSubjectType):
+                raise InvalidArgumentType(
+                    function=self.modify_permission.__name__,
+                    argument='subject_type',
+                    arg_type=PermissionSubjectType.__name__,
+                )
+
+            _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
+            _xmlsubject.add_element("type", subject_type.value)
+
+        return self._send_xml_command(cmd)
+
     def modify_policy_set_nvt_preference(
         self,
         policy_id: str,
@@ -823,6 +1084,92 @@ class GmpV9Mixin(GvmProtocol):
             auto_add_new_families=auto_add_new_families,
             auto_add_new_nvts=auto_add_new_nvts,
         )
+
+    def modify_tag(
+        self,
+        tag_id: str,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        value=None,
+        active=None,
+        resource_action: Optional[str] = None,
+        resource_type: Optional[EntityType] = None,
+        resource_filter: Optional[str] = None,
+        resource_ids: Optional[List[str]] = None
+    ) -> Any:
+        """Modifies an existing tag.
+
+        Arguments:
+            tag_id: UUID of the tag.
+            comment: Comment to add to the tag.
+            name: Name of the tag.
+            value: Value of the tag.
+            active: Whether the tag is active.
+            resource_action: Whether to add or remove resources instead of
+                overwriting. One of '', 'add', 'set' or 'remove'.
+            resource_type: Type of the resources to which to attach the tag.
+                Required if resource_filter is set.
+            resource_filter: Filter term to select resources the tag is to be
+                attached to.
+            resource_ids: IDs of the resources to which to attach the tag.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not tag_id:
+            raise RequiredArgument(
+                function=self.modify_tag.__name__, argument='tag_id'
+            )
+
+        cmd = XmlCommand("modify_tag")
+        cmd.set_attribute("tag_id", str(tag_id))
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if name:
+            cmd.add_element("name", name)
+
+        if value:
+            cmd.add_element("value", value)
+
+        if active is not None:
+            cmd.add_element("active", _to_bool(active))
+
+        if resource_action or resource_filter or resource_ids or resource_type:
+            if resource_filter and not resource_type:
+                raise RequiredArgument(
+                    function=self.modify_tag.__name__, argument='resource_type'
+                )
+
+            _xmlresources = cmd.add_element("resources")
+            if resource_action is not None:
+                _xmlresources.set_attribute("action", resource_action)
+
+            if resource_filter is not None:
+                _xmlresources.set_attribute("filter", resource_filter)
+
+            for resource_id in resource_ids or []:
+                _xmlresources.add_element(
+                    "resource", attrs={"id": str(resource_id)}
+                )
+
+            if resource_type is not None:
+                if not isinstance(resource_type, self.types.EntityType):
+                    raise InvalidArgumentType(
+                        function=self.modify_tag.__name__,
+                        argument="resource_type",
+                        arg_type=EntityType.__name__,
+                    )
+                _actual_resource_type = resource_type
+                if resource_type == EntityType.AUDIT:
+                    _actual_resource_type = EntityType.TASK
+                elif resource_type == EntityType.POLICY:
+                    _actual_resource_type = EntityType.SCAN_CONFIG
+                _xmlresources.add_element("type", _actual_resource_type.value)
+
+        return self._send_xml_command(cmd)
 
     def modify_tls_certificate(
         self,
