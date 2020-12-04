@@ -803,7 +803,7 @@ class GmpV9Mixin(GvmProtocol):
         policy_id: str,
         families: List[Tuple[str, bool]],
         *,
-        auto_add_new_families: Optional[bool] = True,
+        auto_add_new_families: Optional[bool] = True
     ) -> Any:
         """
         Selected the NVTs of a policy at a family level.
