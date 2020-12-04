@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Adding `resume_audit`, `start_audit`, `stop_audit` to gmpv9 [#349](https://github.com/greenbone/python-gvm/pull/349)
 
 ### Changed
+* Implement tuple for `family` argument for `modify_config_set_family_selection` [#354](https://github.com/greenbone/python-gvm/pull/354)
 * added the `audits` parameter to `get_policy` [#345](https://github.com/greenbone/python-gvm/pull/345)
 
 [20.11.3]: https://github.com/greenbone/python-gvm/compare/v20.11.2...HEAD
