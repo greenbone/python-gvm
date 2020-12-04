@@ -442,9 +442,9 @@ class GmpV9Mixin(GvmProtocol):
             )
 
             _actual_resource_type = resource_type
-            if resource_type == EntityType.AUDIT:
+            if resource_type.value == EntityType.AUDIT.value:
                 _actual_resource_type = EntityType.TASK
-            elif resource_type == EntityType.POLICY:
+            elif resource_type.value == EntityType.POLICY.value:
                 _actual_resource_type = EntityType.SCAN_CONFIG
 
             _xmlresource.add_element("type", _actual_resource_type.value)
@@ -541,9 +541,9 @@ class GmpV9Mixin(GvmProtocol):
             )
 
         _actual_resource_type = resource_type
-        if resource_type == EntityType.AUDIT:
+        if resource_type.value == EntityType.AUDIT.value:
             _actual_resource_type = EntityType.TASK
-        elif resource_type == EntityType.POLICY:
+        elif resource_type.value == EntityType.POLICY.value:
             _actual_resource_type = EntityType.SCAN_CONFIG
         _xmlresources.add_element("type", _actual_resource_type.value)
 
@@ -946,9 +946,9 @@ class GmpV9Mixin(GvmProtocol):
                 "resource", attrs={"id": resource_id}
             )
             _actual_resource_type = resource_type
-            if resource_type == EntityType.AUDIT:
+            if resource_type.value == EntityType.AUDIT.value:
                 _actual_resource_type = EntityType.TASK
-            elif resource_type == EntityType.POLICY:
+            elif resource_type.value == EntityType.POLICY.value:
                 _actual_resource_type = EntityType.SCAN_CONFIG
             _xmlresource.add_element("type", _actual_resource_type.value)
 
@@ -1162,9 +1162,9 @@ class GmpV9Mixin(GvmProtocol):
                         arg_type=EntityType.__name__,
                     )
                 _actual_resource_type = resource_type
-                if resource_type == EntityType.AUDIT:
+                if resource_type.value == EntityType.AUDIT.value:
                     _actual_resource_type = EntityType.TASK
-                elif resource_type == EntityType.POLICY:
+                elif resource_type.value == EntityType.POLICY.value:
                     _actual_resource_type = EntityType.SCAN_CONFIG
                 _xmlresources.add_element("type", _actual_resource_type.value)
 
