@@ -4772,7 +4772,7 @@ class GmpV7Mixin(GvmProtocol):
         config_id: str,
         families: List[Tuple[str, bool]],
         *,
-        auto_add_new_families: Optional[bool] = True,
+        auto_add_new_families: Optional[bool] = True
     ) -> Any:
         """
         Selected the NVTs of a scan config at a family level.
