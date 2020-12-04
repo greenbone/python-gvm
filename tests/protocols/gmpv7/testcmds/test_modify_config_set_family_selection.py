@@ -24,7 +24,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 class GmpModifyConfigSetFamilySelectionTestCase:
     def test_modify_config_set_family_selection(self):
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=['foo']
+            config_id='c1', families=[('foo', True)]
         )
 
         self.connection.send.has_been_called_with(
@@ -41,7 +41,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         )
 
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=['foo', 'bar']
+            config_id='c1', families=[('foo', True), ('bar', True)]
         )
 
         self.connection.send.has_been_called_with(
@@ -63,7 +63,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         )
 
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=('foo', 'bar')
+            config_id='c1', families=(('foo', True), ('bar', True))
         )
 
         self.connection.send.has_been_called_with(
@@ -87,16 +87,16 @@ class GmpModifyConfigSetFamilySelectionTestCase:
     def test_modify_config_set_family_selection_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_family_selection(
-                config_id=None, families=['foo']
+                config_id=None, families=[('foo', True)]
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_family_selection(
-                config_id='', families=['foo']
+                config_id='', families=[('foo', True)]
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_family_selection('', ['foo'])
+            self.gmp.modify_config_set_family_selection('', [('foo', True)])
 
     def test_modify_config_set_family_selection_invalid_families(self):
         with self.assertRaises(InvalidArgumentType):
@@ -116,7 +116,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         self,
     ):
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=['foo'], auto_add_new_families=True
+            config_id='c1', families=[('foo', True)], auto_add_new_families=True
         )
 
         self.connection.send.has_been_called_with(
@@ -133,7 +133,9 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         )
 
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=['foo'], auto_add_new_families=False
+            config_id='c1',
+            families=[('foo', True)],
+            auto_add_new_families=False,
         )
 
         self.connection.send.has_been_called_with(
@@ -151,7 +153,8 @@ class GmpModifyConfigSetFamilySelectionTestCase:
 
     def test_modify_config_set_family_selection_with_auto_add_new_nvts(self):
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=['foo'], auto_add_new_nvts=True
+            config_id='c1',
+            families=[('foo', True)],
         )
 
         self.connection.send.has_been_called_with(
@@ -168,7 +171,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         )
 
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=['foo'], auto_add_new_nvts=False
+            config_id='c1', families=[('foo', False)]
         )
 
         self.connection.send.has_been_called_with(
@@ -179,6 +182,28 @@ class GmpModifyConfigSetFamilySelectionTestCase:
             '<name>foo</name>'
             '<all>1</all>'
             '<growing>0</growing>'
+            '</family>'
+            '</family_selection>'
+            '</modify_config>'
+        )
+
+        self.gmp.modify_config_set_family_selection(
+            config_id='c1', families=[('foo', False), ('bar', True)]
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<family_selection>'
+            '<growing>1</growing>'
+            '<family>'
+            '<name>foo</name>'
+            '<all>1</all>'
+            '<growing>0</growing>'
+            '</family>'
+            '<family>'
+            '<name>bar</name>'
+            '<all>1</all>'
+            '<growing>1</growing>'
             '</family>'
             '</family_selection>'
             '</modify_config>'
