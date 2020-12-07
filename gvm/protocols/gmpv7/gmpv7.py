@@ -4808,6 +4808,14 @@ class GmpV7Mixin(GvmProtocol):
             _xmlfamily = _xmlfamsel.add_element("family")
             _xmlfamily.add_element("name", family[0])
             _xmlfamily.add_element("all", "1")
+
+            if not isinstance(family[1], bool):
+                raise InvalidArgumentType(
+                    function=self.modify_config_set_family_selection.__name__,
+                    argument='families',
+                    arg_type='bool',
+                )
+
             _xmlfamily.add_element("growing", _to_bool(family[1]))
 
         return self._send_xml_command(cmd)
