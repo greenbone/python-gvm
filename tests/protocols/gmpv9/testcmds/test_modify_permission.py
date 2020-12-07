@@ -200,7 +200,9 @@ class GmpModifyPermissionTestCase:
         Test special case where "policy" gets translated to "config"
         """
         self.gmp.modify_permission(
-            permission_id='p1', resource_id='r1', resource_type=EntityType.POLICY
+            permission_id='p1',
+            resource_id='r1',
+            resource_type=EntityType.POLICY,
         )
 
         self.connection.send.has_been_called_with(
@@ -210,6 +212,15 @@ class GmpModifyPermissionTestCase:
             '</resource>'
             '</modify_permission>'
         )
+
+    def test_modify_permission_with_invalid_resource_type(self):
+        """
+        Test detection of invalid resource_type
+        """
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_permission(
+                permission_id='p1', resource_id='r1', resource_type='INVALID'
+            )
 
 
 if __name__ == '__main__':

@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv9 import EntityType
 
 
@@ -267,6 +267,17 @@ class GmpCreateTagTestCase:
             '</resources>'
             '</create_tag>'
         )
+
+    def test_create_tag_with_invalid_resource_type(self):
+        """
+        Test detection of invalid resource_type
+        """
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.create_tag(
+                name='foo',
+                resource_ids=['foo'],
+                resource_type='INVALID',
+            )
 
 
 if __name__ == '__main__':
