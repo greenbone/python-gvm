@@ -810,7 +810,9 @@ class GmpV9Mixin(GvmProtocol):
 
         Arguments:
             policy_id: UUID of policy to modify.
-            families: List of NVT family names to select.
+            families: A list of tuples with the first entry being the name
+                of the NVT family selected, second entry a boolean indicating
+                whether new NVTs should be added to the family automatically.
             auto_add_new_families: Whether new families should be added to the
                 policy automatically. Default: True.
         """
