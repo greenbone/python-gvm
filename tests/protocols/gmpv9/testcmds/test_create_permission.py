@@ -137,6 +137,67 @@ class GmpCreatePermissionTestCase:
             '</create_permission>'
         )
 
+    def test_create_permission_for_audit(self):
+        """
+        Test special case where "audit" gets translated to "task"
+        """
+        self.gmp.create_permission(
+            'create_task',
+            subject_id='u1',
+            subject_type=PermissionSubjectType.USER,
+            resource_id='t1',
+            resource_type=EntityType.AUDIT,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_permission>'
+            '<name>create_task</name>'
+            '<subject id="u1">'
+            '<type>user</type>'
+            '</subject>'
+            '<resource id="t1">'
+            '<type>task</type>'
+            '</resource>'
+            '</create_permission>'
+        )
+
+    def test_create_permission_for_policy(self):
+        """
+        Test special case where "policy" gets translated to "config"
+        """
+        self.gmp.create_permission(
+            'create_task',
+            subject_id='u1',
+            subject_type=PermissionSubjectType.USER,
+            resource_id='t1',
+            resource_type=EntityType.POLICY,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_permission>'
+            '<name>create_task</name>'
+            '<subject id="u1">'
+            '<type>user</type>'
+            '</subject>'
+            '<resource id="t1">'
+            '<type>config</type>'
+            '</resource>'
+            '</create_permission>'
+        )
+
+    def test_create_permission_with_invalid_resource_type(self):
+        """
+        Test detection of invalid resource_type
+        """
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.create_permission(
+                'create_task',
+                subject_id='u1',
+                subject_type=PermissionSubjectType.USER,
+                resource_id='t1',
+                resource_type='INVALID',
+            )
+
 
 if __name__ == '__main__':
     unittest.main()
