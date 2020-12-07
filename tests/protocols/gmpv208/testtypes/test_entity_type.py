@@ -41,6 +41,10 @@ class GetEntityTypeFromStringTestCase(unittest.TestCase):
         ct = get_entity_type_from_string('asset')
         self.assertEqual(ct, EntityType.ASSET)
 
+    def test_audit(self):
+        ct = get_entity_type_from_string('audit')
+        self.assertEqual(ct, EntityType.AUDIT)
+
     def test_cert_bund_adv(self):
         ct = get_entity_type_from_string('cert_bund_adv')
         self.assertEqual(ct, EntityType.CERT_BUND_ADV)
@@ -99,6 +103,10 @@ class GetEntityTypeFromStringTestCase(unittest.TestCase):
     def test_permission(self):
         ct = get_entity_type_from_string('permission')
         self.assertEqual(ct, EntityType.PERMISSION)
+
+    def test_policy(self):
+        ct = get_entity_type_from_string('policy')
+        self.assertEqual(ct, EntityType.POLICY)
 
     def test_port_list(self):
         ct = get_entity_type_from_string('port_list')

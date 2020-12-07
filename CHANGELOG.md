@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+* Added AUDIT and POLICY to EntityType enum [#353](https://github.com/greenbone/python-gvm/pull/353)
+
 ### Changed
 ### Deprecated
 ### Removed

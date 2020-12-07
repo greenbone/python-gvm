@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv9 import EntityType
 
 
@@ -231,6 +231,53 @@ class GmpCreateTagTestCase:
             '<active>0</active>'
             '</create_tag>'
         )
+
+    def test_create_tag_with_audit(self):
+        """
+        Test special case where "audit" gets translated to "task"
+        """
+        self.gmp.create_tag(
+            name='foo', resource_ids=['foo'], resource_type=EntityType.AUDIT
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resources>'
+            '<resource id="foo"/>'
+            '<type>task</type>'
+            '</resources>'
+            '</create_tag>'
+        )
+
+    def test_create_tag_with_policy(self):
+        """
+        Test special case where "policy" gets translated to "config"
+        """
+        self.gmp.create_tag(
+            name='foo', resource_ids=['foo'], resource_type=EntityType.POLICY
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resources>'
+            '<resource id="foo"/>'
+            '<type>config</type>'
+            '</resources>'
+            '</create_tag>'
+        )
+
+    def test_create_tag_with_invalid_resource_type(self):
+        """
+        Test detection of invalid resource_type
+        """
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.create_tag(
+                name='foo',
+                resource_ids=['foo'],
+                resource_type='INVALID',
+            )
 
 
 if __name__ == '__main__':

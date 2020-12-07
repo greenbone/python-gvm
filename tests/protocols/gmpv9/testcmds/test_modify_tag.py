@@ -18,7 +18,7 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv9 import EntityType
 
 
@@ -164,6 +164,49 @@ class GmpModifyTagTestCase:
             '</resources>'
             '</modify_tag>'
         )
+
+    def test_modify_tag_with_audit(self):
+        """
+        Test special case where "policy" gets translated to "config"
+        """
+        self.gmp.modify_tag(
+            tag_id='t1', resource_ids=['r1'], resource_type=EntityType.AUDIT
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">'
+            '<resources>'
+            '<resource id="r1"/>'
+            '<type>task</type>'
+            '</resources>'
+            '</modify_tag>'
+        )
+
+    def test_modify_tag_with_policy(self):
+        """
+        Test special case where "policy" gets translated to "config"
+        """
+        self.gmp.modify_tag(
+            tag_id='t1', resource_ids=['r1'], resource_type=EntityType.POLICY
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">'
+            '<resources>'
+            '<resource id="r1"/>'
+            '<type>config</type>'
+            '</resources>'
+            '</modify_tag>'
+        )
+
+    def test_modify_tag_with_invalid_resource_type(self):
+        """
+        Test detection of invalid resource_type
+        """
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_tag(
+                tag_id='t1', resource_ids=['r1'], resource_type='INVALID'
+            )
 
 
 if __name__ == '__main__':

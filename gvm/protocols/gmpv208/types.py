@@ -117,6 +117,7 @@ class EntityType(Enum):
 
     ALERT = "alert"
     ASSET = "asset"
+    AUDIT = "audit"
     CERT_BUND_ADV = "cert_bund_adv"
     CPE = "cpe"
     CREDENTIAL = "credential"
@@ -132,6 +133,7 @@ class EntityType(Enum):
     OVALDEF = "ovaldef"
     OVERRIDE = "override"
     PERMISSION = "permission"
+    POLICY = "policy"
     PORT_LIST = "port_list"
     REPORT = "report"
     REPORT_FORMAT = "report_format"
