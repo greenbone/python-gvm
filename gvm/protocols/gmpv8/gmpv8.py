@@ -120,7 +120,7 @@ class GmpV8Mixin(GvmProtocol):
                     credential_type=CredentialType.USERNAME_PASSWORD,
                     login='foo',
                     password='bar',
-                );
+                )
 
             Creating a Username + SSH Key credential
 
