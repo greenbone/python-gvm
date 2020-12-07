@@ -179,6 +179,38 @@ class GmpModifyPermissionTestCase:
             '</modify_permission>'
         )
 
+    def test_modify_permission_with_audit(self):
+        """
+        Test special case where "audit" gets translated to "task"
+        """
+        self.gmp.modify_permission(
+            permission_id='p1', resource_id='r1', resource_type=EntityType.AUDIT
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_permission permission_id="p1">'
+            '<resource id="r1">'
+            '<type>task</type>'
+            '</resource>'
+            '</modify_permission>'
+        )
+
+    def test_modify_permission_with_policy(self):
+        """
+        Test special case where "policy" gets translated to "config"
+        """
+        self.gmp.modify_permission(
+            permission_id='p1', resource_id='r1', resource_type=EntityType.POLICY
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_permission permission_id="p1">'
+            '<resource id="r1">'
+            '<type>config</type>'
+            '</resource>'
+            '</modify_permission>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()

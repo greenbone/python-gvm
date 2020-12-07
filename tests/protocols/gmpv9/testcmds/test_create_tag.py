@@ -232,6 +232,42 @@ class GmpCreateTagTestCase:
             '</create_tag>'
         )
 
+    def test_create_tag_with_audit(self):
+        """
+        Test special case where "audit" gets translated to "task"
+        """
+        self.gmp.create_tag(
+            name='foo', resource_ids=['foo'], resource_type=EntityType.AUDIT
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resources>'
+            '<resource id="foo"/>'
+            '<type>task</type>'
+            '</resources>'
+            '</create_tag>'
+        )
+
+    def test_create_tag_with_policy(self):
+        """
+        Test special case where "policy" gets translated to "config"
+        """
+        self.gmp.create_tag(
+            name='foo', resource_ids=['foo'], resource_type=EntityType.POLICY
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resources>'
+            '<resource id="foo"/>'
+            '<type>config</type>'
+            '</resources>'
+            '</create_tag>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
