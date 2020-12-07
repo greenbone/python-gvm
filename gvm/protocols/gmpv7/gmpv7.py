@@ -4809,6 +4809,11 @@ class GmpV7Mixin(GvmProtocol):
             _xmlfamily.add_element("name", family[0])
             _xmlfamily.add_element("all", "1")
 
+            if len(family) < 2:
+                raise InvalidArgument(
+                    "Family must have boolean as second argument."
+                )
+
             if not isinstance(family[1], bool):
                 raise InvalidArgumentType(
                     function=self.modify_config_set_family_selection.__name__,
