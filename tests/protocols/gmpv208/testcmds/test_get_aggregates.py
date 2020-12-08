@@ -187,6 +187,35 @@ class GmpGetAggregatesTestCase:
                 resource_type=EntityType.ALERT, sort_criteria='INVALID'
             )
 
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.get_aggregates(
+                resource_type=EntityType.ALERT, sort_criteria=['INVALID']
+            )
+
+    def test_get_aggregates_group_limits(self):
+        """
+        Test get_aggregates calls with group limits (first_group, max_groups)
+        """
+        self.gmp.get_aggregates(EntityType.CPE, first_group=20, max_groups=25)
+
+        self.connection.send.has_been_called_with(
+            '<get_aggregates type="cpe" first_group="20" max_groups="25"/>'
+        )
+
+    def test_get_aggregates_invalid_group_limits(self):
+        """
+        Test get_aggregates calls with invalid group limits
+        """
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.get_aggregates(
+                EntityType.CPE, first_group="INVALID", max_groups=25
+            )
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.get_aggregates(
+                EntityType.CPE, first_group=1, max_groups="INVALID"
+            )
+
     def test_get_aggregates_data_columns(self):
         """
         Test get_aggregates calls with data_columns
@@ -260,7 +289,7 @@ class GmpGetAggregatesTestCase:
         self.gmp.get_aggregates(
             EntityType.SCAN_CONFIG,
             group_column="uuid",
-            text_columns=['name', 'comment']
+            text_columns=['name', 'comment'],
         )
 
         self.connection.send.has_been_called_with(
@@ -279,6 +308,7 @@ class GmpGetAggregatesTestCase:
             self.gmp.get_aggregates(
                 resource_type=EntityType.ALERT, text_columns='INVALID'
             )
+
 
 if __name__ == '__main__':
     unittest.main()

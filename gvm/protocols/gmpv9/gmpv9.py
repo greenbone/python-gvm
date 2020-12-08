@@ -729,10 +729,22 @@ class GmpV9Mixin(GvmProtocol):
         _add_filter(cmd, filter, filter_id)
 
         if first_group is not None:
-            cmd.set_attribute('first_group', int(first_group))
+            if not isinstance(first_group, int):
+                raise InvalidArgumentType(
+                    function=self.get_aggregates.__name__,
+                    argument='first_group',
+                    arg_type=int.__name__,
+                )
+            cmd.set_attribute('first_group', str(first_group))
 
         if max_groups is not None:
-            cmd.set_attribute('max_groups', int(max_groups))
+            if not isinstance(max_groups, int):
+                raise InvalidArgumentType(
+                    function=self.get_aggregates.__name__,
+                    argument='max_groups',
+                    arg_type=int.__name__,
+                )
+            cmd.set_attribute('max_groups', str(max_groups))
 
         if sort_criteria is not None:
             if not isinstance(sort_criteria, list):
