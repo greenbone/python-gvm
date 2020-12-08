@@ -19,9 +19,8 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv9 import (
-    SortOrder, get_sort_order_from_string
-)
+from gvm.protocols.gmpv9 import SortOrder, get_sort_order_from_string
+
 
 class GetSortOrderFromStringTestCase(unittest.TestCase):
     def test_invalid(self):

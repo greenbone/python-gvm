@@ -20,8 +20,10 @@ import unittest
 
 from gvm.errors import InvalidArgument
 from gvm.protocols.gmpv9 import (
-    AggregateStatistic, get_aggregate_statistic_from_string
+    AggregateStatistic,
+    get_aggregate_statistic_from_string,
 )
+
 
 class GetAggregateStatisticFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
