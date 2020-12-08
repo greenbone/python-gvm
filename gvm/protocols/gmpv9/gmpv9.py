@@ -27,7 +27,7 @@ Module for communication with gvmd in `Greenbone Management Protocol version 9`_
 import collections
 import numbers
 
-from typing import Any, List, Optional, Callable
+from typing import Any, List, Optional, Callable, Tuple
 
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import deprecation
@@ -1061,27 +1061,25 @@ class GmpV9Mixin(GvmProtocol):
     def modify_policy_set_family_selection(
         self,
         policy_id: str,
-        families: List[str],
+        families: List[Tuple[str, bool]],
         *,
-        auto_add_new_families: Optional[bool] = True,
-        auto_add_new_nvts: Optional[bool] = True
+        auto_add_new_families: Optional[bool] = True
     ) -> Any:
         """
         Selected the NVTs of a policy at a family level.
 
         Arguments:
             policy_id: UUID of policy to modify.
-            families: List of NVT family names to select.
+            families: A list of tuples with the first entry being the name
+                of the NVT family selected, second entry a boolean indicating
+                whether new NVTs should be added to the family automatically.
             auto_add_new_families: Whether new families should be added to the
                 policy automatically. Default: True.
-            auto_add_new_nvts: Whether new NVTs in the selected families should
-                be added to the policy automatically. Default: True.
         """
         self.modify_config_set_family_selection(
             config_id=policy_id,
             families=families,
             auto_add_new_families=auto_add_new_families,
-            auto_add_new_nvts=auto_add_new_nvts,
         )
 
     def modify_tag(

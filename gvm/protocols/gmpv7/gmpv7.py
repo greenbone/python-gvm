@@ -28,7 +28,7 @@ import collections
 import logging
 import numbers
 
-from typing import Any, List, Optional, Callable, Union
+from typing import Any, List, Optional, Callable, Union, Tuple
 
 from lxml import etree
 
@@ -4770,21 +4770,20 @@ class GmpV7Mixin(GvmProtocol):
     def modify_config_set_family_selection(
         self,
         config_id: str,
-        families: List[str],
+        families: List[Tuple[str, bool]],
         *,
-        auto_add_new_families: Optional[bool] = True,
-        auto_add_new_nvts: Optional[bool] = True
+        auto_add_new_families: Optional[bool] = True
     ) -> Any:
         """
         Selected the NVTs of a scan config at a family level.
 
         Arguments:
             config_id: UUID of scan config to modify.
-            families: List of NVT family names to select.
+            families: A list of tuples with the first entry being the name
+                of the NVT family selected, second entry a boolean indicating
+                whether new NVTs should be added to the family automatically.
             auto_add_new_families: Whether new families should be added to the
                 scan config automatically. Default: True.
-            auto_add_new_nvts: Whether new NVTs in the selected families should
-                be added to the scan config automatically. Default: True.
         """
         if not config_id:
             raise RequiredArgument(
@@ -4807,9 +4806,22 @@ class GmpV7Mixin(GvmProtocol):
 
         for family in families:
             _xmlfamily = _xmlfamsel.add_element("family")
-            _xmlfamily.add_element("name", family)
+            _xmlfamily.add_element("name", family[0])
             _xmlfamily.add_element("all", "1")
-            _xmlfamily.add_element("growing", _to_bool(auto_add_new_nvts))
+
+            if len(family) < 2:
+                raise InvalidArgument(
+                    "Family must have boolean as second argument."
+                )
+
+            if not isinstance(family[1], bool):
+                raise InvalidArgumentType(
+                    function=self.modify_config_set_family_selection.__name__,
+                    argument='families',
+                    arg_type='bool',
+                )
+
+            _xmlfamily.add_element("growing", _to_bool(family[1]))
 
         return self._send_xml_command(cmd)
 
