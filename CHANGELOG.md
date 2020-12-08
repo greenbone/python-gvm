@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added AUDIT and POLICY to EntityType enum [#353](https://github.com/greenbone/python-gvm/pull/353)
 
 ### Changed
+* added the `audits` parameter to `get_policy` [#345](https://github.com/greenbone/python-gvm/pull/345)
+
 ### Deprecated
 ### Removed
 ### Fixed
@@ -25,7 +27,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * Implement tuple for `family` argument for `modify_config_set_family_selection` [#354](https://github.com/greenbone/python-gvm/pull/354)
-* added the `audits` parameter to `get_policy` [#345](https://github.com/greenbone/python-gvm/pull/345)
 
 [20.11.3]: https://github.com/greenbone/python-gvm/compare/v20.11.2...HEAD
 
