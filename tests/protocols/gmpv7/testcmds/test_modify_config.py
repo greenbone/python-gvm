@@ -130,7 +130,9 @@ class GmpModifyConfigTestCase:
             warnings.simplefilter("always")
 
             self.gmp.modify_config(
-                config_id='c1', selection='family_selection', families=['foo']
+                config_id='c1',
+                selection='family_selection',
+                families=[('foo', True)],
             )
 
             self.assertEqual(len(w), 1)
