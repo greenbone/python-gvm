@@ -763,10 +763,20 @@ class GmpV9Mixin(GvmProtocol):
                 sort_elem = cmd.add_element('sort')
                 if sort.get('field'):
                     sort_elem.set_attribute('field', sort.get('field'))
+
                 if sort.get('stat'):
-                    sort_elem.set_attribute('stat', sort.get('stat'))
+                    if isinstance(sort['stat'], AggregateStatistic):
+                        sort_elem.set_attribute('stat', sort['stat'].value)
+                    else:
+                        stat = get_aggregate_statistic_from_string(sort['stat'])
+                        sort_elem.set_attribute('stat', stat.value)
+
                 if sort.get('order'):
-                    sort_elem.set_attribute('order', sort.get('order'))
+                    if isinstance(sort['order'], SortOrder):
+                        sort_elem.set_attribute('order', sort['order'].value)
+                    else:
+                        so = get_sort_order_from_string(sort['order'])
+                        sort_elem.set_attribute('order', so.value)
 
         if data_columns is not None:
             if not isinstance(data_columns, list):

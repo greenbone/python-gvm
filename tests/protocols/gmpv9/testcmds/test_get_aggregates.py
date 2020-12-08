@@ -18,9 +18,9 @@
 
 import unittest
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
+from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv9 import EntityType
+from gvm.protocols.gmpv9 import EntityType, AggregateStatistic, SortOrder
 
 
 class GmpGetAggregatesTestCase:
@@ -156,7 +156,7 @@ class GmpGetAggregatesTestCase:
 
     def test_get_aggregates_sort_criteria(self):
         """
-        Test get_aggregates calls with sort_criteria
+        Test get_aggregates calls with sort_criteria given as strings
         """
         self.gmp.get_aggregates(
             EntityType.NVT,
@@ -178,6 +178,30 @@ class GmpGetAggregatesTestCase:
             '</get_aggregates>'
         )
 
+    def test_get_aggregates_sort_criteria_enum(self):
+        """
+        Test get_aggregates calls with sort_criteria given as enums
+        """
+        self.gmp.get_aggregates(
+            EntityType.NVT,
+            group_column='family',
+            sort_criteria=[
+                {
+                    'field': 'severity',
+                    'stat': AggregateStatistic.MEAN,
+                    'order': SortOrder.DESCENDING,
+                },
+            ],
+            data_columns=['severity'],
+        )
+
+        self.connection.send.has_been_called_with(
+            '<get_aggregates type="nvt" group_column="family">'
+            '<sort field="severity" stat="mean" order="descending"/>'
+            '<data_column>severity</data_column>'
+            '</get_aggregates>'
+        )
+
     def test_get_aggregates_invalid_sort_criteria(self):
         """
         Test get_aggregates calls with invalid sort_criteria
@@ -190,6 +214,18 @@ class GmpGetAggregatesTestCase:
         with self.assertRaises(InvalidArgumentType):
             self.gmp.get_aggregates(
                 resource_type=EntityType.ALERT, sort_criteria=['INVALID']
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.get_aggregates(
+                resource_type=EntityType.ALERT,
+                sort_criteria=[{'stat': 'INVALID'}]
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.get_aggregates(
+                resource_type=EntityType.ALERT,
+                sort_criteria=[{'order': 'INVALID'}]
             )
 
     def test_get_aggregates_group_limits(self):
