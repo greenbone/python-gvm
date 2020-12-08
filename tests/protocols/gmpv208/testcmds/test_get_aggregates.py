@@ -309,6 +309,21 @@ class GmpGetAggregatesTestCase:
                 resource_type=EntityType.ALERT, text_columns='INVALID'
             )
 
+    def test_get_aggregates_mode(self):
+        """
+        Test get_aggregates calls with mode
+        """
+        self.gmp.get_aggregates(
+            EntityType.NVT,
+            group_column='name',
+            mode='word_counts',
+        )
+
+        self.connection.send.has_been_called_with(
+            '<get_aggregates type="nvt" group_column="name"'
+            ' mode="word_counts"/>'
+        )
+
 
 if __name__ == '__main__':
     unittest.main()
