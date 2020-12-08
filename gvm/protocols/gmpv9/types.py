@@ -112,15 +112,15 @@ __all__ = [
 class AggregateStatistic(Enum):
     """Enum for aggregate statistic types"""
 
-    COUNT = "count"     # Number of items
-    C_COUNT = "c_count" # Cumulative number of items
-    C_SUM = "c_sum"     # Cumulative sum of values
-    MAX = "max"         # Maximum value
-    MEAN = "mean"       # Arithmetic mean of values
-    MIN = "min"         # Minimum value
-    SUM = "sum"         # Sum of values
-    TEXT = "text"       # Text column value
-    VALUE = "value"     # Group or subgroup column value
+    COUNT = "count"  # Number of items
+    C_COUNT = "c_count"  # Cumulative number of items
+    C_SUM = "c_sum"  # Cumulative sum of values
+    MAX = "max"  # Maximum value
+    MEAN = "mean"  # Arithmetic mean of values
+    MIN = "min"  # Minimum value
+    SUM = "sum"  # Sum of values
+    TEXT = "text"  # Text column value
+    VALUE = "value"  # Group or subgroup column value
 
 
 def get_aggregate_statistic_from_string(
