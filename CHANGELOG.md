@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added AUDIT and POLICY to EntityType enum [#353](https://github.com/greenbone/python-gvm/pull/353)
 
 ### Changed
+* Update get_aggregates params in GMP 9.0 and newer [#359](https://github.com/greenbone/python-gvm/pull/359)
+
 ### Deprecated
 ### Removed
 ### Fixed
