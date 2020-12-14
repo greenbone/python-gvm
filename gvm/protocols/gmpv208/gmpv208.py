@@ -32,7 +32,7 @@ from typing import Any, List, Optional, Callable
 from gvm.utils import deprecation
 from gvm.xml import XmlCommand
 
-from gvm.protocols.gmpv7.gmpv7 import _to_bool, _to_comma_list
+from gvm.protocols.gmpv7.gmpv7 import _to_bool, _to_comma_list, _add_filter
 from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgumentType, RequiredArgument
 
@@ -139,6 +139,55 @@ class GmpV208Mixin(GvmProtocol):
                 self.get_protocol_version()[1],
             )
         )
+
+    def get_info_list(
+        self,
+        info_type: InfoType,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        name: Optional[str] = None,
+        details: Optional[bool] = None
+    ) -> Any:
+        """Request a list of security information
+
+        Arguments:
+            info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
+                DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            name: Name or identifier of the requested information
+            details: Whether to include information about references to this
+                information
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not info_type:
+            raise RequiredArgument(
+                function=self.get_info_list.__name__, argument='info_type'
+            )
+
+        if not isinstance(info_type, InfoType):
+            raise InvalidArgumentType(
+                function=self.get_info_list.__name__,
+                argument='info_type',
+                arg_type=InfoType.__name__,
+            )
+
+        cmd = XmlCommand("get_info")
+
+        cmd.set_attribute("type", info_type.value)
+
+        _add_filter(cmd, filter, filter_id)
+
+        if name:
+            cmd.set_attribute("name", name)
+
+        if details is not None:
+            cmd.set_attribute("details", _to_bool(details))
+
+        return self._send_xml_command(cmd)
 
     def get_info(self, info_id: str, info_type: InfoType) -> Any:
         """Request a single secinfo

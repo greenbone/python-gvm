@@ -45,11 +45,14 @@ class Gmpv208CreateTargetCommandTestCase(
 
 
 class Gmpv208GetAggregatesTestCase(GmpGetAggregatesTestCase, Gmpv208TestCase):
-
     pass
 
 
 class Gmpv208GetInfoTestCase(GmpGetInfoTestCase, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208GetInfoListTestCase(GmpGetInfoListTestCase, Gmpv208TestCase):
     pass
 
 

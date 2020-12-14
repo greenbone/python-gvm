@@ -16,6 +16,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+* added `get_info_list` to v20.08, so it works as expected with new `InfoType` [#362](https://github.com/greenbone/python-gvm/pull/362)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.11.3...HEAD
 

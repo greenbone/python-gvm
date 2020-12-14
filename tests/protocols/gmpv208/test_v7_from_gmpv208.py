@@ -290,10 +290,6 @@ class Gmpv208GetGroupsTestCase(GmpGetGroupsTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208GetInfoListTestCase(GmpGetInfoListTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetNoteTestCase(GmpGetNoteTestCase, Gmpv208TestCase):
     pass
 

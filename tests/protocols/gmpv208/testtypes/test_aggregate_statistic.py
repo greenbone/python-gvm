@@ -36,18 +36,6 @@ class GetAggregateStatisticFromStringTestCase(unittest.TestCase):
         ct = get_aggregate_statistic_from_string('')
         self.assertIsNone(ct)
 
-
-class GetAggregateStatisticFromStringTestCase(unittest.TestCase):
-    def test_invalid(self):
-        with self.assertRaises(InvalidArgument):
-            get_aggregate_statistic_from_string('foo')
-
-    def test_none_or_empty(self):
-        ct = get_aggregate_statistic_from_string(None)
-        self.assertIsNone(ct)
-        ct = get_aggregate_statistic_from_string('')
-        self.assertIsNone(ct)
-
     def test_count(self):
         ct = get_aggregate_statistic_from_string('count')
         self.assertEqual(ct, AggregateStatistic.COUNT)

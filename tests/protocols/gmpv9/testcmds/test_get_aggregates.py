@@ -219,13 +219,13 @@ class GmpGetAggregatesTestCase:
         with self.assertRaises(InvalidArgument):
             self.gmp.get_aggregates(
                 resource_type=EntityType.ALERT,
-                sort_criteria=[{'stat': 'INVALID'}]
+                sort_criteria=[{'stat': 'INVALID'}],
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.get_aggregates(
                 resource_type=EntityType.ALERT,
-                sort_criteria=[{'order': 'INVALID'}]
+                sort_criteria=[{'order': 'INVALID'}],
             )
 
     def test_get_aggregates_group_limits(self):
