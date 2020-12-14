@@ -23,6 +23,7 @@ from gvm.errors import InvalidArgument
 
 
 from gvm.protocols.gmpv9.types import (
+    AggregateStatistic,
     AlertCondition,
     AlertEvent,
     AlertMethod,
@@ -39,9 +40,11 @@ from gvm.protocols.gmpv9.types import (
     ScannerType,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
+    SortOrder,
     TicketStatus,
     TimeUnit,
     UserAuthType,
+    get_aggregate_statistic_from_string,
     get_alert_condition_from_string,
     get_alert_event_from_string,
     get_alert_method_from_string,
@@ -58,6 +61,7 @@ from gvm.protocols.gmpv9.types import (
     get_severity_level_from_string,
     get_snmp_auth_algorithm_from_string,
     get_snmp_privacy_algorithm_from_string,
+    get_sort_order_from_string,
     get_ticket_status_from_string,
     get_time_unit_from_string,
     get_user_auth_type_from_string,
@@ -65,6 +69,7 @@ from gvm.protocols.gmpv9.types import (
 
 
 __all__ = [
+    "AggregateStatistic",
     "AlertCondition",
     "AlertEvent",
     "AlertMethod",
@@ -84,9 +89,11 @@ __all__ = [
     "SeverityLevel",
     "SnmpAuthAlgorithm",
     "SnmpPrivacyAlgorithm",
+    "SortOrder",
     "TicketStatus",
     "TimeUnit",
     "UserAuthType",
+    "get_aggregate_statistic_from_string",
     "get_alert_condition_from_string",
     "get_alert_event_from_string",
     "get_alert_method_from_string",
@@ -106,6 +113,7 @@ __all__ = [
     "get_severity_level_from_string",
     "get_snmp_auth_algorithm_from_string",
     "get_snmp_privacy_algorithm_from_string",
+    "get_sort_order_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
     "get_user_auth_type_from_string",

@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 * added the `audits` parameter to `get_policy` [#345](https://github.com/greenbone/python-gvm/pull/345)
+* Update get_aggregates params in GMP 9.0 and newer [#359](https://github.com/greenbone/python-gvm/pull/359)
 
 ### Deprecated
 ### Removed
