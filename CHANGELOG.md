@@ -20,6 +20,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Added AUDIT and POLICY to EntityType enum [#353](https://github.com/greenbone/python-gvm/pull/353)
 
 ### Changed
+* Support "all" argument in modify_scan_config_set_family_selection [#368](https://github.com/greenbone/python-gvm/pull/368)
 * added the `audits` parameter to `get_policy` [#345](https://github.com/greenbone/python-gvm/pull/345)
 * Update get_aggregates params in GMP 9.0 and newer [#359](https://github.com/greenbone/python-gvm/pull/359)
 
