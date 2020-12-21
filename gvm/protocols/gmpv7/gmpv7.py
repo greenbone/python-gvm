@@ -4822,8 +4822,8 @@ class GmpV7Mixin(GvmProtocol):
                     arg_type='bool',
                 )
 
+            _xmlfamily.add_element("all", _to_bool(family[2]))
             _xmlfamily.add_element("growing", _to_bool(family[1]))
-            _xmlfamily.add_elemnt("all", _to_bool(family[2]))
 
         return self._send_xml_command(cmd)
 

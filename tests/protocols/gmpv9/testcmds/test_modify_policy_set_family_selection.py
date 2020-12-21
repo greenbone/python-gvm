@@ -24,7 +24,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 class GmpModifyPolicySetFamilySelectionTestCase:
     def test_modify_policy_set_family_selection(self):
         self.gmp.modify_policy_set_family_selection(
-            policy_id='c1', families=[('foo', True)]
+            policy_id='c1', families=[('foo', True, True)]
         )
 
         self.connection.send.has_been_called_with(
@@ -41,7 +41,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
         )
 
         self.gmp.modify_policy_set_family_selection(
-            policy_id='c1', families=[('foo', True), ('bar', True)]
+            policy_id='c1', families=[('foo', True, True), ('bar', True, True)]
         )
 
         self.connection.send.has_been_called_with(
@@ -63,7 +63,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
         )
 
         self.gmp.modify_policy_set_family_selection(
-            policy_id='c1', families=(('foo', True), ('bar', True))
+            policy_id='c1', families=(('foo', True, True), ('bar', True, True))
         )
 
         self.connection.send.has_been_called_with(
@@ -87,16 +87,18 @@ class GmpModifyPolicySetFamilySelectionTestCase:
     def test_modify_policy_set_family_selection_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_family_selection(
-                policy_id=None, families=[('foo', True)]
+                policy_id=None, families=[('foo', True, True)]
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_family_selection(
-                policy_id='', families=[('foo', True)]
+                policy_id='', families=[('foo', True, True)]
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_policy_set_family_selection('', [('foo', True)])
+            self.gmp.modify_policy_set_family_selection(
+                '', [('foo', True, True)]
+            )
 
     def test_modify_policy_set_family_selection_invalid_families(self):
         with self.assertRaises(InvalidArgumentType):
@@ -116,7 +118,9 @@ class GmpModifyPolicySetFamilySelectionTestCase:
         self,
     ):
         self.gmp.modify_policy_set_family_selection(
-            policy_id='c1', families=[('foo', True)], auto_add_new_families=True
+            policy_id='c1',
+            families=[('foo', True, True)],
+            auto_add_new_families=True,
         )
 
         self.connection.send.has_been_called_with(
@@ -134,7 +138,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
 
         self.gmp.modify_policy_set_family_selection(
             policy_id='c1',
-            families=[('foo', True)],
+            families=[('foo', True, True)],
             auto_add_new_families=False,
         )
 
@@ -153,7 +157,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
 
     def test_modify_policy_set_family_selection_with_auto_add_new_nvts(self):
         self.gmp.modify_policy_set_family_selection(
-            policy_id='c1', families=[('foo', True)]
+            policy_id='c1', families=[('foo', True, True)]
         )
 
         self.connection.send.has_been_called_with(
@@ -171,7 +175,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
 
         self.gmp.modify_policy_set_family_selection(
             policy_id='c1',
-            families=[('foo', False)],
+            families=[('foo', False, True)],
         )
 
         self.connection.send.has_been_called_with(
