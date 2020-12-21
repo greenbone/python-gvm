@@ -218,7 +218,12 @@ class GmpModifyConfigSetFamilySelectionTestCase:
 
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_config_set_family_selection(
-                config_id='c1', families=[('foo', None, 'True')]
+                config_id='c1', families=[('foo', True, None)]
+            )
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_config_set_family_selection(
+                config_id='c1', families=[('foo', 'True', False)]
             )
 
         with self.assertRaises(InvalidArgument):
