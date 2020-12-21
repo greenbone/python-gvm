@@ -41,7 +41,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
         )
 
         self.gmp.modify_policy_set_family_selection(
-            policy_id='c1', families=[('foo', True, True), ('bar', True, True)]
+            policy_id='c1', families=(('foo', True, True), ('bar', True, True))
         )
 
         self.connection.send.has_been_called_with(
@@ -63,7 +63,8 @@ class GmpModifyPolicySetFamilySelectionTestCase:
         )
 
         self.gmp.modify_policy_set_family_selection(
-            policy_id='c1', families=(('foo', True, True), ('bar', True, True))
+            policy_id='c1',
+            families=[('foo', True, False), ('bar', False, True)],
         )
 
         self.connection.send.has_been_called_with(
@@ -72,13 +73,13 @@ class GmpModifyPolicySetFamilySelectionTestCase:
             '<growing>1</growing>'
             '<family>'
             '<name>foo</name>'
-            '<all>1</all>'
+            '<all>0</all>'
             '<growing>1</growing>'
             '</family>'
             '<family>'
             '<name>bar</name>'
             '<all>1</all>'
-            '<growing>1</growing>'
+            '<growing>0</growing>'
             '</family>'
             '</family_selection>'
             '</modify_config>'
