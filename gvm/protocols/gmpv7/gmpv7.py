@@ -4770,7 +4770,7 @@ class GmpV7Mixin(GvmProtocol):
     def modify_config_set_family_selection(
         self,
         config_id: str,
-        families: List[Tuple[str, bool]],
+        families: List[Tuple[str, bool, bool]],
         *,
         auto_add_new_families: Optional[bool] = True
     ) -> Any:
@@ -4781,7 +4781,9 @@ class GmpV7Mixin(GvmProtocol):
             config_id: UUID of scan config to modify.
             families: A list of tuples with the first entry being the name
                 of the NVT family selected, second entry a boolean indicating
-                whether new NVTs should be added to the family automatically.
+                whether new NVTs should be added to the family automatically,
+                and third entry a boolean indicating whether all nvts from
+                the family should be included.
             auto_add_new_families: Whether new families should be added to the
                 scan config automatically. Default: True.
         """
@@ -4807,14 +4809,13 @@ class GmpV7Mixin(GvmProtocol):
         for family in families:
             _xmlfamily = _xmlfamsel.add_element("family")
             _xmlfamily.add_element("name", family[0])
-            _xmlfamily.add_element("all", "1")
 
-            if len(family) < 2:
-                raise InvalidArgument(
-                    "Family must have boolean as second argument."
-                )
+            if len(family) != 3:
+                raise InvalidArgument("Family must have 3 arguments.")
 
-            if not isinstance(family[1], bool):
+            if not isinstance(family[1], bool) or not isinstance(
+                family[2], bool
+            ):
                 raise InvalidArgumentType(
                     function=self.modify_config_set_family_selection.__name__,
                     argument='families',
@@ -4822,6 +4823,7 @@ class GmpV7Mixin(GvmProtocol):
                 )
 
             _xmlfamily.add_element("growing", _to_bool(family[1]))
+            _xmlfamily.add_elemnt("all", _to_bool(family[2]))
 
         return self._send_xml_command(cmd)
 
