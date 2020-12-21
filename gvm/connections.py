@@ -189,7 +189,7 @@ class SSHConnection(GvmConnection):
         hostname: Optional[str] = DEFAULT_HOSTNAME,
         port: Optional[int] = DEFAULT_SSH_PORT,
         username: Optional[str] = DEFAULT_SSH_USERNAME,
-        password: Optional[str] = DEFAULT_SSH_PASSWORD
+        password: Optional[str] = DEFAULT_SSH_PASSWORD,
     ):
         super().__init__(timeout=timeout)
 
@@ -294,7 +294,7 @@ class TLSConnection(GvmConnection):
         hostname: Optional[str] = DEFAULT_HOSTNAME,
         port: Optional[int] = DEFAULT_GVM_PORT,
         password: Optional[str] = None,
-        timeout: Optional[int] = DEFAULT_TIMEOUT
+        timeout: Optional[int] = DEFAULT_TIMEOUT,
     ):
         super().__init__(timeout=timeout)
 
@@ -348,7 +348,7 @@ class UnixSocketConnection(GvmConnection):
         self,
         *,
         path: Optional[str] = DEFAULT_UNIX_SOCKET_PATH,
-        timeout: Optional[int] = DEFAULT_TIMEOUT
+        timeout: Optional[int] = DEFAULT_TIMEOUT,
     ):
         super().__init__(timeout=timeout)
 

@@ -44,7 +44,7 @@ class XmlCommandElement:
         name: str,
         text: Optional[str] = None,
         *,
-        attrs: Optional[dict] = None
+        attrs: Optional[dict] = None,
     ):
         node = etree.SubElement(self._element, name, attrib=attrs)
         node.text = text

@@ -39,7 +39,7 @@ class GvmProtocol:
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None
+        transform: Optional[Callable[[str], Any]] = None,
     ):
         self._connection = connection
 

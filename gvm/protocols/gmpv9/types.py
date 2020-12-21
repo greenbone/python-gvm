@@ -505,8 +505,7 @@ def get_sort_order_from_string(
         return SortOrder[sort_order.upper()]
     except KeyError:
         raise InvalidArgument(
-            argument='sort_order',
-            function=get_sort_order_from_string.__name__,
+            argument='sort_order', function=get_sort_order_from_string.__name__
         ) from None
 
 

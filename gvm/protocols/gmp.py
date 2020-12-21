@@ -76,7 +76,7 @@ class Gmp(GvmProtocol):
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None
+        transform: Optional[Callable[[str], Any]] = None,
     ):
         super().__init__(connection, transform=EtreeCheckCommandTransform())
         self._gmp_transform = transform
