@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+* Add missing types and functions to "latest" GMP [#369](https://github.com/greenbone/python-gvm/pull/369)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.12.1...HEAD
 
