@@ -7,19 +7,26 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
+[Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.12.1...HEAD
+
+
+## [20.12.1] - 2020-12-16
+### Added
 * Added AUDIT and POLICY to EntityType enum [#353](https://github.com/greenbone/python-gvm/pull/353)
 
 ### Changed
 * added the `audits` parameter to `get_policy` [#345](https://github.com/greenbone/python-gvm/pull/345)
 * Update get_aggregates params in GMP 9.0 and newer [#359](https://github.com/greenbone/python-gvm/pull/359)
 
-### Deprecated
-### Removed
 ### Fixed
 * added `get_info_list` to v20.08, so it works as expected with new `InfoType` [#362](https://github.com/greenbone/python-gvm/pull/362)
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.11.3...HEAD
-
+[20.12.1]: https://github.com/greenbone/python-gvm/compare/v20.11.3...v20.12.1
 
 ## [20.11.3] - 2020-11-26
 ### Added
