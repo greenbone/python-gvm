@@ -4810,7 +4810,9 @@ class GmpV7Mixin(GvmProtocol):
             _xmlfamily.add_element("name", family[0])
 
             if len(family) != 3:
-                raise InvalidArgument("Family must be a tuple of 3. (str, bool, bool)")
+                raise InvalidArgument(
+                    "Family must be a tuple of 3. (str, bool, bool)"
+                )
 
             if not isinstance(family[1], bool) or not isinstance(
                 family[2], bool
