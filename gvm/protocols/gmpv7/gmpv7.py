@@ -4768,7 +4768,7 @@ class GmpV7Mixin(GvmProtocol):
     def modify_config_set_family_selection(
         self,
         config_id: str,
-        families: List[Tuple[str, bool]],
+        families: List[Tuple[str, bool, bool]],
         *,
         auto_add_new_families: Optional[bool] = True,
     ) -> Any:
@@ -4777,9 +4777,10 @@ class GmpV7Mixin(GvmProtocol):
 
         Arguments:
             config_id: UUID of scan config to modify.
-            families: A list of tuples with the first entry being the name
-                of the NVT family selected, second entry a boolean indicating
-                whether new NVTs should be added to the family automatically.
+            families: A list of tuples (str, bool, bool):
+                str: the name of the NVT family selected,
+                bool: add new NVTs  to the family automatically,
+                bool: include all NVTs from the family
             auto_add_new_families: Whether new families should be added to the
                 scan config automatically. Default: True.
         """
@@ -4805,20 +4806,22 @@ class GmpV7Mixin(GvmProtocol):
         for family in families:
             _xmlfamily = _xmlfamsel.add_element("family")
             _xmlfamily.add_element("name", family[0])
-            _xmlfamily.add_element("all", "1")
 
-            if len(family) < 2:
+            if len(family) != 3:
                 raise InvalidArgument(
-                    "Family must have boolean as second argument."
+                    "Family must be a tuple of 3. (str, bool, bool)"
                 )
 
-            if not isinstance(family[1], bool):
+            if not isinstance(family[1], bool) or not isinstance(
+                family[2], bool
+            ):
                 raise InvalidArgumentType(
                     function=self.modify_config_set_family_selection.__name__,
                     argument='families',
-                    arg_type='bool',
+                    arg_type='[tuple(str, bool, bool)]',
                 )
 
+            _xmlfamily.add_element("all", _to_bool(family[2]))
             _xmlfamily.add_element("growing", _to_bool(family[1]))
 
         return self._send_xml_command(cmd)
