@@ -4779,11 +4779,10 @@ class GmpV7Mixin(GvmProtocol):
 
         Arguments:
             config_id: UUID of scan config to modify.
-            families: A list of tuples with the first entry being the name
-                of the NVT family selected, second entry a boolean indicating
-                whether new NVTs should be added to the family automatically,
-                and third entry a boolean indicating whether all nvts from
-                the family should be included.
+            families: A list of tuples (str, bool, bool):
+                str: the name of the NVT family selected, 
+                bool: add new NVTs  to the family automatically,
+                bool: include all NVTs from the family
             auto_add_new_families: Whether new families should be added to the
                 scan config automatically. Default: True.
         """
@@ -4811,7 +4810,7 @@ class GmpV7Mixin(GvmProtocol):
             _xmlfamily.add_element("name", family[0])
 
             if len(family) != 3:
-                raise InvalidArgument("Family must have 3 arguments.")
+                raise InvalidArgument("Family must be a tuple of 3. (str, bool, bool)")
 
             if not isinstance(family[1], bool) or not isinstance(
                 family[2], bool
@@ -4819,7 +4818,7 @@ class GmpV7Mixin(GvmProtocol):
                 raise InvalidArgumentType(
                     function=self.modify_config_set_family_selection.__name__,
                     argument='families',
-                    arg_type='bool',
+                    arg_type='[tuple(str, bool, bool)]',
                 )
 
             _xmlfamily.add_element("all", _to_bool(family[2]))
