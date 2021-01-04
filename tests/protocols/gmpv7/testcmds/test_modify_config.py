@@ -132,7 +132,7 @@ class GmpModifyConfigTestCase:
             self.gmp.modify_config(
                 config_id='c1',
                 selection='family_selection',
-                families=[('foo', True)],
+                families=[('foo', True, True)],
             )
 
             self.assertEqual(len(w), 1)

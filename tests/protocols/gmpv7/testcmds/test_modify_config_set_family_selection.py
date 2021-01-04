@@ -24,7 +24,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType, InvalidArgument
 class GmpModifyConfigSetFamilySelectionTestCase:
     def test_modify_config_set_family_selection(self):
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=[('foo', True)]
+            config_id='c1', families=[('foo', True, True)]
         )
 
         self.connection.send.has_been_called_with(
@@ -41,7 +41,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         )
 
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=[('foo', True), ('bar', True)]
+            config_id='c1', families=[('foo', True, True), ('bar', True, True)]
         )
 
         self.connection.send.has_been_called_with(
@@ -63,7 +63,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         )
 
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=(('foo', True), ('bar', True))
+            config_id='c1', families=(('foo', True, True), ('bar', True, True))
         )
 
         self.connection.send.has_been_called_with(
@@ -79,6 +79,29 @@ class GmpModifyConfigSetFamilySelectionTestCase:
             '<name>bar</name>'
             '<all>1</all>'
             '<growing>1</growing>'
+            '</family>'
+            '</family_selection>'
+            '</modify_config>'
+        )
+
+        self.gmp.modify_config_set_family_selection(
+            config_id='c1',
+            families=[('foo', True, False), ('bar', False, True)],
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<family_selection>'
+            '<growing>1</growing>'
+            '<family>'
+            '<name>foo</name>'
+            '<all>0</all>'
+            '<growing>1</growing>'
+            '</family>'
+            '<family>'
+            '<name>bar</name>'
+            '<all>1</all>'
+            '<growing>0</growing>'
             '</family>'
             '</family_selection>'
             '</modify_config>'
@@ -87,12 +110,12 @@ class GmpModifyConfigSetFamilySelectionTestCase:
     def test_modify_config_set_family_selection_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_family_selection(
-                config_id=None, families=[('foo', True)]
+                config_id=None, families=[('foo', True, True)]
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_config_set_family_selection(
-                config_id='', families=[('foo', True)]
+                config_id='', families=[('foo', True, True)]
             )
 
         with self.assertRaises(RequiredArgument):
@@ -116,7 +139,9 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         self,
     ):
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=[('foo', True)], auto_add_new_families=True
+            config_id='c1',
+            families=[('foo', True, True)],
+            auto_add_new_families=True,
         )
 
         self.connection.send.has_been_called_with(
@@ -134,7 +159,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
 
         self.gmp.modify_config_set_family_selection(
             config_id='c1',
-            families=[('foo', True)],
+            families=[('foo', True, True)],
             auto_add_new_families=False,
         )
 
@@ -154,7 +179,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
     def test_modify_config_set_family_selection_with_auto_add_new_nvts(self):
         self.gmp.modify_config_set_family_selection(
             config_id='c1',
-            families=[('foo', True)],
+            families=[('foo', True, True)],
         )
 
         self.connection.send.has_been_called_with(
@@ -171,7 +196,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         )
 
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=[('foo', False)]
+            config_id='c1', families=[('foo', False, True)]
         )
 
         self.connection.send.has_been_called_with(
@@ -188,7 +213,8 @@ class GmpModifyConfigSetFamilySelectionTestCase:
         )
 
         self.gmp.modify_config_set_family_selection(
-            config_id='c1', families=[('foo', False), ('bar', True)]
+            config_id='c1',
+            families=[('foo', False, True), ('bar', True, False)],
         )
 
         self.connection.send.has_been_called_with(
@@ -202,7 +228,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
             '</family>'
             '<family>'
             '<name>bar</name>'
-            '<all>1</all>'
+            '<all>0</all>'
             '<growing>1</growing>'
             '</family>'
             '</family_selection>'
@@ -211,12 +237,17 @@ class GmpModifyConfigSetFamilySelectionTestCase:
 
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_config_set_family_selection(
-                config_id='c1', families=[('foo', 'False')]
+                config_id='c1', families=[('foo', 'False', 'True')]
             )
 
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_config_set_family_selection(
-                config_id='c1', families=[('foo', None)]
+                config_id='c1', families=[('foo', True, None)]
+            )
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_config_set_family_selection(
+                config_id='c1', families=[('foo', 'True', False)]
             )
 
         with self.assertRaises(InvalidArgument):

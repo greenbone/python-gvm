@@ -1224,7 +1224,7 @@ class GmpV9Mixin(GvmProtocol):
     def modify_policy_set_family_selection(
         self,
         policy_id: str,
-        families: List[Tuple[str, bool]],
+        families: List[Tuple[str, bool, bool]],
         *,
         auto_add_new_families: Optional[bool] = True
     ) -> Any:
@@ -1235,7 +1235,9 @@ class GmpV9Mixin(GvmProtocol):
             policy_id: UUID of policy to modify.
             families: A list of tuples with the first entry being the name
                 of the NVT family selected, second entry a boolean indicating
-                whether new NVTs should be added to the family automatically.
+                whether new NVTs should be added to the family automatically,
+                and third entry a boolean indicating whether all nvts from
+                the family should be included.
             auto_add_new_families: Whether new families should be added to the
                 policy automatically. Default: True.
         """
