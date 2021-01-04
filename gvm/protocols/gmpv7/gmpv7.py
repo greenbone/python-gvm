@@ -4780,7 +4780,7 @@ class GmpV7Mixin(GvmProtocol):
         Arguments:
             config_id: UUID of scan config to modify.
             families: A list of tuples (str, bool, bool):
-                str: the name of the NVT family selected, 
+                str: the name of the NVT family selected,
                 bool: add new NVTs  to the family automatically,
                 bool: include all NVTs from the family
             auto_add_new_families: Whether new families should be added to the
