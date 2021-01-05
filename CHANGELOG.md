@@ -11,15 +11,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
-
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.01.0...HEAD
-
-
-## [21.01.0] - 2021-01-04
-### Fixed
 * Add missing types and functions to "latest" GMP [#369](https://github.com/greenbone/python-gvm/pull/369)
 
-[21.01.0]: https://github.com/greenbone/python-gvm/compare/v20.12.1...HEAD
+[Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.12.1...HEAD
+
 
 ## [20.12.1] - 2020-12-16
 ### Added
