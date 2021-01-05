@@ -45,7 +45,7 @@ The current release of `python-gvm` can be used with all supported GOS versions.
 
 ### Requirements
 
-Python 3.5 and later is supported.
+Python 3.7 and later is supported.
 
 ### Install using pip
 

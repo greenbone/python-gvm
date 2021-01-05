@@ -146,7 +146,7 @@ class GmpV9Mixin(GvmProtocol):
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None
+        transform: Optional[Callable[[str], Any]] = None,
     ):
         super().__init__(connection, transform=transform)
 
@@ -164,7 +164,7 @@ class GmpV9Mixin(GvmProtocol):
         event_data: Optional[dict] = None,
         condition_data: Optional[dict] = None,
         filter_id: Optional[int] = None,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Create a new alert
 
@@ -281,7 +281,7 @@ class GmpV9Mixin(GvmProtocol):
         comment: Optional[str] = None,
         schedule_periods: Optional[int] = None,
         observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None
+        preferences: Optional[dict] = None,
     ) -> Any:
         """Create a new audit task
 
@@ -375,7 +375,7 @@ class GmpV9Mixin(GvmProtocol):
         *,
         resource_id: Optional[str] = None,
         resource_type: Optional[EntityType] = None,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         """Create a new permission
 
@@ -484,7 +484,7 @@ class GmpV9Mixin(GvmProtocol):
         resource_ids: Optional[List[str]] = None,
         value: Optional[str] = None,
         comment: Optional[str] = None,
-        active: Optional[bool] = None
+        active: Optional[bool] = None,
     ) -> Any:
         """Create a tag.
 
@@ -575,7 +575,7 @@ class GmpV9Mixin(GvmProtocol):
         comment: Optional[str] = None,
         schedule_periods: Optional[int] = None,
         observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None
+        preferences: Optional[dict] = None,
     ) -> Any:
         """Create a new scan task
 
@@ -621,7 +621,7 @@ class GmpV9Mixin(GvmProtocol):
         certificate: str,
         *,
         comment: Optional[str] = None,
-        trust: Optional[bool] = None
+        trust: Optional[bool] = None,
     ) -> Any:
         """Create a new TLS certificate
 
@@ -672,7 +672,7 @@ class GmpV9Mixin(GvmProtocol):
         first_group: Optional[int] = None,
         max_groups: Optional[int] = None,
         mode: Optional[int] = None,
-        **kwargs
+        **kwargs,
     ) -> Any:
         """Request aggregated information on a resource / entity type
 
@@ -827,7 +827,7 @@ class GmpV9Mixin(GvmProtocol):
         filter: Optional[str] = None,
         filter_id: Optional[str] = None,
         include_certificate_data: Optional[bool] = None,
-        details: Optional[bool] = None
+        details: Optional[bool] = None,
     ) -> Any:
         """Request a list of TLS certificates
 
@@ -894,7 +894,7 @@ class GmpV9Mixin(GvmProtocol):
         condition: Optional[AlertCondition] = None,
         condition_data: Optional[dict] = None,
         method: Optional[AlertMethod] = None,
-        method_data: Optional[dict] = None
+        method_data: Optional[dict] = None,
     ) -> Any:
         """Modifies an existing alert.
 
@@ -1005,7 +1005,7 @@ class GmpV9Mixin(GvmProtocol):
         comment: Optional[str] = None,
         alert_ids: Optional[List[str]] = None,
         observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None
+        preferences: Optional[dict] = None,
     ) -> Any:
         """Modifies an existing task.
 
@@ -1053,7 +1053,7 @@ class GmpV9Mixin(GvmProtocol):
         resource_id: Optional[str] = None,
         resource_type: Optional[EntityType] = None,
         subject_id: Optional[str] = None,
-        subject_type: Optional[PermissionSubjectType] = None
+        subject_type: Optional[PermissionSubjectType] = None,
     ) -> Any:
         """Modifies an existing permission.
 
@@ -1140,7 +1140,7 @@ class GmpV9Mixin(GvmProtocol):
         name: str,
         nvt_oid: str,
         *,
-        value: Optional[str] = None
+        value: Optional[str] = None,
     ) -> Any:
         """Modifies the nvt preferences of an existing policy.
 
@@ -1152,10 +1152,7 @@ class GmpV9Mixin(GvmProtocol):
                 and to use the default instead.
         """
         self.modify_config_set_nvt_preference(
-            config_id=policy_id,
-            name=name,
-            nvt_oid=nvt_oid,
-            value=value,
+            config_id=policy_id, name=name, nvt_oid=nvt_oid, value=value
         )
 
     def modify_policy_set_name(self, policy_id: str, name: str) -> Any:
@@ -1165,10 +1162,7 @@ class GmpV9Mixin(GvmProtocol):
             config_id: UUID of policy to modify.
             name: New name for the config.
         """
-        self.modify_config_set_name(
-            config_id=policy_id,
-            name=name,
-        )
+        self.modify_config_set_name(config_id=policy_id, name=name)
 
     def modify_policy_set_comment(
         self, policy_id: str, comment: Optional[str] = ""
@@ -1179,10 +1173,7 @@ class GmpV9Mixin(GvmProtocol):
             policy_id: UUID of policy to modify.
             comment: Comment to set on a config. Default: ''
         """
-        self.modify_config_set_comment(
-            config_id=policy_id,
-            comment=comment,
-        )
+        self.modify_config_set_comment(config_id=policy_id, comment=comment)
 
     def modify_policy_set_scanner_preference(
         self, policy_id: str, name: str, *, value: Optional[str] = None
@@ -1197,9 +1188,7 @@ class GmpV9Mixin(GvmProtocol):
 
         """
         self.modify_config_set_scanner_preference(
-            config_id=policy_id,
-            name=name,
-            value=value,
+            config_id=policy_id, name=name, value=value
         )
 
     def modify_policy_set_nvt_selection(
@@ -1216,9 +1205,7 @@ class GmpV9Mixin(GvmProtocol):
             nvt_oids: List of NVTs to select for the family.
         """
         self.modify_config_set_nvt_selection(
-            config_id=policy_id,
-            family=family,
-            nvt_oids=nvt_oids,
+            config_id=policy_id, family=family, nvt_oids=nvt_oids
         )
 
     def modify_policy_set_family_selection(
@@ -1226,7 +1213,7 @@ class GmpV9Mixin(GvmProtocol):
         policy_id: str,
         families: List[Tuple[str, bool, bool]],
         *,
-        auto_add_new_families: Optional[bool] = True
+        auto_add_new_families: Optional[bool] = True,
     ) -> Any:
         """
         Selected the NVTs of a policy at a family level.
@@ -1258,7 +1245,7 @@ class GmpV9Mixin(GvmProtocol):
         resource_action: Optional[str] = None,
         resource_type: Optional[EntityType] = None,
         resource_filter: Optional[str] = None,
-        resource_ids: Optional[List[str]] = None
+        resource_ids: Optional[List[str]] = None,
     ) -> Any:
         """Modifies an existing tag.
 
@@ -1339,7 +1326,7 @@ class GmpV9Mixin(GvmProtocol):
         *,
         name: Optional[str] = None,
         comment: Optional[str] = None,
-        trust: Optional[bool] = None
+        trust: Optional[bool] = None,
     ) -> Any:
         """Modifies an existing TLS certificate.
 
@@ -1402,7 +1389,7 @@ class GmpV9Mixin(GvmProtocol):
         details: Optional[bool] = None,
         families: Optional[bool] = None,
         preferences: Optional[bool] = None,
-        tasks: Optional[bool] = None
+        tasks: Optional[bool] = None,
     ) -> Any:
         """Request a list of scan configs
 
@@ -1441,7 +1428,7 @@ class GmpV9Mixin(GvmProtocol):
         details: Optional[bool] = None,
         families: Optional[bool] = None,
         preferences: Optional[bool] = None,
-        trash: Optional[bool] = None
+        trash: Optional[bool] = None,
     ) -> Any:
         """Request a list of policies
 
@@ -1508,7 +1495,7 @@ class GmpV9Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None
+        schedules_only: Optional[bool] = None,
     ) -> Any:
         """Request a list of tasks
 
@@ -1539,7 +1526,7 @@ class GmpV9Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None
+        schedules_only: Optional[bool] = None,
     ) -> Any:
         """Request a list of audits
 
@@ -1694,7 +1681,7 @@ class GmpV9Mixin(GvmProtocol):
         comment: Optional[str] = None,
         schedule_periods: Optional[int] = None,
         observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None
+        preferences: Optional[dict] = None,
     ) -> Any:
         if not name:
             raise RequiredArgument(function=function, argument='name')
@@ -1797,7 +1784,7 @@ class GmpV9Mixin(GvmProtocol):
         usage_type: UsageType,
         function: str,
         *,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         if not name:
             raise RequiredArgument(function=function, argument='name')
@@ -1820,7 +1807,7 @@ class GmpV9Mixin(GvmProtocol):
         usage_type: UsageType,
         function: str,
         *,
-        comment: Optional[str] = None
+        comment: Optional[str] = None,
     ) -> Any:
         if not name:
             raise RequiredArgument(function=function, argument='name')
@@ -1846,7 +1833,7 @@ class GmpV9Mixin(GvmProtocol):
         details: Optional[bool] = None,
         families: Optional[bool] = None,
         preferences: Optional[bool] = None,
-        tasks: Optional[bool] = None
+        tasks: Optional[bool] = None,
     ) -> Any:
         cmd = XmlCommand("get_configs")
         cmd.set_attribute("usage_type", usage_type.value)
@@ -1875,7 +1862,7 @@ class GmpV9Mixin(GvmProtocol):
         config_id: str,
         usage_type: UsageType,
         *,
-        tasks: Optional[bool] = None
+        tasks: Optional[bool] = None,
     ) -> Any:
         if not config_id:
             raise RequiredArgument(
@@ -1903,7 +1890,7 @@ class GmpV9Mixin(GvmProtocol):
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None
+        schedules_only: Optional[bool] = None,
     ) -> Any:
         cmd = XmlCommand("get_tasks")
         cmd.set_attribute("usage_type", usage_type.value)

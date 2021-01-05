@@ -55,7 +55,7 @@ class GmpV214Mixin(GvmProtocol):
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None
+        transform: Optional[Callable[[str], Any]] = None,
     ):
         super().__init__(connection, transform=transform)
 
@@ -73,7 +73,7 @@ class GmpV214Mixin(GvmProtocol):
         result_id: Optional[str] = None,
         severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
-        threat: Optional[SeverityLevel] = None
+        threat: Optional[SeverityLevel] = None,
     ) -> Any:
         """Create a new note
 
@@ -149,7 +149,7 @@ class GmpV214Mixin(GvmProtocol):
         new_severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
         threat: Optional[SeverityLevel] = None,
-        new_threat: Optional[SeverityLevel] = None
+        new_threat: Optional[SeverityLevel] = None,
     ) -> Any:
         """Create a new override
 
@@ -237,7 +237,7 @@ class GmpV214Mixin(GvmProtocol):
         result_id: Optional[str] = None,
         severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
-        threat: Optional[SeverityLevel] = None
+        threat: Optional[SeverityLevel] = None,
     ) -> Any:
         """Modifies an existing note.
 
@@ -312,7 +312,7 @@ class GmpV214Mixin(GvmProtocol):
         new_severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
         threat: Optional[SeverityLevel] = None,
-        new_threat: Optional[SeverityLevel] = None
+        new_threat: Optional[SeverityLevel] = None,
     ) -> Any:
         """Modifies an existing override.
 
@@ -402,7 +402,7 @@ class GmpV214Mixin(GvmProtocol):
         hosts_allow: Optional[bool] = False,
         ifaces: Optional[List[str]] = None,
         ifaces_allow: Optional[bool] = False,
-        group_ids: Optional[List[str]] = None
+        group_ids: Optional[List[str]] = None,
     ) -> Any:
 
         """Modifies an existing user. Most of the fields need to be supplied

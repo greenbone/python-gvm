@@ -7,8 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+* CI tests Python 3.9 now. [#367](https://github.com/greenbone/python-gvm/pull/367)
+
 ### Changed
 ### Deprecated
+* Dropped Python 3.5 and Python 3.6 support. Python 3.7+ is required now. [#367](https://github.com/greenbone/python-gvm/pull/367)
+
 ### Removed
 ### Fixed
 * Add missing types and functions to "latest" GMP [#369](https://github.com/greenbone/python-gvm/pull/369)

@@ -44,7 +44,7 @@ class Gmp(GmpV7Mixin):
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None
+        transform: Optional[Callable[[str], Any]] = None,
     ):
         super().__init__(connection, transform=transform)
 
