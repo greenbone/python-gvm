@@ -5,20 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [21.1.0] - 2021-01-05
 ### Added
 * CI tests Python 3.9 now. [#367](https://github.com/greenbone/python-gvm/pull/367)
 
-### Changed
 ### Deprecated
 * Dropped Python 3.5 and Python 3.6 support. Python 3.7+ is required now. [#367](https://github.com/greenbone/python-gvm/pull/367)
 
-### Removed
 ### Fixed
 * Add missing types and functions to "latest" GMP [#369](https://github.com/greenbone/python-gvm/pull/369)
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v20.12.1...HEAD
-
+[21.1.0]: https://github.com/greenbone/python-gvm/compare/v20.12.1...v21.1.0
 
 ## [20.12.1] - 2020-12-16
 ### Added
