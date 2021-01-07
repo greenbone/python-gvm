@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "python-gvm"
-version = "20.12.1.dev1"
+version = "21.1.2.dev1"
 description = "Library to communicate with remote servers over GMP or OSP" 
 license = "GPL-3.0-or-later"
 authors = ["Greenbone Networks GmbH <info@greenbone.net>"]
