@@ -12,8 +12,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Removed
 ### Fixed
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.1.0...HEAD
+[Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.1.1...HEAD
 
+
+## [21.1.1] - 2021-01-05
+### Fixed
+* Fixed release issues, through rerelease.
+
+[21.1.1]: https://github.com/greenbone/python-gvm/compare/v21.1.0...v21.1.1
 
 ## [21.1.0] - 2021-01-05
 ### Added
