@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Deprecated
 ### Removed
 ### Fixed
+* removing `timeout` from `get_nvt()` [376](https://github.com/greenbone/python-gvm/pull/376)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.1.1...HEAD
 

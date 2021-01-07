@@ -28,7 +28,7 @@ class GmpGetNvtTestCase:
         self.connection.send.has_been_called_with(
             (
                 '<get_nvts nvt_oid="nvt_oid" details="1" '
-                'preferences="1" preference_count="1" timeout="1"/>'
+                'preferences="1" preference_count="1"/>'
             )
         )
 
