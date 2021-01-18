@@ -20,6 +20,8 @@
 
 from .test_create_note import GmpCreateNoteTestCase
 from .test_create_override import GmpCreateOverrideTestCase
+from .test_create_target import GmpCreateTargetTestCase
 from .test_modify_note import GmpModifyNoteTestCase
 from .test_modify_override import GmpModifyOverrideTestCase
+from .test_modify_target import GmpModifyTargetTestCase
 from .test_modify_user import GmpModifyUserTestCase
