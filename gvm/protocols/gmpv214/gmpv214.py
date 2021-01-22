@@ -241,7 +241,7 @@ class GmpV214Mixin(GvmProtocol):
         esxi_credential_id: Optional[str] = None,
         snmp_credential_id: Optional[str] = None,
         alive_test: Optional[AliveTest] = None,
-        allow_simult_ips_same_host: Optional[bool] = None,
+        allow_simultaneous_ips: Optional[bool] = None,
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
         port_range: Optional[str] = None,
@@ -262,7 +262,7 @@ class GmpV214Mixin(GvmProtocol):
             snmp_credential_id: UUID of a snmp credential to use on target
             esxi_credential_id: UUID of a esxi credential to use on target
             alive_test: Which alive test to use
-            allow_simult_ips_same_host: Whether to scan multiple IPs of the
+            allow_simultaneous_ips: Whether to scan multiple IPs of the
                 same host simultaneously
             reverse_lookup_only: Whether to scan only hosts that have names
             reverse_lookup_unify: Whether to scan only one IP when multiple IPs
@@ -328,10 +328,10 @@ class GmpV214Mixin(GvmProtocol):
 
             cmd.add_element("alive_tests", alive_test.value)
 
-        if allow_simult_ips_same_host is not None:
+        if allow_simultaneous_ips is not None:
             cmd.add_element(
-                "allow_simult_ips_same_host",
-                _to_bool(allow_simult_ips_same_host),
+                "allow_simultaneous_ips",
+                _to_bool(allow_simultaneous_ips),
             )
 
         if reverse_lookup_only is not None:
@@ -529,7 +529,7 @@ class GmpV214Mixin(GvmProtocol):
         esxi_credential_id: Optional[str] = None,
         snmp_credential_id: Optional[str] = None,
         alive_test: Optional[AliveTest] = None,
-        allow_simult_ips_same_host: Optional[bool] = None,
+        allow_simultaneous_ips: Optional[bool] = None,
         reverse_lookup_only: Optional[bool] = None,
         reverse_lookup_unify: Optional[bool] = None,
         port_list_id: Optional[str] = None,
@@ -549,7 +549,7 @@ class GmpV214Mixin(GvmProtocol):
             snmp_credential_id: UUID of SNMP credential to use on target.
             port_list_id: UUID of port list describing ports to scan.
             alive_test: Which alive tests to use.
-            allow_simult_ips_same_host: Whether to scan multiple IPs of the
+            allow_simultaneous_ips: Whether to scan multiple IPs of the
                 same host simultaneously
             reverse_lookup_only: Whether to scan only hosts that have names.
             reverse_lookup_unify: Whether to scan only one IP when multiple IPs
@@ -606,10 +606,10 @@ class GmpV214Mixin(GvmProtocol):
         if snmp_credential_id:
             cmd.add_element("snmp_credential", attrs={"id": snmp_credential_id})
 
-        if allow_simult_ips_same_host is not None:
+        if allow_simultaneous_ips is not None:
             cmd.add_element(
-                "allow_simult_ips_same_host",
-                _to_bool(allow_simult_ips_same_host),
+                "allow_simultaneous_ips",
+                _to_bool(allow_simultaneous_ips),
             )
 
         if reverse_lookup_only is not None:

@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
-* Added allow_simult_ips_same_host param for targets [#380](https://github.com/greenbone/python-gvm/pull/380)
+* Added allow_simultaneous_ips param for targets [#380](https://github.com/greenbone/python-gvm/pull/380)
 
 ### Changed
 ### Deprecated

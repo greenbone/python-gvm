@@ -170,32 +170,28 @@ class GmpCreateTargetTestCase:
         with self.assertRaises(InvalidArgumentType):
             self.gmp.create_target('foo', hosts=['foo'], alive_test='foo')
 
-    def test_create_target_with_allow_simult_ips_same_host(self):
+    def test_create_target_with_allow_simultaneous_ips(self):
         self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            allow_simult_ips_same_host=True
+            'foo', hosts=['foo'], allow_simultaneous_ips=True
         )
 
         self.connection.send.has_been_called_with(
             '<create_target>'
             '<name>foo</name>'
             '<hosts>foo</hosts>'
-            '<allow_simult_ips_same_host>1</allow_simult_ips_same_host>'
+            '<allow_simultaneous_ips>1</allow_simultaneous_ips>'
             '</create_target>'
         )
 
         self.gmp.create_target(
-            'foo',
-            hosts=['foo'],
-            allow_simult_ips_same_host=False
+            'foo', hosts=['foo'], allow_simultaneous_ips=False
         )
 
         self.connection.send.has_been_called_with(
             '<create_target>'
             '<name>foo</name>'
             '<hosts>foo</hosts>'
-            '<allow_simult_ips_same_host>0</allow_simult_ips_same_host>'
+            '<allow_simultaneous_ips>0</allow_simultaneous_ips>'
             '</create_target>'
         )
 
