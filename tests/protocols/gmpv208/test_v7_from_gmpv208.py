@@ -448,10 +448,6 @@ class Gmpv208ImportReportFormatTestCase(
     pass
 
 
-class Gmpv208ImportReportTestCase(GmpImportReportTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208ModifyAssetTestCase(GmpModifyAssetTestCase, Gmpv208TestCase):
     pass
 

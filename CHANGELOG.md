@@ -7,11 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Added
+* Added allow_simultaneous_ips param for targets [#380](https://github.com/greenbone/python-gvm/pull/380)
+
 ### Changed
 ### Deprecated
 ### Removed
 ### Fixed
 * removing `timeout` from `get_nvt()` [376](https://github.com/greenbone/python-gvm/pull/376)
+* Fixing `import_report()` for v9 and v20.8 and newer, removed the `task_name` and `task_comment` parameters, that do not work anymore [377](https://github.com/greenbone/python-gvm/pull/377)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.1.1...HEAD
 

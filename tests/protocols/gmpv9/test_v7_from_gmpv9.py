@@ -458,10 +458,6 @@ class Gmpv9ImportReportFormatTestCase(
     pass
 
 
-class Gmpv9ImportReportTestCase(GmpImportReportTestCase, Gmpv9TestCase):
-    pass
-
-
 class Gmpv9ModifyAgentTestCase(GmpModifyAgentTestCase, Gmpv9TestCase):
     pass
 

@@ -236,3 +236,7 @@ class Gmpv208StartAuditTestCase(GmpStartAuditTestCase, Gmpv208TestCase):
 
 class Gmpv208StopAuditTestCase(GmpStopAuditTestCase, Gmpv208TestCase):
     pass
+
+
+class Gmpv208ImportReportTestCase(GmpImportReportTestCase, Gmpv208TestCase):
+    pass
