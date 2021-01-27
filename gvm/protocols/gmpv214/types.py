@@ -38,7 +38,6 @@ from gvm.protocols.gmpv208.types import (
     InfoType,
     PermissionSubjectType,
     PortRangeType,
-    ScannerType,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
     SortOrder,
@@ -60,7 +59,6 @@ from gvm.protocols.gmpv208.types import (
     get_info_type_from_string,
     get_permission_subject_type_from_string,
     get_port_range_type_from_string,
-    get_scanner_type_from_string,
     get_snmp_auth_algorithm_from_string,
     get_snmp_privacy_algorithm_from_string,
     get_sort_order_from_string,
@@ -144,3 +142,54 @@ def get_severity_level_from_string(
             argument='severity_level',
             function=get_severity_level_from_string.__name__,
         ) from None
+
+
+class ScannerType(Enum):
+    """ Enum for scanner type """
+
+    OSP_SCANNER_TYPE = "1"
+    OPENVAS_SCANNER_TYPE = "2"
+    CVE_SCANNER_TYPE = "3"
+    GREENBONE_SENSOR_SCANNER_TYPE = "5"
+
+
+def get_scanner_type_from_string(
+    scanner_type: Optional[str],
+) -> Optional[ScannerType]:
+    """Convert a scanner type string to an actual ScannerType instance
+
+    Arguments:
+        scanner_type: Scanner type string to convert to a ScannerType
+    """
+    if not scanner_type:
+        return None
+
+    scanner_type = scanner_type.lower()
+
+    if (
+        scanner_type == ScannerType.OSP_SCANNER_TYPE.value
+        or scanner_type == 'osp'
+    ):
+        return ScannerType.OSP_SCANNER_TYPE
+
+    if (
+        scanner_type == ScannerType.OPENVAS_SCANNER_TYPE.value
+        or scanner_type == 'openvas'
+    ):
+        return ScannerType.OPENVAS_SCANNER_TYPE
+
+    if (
+        scanner_type == ScannerType.CVE_SCANNER_TYPE.value
+        or scanner_type == 'cve'
+    ):
+        return ScannerType.CVE_SCANNER_TYPE
+
+    if (
+        scanner_type == ScannerType.GREENBONE_SENSOR_SCANNER_TYPE.value
+        or scanner_type == 'greenbone'
+    ):
+        return ScannerType.GREENBONE_SENSOR_SCANNER_TYPE
+
+    raise InvalidArgument(
+        argument='scanner_type', function=get_scanner_type_from_string.__name__
+    )
