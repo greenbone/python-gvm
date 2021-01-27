@@ -49,12 +49,14 @@ class GmpImportReportTestCase:
     def test_import_report_missing_report(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.import_report(
-                None, task_id=self.TASK_ID, 
+                None,
+                task_id=self.TASK_ID,
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.import_report(
-                '', task_id=self.TASK_ID, 
+                '',
+                task_id=self.TASK_ID,
             )
 
     def test_import_report_missing_task(self):
@@ -106,4 +108,3 @@ class GmpImportReportTestCase:
 
 if __name__ == '__main__':
     unittest.main()
-

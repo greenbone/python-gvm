@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -19,17 +19,17 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import FilterType, get_filter_type_from_string
+from gvm.protocols.gmpv214 import FilterType, get_filter_type_from_string
 
 
 class GetFilterTypeFomStringTestCase(unittest.TestCase):
-    def test_filter_type_alert(self):
-        ft = get_filter_type_from_string('alert')
-        self.assertEqual(ft, FilterType.ALERT)
-
     def test_filter_type_agent(self):
         with self.assertRaises(InvalidArgument):
             get_filter_type_from_string('agent')
+
+    def test_filter_type_alert(self):
+        ft = get_filter_type_from_string('alert')
+        self.assertEqual(ft, FilterType.ALERT)
 
     def test_filter_type_asset(self):
         ft = get_filter_type_from_string('asset')

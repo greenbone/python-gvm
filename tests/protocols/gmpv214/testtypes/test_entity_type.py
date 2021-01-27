@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import EntityType, get_entity_type_from_string
+from gvm.protocols.gmpv214 import EntityType, get_entity_type_from_string
 
 
 class GetEntityTypeFromStringTestCase(unittest.TestCase):
@@ -37,6 +37,10 @@ class GetEntityTypeFromStringTestCase(unittest.TestCase):
         with self.assertRaises(InvalidArgument):
             get_entity_type_from_string('agent')
 
+    def test_audit(self):
+        ct = get_entity_type_from_string('audit')
+        self.assertEqual(ct, EntityType.AUDIT)
+
     def test_alert(self):
         ct = get_entity_type_from_string('alert')
         self.assertEqual(ct, EntityType.ALERT)
@@ -44,10 +48,6 @@ class GetEntityTypeFromStringTestCase(unittest.TestCase):
     def test_asset(self):
         ct = get_entity_type_from_string('asset')
         self.assertEqual(ct, EntityType.ASSET)
-
-    def test_audit(self):
-        ct = get_entity_type_from_string('audit')
-        self.assertEqual(ct, EntityType.AUDIT)
 
     def test_cert_bund_adv(self):
         ct = get_entity_type_from_string('cert_bund_adv')

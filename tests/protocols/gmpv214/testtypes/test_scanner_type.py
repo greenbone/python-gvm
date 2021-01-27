@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv9 import ScannerType, get_scanner_type_from_string
+from gvm.protocols.gmpv214 import ScannerType, get_scanner_type_from_string
 
 
 class GetScannerTypeFromStringTestCase(unittest.TestCase):
@@ -55,11 +55,11 @@ class GetScannerTypeFromStringTestCase(unittest.TestCase):
         self.assertEqual(ct, ScannerType.CVE_SCANNER_TYPE)
 
     def test_gmp_scanner(self):
-        ct = get_scanner_type_from_string('4')
-        self.assertEqual(ct, ScannerType.GMP_SCANNER_TYPE)
+        with self.assertRaises(InvalidArgument):
+            get_scanner_type_from_string('4')
 
-        ct = get_scanner_type_from_string('gmp')
-        self.assertEqual(ct, ScannerType.GMP_SCANNER_TYPE)
+        with self.assertRaises(InvalidArgument):
+            get_scanner_type_from_string('gmp')
 
     def test_greenbone_sensor_scanner(self):
         ct = get_scanner_type_from_string('5')

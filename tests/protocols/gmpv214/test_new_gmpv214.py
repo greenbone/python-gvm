@@ -46,3 +46,11 @@ class Gmpv214ModifyTargetTestCase(GmpModifyTargetTestCase, Gmpv214TestCase):
 
 class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
     pass
+
+
+class Gmpv214CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv214TestCase):
+    pass
