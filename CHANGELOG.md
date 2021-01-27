@@ -12,7 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Deprecated
 ### Removed
+
 ### Fixed
+* Add missing ReportFormatType to GMP 21.04 [#385](https://github.com/greenbone/python-gvm/pull/385)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.1.2...HEAD
 
