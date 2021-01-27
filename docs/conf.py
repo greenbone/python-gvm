@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -24,7 +24,7 @@ import gvm
 # -- Project information -----------------------------------------------------
 
 project = 'python-gvm'
-copyright = '2018 - 2019, Greenbone Networks GmbH'
+copyright = '2018 - 2021, Greenbone Networks GmbH'
 author = 'Greenbone Networks GmbH'
 
 # The short X.Y version
