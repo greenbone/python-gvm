@@ -15,10 +15,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-"""Latest supported stable protocols.
+"""Latest supported protocols, including unstable ones.
 
-This module exposes the latest supported protocols for the newest stable
-release branch of GVM.
+This module exposes the latest supported protocols of GVM including versions
+not yet released as stable.
 
 The provided Gmp class implements the latest `Greenbone Management
 Protocol`_.
@@ -28,14 +28,14 @@ For details about the possible supported protocol versions please take a look at
 :py:mod:`gvm.protocols`.
 
 Exports:
-  - :py:class:`gvm.protocols.gmpv208.Gmp`
+  - :py:class:`gvm.protocols.gmpv214.Gmp`
   - :py:class:`gvm.protocols.ospv1.Osp`
 
 .. _Greenbone Management Protocol:
     https://docs.greenbone.net/API/GMP/gmp.html
 """
 
-from .gmpv208 import (
+from .gmpv214 import (
     Gmp,
     AggregateStatistic,
     AlertCondition,
@@ -52,7 +52,6 @@ from .gmpv208 import (
     InfoType,
     PermissionSubjectType,
     PortRangeType,
-    ReportFormatType,
     ScannerType,
     SeverityLevel,
     SnmpAuthAlgorithm,
@@ -76,7 +75,6 @@ from .gmpv208 import (
     get_info_type_from_string,
     get_permission_subject_type_from_string,
     get_port_range_type_from_string,
-    get_report_format_id_from_string,
     get_scanner_type_from_string,
     get_severity_level_from_string,
     get_snmp_auth_algorithm_from_string,
@@ -106,7 +104,6 @@ __all__ = [
     "InfoType",
     "PermissionSubjectType",
     "PortRangeType",
-    "ReportFormatType",
     "ScannerType",
     "SeverityLevel",
     "SnmpAuthAlgorithm",
@@ -130,7 +127,6 @@ __all__ = [
     "get_info_type_from_string",
     "get_permission_subject_type_from_string",
     "get_port_range_type_from_string",
-    "get_report_format_id_from_string",
     "get_scanner_type_from_string",
     "get_severity_level_from_string",
     "get_snmp_auth_algorithm_from_string",

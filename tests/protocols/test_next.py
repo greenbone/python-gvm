@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2019 Greenbone Networks GmbH
+# Copyright (C) 2018 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -15,22 +15,19 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-"""
-Package for supported Greenbone Protocol versions.
 
-Currently `GMP version 7`_, `GMP version 8`_, `GMP version 9`_ ,
-`GMP version 20.08`_, `GMP version 21.04`_ and `OSP version 1`_ are supported.
+import unittest
 
-.. _GMP version 7:
-    https://docs.greenbone.net/API/GMP/gmp-7.0.html
-.. _GMP version 8:
-    https://docs.greenbone.net/API/GMP/gmp-8.0.html
-.. _GMP version 9:
-    https://docs.greenbone.net/API/GMP/gmp-9.0.html
-.. _GMP version 20.08:
-    https://docs.greenbone.net/API/GMP/gmp-20.08.html
-.. _GMP version 21.04:
-    https://docs.greenbone.net/API/GMP/gmp-21.04.html
-.. _OSP version 1:
-    https://docs.greenbone.net/API/OSP/osp-1.2.html
-"""
+from gvm.protocols.next import Gmp, Osp
+
+
+class LatestProtocolsTestCase(unittest.TestCase):
+    def test_gmp_version(self):
+        self.assertEqual(Gmp.get_protocol_version(), (21, 4))
+
+    def test_osp_version(self):
+        self.assertEqual(Osp.get_protocol_version(), (1, 2))
+
+
+if __name__ == '__main__':
+    unittest.main()
