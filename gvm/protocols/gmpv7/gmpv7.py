@@ -4602,7 +4602,7 @@ class GmpV7Mixin(GvmProtocol):
 
         Arguments:
             config_id: UUID of scan config to modify.
-            name: Name for preference to change.
+            name: Name for nvt preference to change.
             nvt_oid: OID of the NVT associated with preference to modify
             value: New value for the preference. None to delete the preference
                 and to use the default instead.
