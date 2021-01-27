@@ -5,12 +5,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [21.1.2] - 2021-01-27
 ### Added
 * Added allow_simultaneous_ips param for targets [#380](https://github.com/greenbone/python-gvm/pull/380)
 
-### Changed
-### Deprecated
 ### Removed
 * dropped the GMP Scanner (4) from `ScannerTypes` for v21.4 [#383](https://github.com/greenbone/python-gvm/pull/383)
 
@@ -19,8 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 * Add `ReportFormatType` and `get_report_format_id_from_string` to `latest.py`, so it is usable with `import gvm.protcols.latest`[#381](https://github.com/greenbone/python-gvm/pull/381)
 * Fixing `import_report()` for v9 and v20.8 and newer, removed the `task_name` and `task_comment` parameters, that do not work anymore [#377](https://github.com/greenbone/python-gvm/pull/377)
 
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.1.1...HEAD
-
+[21.1.2]: https://github.com/greenbone/python-gvm/compare/v21.1.1...v21.1.2
 
 ## [21.1.1] - 2021-01-05
 ### Fixed
