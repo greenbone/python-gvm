@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2019-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -32,6 +32,10 @@ class GetEntityTypeFromStringTestCase(unittest.TestCase):
         self.assertIsNone(ct)
         ct = get_entity_type_from_string('')
         self.assertIsNone(ct)
+
+    def test_agent(self):
+        with self.assertRaises(InvalidArgument):
+            get_entity_type_from_string('agent')
 
     def test_alert(self):
         ct = get_entity_type_from_string('alert')
