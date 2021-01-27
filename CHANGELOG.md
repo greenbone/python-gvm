@@ -10,8 +10,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 ### Deprecated
 ### Removed
+* dropped the GMP Scanner (4) from `ScannerTypes` for v21.4 [#383](https://github.com/greenbone/python-gvm/pull/383)
+
 ### Fixed
-* removing `timeout` from `get_nvt()` [376](https://github.com/greenbone/python-gvm/pull/376)
+* removing `timeout` from `get_nvt()` [#376](https://github.com/greenbone/python-gvm/pull/376)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.1.1...HEAD
 
