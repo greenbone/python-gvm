@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv9 import (
+from gvm.protocols.gmpv214 import (
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
     get_snmp_auth_algorithm_from_string,

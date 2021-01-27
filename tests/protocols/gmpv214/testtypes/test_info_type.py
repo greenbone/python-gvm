@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv9 import InfoType, get_info_type_from_string
+from gvm.protocols.gmpv214 import InfoType, get_info_type_from_string
 
 
 class GetInfoTypeFromStringTestCase(unittest.TestCase):
@@ -58,8 +58,8 @@ class GetInfoTypeFromStringTestCase(unittest.TestCase):
         self.assertEqual(ct, InfoType.OVALDEF)
 
     def test_allinfo(self):
-        ct = get_info_type_from_string('allinfo')
-        self.assertEqual(ct, InfoType.ALLINFO)
+        with self.assertRaises(InvalidArgument):
+            get_info_type_from_string('allinfo')
 
 
 if __name__ == '__main__':

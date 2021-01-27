@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -19,7 +19,10 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv9 import AlertCondition, get_alert_condition_from_string
+from gvm.protocols.gmpv214 import (
+    AlertCondition,
+    get_alert_condition_from_string,
+)
 
 
 class GetAlertConditionFromStringTestCase(unittest.TestCase):

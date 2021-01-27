@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv9 import TimeUnit, get_time_unit_from_string
+from gvm.protocols.gmpv214 import TimeUnit, get_time_unit_from_string
 
 
 class GetTimeUnitFromStringTestCase(unittest.TestCase):
