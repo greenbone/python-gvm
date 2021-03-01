@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020 Greenbone Networks GmbH
+# Copyright (C) 2020-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -28,6 +28,10 @@ class Gmpv214CreateOverrideTestCase(GmpCreateOverrideTestCase, Gmpv214TestCase):
     pass
 
 
+class Gmpv214CreateTargetTestCase(GmpCreateTargetTestCase, Gmpv214TestCase):
+    pass
+
+
 class Gmpv214ModifyNoteTestCase(GmpModifyNoteTestCase, Gmpv214TestCase):
     pass
 
@@ -36,5 +40,17 @@ class Gmpv214ModifyOverrideTestCase(GmpModifyOverrideTestCase, Gmpv214TestCase):
     pass
 
 
+class Gmpv214ModifyTargetTestCase(GmpModifyTargetTestCase, Gmpv214TestCase):
+    pass
+
+
 class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv214TestCase):
     pass

@@ -4,7 +4,7 @@ build-backend = "poetry.masonry.api"
 
 [tool.poetry]
 name = "python-gvm"
-version = "21.1.2.dev1"
+version = "21.1.4.dev1"
 description = "Library to communicate with remote servers over GMP or OSP" 
 license = "GPL-3.0-or-later"
 authors = ["Greenbone Networks GmbH <info@greenbone.net>"]
@@ -37,15 +37,15 @@ defusedxml = "^0.6.0"
 
 
 [tool.poetry.dev-dependencies]
-coverage = "^5.3"
-pylint = "^2.6"
-sphinx = "^3.4.1"
+coverage = "^5.5"
+pylint = "^2.7"
+sphinx = "^3.5.1"
 sphinx-autodoc-typehints = "^1.11.1"
 autohooks = "^2.2.0"
 autohooks-plugin-pylint = "^1.2.0"
 autohooks-plugin-black = "^1.2.0"
 black = "20.8b1"
-pontos = "^0.3.1"
+pontos = "^21.2.0"
 
 [tool.black]
 line-length = 80

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2020 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -28,6 +28,8 @@ import collections
 import numbers
 
 from typing import Any, List, Optional, Callable, Tuple
+
+from lxml import etree
 
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import deprecation
@@ -1976,5 +1978,50 @@ class GmpV9Mixin(GvmProtocol):
 
         cmd = XmlCommand("stop_task")
         cmd.set_attribute("task_id", audit_id)
+
+        return self._send_xml_command(cmd)
+
+    def import_report(
+        self,
+        report: str,
+        *,
+        task_id: Optional[str] = None,
+        in_assets: Optional[bool] = None,
+    ) -> Any:
+        """Import a Report from XML
+
+        Arguments:
+            report: Report XML as string to import. This XML must contain
+                a :code:`<report>` root element.
+            task_id: UUID of task to import report to
+            in_asset: Whether to create or update assets using the report
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not report:
+            raise RequiredArgument(
+                function=self.import_report.__name__, argument='report'
+            )
+
+        cmd = XmlCommand("create_report")
+
+        if task_id:
+            cmd.add_element("task", attrs={"id": task_id})
+        else:
+            raise RequiredArgument(
+                function=self.import_report.__name__,
+                argument='task_id',
+            )
+
+        if in_assets is not None:
+            cmd.add_element("in_assets", _to_bool(in_assets))
+
+        try:
+            cmd.append_xml_str(report)
+        except etree.XMLSyntaxError as e:
+            raise InvalidArgument(
+                "Invalid xml passed as report to import_report {}".format(e)
+            ) from None
 
         return self._send_xml_command(cmd)

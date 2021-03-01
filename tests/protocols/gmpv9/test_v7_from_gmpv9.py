@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2019-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -455,10 +455,6 @@ class Gmpv9ImportConfigTestCase(GmpImportConfigTestCase, Gmpv9TestCase):
 class Gmpv9ImportReportFormatTestCase(
     GmpImportReportFormatTestCase, Gmpv9TestCase
 ):
-    pass
-
-
-class Gmpv9ImportReportTestCase(GmpImportReportTestCase, Gmpv9TestCase):
     pass
 
 

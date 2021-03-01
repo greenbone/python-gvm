@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019 Greenbone Networks GmbH
+# Copyright (C) 2019-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -235,4 +235,8 @@ class Gmpv208StartAuditTestCase(GmpStartAuditTestCase, Gmpv208TestCase):
 
 
 class Gmpv208StopAuditTestCase(GmpStopAuditTestCase, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208ImportReportTestCase(GmpImportReportTestCase, Gmpv208TestCase):
     pass

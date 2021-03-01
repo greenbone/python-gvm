@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018 - 2019 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -15,9 +15,10 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-"""Latest supported protocols.
+"""Latest supported stable protocols.
 
-This module exposes the latest supported protocols of gvm.
+This module exposes the latest supported protocols for the newest stable
+release branch of GVM.
 
 The provided Gmp class implements the latest `Greenbone Management
 Protocol`_.
@@ -27,7 +28,7 @@ For details about the possible supported protocol versions please take a look at
 :py:mod:`gvm.protocols`.
 
 Exports:
-  - :py:class:`gvm.protocols.gmpv20.08Gmp`
+  - :py:class:`gvm.protocols.gmpv208.Gmp`
   - :py:class:`gvm.protocols.ospv1.Osp`
 
 .. _Greenbone Management Protocol:
@@ -51,6 +52,7 @@ from .gmpv208 import (
     InfoType,
     PermissionSubjectType,
     PortRangeType,
+    ReportFormatType,
     ScannerType,
     SeverityLevel,
     SnmpAuthAlgorithm,
@@ -74,6 +76,7 @@ from .gmpv208 import (
     get_info_type_from_string,
     get_permission_subject_type_from_string,
     get_port_range_type_from_string,
+    get_report_format_id_from_string,
     get_scanner_type_from_string,
     get_severity_level_from_string,
     get_snmp_auth_algorithm_from_string,
@@ -103,6 +106,7 @@ __all__ = [
     "InfoType",
     "PermissionSubjectType",
     "PortRangeType",
+    "ReportFormatType",
     "ScannerType",
     "SeverityLevel",
     "SnmpAuthAlgorithm",
@@ -126,6 +130,7 @@ __all__ = [
     "get_info_type_from_string",
     "get_permission_subject_type_from_string",
     "get_port_range_type_from_string",
+    "get_report_format_id_from_string",
     "get_scanner_type_from_string",
     "get_severity_level_from_string",
     "get_snmp_auth_algorithm_from_string",

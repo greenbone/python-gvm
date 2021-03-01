@@ -1,5 +1,5 @@
 # -*- coding utf-8 -*-
-# Copyright (C) 2020 Greenbone Networks GmbH
+# Copyright (C) 2020-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier GPL-3.0-or-later
 #
@@ -80,3 +80,4 @@ from .test_modify_tls_certificate import GmpModifyTLSCertificateTestCase
 from .test_resume_audit import GmpResumeAuditTestCase
 from .test_start_audit import GmpStartAuditTestCase
 from .test_stop_audit import GmpStopAuditTestCase
+from .test_import_report import GmpImportReportTestCase
