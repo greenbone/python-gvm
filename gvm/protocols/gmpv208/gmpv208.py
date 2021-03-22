@@ -369,8 +369,8 @@ class GmpV208Mixin(GvmProtocol):
         comment: Optional[str] = None,
         scanner_preferences: Optional[List[Tuple[str, str]]] = None,
         nvt_preferences: Optional[List[Tuple[str, str, str]]] = None,
-        nvt_families: Optional[List[Tuple[str, List[str]]]] = None,
-        families: Optional[List[Tuple[str, bool, bool]]] = None,
+        nvts: Optional[List[Tuple[str, List[str]]]] = None,
+        nvt_families: Optional[List[Tuple[str, bool, bool]]] = None,
         auto_add_new_families: Optional[bool] = True,
     ) -> Any:
         """Modifies the name of an existing scan config
@@ -383,13 +383,14 @@ class GmpV208Mixin(GvmProtocol):
                 str: the name of the Scanner preference to modify,
                 str: the new value, None to set to default value
             nvt_preference: A list of tuples (str, str, str):
-                str: the name of the NVT preference to modify,
                 str: the OID of that NVT,
+                str: the preference name of that NVT to modify,
+                     MUST BE: "nvt_oid:id:value_type:name"
                 str: the new value, None to set to default value
-            nvt_families: List of NVT families to include NVTs from
-                str: the name of the NVT family to modadd NVTsify,
+            nvts: List of NVT families to include NVTs from
+                str: the name of the NVT family to modify,
                 List(str): List of NVTs to select for that family.
-            families: A list of tuples (str, bool, bool):
+            nvt_families: A list of tuples (str, bool, bool):
                 str: the name of the NVT family selected,
                 bool: add new NVTs to the family automatically,
                 bool: include all NVTs from the family
@@ -406,9 +407,10 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("config_id", str(config_id))
 
         # Name and Comment modification
-        if name:
+        print("Bello!")
+        if name is not None:
             cmd.add_element("name", name)
-        if comment:
+        if comment is not None:
             cmd.add_element("comment", comment)
 
         # Scanner Preference modification
@@ -419,16 +421,19 @@ class GmpV208Mixin(GvmProtocol):
                 if preference[1] is not None:
                     _xmlpref.add_element("value", _to_base64(preference[1]))
 
+        # NVT Preference modification
         if nvt_preferences:
             for preference in nvt_preferences:
                 _xmlpref = cmd.add_element("preference")
-                _xmlpref.add_element("name", preference[0])
-                _xmlpref.add_element("nvt", attrs={"oid": preference[1]})
+                _xmlpref.add_element("nvt", attrs={"oid": preference[0]})
+                # Name must be "nvt_oid:id:value_type:name"
+                # ids start at 1
+                _xmlpref.add_element("name", preference[1])
                 if preference[2] is not None:
                     _xmlpref.add_element("value", _to_base64(preference[2]))
 
-        if nvt_families:
-            for family in nvt_families:
+        if nvts:
+            for family in nvts:
                 if not _is_list_like(family[1]):
                     raise InvalidArgumentType(
                         function=self.modify_config.__name__,
@@ -440,8 +445,8 @@ class GmpV208Mixin(GvmProtocol):
                 for nvt in family[1]:
                     _xmlnvtsel.add_element("nvt", attrs={"oid": nvt})
 
-        if families:
-            if not _is_list_like(families):
+        if nvt_families:
+            if not _is_list_like(nvt_families):
                 raise InvalidArgumentType(
                     function=self.modify_config.__name__,
                     argument='families',
@@ -451,7 +456,7 @@ class GmpV208Mixin(GvmProtocol):
             _xmlfamsel = cmd.add_element("family_selection")
             _xmlfamsel.add_element("growing", _to_bool(auto_add_new_families))
 
-            for family in families:
+            for family in nvt_families:
                 _xmlfamily = _xmlfamsel.add_element("family")
                 _xmlfamily.add_element("name", family[0])
 
