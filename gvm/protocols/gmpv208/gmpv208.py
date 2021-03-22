@@ -40,7 +40,7 @@ from gvm.protocols.gmpv7.gmpv7 import (
     _to_base64,
 )
 from gvm.connections import GvmConnection
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 
 from gvm.protocols.base import GvmProtocol
 
@@ -407,7 +407,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("config_id", str(config_id))
 
         # Name and Comment modification
-        print("Bello!")
         if name is not None:
             cmd.add_element("name", name)
         if comment is not None:
@@ -415,6 +414,12 @@ class GmpV208Mixin(GvmProtocol):
 
         # Scanner Preference modification
         if scanner_preferences:
+            if not _is_list_like(scanner_preferences):
+                raise InvalidArgumentType(
+                    function=self.modify_config.__name__,
+                    argument='scanner_preferences',
+                    arg_type='list',
+                )
             for preference in scanner_preferences:
                 _xmlpref = cmd.add_element("preference")
                 _xmlpref.add_element("name", preference[0])
@@ -423,6 +428,12 @@ class GmpV208Mixin(GvmProtocol):
 
         # NVT Preference modification
         if nvt_preferences:
+            if not _is_list_like(nvt_preferences):
+                raise InvalidArgumentType(
+                    function=self.modify_config.__name__,
+                    argument='nvt_preferences',
+                    arg_type='list',
+                )
             for preference in nvt_preferences:
                 _xmlpref = cmd.add_element("preference")
                 _xmlpref.add_element("nvt", attrs={"oid": preference[0]})
@@ -433,11 +444,17 @@ class GmpV208Mixin(GvmProtocol):
                     _xmlpref.add_element("value", _to_base64(preference[2]))
 
         if nvts:
+            if not _is_list_like(nvts):
+                raise InvalidArgumentType(
+                    function=self.modify_config.__name__,
+                    argument='nvts',
+                    arg_type='list',
+                )
             for family in nvts:
                 if not _is_list_like(family[1]):
                     raise InvalidArgumentType(
                         function=self.modify_config.__name__,
-                        argument='nvt_oids',
+                        argument='nvts',
                         arg_type='list',
                     )
                 _xmlnvtsel = cmd.add_element("nvt_selection")
@@ -449,7 +466,7 @@ class GmpV208Mixin(GvmProtocol):
             if not _is_list_like(nvt_families):
                 raise InvalidArgumentType(
                     function=self.modify_config.__name__,
-                    argument='families',
+                    argument='nvt_families',
                     arg_type='list',
                 )
 

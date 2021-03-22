@@ -456,10 +456,6 @@ class Gmpv208ModifyAuthTestCase(GmpModifyAuthTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208ModifyConfigTestCase(GmpModifyConfigTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208ModifyConfigSetCommentTestCase(
     GmpModifyConfigSetCommentTestCase, Gmpv208TestCase
 ):
