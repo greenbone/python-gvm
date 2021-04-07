@@ -1,3 +1,15 @@
+python-gvm (21.5.2-gos2008~2) gos20.08; urgency=medium
+
+  * Added self to uploaders.
+  * Satisfied lintian warnings (Closes: PL-52):
+    * Fixed issue numbering in changelog.
+    * Added description to patch.
+    * Added overrides for unnecessry files.
+    * Fixed description in control file.
+    * Made copyright "secure".
+
+ -- Carlos A. Parra F. <carlos.parra@greenbone.net>  Mon, 21 Jun 2021 11:51:55 +0200
+
 python-gvm (21.5.2-gos2008~1) gos20.08; urgency=medium
 
   * New upstream release 21.5.2-gos2008~1. (PL-540)
