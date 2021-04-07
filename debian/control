@@ -21,7 +21,8 @@ Package: python3-gvm
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}
 Conflicts: python3-gvm-tools
-Replaces:  python3-gvm-tools
+Replaces: python3-gvm-tools
 Description: Library for gvm-tools
+ ·
  This package installs the library necessary for the gvm-tools.
- So that it can be used from inside another python program.
+ So that it can be used from inside another Python program.
