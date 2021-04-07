@@ -1,3 +1,6 @@
+Description: We need the setup.py again as Debian is a nightmare with pip and poetry packaging.
+Author: Raphael Grewe <raphael.grewe@greenbone.net>
+
 --- /dev/null
 +++ /setup.py
 @@ -0,0 +1,62 @@
