@@ -1,0 +1,4 @@
+# Unnecessary files
+python3-gvm: no-actions-file
+python3-gvm: no-defaults-file
+python3-gvm: no-module-file

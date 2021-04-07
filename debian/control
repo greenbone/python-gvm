@@ -1,5 +1,5 @@
 Source: python-gvm
-Section: admin
+Section: python
 Priority: optional
 Maintainer: Greenbone Networks GmbH <info@greenbone.net>
 Uploaders: Sascha Howey <sascha.howey@greenbone.net>,
