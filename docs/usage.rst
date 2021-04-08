@@ -280,8 +280,8 @@ Full Example
 
 .. code-block:: python
 
-    from osp.connections import UnixSocketConnection
-    from osp.protocols.latest import Osp
+    from gvm.connections import UnixSocketConnection
+    from gvm.protocols.latest import Osp
 
     # path to unix socket
     path = '/var/run/ospd-wrapper.sock'
