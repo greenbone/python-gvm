@@ -2010,8 +2010,7 @@ class GmpV9Mixin(GvmProtocol):
             cmd.add_element("task", attrs={"id": task_id})
         else:
             raise RequiredArgument(
-                function=self.import_report.__name__,
-                argument='task_id',
+                function=self.import_report.__name__, argument='task_id'
             )
 
         if in_assets is not None:

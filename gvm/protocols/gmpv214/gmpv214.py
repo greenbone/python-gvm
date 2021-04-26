@@ -330,8 +330,7 @@ class GmpV214Mixin(GvmProtocol):
 
         if allow_simultaneous_ips is not None:
             cmd.add_element(
-                "allow_simultaneous_ips",
-                _to_bool(allow_simultaneous_ips),
+                "allow_simultaneous_ips", _to_bool(allow_simultaneous_ips)
             )
 
         if reverse_lookup_only is not None:
@@ -608,8 +607,7 @@ class GmpV214Mixin(GvmProtocol):
 
         if allow_simultaneous_ips is not None:
             cmd.add_element(
-                "allow_simultaneous_ips",
-                _to_bool(allow_simultaneous_ips),
+                "allow_simultaneous_ips", _to_bool(allow_simultaneous_ips)
             )
 
         if reverse_lookup_only is not None:
