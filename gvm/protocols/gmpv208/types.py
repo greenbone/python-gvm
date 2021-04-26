@@ -190,7 +190,7 @@ def get_entity_type_from_string(
 
 
 class FeedType(Enum):
-    """Enum for feed types """
+    """Enum for feed types"""
 
     NVT = "NVT"
     CERT = "CERT"
