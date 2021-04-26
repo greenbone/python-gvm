@@ -110,7 +110,7 @@ __all__ = [
 
 
 class EntityType(Enum):
-    """Enum for entity types """
+    """Enum for entity types"""
 
     AGENT = "agent"
     ALERT = "alert"
@@ -177,7 +177,7 @@ def get_entity_type_from_string(
 
 
 class FilterType(Enum):
-    """Enum for filter types """
+    """Enum for filter types"""
 
     AGENT = "agent"
     ALERT = "alert"
@@ -239,7 +239,7 @@ def get_filter_type_from_string(
 
 
 class CredentialType(Enum):
-    """ Enum for credential types """
+    """Enum for credential types"""
 
     CLIENT_CERTIFICATE = 'cc'
     SNMP = 'snmp'
@@ -267,7 +267,7 @@ def get_credential_type_from_string(
 
 
 class TicketStatus(Enum):
-    """Enum for ticket status """
+    """Enum for ticket status"""
 
     OPEN = 'Open'
     FIXED = 'Fixed'

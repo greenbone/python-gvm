@@ -190,7 +190,7 @@ class GmpGetAggregatesTestCase:
                     'field': 'severity',
                     'stat': AggregateStatistic.MEAN,
                     'order': SortOrder.DESCENDING,
-                },
+                }
             ],
             data_columns=['severity'],
         )
@@ -350,9 +350,7 @@ class GmpGetAggregatesTestCase:
         Test get_aggregates calls with mode
         """
         self.gmp.get_aggregates(
-            EntityType.NVT,
-            group_column='name',
-            mode='word_counts',
+            EntityType.NVT, group_column='name', mode='word_counts'
         )
 
         self.connection.send.has_been_called_with(

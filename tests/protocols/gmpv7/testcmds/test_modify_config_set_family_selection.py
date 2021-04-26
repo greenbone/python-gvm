@@ -178,8 +178,7 @@ class GmpModifyConfigSetFamilySelectionTestCase:
 
     def test_modify_config_set_family_selection_with_auto_add_new_nvts(self):
         self.gmp.modify_config_set_family_selection(
-            config_id='c1',
-            families=[('foo', True, True)],
+            config_id='c1', families=[('foo', True, True)]
         )
 
         self.connection.send.has_been_called_with(

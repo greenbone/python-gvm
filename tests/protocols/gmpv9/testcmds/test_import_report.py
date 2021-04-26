@@ -48,16 +48,10 @@ class GmpImportReportTestCase:
 
     def test_import_report_missing_report(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.import_report(
-                None,
-                task_id=self.TASK_ID,
-            )
+            self.gmp.import_report(None, task_id=self.TASK_ID)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.import_report(
-                '',
-                task_id=self.TASK_ID,
-            )
+            self.gmp.import_report('', task_id=self.TASK_ID)
 
     def test_import_report_missing_task(self):
         with self.assertRaises(RequiredArgument):
@@ -65,15 +59,11 @@ class GmpImportReportTestCase:
 
     def test_import_report_invalid_xml(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.import_report(
-                'Foo',  # not root tag
-                task_id=self.TASK_ID,
-            )
+            self.gmp.import_report('Foo', task_id=self.TASK_ID)  # not root tag
 
         with self.assertRaises(InvalidArgument):
             self.gmp.import_report(
-                '<Foo>',  # missing closing tag
-                task_id=self.TASK_ID,
+                '<Foo>', task_id=self.TASK_ID  # missing closing tag
             )
 
     def test_import_report_with_in_assets(self):

@@ -69,7 +69,7 @@ __all__ = [
 
 
 class AlertEvent(Enum):
-    """Enum for alert event types """
+    """Enum for alert event types"""
 
     TASK_RUN_STATUS_CHANGED = 'Task run status changed'
     UPDATED_SECINFO_ARRIVED = 'Updated SecInfo arrived'
@@ -79,7 +79,7 @@ class AlertEvent(Enum):
 def get_alert_event_from_string(
     alert_event: Optional[str],
 ) -> Optional[AlertEvent]:
-    """Convert an alert event string into a AlertEvent instance """
+    """Convert an alert event string into a AlertEvent instance"""
     if not alert_event:
         return None
 
@@ -100,7 +100,7 @@ def get_alert_event_from_string(
 
 
 class AlertCondition(Enum):
-    """Enum for alert condition types """
+    """Enum for alert condition types"""
 
     ALWAYS = 'Always'
     SEVERITY_AT_LEAST = 'Severity at least'
@@ -111,7 +111,7 @@ class AlertCondition(Enum):
 def get_alert_condition_from_string(
     alert_condition: Optional[str],
 ) -> Optional[AlertCondition]:
-    """Convert an alert condition string into a AlertCondition instance """
+    """Convert an alert condition string into a AlertCondition instance"""
     if not alert_condition:
         return None
 
@@ -153,7 +153,7 @@ class AlertMethod(Enum):
 def get_alert_method_from_string(
     alert_method: Optional[str],
 ) -> Optional[AlertMethod]:
-    """Convert an alert method string into a AlertCondition instance """
+    """Convert an alert method string into a AlertCondition instance"""
     if not alert_method:
         return None
 
@@ -181,7 +181,7 @@ def get_alert_method_from_string(
 
 
 class AliveTest(Enum):
-    """Enum for choosing an alive test """
+    """Enum for choosing an alive test"""
 
     SCAN_CONFIG_DEFAULT = 'Scan Config Default'
     ICMP_PING = 'ICMP Ping'
@@ -201,7 +201,7 @@ class AliveTest(Enum):
 def get_alive_test_from_string(
     alive_test: Optional[str],
 ) -> Optional[AliveTest]:
-    """Convert an alive test string into a AliveTest instance """
+    """Convert an alive test string into a AliveTest instance"""
     if not alive_test:
         return None
 
@@ -243,7 +243,7 @@ def get_alive_test_from_string(
 
 
 class AssetType(Enum):
-    """"Enum for asset types """
+    """ "Enum for asset types"""
 
     OPERATING_SYSTEM = 'os'
     HOST = 'host'
@@ -267,7 +267,7 @@ def get_asset_type_from_string(
 
 
 class CredentialFormat(Enum):
-    """ Enum for credential format """
+    """Enum for credential format"""
 
     KEY = 'key'
     RPM = 'rpm'
@@ -292,7 +292,7 @@ def get_credential_format_from_string(
 
 
 class CredentialType(Enum):
-    """Enum for credential types """
+    """Enum for credential types"""
 
     CLIENT_CERTIFICATE = 'cc'
     SNMP = 'snmp'
@@ -317,7 +317,7 @@ def get_credential_type_from_string(
 
 
 class EntityType(Enum):
-    """Enum for entity types """
+    """Enum for entity types"""
 
     AGENT = "agent"
     ALERT = "alert"
@@ -377,7 +377,7 @@ def get_entity_type_from_string(
 
 
 class FeedType(Enum):
-    """Enum for feed types """
+    """Enum for feed types"""
 
     NVT = "NVT"
     CERT = "CERT"
@@ -398,7 +398,7 @@ def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
 
 
 class FilterType(Enum):
-    """Enum for filter types """
+    """Enum for filter types"""
 
     AGENT = "agent"
     ALERT = "alert"
@@ -455,7 +455,7 @@ def get_filter_type_from_string(
 
 
 class HostsOrdering(Enum):
-    """ Enum for host ordering during scans """
+    """Enum for host ordering during scans"""
 
     SEQUENTIAL = "sequential"
     RANDOM = "random"
@@ -482,7 +482,7 @@ def get_hosts_ordering_from_string(
 
 
 class InfoType(Enum):
-    """ Enum for info types """
+    """Enum for info types"""
 
     CERT_BUND_ADV = "CERT_BUND_ADV"
     CPE = "CPE"
@@ -510,7 +510,7 @@ def get_info_type_from_string(info_type: Optional[str]) -> Optional[InfoType]:
 
 
 class PermissionSubjectType(Enum):
-    """ Enum for permission subject type """
+    """Enum for permission subject type"""
 
     USER = 'user'
     GROUP = 'group'
@@ -540,7 +540,7 @@ def get_permission_subject_type_from_string(
 
 
 class PortRangeType(Enum):
-    """ Enum for port range type """
+    """Enum for port range type"""
 
     TCP = 'TCP'
     UDP = 'UDP'
@@ -567,7 +567,7 @@ def get_port_range_type_from_string(
 
 
 class ReportFormatType(Enum):
-    """ Enum for builtin report formats """
+    """Enum for builtin report formats"""
 
     ANONYMOUS_XML = '5057e5cc-b825-11e4-9d0e-28d24461215b'
     ARF = '910200ca-dc05-11e1-954f-406186ea4fc5'
@@ -593,7 +593,7 @@ class ReportFormatType(Enum):
 def get_report_format_id_from_string(
     report_format: Optional[str],
 ) -> Optional[ReportFormatType]:
-    """Convert an report format name into a ReportFormatType instance """
+    """Convert an report format name into a ReportFormatType instance"""
     if not report_format:
         return None
 
@@ -663,7 +663,7 @@ def get_report_format_id_from_string(
 
 
 class ScannerType(Enum):
-    """ Enum for scanner type """
+    """Enum for scanner type"""
 
     OSP_SCANNER_TYPE = "1"
     OPENVAS_SCANNER_TYPE = "2"
@@ -714,7 +714,7 @@ def get_scanner_type_from_string(
 
 
 class SnmpAuthAlgorithm(Enum):
-    """ Enum for SNMP auth algorithm """
+    """Enum for SNMP auth algorithm"""
 
     SHA1 = 'sha1'
     MD5 = 'md5'
@@ -737,7 +737,7 @@ def get_snmp_auth_algorithm_from_string(
 
 
 class SnmpPrivacyAlgorithm(Enum):
-    """ Enum for SNMP privacy algorithm """
+    """Enum for SNMP privacy algorithm"""
 
     AES = 'aes'
     DES = 'des'
@@ -762,7 +762,7 @@ def get_snmp_privacy_algorithm_from_string(
 
 
 class SeverityLevel(Enum):
-    """ Enum for severity levels """
+    """Enum for severity levels"""
 
     HIGH = "High"
     MEDIUM = "Medium"
@@ -775,7 +775,7 @@ class SeverityLevel(Enum):
 def get_severity_level_from_string(
     severity_level: Optional[str],
 ) -> Optional[SeverityLevel]:
-    """ Convert a severity level string into a SeverityLevel instance """
+    """Convert a severity level string into a SeverityLevel instance"""
     if not severity_level:
         return None
 
@@ -789,7 +789,7 @@ def get_severity_level_from_string(
 
 
 class TimeUnit(Enum):
-    """ Enum for time units """
+    """Enum for time units"""
 
     SECOND = "second"
     MINUTE = "minute"
@@ -802,7 +802,7 @@ class TimeUnit(Enum):
 
 
 def get_time_unit_from_string(time_unit: Optional[str]) -> Optional[TimeUnit]:
-    """ Convert a time unit string into a TimeUnit instance """
+    """Convert a time unit string into a TimeUnit instance"""
     if not time_unit:
         return None
 
@@ -826,7 +826,7 @@ class UserAuthType(Enum):
 def get_user_auth_type_from_string(
     user_auth_type: Optional[str],
 ) -> Optional[UserAuthType]:
-    """ Convert a user auth type string into a UserAuthType instance """
+    """Convert a user auth type string into a UserAuthType instance"""
     if not user_auth_type:
         return None
 

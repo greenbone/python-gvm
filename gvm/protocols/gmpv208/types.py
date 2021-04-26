@@ -121,7 +121,7 @@ __all__ = [
 
 
 class EntityType(Enum):
-    """Enum for entity types """
+    """Enum for entity types"""
 
     ALERT = "alert"
     ASSET = "asset"
@@ -192,7 +192,7 @@ def get_entity_type_from_string(
 
 
 class FilterType(Enum):
-    """Enum for filter types """
+    """Enum for filter types"""
 
     ALERT = "alert"
     ASSET = "asset"
@@ -257,7 +257,7 @@ def get_filter_type_from_string(
 
 
 class InfoType(Enum):
-    """Enum for info types """
+    """Enum for info types"""
 
     CERT_BUND_ADV = "CERT_BUND_ADV"
     CPE = "CPE"
