@@ -68,3 +68,7 @@ class Gmpv214ModifyReportFormatTestCase(
 
 class Gmpv214ModifyTagTestCase(GmpModifyTagTestCase, Gmpv214TestCase):
     pass
+
+
+class Gmpv214GetFeedTestCase(GmpGetFeedTestCase, Gmpv214TestCase):
+    pass

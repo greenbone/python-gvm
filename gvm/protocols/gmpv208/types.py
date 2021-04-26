@@ -31,7 +31,6 @@ from gvm.protocols.gmpv9.types import (
     AssetType,
     CredentialFormat,
     CredentialType,
-    FeedType,
     HostsOrdering,
     PermissionSubjectType,
     PortRangeType,
@@ -52,7 +51,6 @@ from gvm.protocols.gmpv9.types import (
     get_asset_type_from_string,
     get_credential_format_from_string,
     get_credential_type_from_string,
-    get_feed_type_from_string,
     get_hosts_ordering_from_string,
     get_permission_subject_type_from_string,
     get_port_range_type_from_string,
@@ -188,6 +186,28 @@ def get_entity_type_from_string(
         raise InvalidArgument(
             argument='entity_type',
             function=get_entity_type_from_string.__name__,
+        ) from None
+
+
+class FeedType(Enum):
+    """Enum for feed types"""
+
+    NVT = "NVT"
+    CERT = "CERT"
+    SCAP = "SCAP"
+    GVMD_DATA = "GVMD_DATA"
+
+
+def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
+    """Convert a feed type string into a FeedType instance"""
+    if not feed_type:
+        return None
+
+    try:
+        return FeedType[feed_type.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='feed_type', function=get_feed_type_from_string.__name__
         ) from None
 
 

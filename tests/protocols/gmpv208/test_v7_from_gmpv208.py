@@ -266,10 +266,6 @@ class Gmpv208GetCredentialsTestCase(GmpGetCredentialsTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208GetFeedTestCase(GmpGetFeedTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetFeedsTestCase(GmpGetFeedsTestCase, Gmpv208TestCase):
     pass
 

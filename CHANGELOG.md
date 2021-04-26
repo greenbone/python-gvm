@@ -8,6 +8,8 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 ## [Unreleased]
 ### Added
 ### Changed
+* `get_feed` can also be requested with `GVMD_DATA` for 20.08 and newer, added `GVMD_DATA` to the FeedType and updated API call [#434](https://github.com/greenbone/python-gvm/pull/434)
+
 ### Deprecated
 ### Removed
 ### Fixed
