@@ -274,9 +274,7 @@ class GmpCreateTagTestCase:
         """
         with self.assertRaises(InvalidArgumentType):
             self.gmp.create_tag(
-                name='foo',
-                resource_ids=['foo'],
-                resource_type='INVALID',
+                name='foo', resource_ids=['foo'], resource_type='INVALID'
             )
 
 

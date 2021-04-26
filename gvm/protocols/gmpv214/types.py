@@ -123,7 +123,7 @@ __all__ = [
 
 
 class SeverityLevel(Enum):
-    """ Enum for severity levels """
+    """Enum for severity levels"""
 
     HIGH = "High"
     MEDIUM = "Medium"
@@ -135,7 +135,7 @@ class SeverityLevel(Enum):
 def get_severity_level_from_string(
     severity_level: Optional[str],
 ) -> Optional[SeverityLevel]:
-    """ Convert a severity level string into a SeverityLevel instance """
+    """Convert a severity level string into a SeverityLevel instance"""
     if not severity_level:
         return None
 
@@ -149,7 +149,7 @@ def get_severity_level_from_string(
 
 
 class ScannerType(Enum):
-    """ Enum for scanner type """
+    """Enum for scanner type"""
 
     OSP_SCANNER_TYPE = "1"
     OPENVAS_SCANNER_TYPE = "2"

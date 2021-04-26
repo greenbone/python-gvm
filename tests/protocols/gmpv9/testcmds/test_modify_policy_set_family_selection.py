@@ -175,8 +175,7 @@ class GmpModifyPolicySetFamilySelectionTestCase:
         )
 
         self.gmp.modify_policy_set_family_selection(
-            policy_id='c1',
-            families=[('foo', False, True)],
+            policy_id='c1', families=[('foo', False, True)]
         )
 
         self.connection.send.has_been_called_with(

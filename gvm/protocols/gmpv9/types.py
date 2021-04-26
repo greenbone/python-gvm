@@ -147,7 +147,7 @@ def get_aggregate_statistic_from_string(
 
 
 class EntityType(Enum):
-    """Enum for entity types """
+    """Enum for entity types"""
 
     AGENT = "agent"
     ALERT = "alert"
@@ -219,7 +219,7 @@ def get_entity_type_from_string(
 
 
 class AlertEvent(Enum):
-    """Enum for alert event types """
+    """Enum for alert event types"""
 
     TASK_RUN_STATUS_CHANGED = 'Task run status changed'
     UPDATED_SECINFO_ARRIVED = 'Updated SecInfo arrived'
@@ -232,7 +232,7 @@ class AlertEvent(Enum):
 def get_alert_event_from_string(
     alert_event: Optional[str],
 ) -> Optional[AlertEvent]:
-    """Convert an alert event string into a AlertEvent instance """
+    """Convert an alert event string into a AlertEvent instance"""
     if not alert_event:
         return None
 
@@ -262,7 +262,7 @@ def get_alert_event_from_string(
 
 
 class AlertCondition(Enum):
-    """Enum for alert condition types """
+    """Enum for alert condition types"""
 
     ALWAYS = 'Always'
     ERROR = 'Error'
@@ -275,7 +275,7 @@ class AlertCondition(Enum):
 def get_alert_condition_from_string(
     alert_condition: Optional[str],
 ) -> Optional[AlertCondition]:
-    """Convert an alert condition string into a AlertCondition instance """
+    """Convert an alert condition string into a AlertCondition instance"""
     if not alert_condition:
         return None
 
@@ -325,7 +325,7 @@ class AlertMethod(Enum):
 def get_alert_method_from_string(
     alert_method: Optional[str],
 ) -> Optional[AlertMethod]:
-    """Convert an alert method string into a AlertCondition instance """
+    """Convert an alert method string into a AlertCondition instance"""
     if not alert_method:
         return None
 
@@ -359,7 +359,7 @@ def get_alert_method_from_string(
 
 
 class FilterType(Enum):
-    """Enum for filter types """
+    """Enum for filter types"""
 
     AGENT = "agent"
     ALERT = "alert"
@@ -425,7 +425,7 @@ def get_filter_type_from_string(
 
 
 class ScannerType(Enum):
-    """ Enum for scanner type """
+    """Enum for scanner type"""
 
     OSP_SCANNER_TYPE = "1"
     OPENVAS_SCANNER_TYPE = "2"
@@ -510,7 +510,7 @@ def get_sort_order_from_string(
 
 
 class _UsageType(Enum):
-    """Enum for usage types """
+    """Enum for usage types"""
 
     AUDIT = "audit"
     POLICY = "policy"
