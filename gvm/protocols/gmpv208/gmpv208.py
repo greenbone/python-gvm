@@ -354,3 +354,29 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("port_list", attrs={"id": port_list_id})
 
         return self._send_xml_command(cmd)
+
+    def get_feed(self, feed_type: Optional[FeedType]) -> Any:
+        """Request a single feed
+
+        Arguments:
+            feed_type: Type of single feed to get: NVT, CERT or SCAP
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not feed_type:
+            raise RequiredArgument(
+                function=self.get_feed.__name__, argument='feed_type'
+            )
+
+        if not isinstance(feed_type, FeedType):
+            raise InvalidArgumentType(
+                function=self.get_feed.__name__,
+                argument='feed_type',
+                arg_type=FeedType.__name__,
+            )
+
+        cmd = XmlCommand("get_feeds")
+        cmd.set_attribute("type", feed_type.value)
+
+        return self._send_xml_command(cmd)
