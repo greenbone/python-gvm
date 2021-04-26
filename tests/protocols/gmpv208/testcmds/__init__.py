@@ -30,3 +30,4 @@ from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_permission import GmpModifyPermissionTestCase
 from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_tag import GmpModifyTagTestCase
+from .test_get_feed import GmpGetFeedTestCase
