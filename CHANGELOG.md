@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Calendar Versioning](https://calver.org)html).
 
+## [Unreleased]
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
+[Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.4.0...HEAD
+
+
 ## [21.4.0] - 2021-04-26
 ### Changed
 * `get_feed` can also be requested with `GVMD_DATA` for 20.08 and newer, added `GVMD_DATA` to the FeedType and updated API call [#434](https://github.com/greenbone/python-gvm/pull/434)
