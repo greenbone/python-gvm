@@ -158,7 +158,7 @@ if it has been lost.
 * Run pontos-release release
 
   ```sh
-  poetry run pontos-release --project python-gvm --space greenbone release --release-version <version> --git-remote-name upstream release
+  poetry run pontos-release --project python-gvm --space greenbone release --release-version <version> --git-remote-name upstream
 
 ## Uploading to the 'real' PyPI
 
