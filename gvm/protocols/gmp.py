@@ -25,7 +25,6 @@ from gvm.errors import GvmError
 
 from gvm.protocols.base import GvmProtocol, GvmConnection
 
-from gvm.protocols.gmpv7 import Gmp as Gmpv7
 from gvm.protocols.gmpv8 import Gmp as Gmpv8
 from gvm.protocols.gmpv9 import Gmp as Gmpv9
 from gvm.protocols.gmpv208 import Gmp as Gmpv208
@@ -36,7 +35,7 @@ from gvm.transforms import EtreeCheckCommandTransform
 from gvm.xml import XmlCommand
 
 SUPPORTED_GMP_VERSIONS = Union[  # pylint: disable=invalid-name
-    Gmpv7, Gmpv8, Gmpv9, Gmpv208, Gmpv214
+    Gmpv8, Gmpv9, Gmpv208, Gmpv214
 ]
 
 
@@ -102,15 +101,13 @@ class Gmp(GvmProtocol):
         """
         version = self.determine_remote_gmp_version()
         major_version = int(version.split('.')[0])
-        if major_version == 7:
-            gmp_class = Gmpv7
-        elif major_version == 8:
+        if major_version == 8:
             gmp_class = Gmpv8
         elif major_version == 9:
             gmp_class = Gmpv9
         elif major_version == 20:
             gmp_class = Gmpv208
-        elif major_version >= 21:
+        elif major_version == 21:
             gmp_class = Gmpv214
         else:
             raise GvmError(
