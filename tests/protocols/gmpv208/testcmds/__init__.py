@@ -86,3 +86,13 @@ from .test_resume_audit import GmpResumeAuditTestCase
 from .test_start_audit import GmpStartAuditTestCase
 from .test_stop_audit import GmpStopAuditTestCase
 from .test_import_report import GmpImportReportTestCase
+from .test_clone_ticket import GmpCloneTicketTestCase
+from .test_create_schedule import GmpCreateScheduleTestCase
+from .test_create_ticket import GmpCreateTicketTestCase
+from .test_delete_ticket import GmpDeleteTicketTestCase
+from .test_get_ticket import GmpGetTicketTestCase
+from .test_get_tickets import GmpGetTargetsTestCase
+from .test_get_vulnerabilities import GmpGetVulnerabilitiesTestCase
+from .test_get_vulnerability import GmpGetVulnerabilityTestCase
+from .test_modify_schedule import GmpModifyScheduleTestCase
+from .test_protocol_version import GmpProtocolVersionTestCase
