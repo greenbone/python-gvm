@@ -1488,6 +1488,44 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def clone_alert(self, alert_id: str) -> Any:
+        """Clone an existing alert
+
+        Arguments:
+            alert_id: UUID of an existing alert to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not alert_id:
+            raise RequiredArgument(
+                function=self.clone_alert.__name__, argument='alert_id'
+            )
+
+        cmd = XmlCommand("create_alert")
+        cmd.add_element("copy", alert_id)
+        return self._send_xml_command(cmd)
+
+    def clone_ticket(self, ticket_id: str) -> Any:
+        """Clone an existing ticket
+
+        Arguments:
+            ticket_id: UUID of an existing ticket to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not ticket_id:
+            raise RequiredArgument(
+                function=self.clone_ticket.__name__, argument='ticket_id'
+            )
+
+        cmd = XmlCommand("create_ticket")
+
+        _copy = cmd.add_element("copy", ticket_id)
+
+        return self._send_xml_command(cmd)
+
     def clone_tls_certificate(self, tls_certificate_id: str) -> Any:
         """Modifies an existing TLS certificate.
 
