@@ -23,9 +23,6 @@ from tests.protocols import GmpTestCase
 from gvm.errors import GvmError
 
 from gvm.protocols.gmp import Gmp
-from gvm.protocols.gmpv7 import Gmp as Gmpv7
-from gvm.protocols.gmpv8 import Gmp as Gmpv8
-from gvm.protocols.gmpv9 import Gmp as Gmpv9
 from gvm.protocols.gmpv208 import Gmp as Gmpv208
 from gvm.protocols.gmpv214 import Gmp as Gmpv214
 
@@ -41,9 +38,9 @@ class GmpContextManagerTestCase(GmpTestCase):
             '</get_version_response>'
         )
 
-        with self.gmp as gmp:
-            self.assertEqual(gmp.get_protocol_version(), (7,))
-            self.assertIsInstance(gmp, Gmpv7)
+        with self.assertRaises(GvmError):
+            with self.gmp:
+                pass
 
     def test_select_gmpv8(self):
         self.connection.read.return_value(
@@ -52,9 +49,9 @@ class GmpContextManagerTestCase(GmpTestCase):
             '</get_version_response>'
         )
 
-        with self.gmp as gmp:
-            self.assertEqual(gmp.get_protocol_version(), (8,))
-            self.assertIsInstance(gmp, Gmpv8)
+        with self.assertRaises(GvmError):
+            with self.gmp:
+                pass
 
     def test_select_gmpv9(self):
         self.connection.read.return_value(
@@ -63,9 +60,9 @@ class GmpContextManagerTestCase(GmpTestCase):
             '</get_version_response>'
         )
 
-        with self.gmp as gmp:
-            self.assertEqual(gmp.get_protocol_version(), (9,))
-            self.assertIsInstance(gmp, Gmpv9)
+        with self.assertRaises(GvmError):
+            with self.gmp:
+                pass
 
     def test_select_gmpv208(self):
         self.connection.read.return_value(

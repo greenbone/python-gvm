@@ -37,12 +37,6 @@ from lxml import etree
 from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.base import GvmProtocol
-from gvm.protocols.gmpv7.gmpv7 import (
-    _to_bool,
-    _add_filter,
-    _is_list_like,
-    _to_comma_list,
-)
 from gvm.utils import deprecation
 from gvm.xml import create_parser, XmlCommand
 

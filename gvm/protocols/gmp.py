@@ -48,8 +48,8 @@ class Gmp(GvmProtocol):
             from gvm.protocols.gmp import Gmp
 
             with Gmp(connection) as gmp:
-                # gmp can be an instance of gvm.protocols.gmpv7.Gmp,
-                # gvm.protocols.gmpv8.Gmp or gvm.protocols.gmpv9.Gmp depending
+                # gmp can be an instance of gvm.protocols.gmpv20.8.Gmp,
+                # gvm.protocols.gmpv21.4.Gmp depending
                 # on the supported GMP version of the remote manager daemon
                 resp = gmp.get_tasks()
 
