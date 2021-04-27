@@ -20,7 +20,7 @@ import unittest
 
 from gvm.errors import RequiredArgument
 
-from gvm.protocols.gmpv7 import PortRangeType
+from gvm.protocols.gmpv208 import PortRangeType
 
 
 class GmpCreatePortRangeTestCase:

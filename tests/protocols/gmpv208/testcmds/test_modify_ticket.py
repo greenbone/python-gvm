@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
-from gvm.protocols.gmpv9 import TicketStatus
+from gvm.protocols.gmpv208 import TicketStatus
 
 
 class GmpModifyTicketTestCase:

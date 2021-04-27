@@ -20,7 +20,7 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv9 import AlertCondition, AlertEvent, AlertMethod
+from gvm.protocols.gmpv208 import AlertCondition, AlertEvent, AlertMethod
 
 
 class GmpModifyAlertTestCase:

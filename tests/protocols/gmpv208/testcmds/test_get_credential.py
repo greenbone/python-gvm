@@ -20,7 +20,7 @@ import unittest
 
 from gvm.errors import InvalidArgumentType, RequiredArgument
 
-from gvm.protocols.gmpv7 import CredentialFormat
+from gvm.protocols.gmpv208 import CredentialFormat
 
 
 class GmpGetCredentialTestCase:

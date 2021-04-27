@@ -20,7 +20,7 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv7 import AssetType
+from gvm.protocols.gmpv208 import AssetType
 
 
 class GmpGetAssetTestCase:

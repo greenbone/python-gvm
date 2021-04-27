@@ -22,7 +22,7 @@ from decimal import Decimal
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv7 import SeverityLevel
+from gvm.protocols.gmpv208 import SeverityLevel
 
 
 class GmpCreateNoteTestCase:

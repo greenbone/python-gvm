@@ -22,7 +22,7 @@ from collections import OrderedDict
 
 from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv7 import HostsOrdering
+from gvm.protocols.gmpv208 import HostsOrdering
 
 
 class GmpModifyTaskCommandTestCase:

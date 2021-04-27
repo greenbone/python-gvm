@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
-from gvm.protocols.gmpv9 import ScannerType
+from gvm.protocols.gmpv208 import ScannerType
 
 
 class GmpModifyScannerTestCase:

@@ -20,7 +20,7 @@ import unittest
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv7 import AliveTest
+from gvm.protocols.gmpv208 import AliveTest
 
 
 class GmpModifyTargetTestCase:
