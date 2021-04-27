@@ -30,9 +30,6 @@ from typing import Any, Callable, Optional
 
 from gvm.protocols.gmpv214.gmpv214 import GmpV214Mixin
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
-from gvm.protocols.gmpv9.gmpv9 import GmpV9Mixin
-from gvm.protocols.gmpv8.gmpv8 import GmpV8Mixin
-from gvm.protocols.gmpv7.gmpv7 import GmpV7Mixin
 from gvm.connections import GvmConnection
 
 
@@ -42,7 +39,7 @@ from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 PROTOCOL_VERSION = (21, 4)
 
 
-class Gmp(GmpV214Mixin, GmpV208Mixin, GmpV9Mixin, GmpV8Mixin, GmpV7Mixin):
+class Gmp(GmpV214Mixin, GmpV208Mixin):
 
     types = types
 
