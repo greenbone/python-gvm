@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv7 import UserAuthType
+from gvm.protocols.gmpv208 import UserAuthType
 
 
 class GmpModifyUserTestCase:

@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv9 import (
+from gvm.protocols.gmpv208 import (
     AggregateStatistic,
     get_aggregate_statistic_from_string,
 )
