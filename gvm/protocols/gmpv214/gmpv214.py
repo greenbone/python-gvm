@@ -31,7 +31,7 @@ import numbers
 
 from gvm.utils import deprecation
 from gvm.xml import XmlCommand
-from gvm.protocols.gmpv7.gmpv7 import _to_comma_list, _to_bool
+from gvm.protocols.gmpv208.gmpv208 import _to_comma_list, _to_bool
 
 from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgumentType, RequiredArgument

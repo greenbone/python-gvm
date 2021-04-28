@@ -37,12 +37,6 @@ from lxml import etree
 from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.base import GvmProtocol
-from gvm.protocols.gmpv7.gmpv7 import (
-    _to_bool,
-    _add_filter,
-    _is_list_like,
-    _to_comma_list,
-)
 from gvm.utils import deprecation
 from gvm.xml import create_parser, XmlCommand
 
@@ -1485,6 +1479,44 @@ class GmpV208Mixin(GvmProtocol):
 
         if trust:
             cmd.add_element("trust", _to_bool(trust))
+
+        return self._send_xml_command(cmd)
+
+    def clone_alert(self, alert_id: str) -> Any:
+        """Clone an existing alert
+
+        Arguments:
+            alert_id: UUID of an existing alert to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not alert_id:
+            raise RequiredArgument(
+                function=self.clone_alert.__name__, argument='alert_id'
+            )
+
+        cmd = XmlCommand("create_alert")
+        cmd.add_element("copy", alert_id)
+        return self._send_xml_command(cmd)
+
+    def clone_ticket(self, ticket_id: str) -> Any:
+        """Clone an existing ticket
+
+        Arguments:
+            ticket_id: UUID of an existing ticket to clone from
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not ticket_id:
+            raise RequiredArgument(
+                function=self.clone_ticket.__name__, argument='ticket_id'
+            )
+
+        cmd = XmlCommand("create_ticket")
+
+        _copy = cmd.add_element("copy", ticket_id)
 
         return self._send_xml_command(cmd)
 
