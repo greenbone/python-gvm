@@ -19,7 +19,7 @@
 Module for communication to a daemon speaking `Open Scanner Protocol version 1`_
 
 .. _Open Scanner Protocol version 1:
-    https://docs.greenbone.net/API/GMP/gmp-7.0.html
+    https://docs.greenbone.net/API/OSP/osp-20.08.html
 """
 import logging
 
