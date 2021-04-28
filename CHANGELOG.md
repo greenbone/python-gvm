@@ -6,9 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ## [Unreleased]
+
+**Dropped support for GMP v7, v8 and v9!**
+
 ### Added
 ### Changed
 ### Deprecated
+* **Dropped support** for GMP v7, v8 and v9! The oldest usable GMP version is 20.8 [#436](https://github.com/greenbone/python-gvm/pull/436) [#437](https://github.com/greenbone/python-gvm/pull/437) [#438](https://github.com/greenbone/python-gvm/pull/438) [#439](https://github.com/greenbone/python-gvm/pull/439)
+
 ### Removed
 ### Fixed
 
