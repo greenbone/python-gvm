@@ -15,7 +15,7 @@ To communicate with a remote server via one of the
 :ref:`GVM protocols <Protocols>` it is required to decide which transport
 protocol should be used for the :ref:`connection <Connections>`. Currently two protocols
 – namely
-:py:class:`GMP <gvm.protocols.gmpv9.Gmp>` and
+:py:class:`GMP <gvm.protocols.gmpv214.Gmp>` and
 :py:class:`OSP <gvm.protocols.ospv1.Osp>` – and three connection types – namely
 :py:class:`TLS <gvm.connections.TLSConnection>`,
 :py:class:`SSH <gvm.connections.SSHConnection>` and
@@ -70,7 +70,7 @@ The following shows the process of a simple request in more detail.
 4. Establish a connection to be able to make a request on **gvmd**. To automatically connect and disconnect, a Python
    `with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_ should be used.
 
-.. note:: By default all request methods of the :py:class:`gmp <gvm.protocols.gmpv9.Gmp>`
+.. note:: By default all request methods of the :py:class:`gmp <gvm.protocols.gmpv214.Gmp>`
     object return the response as UTF-8 encoded string.
 
 5. Obtain the protocol version of the **gvmd** by printing the response of the unprivileged command ``*get_version*``:
@@ -132,7 +132,7 @@ Step by Step
 3. In this case, an `Etree Element`_ should be obtained from the response to be able to
    extract specific information.
 
-   To do so, pass a :py:mod:`transform <gvm.transforms>` to the :py:class:`Gmp <gvm.protocols.gmpv9.Gmp>`
+   To do so, pass a :py:mod:`transform <gvm.transforms>` to the :py:class:`Gmp <gvm.protocols.gmpv214.Gmp>`
    constructor. Additionally, a :py:class:`GvmError <gvm.errors.GvmError>` should be raised if the status of the
    response was not *ok*. Therefore choose a :py:class:`EtreeCheckCommandTransform <gvm.transforms.EtreeCheckCommandTransform>`:
 

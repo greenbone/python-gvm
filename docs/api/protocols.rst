@@ -8,9 +8,6 @@ Protocols
 .. toctree::
     :maxdepth: 2
 
-    gmpv7
-    gmpv8
-    gmpv9
     gmpv208
     gmpv214
     ospv1
