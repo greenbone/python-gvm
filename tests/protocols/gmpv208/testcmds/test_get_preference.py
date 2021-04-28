@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -52,7 +50,3 @@ class GmpGetPreferenceTestCase:
         self.connection.send.has_been_called_with(
             '<get_preferences preference="foo" config_id="c1"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -84,7 +82,3 @@ class GmpModifyPolicySetScannerPreferenceTestCase:
             self.gmp.modify_policy_set_scanner_preference(
                 policy_id='', name='foo'
             )
-
-
-if __name__ == '__main__':
-    unittest.main()

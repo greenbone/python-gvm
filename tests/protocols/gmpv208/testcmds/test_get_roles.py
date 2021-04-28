@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetRolesTestCase:
     def test_get_roles(self):
@@ -45,7 +43,3 @@ class GmpGetRolesTestCase:
         self.gmp.get_roles(trash=False)
 
         self.connection.send.has_been_called_with('<get_roles trash="0"/>')
-
-
-if __name__ == '__main__':
-    unittest.main()

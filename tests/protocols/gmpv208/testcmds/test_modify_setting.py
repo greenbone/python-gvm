@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -65,7 +63,3 @@ class GmpModifySettingTestCase:
     def test_modify_setting_missing_value(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_setting(setting_id='s1', value=None)
-
-
-if __name__ == '__main__':
-    unittest.main()

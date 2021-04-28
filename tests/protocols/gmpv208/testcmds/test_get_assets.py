@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import InvalidArgumentType
 
 from gvm.protocols.gmpv208 import AssetType
@@ -64,7 +62,3 @@ class GmpGetAssetsTestCase:
         self.connection.send.has_been_called_with(
             '<get_assets type="os" filt_id="f1"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

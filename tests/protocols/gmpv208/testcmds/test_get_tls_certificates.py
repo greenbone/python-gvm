@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetTLSCertificatesTestCase:
     def test_get_tls_certificates(self):
@@ -45,7 +43,3 @@ class GmpGetTLSCertificatesTestCase:
         self.connection.send.has_been_called_with(
             '<get_tls_certificates details="1"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

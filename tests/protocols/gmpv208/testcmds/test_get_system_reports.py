@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import InvalidArgument
 
 
@@ -78,7 +76,3 @@ class GmpGetSystemReportsTestCase:
         self.connection.send.has_been_called_with(
             '<get_system_reports end_time="01-01-2019"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

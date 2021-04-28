@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv208 import InfoType
@@ -89,7 +87,3 @@ class GmpGetInfoTestCase:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.get_info(info_id=None, info_type=InfoType.CPE)
-
-
-if __name__ == '__main__':
-    unittest.main()

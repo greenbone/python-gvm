@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetReportsTestCase:
     def test_get_reports(self):
@@ -82,7 +80,3 @@ class GmpGetReportsTestCase:
         self.connection.send.has_been_called_with(
             '<get_reports details="0" ignore_pagination="1"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

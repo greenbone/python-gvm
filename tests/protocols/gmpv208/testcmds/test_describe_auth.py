@@ -16,15 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpDescribeAuthCommandTestCase:
     def test_describe_auth(self):
         self.gmp.describe_auth()
 
         self.connection.send.has_been_called_with('<describe_auth/>')
-
-
-if __name__ == '__main__':
-    unittest.main()

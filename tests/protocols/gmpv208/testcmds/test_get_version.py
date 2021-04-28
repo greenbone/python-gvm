@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetVersionCommandTestCase:
     def test_get_version(self):
@@ -27,7 +25,3 @@ class GmpGetVersionCommandTestCase:
         self.connection.read.has_been_called()
         self.connection.send.has_been_called()
         self.connection.send.has_been_called_with('<get_version/>')
-
-
-if __name__ == '__main__':
-    unittest.main()
