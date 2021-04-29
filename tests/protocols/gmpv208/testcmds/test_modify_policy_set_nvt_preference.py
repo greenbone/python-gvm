@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -107,7 +105,3 @@ class GmpModifyPolicySetNvtPreferenceTestCase:
             self.gmp.modify_policy_set_nvt_preference(
                 policy_id='', name='foo', nvt_oid='o1'
             )
-
-
-if __name__ == '__main__':
-    unittest.main()

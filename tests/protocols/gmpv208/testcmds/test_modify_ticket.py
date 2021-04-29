@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import TicketStatus
 
@@ -113,7 +111,3 @@ class GmpModifyTicketTestCase:
     def test_modify_ticket_note_without_status(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_ticket(ticket_id='t1', note='foo')
-
-
-if __name__ == '__main__':
-    unittest.main()

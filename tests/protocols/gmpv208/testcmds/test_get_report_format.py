@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv208 import (
     ReportFormatType,
@@ -60,7 +58,3 @@ class GmpGetReportFormatTestCase:
             '<get_report_formats '
             'report_format_id="{}" details="1"/>'.format(report_format_id)
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -50,7 +48,3 @@ class GmpGetAlertTestCase:
         self.connection.send.has_been_called_with(
             '<get_alerts alert_id="a1" tasks="0"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetTargetsTestCase:
     def test_get_tickets(self):
@@ -45,7 +43,3 @@ class GmpGetTargetsTestCase:
         self.gmp.get_tickets(trash=False)
 
         self.connection.send.has_been_called_with('<get_tickets trash="0"/>')
-
-
-if __name__ == '__main__':
-    unittest.main()

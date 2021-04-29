@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from decimal import Decimal
 
 from gvm.errors import RequiredArgument
@@ -175,7 +173,3 @@ class GmpModifyNoteTestCase:
         self.connection.send.has_been_called_with(
             '<modify_note note_id="n1">' '<text>foo</text>' '</modify_note>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -44,7 +42,3 @@ class GmpCloneTicketTestCase:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.clone_ticket(ticket_id=None)
-
-
-if __name__ == '__main__':
-    unittest.main()
