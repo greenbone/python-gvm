@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -18,23 +18,18 @@
 
 import unittest
 
-from lxml import etree
-
-from gvm.transforms import EtreeTransform
+from gvm.utils import to_comma_list
 
 
-class EtreeTransformTestCase(unittest.TestCase):
-    def test_transform_response(self):
-        transform = EtreeTransform()
-        result = transform('<foo/>')
+class TestToCoCommaList(unittest.TestCase):
+    def test_to_comma_list(self):
+        # pylint: disable=invalid-name
+        the_list = ['foo', 'bar', 'baz']
 
-        self.assertTrue(etree.iselement(result))
+        comma_string = to_comma_list(the_list)
 
-    def test_transform_more_complex_response(self):
-        transform = EtreeTransform()
-        result = transform('<foo id="bar"><lorem/><ipsum/></foo>')
+        self.assertEqual('foo,bar,baz', comma_string)
 
-        self.assertTrue(etree.iselement(result))
-        self.assertEqual(result.tag, 'foo')
-        self.assertEqual(result.get('id'), 'bar')
-        self.assertEqual(len(result), 2)
+
+if __name__ == '__main__':
+    unittest.main()
