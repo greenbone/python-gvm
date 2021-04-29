@@ -33,10 +33,6 @@ class GetEntityTypeFromStringTestCase(unittest.TestCase):
         ct = get_entity_type_from_string('')
         self.assertIsNone(ct)
 
-    def test_agent(self):
-        with self.assertRaises(InvalidArgument):
-            get_entity_type_from_string('agent')
-
     def test_alert(self):
         ct = get_entity_type_from_string('alert')
         self.assertEqual(ct, EntityType.ALERT)

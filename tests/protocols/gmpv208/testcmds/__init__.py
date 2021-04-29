@@ -18,7 +18,6 @@
 
 # pylint: disable=no-member
 
-from .test_agent_deprecation import GmpCloneAgentTestCase
 from .test_create_filter import GmpCreateFilterTestCase
 from .test_create_permission import GmpCreatePermissionTestCase
 from .test_create_tag import GmpCreateTagTestCase
@@ -112,7 +111,6 @@ from .test_clone_schedule import GmpCloneScheduleTestCase
 from .test_clone_tag import GmpCloneTagTestCase
 from .test_clone_target import GmpCloneTargetCommandTestCase
 from .test_clone_user import GmpCloneUserTestCase
-from .test_create_agent import GmpCreateAgentTestCase
 from .test_create_container_task import GMPCreateContainerTaskCommandTestCase
 from .test_create_group import GmpCreateGroupTestCase
 from .test_create_host import GmpCreateHostTestCase
@@ -122,7 +120,6 @@ from .test_create_port_list import GmpCreatePortListTestCase
 from .test_create_port_range import GmpCreatePortRangeTestCase
 from .test_create_role import GmpCreateRoleTestCase
 from .test_create_user import GmpCreateUserTestCase
-from .test_delete_agent import GmpDeleteAgentTestCase
 from .test_delete_alert import GmpDeleteAlertTestCase
 from .test_delete_asset import GmpDeleteAssetTestCase
 from .test_delete_credential import GmpDeleteCredentialTestCase
@@ -143,8 +140,6 @@ from .test_delete_target import GmpDeleteTargetTestCase
 from .test_delete_user import GmpDeleteUserTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
-from .test_get_agent import GmpGetAgentTestCase
-from .test_get_agents import GmpGetAgentsTestCase
 from .test_get_alert import GmpGetAlertTestCase
 from .test_get_alerts import GmpGetAlertsTestCase
 from .test_get_asset import GmpGetAssetTestCase
@@ -194,7 +189,6 @@ from .test_get_version import GmpGetVersionCommandTestCase
 from .test_help import GmpHelpTestCase
 from .test_import_config import GmpImportConfigTestCase
 from .test_import_report_format import GmpImportReportFormatTestCase
-from .test_modify_agent import GmpModifyAgentTestCase
 from .test_modify_asset import GmpModifyAssetTestCase
 from .test_modify_auth import GmpModifyAuthTestCase
 from .test_modify_config import GmpModifyConfigTestCase
@@ -232,7 +226,6 @@ from .test_sync_feed import GmpSyncFeedCommandTestCase
 from .test_sync_scap import GmpSyncScapCommandTestCase
 from .test_test_alert import GmpTestAlertTestCase
 from .test_trigger_alert import GmpTriggerAlertTestCase
-from .test_verify_agent import GmpVerifyAgentTestCase
 from .test_verify_report_format import GmpVerifyReportFormatTestCase
 from .test_verify_scanner import GmpVerifyScannerTestCase
 from .test_with_statement import GmpWithStatementTestCase
