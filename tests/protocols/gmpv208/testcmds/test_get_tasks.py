@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetTasksTestCase:
     def test_get_tasks_simple(self):
@@ -68,7 +66,3 @@ class GmpGetTasksTestCase:
         self.connection.send.has_been_called_with(
             '<get_tasks usage_type="scan" schedules_only="1"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

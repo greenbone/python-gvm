@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetCredentialsTestCase:
     def test_get_credentials(self):
@@ -77,7 +75,3 @@ class GmpGetCredentialsTestCase:
         self.connection.send.has_been_called_with(
             '<get_credentials targets="0"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

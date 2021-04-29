@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from decimal import Decimal
 
 from gvm.errors import RequiredArgument
@@ -184,7 +182,3 @@ class GmpCreateNoteTestCase:
             '<active>3600</active>'
             '</create_note>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

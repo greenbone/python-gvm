@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from decimal import Decimal
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
@@ -246,7 +244,3 @@ class GmpModifyOverrideTestCase:
             self.gmp.modify_override(
                 override_id='o1', text='foo', new_threat='foo'
             )
-
-
-if __name__ == '__main__':
-    unittest.main()

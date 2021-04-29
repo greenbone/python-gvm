@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from decimal import Decimal
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
@@ -185,7 +183,3 @@ class GmpModifyNoteTestCase:
 
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_note(note_id='n1', text='foo', threat='foo')
-
-
-if __name__ == '__main__':
-    unittest.main()

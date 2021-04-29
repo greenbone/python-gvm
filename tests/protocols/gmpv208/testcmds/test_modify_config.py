@@ -15,8 +15,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-import unittest
 import warnings
 
 from gvm.errors import RequiredArgument, InvalidArgument
@@ -150,7 +148,3 @@ class GmpModifyConfigTestCase:
             '</family_selection>'
             '</modify_config>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

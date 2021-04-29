@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -71,7 +69,3 @@ class GmpModifyAssetTestCase:
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">' '<comment/>' '</modify_asset>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

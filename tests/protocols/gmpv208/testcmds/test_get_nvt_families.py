@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetNvtFamiliesTestCase:
     def test_get_nvt_families(self):
@@ -31,7 +29,3 @@ class GmpGetNvtFamiliesTestCase:
         self.connection.send.has_been_called_with(
             '<get_nvt_families sort_order="foo"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

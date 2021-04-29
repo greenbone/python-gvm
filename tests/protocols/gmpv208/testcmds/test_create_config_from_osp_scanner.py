@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -58,7 +56,3 @@ class GmpCreateConfigFromOSPScannerTestCase:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.create_config_from_osp_scanner(scanner_id='c1', name='')
-
-
-if __name__ == '__main__':
-    unittest.main()
