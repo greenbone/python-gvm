@@ -13,7 +13,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 ### Changed
 ### Deprecated
 ### Removed
-
+* Removed deprecated `Agents` completely. [#441](https://github.com/greenbone/python-gvm/pull/441)
 * **Dropped support** for GMP v7, v8 and v9! The oldest usable GMP version is 20.8 
   [#436](https://github.com/greenbone/python-gvm/pull/436)
   [#437](https://github.com/greenbone/python-gvm/pull/437)

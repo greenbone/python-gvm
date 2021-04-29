@@ -2184,86 +2184,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_agent(
-        self,
-        installer: str,
-        signature: str,
-        name: str,
-        *,
-        comment: Optional[str] = None,
-        howto_install: Optional[str] = None,
-        howto_use: Optional[str] = None,
-    ) -> None:
-        # pylint: disable=unused-argument
-        deprecation(
-            "{} has been removed in GMP version {}.{}".format(
-                self.create_agent.__name__,
-                self.get_protocol_version()[0],
-                self.get_protocol_version()[1],
-            )
-        )
-
-    def clone_agent(self, agent_id: str) -> None:
-        # pylint: disable=unused-argument
-        deprecation(
-            "{} has been removed in GMP version {}.{}".format(
-                self.clone_agent.__name__,
-                self.get_protocol_version()[0],
-                self.get_protocol_version()[1],
-            )
-        )
-
-    def modify_agent(
-        self,
-        agent_id: str,
-        *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-    ) -> None:
-        # pylint: disable=unused-argument
-        deprecation(
-            "{} has been removed in GMP version {}.{}".format(
-                self.clone_agent.__name__,
-                self.get_protocol_version()[0],
-                self.get_protocol_version()[1],
-            )
-        )
-
-    def delete_agent(
-        self,
-        agent_id: str,
-        *,
-        ultimate: Optional[bool] = False
-        # pylint: disable=unused-argument
-    ) -> None:
-        deprecation(
-            "{} has been removed in GMP version {}.{}".format(
-                self.delete_agent.__name__,
-                self.get_protocol_version()[0],
-                self.get_protocol_version()[1],
-            )
-        )
-
-    def verify_agent(self, agent_id: str) -> None:
-        # pylint: disable=unused-argument
-        deprecation(
-            "{} has been removed in GMP version {}.{}".format(
-                self.verify_agent.__name__,
-                self.get_protocol_version()[0],
-                self.get_protocol_version()[1],
-            )
-        )
-
-    def get_agent(self, agent_id: str) -> None:
-        # pylint: disable=unused-argument
-        deprecation(
-            "{} has been removed in GMP version {}.{}".format(
-                self.get_agent.__name__,
-                self.get_protocol_version()[0],
-                self.get_protocol_version()[1],
-            )
-        )
-
     def get_info_list(
         self,
         info_type: InfoType,
@@ -4628,49 +4548,6 @@ class GmpV208Mixin(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         return self._send_xml_command(XmlCommand("empty_trashcan"))
-
-    def get_agents(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        format: Optional[str] = None,
-    ) -> Any:
-        """Request a list of agents
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: True to request the agents in the trashcan
-            details: Whether to include agents packageinformation when no format
-                was provided
-            format: One of "installer", "howto_install" or "howto_use"
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_agents")
-
-        _add_filter(cmd, filter, filter_id)
-
-        if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
-
-        if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
-
-        if format:
-            if format not in ("installer", "howto_install", "howto_use"):
-                raise InvalidArgument(
-                    "installer argument needs to be one of installer, "
-                    "howto_install or howto_use"
-                )
-
-            cmd.set_attribute("format", format)
-
-        return self._send_xml_command(cmd)
 
     def get_alerts(
         self,

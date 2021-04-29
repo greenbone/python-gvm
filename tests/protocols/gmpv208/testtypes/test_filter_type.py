@@ -27,10 +27,6 @@ class GetFilterTypeFomStringTestCase(unittest.TestCase):
         ft = get_filter_type_from_string('alert')
         self.assertEqual(ft, FilterType.ALERT)
 
-    def test_filter_type_agent(self):
-        with self.assertRaises(InvalidArgument):
-            get_filter_type_from_string('agent')
-
     def test_filter_type_asset(self):
         ft = get_filter_type_from_string('asset')
         self.assertEqual(ft, FilterType.ASSET)
