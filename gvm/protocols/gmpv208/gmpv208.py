@@ -38,12 +38,12 @@ from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.base import GvmProtocol
 from gvm.utils import (
     deprecation,
-    _check_command_status,
-    _is_list_like,
-    _to_base64,
-    _to_bool,
-    _to_comma_list,
-    _add_filter,
+    check_command_status,
+    is_list_like,
+    to_base64,
+    to_bool,
+    to_comma_list,
+    add_filter,
 )
 from gvm.xml import XmlCommand
 
@@ -228,7 +228,7 @@ class GmpV208Mixin(GvmProtocol):
         self._send(cmd.to_string())
         response = self._read()
 
-        if _check_command_status(response):
+        if check_command_status(response):
             self._authenticated = True
 
         return self._transform(response)
@@ -734,7 +734,7 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("certificate", certificate)
 
         if trust:
-            cmd.add_element("trust", _to_bool(trust))
+            cmd.add_element("trust", to_bool(trust))
 
         return self._send_xml_command(cmd)
 
@@ -806,7 +806,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.set_attribute('usage_type', 'scan')
         cmd.set_attribute('type', _actual_resource_type.value)
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if first_group is not None:
             if not isinstance(first_group, int):
@@ -923,14 +923,14 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("get_tls_certificates")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         if include_certificate_data is not None:
             cmd.set_attribute(
-                "include_certificate_data", _to_bool(include_certificate_data)
+                "include_certificate_data", to_bool(include_certificate_data)
             )
 
         return self._send_xml_command(cmd)
@@ -1364,7 +1364,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("value", value)
 
         if active is not None:
-            cmd.add_element("active", _to_bool(active))
+            cmd.add_element("active", to_bool(active))
 
         if resource_action or resource_filter or resource_ids or resource_type:
             if resource_filter and not resource_type:
@@ -1435,7 +1435,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("name", name)
 
         if trust:
-            cmd.add_element("trust", _to_bool(trust))
+            cmd.add_element("trust", to_bool(trust))
 
         return self._send_xml_command(cmd)
 
@@ -1742,7 +1742,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_task")
         cmd.set_attribute("task_id", audit_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -1762,7 +1762,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_config")
         cmd.set_attribute("config_id", policy_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -1828,7 +1828,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("comment", comment)
 
         if alterable is not None:
-            cmd.add_element("alterable", _to_bool(alterable))
+            cmd.add_element("alterable", to_bool(alterable))
 
         if hosts_ordering:
             if not isinstance(hosts_ordering, self.types.HostsOrdering):
@@ -1849,7 +1849,7 @@ class GmpV208Mixin(GvmProtocol):
 
                 # if a single id is given as a string wrap it into a list
                 alert_ids = [alert_ids]
-            if _is_list_like(alert_ids):
+            if is_list_like(alert_ids):
                 # parse all given alert id's
                 for alert in alert_ids:
                     cmd.add_element("alert", attrs={"id": str(alert)})
@@ -1869,7 +1869,7 @@ class GmpV208Mixin(GvmProtocol):
                 cmd.add_element("schedule_periods", str(schedule_periods))
 
         if observers is not None:
-            if not _is_list_like(observers):
+            if not is_list_like(observers):
                 raise InvalidArgumentType(
                     function=function, argument='observers', arg_type='list'
                 )
@@ -1877,7 +1877,7 @@ class GmpV208Mixin(GvmProtocol):
             # gvmd splits by comma and space
             # gvmd tries to lookup each value as user name and afterwards as
             # user id. So both user name and user id are possible
-            cmd.add_element("observers", _to_comma_list(observers))
+            cmd.add_element("observers", to_comma_list(observers))
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
@@ -1956,22 +1956,22 @@ class GmpV208Mixin(GvmProtocol):
         cmd = XmlCommand("get_configs")
         cmd.set_attribute("usage_type", usage_type.value)
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         if families is not None:
-            cmd.set_attribute("families", _to_bool(families))
+            cmd.set_attribute("families", to_bool(families))
 
         if preferences is not None:
-            cmd.set_attribute("preferences", _to_bool(preferences))
+            cmd.set_attribute("preferences", to_bool(preferences))
 
         if tasks is not None:
-            cmd.set_attribute("tasks", _to_bool(tasks))
+            cmd.set_attribute("tasks", to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -1993,7 +1993,7 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("usage_type", usage_type.value)
 
         if tasks is not None:
-            cmd.set_attribute("tasks", _to_bool(tasks))
+            cmd.set_attribute("tasks", to_bool(tasks))
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
@@ -2013,16 +2013,16 @@ class GmpV208Mixin(GvmProtocol):
         cmd = XmlCommand("get_tasks")
         cmd.set_attribute("usage_type", usage_type.value)
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         if schedules_only is not None:
-            cmd.set_attribute("schedules_only", _to_bool(schedules_only))
+            cmd.set_attribute("schedules_only", to_bool(schedules_only))
 
         return self._send_xml_command(cmd)
 
@@ -2130,7 +2130,7 @@ class GmpV208Mixin(GvmProtocol):
             )
 
         if in_assets is not None:
-            cmd.add_element("in_assets", _to_bool(in_assets))
+            cmd.add_element("in_assets", to_bool(in_assets))
 
         try:
             cmd.append_xml_str(report)
@@ -2180,13 +2180,13 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd.set_attribute("type", info_type.value)
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if name:
             cmd.set_attribute("name", name)
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         return self._send_xml_command(cmd)
 
@@ -2292,7 +2292,7 @@ class GmpV208Mixin(GvmProtocol):
                 "asset_hosts", attrs={"filter": str(asset_hosts_filter)}
             )
         elif hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
         else:
             raise RequiredArgument(
                 function=self.create_target.__name__,
@@ -2303,7 +2303,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("comment", comment)
 
         if exclude_hosts:
-            cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
+            cmd.add_element("exclude_hosts", to_comma_list(exclude_hosts))
 
         if ssh_credential_id:
             _xmlssh = cmd.add_element(
@@ -2332,13 +2332,11 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("alive_tests", alive_test.value)
 
         if reverse_lookup_only is not None:
-            cmd.add_element(
-                "reverse_lookup_only", _to_bool(reverse_lookup_only)
-            )
+            cmd.add_element("reverse_lookup_only", to_bool(reverse_lookup_only))
 
         if reverse_lookup_unify is not None:
             cmd.add_element(
-                "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
+                "reverse_lookup_unify", to_bool(reverse_lookup_unify)
             )
 
         # since 20.08 one of port_range or port_list_id is required!
@@ -2532,7 +2530,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("comment", comment)
 
         if allow_insecure is not None:
-            cmd.add_element("allow_insecure", _to_bool(allow_insecure))
+            cmd.add_element("allow_insecure", to_bool(allow_insecure))
 
         if (
             credential_type == CredentialType.CLIENT_CERTIFICATE
@@ -2687,7 +2685,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("name", name)
 
         if allow_insecure is not None:
-            cmd.add_element("allow_insecure", _to_bool(allow_insecure))
+            cmd.add_element("allow_insecure", to_bool(allow_insecure))
 
         if certificate:
             cmd.add_element("certificate", certificate)
@@ -2813,7 +2811,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_ticket")
         cmd.set_attribute("ticket_id", ticket_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -2836,10 +2834,10 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_tickets")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -2874,7 +2872,7 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_vulns")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         return self._send_xml_command(cmd)
 
@@ -3298,7 +3296,7 @@ class GmpV208Mixin(GvmProtocol):
             _xmlspecial.add_element("full")
 
         if users:
-            cmd.add_element("users", _to_comma_list(users))
+            cmd.add_element("users", to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -3394,7 +3392,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("active", str(days_active))
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
             cmd.add_element("port", str(port))
@@ -3491,7 +3489,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("active", str(days_active))
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
             cmd.add_element("port", str(port))
@@ -3763,7 +3761,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("comment", comment)
 
         if users:
-            cmd.add_element("users", _to_comma_list(users))
+            cmd.add_element("users", to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -4019,15 +4017,15 @@ class GmpV208Mixin(GvmProtocol):
         if hosts:
             cmd.add_element(
                 "hosts",
-                _to_comma_list(hosts),
-                attrs={"allow": _to_bool(hosts_allow)},
+                to_comma_list(hosts),
+                attrs={"allow": to_bool(hosts_allow)},
             )
 
         if ifaces:
             cmd.add_element(
                 "ifaces",
-                _to_comma_list(ifaces),
-                attrs={"allow": _to_bool(ifaces_allow)},
+                to_comma_list(ifaces),
+                attrs={"allow": to_bool(ifaces_allow)},
             )
 
         if role_ids:
@@ -4070,7 +4068,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_alert")
         cmd.set_attribute("alert_id", alert_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4114,7 +4112,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_config")
         cmd.set_attribute("config_id", config_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4135,7 +4133,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_credential")
         cmd.set_attribute("credential_id", credential_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4155,7 +4153,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_filter")
         cmd.set_attribute("filter_id", filter_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4175,7 +4173,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_group")
         cmd.set_attribute("group_id", group_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4195,7 +4193,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_note")
         cmd.set_attribute("note_id", note_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4215,7 +4213,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_override")
         cmd.set_attribute("override_id", override_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4236,7 +4234,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_permission")
         cmd.set_attribute("permission_id", permission_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4256,7 +4254,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_port_list")
         cmd.set_attribute("port_list_id", port_list_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4319,7 +4317,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd.set_attribute("report_format_id", report_format_id)
 
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4339,7 +4337,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_role")
         cmd.set_attribute("role_id", role_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4359,7 +4357,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_scanner")
         cmd.set_attribute("scanner_id", scanner_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4379,7 +4377,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_schedule")
         cmd.set_attribute("schedule_id", schedule_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4399,7 +4397,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_tag")
         cmd.set_attribute("tag_id", tag_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4419,7 +4417,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_target")
         cmd.set_attribute("target_id", target_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4439,7 +4437,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_task")
         cmd.set_attribute("task_id", task_id)
-        cmd.set_attribute("ultimate", _to_bool(ultimate))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -4526,13 +4524,13 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_alerts")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         if tasks is not None:
-            cmd.set_attribute("tasks", _to_bool(tasks))
+            cmd.set_attribute("tasks", to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -4555,7 +4553,7 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("alert_id", alert_id)
 
         if tasks is not None:
-            cmd.set_attribute("tasks", _to_bool(tasks))
+            cmd.set_attribute("tasks", to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -4587,7 +4585,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd.set_attribute("type", asset_type.value)
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         return self._send_xml_command(cmd)
 
@@ -4644,16 +4642,16 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_credentials")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if scanners is not None:
-            cmd.set_attribute("scanners", _to_bool(scanners))
+            cmd.set_attribute("scanners", to_bool(scanners))
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         if targets is not None:
-            cmd.set_attribute("targets", _to_bool(targets))
+            cmd.set_attribute("targets", to_bool(targets))
 
         return self._send_xml_command(cmd)
 
@@ -4696,10 +4694,10 @@ class GmpV208Mixin(GvmProtocol):
             cmd.set_attribute("format", credential_format.value)
 
         if scanners is not None:
-            cmd.set_attribute("scanners", _to_bool(scanners))
+            cmd.set_attribute("scanners", to_bool(scanners))
 
         if targets is not None:
-            cmd.set_attribute("targets", _to_bool(targets))
+            cmd.set_attribute("targets", to_bool(targets))
 
         return self._send_xml_command(cmd)
 
@@ -4732,13 +4730,13 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_filters")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         if alerts is not None:
-            cmd.set_attribute("alerts", _to_bool(alerts))
+            cmd.set_attribute("alerts", to_bool(alerts))
 
         return self._send_xml_command(cmd)
 
@@ -4764,7 +4762,7 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("filter_id", filter_id)
 
         if alerts is not None:
-            cmd.set_attribute("alerts", _to_bool(alerts))
+            cmd.set_attribute("alerts", to_bool(alerts))
 
         return self._send_xml_command(cmd)
 
@@ -4787,10 +4785,10 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_groups")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -4834,13 +4832,13 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_notes")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         if result is not None:
-            cmd.set_attribute("result", _to_bool(result))
+            cmd.set_attribute("result", to_bool(result))
 
         return self._send_xml_command(cmd)
 
@@ -4898,16 +4896,16 @@ class GmpV208Mixin(GvmProtocol):
         cmd = XmlCommand("get_nvts")
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         if preferences is not None:
-            cmd.set_attribute("preferences", _to_bool(preferences))
+            cmd.set_attribute("preferences", to_bool(preferences))
 
         if preference_count is not None:
-            cmd.set_attribute("preference_count", _to_bool(preference_count))
+            cmd.set_attribute("preference_count", to_bool(preference_count))
 
         if timeout is not None:
-            cmd.set_attribute("timeout", _to_bool(timeout))
+            cmd.set_attribute("timeout", to_bool(timeout))
 
         if config_id:
             cmd.set_attribute("config_id", config_id)
@@ -4987,13 +4985,13 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_overrides")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         if result is not None:
-            cmd.set_attribute("result", _to_bool(result))
+            cmd.set_attribute("result", to_bool(result))
 
         return self._send_xml_command(cmd)
 
@@ -5038,10 +5036,10 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_permissions")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -5087,16 +5085,16 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_port_lists")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         if targets is not None:
-            cmd.set_attribute("targets", _to_bool(targets))
+            cmd.set_attribute("targets", to_bool(targets))
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -5214,13 +5212,13 @@ class GmpV208Mixin(GvmProtocol):
             cmd.set_attribute("report_filt_id", filter_id)
 
         if note_details is not None:
-            cmd.set_attribute("note_details", _to_bool(note_details))
+            cmd.set_attribute("note_details", to_bool(note_details))
 
         if override_details is not None:
-            cmd.set_attribute("override_details", _to_bool(override_details))
+            cmd.set_attribute("override_details", to_bool(override_details))
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         cmd.set_attribute("ignore_pagination", "1")
 
@@ -5263,7 +5261,7 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd.set_attribute("report_id", report_id)
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if delta_report_id:
             cmd.set_attribute("delta_report_id", delta_report_id)
@@ -5275,9 +5273,9 @@ class GmpV208Mixin(GvmProtocol):
             cmd.set_attribute("format_id", report_format_id)
 
         if ignore_pagination is not None:
-            cmd.set_attribute("ignore_pagination", _to_bool(ignore_pagination))
+            cmd.set_attribute("ignore_pagination", to_bool(ignore_pagination))
 
-        cmd.set_attribute("details", _to_bool(details))
+        cmd.set_attribute("details", to_bool(details))
 
         return self._send_xml_command(cmd)
 
@@ -5306,19 +5304,19 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_report_formats")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         if alerts is not None:
-            cmd.set_attribute("alerts", _to_bool(alerts))
+            cmd.set_attribute("alerts", to_bool(alerts))
 
         if params is not None:
-            cmd.set_attribute("params", _to_bool(params))
+            cmd.set_attribute("params", to_bool(params))
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -5377,19 +5375,19 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_results")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if task_id:
             cmd.set_attribute("task_id", task_id)
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         if note_details is not None:
-            cmd.set_attribute("note_details", _to_bool(note_details))
+            cmd.set_attribute("note_details", to_bool(note_details))
 
         if override_details is not None:
-            cmd.set_attribute("override_details", _to_bool(override_details))
+            cmd.set_attribute("override_details", to_bool(override_details))
 
         return self._send_xml_command(cmd)
 
@@ -5434,10 +5432,10 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_roles")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         return self._send_xml_command(cmd)
 
@@ -5481,13 +5479,13 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_scanners")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         if details is not None:
-            cmd.set_attribute("details", _to_bool(details))
+            cmd.set_attribute("details", to_bool(details))
 
         return self._send_xml_command(cmd)
 
@@ -5534,13 +5532,13 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_schedules")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         if tasks is not None:
-            cmd.set_attribute("tasks", _to_bool(tasks))
+            cmd.set_attribute("tasks", to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -5566,7 +5564,7 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("schedule_id", schedule_id)
 
         if tasks is not None:
-            cmd.set_attribute("tasks", _to_bool(tasks))
+            cmd.set_attribute("tasks", to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -5649,7 +5647,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.set_attribute("end_time", str(end_time))
 
         if brief is not None:
-            cmd.set_attribute("brief", _to_bool(brief))
+            cmd.set_attribute("brief", to_bool(brief))
 
         if slave_id:
             cmd.set_attribute("slave_id", slave_id)
@@ -5677,13 +5675,13 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_tags")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         if names_only is not None:
-            cmd.set_attribute("names_only", _to_bool(names_only))
+            cmd.set_attribute("names_only", to_bool(names_only))
 
         return self._send_xml_command(cmd)
 
@@ -5727,13 +5725,13 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_targets")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         if trash is not None:
-            cmd.set_attribute("trash", _to_bool(trash))
+            cmd.set_attribute("trash", to_bool(trash))
 
         if tasks is not None:
-            cmd.set_attribute("tasks", _to_bool(tasks))
+            cmd.set_attribute("tasks", to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -5759,7 +5757,7 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("target_id", target_id)
 
         if tasks is not None:
-            cmd.set_attribute("tasks", _to_bool(tasks))
+            cmd.set_attribute("tasks", to_bool(tasks))
 
         return self._send_xml_command(cmd)
 
@@ -5777,7 +5775,7 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("get_users")
 
-        _add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter, filter_id)
 
         return self._send_xml_command(cmd)
 
@@ -5934,7 +5932,7 @@ class GmpV208Mixin(GvmProtocol):
         _xmlpref.add_element("name", name)
 
         if value:
-            _xmlpref.add_element("value", _to_base64(value))
+            _xmlpref.add_element("value", to_base64(value))
 
         return self._send_xml_command(cmd)
 
@@ -6017,7 +6015,7 @@ class GmpV208Mixin(GvmProtocol):
         _xmlpref.add_element("name", name)
 
         if value:
-            _xmlpref.add_element("value", _to_base64(value))
+            _xmlpref.add_element("value", to_base64(value))
 
         return self._send_xml_command(cmd)
 
@@ -6046,7 +6044,7 @@ class GmpV208Mixin(GvmProtocol):
                 argument='family argument',
             )
 
-        if not _is_list_like(nvt_oids):
+        if not is_list_like(nvt_oids):
             raise InvalidArgumentType(
                 function=self.modify_config_set_nvt_selection.__name__,
                 argument='nvt_oids',
@@ -6089,7 +6087,7 @@ class GmpV208Mixin(GvmProtocol):
                 argument='config_id',
             )
 
-        if not _is_list_like(families):
+        if not is_list_like(families):
             raise InvalidArgumentType(
                 function=self.modify_config_set_family_selection.__name__,
                 argument='families',
@@ -6100,7 +6098,7 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("config_id", str(config_id))
 
         _xmlfamsel = cmd.add_element("family_selection")
-        _xmlfamsel.add_element("growing", _to_bool(auto_add_new_families))
+        _xmlfamsel.add_element("growing", to_bool(auto_add_new_families))
 
         for family in families:
             _xmlfamily = _xmlfamsel.add_element("family")
@@ -6120,8 +6118,8 @@ class GmpV208Mixin(GvmProtocol):
                     arg_type='[tuple(str, bool, bool)]',
                 )
 
-            _xmlfamily.add_element("all", _to_bool(family[2]))
-            _xmlfamily.add_element("growing", _to_bool(family[1]))
+            _xmlfamily.add_element("all", to_bool(family[2]))
+            _xmlfamily.add_element("growing", to_bool(family[1]))
 
         return self._send_xml_command(cmd)
 
@@ -6240,7 +6238,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("name", name)
 
         if users:
-            cmd.add_element("users", _to_comma_list(users))
+            cmd.add_element("users", to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -6292,7 +6290,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("active", str(days_active))
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
             cmd.add_element("port", str(port))
@@ -6372,7 +6370,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("active", str(days_active))
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
             cmd.add_element("port", str(port))
@@ -6480,7 +6478,7 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("report_format_id", report_format_id)
 
         if active is not None:
-            cmd.add_element("active", _to_bool(active))
+            cmd.add_element("active", to_bool(active))
 
         if name:
             cmd.add_element("name", name)
@@ -6531,7 +6529,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("name", name)
 
         if users:
-            cmd.add_element("users", _to_comma_list(users))
+            cmd.add_element("users", to_comma_list(users))
 
         return self._send_xml_command(cmd)
 
@@ -6637,7 +6635,7 @@ class GmpV208Mixin(GvmProtocol):
         else:
             cmd.add_element("name", name)
 
-        cmd.add_element("value", _to_base64(value))
+        cmd.add_element("value", to_base64(value))
 
         return self._send_xml_command(cmd)
 
@@ -6696,12 +6694,12 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("name", name)
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
             if exclude_hosts is None:
                 exclude_hosts = ['']
 
         if exclude_hosts:
-            cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
+            cmd.add_element("exclude_hosts", to_comma_list(exclude_hosts))
 
         if alive_test:
             if not isinstance(alive_test, AliveTest):
@@ -6730,13 +6728,11 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("snmp_credential", attrs={"id": snmp_credential_id})
 
         if reverse_lookup_only is not None:
-            cmd.add_element(
-                "reverse_lookup_only", _to_bool(reverse_lookup_only)
-            )
+            cmd.add_element("reverse_lookup_only", to_bool(reverse_lookup_only))
 
         if reverse_lookup_unify is not None:
             cmd.add_element(
-                "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
+                "reverse_lookup_unify", to_bool(reverse_lookup_unify)
             )
 
         if port_list_id:
@@ -6803,7 +6799,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("target", attrs={"id": target_id})
 
         if alterable is not None:
-            cmd.add_element("alterable", _to_bool(alterable))
+            cmd.add_element("alterable", to_bool(alterable))
 
         if hosts_ordering:
             if not isinstance(hosts_ordering, HostsOrdering):
@@ -6832,7 +6828,7 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("schedule_periods", str(schedule_periods))
 
         if alert_ids is not None:
-            if not _is_list_like(alert_ids):
+            if not is_list_like(alert_ids):
                 raise InvalidArgumentType(
                     function=self.modify_task.__name__,
                     argument='alert_ids',
@@ -6846,14 +6842,14 @@ class GmpV208Mixin(GvmProtocol):
                     cmd.add_element("alert", attrs={"id": str(alert)})
 
         if observers is not None:
-            if not _is_list_like(observers):
+            if not is_list_like(observers):
                 raise InvalidArgumentType(
                     function=self.modify_task.__name__,
                     argument='observers',
                     arg_type='list',
                 )
 
-            cmd.add_element("observers", _to_comma_list(observers))
+            cmd.add_element("observers", to_comma_list(observers))
 
         if preferences is not None:
             if not isinstance(preferences, collections.abc.Mapping):
@@ -6942,15 +6938,15 @@ class GmpV208Mixin(GvmProtocol):
         if hosts:
             cmd.add_element(
                 "hosts",
-                _to_comma_list(hosts),
-                attrs={"allow": _to_bool(hosts_allow)},
+                to_comma_list(hosts),
+                attrs={"allow": to_bool(hosts_allow)},
             )
 
         if ifaces:
             cmd.add_element(
                 "ifaces",
-                _to_comma_list(ifaces),
-                attrs={"allow": _to_bool(ifaces_allow)},
+                to_comma_list(ifaces),
+                attrs={"allow": to_bool(ifaces_allow)},
             )
 
         if comment:

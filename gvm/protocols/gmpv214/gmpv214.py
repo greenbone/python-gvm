@@ -29,7 +29,7 @@ Module for communication with gvmd in
 from typing import Any, List, Optional, Callable
 import numbers
 
-from gvm.utils import deprecation, _to_comma_list, _to_bool
+from gvm.utils import deprecation, to_comma_list, to_bool
 from gvm.xml import XmlCommand
 
 from gvm.connections import GvmConnection
@@ -110,7 +110,7 @@ class GmpV214Mixin(GvmProtocol):
             cmd.add_element("active", str(days_active))
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
             cmd.add_element("port", str(port))
@@ -188,7 +188,7 @@ class GmpV214Mixin(GvmProtocol):
             cmd.add_element("active", str(days_active))
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
             cmd.add_element("port", str(port))
@@ -281,14 +281,14 @@ class GmpV214Mixin(GvmProtocol):
         _xmlname = cmd.add_element("name", name)
 
         if make_unique is not None:
-            _xmlname.add_element("make_unique", _to_bool(make_unique))
+            _xmlname.add_element("make_unique", to_bool(make_unique))
 
         if asset_hosts_filter:
             cmd.add_element(
                 "asset_hosts", attrs={"filter": str(asset_hosts_filter)}
             )
         elif hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
         else:
             raise RequiredArgument(
                 function=self.create_target.__name__,
@@ -299,7 +299,7 @@ class GmpV214Mixin(GvmProtocol):
             cmd.add_element("comment", comment)
 
         if exclude_hosts:
-            cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
+            cmd.add_element("exclude_hosts", to_comma_list(exclude_hosts))
 
         if ssh_credential_id:
             _xmlssh = cmd.add_element(
@@ -329,17 +329,15 @@ class GmpV214Mixin(GvmProtocol):
 
         if allow_simultaneous_ips is not None:
             cmd.add_element(
-                "allow_simultaneous_ips", _to_bool(allow_simultaneous_ips)
+                "allow_simultaneous_ips", to_bool(allow_simultaneous_ips)
             )
 
         if reverse_lookup_only is not None:
-            cmd.add_element(
-                "reverse_lookup_only", _to_bool(reverse_lookup_only)
-            )
+            cmd.add_element("reverse_lookup_only", to_bool(reverse_lookup_only))
 
         if reverse_lookup_unify is not None:
             cmd.add_element(
-                "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
+                "reverse_lookup_unify", to_bool(reverse_lookup_unify)
             )
 
         if port_range:
@@ -398,7 +396,7 @@ class GmpV214Mixin(GvmProtocol):
             cmd.add_element("active", str(days_active))
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
             cmd.add_element("port", str(port))
@@ -476,7 +474,7 @@ class GmpV214Mixin(GvmProtocol):
             cmd.add_element("active", str(days_active))
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
             cmd.add_element("port", str(port))
@@ -571,12 +569,12 @@ class GmpV214Mixin(GvmProtocol):
             cmd.add_element("name", name)
 
         if hosts:
-            cmd.add_element("hosts", _to_comma_list(hosts))
+            cmd.add_element("hosts", to_comma_list(hosts))
             if exclude_hosts is None:
                 exclude_hosts = ['']
 
         if exclude_hosts:
-            cmd.add_element("exclude_hosts", _to_comma_list(exclude_hosts))
+            cmd.add_element("exclude_hosts", to_comma_list(exclude_hosts))
 
         if alive_test:
             if not isinstance(alive_test, AliveTest):
@@ -606,17 +604,15 @@ class GmpV214Mixin(GvmProtocol):
 
         if allow_simultaneous_ips is not None:
             cmd.add_element(
-                "allow_simultaneous_ips", _to_bool(allow_simultaneous_ips)
+                "allow_simultaneous_ips", to_bool(allow_simultaneous_ips)
             )
 
         if reverse_lookup_only is not None:
-            cmd.add_element(
-                "reverse_lookup_only", _to_bool(reverse_lookup_only)
-            )
+            cmd.add_element("reverse_lookup_only", to_bool(reverse_lookup_only))
 
         if reverse_lookup_unify is not None:
             cmd.add_element(
-                "reverse_lookup_unify", _to_bool(reverse_lookup_unify)
+                "reverse_lookup_unify", to_bool(reverse_lookup_unify)
             )
 
         if port_list_id:
@@ -690,15 +686,15 @@ class GmpV214Mixin(GvmProtocol):
         if hosts:
             cmd.add_element(
                 "hosts",
-                _to_comma_list(hosts),
-                attrs={"allow": _to_bool(hosts_allow)},
+                to_comma_list(hosts),
+                attrs={"allow": to_bool(hosts_allow)},
             )
 
         if ifaces:
             cmd.add_element(
                 "ifaces",
-                _to_comma_list(ifaces),
-                attrs={"allow": _to_bool(ifaces_allow)},
+                to_comma_list(ifaces),
+                attrs={"allow": to_bool(ifaces_allow)},
             )
 
         if comment:
