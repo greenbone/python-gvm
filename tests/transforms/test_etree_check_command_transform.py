@@ -29,7 +29,7 @@ class EtreeCheckCommandTransformTestCase(unittest.TestCase):
         transform = EtreeCheckCommandTransform()
 
         with self.assertRaises(GvmError):
-            transform('<foo/')
+            transform('<foo/>')
 
     def test_no_success_status_transform(self):
         transform = EtreeCheckCommandTransform()

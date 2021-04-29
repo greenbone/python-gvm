@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -18,23 +18,17 @@
 
 import unittest
 
-from lxml import etree
-
-from gvm.transforms import EtreeTransform
+from gvm.utils import to_base64
 
 
-class EtreeTransformTestCase(unittest.TestCase):
-    def test_transform_response(self):
-        transform = EtreeTransform()
-        result = transform('<foo/>')
+class TestToBase64(unittest.TestCase):
+    def test_to_base64(self):
+        foo64 = to_base64("foo")
+        self.assertEqual(b"Zm9v", foo64)
 
-        self.assertTrue(etree.iselement(result))
+        bar64 = to_base64("bar")
+        self.assertEqual(b'YmFy', bar64)
 
-    def test_transform_more_complex_response(self):
-        transform = EtreeTransform()
-        result = transform('<foo id="bar"><lorem/><ipsum/></foo>')
 
-        self.assertTrue(etree.iselement(result))
-        self.assertEqual(result.tag, 'foo')
-        self.assertEqual(result.get('id'), 'bar')
-        self.assertEqual(len(result), 2)
+if __name__ == '__main__':
+    unittest.main()

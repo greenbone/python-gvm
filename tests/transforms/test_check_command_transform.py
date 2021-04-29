@@ -29,7 +29,7 @@ class CheckCommandTransformTestCase(unittest.TestCase):
         transform = CheckCommandTransform()
 
         with self.assertRaises(GvmError):
-            transform('<foo/')
+            transform('<foo/>')
 
     def test_no_success_300status_transform(self):
         transform = CheckCommandTransform()

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -18,23 +18,27 @@
 
 import unittest
 
-from lxml import etree
+from gvm.utils import add_filter
+from gvm.xml import XmlCommand
 
-from gvm.transforms import EtreeTransform
+
+class TestAddFilter(unittest.TestCase):
+    def test_add_filter(self):
+        cmd = XmlCommand("test")
+        filter_string = "foo"
+
+        add_filter(cmd, filter=filter_string, filter_id=None)
+
+        self.assertEqual(cmd.to_string(), '<test filter="foo"/>')
+
+    def test_add_filter_id(self):
+        cmd = XmlCommand("test")
+        filter_id = "foo"
+
+        add_filter(cmd, filter=None, filter_id=filter_id)
+
+        self.assertEqual(cmd.to_string(), '<test filt_id="foo"/>')
 
 
-class EtreeTransformTestCase(unittest.TestCase):
-    def test_transform_response(self):
-        transform = EtreeTransform()
-        result = transform('<foo/>')
-
-        self.assertTrue(etree.iselement(result))
-
-    def test_transform_more_complex_response(self):
-        transform = EtreeTransform()
-        result = transform('<foo id="bar"><lorem/><ipsum/></foo>')
-
-        self.assertTrue(etree.iselement(result))
-        self.assertEqual(result.tag, 'foo')
-        self.assertEqual(result.get('id'), 'bar')
-        self.assertEqual(len(result), 2)
+if __name__ == '__main__':
+    unittest.main()

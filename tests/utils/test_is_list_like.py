@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -18,23 +18,23 @@
 
 import unittest
 
-from lxml import etree
-
-from gvm.transforms import EtreeTransform
+from gvm.utils import is_list_like
 
 
-class EtreeTransformTestCase(unittest.TestCase):
-    def test_transform_response(self):
-        transform = EtreeTransform()
-        result = transform('<foo/>')
+class TestIsListLike(unittest.TestCase):
+    def test_is_list_like(self):
+        self.assertFalse(is_list_like(True))
 
-        self.assertTrue(etree.iselement(result))
+        self.assertFalse(is_list_like("foo"))
 
-    def test_transform_more_complex_response(self):
-        transform = EtreeTransform()
-        result = transform('<foo id="bar"><lorem/><ipsum/></foo>')
+        self.assertFalse(is_list_like(13))
 
-        self.assertTrue(etree.iselement(result))
-        self.assertEqual(result.tag, 'foo')
-        self.assertEqual(result.get('id'), 'bar')
-        self.assertEqual(len(result), 2)
+        self.assertTrue(is_list_like([1]))
+
+        self.assertTrue(is_list_like(["1", "2"]))
+
+        self.assertTrue(is_list_like(('2', '3')))
+
+
+if __name__ == '__main__':
+    unittest.main()

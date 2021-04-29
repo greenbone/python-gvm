@@ -29,10 +29,9 @@ from gvm.errors import GvmError
 
 
 def create_parser():
-    # recover => try hard to parse through broken XML
     # huge_tree => disable security restrictions and support very deep trees and
     #              very long text content (for get_reports)
-    return etree.XMLParser(encoding="utf-8", recover=True, huge_tree=True)
+    return etree.XMLParser(encoding="utf-8", huge_tree=True)
 
 
 class XmlCommandElement:
