@@ -21,6 +21,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
   [#437](https://github.com/greenbone/python-gvm/pull/437)
   [#438](https://github.com/greenbone/python-gvm/pull/438)
   [#439](https://github.com/greenbone/python-gvm/pull/439)
+  [#444](https://github.com/greenbone/python-gvm/pull/444)
 
 ### Fixed
 
