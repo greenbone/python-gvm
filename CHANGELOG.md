@@ -11,6 +11,8 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ### Added
 ### Changed
+* Moved helper functions from gmp to utils. XML will not be recovered by the parser anymore! [#442](https://github.com/greenbone/python-gvm/pull/442)
+
 ### Deprecated
 ### Removed
 * Removed deprecated `Agents` completely. [#441](https://github.com/greenbone/python-gvm/pull/441)
