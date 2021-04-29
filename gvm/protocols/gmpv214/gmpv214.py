@@ -29,9 +29,8 @@ Module for communication with gvmd in
 from typing import Any, List, Optional, Callable
 import numbers
 
-from gvm.utils import deprecation
+from gvm.utils import deprecation, _to_comma_list, _to_bool
 from gvm.xml import XmlCommand
-from gvm.protocols.gmpv208.gmpv208 import _to_comma_list, _to_bool
 
 from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgumentType, RequiredArgument

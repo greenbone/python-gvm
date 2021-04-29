@@ -25,7 +25,6 @@ Module for communication with gvmd in
 .. _Greenbone Management Protocol version 20.08:
     https://docs.greenbone.net/API/GMP/gmp-20.08.html
 """
-import base64
 import collections
 import logging
 import numbers
@@ -37,8 +36,16 @@ from lxml import etree
 from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.base import GvmProtocol
-from gvm.utils import deprecation
-from gvm.xml import create_parser, XmlCommand
+from gvm.utils import (
+    deprecation,
+    _check_command_status,
+    _is_list_like,
+    _to_base64,
+    _to_bool,
+    _to_comma_list,
+    _add_filter,
+)
+from gvm.xml import XmlCommand
 
 from . import types
 from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
@@ -53,57 +60,7 @@ logger = logging.getLogger(__name__)
 
 Severity = numbers.Real
 
-
-def _check_command_status(xml: str) -> bool:
-    """Check gmp response
-
-    Look into the gmp response and check for the status in the root element
-
-    Arguments:
-        xml: XML-Source
-
-    Returns:
-        True if valid, otherwise False
-    """
-
-    if xml == 0 or xml is None:
-        logger.error("XML Command is empty")
-        return False
-
-    try:
-        root = etree.XML(xml, parser=create_parser())
-        status = root.attrib["status"]
-        return status is not None and status[0] == "2"
-
-    except etree.Error as e:
-        logger.error("etree.XML(xml): %s", e)
-        return False
-
-
-def _to_bool(value: bool) -> str:
-    return "1" if value else "0"
-
-
-def _to_base64(value: str) -> bytes:
-    return base64.b64encode(value.encode("utf-8"))
-
-
-def _to_comma_list(value: List) -> str:
-    return ",".join(value)
-
-
-def _add_filter(cmd, filter, filter_id):
-    if filter:
-        cmd.set_attribute("filter", filter)
-
-    if filter_id:
-        cmd.set_attribute("filt_id", filter_id)
-
-
-def _is_list_like(value: Any) -> bool:
-    return isinstance(value, (list, tuple))
-
-
+# put this into the Alert Entity
 def _check_event(
     event: AlertEvent, condition: AlertCondition, method: AlertMethod
 ):
