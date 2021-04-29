@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetVulnerabilitiesTestCase:
     def test_get_vulnerabilities(self):
@@ -36,7 +34,3 @@ class GmpGetVulnerabilitiesTestCase:
         self.gmp.get_vulnerabilities(filter_id='f1')
 
         self.connection.send.has_been_called_with('<get_vulns filt_id="f1"/>')
-
-
-if __name__ == '__main__':
-    unittest.main()

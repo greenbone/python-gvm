@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetSettingsTestCase:
     def test_get_settings(self):
@@ -31,7 +29,3 @@ class GmpGetSettingsTestCase:
         self.connection.send.has_been_called_with(
             '<get_settings filter="foo=bar"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

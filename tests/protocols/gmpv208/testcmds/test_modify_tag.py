@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv208 import EntityType
 
@@ -164,7 +162,3 @@ class GmpModifyTagTestCase:
             '</resources>'
             '</modify_tag>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

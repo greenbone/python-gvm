@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import InvalidArgument
 
 
@@ -67,7 +65,3 @@ class GmpGetAgentsTestCase:
     def test_get_agents_invalid_format(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.get_agents(format='foo')
-
-
-if __name__ == '__main__':
-    unittest.main()

@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from collections import OrderedDict
 
 from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
@@ -216,7 +214,3 @@ class GmpModifyAuditCommandTestCase:
 
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_audit(audit_id='t1', preferences=['foo', 'bar'])
-
-
-if __name__ == '__main__':
-    unittest.main()

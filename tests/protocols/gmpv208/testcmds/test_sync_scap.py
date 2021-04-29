@@ -16,15 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpSyncScapCommandTestCase:
     def test_sync_scap(self):
         self.gmp.sync_scap()
 
         self.connection.send.has_been_called_with('<sync_scap/>')
-
-
-if __name__ == '__main__':
-    unittest.main()

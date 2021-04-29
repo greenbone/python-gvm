@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -54,7 +52,3 @@ class GmpModifyPolicySetCommentTestCase:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_comment(policy_id='')
-
-
-if __name__ == '__main__':
-    unittest.main()

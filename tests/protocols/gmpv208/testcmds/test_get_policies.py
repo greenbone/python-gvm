@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 
 class GmpGetPoliciesTestCase:
     def test_get_policies_simple(self):
@@ -103,7 +101,3 @@ class GmpGetPoliciesTestCase:
         self.connection.send.has_been_called_with(
             '<get_configs usage_type="policy" tasks="0"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

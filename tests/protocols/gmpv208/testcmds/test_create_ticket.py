@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -73,7 +71,3 @@ class GmpCreateTicketTestCase:
             self.gmp.create_ticket(
                 result_id='r1', assigned_to_user_id='u1', note=''
             )
-
-
-if __name__ == '__main__':
-    unittest.main()

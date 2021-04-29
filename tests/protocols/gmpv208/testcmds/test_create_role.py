@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument
 
 
@@ -61,7 +59,3 @@ class GmpCreateRoleTestCase:
             '<users>u1,u2</users>'
             '</create_role>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()

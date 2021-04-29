@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv208 import InfoType
@@ -109,7 +107,3 @@ class GmpGetInfoListTestCase:
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" details="0"/>'
         )
-
-
-if __name__ == '__main__':
-    unittest.main()
