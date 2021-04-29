@@ -23,10 +23,6 @@ from gvm.protocols.gmpv214 import FilterType, get_filter_type_from_string
 
 
 class GetFilterTypeFomStringTestCase(unittest.TestCase):
-    def test_filter_type_agent(self):
-        with self.assertRaises(InvalidArgument):
-            get_filter_type_from_string('agent')
-
     def test_filter_type_alert(self):
         ft = get_filter_type_from_string('alert')
         self.assertEqual(ft, FilterType.ALERT)

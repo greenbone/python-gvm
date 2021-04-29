@@ -20,10 +20,6 @@ from . import Gmpv214TestCase
 from ..gmpv208.testcmds import *  # pylint: disable=unused-wildcard-import,wildcard-import
 
 
-class Gmpv214CloneAgentTestCase(GmpCloneAgentTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CreateFilterTestCase(GmpCreateFilterTestCase, Gmpv214TestCase):
     pass
 
