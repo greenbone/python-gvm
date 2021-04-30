@@ -11,6 +11,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ### Added
 ### Changed
+* Detached the Task API calls from the GMP class into a new `TaskMixin`. [#443](https://github.com/greenbone/python-gvm/pull/443)
 * Moved helper functions from gmp to utils. The response XML will not be recovered by the parser anymore! [#442](https://github.com/greenbone/python-gvm/pull/442)
 
 ### Deprecated
