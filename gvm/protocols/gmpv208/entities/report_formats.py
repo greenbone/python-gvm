@@ -55,8 +55,6 @@ def get_report_format_id_from_string(
 
     report_format = report_format.lower()
 
-    print(report_format)
-
     try:
         return ReportFormatType[report_format.replace(' ', '_').upper()]
     except KeyError:
