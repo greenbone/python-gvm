@@ -18,30 +18,16 @@
 
 from gvm.errors import GvmError
 
-from ...gmpv208 import Gmpv208TestCase
-from ...gmpv214 import Gmpv214TestCase
 
+class GmpStartTaskTestCase:
+    def test_start_task(self):
+        self.gmp.start_task('a1')
 
-class GmpGetTaskTestCase:
-    def test_get_task(self):
-        self.gmp.get_task('a1')
+        self.connection.send.has_been_called_with('<start_task task_id="a1"/>')
 
-        self.connection.send.has_been_called_with(
-            '<get_tasks task_id="a1" usage_type="scan" details="1"/>'
-        )
-
-    def test_fail_without_task_id(self):
+    def test_missing_id(self):
         with self.assertRaises(GvmError):
-            self.gmp.get_task(None)
+            self.gmp.start_task(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.get_task('')
-
-
-# For new versions add another Mixin here.
-class Gmpv208GetTaskTestCase(GmpGetTaskTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv214GetTaskTestCase(GmpGetTaskTestCase, Gmpv214TestCase):
-    pass
+            self.gmp.start_task('')

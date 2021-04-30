@@ -16,9 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
-from ...gmpv214 import Gmpv214TestCase
-
 
 class GmpGetTasksTestCase:
     def test_get_tasks_simple(self):
@@ -69,12 +66,3 @@ class GmpGetTasksTestCase:
         self.connection.send.has_been_called_with(
             '<get_tasks usage_type="scan" schedules_only="1"/>'
         )
-
-
-# For new versions add another Mixin here.
-class Gmpv208GetTasksTestCase(GmpGetTasksTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv214GetTasksTestCase(GmpGetTasksTestCase, Gmpv214TestCase):
-    pass

@@ -22,9 +22,6 @@ from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv208 import HostsOrdering
 
-from ...gmpv208 import Gmpv208TestCase
-from ...gmpv214 import Gmpv214TestCase
-
 
 class GmpModifyTaskTestCase:
     def test_modify_task(self):
@@ -215,12 +212,3 @@ class GmpModifyTaskTestCase:
 
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_task(task_id='t1', preferences=['foo', 'bar'])
-
-
-# For new versions add another Mixin here.
-class Gmpv208ModifyTaskTestCase(GmpModifyTaskTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv214ModifyTaskTestCase(GmpModifyTaskTestCase, Gmpv214TestCase):
-    pass

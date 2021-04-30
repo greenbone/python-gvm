@@ -18,9 +18,6 @@
 
 from gvm.errors import RequiredArgument
 
-from ...gmpv208 import Gmpv208TestCase
-from ...gmpv214 import Gmpv214TestCase
-
 
 class GmpCreateContainerTaskTestCase:
     def test_create_task(self):
@@ -50,16 +47,3 @@ class GmpCreateContainerTaskTestCase:
             '<comment>bar</comment>'
             '</create_task>'
         )
-
-
-# For new versions add another Mixin here.
-class Gmpv208CreateContainerTaskTestCase(
-    GmpCreateContainerTaskTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv214CreateContainerTaskTestCase(
-    GmpCreateContainerTaskTestCase, Gmpv214TestCase
-):
-    pass
