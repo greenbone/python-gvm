@@ -82,7 +82,6 @@ class TaskMixin:
         config_id: str,
         target_id: str,
         scanner_id: str,
-        function: str,
         *,
         alterable: Optional[bool] = None,
         hosts_ordering: Optional[HostsOrdering] = None,
@@ -94,20 +93,30 @@ class TaskMixin:
         preferences: Optional[dict] = None,
     ) -> Any:
         if not name:
-            raise RequiredArgument(function=function, argument='name')
+            raise RequiredArgument(
+                function=self.create_task.__name__, argument='name'
+            )
 
         if not config_id:
-            raise RequiredArgument(function=function, argument='config_id')
+            raise RequiredArgument(
+                function=self.create_task.__name__, argument='config_id'
+            )
 
         if not target_id:
-            raise RequiredArgument(function=function, argument='target_id')
+            raise RequiredArgument(
+                function=self.create_task.__name__, argument='target_id'
+            )
 
         if not scanner_id:
-            raise RequiredArgument(function=function, argument='scanner_id')
+            raise RequiredArgument(
+                function=self.create_task.__name__, argument='scanner_id'
+            )
 
         # don't allow to create a container task with create_task
         if target_id == '0':
-            raise InvalidArgument(function=function, argument='target_id')
+            raise InvalidArgument(
+                function=self.create_task.__name__, argument='target_id'
+            )
 
         cmd = XmlCommand("create_task")
         cmd.add_element("name", name)
@@ -125,7 +134,7 @@ class TaskMixin:
         if hosts_ordering:
             if not isinstance(hosts_ordering, self.types.HostsOrdering):
                 raise InvalidArgumentType(
-                    function=function,
+                    function=self.create_task.__name__,
                     argument='hosts_ordering',
                     arg_type=HostsOrdering.__name__,
                 )
@@ -154,7 +163,9 @@ class TaskMixin:
         if observers is not None:
             if not is_list_like(observers):
                 raise InvalidArgumentType(
-                    function=function, argument='observers', arg_type='list'
+                    function=self.create_task.__name__,
+                    argument='observers',
+                    arg_type='list',
                 )
 
             # gvmd splits by comma and space
@@ -165,7 +176,7 @@ class TaskMixin:
         if preferences is not None:
             if not isinstance(preferences, Mapping):
                 raise InvalidArgumentType(
-                    function=function,
+                    function=self.create_task.__name__,
                     argument='preferences',
                     arg_type=Mapping.__name__,
                 )
