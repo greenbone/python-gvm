@@ -23,8 +23,8 @@ from typing import Any, List, Optional
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208.types import (
     HostsOrdering,
-)  # it I use latest, I get circular import :/
-from gvm.utils import deprecation, is_list_like, to_bool, to_comma_list
+)  # if I use latest, I get circular import :/
+from gvm.utils import is_list_like, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 
@@ -45,6 +45,35 @@ class TaskMixin:
 
         cmd = XmlCommand("create_task")
         cmd.add_element("copy", task_id)
+        return self._send_xml_command(cmd)
+
+    def create_container_task(
+        self, name: str, *, comment: Optional[str] = None
+    ) -> Any:
+        """Create a new container task
+
+        A container task is a "meta" task to import and view reports from other
+        systems.
+
+        Arguments:
+            name: Name of the task
+            comment: Comment for the task
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not name:
+            raise RequiredArgument(
+                function=self.create_container_task.__name__, argument='name'
+            )
+
+        cmd = XmlCommand("create_task")
+        cmd.add_element("name", name)
+        cmd.add_element("target", attrs={"id": "0"})
+
+        if comment:
+            cmd.add_element("comment", comment)
+
         return self._send_xml_command(cmd)
 
     def create_task(
@@ -103,15 +132,6 @@ class TaskMixin:
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
         if alert_ids:
-            if isinstance(alert_ids, str):
-                deprecation(
-                    "Please pass a list as alert_ids parameter to {}. "
-                    "Passing a string is deprecated and will be removed in "
-                    "future.".format(function)
-                )
-
-                # if a single id is given as a string wrap it into a list
-                alert_ids = [alert_ids]
             if is_list_like(alert_ids):
                 # parse all given alert id's
                 for alert in alert_ids:
@@ -155,6 +175,26 @@ class TaskMixin:
                 _xmlpref = _xmlprefs.add_element("preference")
                 _xmlpref.add_element("scanner_name", pref_name)
                 _xmlpref.add_element("value", str(pref_value))
+
+        return self._send_xml_command(cmd)
+
+    def delete_task(
+        self, task_id: str, *, ultimate: Optional[bool] = False
+    ) -> Any:
+        """Deletes an existing task
+
+        Arguments:
+            task_id: UUID of the task to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        if not task_id:
+            raise RequiredArgument(
+                function=self.delete_task.__name__, argument='task_id'
+            )
+
+        cmd = XmlCommand("delete_task")
+        cmd.set_attribute("task_id", task_id)
+        cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
@@ -282,6 +322,29 @@ class TaskMixin:
                 _xmlpref = _xmlprefs.add_element("preference")
                 _xmlpref.add_element("scanner_name", pref_name)
                 _xmlpref.add_element("value", str(pref_value))
+
+        return self._send_xml_command(cmd)
+
+    def move_task(self, task_id: str, *, slave_id: Optional[str] = None) -> Any:
+        """Move an existing task to another GMP slave scanner or the master
+
+        Arguments:
+            task_id: UUID of the task to be moved
+            slave_id: UUID of slave to reassign the task to, empty for master.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not task_id:
+            raise RequiredArgument(
+                function=self.move_task.__name__, argument='task_id'
+            )
+
+        cmd = XmlCommand("move_task")
+        cmd.set_attribute("task_id", task_id)
+
+        if slave_id is not None:
+            cmd.set_attribute("slave_id", slave_id)
 
         return self._send_xml_command(cmd)
 

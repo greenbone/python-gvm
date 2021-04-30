@@ -641,60 +641,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_task(
-        self,
-        name: str,
-        config_id: str,
-        target_id: str,
-        scanner_id: str,
-        *,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[str] = None,
-        alert_ids: Optional[List[str]] = None,
-        comment: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None,
-    ) -> Any:
-        """Create a new scan task
-
-        Arguments:
-            name: Name of the task
-            config_id: UUID of scan config to use by the task
-            target_id: UUID of target to be scanned
-            scanner_id: UUID of scanner to use for scanning the target
-            comment: Comment for the task
-            alterable: Whether the task should be alterable
-            alert_ids: List of UUIDs for alerts to be applied to the task
-            hosts_ordering: The order hosts are scanned in
-            schedule_id: UUID of a schedule when the task should be run.
-            schedule_periods: A limit to the number of times the task will be
-                scheduled, or 0 for no limit
-            observers: List of names or ids of users which should be allowed to
-                observe this task
-            preferences: Name/Value pairs of scanner preferences.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self.__create_task(
-            name=name,
-            config_id=config_id,
-            target_id=target_id,
-            scanner_id=scanner_id,
-            usage_type=UsageType.SCAN,
-            function=self.create_task.__name__,
-            alterable=alterable,
-            hosts_ordering=hosts_ordering,
-            schedule_id=schedule_id,
-            alert_ids=alert_ids,
-            comment=comment,
-            schedule_periods=schedule_periods,
-            observers=observers,
-            preferences=preferences,
-        )
-
     def create_tls_certificate(
         self,
         name: str,
@@ -3929,53 +3875,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", target_id)
         return self._send_xml_command(cmd)
 
-    def create_container_task(
-        self, name: str, *, comment: Optional[str] = None
-    ) -> Any:
-        """Create a new container task
-
-        A container task is a "meta" task to import and view reports from other
-        systems.
-
-        Arguments:
-            name: Name of the task
-            comment: Comment for the task
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not name:
-            raise RequiredArgument(
-                function=self.create_container_task.__name__, argument='name'
-            )
-
-        cmd = XmlCommand("create_task")
-        cmd.add_element("name", name)
-        cmd.add_element("target", attrs={"id": "0"})
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        return self._send_xml_command(cmd)
-
-    def clone_task(self, task_id: str) -> Any:
-        """Clone an existing task
-
-        Arguments:
-            task_id: UUID of existing task to clone from
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.clone_task.__name__, argument='task_id'
-            )
-
-        cmd = XmlCommand("create_task")
-        cmd.add_element("copy", task_id)
-        return self._send_xml_command(cmd)
-
     def create_user(
         self,
         name: str,
@@ -4417,26 +4316,6 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_target")
         cmd.set_attribute("target_id", target_id)
-        cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
-    def delete_task(
-        self, task_id: str, *, ultimate: Optional[bool] = False
-    ) -> Any:
-        """Deletes an existing task
-
-        Arguments:
-            task_id: UUID of the task to be deleted.
-            ultimate: Whether to remove entirely, or to the trashcan.
-        """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.delete_task.__name__, argument='task_id'
-            )
-
-        cmd = XmlCommand("delete_task")
-        cmd.set_attribute("task_id", task_id)
         cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
@@ -6839,29 +6718,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def move_task(self, task_id: str, *, slave_id: Optional[str] = None) -> Any:
-        """Move an existing task to another GMP slave scanner or the master
-
-        Arguments:
-            task_id: UUID of the task to be moved
-            slave_id: UUID of slave to reassign the task to, empty for master.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.move_task.__name__, argument='task_id'
-            )
-
-        cmd = XmlCommand("move_task")
-        cmd.set_attribute("task_id", task_id)
-
-        if slave_id is not None:
-            cmd.set_attribute("slave_id", slave_id)
-
-        return self._send_xml_command(cmd)
-
     def restore(self, entity_id: str) -> Any:
         """Restore an entity from the trashcan
 
@@ -6878,63 +6734,6 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("restore")
         cmd.set_attribute("id", entity_id)
-
-        return self._send_xml_command(cmd)
-
-    def resume_task(self, task_id: str) -> Any:
-        """Resume an existing stopped task
-
-        Arguments:
-            task_id: UUID of the task to be resumed
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.resume_task.__name__, argument='task_id'
-            )
-
-        cmd = XmlCommand("resume_task")
-        cmd.set_attribute("task_id", task_id)
-
-        return self._send_xml_command(cmd)
-
-    def start_task(self, task_id: str) -> Any:
-        """Start an existing task
-
-        Arguments:
-            task_id: UUID of the task to be started
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.start_task.__name__, argument='task_id'
-            )
-
-        cmd = XmlCommand("start_task")
-        cmd.set_attribute("task_id", task_id)
-
-        return self._send_xml_command(cmd)
-
-    def stop_task(self, task_id: str) -> Any:
-        """Stop an existing running task
-
-        Arguments:
-            task_id: UUID of the task to be stopped
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.stop_task.__name__, argument='task_id'
-            )
-
-        cmd = XmlCommand("stop_task")
-        cmd.set_attribute("task_id", task_id)
 
         return self._send_xml_command(cmd)
 
