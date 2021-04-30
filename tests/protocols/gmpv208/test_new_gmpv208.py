@@ -89,10 +89,6 @@ class Gmpv208ClonePolicyTestCase(GmpClonePolicyTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneTaskTestCase(GmpCloneTaskTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CloneTLSCertificateTestCase(
     GmpCloneTLSCertificateTestCase, Gmpv208TestCase
 ):
@@ -125,12 +121,6 @@ class Gmpv208CreatePolicyTestCase(GmpCreatePolicyTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateTaskCommandTestCase(
-    GmpCreateTaskCommandTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208ModifyAlertTestCase(GmpModifyAlertTestCase, Gmpv208TestCase):
     pass
 
@@ -156,10 +146,6 @@ class Gmpv208DeleteConfigTestCase(GmpDeleteConfigTestCase, Gmpv208TestCase):
 
 class Gmpv208DeletePolicyTestCase(GmpDeletePolicyTestCase, Gmpv208TestCase):
 
-    pass
-
-
-class Gmpv208DeleteTaskTestCase(GmpDeleteTaskTestCase, Gmpv208TestCase):
     pass
 
 
@@ -191,15 +177,6 @@ class Gmpv208GetPoliciesTestCase(GmpGetPoliciesTestCase, Gmpv208TestCase):
 
 
 class Gmpv208GetPolicyTestCase(GmpGetPolicyTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetTaskTestCase(GmpGetTaskTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetTasksTestCase(GmpGetTasksTestCase, Gmpv208TestCase):
-
     pass
 
 
@@ -413,12 +390,6 @@ class Gmpv208CloneTargetCommandTestCase(
 
 
 class Gmpv208CloneUserTestCase(GmpCloneUserTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CreateContainerTaskCommandTestCase(
-    GMPCreateContainerTaskCommandTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -816,33 +787,11 @@ class Gmpv208ModifyTargetTestCase(GmpModifyTargetTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208ModifyTaskCommandTestCase(
-    GmpModifyTaskCommandTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208ModifyUserTestCase(GmpModifyUserTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208MoveTaskTestCase(GmpMoveTaskTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208RestoreTestCase(GmpRestoreTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ResumeTaskTestCase(GmpResumeTaskTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208StartTaskTestCase(GmpStartTaskTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208StopTaskTestCase(GmpStopTaskTestCase, Gmpv208TestCase):
     pass
 
 

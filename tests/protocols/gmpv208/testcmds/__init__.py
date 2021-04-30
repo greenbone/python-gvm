@@ -33,7 +33,6 @@ from .test_get_feed import GmpGetFeedTestCase
 from .test_clone_audit import GmpCloneAuditTestCase
 from .test_clone_config import GmpCloneConfigTestCase
 from .test_clone_policy import GmpClonePolicyTestCase
-from .test_clone_task import GmpCloneTaskTestCase
 from .test_clone_tls_certificate import GmpCloneTLSCertificateTestCase
 from .test_create_audit import GmpCreateAuditCommandTestCase
 from .test_create_alert import GmpCreateAlertTestCase
@@ -44,12 +43,10 @@ from .test_create_config_from_osp_scanner import (
 from .test_create_credential import GmpCreateCredentialTestCase
 from .test_create_policy import GmpCreatePolicyTestCase
 from .test_create_scanner import GmpCreateScannerTestCase
-from .test_create_task import GmpCreateTaskCommandTestCase
 from .test_create_tls_certificate import GmpCreateTLSCertificateTestCase
 from .test_delete_audit import GmpDeleteAuditTestCase
 from .test_delete_config import GmpDeleteConfigTestCase
 from .test_delete_policy import GmpDeletePolicyTestCase
-from .test_delete_task import GmpDeleteTaskTestCase
 from .test_delete_tls_certificate import GmpDeleteTLSCertificateTestCase
 from .test_get_audit import GmpGetAuditTestCase
 from .test_get_audits import GmpGetAuditsTestCase
@@ -57,8 +54,6 @@ from .test_get_config import GmpGetConfigTestCase
 from .test_get_configs import GmpGetConfigsTestCase
 from .test_get_policies import GmpGetPoliciesTestCase
 from .test_get_policy import GmpGetPolicyTestCase
-from .test_get_task import GmpGetTaskTestCase
-from .test_get_tasks import GmpGetTasksTestCase
 from .test_get_tls_certificate import GmpGetTlsCertificateTestCase
 from .test_get_tls_certificates import GmpGetTLSCertificatesTestCase
 from .test_modify_credential import GmpModifyCredentialTestCase
@@ -111,7 +106,6 @@ from .test_clone_schedule import GmpCloneScheduleTestCase
 from .test_clone_tag import GmpCloneTagTestCase
 from .test_clone_target import GmpCloneTargetCommandTestCase
 from .test_clone_user import GmpCloneUserTestCase
-from .test_create_container_task import GMPCreateContainerTaskCommandTestCase
 from .test_create_group import GmpCreateGroupTestCase
 from .test_create_host import GmpCreateHostTestCase
 from .test_create_note import GmpCreateNoteTestCase
@@ -213,13 +207,8 @@ from .test_modify_port_list import GmpModifyPortListTestCase
 from .test_modify_role import GmpModifyRoleTestCase
 from .test_modify_setting import GmpModifySettingTestCase
 from .test_modify_target import GmpModifyTargetTestCase
-from .test_modify_task import GmpModifyTaskCommandTestCase
 from .test_modify_user import GmpModifyUserTestCase
-from .test_move_task import GmpMoveTaskTestCase
 from .test_restore import GmpRestoreTestCase
-from .test_resume_task import GmpResumeTaskTestCase
-from .test_start_task import GmpStartTaskTestCase
-from .test_stop_task import GmpStopTaskTestCase
 from .test_sync_cert import GmpSyncCertCommandTestCase
 from .test_sync_config import GmpSyncConfigCommandTestCase
 from .test_sync_feed import GmpSyncFeedCommandTestCase
