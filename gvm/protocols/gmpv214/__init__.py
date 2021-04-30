@@ -30,7 +30,7 @@ from typing import Any, Callable, Optional
 
 from gvm.protocols.gmpv214.gmpv214 import GmpV214Mixin
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
-from gvm.protocols.entities.tasks import TaskMixin
+from gvm.protocols.gmpv208.entities.tasks import TaskMixin
 from gvm.connections import GvmConnection
 
 
