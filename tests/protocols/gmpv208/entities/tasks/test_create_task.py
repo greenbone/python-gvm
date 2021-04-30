@@ -23,7 +23,7 @@ from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import HostsOrdering
 
 
-class GmpCreateTaskTestCase:
+class GmpCreateTaskTestMixin:
     def test_create_task(self):
         self.gmp.create_task(
             name='foo', config_id='c1', target_id='t1', scanner_id='s1'

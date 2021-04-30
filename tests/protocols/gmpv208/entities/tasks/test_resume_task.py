@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpResumeTaskTestCase:
+class GmpResumeTaskTestMixin:
     def test_resume_task(self):
         self.gmp.resume_task('a1')
 

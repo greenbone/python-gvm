@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpStopTaskTestCase:
+class GmpStopTaskTestMixin:
     def test_stop_task(self):
         self.gmp.stop_task('a1')
 

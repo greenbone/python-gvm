@@ -16,14 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .test_clone_task import GmpCloneTaskTestCase
-from .test_create_container_task import GmpCreateContainerTaskTestCase
-from .test_create_task import GmpCreateTaskTestCase
-from .test_delete_task import GmpDeleteTaskTestCase
-from .test_get_task import GmpGetTaskTestCase
-from .test_get_tasks import GmpGetTasksTestCase
-from .test_modify_task import GmpModifyTaskTestCase
-from .test_move_task import GmpMoveTaskTestCase
-from .test_resume_task import GmpResumeTaskTestCase
-from .test_start_task import GmpStartTaskTestCase
-from .test_stop_task import GmpStopTaskTestCase
+from .test_clone_task import GmpCloneTaskTestMixin
+from .test_create_container_task import GmpCreateContainerTaskTestMixin
+from .test_create_task import GmpCreateTaskTestMixin
+from .test_delete_task import GmpDeleteTaskTestMixin
+from .test_get_task import GmpGetTaskTestMixin
+from .test_get_tasks import GmpGetTasksTestMixin
+from .test_modify_task import GmpModifyTaskTestMixin
+from .test_move_task import GmpMoveTaskTestMixin
+from .test_resume_task import GmpResumeTaskTestMixin
+from .test_start_task import GmpStartTaskTestMixin
+from .test_stop_task import GmpStopTaskTestMixin

@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCreateContainerTaskTestCase:
+class GmpCreateContainerTaskTestMixin:
     def test_create_task(self):
         self.gmp.create_container_task(name='foo')
 

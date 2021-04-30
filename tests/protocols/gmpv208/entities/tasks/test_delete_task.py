@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpDeleteTaskTestCase:
+class GmpDeleteTaskTestMixin:
     def test_delete(self):
         self.gmp.delete_task('a1')
 

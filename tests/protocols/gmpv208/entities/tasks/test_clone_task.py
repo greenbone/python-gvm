@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCloneTaskTestCase:
+class GmpCloneTaskTestMixin:
     def test_clone(self):
         self.gmp.clone_task('a1')
 

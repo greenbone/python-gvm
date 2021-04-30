@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpMoveTaskTestCase:
+class GmpMoveTaskTestMixin:
     def test_move_task(self):
         self.gmp.move_task('a1')
 

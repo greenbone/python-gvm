@@ -18,61 +18,61 @@
 
 from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.tasks import (
-    GmpCloneTaskTestCase,
-    GmpCreateContainerTaskTestCase,
-    GmpCreateTaskTestCase,
-    GmpDeleteTaskTestCase,
-    GmpGetTasksTestCase,
-    GmpGetTaskTestCase,
-    GmpModifyTaskTestCase,
-    GmpMoveTaskTestCase,
-    GmpResumeTaskTestCase,
-    GmpStartTaskTestCase,
-    GmpStopTaskTestCase,
+    GmpCloneTaskTestMixin,
+    GmpCreateContainerTaskTestMixin,
+    GmpCreateTaskTestMixin,
+    GmpDeleteTaskTestMixin,
+    GmpGetTasksTestMixin,
+    GmpGetTaskTestMixin,
+    GmpModifyTaskTestMixin,
+    GmpMoveTaskTestMixin,
+    GmpResumeTaskTestMixin,
+    GmpStartTaskTestMixin,
+    GmpStopTaskTestMixin,
 )
 
 
-class Gmpv214CloneTaskTestCase(GmpCloneTaskTestCase, Gmpv214TestCase):
+class Gmpv214CloneTaskTestCase(GmpCloneTaskTestMixin, Gmpv214TestCase):
     pass
 
 
 class Gmpv214CreateContainerTaskTestCase(
-    GmpCreateContainerTaskTestCase, Gmpv214TestCase
+    GmpCreateContainerTaskTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv214CreateTaskTestCase(GmpCreateTaskTestCase, Gmpv214TestCase):
+class Gmpv214CreateTaskTestCase(GmpCreateTaskTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214DeleteTaskTestCase(GmpDeleteTaskTestCase, Gmpv214TestCase):
+class Gmpv214DeleteTaskTestCase(GmpDeleteTaskTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetTaskTestCase(GmpGetTaskTestCase, Gmpv214TestCase):
+class Gmpv214GetTaskTestCase(GmpGetTaskTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetTasksTestCase(GmpGetTasksTestCase, Gmpv214TestCase):
+class Gmpv214GetTasksTestCase(GmpGetTasksTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214ModifyTaskTestCase(GmpModifyTaskTestCase, Gmpv214TestCase):
+class Gmpv214ModifyTaskTestCase(GmpModifyTaskTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214MoveTaskTestCase(GmpMoveTaskTestCase, Gmpv214TestCase):
+class Gmpv214MoveTaskTestCase(GmpMoveTaskTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214ResumeTaskTestCase(GmpResumeTaskTestCase, Gmpv214TestCase):
+class Gmpv214ResumeTaskTestCase(GmpResumeTaskTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214StartTaskTestCase(GmpStartTaskTestCase, Gmpv214TestCase):
+class Gmpv214StartTaskTestCase(GmpStartTaskTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214StopTaskTestCase(GmpStopTaskTestCase, Gmpv214TestCase):
+class Gmpv214StopTaskTestCase(GmpStopTaskTestMixin, Gmpv214TestCase):
     pass
