@@ -83,10 +83,6 @@ class Gmpv214ClonePolicyTestCase(GmpClonePolicyTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneTaskTestCase(GmpCloneTaskTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CloneTLSCertificateTestCase(
     GmpCloneTLSCertificateTestCase, Gmpv214TestCase
 ):
@@ -119,12 +115,6 @@ class Gmpv214CreatePolicyTestCase(GmpCreatePolicyTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreateTaskCommandTestCase(
-    GmpCreateTaskCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214ModifyAlertTestCase(GmpModifyAlertTestCase, Gmpv214TestCase):
     pass
 
@@ -150,10 +140,6 @@ class Gmpv214DeleteConfigTestCase(GmpDeleteConfigTestCase, Gmpv214TestCase):
 
 class Gmpv214DeletePolicyTestCase(GmpDeletePolicyTestCase, Gmpv214TestCase):
 
-    pass
-
-
-class Gmpv214DeleteTaskTestCase(GmpDeleteTaskTestCase, Gmpv214TestCase):
     pass
 
 
@@ -185,15 +171,6 @@ class Gmpv214GetPoliciesTestCase(GmpGetPoliciesTestCase, Gmpv214TestCase):
 
 
 class Gmpv214GetPolicyTestCase(GmpGetPolicyTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetTaskTestCase(GmpGetTaskTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetTasksTestCase(GmpGetTasksTestCase, Gmpv214TestCase):
-
     pass
 
 
@@ -399,12 +376,6 @@ class Gmpv214CloneTargetCommandTestCase(
 
 
 class Gmpv214CloneUserTestCase(GmpCloneUserTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CreateContainerTaskCommandTestCase(
-    GMPCreateContainerTaskCommandTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -786,29 +757,7 @@ class Gmpv214ModifyTargetTestCase(GmpModifyTargetTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214ModifyTaskCommandTestCase(
-    GmpModifyTaskCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214MoveTaskTestCase(GmpMoveTaskTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214RestoreTestCase(GmpRestoreTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ResumeTaskTestCase(GmpResumeTaskTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214StartTaskTestCase(GmpStartTaskTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214StopTaskTestCase(GmpStopTaskTestCase, Gmpv214TestCase):
     pass
 
 

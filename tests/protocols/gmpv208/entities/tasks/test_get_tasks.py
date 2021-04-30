@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetTasksTestCase:
+class GmpGetTasksTestMixin:
     def test_get_tasks_simple(self):
         self.gmp.get_tasks()
 

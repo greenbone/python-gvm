@@ -23,7 +23,7 @@ from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import HostsOrdering
 
 
-class GmpModifyTaskCommandTestCase:
+class GmpModifyTaskTestMixin:
     def test_modify_task(self):
         self.gmp.modify_task('t1')
 

@@ -28,6 +28,7 @@ Module for communication with gvmd in
 from typing import Any, Callable, Optional
 
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
+from gvm.protocols.gmpv208.entities.tasks import TaskMixin
 from gvm.connections import GvmConnection
 
 
@@ -37,7 +38,7 @@ from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 PROTOCOL_VERSION = (20, 8)
 
 
-class Gmp(GmpV208Mixin):
+class Gmp(GmpV208Mixin, TaskMixin):
 
     types = types
 

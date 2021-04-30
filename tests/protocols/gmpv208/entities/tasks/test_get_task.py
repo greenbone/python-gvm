@@ -19,15 +19,17 @@
 from gvm.errors import GvmError
 
 
-class GmpResumeTaskTestCase:
-    def test_resume_task(self):
-        self.gmp.resume_task('a1')
+class GmpGetTaskTestMixin:
+    def test_get_task(self):
+        self.gmp.get_task('a1')
 
-        self.connection.send.has_been_called_with('<resume_task task_id="a1"/>')
+        self.connection.send.has_been_called_with(
+            '<get_tasks task_id="a1" usage_type="scan" details="1"/>'
+        )
 
-    def test_missing_id(self):
+    def test_fail_without_task_id(self):
         with self.assertRaises(GvmError):
-            self.gmp.resume_task(None)
+            self.gmp.get_task(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.resume_task('')
+            self.gmp.get_task('')

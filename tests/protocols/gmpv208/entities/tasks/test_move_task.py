@@ -19,24 +19,22 @@
 from gvm.errors import GvmError
 
 
-class GmpDeleteTaskTestCase:
-    def test_delete(self):
-        self.gmp.delete_task('a1')
+class GmpMoveTaskTestMixin:
+    def test_move_task(self):
+        self.gmp.move_task('a1')
+
+        self.connection.send.has_been_called_with('<move_task task_id="a1"/>')
+
+    def test_move_task_to_slave(self):
+        self.gmp.move_task('a1', slave_id='s1')
 
         self.connection.send.has_been_called_with(
-            '<delete_task task_id="a1" ultimate="0"/>'
-        )
-
-    def test_delete_ultimate(self):
-        self.gmp.delete_task('a1', ultimate=True)
-
-        self.connection.send.has_been_called_with(
-            '<delete_task task_id="a1" ultimate="1"/>'
+            '<move_task task_id="a1" slave_id="s1"/>'
         )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):
-            self.gmp.delete_task(None)
+            self.gmp.move_task(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.delete_task('')
+            self.gmp.move_task('')
