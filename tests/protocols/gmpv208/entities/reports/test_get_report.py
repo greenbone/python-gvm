@@ -23,7 +23,7 @@ from gvm.protocols.gmpv208.entities.report_formats import (
 )
 
 
-class GmpGetReportTestCase:
+class GmpGetReportTestMixin:
     def test_get_report_without_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.get_report(None)

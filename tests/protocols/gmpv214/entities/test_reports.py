@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from ...gmpv214 import Gmpv214TestCase
+from ...gmpv208.entities.reports import (
+    GmpDeleteReportTestMixin,
+    GmpGetReportsTestMixin,
+    GmpGetReportTestMixin,
+    GmpImportReportTestMixin,
+)
 
 
-class GmpDeleteReportTestCase:
-    def test_delete(self):
-        self.gmp.delete_report('a1')
+class Gmpv214DeleteReportTestCase(GmpDeleteReportTestMixin, Gmpv214TestCase):
+    pass
 
-        self.connection.send.has_been_called_with(
-            '<delete_report report_id="a1"/>'
-        )
 
-    def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_report(None)
+class Gmpv214GetReportTestCase(GmpGetReportTestMixin, Gmpv214TestCase):
+    pass
 
-        with self.assertRaises(GvmError):
-            self.gmp.delete_report('')
+
+class Gmpv214GetReportsTestCase(GmpGetReportsTestMixin, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214ImportReportTestCase(GmpImportReportTestMixin, Gmpv214TestCase):
+    pass
