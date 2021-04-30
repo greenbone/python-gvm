@@ -21,7 +21,10 @@ from typing import Optional
 
 from gvm.errors import InvalidArgument
 
-
+from gvm.protocols.gmpv208.entities.report_formats import (
+    ReportFormatType,
+    get_report_format_id_from_string,
+)
 from gvm.protocols.gmpv208.types import (
     AggregateStatistic,
     AlertCondition,
@@ -38,7 +41,6 @@ from gvm.protocols.gmpv208.types import (
     InfoType,
     PermissionSubjectType,
     PortRangeType,
-    ReportFormatType,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
     SortOrder,
@@ -60,7 +62,6 @@ from gvm.protocols.gmpv208.types import (
     get_info_type_from_string,
     get_permission_subject_type_from_string,
     get_port_range_type_from_string,
-    get_report_format_id_from_string,
     get_snmp_auth_algorithm_from_string,
     get_snmp_privacy_algorithm_from_string,
     get_sort_order_from_string,

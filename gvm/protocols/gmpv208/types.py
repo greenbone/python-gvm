@@ -40,7 +40,6 @@ __all__ = [
     "InfoType",
     "PermissionSubjectType",
     "PortRangeType",
-    "ReportFormatType",
     "ScannerType",
     "SeverityLevel",
     "SnmpAuthAlgorithm",
@@ -64,7 +63,6 @@ __all__ = [
     "get_info_type_from_string",
     "get_permission_subject_type_from_string",
     "get_port_range_type_from_string",
-    "get_report_format_id_from_string",
     "get_scanner_type_from_string",
     "get_severity_level_from_string",
     "get_snmp_auth_algorithm_from_string",
@@ -798,100 +796,100 @@ def get_port_range_type_from_string(
         ) from None
 
 
-class ReportFormatType(Enum):
-    """Enum for builtin report formats"""
+# class ReportFormatType(Enum):
+#     """Enum for builtin report formats"""
 
-    ANONYMOUS_XML = '5057e5cc-b825-11e4-9d0e-28d24461215b'
-    ARF = '910200ca-dc05-11e1-954f-406186ea4fc5'
-    CPE = '5ceff8ba-1f62-11e1-ab9f-406186ea4fc5'
-    CSV_HOSTS = '9087b18c-626c-11e3-8892-406186ea4fc5"'
-    CSV_RESULTS = 'c1645568-627a-11e3-a660-406186ea4fc5'
-    GCR_PDF = 'dc51a40a-c022-11e9-b02d-3f7ca5bdcb11'
-    GSR_HTML = 'ffa123c9-a2d2-409e-bbbb-a6c1385dbeaa'
-    GSR_PDF = '35ba7077-dc85-42ef-87c9-b0eda7e903b6'
-    GXCR_PDF = 'f0d348de-c022-11e9-bc4c-4bf1d5e1a8ca'
-    GXR_PDF = 'ebbc7f34-8ae5-11e1-b07b-001f29eadec8'
-    ITG = '77bd6c4a-1f62-11e1-abf0-406186ea4fc5'
-    LATEX = 'a684c02c-b531-11e1-bdc2-406186ea4fc5'
-    NBE = '9ca6fe72-1f62-11e1-9e7c-406186ea4fc5'
-    PDF = 'c402cc3e-b531-11e1-9163-406186ea4fc5'
-    SVG = '9e5e5deb-879e-4ecc-8be6-a71cd0875cdd'
-    TXT = 'a3810a62-1f62-11e1-9219-406186ea4fc5'
-    VERINICE_ISM = 'c15ad349-bd8d-457a-880a-c7056532ee15'
-    VERINICE_ITG = '50c9950a-f326-11e4-800c-28d24461215b'
-    XML = 'a994b278-1f62-11e1-96ac-406186ea4fc5'
+#     ANONYMOUS_XML = '5057e5cc-b825-11e4-9d0e-28d24461215b'
+#     ARF = '910200ca-dc05-11e1-954f-406186ea4fc5'
+#     CPE = '5ceff8ba-1f62-11e1-ab9f-406186ea4fc5'
+#     CSV_HOSTS = '9087b18c-626c-11e3-8892-406186ea4fc5"'
+#     CSV_RESULTS = 'c1645568-627a-11e3-a660-406186ea4fc5'
+#     GCR_PDF = 'dc51a40a-c022-11e9-b02d-3f7ca5bdcb11'
+#     GSR_HTML = 'ffa123c9-a2d2-409e-bbbb-a6c1385dbeaa'
+#     GSR_PDF = '35ba7077-dc85-42ef-87c9-b0eda7e903b6'
+#     GXCR_PDF = 'f0d348de-c022-11e9-bc4c-4bf1d5e1a8ca'
+#     GXR_PDF = 'ebbc7f34-8ae5-11e1-b07b-001f29eadec8'
+#     ITG = '77bd6c4a-1f62-11e1-abf0-406186ea4fc5'
+#     LATEX = 'a684c02c-b531-11e1-bdc2-406186ea4fc5'
+#     NBE = '9ca6fe72-1f62-11e1-9e7c-406186ea4fc5'
+#     PDF = 'c402cc3e-b531-11e1-9163-406186ea4fc5'
+#     SVG = '9e5e5deb-879e-4ecc-8be6-a71cd0875cdd'
+#     TXT = 'a3810a62-1f62-11e1-9219-406186ea4fc5'
+#     VERINICE_ISM = 'c15ad349-bd8d-457a-880a-c7056532ee15'
+#     VERINICE_ITG = '50c9950a-f326-11e4-800c-28d24461215b'
+#     XML = 'a994b278-1f62-11e1-96ac-406186ea4fc5'
 
 
-def get_report_format_id_from_string(
-    report_format: Optional[str],
-) -> Optional[ReportFormatType]:
-    """Convert an report format name into a ReportFormatType instance"""
-    if not report_format:
-        return None
+# def get_report_format_id_from_string(
+#     report_format: Optional[str],
+# ) -> Optional[ReportFormatType]:
+#     """Convert an report format name into a ReportFormatType instance"""
+#     if not report_format:
+#         return None
 
-    report_format = report_format.lower()
+#     report_format = report_format.lower()
 
-    if report_format == 'anonymous xml':
-        return ReportFormatType.ANONYMOUS_XML
+#     if report_format == 'anonymous xml':
+#         return ReportFormatType.ANONYMOUS_XML
 
-    if report_format == 'arf':
-        return ReportFormatType.ARF
+#     if report_format == 'arf':
+#         return ReportFormatType.ARF
 
-    if report_format == 'cpe':
-        return ReportFormatType.CPE
+#     if report_format == 'cpe':
+#         return ReportFormatType.CPE
 
-    if report_format == 'csv hosts':
-        return ReportFormatType.CSV_HOSTS
+#     if report_format == 'csv hosts':
+#         return ReportFormatType.CSV_HOSTS
 
-    if report_format == 'csv results':
-        return ReportFormatType.CSV_RESULTS
+#     if report_format == 'csv results':
+#         return ReportFormatType.CSV_RESULTS
 
-    if report_format == 'gcr pdf':
-        return ReportFormatType.GCR_PDF
+#     if report_format == 'gcr pdf':
+#         return ReportFormatType.GCR_PDF
 
-    if report_format == 'gsr html':
-        return ReportFormatType.GSR_HTML
+#     if report_format == 'gsr html':
+#         return ReportFormatType.GSR_HTML
 
-    if report_format == 'gsr pdf':
-        return ReportFormatType.GSR_PDF
+#     if report_format == 'gsr pdf':
+#         return ReportFormatType.GSR_PDF
 
-    if report_format == 'gxcr pdf':
-        return ReportFormatType.GXCR_PDF
+#     if report_format == 'gxcr pdf':
+#         return ReportFormatType.GXCR_PDF
 
-    if report_format == 'gxr pdf':
-        return ReportFormatType.GXR_PDF
+#     if report_format == 'gxr pdf':
+#         return ReportFormatType.GXR_PDF
 
-    if report_format == 'itg':
-        return ReportFormatType.ITG
+#     if report_format == 'itg':
+#         return ReportFormatType.ITG
 
-    if report_format == 'latex':
-        return ReportFormatType.LATEX
+#     if report_format == 'latex':
+#         return ReportFormatType.LATEX
 
-    if report_format == 'nbe':
-        return ReportFormatType.NBE
+#     if report_format == 'nbe':
+#         return ReportFormatType.NBE
 
-    if report_format == 'pdf':
-        return ReportFormatType.PDF
+#     if report_format == 'pdf':
+#         return ReportFormatType.PDF
 
-    if report_format == 'svg':
-        return ReportFormatType.SVG
+#     if report_format == 'svg':
+#         return ReportFormatType.SVG
 
-    if report_format == 'txt':
-        return ReportFormatType.TXT
+#     if report_format == 'txt':
+#         return ReportFormatType.TXT
 
-    if report_format == 'verinice ism':
-        return ReportFormatType.VERINICE_ISM
+#     if report_format == 'verinice ism':
+#         return ReportFormatType.VERINICE_ISM
 
-    if report_format == 'verinice itg':
-        return ReportFormatType.VERINICE_ITG
+#     if report_format == 'verinice itg':
+#         return ReportFormatType.VERINICE_ITG
 
-    if report_format == 'xml':
-        return ReportFormatType.XML
+#     if report_format == 'xml':
+#         return ReportFormatType.XML
 
-    raise InvalidArgument(
-        argument='report_format',
-        function=get_report_format_id_from_string.__name__,
-    )
+#     raise InvalidArgument(
+#         argument='report_format',
+#         function=get_report_format_id_from_string.__name__,
+#     )
 
 
 class SnmpAuthAlgorithm(Enum):
