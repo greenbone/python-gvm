@@ -23,8 +23,11 @@ from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv208 import HostsOrdering
 
+from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 
-class GmpCreateTaskCommandTestCase:
+
+class GmpCreateTaskTestCase:
     def test_create_task(self):
         self.gmp.create_task(
             name='foo', config_id='c1', target_id='t1', scanner_id='s1'
@@ -431,3 +434,12 @@ class GmpCreateTaskCommandTestCase:
                 scanner_id='s1',
                 observers='',
             )
+
+
+# For new versions add another Mixin here.
+class Gmpv208CreateTaskTestCase(GmpCreateTaskTestCase, Gmpv208TestCase):
+    pass
+
+
+class Gmpv214CreateTaskTestCase(GmpCreateTaskTestCase, Gmpv214TestCase):
+    pass

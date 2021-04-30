@@ -18,6 +18,9 @@
 
 from gvm.errors import GvmError
 
+from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
+
 
 class GmpDeleteTaskTestCase:
     def test_delete(self):
@@ -40,3 +43,12 @@ class GmpDeleteTaskTestCase:
 
         with self.assertRaises(GvmError):
             self.gmp.delete_task('')
+
+
+# For new versions add another Mixin here.
+class Gmpv208DeleteTaskTestCase(GmpDeleteTaskTestCase, Gmpv208TestCase):
+    pass
+
+
+class Gmpv214DeleteTaskTestCase(GmpDeleteTaskTestCase, Gmpv214TestCase):
+    pass

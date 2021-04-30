@@ -16,20 +16,37 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from gvm.errors import GvmError
+
+from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 
 
-class GmpCloneTaskTestCase:
-    def test_clone(self):
-        self.gmp.clone_task('a1')
+class GmpMoveTaskTestCase:
+    def test_move_task(self):
+        self.gmp.move_task('a1')
+
+        self.connection.send.has_been_called_with('<move_task task_id="a1"/>')
+
+    def test_move_task_to_slave(self):
+        self.gmp.move_task('a1', slave_id='s1')
 
         self.connection.send.has_been_called_with(
-            '<create_task><copy>a1</copy></create_task>'
+            '<move_task task_id="a1" slave_id="s1"/>'
         )
 
     def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_task('')
+        with self.assertRaises(GvmError):
+            self.gmp.move_task(None)
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_task(None)
+        with self.assertRaises(GvmError):
+            self.gmp.move_task('')
+
+
+# For new versions add another Mixin here.
+class Gmpv208MoveTaskTestCase(GmpMoveTaskTestCase, Gmpv208TestCase):
+    pass
+
+
+class Gmpv214MoveTaskTestCase(GmpMoveTaskTestCase, Gmpv214TestCase):
+    pass
