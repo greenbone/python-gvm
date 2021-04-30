@@ -1783,6 +1783,118 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
+    def __create_task(
+        self,
+        name: str,
+        config_id: str,
+        target_id: str,
+        scanner_id: str,
+        usage_type: UsageType,
+        function: str,
+        *,
+        alterable: Optional[bool] = None,
+        hosts_ordering: Optional[HostsOrdering] = None,
+        schedule_id: Optional[str] = None,
+        alert_ids: Optional[List[str]] = None,
+        comment: Optional[str] = None,
+        schedule_periods: Optional[int] = None,
+        observers: Optional[List[str]] = None,
+        preferences: Optional[dict] = None,
+    ) -> Any:
+        if not name:
+            raise RequiredArgument(function=function, argument='name')
+
+        if not config_id:
+            raise RequiredArgument(function=function, argument='config_id')
+
+        if not target_id:
+            raise RequiredArgument(function=function, argument='target_id')
+
+        if not scanner_id:
+            raise RequiredArgument(function=function, argument='scanner_id')
+
+        # don't allow to create a container task with create_task
+        if target_id == '0':
+            raise InvalidArgument(function=function, argument='target_id')
+
+        cmd = XmlCommand("create_task")
+        cmd.add_element("name", name)
+        cmd.add_element("usage_type", usage_type.value)
+        cmd.add_element("config", attrs={"id": config_id})
+        cmd.add_element("target", attrs={"id": target_id})
+        cmd.add_element("scanner", attrs={"id": scanner_id})
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if alterable is not None:
+            cmd.add_element("alterable", to_bool(alterable))
+
+        if hosts_ordering:
+            if not isinstance(hosts_ordering, self.types.HostsOrdering):
+                raise InvalidArgumentType(
+                    function=function,
+                    argument='hosts_ordering',
+                    arg_type=HostsOrdering.__name__,
+                )
+            cmd.add_element("hosts_ordering", hosts_ordering.value)
+
+        if alert_ids:
+            if isinstance(alert_ids, str):
+                deprecation(
+                    "Please pass a list as alert_ids parameter to {}. "
+                    "Passing a string is deprecated and will be removed in "
+                    "future.".format(function)
+                )
+
+                # if a single id is given as a string wrap it into a list
+                alert_ids = [alert_ids]
+            if is_list_like(alert_ids):
+                # parse all given alert id's
+                for alert in alert_ids:
+                    cmd.add_element("alert", attrs={"id": str(alert)})
+
+        if schedule_id:
+            cmd.add_element("schedule", attrs={"id": schedule_id})
+
+            if schedule_periods is not None:
+                if (
+                    not isinstance(schedule_periods, numbers.Integral)
+                    or schedule_periods < 0
+                ):
+                    raise InvalidArgument(
+                        "schedule_periods must be an integer greater or equal "
+                        "than 0"
+                    )
+                cmd.add_element("schedule_periods", str(schedule_periods))
+
+        if observers is not None:
+            if not is_list_like(observers):
+                raise InvalidArgumentType(
+                    function=function, argument='observers', arg_type='list'
+                )
+
+            # gvmd splits by comma and space
+            # gvmd tries to lookup each value as user name and afterwards as
+            # user id. So both user name and user id are possible
+            cmd.add_element("observers", to_comma_list(observers))
+
+        if preferences is not None:
+            if not isinstance(preferences, collections.abc.Mapping):
+                raise InvalidArgumentType(
+                    function=function,
+                    argument='preferences',
+                    arg_type=collections.abc.Mapping.__name__,
+                )
+
+            _xmlprefs = cmd.add_element("preferences")
+            for pref_name, pref_value in preferences.items():
+                _xmlpref = _xmlprefs.add_element("preference")
+                _xmlpref.add_element("scanner_name", pref_name)
+                _xmlpref.add_element("value", str(pref_value))
+
+        return self._send_xml_command(cmd)
+
     def __create_config(
         self,
         config_id: str,
@@ -6625,133 +6737,6 @@ class GmpV208Mixin(GvmProtocol):
 
         if port_list_id:
             cmd.add_element("port_list", attrs={"id": port_list_id})
-
-        return self._send_xml_command(cmd)
-
-    def modify_task(
-        self,
-        task_id: str,
-        *,
-        name: Optional[str] = None,
-        config_id: Optional[str] = None,
-        target_id: Optional[str] = None,
-        scanner_id: Optional[str] = None,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        comment: Optional[str] = None,
-        alert_ids: Optional[List[str]] = None,
-        observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None,
-    ) -> Any:
-        """Modifies an existing task.
-
-        Arguments:
-            task_id: UUID of task to modify.
-            name: The name of the task.
-            config_id: UUID of scan config to use by the task
-            target_id: UUID of target to be scanned
-            scanner_id: UUID of scanner to use for scanning the target
-            comment: The comment on the task.
-            alert_ids: List of UUIDs for alerts to be applied to the task
-            hosts_ordering: The order hosts are scanned in
-            schedule_id: UUID of a schedule when the task should be run.
-            schedule_periods: A limit to the number of times the task will be
-                scheduled, or 0 for no limit.
-            observers: List of names or ids of users which should be allowed to
-                observe this task
-            preferences: Name/Value pairs of scanner preferences.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.modify_task.__name__, argument='task_id argument'
-            )
-
-        cmd = XmlCommand("modify_task")
-        cmd.set_attribute("task_id", task_id)
-
-        if name:
-            cmd.add_element("name", name)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if config_id:
-            cmd.add_element("config", attrs={"id": config_id})
-
-        if target_id:
-            cmd.add_element("target", attrs={"id": target_id})
-
-        if alterable is not None:
-            cmd.add_element("alterable", to_bool(alterable))
-
-        if hosts_ordering:
-            if not isinstance(hosts_ordering, HostsOrdering):
-                raise InvalidArgumentType(
-                    function=self.modify_task.__name__,
-                    argument='hosts_ordering',
-                    arg_type=HostsOrdering.__name__,
-                )
-            cmd.add_element("hosts_ordering", hosts_ordering.value)
-
-        if scanner_id:
-            cmd.add_element("scanner", attrs={"id": scanner_id})
-
-        if schedule_id:
-            cmd.add_element("schedule", attrs={"id": schedule_id})
-
-        if schedule_periods is not None:
-            if (
-                not isinstance(schedule_periods, numbers.Integral)
-                or schedule_periods < 0
-            ):
-                raise InvalidArgument(
-                    "schedule_periods must be an integer greater or equal "
-                    "than 0"
-                )
-            cmd.add_element("schedule_periods", str(schedule_periods))
-
-        if alert_ids is not None:
-            if not is_list_like(alert_ids):
-                raise InvalidArgumentType(
-                    function=self.modify_task.__name__,
-                    argument='alert_ids',
-                    arg_type='list',
-                )
-
-            if len(alert_ids) == 0:
-                cmd.add_element("alert", attrs={"id": "0"})
-            else:
-                for alert in alert_ids:
-                    cmd.add_element("alert", attrs={"id": str(alert)})
-
-        if observers is not None:
-            if not is_list_like(observers):
-                raise InvalidArgumentType(
-                    function=self.modify_task.__name__,
-                    argument='observers',
-                    arg_type='list',
-                )
-
-            cmd.add_element("observers", to_comma_list(observers))
-
-        if preferences is not None:
-            if not isinstance(preferences, collections.abc.Mapping):
-                raise InvalidArgumentType(
-                    function=self.modify_task.__name__,
-                    argument='preferences',
-                    arg_type=collections.abc.Mapping.__name__,
-                )
-
-            _xmlprefs = cmd.add_element("preferences")
-            for pref_name, pref_value in preferences.items():
-                _xmlpref = _xmlprefs.add_element("preference")
-                _xmlpref.add_element("scanner_name", pref_name)
-                _xmlpref.add_element("value", str(pref_value))
 
         return self._send_xml_command(cmd)
 
