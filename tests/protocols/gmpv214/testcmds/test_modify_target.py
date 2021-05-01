@@ -18,7 +18,7 @@
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv208 import AliveTest
+from gvm.protocols.gmpv208.entities.targets import AliveTest
 
 
 class GmpModifyTargetTestCase:

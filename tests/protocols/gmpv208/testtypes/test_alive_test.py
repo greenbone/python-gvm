@@ -19,7 +19,10 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import AliveTest, get_alive_test_from_string
+from gvm.protocols.gmpv208.entities.targets import (
+    AliveTest,
+    get_alive_test_from_string,
+)
 
 
 class GetAliveTestFromStringTestCase(unittest.TestCase):

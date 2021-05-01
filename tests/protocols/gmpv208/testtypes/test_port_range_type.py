@@ -19,7 +19,10 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import PortRangeType, get_port_range_type_from_string
+from gvm.protocols.gmpv208.entities.port_lists import (
+    PortRangeType,
+    get_port_range_type_from_string,
+)
 
 
 class GetPortRangeTypeFromStringTestCase(unittest.TestCase):
