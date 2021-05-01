@@ -34,6 +34,7 @@ from gvm.protocols.gmpv208.entities.port_lists import (
     PortRangeType,
 )
 from gvm.protocols.gmpv208.entities.reports import ReportsMixin
+from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
     get_report_format_id_from_string,
@@ -53,7 +54,14 @@ from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 PROTOCOL_VERSION = (20, 8)
 
 
-class Gmp(GmpV208Mixin, PortListMixin, ReportsMixin, TargetMixin, TaskMixin):
+class Gmp(
+    GmpV208Mixin,
+    PortListMixin,
+    ReportsMixin,
+    ResultsMixin,
+    TargetMixin,
+    TaskMixin,
+):
 
     types = types
 
