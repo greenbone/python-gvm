@@ -29,7 +29,6 @@ __all__ = [
     "AlertCondition",
     "AlertEvent",
     "AlertMethod",
-    "AliveTest",
     "AssetType",
     "CredentialFormat",
     "CredentialType",
@@ -51,7 +50,6 @@ __all__ = [
     "get_alert_condition_from_string",
     "get_alert_event_from_string",
     "get_alert_method_from_string",
-    "get_alive_test_from_string",
     "get_asset_type_from_string",
     "get_credential_format_from_string",
     "get_credential_type_from_string",
@@ -596,48 +594,6 @@ def get_ticket_status_from_string(
         raise InvalidArgument(
             argument='ticket_status',
             function=get_ticket_status_from_string.__name__,
-        ) from None
-
-
-class AliveTest(Enum):
-    """Enum for choosing an alive test"""
-
-    SCAN_CONFIG_DEFAULT = 'Scan Config Default'
-    ICMP_PING = 'ICMP Ping'
-    TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
-    TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
-    ARP_PING = 'ARP Ping'
-    APR_PING = 'ARP Ping'  # Alias for ARP_PING
-    ICMP_AND_TCP_ACK_SERVICE_PING = 'ICMP & TCP-ACK Service Ping'
-    ICMP_AND_ARP_PING = 'ICMP & ARP Ping'
-    TCP_ACK_SERVICE_AND_ARP_PING = 'TCP-ACK Service & ARP Ping'
-    ICMP_TCP_ACK_SERVICE_AND_ARP_PING = (  # pylint: disable=invalid-name
-        'ICMP, TCP-ACK Service & ARP Ping'
-    )
-    CONSIDER_ALIVE = 'Consider Alive'
-
-
-def get_alive_test_from_string(
-    alive_test: Optional[str],
-) -> Optional[AliveTest]:
-    """Convert an alive test string into a AliveTest instance"""
-    if not alive_test:
-        return None
-
-    alive_test = alive_test.lower()
-
-    try:
-        return AliveTest[
-            alive_test.replace(',', '')
-            .replace(' ', '_')
-            .replace('-', '_')
-            .replace('&', 'and')
-            .upper()
-        ]
-    except KeyError:
-        raise InvalidArgument(
-            argument='alive_test',
-            function=get_alive_test_from_string.__name__,
         ) from None
 
 
