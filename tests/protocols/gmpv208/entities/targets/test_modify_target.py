@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208.entities.targets import AliveTest
 
 
-class GmpModifyTargetTestCase:
+class GmpModifyTargetTestMixin:
     def test_modify_target(self):
         self.gmp.modify_target(target_id='t1')
 
@@ -151,23 +151,6 @@ class GmpModifyTargetTestCase:
     def test_modify_target_invalid_alive_tests(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_target(target_id='t1', alive_test='foo')
-
-    def test_modify_target_with_allow_simultaneous_ips(self):
-        self.gmp.modify_target(target_id='t1', allow_simultaneous_ips=True)
-
-        self.connection.send.has_been_called_with(
-            '<modify_target target_id="t1">'
-            '<allow_simultaneous_ips>1</allow_simultaneous_ips>'
-            '</modify_target>'
-        )
-
-        self.gmp.modify_target(target_id='t1', allow_simultaneous_ips=False)
-
-        self.connection.send.has_been_called_with(
-            '<modify_target target_id="t1">'
-            '<allow_simultaneous_ips>0</allow_simultaneous_ips>'
-            '</modify_target>'
-        )
 
     def test_modify_target_with_reverse_lookup_only(self):
         self.gmp.modify_target(target_id='t1', reverse_lookup_only=True)

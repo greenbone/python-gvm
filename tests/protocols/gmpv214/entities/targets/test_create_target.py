@@ -18,29 +18,10 @@
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv208.entities.targets import AliveTest
+from gvm.protocols.gmpv214.entities.targets import AliveTest
 
 
-class GmpCreateTargetTestCase:
-    def test_create_target_with_make_unique(self):
-        self.gmp.create_target('foo', make_unique=True, hosts=['foo', 'bar'])
-
-        self.connection.send.has_been_called_with(
-            '<create_target>'
-            '<name>foo<make_unique>1</make_unique></name>'
-            '<hosts>foo,bar</hosts>'
-            '</create_target>'
-        )
-
-        self.gmp.create_target('foo', make_unique=False, hosts=['foo', 'bar'])
-
-        self.connection.send.has_been_called_with(
-            '<create_target>'
-            '<name>foo<make_unique>0</make_unique></name>'
-            '<hosts>foo,bar</hosts>'
-            '</create_target>'
-        )
-
+class GmpCreateTargetTestMixin:
     def test_create_target_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_target(None, hosts=['foo'])

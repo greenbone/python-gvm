@@ -21,40 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208.entities.targets import AliveTest
 
 
-class GmpCreateTargetCommandTestCase:
-    def test_create_target_with_make_unique(self):
-        with self.assertWarns(DeprecationWarning):
-            self.gmp.create_target(
-                'foo',
-                port_list_id='pl1',
-                make_unique=True,
-                hosts=['foo', 'bar'],
-            )
-
-            self.connection.send.has_been_called_with(
-                '<create_target>'
-                '<name>foo</name>'
-                '<hosts>foo,bar</hosts>'
-                '<port_list id="pl1"/>'
-                '</create_target>'
-            )
-
-        with self.assertWarns(DeprecationWarning):
-            self.gmp.create_target(
-                'foo',
-                port_list_id='pl1',
-                make_unique=False,
-                hosts=['foo', 'bar'],
-            )
-
-            self.connection.send.has_been_called_with(
-                '<create_target>'
-                '<name>foo</name>'
-                '<hosts>foo,bar</hosts>'
-                '<port_list id="pl1"/>'
-                '</create_target>'
-            )
-
+class GmpCreateTargetTestMixin:
     def test_create_target_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_target(None, hosts=['foo'])

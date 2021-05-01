@@ -16,27 +16,25 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from gvm.errors import RequiredArgument
 
 
-class GmpDeleteTargetTestCase:
-    def test_delete(self):
-        self.gmp.delete_target('a1')
+class GmpCloneTargetTestMixin:
 
-        self.connection.send.has_been_called_with(
-            '<delete_target target_id="a1" ultimate="0"/>'
-        )
+    TARGET_ID = '00000000-0000-0000-0000-000000000000'
 
-    def test_delete_ultimate(self):
-        self.gmp.delete_target('a1', ultimate=True)
+    def test_clone(self):
+        self.gmp.clone_target(self.TARGET_ID)
 
         self.connection.send.has_been_called_with(
-            '<delete_target target_id="a1" ultimate="1"/>'
+            '<create_target>'
+            '<copy>{copy}</copy>'
+            '</create_target>'.format(copy=self.TARGET_ID)
         )
 
     def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_target(None)
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_target('')
 
-        with self.assertRaises(GvmError):
-            self.gmp.delete_target('')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_target(None)

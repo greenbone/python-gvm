@@ -21,7 +21,6 @@
 from .test_create_filter import GmpCreateFilterTestCase
 from .test_create_permission import GmpCreatePermissionTestCase
 from .test_create_tag import GmpCreateTagTestCase
-from .test_create_target import GmpCreateTargetCommandTestCase
 from .test_get_aggregates import GmpGetAggregatesTestCase
 from .test_get_info import GmpGetInfoTestCase
 from .test_get_info_list import GmpGetInfoListTestCase
@@ -103,7 +102,6 @@ from .test_clone_role import GmpCloneRoleTestCase
 from .test_clone_scanner import GmpCloneScannerTestCase
 from .test_clone_schedule import GmpCloneScheduleTestCase
 from .test_clone_tag import GmpCloneTagTestCase
-from .test_clone_target import GmpCloneTargetCommandTestCase
 from .test_clone_user import GmpCloneUserTestCase
 from .test_create_group import GmpCreateGroupTestCase
 from .test_create_host import GmpCreateHostTestCase
@@ -128,7 +126,6 @@ from .test_delete_role import GmpDeleteRoleTestCase
 from .test_delete_scanner import GmpDeleteScannerTestCase
 from .test_delete_schedule import GmpDeleteScheduleTestCase
 from .test_delete_tag import GmpDeleteTagTestCase
-from .test_delete_target import GmpDeleteTargetTestCase
 from .test_delete_user import GmpDeleteUserTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
@@ -172,7 +169,6 @@ from .test_get_settings import GmpGetSettingsTestCase
 from .test_get_system_reports import GmpGetSystemReportsTestCase
 from .test_get_tag import GmpGetTagTestCase
 from .test_get_tags import GmpGetTagsTestCase
-from .test_get_target import GmpGetTargetTestCase
 from .test_get_user import GmpGetUserTestCase
 from .test_get_users import GmpGetUsersTestCase
 from .test_get_version import GmpGetVersionCommandTestCase
@@ -202,7 +198,6 @@ from .test_modify_override import GmpModifyOverrideTestCase
 from .test_modify_port_list import GmpModifyPortListTestCase
 from .test_modify_role import GmpModifyRoleTestCase
 from .test_modify_setting import GmpModifySettingTestCase
-from .test_modify_target import GmpModifyTargetTestCase
 from .test_modify_user import GmpModifyUserTestCase
 from .test_restore import GmpRestoreTestCase
 from .test_sync_cert import GmpSyncCertCommandTestCase

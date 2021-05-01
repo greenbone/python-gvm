@@ -277,10 +277,6 @@ class Gmpv214GetTicketTestCase(GmpGetTicketTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetTargetsTestCase(GmpGetTargetsTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetVulnerabilitiesTestCase(
     GmpGetVulnerabilitiesTestCase, Gmpv214TestCase
 ):
@@ -362,12 +358,6 @@ class Gmpv214CloneScheduleTestCase(GmpCloneScheduleTestCase, Gmpv214TestCase):
 
 
 class Gmpv214CloneTagTestCase(GmpCloneTagTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CloneTargetCommandTestCase(
-    GmpCloneTargetCommandTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -466,10 +456,6 @@ class Gmpv214DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv214TestCase):
 
 
 class Gmpv214DeleteTagTestCase(GmpDeleteTagTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteTargetTestCase(GmpDeleteTargetTestCase, Gmpv214TestCase):
     pass
 
 
@@ -651,10 +637,6 @@ class Gmpv214GetTagsTestCase(GmpGetTagsTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetTargetTestCase(GmpGetTargetTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetUserTestCase(GmpGetUserTestCase, Gmpv214TestCase):
     pass
 
@@ -734,10 +716,6 @@ class Gmpv214ModifyRoleTestCase(GmpModifyRoleTestCase, Gmpv214TestCase):
 
 
 class Gmpv214ModifySettingTestCase(GmpModifySettingTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyTargetTestCase(GmpModifyTargetTestCase, Gmpv214TestCase):
     pass
 
 

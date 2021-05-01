@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetTargetTestCase:
+class GmpGetTargetTestMixin:
     def test_get_target(self):
         self.gmp.get_target('t1')
 
