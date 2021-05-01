@@ -259,6 +259,7 @@ class PortListMixin:
         cmd.set_attribute("port_list_id", port_list_id)
 
         # for single entity always request all details
+
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
