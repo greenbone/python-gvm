@@ -39,7 +39,6 @@ __all__ = [
     "HostsOrdering",
     "InfoType",
     "PermissionSubjectType",
-    "PortRangeType",
     "ScannerType",
     "SeverityLevel",
     "SnmpAuthAlgorithm",
@@ -62,7 +61,6 @@ __all__ = [
     "get_hosts_ordering_from_string",
     "get_info_type_from_string",
     "get_permission_subject_type_from_string",
-    "get_port_range_type_from_string",
     "get_scanner_type_from_string",
     "get_severity_level_from_string",
     "get_snmp_auth_algorithm_from_string",
@@ -766,33 +764,6 @@ def get_permission_subject_type_from_string(
         raise InvalidArgument(
             argument='subject_type',
             function=get_permission_subject_type_from_string.__name__,
-        ) from None
-
-
-class PortRangeType(Enum):
-    """Enum for port range type"""
-
-    TCP = 'TCP'
-    UDP = 'UDP'
-
-
-def get_port_range_type_from_string(
-    port_range_type: Optional[str],
-) -> Optional[PortRangeType]:
-    """Convert a port range type string to an actual PortRangeType instance
-
-    Arguments:
-        port_range_type: Port range type string to convert to a PortRangeType
-    """
-    if not port_range_type:
-        return None
-
-    try:
-        return PortRangeType[port_range_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='port_range_type',
-            function=get_port_range_type_from_string.__name__,
         ) from None
 
 
