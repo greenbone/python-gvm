@@ -626,39 +626,19 @@ def get_alive_test_from_string(
 
     alive_test = alive_test.lower()
 
-    if alive_test == 'scan config default':
-        return AliveTest.SCAN_CONFIG_DEFAULT
-
-    if alive_test == 'icmp ping':
-        return AliveTest.ICMP_PING
-
-    if alive_test == 'tcp-ack service ping':
-        return AliveTest.TCP_ACK_SERVICE_PING
-
-    if alive_test == 'tcp-syn service ping':
-        return AliveTest.TCP_SYN_SERVICE_PING
-
-    if alive_test == 'arp ping':
-        return AliveTest.ARP_PING
-
-    if alive_test == 'icmp & tcp-ack service ping':
-        return AliveTest.ICMP_AND_TCP_ACK_SERVICE_PING
-
-    if alive_test == 'icmp & arp ping':
-        return AliveTest.ICMP_AND_ARP_PING
-
-    if alive_test == 'tcp-ack service & arp ping':
-        return AliveTest.TCP_ACK_SERVICE_AND_ARP_PING
-
-    if alive_test == 'icmp, tcp-ack service & arp ping':
-        return AliveTest.ICMP_TCP_ACK_SERVICE_AND_ARP_PING
-
-    if alive_test == 'consider alive':
-        return AliveTest.CONSIDER_ALIVE
-
-    raise InvalidArgument(
-        argument='alive_test', function=get_alive_test_from_string.__name__
-    )
+    try:
+        return AliveTest[
+            alive_test.replace(',', '')
+            .replace(' ', '_')
+            .replace('-', '_')
+            .replace('&', 'and')
+            .upper()
+        ]
+    except KeyError:
+        raise InvalidArgument(
+            argument='alive_test',
+            function=get_alive_test_from_string.__name__,
+        ) from None
 
 
 class AssetType(Enum):
