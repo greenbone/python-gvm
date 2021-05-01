@@ -35,7 +35,6 @@ class TargetMixin(Gmp208TargetMixin):
         self,
         name: str,
         *,
-        make_unique: Optional[bool] = None,
         asset_hosts_filter: Optional[str] = None,
         hosts: Optional[List[str]] = None,
         comment: Optional[str] = None,
@@ -56,7 +55,6 @@ class TargetMixin(Gmp208TargetMixin):
 
         Arguments:
             name: Name of the target
-            make_unique: Append a unique suffix if the name already exists
             asset_hosts_filter: Filter to select target host from assets hosts
             hosts: List of hosts addresses to scan
             exclude_hosts: List of hosts addresses to exclude from scan
@@ -85,9 +83,6 @@ class TargetMixin(Gmp208TargetMixin):
 
         cmd = XmlCommand("create_target")
         _xmlname = cmd.add_element("name", name)
-
-        if make_unique is not None:
-            _xmlname.add_element("make_unique", to_bool(make_unique))
 
         if asset_hosts_filter:
             cmd.add_element(

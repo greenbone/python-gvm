@@ -22,7 +22,7 @@ from enum import Enum
 from typing import Any, List, Optional
 
 from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
-from gvm.utils import add_filter, to_bool, to_comma_list, warnings
+from gvm.utils import add_filter, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 
@@ -91,7 +91,6 @@ class TargetMixin:
         self,
         name: str,
         *,
-        make_unique: Optional[bool] = None,
         asset_hosts_filter: Optional[str] = None,
         hosts: Optional[List[str]] = None,
         comment: Optional[str] = None,
@@ -111,7 +110,6 @@ class TargetMixin:
 
         Arguments:
             name: Name of the target
-            make_unique: Deprecated. Will be ignored.
             asset_hosts_filter: Filter to select target host from assets hosts
             hosts: List of hosts addresses to scan
             exclude_hosts: List of hosts addresses to exclude from scan
@@ -134,13 +132,6 @@ class TargetMixin:
 
         cmd = XmlCommand("create_target")
         _xmlname = cmd.add_element("name", name)
-
-        if make_unique is not None:
-            warnings.warn(
-                'create_target make_unique argument is deprecated '
-                'and will be ignored.',
-                DeprecationWarning,
-            )
 
         if not name:
             raise RequiredArgument(
