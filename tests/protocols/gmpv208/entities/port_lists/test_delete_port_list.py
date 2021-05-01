@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpDeletePortListTestCase:
+class GmpDeletePortListTestMixin:
     def test_delete(self):
         self.gmp.delete_port_list('a1')
 

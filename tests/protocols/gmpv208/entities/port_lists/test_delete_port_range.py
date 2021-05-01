@@ -16,20 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from gvm.errors import GvmError
 
 
-class GmpClonePortListTestCase:
-    def test_clone(self):
-        self.gmp.clone_port_list('a1')
+class GmpDeletePortRangeTestMixin:
+    def test_delete(self):
+        self.gmp.delete_port_range('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_port_list>' '<copy>a1</copy>' '</create_port_list>'
+            '<delete_port_range port_range_id="a1"/>'
         )
 
     def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_port_list('')
+        with self.assertRaises(GvmError):
+            self.gmp.delete_port_range(None)
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_port_list(None)
+        with self.assertRaises(GvmError):
+            self.gmp.delete_port_range('')

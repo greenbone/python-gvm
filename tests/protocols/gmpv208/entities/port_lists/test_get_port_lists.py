@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetPortListsTestCase:
+class GmpGetPortListsTestMixin:
     def test_get_port_lists(self):
         self.gmp.get_port_lists()
 

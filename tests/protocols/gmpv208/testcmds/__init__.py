@@ -97,7 +97,6 @@ from .test_clone_group import GmpCloneGroupTestCase
 from .test_clone_note import GmpCloneNoteTestCase
 from .test_clone_override import GmpCloneOverrideTestCase
 from .test_clone_permission import GmpClonePermissionTestCase
-from .test_clone_port_list import GmpClonePortListTestCase
 from .test_clone_role import GmpCloneRoleTestCase
 from .test_clone_scanner import GmpCloneScannerTestCase
 from .test_clone_schedule import GmpCloneScheduleTestCase
@@ -107,8 +106,6 @@ from .test_create_group import GmpCreateGroupTestCase
 from .test_create_host import GmpCreateHostTestCase
 from .test_create_note import GmpCreateNoteTestCase
 from .test_create_override import GmpCreateOverrideTestCase
-from .test_create_port_list import GmpCreatePortListTestCase
-from .test_create_port_range import GmpCreatePortRangeTestCase
 from .test_create_role import GmpCreateRoleTestCase
 from .test_create_user import GmpCreateUserTestCase
 from .test_delete_alert import GmpDeleteAlertTestCase
@@ -119,8 +116,6 @@ from .test_delete_group import GmpDeleteGroupTestCase
 from .test_delete_note import GmpDeleteNoteTestCase
 from .test_delete_override import GmpDeleteOverrideTestCase
 from .test_delete_permission import GmpDeletePermissionTestCase
-from .test_delete_port_list import GmpDeletePortListTestCase
-from .test_delete_port_range import GmpDeletePortRangeTestCase
 from .test_delete_report_format import GmpDeleteReportFormatTestCase
 from .test_delete_role import GmpDeleteRoleTestCase
 from .test_delete_scanner import GmpDeleteScannerTestCase
@@ -150,8 +145,6 @@ from .test_get_override import GmpGetOverrideTestCase
 from .test_get_overrides import GmpGetOverridesTestCase
 from .test_get_permission import GmpGetPermissionTestCase
 from .test_get_permissions import GmpGetPermissionsTestCase
-from .test_get_port_list import GmpGetPortListTestCase
-from .test_get_port_lists import GmpGetPortListsTestCase
 from .test_get_preference import GmpGetPreferenceTestCase
 from .test_get_preferences import GmpGetPreferencesTestCase
 from .test_get_report_format import GmpGetReportFormatTestCase
@@ -195,7 +188,6 @@ from .test_modify_config_set_scanner_preference import (
 from .test_modify_group import GmpModifyGroupTestCase
 from .test_modify_note import GmpModifyNoteTestCase
 from .test_modify_override import GmpModifyOverrideTestCase
-from .test_modify_port_list import GmpModifyPortListTestCase
 from .test_modify_role import GmpModifyRoleTestCase
 from .test_modify_setting import GmpModifySettingTestCase
 from .test_modify_user import GmpModifyUserTestCase

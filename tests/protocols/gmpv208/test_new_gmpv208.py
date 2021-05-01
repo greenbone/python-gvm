@@ -349,10 +349,6 @@ class Gmpv208ClonePermissionTestCase(
     pass
 
 
-class Gmpv208ClonePortListTestCase(GmpClonePortListTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CloneRoleTestCase(GmpCloneRoleTestCase, Gmpv208TestCase):
     pass
 
@@ -386,16 +382,6 @@ class Gmpv208CreateNoteTestCase(GmpCreateNoteTestCase, Gmpv208TestCase):
 
 
 class Gmpv208CreateOverrideTestCase(GmpCreateOverrideTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CreatePortListTestCase(GmpCreatePortListTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CreatePortRangeTestCase(
-    GmpCreatePortRangeTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -439,16 +425,6 @@ class Gmpv208DeleteOverrideTestCase(GmpDeleteOverrideTestCase, Gmpv208TestCase):
 
 class Gmpv208DeletePermissionTestCase(
     GmpDeletePermissionTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208DeletePortListTestCase(GmpDeletePortListTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeletePortRangeTestCase(
-    GmpDeletePortRangeTestCase, Gmpv208TestCase
 ):
     pass
 
@@ -568,14 +544,6 @@ class Gmpv208GetPermissionTestCase(GmpGetPermissionTestCase, Gmpv208TestCase):
 
 
 class Gmpv208GetPermissionsTestCase(GmpGetPermissionsTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetPortListTestCase(GmpGetPortListTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetPortListsTestCase(GmpGetPortListsTestCase, Gmpv208TestCase):
     pass
 
 
@@ -728,10 +696,6 @@ class Gmpv208ModifyNoteTestCase(GmpModifyNoteTestCase, Gmpv208TestCase):
 
 
 class Gmpv208ModifyOverrideTestCase(GmpModifyOverrideTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyPortListTestCase(GmpModifyPortListTestCase, Gmpv208TestCase):
     pass
 
 

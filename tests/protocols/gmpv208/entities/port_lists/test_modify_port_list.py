@@ -19,20 +19,38 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetPortListTestCase:
-    def test_get_port_list(self):
-        self.gmp.get_port_list(port_list_id='port_list_id')
+class GmpModifyPortListTestMixin:
+    def test_modify_port_list(self):
+        self.gmp.modify_port_list(port_list_id='p1')
 
         self.connection.send.has_been_called_with(
-            '<get_port_lists port_list_id="port_list_id" details="1"/>'
+            '<modify_port_list port_list_id="p1"/>'
         )
 
-    def test_get_port_list_missing_port_list_id(self):
+    def test_modify_port_list_missing_port_list_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_port_list(port_list_id=None)
+            self.gmp.modify_port_list(port_list_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_port_list(port_list_id='')
+            self.gmp.modify_port_list(port_list_id='')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_port_list('')
+            self.gmp.modify_port_list('')
+
+    def test_modify_port_list_with_comment(self):
+        self.gmp.modify_port_list(port_list_id='p1', comment='foo')
+
+        self.connection.send.has_been_called_with(
+            '<modify_port_list port_list_id="p1">'
+            '<comment>foo</comment>'
+            '</modify_port_list>'
+        )
+
+    def test_modify_port_list_with_name(self):
+        self.gmp.modify_port_list(port_list_id='p1', name='foo')
+
+        self.connection.send.has_been_called_with(
+            '<modify_port_list port_list_id="p1">'
+            '<name>foo</name>'
+            '</modify_port_list>'
+        )

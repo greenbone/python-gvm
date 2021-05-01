@@ -18,10 +18,10 @@
 
 from gvm.errors import RequiredArgument
 
-from gvm.protocols.gmpv208 import PortRangeType
+from gvm.protocols.gmpv208.entities.port_lists import PortRangeType
 
 
-class GmpCreatePortRangeTestCase:
+class GmpCreatePortRangeTestMixin:
     def test_create_port_range_missing_port_list_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
