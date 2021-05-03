@@ -256,10 +256,6 @@ class Gmpv214StopAuditTestCase(GmpStopAuditTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214ImportReportTestCase(GmpImportReportTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CloneTicketTestCase(GmpCloneTicketTestCase, Gmpv214TestCase):
     pass
 
@@ -451,10 +447,6 @@ class Gmpv214DeletePortRangeTestCase(
     pass
 
 
-class Gmpv214DeleteReportTestCase(GmpDeleteReportTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214DeleteReportFormatTestCase(
     GmpDeleteReportFormatTestCase, Gmpv214TestCase
 ):
@@ -593,10 +585,6 @@ class Gmpv214GetPreferencesTestCase(GmpGetPreferencesTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetReportTestCase(GmpGetReportTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetReportFormatTestCase(
     GmpGetReportFormatTestCase, Gmpv214TestCase
 ):
@@ -606,10 +594,6 @@ class Gmpv214GetReportFormatTestCase(
 class Gmpv214GetReportFormatsTestCase(
     GmpGetReportFormatsTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214GetReportsTestCase(GmpGetReportsTestCase, Gmpv214TestCase):
     pass
 
 

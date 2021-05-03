@@ -79,7 +79,6 @@ from .test_modify_tls_certificate import GmpModifyTLSCertificateTestCase
 from .test_resume_audit import GmpResumeAuditTestCase
 from .test_start_audit import GmpStartAuditTestCase
 from .test_stop_audit import GmpStopAuditTestCase
-from .test_import_report import GmpImportReportTestCase
 from .test_clone_ticket import GmpCloneTicketTestCase
 from .test_create_schedule import GmpCreateScheduleTestCase
 from .test_create_ticket import GmpCreateTicketTestCase
@@ -124,7 +123,6 @@ from .test_delete_override import GmpDeleteOverrideTestCase
 from .test_delete_permission import GmpDeletePermissionTestCase
 from .test_delete_port_list import GmpDeletePortListTestCase
 from .test_delete_port_range import GmpDeletePortRangeTestCase
-from .test_delete_report import GmpDeleteReportTestCase
 from .test_delete_report_format import GmpDeleteReportFormatTestCase
 from .test_delete_role import GmpDeleteRoleTestCase
 from .test_delete_scanner import GmpDeleteScannerTestCase
@@ -159,10 +157,8 @@ from .test_get_port_list import GmpGetPortListTestCase
 from .test_get_port_lists import GmpGetPortListsTestCase
 from .test_get_preference import GmpGetPreferenceTestCase
 from .test_get_preferences import GmpGetPreferencesTestCase
-from .test_get_report import GmpGetReportTestCase
 from .test_get_report_format import GmpGetReportFormatTestCase
 from .test_get_report_formats import GmpGetReportFormatsTestCase
-from .test_get_reports import GmpGetReportsTestCase
 from .test_get_result import GmpGetResultTestCase
 from .test_get_results import GmpGetResultsTestCase
 from .test_get_role import GmpGetRoleTestCase

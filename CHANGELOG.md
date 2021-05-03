@@ -11,6 +11,8 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ### Added
 ### Changed
+* Detached the ReportFormatType from the GMP types class. [#445](https://github.com/greenbone/python-gvm/pull/445)
+* Detached the Report API calls from the GMP class into a new `ReportMixin`. [#445](https://github.com/greenbone/python-gvm/pull/445)
 * Detached the Task API calls from the GMP class into a new `TaskMixin`. [#443](https://github.com/greenbone/python-gvm/pull/443)
 * Moved helper functions from gmp to utils. The response XML will not be recovered by the parser anymore! [#442](https://github.com/greenbone/python-gvm/pull/442)
 

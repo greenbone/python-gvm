@@ -270,10 +270,6 @@ class Gmpv208StopAuditTestCase(GmpStopAuditTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208ImportReportTestCase(GmpImportReportTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CloneTicketTestCase(GmpCloneTicketTestCase, Gmpv208TestCase):
     pass
 
@@ -473,10 +469,6 @@ class Gmpv208DeletePortRangeTestCase(
     pass
 
 
-class Gmpv208DeleteReportTestCase(GmpDeleteReportTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208DeleteReportFormatTestCase(
     GmpDeleteReportFormatTestCase, Gmpv208TestCase
 ):
@@ -615,10 +607,6 @@ class Gmpv208GetPreferencesTestCase(GmpGetPreferencesTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208GetReportTestCase(GmpGetReportTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetReportFormatTestCase(
     GmpGetReportFormatTestCase, Gmpv208TestCase
 ):
@@ -628,10 +616,6 @@ class Gmpv208GetReportFormatTestCase(
 class Gmpv208GetReportFormatsTestCase(
     GmpGetReportFormatsTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208GetReportsTestCase(GmpGetReportsTestCase, Gmpv208TestCase):
     pass
 
 

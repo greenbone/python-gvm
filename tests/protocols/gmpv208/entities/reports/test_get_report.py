@@ -17,13 +17,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv208 import (
+from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
     get_report_format_id_from_string,
 )
 
 
-class GmpGetReportTestCase:
+class GmpGetReportTestMixin:
     def test_get_report_without_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.get_report(None)
