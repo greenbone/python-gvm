@@ -567,14 +567,6 @@ class Gmpv208GetReportFormatsTestCase(
     pass
 
 
-class Gmpv208GetResultTestCase(GmpGetResultTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetResultsTestCase(GmpGetResultsTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetRoleTestCase(GmpGetRoleTestCase, Gmpv208TestCase):
     pass
 
