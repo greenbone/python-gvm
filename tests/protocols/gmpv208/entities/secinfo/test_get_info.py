@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import InfoType
 
 
-class GmpGetInfoTestCase:
+class GmpGetInfoTestMixin:
     def test_get_info(self):
         self.gmp.get_info(info_type=InfoType.CERT_BUND_ADV, info_id='i1')
 
