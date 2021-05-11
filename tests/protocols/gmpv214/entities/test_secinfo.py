@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
-from .secinfo import (
+from ...gmpv214 import Gmpv214TestCase
+from ...gmpv208.entities.secinfo import (
     GmpGetCertBundTestMixin,
     GmpGetCpeTestMixin,
     GmpGetCveTestMixin,
@@ -31,47 +31,47 @@ from .secinfo import (
 )
 
 
-class Gmpv208GetCertBundTestCase(GmpGetCertBundTestMixin, Gmpv208TestCase):
+class Gmpv214GetCertBundTestCase(GmpGetCertBundTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetCpeTestCase(GmpGetCpeTestMixin, Gmpv208TestCase):
+class Gmpv214GetCpeTestCase(GmpGetCpeTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetCveTestCase(GmpGetCveTestMixin, Gmpv208TestCase):
+class Gmpv214GetCveTestCase(GmpGetCveTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetDfnCerttCase(GmpGetDfnCertTestMixin, Gmpv208TestCase):
+class Gmpv214GetDfnCerttCase(GmpGetDfnCertTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetInfoListTestCase(GmpGetInfoListTestMixin, Gmpv208TestCase):
+class Gmpv214GetInfoListTestCase(GmpGetInfoListTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetInfoTestCase(GmpGetInfoTestMixin, Gmpv208TestCase):
+class Gmpv214GetInfoTestCase(GmpGetInfoTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetNvtTestCase(GmpGetNvtTestMixin, Gmpv208TestCase):
+class Gmpv214GetNvtTestCase(GmpGetNvtTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetScanConfigNvtTestCase(
-    GmpGetScanConfigNvtTestMixin, Gmpv208TestCase
+class Gmpv214GetScanConfigNvtTestCase(
+    GmpGetScanConfigNvtTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208GetNvtFamiliesTestCase(
-    GmpGetNvtFamiliesTestMixin, Gmpv208TestCase
+class Gmpv214GetNvtFamiliesTestCase(
+    GmpGetNvtFamiliesTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208GetScanConfigNvtsTestCase(
-    GmpGetScanConfigNvtsTestMixin, Gmpv208TestCase
+class Gmpv214GetScanConfigNvtsTestCase(
+    GmpGetScanConfigNvtsTestMixin, Gmpv214TestCase
 ):
     pass

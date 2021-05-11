@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetScanConfigNvtsTestCase:
+class GmpGetScanConfigNvtsTestMixin:
     def test_get_scan_config_nvts_simple(self):
         self.gmp.get_scan_config_nvts()
 

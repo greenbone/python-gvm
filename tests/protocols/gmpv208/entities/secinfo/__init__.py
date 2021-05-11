@@ -23,3 +23,6 @@ from .test_get_dfn_cert_advisory import GmpGetDfnCertTestMixin
 from .test_get_info import GmpGetInfoTestMixin
 from .test_get_info_list import GmpGetInfoListTestMixin
 from .test_get_nvt import GmpGetNvtTestMixin
+from .test_get_nvt_families import GmpGetNvtFamiliesTestMixin
+from .test_get_scan_config_nvt import GmpGetScanConfigNvtTestMixin
+from .test_get_scan_config_nvts import GmpGetScanConfigNvtsTestMixin

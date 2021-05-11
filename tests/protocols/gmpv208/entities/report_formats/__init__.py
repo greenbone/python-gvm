@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -15,17 +15,3 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
-
-class GmpGetNvtFamiliesTestCase:
-    def test_get_nvt_families(self):
-        self.gmp.get_nvt_families()
-
-        self.connection.send.has_been_called_with('<get_nvt_families/>')
-
-    def test_get_nvt_families_with_sort_order(self):
-        self.gmp.get_nvt_families(sort_order='foo')
-
-        self.connection.send.has_been_called_with(
-            '<get_nvt_families sort_order="foo"/>'
-        )

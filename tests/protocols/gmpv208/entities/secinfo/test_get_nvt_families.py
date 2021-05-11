@@ -16,26 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
 
+class GmpGetNvtFamiliesTestMixin:
+    def test_get_nvt_families(self):
+        self.gmp.get_nvt_families()
 
-class GmpGetScanConfigNvtTestCase:
-    def test_get_scan_config_nvt_with_nvt_oid(self):
-        self.gmp.get_scan_config_nvt(nvt_oid='nvt_oid')
+        self.connection.send.has_been_called_with('<get_nvt_families/>')
+
+    def test_get_nvt_families_with_sort_order(self):
+        self.gmp.get_nvt_families(sort_order='foo')
 
         self.connection.send.has_been_called_with(
-            (
-                '<get_nvts nvt_oid="nvt_oid" details="1" '
-                'preferences="1" preference_count="1"/>'
-            )
+            '<get_nvt_families sort_order="foo"/>'
         )
-
-    def test_get_scan_config_nvt_missing_nvt_oid(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_scan_config_nvt(nvt_oid=None)
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_scan_config_nvt(nvt_oid='')
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_scan_config_nvt('')
