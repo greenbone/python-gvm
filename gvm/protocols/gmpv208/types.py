@@ -36,7 +36,6 @@ __all__ = [
     "FeedType",
     "FilterType",
     "HostsOrdering",
-    "InfoType",
     "PermissionSubjectType",
     "ScannerType",
     "SeverityLevel",
@@ -57,7 +56,6 @@ __all__ = [
     "get_feed_type_from_string",
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
-    "get_info_type_from_string",
     "get_permission_subject_type_from_string",
     "get_scanner_type_from_string",
     "get_severity_level_from_string",
@@ -225,33 +223,6 @@ def get_filter_type_from_string(
         raise InvalidArgument(
             argument='filter_type',
             function=get_filter_type_from_string.__name__,
-        ) from None
-
-
-class InfoType(Enum):
-    """Enum for info types"""
-
-    CERT_BUND_ADV = "CERT_BUND_ADV"
-    CPE = "CPE"
-    CVE = "CVE"
-    DFN_CERT_ADV = "DFN_CERT_ADV"
-    OVALDEF = "OVALDEF"
-    NVT = "NVT"
-
-
-def get_info_type_from_string(info_type: Optional[str]) -> Optional[InfoType]:
-    """Convert a info type string to an actual InfoType instance
-
-    Arguments:
-        info_type: Info type string to convert to a InfoType
-    """
-    if not info_type:
-        return None
-    try:
-        return InfoType[info_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='info_type', function=get_info_type_from_string.__name__
         ) from None
 
 

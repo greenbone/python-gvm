@@ -39,6 +39,12 @@ from gvm.protocols.gmpv208.entities.report_formats import (
     get_report_format_id_from_string,
 )
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
+from gvm.protocols.gmpv208.entities.secinfo import (
+    get_info_type_from_string,
+    InfoType,
+    SecInfoMixin,
+)
+
 from gvm.protocols.gmpv208.entities.tasks import TaskMixin
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
 from gvm.protocols.gmpv214.entities.targets import (
@@ -64,6 +70,7 @@ class Gmp(
     ResultsMixin,
     TargetMixin,
     TaskMixin,
+    SecInfoMixin,
 ):
 
     types = types
