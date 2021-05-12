@@ -20,22 +20,6 @@ from . import Gmpv214TestCase
 from .testcmds import *  # pylint: disable=wildcard-import
 
 
-class Gmpv214CreateNoteTestCase(GmpCreateNoteTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CreateOverrideTestCase(GmpCreateOverrideTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyNoteTestCase(GmpModifyNoteTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyOverrideTestCase(GmpModifyOverrideTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
     pass
 

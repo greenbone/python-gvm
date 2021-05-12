@@ -319,14 +319,6 @@ class Gmpv214CloneGroupTestCase(GmpCloneGroupTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneNoteTestCase(GmpCloneNoteTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CloneOverrideTestCase(GmpCloneOverrideTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ClonePermissionTestCase(
     GmpClonePermissionTestCase, Gmpv214TestCase
 ):
@@ -388,14 +380,6 @@ class Gmpv214DeleteFilterTestCase(GmpDeleteFilterTestCase, Gmpv214TestCase):
 
 
 class Gmpv214DeleteGroupTestCase(GmpDeleteGroupTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteNoteTestCase(GmpDeleteNoteTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteOverrideTestCase(GmpDeleteOverrideTestCase, Gmpv214TestCase):
     pass
 
 
@@ -484,22 +468,6 @@ class Gmpv214GetGroupTestCase(GmpGetGroupTestCase, Gmpv214TestCase):
 
 
 class Gmpv214GetGroupsTestCase(GmpGetGroupsTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetNoteTestCase(GmpGetNoteTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetNotesTestCase(GmpGetNotesTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetOverrideTestCase(GmpGetOverrideTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetOverridesTestCase(GmpGetOverridesTestCase, Gmpv214TestCase):
     pass
 
 
