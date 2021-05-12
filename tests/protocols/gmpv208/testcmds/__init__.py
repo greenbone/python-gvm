@@ -144,8 +144,6 @@ from .test_get_preference import GmpGetPreferenceTestCase
 from .test_get_preferences import GmpGetPreferencesTestCase
 from .test_get_report_format import GmpGetReportFormatTestCase
 from .test_get_report_formats import GmpGetReportFormatsTestCase
-from .test_get_result import GmpGetResultTestCase
-from .test_get_results import GmpGetResultsTestCase
 from .test_get_role import GmpGetRoleTestCase
 from .test_get_roles import GmpGetRolesTestCase
 from .test_get_scanner import GmpGetScannerTestCase
