@@ -27,7 +27,6 @@ Module for communication with gvmd in
 """
 
 from typing import Any, List, Optional, Callable
-import numbers
 
 from gvm.utils import to_comma_list, to_bool
 from gvm.xml import XmlCommand
@@ -43,8 +42,6 @@ from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 _EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
 
 PROTOCOL_VERSION = (21, 4)
-
-Severity = numbers.Real
 
 
 class GmpV214Mixin(GvmProtocol):
