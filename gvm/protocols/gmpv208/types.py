@@ -38,7 +38,6 @@ __all__ = [
     "HostsOrdering",
     "PermissionSubjectType",
     "ScannerType",
-    "SeverityLevel",
     "SnmpAuthAlgorithm",
     "SnmpPrivacyAlgorithm",
     "SortOrder",
@@ -58,7 +57,6 @@ __all__ = [
     "get_hosts_ordering_from_string",
     "get_permission_subject_type_from_string",
     "get_scanner_type_from_string",
-    "get_severity_level_from_string",
     "get_snmp_auth_algorithm_from_string",
     "get_snmp_privacy_algorithm_from_string",
     "get_sort_order_from_string",
@@ -722,33 +720,6 @@ def get_snmp_privacy_algorithm_from_string(
         ) from None
 
 
-class SeverityLevel(Enum):
-    """Enum for severity levels"""
-
-    HIGH = "High"
-    MEDIUM = "Medium"
-    LOW = "Low"
-    LOG = "Log"
-    ALARM = "Alarm"
-    DEBUG = "Debug"
-
-
-def get_severity_level_from_string(
-    severity_level: Optional[str],
-) -> Optional[SeverityLevel]:
-    """Convert a severity level string into a SeverityLevel instance"""
-    if not severity_level:
-        return None
-
-    try:
-        return SeverityLevel[severity_level.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='severity_level',
-            function=get_severity_level_from_string.__name__,
-        ) from None
-
-
 class TimeUnit(Enum):
     """Enum for time units"""
 
@@ -772,7 +743,7 @@ def get_time_unit_from_string(time_unit: Optional[str]) -> Optional[TimeUnit]:
     except KeyError:
         raise InvalidArgument(
             argument='severity_level',
-            function=get_severity_level_from_string.__name__,
+            function=get_time_unit_from_string.__name__,
         ) from None
 
 
