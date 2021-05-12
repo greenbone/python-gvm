@@ -28,7 +28,7 @@ from gvm.utils import add_filter, to_comma_list, to_bool
 from gvm.xml import XmlCommand
 
 
-class OverrideMixin:
+class OverridesMixin:
     def create_override(
         self,
         text: str,

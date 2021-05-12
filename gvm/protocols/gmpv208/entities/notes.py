@@ -27,7 +27,7 @@ from gvm.utils import add_filter, to_comma_list, to_bool
 from gvm.xml import XmlCommand
 
 
-class NoteMixin:
+class NotesMixin:
     def create_note(
         self,
         text: str,

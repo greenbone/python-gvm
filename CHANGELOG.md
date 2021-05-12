@@ -17,7 +17,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Detached the `InfoType` from the GMP types class.  [#456](https://github.com/greenbone/python-gvm/pull/456)
 * Detached the SecInfo (CPE, CVE, NVT, CERT-BUND, DNF-CERT, OVAL Definitions) calls from CMP class into new `SecInfoMixin`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 * Detached the PortList and PortRange API calls from the GMP class into a new `PortListMixin`. [#446](https://github.com/greenbone/python-gvm/pull/446)
-* Detached the Target API calls from the GMP class into a new `TargetMixin`. [#446](https://github.com/greenbone/python-gvm/pull/446)
+* Detached the Target API calls from the GMP class into a new `TargetsMixin`. [#446](https://github.com/greenbone/python-gvm/pull/446)
 * Detached the `AliveTest` from the GMP types class. [#446](https://github.com/greenbone/python-gvm/pull/446)
 * Detached the `PortListType` from the GMP types class. [#446](https://github.com/greenbone/python-gvm/pull/446)
 * Detached the ReportFormatType from the GMP types class. [#445](https://github.com/greenbone/python-gvm/pull/445)
