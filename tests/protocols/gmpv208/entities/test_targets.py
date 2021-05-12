@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,33 +16,36 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv214TestCase
-from .testcmds import *  # pylint: disable=wildcard-import
+from ...gmpv208 import Gmpv208TestCase
+from .targets import (
+    GmpCloneTargetTestMixin,
+    GmpCreateTargetTestMixin,
+    GmpDeleteTargetTestMixin,
+    GmpGetTargetsTestMixin,
+    GmpGetTargetTestMixin,
+    GmpModifyTargetTestMixin,
+)
 
 
-class Gmpv214CreateNoteTestCase(GmpCreateNoteTestCase, Gmpv214TestCase):
+class Gmpv208CloneTargetTestCase(GmpCloneTargetTestMixin, Gmpv208TestCase):
     pass
 
 
-class Gmpv214CreateOverrideTestCase(GmpCreateOverrideTestCase, Gmpv214TestCase):
+class Gmpv208CreateTargetTestCase(GmpCreateTargetTestMixin, Gmpv208TestCase):
     pass
 
 
-class Gmpv214ModifyNoteTestCase(GmpModifyNoteTestCase, Gmpv214TestCase):
+class Gmpv208DeleteTargetTestCase(GmpDeleteTargetTestMixin, Gmpv208TestCase):
     pass
 
 
-class Gmpv214ModifyOverrideTestCase(GmpModifyOverrideTestCase, Gmpv214TestCase):
+class Gmpv208GetTargetTestCase(GmpGetTargetTestMixin, Gmpv208TestCase):
     pass
 
 
-class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
+class Gmpv208GetTargetsTestCase(GmpGetTargetsTestMixin, Gmpv208TestCase):
     pass
 
 
-class Gmpv214CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv214TestCase):
+class Gmpv208ModifyTargetTestCase(GmpModifyTargetTestMixin, Gmpv208TestCase):
     pass

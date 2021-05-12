@@ -19,22 +19,17 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCloneTargetCommandTestCase:
-
-    TARGET_ID = '00000000-0000-0000-0000-000000000000'
-
+class GmpClonePortListTestMixin:
     def test_clone(self):
-        self.gmp.clone_target(self.TARGET_ID)
+        self.gmp.clone_port_list('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_target>'
-            '<copy>{copy}</copy>'
-            '</create_target>'.format(copy=self.TARGET_ID)
+            '<create_port_list>' '<copy>a1</copy>' '</create_port_list>'
         )
 
     def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.clone_target('')
+            self.gmp.clone_port_list('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.clone_target(None)
+            self.gmp.clone_port_list(None)

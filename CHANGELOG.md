@@ -11,6 +11,10 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ### Added
 ### Changed
+* Detached the PortList and PortRange API calls from the GMP class into a new `PortListMixin`. [#446](https://github.com/greenbone/python-gvm/pull/446)
+* Detached the Target API calls from the GMP class into a new `TargetMixin`. [#446](https://github.com/greenbone/python-gvm/pull/446)
+* Detached the AliveTest from the GMP types class. [#446](https://github.com/greenbone/python-gvm/pull/446)
+* Detached the PortListType from the GMP types class. [#446](https://github.com/greenbone/python-gvm/pull/446)
 * Detached the ReportFormatType from the GMP types class. [#445](https://github.com/greenbone/python-gvm/pull/445)
 * Detached the Report API calls from the GMP class into a new `ReportMixin`. [#445](https://github.com/greenbone/python-gvm/pull/445)
 * Detached the Task API calls from the GMP class into a new `TaskMixin`. [#443](https://github.com/greenbone/python-gvm/pull/443)
@@ -18,6 +22,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ### Deprecated
 ### Removed
+*  Remove deprecated `make_unique` parameter from `Targets`. [#446](https://github.com/greenbone/python-gvm/pull/446)
 * Removed deprecated `Agents` completely. [#441](https://github.com/greenbone/python-gvm/pull/441)
 * **Dropped support** for GMP v7, v8 and v9! The oldest usable GMP version is 20.8 
   [#436](https://github.com/greenbone/python-gvm/pull/436)

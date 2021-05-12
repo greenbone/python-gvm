@@ -18,10 +18,10 @@
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv208 import AliveTest
+from gvm.protocols.gmpv214.entities.targets import AliveTest
 
 
-class GmpModifyTargetTestCase:
+class GmpModifyTargetTestMixin:
     def test_modify_target(self):
         self.gmp.modify_target(target_id='t1')
 

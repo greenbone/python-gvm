@@ -277,10 +277,6 @@ class Gmpv214GetTicketTestCase(GmpGetTicketTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetTargetsTestCase(GmpGetTargetsTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetVulnerabilitiesTestCase(
     GmpGetVulnerabilitiesTestCase, Gmpv214TestCase
 ):
@@ -345,10 +341,6 @@ class Gmpv214ClonePermissionTestCase(
     pass
 
 
-class Gmpv214ClonePortListTestCase(GmpClonePortListTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CloneRoleTestCase(GmpCloneRoleTestCase, Gmpv214TestCase):
     pass
 
@@ -365,12 +357,6 @@ class Gmpv214CloneTagTestCase(GmpCloneTagTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneTargetCommandTestCase(
-    GmpCloneTargetCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214CloneUserTestCase(GmpCloneUserTestCase, Gmpv214TestCase):
     pass
 
@@ -380,16 +366,6 @@ class Gmpv214CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv214TestCase):
 
 
 class Gmpv214CreateHostTestCase(GmpCreateHostTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CreatePortListTestCase(GmpCreatePortListTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CreatePortRangeTestCase(
-    GmpCreatePortRangeTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -437,16 +413,6 @@ class Gmpv214DeletePermissionTestCase(
     pass
 
 
-class Gmpv214DeletePortListTestCase(GmpDeletePortListTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeletePortRangeTestCase(
-    GmpDeletePortRangeTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214DeleteReportFormatTestCase(
     GmpDeleteReportFormatTestCase, Gmpv214TestCase
 ):
@@ -466,10 +432,6 @@ class Gmpv214DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv214TestCase):
 
 
 class Gmpv214DeleteTagTestCase(GmpDeleteTagTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteTargetTestCase(GmpDeleteTargetTestCase, Gmpv214TestCase):
     pass
 
 
@@ -569,14 +531,6 @@ class Gmpv214GetPermissionsTestCase(GmpGetPermissionsTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetPortListTestCase(GmpGetPortListTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetPortListsTestCase(GmpGetPortListsTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetPreferenceTestCase(GmpGetPreferenceTestCase, Gmpv214TestCase):
     pass
 
@@ -651,10 +605,6 @@ class Gmpv214GetTagsTestCase(GmpGetTagsTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetTargetTestCase(GmpGetTargetTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetUserTestCase(GmpGetUserTestCase, Gmpv214TestCase):
     pass
 
@@ -725,19 +675,11 @@ class Gmpv214ModifyGroupTestCase(GmpModifyGroupTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214ModifyPortListTestCase(GmpModifyPortListTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ModifyRoleTestCase(GmpModifyRoleTestCase, Gmpv214TestCase):
     pass
 
 
 class Gmpv214ModifySettingTestCase(GmpModifySettingTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyTargetTestCase(GmpModifyTargetTestCase, Gmpv214TestCase):
     pass
 
 

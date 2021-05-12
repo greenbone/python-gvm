@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCreatePortListTestCase:
+class GmpCreatePortListTestMixin:
     def test_create_port_list_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_list(name=None, port_range='T:1-1234')

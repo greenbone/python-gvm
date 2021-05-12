@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetTargetsTestCase:
+class GmpGetTargetsTestMixin:
     def test_get_targets(self):
         self.gmp.get_targets()
 

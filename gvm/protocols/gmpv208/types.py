@@ -29,7 +29,6 @@ __all__ = [
     "AlertCondition",
     "AlertEvent",
     "AlertMethod",
-    "AliveTest",
     "AssetType",
     "CredentialFormat",
     "CredentialType",
@@ -39,7 +38,6 @@ __all__ = [
     "HostsOrdering",
     "InfoType",
     "PermissionSubjectType",
-    "PortRangeType",
     "ScannerType",
     "SeverityLevel",
     "SnmpAuthAlgorithm",
@@ -52,7 +50,6 @@ __all__ = [
     "get_alert_condition_from_string",
     "get_alert_event_from_string",
     "get_alert_method_from_string",
-    "get_alive_test_from_string",
     "get_asset_type_from_string",
     "get_credential_format_from_string",
     "get_credential_type_from_string",
@@ -62,7 +59,6 @@ __all__ = [
     "get_hosts_ordering_from_string",
     "get_info_type_from_string",
     "get_permission_subject_type_from_string",
-    "get_port_range_type_from_string",
     "get_scanner_type_from_string",
     "get_severity_level_from_string",
     "get_snmp_auth_algorithm_from_string",
@@ -601,68 +597,6 @@ def get_ticket_status_from_string(
         ) from None
 
 
-class AliveTest(Enum):
-    """Enum for choosing an alive test"""
-
-    SCAN_CONFIG_DEFAULT = 'Scan Config Default'
-    ICMP_PING = 'ICMP Ping'
-    TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
-    TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
-    ARP_PING = 'ARP Ping'
-    APR_PING = 'ARP Ping'  # Alias for ARP_PING
-    ICMP_AND_TCP_ACK_SERVICE_PING = 'ICMP & TCP-ACK Service Ping'
-    ICMP_AND_ARP_PING = 'ICMP & ARP Ping'
-    TCP_ACK_SERVICE_AND_ARP_PING = 'TCP-ACK Service & ARP Ping'
-    ICMP_TCP_ACK_SERVICE_AND_ARP_PING = (  # pylint: disable=invalid-name
-        'ICMP, TCP-ACK Service & ARP Ping'
-    )
-    CONSIDER_ALIVE = 'Consider Alive'
-
-
-def get_alive_test_from_string(
-    alive_test: Optional[str],
-) -> Optional[AliveTest]:
-    """Convert an alive test string into a AliveTest instance"""
-    if not alive_test:
-        return None
-
-    alive_test = alive_test.lower()
-
-    if alive_test == 'scan config default':
-        return AliveTest.SCAN_CONFIG_DEFAULT
-
-    if alive_test == 'icmp ping':
-        return AliveTest.ICMP_PING
-
-    if alive_test == 'tcp-ack service ping':
-        return AliveTest.TCP_ACK_SERVICE_PING
-
-    if alive_test == 'tcp-syn service ping':
-        return AliveTest.TCP_SYN_SERVICE_PING
-
-    if alive_test == 'arp ping':
-        return AliveTest.ARP_PING
-
-    if alive_test == 'icmp & tcp-ack service ping':
-        return AliveTest.ICMP_AND_TCP_ACK_SERVICE_PING
-
-    if alive_test == 'icmp & arp ping':
-        return AliveTest.ICMP_AND_ARP_PING
-
-    if alive_test == 'tcp-ack service & arp ping':
-        return AliveTest.TCP_ACK_SERVICE_AND_ARP_PING
-
-    if alive_test == 'icmp, tcp-ack service & arp ping':
-        return AliveTest.ICMP_TCP_ACK_SERVICE_AND_ARP_PING
-
-    if alive_test == 'consider alive':
-        return AliveTest.CONSIDER_ALIVE
-
-    raise InvalidArgument(
-        argument='alive_test', function=get_alive_test_from_string.__name__
-    )
-
-
 class AssetType(Enum):
     """ "Enum for asset types"""
 
@@ -766,33 +700,6 @@ def get_permission_subject_type_from_string(
         raise InvalidArgument(
             argument='subject_type',
             function=get_permission_subject_type_from_string.__name__,
-        ) from None
-
-
-class PortRangeType(Enum):
-    """Enum for port range type"""
-
-    TCP = 'TCP'
-    UDP = 'UDP'
-
-
-def get_port_range_type_from_string(
-    port_range_type: Optional[str],
-) -> Optional[PortRangeType]:
-    """Convert a port range type string to an actual PortRangeType instance
-
-    Arguments:
-        port_range_type: Port range type string to convert to a PortRangeType
-    """
-    if not port_range_type:
-        return None
-
-    try:
-        return PortRangeType[port_range_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='port_range_type',
-            function=get_port_range_type_from_string.__name__,
         ) from None
 
 
