@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,26 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from ...gmpv208 import Gmpv208TestCase
+from ...gmpv208.entities.results import (
+    GmpGetResultsTestMixin,
+    GmpGetResultTestMixin,
+)
 
 
-class GmpGetResultTestCase:
-    def test_get_result(self):
-        self.gmp.get_result('r1')
+class Gmpv208GetResultTestCase(GmpGetResultTestMixin, Gmpv208TestCase):
+    pass
 
-        self.connection.send.has_been_called_with(
-            '<get_results result_id="r1" details="1"/>'
-        )
 
-        self.gmp.get_result(result_id='r1')
-
-        self.connection.send.has_been_called_with(
-            '<get_results result_id="r1" details="1"/>'
-        )
-
-    def test_get_result_missing_result_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_result(result_id=None)
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_result('')
+class Gmpv208GetResultsTestCase(GmpGetResultsTestMixin, Gmpv208TestCase):
+    pass

@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetResultsTestCase:
+class GmpGetResultsTestMixin:
     def test_get_results(self):
         self.gmp.get_results()
 
