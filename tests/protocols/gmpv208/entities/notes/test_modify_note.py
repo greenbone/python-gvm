@@ -23,7 +23,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import SeverityLevel
 
 
-class GmpModifyNoteTestCase:
+class GmpModifyNoteTestMixin:
     def test_modify_note(self):
         self.gmp.modify_note(note_id='n1', text='foo')
 

@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetNotesTestCase:
+class GmpGetNotesTestMixin:
     def test_get_notes(self):
         self.gmp.get_notes()
 

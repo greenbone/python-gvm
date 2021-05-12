@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,27 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
-
-
-class GmpDeleteNoteTestCase:
-    def test_delete(self):
-        self.gmp.delete_note('a1')
-
-        self.connection.send.has_been_called_with(
-            '<delete_note note_id="a1" ultimate="0"/>'
-        )
-
-    def test_delete_ultimate(self):
-        self.gmp.delete_note('a1', ultimate=True)
-
-        self.connection.send.has_been_called_with(
-            '<delete_note note_id="a1" ultimate="1"/>'
-        )
-
-    def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_note(None)
-
-        with self.assertRaises(GvmError):
-            self.gmp.delete_note('')
+from .test_clone_override import GmpCloneOverrideTestMixin
+from .test_create_override import GmpCreateOverrideTestMixin
+from .test_delete_override import GmpDeleteOverrideTestMixin
+from .test_get_override import GmpGetOverrideTestMixin
+from .test_get_overrides import GmpGetOverridesTestMixin
+from .test_modify_override import GmpModifyOverrideTestMixin
