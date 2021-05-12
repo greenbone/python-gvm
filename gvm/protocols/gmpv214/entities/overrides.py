@@ -26,7 +26,7 @@ from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv208.entities.overrides import (
     OverridesMixin as Gmp208OverridesMixin,
 )
-from gvm.protocols.gmpv208.entities.severity import Severity, SeverityLevel
+from gvm.protocols.gmpv208.entities.severity import Severity
 from gvm.utils import deprecation, to_comma_list
 from gvm.xml import XmlCommand
 
@@ -44,8 +44,8 @@ class OverridesMixin(Gmp208OverridesMixin):
         severity: Optional[Severity] = None,
         new_severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
-        threat: Optional[SeverityLevel] = None,
-        new_threat: Optional[SeverityLevel] = None,
+        threat: Any = None,
+        new_threat: Any = None,
     ) -> Any:
         """Create a new override
 
@@ -59,10 +59,8 @@ class OverridesMixin(Gmp208OverridesMixin):
             severity: Severity to which override applies
             new_severity: New severity for result
             task_id: UUID of task to which override applies
-            threat: Severity level to which override applies. Will be converted
-                to severity.
-            new_threat: New severity level for results. Will be converted to
-                new_severity.
+            threat: deprecated
+            new_threat: deprecated
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -134,8 +132,8 @@ class OverridesMixin(Gmp208OverridesMixin):
         severity: Optional[Severity] = None,
         new_severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
-        threat: Optional[SeverityLevel] = None,
-        new_threat: Optional[SeverityLevel] = None,
+        threat: Any = None,
+        new_threat: Any = None,
     ) -> Any:
         """Modifies an existing override.
 
@@ -150,10 +148,8 @@ class OverridesMixin(Gmp208OverridesMixin):
             severity: Severity to which override applies.
             new_severity: New severity score for result.
             task_id: Task to which override applies.
-            threat: Threat level to which override applies.
-                Will be converted to severity.
-            new_threat: New threat level for results. Will be converted to
-                new_severity.
+            threat: deprecated
+            new_threat: deprecated
 
         Returns:
             The response. See :py:meth:`send_command` for details.

@@ -23,7 +23,7 @@ from typing import Any, List, Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv208.entities.notes import NotesMixin as Gmp208NotesMixin
-from gvm.protocols.gmpv208.entities.severity import Severity, SeverityLevel
+from gvm.protocols.gmpv208.entities.severity import Severity
 from gvm.utils import deprecation, to_comma_list
 from gvm.xml import XmlCommand
 
@@ -40,7 +40,7 @@ class NotesMixin(Gmp208NotesMixin):
         result_id: Optional[str] = None,
         severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
-        threat: Optional[SeverityLevel] = None,
+        threat: Any = None,
     ) -> Any:
         """Create a new note
 
@@ -54,8 +54,7 @@ class NotesMixin(Gmp208NotesMixin):
             result_id: UUID of a result to which note applies
             severity: Severity to which note applies
             task_id: UUID of task to which note applies
-            threat: Severity level to which note applies. Will be converted to
-                severity.
+            threat: deprecated
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -114,7 +113,7 @@ class NotesMixin(Gmp208NotesMixin):
         result_id: Optional[str] = None,
         severity: Optional[Severity] = None,
         task_id: Optional[str] = None,
-        threat: Optional[SeverityLevel] = None,
+        threat: Any = None,
     ) -> Any:
         """Modifies an existing note.
 
@@ -127,8 +126,7 @@ class NotesMixin(Gmp208NotesMixin):
             result_id: Result to which note applies.
             severity: Severity to which note applies.
             task_id: Task to which note applies.
-            threat: Threat level to which note applies. Will be converted to
-                severity.
+            threat: deprecated
 
         Returns:
             The response. See :py:meth:`send_command` for details.
