@@ -23,7 +23,7 @@ from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv214 import SeverityLevel
 
 
-class GmpCreateOverrideTestCase:
+class GmpCreateOverrideTestMixin:
     def test_create_override(self):
         self.gmp.create_override('foo', nvt_oid='oid1')
 
