@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.notes import (
     GmpCloneNoteTestMixin,
     GmpDeleteNoteTestMixin,
@@ -29,25 +29,25 @@ from .notes import (
 )
 
 
-class Gmpv208DeleteNoteTestCase(GmpDeleteNoteTestMixin, Gmpv208TestCase):
+class Gmpv214DeleteNoteTestCase(GmpDeleteNoteTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetNoteTestCase(GmpGetNoteTestMixin, Gmpv208TestCase):
+class Gmpv214GetNoteTestCase(GmpGetNoteTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetNotesTestCase(GmpGetNotesTestMixin, Gmpv208TestCase):
+class Gmpv214GetNotesTestCase(GmpGetNotesTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208CloneNoteTestCase(GmpCloneNoteTestMixin, Gmpv208TestCase):
+class Gmpv214CloneNoteTestCase(GmpCloneNoteTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208CreateNoteTestCase(GmpCreateNoteTestMixin, Gmpv208TestCase):
+class Gmpv214CreateNoteTestCase(GmpCreateNoteTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208ModifyNoteTestCase(GmpModifyNoteTestMixin, Gmpv208TestCase):
+class Gmpv214ModifyNoteTestCase(GmpModifyNoteTestMixin, Gmpv214TestCase):
     pass
