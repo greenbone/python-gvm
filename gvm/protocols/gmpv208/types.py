@@ -26,9 +26,6 @@ from gvm.errors import InvalidArgument
 
 __all__ = [
     "AggregateStatistic",
-    "AlertCondition",
-    "AlertEvent",
-    "AlertMethod",
     "AssetType",
     "CredentialFormat",
     "CredentialType",
@@ -45,9 +42,6 @@ __all__ = [
     "TimeUnit",
     "UserAuthType",
     "get_aggregate_statistic_from_string",
-    "get_alert_condition_from_string",
-    "get_alert_event_from_string",
-    "get_alert_method_from_string",
     "get_asset_type_from_string",
     "get_credential_format_from_string",
     "get_credential_type_from_string",
@@ -286,146 +280,6 @@ def get_aggregate_statistic_from_string(
         raise InvalidArgument(
             argument='aggregate_statistic',
             function=get_aggregate_statistic_from_string.__name__,
-        ) from None
-
-
-class AlertEvent(Enum):
-    """Enum for alert event types"""
-
-    TASK_RUN_STATUS_CHANGED = 'Task run status changed'
-    UPDATED_SECINFO_ARRIVED = 'Updated SecInfo arrived'
-    NEW_SECINFO_ARRIVED = 'New SecInfo arrived'
-    TICKET_RECEIVED = 'Ticket received'
-    ASSIGNED_TICKET_CHANGED = 'Assigned ticket changed'
-    OWNED_TICKET_CHANGED = 'Owned ticket changed'
-
-
-def get_alert_event_from_string(
-    alert_event: Optional[str],
-) -> Optional[AlertEvent]:
-    """Convert an alert event string into a AlertEvent instance"""
-    if not alert_event:
-        return None
-
-    alert_event = alert_event.lower()
-
-    if alert_event == 'task run status changed':
-        return AlertEvent.TASK_RUN_STATUS_CHANGED
-
-    if alert_event == 'updated secinfo arrived':
-        return AlertEvent.UPDATED_SECINFO_ARRIVED
-
-    if alert_event == 'new secinfo arrived':
-        return AlertEvent.NEW_SECINFO_ARRIVED
-
-    if alert_event == 'ticket received':
-        return AlertEvent.TICKET_RECEIVED
-
-    if alert_event == 'assigned ticket changed':
-        return AlertEvent.ASSIGNED_TICKET_CHANGED
-
-    if alert_event == 'owned ticket changed':
-        return AlertEvent.OWNED_TICKET_CHANGED
-
-    raise InvalidArgument(
-        argument='alert_event', function=get_alert_event_from_string.__name__
-    )
-
-
-class AlertCondition(Enum):
-    """Enum for alert condition types"""
-
-    ALWAYS = 'Always'
-    ERROR = 'Error'
-    SEVERITY_AT_LEAST = 'Severity at least'
-    SEVERITY_CHANGED = 'Severity changed'
-    FILTER_COUNT_CHANGED = 'Filter count changed'
-    FILTER_COUNT_AT_LEAST = 'Filter count at least'
-
-
-def get_alert_condition_from_string(
-    alert_condition: Optional[str],
-) -> Optional[AlertCondition]:
-    """Convert an alert condition string into a AlertCondition instance"""
-    if not alert_condition:
-        return None
-
-    alert_condition = alert_condition.lower()
-
-    if alert_condition == 'error':
-        return AlertCondition.ERROR
-
-    if alert_condition == 'always':
-        return AlertCondition.ALWAYS
-
-    if alert_condition == 'filter count changed':
-        return AlertCondition.FILTER_COUNT_CHANGED
-
-    if alert_condition == 'filter count at least':
-        return AlertCondition.FILTER_COUNT_AT_LEAST
-
-    if alert_condition == 'severity at least':
-        return AlertCondition.SEVERITY_AT_LEAST
-
-    if alert_condition == 'severity changed':
-        return AlertCondition.SEVERITY_CHANGED
-
-    raise InvalidArgument(
-        argument='alert_condition',
-        function=get_alert_condition_from_string.__name__,
-    )
-
-
-class AlertMethod(Enum):
-    """Enum for alert method type"""
-
-    SCP = "SCP"
-    SEND = "Send"
-    SMB = "SMB"
-    SNMP = "SNMP"
-    SYSLOG = "Syslog"
-    EMAIL = "Email"
-    START_TASK = "Start Task"
-    HTTP_GET = "HTTP Get"
-    SOURCEFIRE_CONNECTOR = "Sourcefire Connector"
-    VERINICE_CONNECTOR = "verinice Connector"
-    TIPPINGPOINT = "TippingPoint SMS"
-    ALEMBA_VFIRE = "Alemba vFire"
-
-
-def get_alert_method_from_string(
-    alert_method: Optional[str],
-) -> Optional[AlertMethod]:
-    """Convert an alert method string into a AlertCondition instance"""
-    if not alert_method:
-        return None
-
-    alert_method = alert_method.upper()
-
-    if alert_method == 'START TASK':
-        return AlertMethod.START_TASK
-
-    if alert_method == 'HTTP GET':
-        return AlertMethod.HTTP_GET
-
-    if alert_method == 'SOURCEFIRE CONNECTOR':
-        return AlertMethod.SOURCEFIRE_CONNECTOR
-
-    if alert_method == 'VERINICE CONNECTOR':
-        return AlertMethod.VERINICE_CONNECTOR
-
-    if alert_method == 'TIPPINGPOINT SMS':
-        return AlertMethod.TIPPINGPOINT
-
-    if alert_method == 'ALEMBA VFIRE':
-        return AlertMethod.ALEMBA_VFIRE
-
-    try:
-        return AlertMethod[alert_method]
-    except KeyError:
-        raise InvalidArgument(
-            argument='alert_method',
-            function=get_alert_method_from_string.__name__,
         ) from None
 
 
