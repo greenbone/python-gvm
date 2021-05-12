@@ -44,13 +44,19 @@ from gvm.protocols.gmpv208.entities.secinfo import (
     InfoType,
     SecInfoMixin,
 )
+from gvm.protocols.gmpv208.entities.severity import (
+    SeverityLevel,
+    get_severity_level_from_string,
+)
 
 from gvm.protocols.gmpv208.entities.tasks import TaskMixin
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
+from gvm.protocols.gmpv214.entities.notes import NotesMixin
+from gvm.protocols.gmpv214.entities.overrides import OverridesMixin
 from gvm.protocols.gmpv214.entities.targets import (
     AliveTest,
     get_alive_test_from_string,
-    TargetMixin,
+    TargetsMixin,
 )
 from gvm.protocols.gmpv214.gmpv214 import GmpV214Mixin
 from gvm.connections import GvmConnection
@@ -66,9 +72,11 @@ class Gmp(
     GmpV214Mixin,
     GmpV208Mixin,
     PortListMixin,
+    NotesMixin,
+    OverridesMixin,
     ReportsMixin,
     ResultsMixin,
-    TargetMixin,
+    TargetsMixin,
     TaskMixin,
     SecInfoMixin,
 ):
