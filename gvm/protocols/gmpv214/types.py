@@ -23,9 +23,6 @@ from gvm.errors import InvalidArgument
 
 from gvm.protocols.gmpv208.types import (
     AggregateStatistic,
-    AlertCondition,
-    AlertEvent,
-    AlertMethod,
     AssetType,
     CredentialFormat,
     CredentialType,
@@ -41,9 +38,6 @@ from gvm.protocols.gmpv208.types import (
     TimeUnit,
     UserAuthType,
     get_aggregate_statistic_from_string,
-    get_alert_condition_from_string,
-    get_alert_event_from_string,
-    get_alert_method_from_string,
     get_asset_type_from_string,
     get_credential_format_from_string,
     get_credential_type_from_string,
@@ -63,9 +57,6 @@ from gvm.protocols.gmpv208.types import (
 
 __all__ = [
     "AggregateStatistic",
-    "AlertCondition",
-    "AlertEvent",
-    "AlertMethod",
     "AssetType",
     "CredentialFormat",
     "CredentialType",
@@ -83,9 +74,6 @@ __all__ = [
     "TimeUnit",
     "UserAuthType",
     "get_aggregate_statistic_from_string",
-    "get_alert_condition_from_string",
-    "get_alert_event_from_string",
-    "get_alert_method_from_string",
     "get_asset_type_from_string",
     "get_credential_format_from_string",
     "get_credential_type_from_string",
