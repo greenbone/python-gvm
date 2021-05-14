@@ -37,6 +37,11 @@ from gvm.protocols.gmpv208.entities.alerts import (
     get_alert_event_from_string,
     get_alert_method_from_string,
 )
+from gvm.protocols.gmpv208.entities.assets import (
+    AssetsMixin,
+    AssetType,
+    get_asset_type_from_string,
+)
 from gvm.protocols.gmpv208.entities.port_lists import (
     PortListMixin,
     PortRangeType,
@@ -81,6 +86,7 @@ class Gmp(
     GmpV214Mixin,
     GmpV208Mixin,
     AlertsMixin,
+    AssetsMixin,
     PortListMixin,
     NotesMixin,
     OverridesMixin,
