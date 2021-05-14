@@ -32,7 +32,6 @@ from .test_clone_config import GmpCloneConfigTestCase
 from .test_clone_policy import GmpClonePolicyTestCase
 from .test_clone_tls_certificate import GmpCloneTLSCertificateTestCase
 from .test_create_audit import GmpCreateAuditCommandTestCase
-from .test_create_alert import GmpCreateAlertTestCase
 from .test_create_config import GmpCreateConfigTestCase
 from .test_create_config_from_osp_scanner import (
     GmpCreateConfigFromOSPScannerTestCase,
@@ -54,7 +53,6 @@ from .test_get_policy import GmpGetPolicyTestCase
 from .test_get_tls_certificate import GmpGetTlsCertificateTestCase
 from .test_get_tls_certificates import GmpGetTLSCertificatesTestCase
 from .test_modify_credential import GmpModifyCredentialTestCase
-from .test_modify_alert import GmpModifyAlertTestCase
 from .test_modify_audit import GmpModifyAuditCommandTestCase
 from .test_modify_policy_set_comment import GmpModifyPolicySetCommentTestCase
 from .test_modify_policy_set_family_selection import (
@@ -87,7 +85,6 @@ from .test_get_vulnerability import GmpGetVulnerabilityTestCase
 from .test_modify_schedule import GmpModifyScheduleTestCase
 from .test_protocol_version import GmpProtocolVersionTestCase
 from .test_authenticate import GmpAuthenticateTestCase
-from .test_clone_alert import GmpCloneAlertTestCase
 from .test_clone_report_format import GmpCloneReportFormatTestCase
 from .test_clone_credential import GmpCloneCredentialTestCase
 from .test_clone_filter import GmpCloneFilterTestCase
@@ -102,7 +99,6 @@ from .test_create_group import GmpCreateGroupTestCase
 from .test_create_host import GmpCreateHostTestCase
 from .test_create_role import GmpCreateRoleTestCase
 from .test_create_user import GmpCreateUserTestCase
-from .test_delete_alert import GmpDeleteAlertTestCase
 from .test_delete_asset import GmpDeleteAssetTestCase
 from .test_delete_credential import GmpDeleteCredentialTestCase
 from .test_delete_filter import GmpDeleteFilterTestCase
@@ -116,8 +112,6 @@ from .test_delete_tag import GmpDeleteTagTestCase
 from .test_delete_user import GmpDeleteUserTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
-from .test_get_alert import GmpGetAlertTestCase
-from .test_get_alerts import GmpGetAlertsTestCase
 from .test_get_asset import GmpGetAssetTestCase
 from .test_get_assets import GmpGetAssetsTestCase
 from .test_get_credential import GmpGetCredentialTestCase
@@ -176,8 +170,6 @@ from .test_sync_cert import GmpSyncCertCommandTestCase
 from .test_sync_config import GmpSyncConfigCommandTestCase
 from .test_sync_feed import GmpSyncFeedCommandTestCase
 from .test_sync_scap import GmpSyncScapCommandTestCase
-from .test_test_alert import GmpTestAlertTestCase
-from .test_trigger_alert import GmpTriggerAlertTestCase
 from .test_verify_report_format import GmpVerifyReportFormatTestCase
 from .test_verify_scanner import GmpVerifyScannerTestCase
 from .test_with_statement import GmpWithStatementTestCase

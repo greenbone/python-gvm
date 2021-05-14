@@ -19,32 +19,17 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetAlertTestCase:
-    def test_get_alert(self):
-        self.gmp.get_alert('a1')
-
-        self.connection.send.has_been_called_with('<get_alerts alert_id="a1"/>')
-
-        self.gmp.get_alert(alert_id='a1')
-
-        self.connection.send.has_been_called_with('<get_alerts alert_id="a1"/>')
-
-    def test_get_alert_invalid_alert_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_alert(alert_id=None)
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_alert(alert_id='')
-
-    def test_get_alert_with_tasks(self):
-        self.gmp.get_alert(alert_id='a1', tasks=True)
+class GmpCloneAlertTestMixin:
+    def test_clone(self):
+        self.gmp.clone_alert('a1')
 
         self.connection.send.has_been_called_with(
-            '<get_alerts alert_id="a1" tasks="1"/>'
+            '<create_alert>' '<copy>a1</copy>' '</create_alert>'
         )
 
-        self.gmp.get_alert(alert_id='a1', tasks=False)
+    def test_missing_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_alert('')
 
-        self.connection.send.has_been_called_with(
-            '<get_alerts alert_id="a1" tasks="0"/>'
-        )
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_alert(None)

@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import AlertCondition, AlertEvent, AlertMethod
 
 
-class GmpModifyAlertTestCase:
+class GmpModifyAlertTestMixin:
     def test_modify_alert(self):
         self.gmp.modify_alert(alert_id='a1')
 

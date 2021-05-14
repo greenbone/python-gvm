@@ -19,24 +19,32 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpDeleteAlertTestCase:
-    def test_delete(self):
-        self.gmp.delete_alert('a1')
+class GmpGetAlertTestMixin:
+    def test_get_alert(self):
+        self.gmp.get_alert('a1')
 
-        self.connection.send.has_been_called_with(
-            '<delete_alert alert_id="a1" ultimate="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts alert_id="a1"/>')
 
-    def test_delete_ultimate(self):
-        self.gmp.delete_alert('a1', ultimate=True)
+        self.gmp.get_alert(alert_id='a1')
 
-        self.connection.send.has_been_called_with(
-            '<delete_alert alert_id="a1" ultimate="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_alerts alert_id="a1"/>')
 
-    def test_missing_alert_id(self):
+    def test_get_alert_invalid_alert_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.delete_alert(None)
+            self.gmp.get_alert(alert_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.delete_alert('')
+            self.gmp.get_alert(alert_id='')
+
+    def test_get_alert_with_tasks(self):
+        self.gmp.get_alert(alert_id='a1', tasks=True)
+
+        self.connection.send.has_been_called_with(
+            '<get_alerts alert_id="a1" tasks="1"/>'
+        )
+
+        self.gmp.get_alert(alert_id='a1', tasks=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_alerts alert_id="a1" tasks="0"/>'
+        )
