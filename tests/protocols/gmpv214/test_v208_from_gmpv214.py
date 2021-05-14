@@ -38,14 +38,6 @@ class Gmpv214GetAggregatesTestCase(GmpGetAggregatesTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetInfoTestCase(GmpGetInfoTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetInfoListTestCase(GmpGetInfoListTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv214TestCase):
     pass
 
@@ -500,18 +492,6 @@ class Gmpv214GetNoteTestCase(GmpGetNoteTestCase, Gmpv214TestCase):
 
 
 class Gmpv214GetNotesTestCase(GmpGetNotesTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetNvtTestCase(GmpGetNvtTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetNvtFamiliesTestCase(GmpGetNvtFamiliesTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetNvtsTestCase(GmpGetNvtsTestCase, Gmpv214TestCase):
     pass
 
 

@@ -22,8 +22,6 @@ from .test_create_filter import GmpCreateFilterTestCase
 from .test_create_permission import GmpCreatePermissionTestCase
 from .test_create_tag import GmpCreateTagTestCase
 from .test_get_aggregates import GmpGetAggregatesTestCase
-from .test_get_info import GmpGetInfoTestCase
-from .test_get_info_list import GmpGetInfoListTestCase
 from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_permission import GmpModifyPermissionTestCase
 from .test_modify_report_format import GmpModifyReportFormatTestCase
@@ -138,9 +136,6 @@ from .test_get_groups import GmpGetGroupsTestCase
 
 from .test_get_note import GmpGetNoteTestCase
 from .test_get_notes import GmpGetNotesTestCase
-from .test_get_nvt import GmpGetNvtTestCase
-from .test_get_nvt_families import GmpGetNvtFamiliesTestCase
-from .test_get_nvts import GmpGetNvtsTestCase
 from .test_get_override import GmpGetOverrideTestCase
 from .test_get_overrides import GmpGetOverridesTestCase
 from .test_get_permission import GmpGetPermissionTestCase

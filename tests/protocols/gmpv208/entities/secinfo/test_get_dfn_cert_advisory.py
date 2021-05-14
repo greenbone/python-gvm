@@ -19,23 +19,26 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetNvtTestCase:
-    def test_get_nvt_with_nvt_oid(self):
-        self.gmp.get_nvt(nvt_oid='nvt_oid')
+class GmpGetDfnCertTestMixin:
+    def test_get_cert_bund_advisory(self):
+        self.gmp.get_dfn_cert_advisory(cert_id='i1')
 
         self.connection.send.has_been_called_with(
-            (
-                '<get_nvts nvt_oid="nvt_oid" details="1" '
-                'preferences="1" preference_count="1"/>'
-            )
+            '<get_info info_id="i1" type="DFN_CERT_ADV" details="1"/>'
         )
 
-    def test_get_nvt_missing_nvt_oid(self):
+        self.gmp.get_dfn_cert_advisory('i1')
+
+        self.connection.send.has_been_called_with(
+            '<get_info info_id="i1" type="DFN_CERT_ADV" details="1"/>'
+        )
+
+    def test_get_cert_bund_advisory_missing_cert_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_nvt(nvt_oid=None)
+            self.gmp.get_dfn_cert_advisory(cert_id='')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_nvt(nvt_oid='')
+            self.gmp.get_dfn_cert_advisory('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_nvt('')
+            self.gmp.get_dfn_cert_advisory(cert_id=None)
