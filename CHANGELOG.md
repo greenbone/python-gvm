@@ -13,6 +13,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Introduced new explicit API calls for SecInfo: `get_nvt()`, `get_nvt_list()`, `get_cpe()`, `get_cpe_list()`, `get_cve()`, `get_cve_list()`, `get_cert_bund_advisory()`, `get_cert_bund_advisory_list()`, `get_dnf_cert_advisory()`, `get_dnf_cert_advisory_list()`, `get_oval_definition()`, `get_oval_definition_list()`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 
 ### Changed
+* Detached the Notes and Overrides API calls from the GMP class into a new `NotesMixin` and `OverridesMixin`. [#457](https://github.com/greenbone/python-gvm/pull/457)
 * Changed the API calls `get_nvt()` and `get_nvts()` to `get_scan_config_nvt()` and `get_scan_config_nvts()`.  [#456](https://github.com/greenbone/python-gvm/pull/456)
 * Detached the `InfoType` from the GMP types class.  [#456](https://github.com/greenbone/python-gvm/pull/456)
 * Detached the SecInfo (CPE, CVE, NVT, CERT-BUND, DNF-CERT, OVAL Definitions) calls from CMP class into new `SecInfoMixin`. [#456](https://github.com/greenbone/python-gvm/pull/456)
