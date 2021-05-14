@@ -75,7 +75,7 @@ class GetAlertMethodFromStringTestCase(unittest.TestCase):
 
     def test_tippingpoint_sms(self):
         ct = get_alert_method_from_string('Tippingpoint SMS')
-        self.assertEqual(ct, AlertMethod.TIPPINGPOINT)
+        self.assertEqual(ct, AlertMethod.TIPPINGPOINT_SMS)
 
     def test_alemba_vfire(self):
         ct = get_alert_method_from_string('Alemba vFire')
