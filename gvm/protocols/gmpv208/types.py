@@ -26,7 +26,6 @@ from gvm.errors import InvalidArgument
 
 __all__ = [
     "AggregateStatistic",
-    "AssetType",
     "CredentialFormat",
     "CredentialType",
     "EntityType",
@@ -42,7 +41,6 @@ __all__ = [
     "TimeUnit",
     "UserAuthType",
     "get_aggregate_statistic_from_string",
-    "get_asset_type_from_string",
     "get_credential_format_from_string",
     "get_credential_type_from_string",
     "get_entity_type_from_string",
@@ -417,30 +415,6 @@ def get_ticket_status_from_string(
         raise InvalidArgument(
             argument='ticket_status',
             function=get_ticket_status_from_string.__name__,
-        ) from None
-
-
-class AssetType(Enum):
-    """ "Enum for asset types"""
-
-    OPERATING_SYSTEM = 'os'
-    HOST = 'host'
-
-
-def get_asset_type_from_string(
-    asset_type: Optional[str],
-) -> Optional[AssetType]:
-    if not asset_type:
-        return None
-
-    if asset_type == 'os':
-        return AssetType.OPERATING_SYSTEM
-
-    try:
-        return AssetType[asset_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='asset_type', function=get_asset_type_from_string.__name__
         ) from None
 
 
