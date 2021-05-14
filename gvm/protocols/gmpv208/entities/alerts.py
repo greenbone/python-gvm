@@ -48,29 +48,13 @@ def get_alert_event_from_string(
     if not alert_event:
         return None
 
-    alert_event = alert_event.lower()
-
-    if alert_event == 'task run status changed':
-        return AlertEvent.TASK_RUN_STATUS_CHANGED
-
-    if alert_event == 'updated secinfo arrived':
-        return AlertEvent.UPDATED_SECINFO_ARRIVED
-
-    if alert_event == 'new secinfo arrived':
-        return AlertEvent.NEW_SECINFO_ARRIVED
-
-    if alert_event == 'ticket received':
-        return AlertEvent.TICKET_RECEIVED
-
-    if alert_event == 'assigned ticket changed':
-        return AlertEvent.ASSIGNED_TICKET_CHANGED
-
-    if alert_event == 'owned ticket changed':
-        return AlertEvent.OWNED_TICKET_CHANGED
-
-    raise InvalidArgument(
-        argument='alert_event', function=get_alert_event_from_string.__name__
-    )
+    try:
+        return AlertEvent[alert_event.replace(' ', '_').upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='alert_event',
+            function=get_alert_event_from_string.__name__,
+        ) from KeyError
 
 
 class AlertCondition(Enum):
@@ -91,30 +75,13 @@ def get_alert_condition_from_string(
     if not alert_condition:
         return None
 
-    alert_condition = alert_condition.lower()
-
-    if alert_condition == 'error':
-        return AlertCondition.ERROR
-
-    if alert_condition == 'always':
-        return AlertCondition.ALWAYS
-
-    if alert_condition == 'filter count changed':
-        return AlertCondition.FILTER_COUNT_CHANGED
-
-    if alert_condition == 'filter count at least':
-        return AlertCondition.FILTER_COUNT_AT_LEAST
-
-    if alert_condition == 'severity at least':
-        return AlertCondition.SEVERITY_AT_LEAST
-
-    if alert_condition == 'severity changed':
-        return AlertCondition.SEVERITY_CHANGED
-
-    raise InvalidArgument(
-        argument='alert_condition',
-        function=get_alert_condition_from_string.__name__,
-    )
+    try:
+        return AlertCondition[alert_condition.replace(' ', '_').upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='alert_condition',
+            function=get_alert_condition_from_string.__name__,
+        ) from KeyError
 
 
 class AlertMethod(Enum):
@@ -130,7 +97,7 @@ class AlertMethod(Enum):
     HTTP_GET = "HTTP Get"
     SOURCEFIRE_CONNECTOR = "Sourcefire Connector"
     VERINICE_CONNECTOR = "verinice Connector"
-    TIPPINGPOINT = "TippingPoint SMS"
+    TIPPINGPOINT_SMS = "TippingPoint SMS"
     ALEMBA_VFIRE = "Alemba vFire"
 
 
@@ -141,33 +108,13 @@ def get_alert_method_from_string(
     if not alert_method:
         return None
 
-    alert_method = alert_method.upper()
-
-    if alert_method == 'START TASK':
-        return AlertMethod.START_TASK
-
-    if alert_method == 'HTTP GET':
-        return AlertMethod.HTTP_GET
-
-    if alert_method == 'SOURCEFIRE CONNECTOR':
-        return AlertMethod.SOURCEFIRE_CONNECTOR
-
-    if alert_method == 'VERINICE CONNECTOR':
-        return AlertMethod.VERINICE_CONNECTOR
-
-    if alert_method == 'TIPPINGPOINT SMS':
-        return AlertMethod.TIPPINGPOINT
-
-    if alert_method == 'ALEMBA VFIRE':
-        return AlertMethod.ALEMBA_VFIRE
-
     try:
-        return AlertMethod[alert_method]
+        return AlertMethod[alert_method.replace(' ', '_').upper()]
     except KeyError:
         raise InvalidArgument(
             argument='alert_method',
             function=get_alert_method_from_string.__name__,
-        ) from None
+        ) from KeyError
 
 
 def _check_event(
