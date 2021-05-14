@@ -19,13 +19,20 @@
 from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.secinfo import (
     GmpGetCertBundTestMixin,
+    GmpGetCertBundListTestMixin,
     GmpGetCpeTestMixin,
+    GmpGetCpeListTestMixin,
     GmpGetCveTestMixin,
+    GmpGetCveListTestMixin,
     GmpGetDfnCertTestMixin,
+    GmpGetDfnCertListTestMixin,
     GmpGetInfoListTestMixin,
     GmpGetInfoTestMixin,
     GmpGetNvtFamiliesTestMixin,
     GmpGetNvtTestMixin,
+    GmpGetNvtListTestMixin,
+    GmpGetOvalDefTestMixin,
+    GmpGetOvalDefListTestMixin,
     GmpGetScanConfigNvtsTestMixin,
     GmpGetScanConfigNvtTestMixin,
 )
@@ -43,7 +50,11 @@ class Gmpv214GetCveTestCase(GmpGetCveTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetDfnCerttCase(GmpGetDfnCertTestMixin, Gmpv214TestCase):
+class Gmpv214GetDfnCertCase(GmpGetDfnCertTestMixin, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214GetOvalDefCase(GmpGetOvalDefTestMixin, Gmpv214TestCase):
     pass
 
 
@@ -73,5 +84,33 @@ class Gmpv214GetNvtFamiliesTestCase(
 
 class Gmpv214GetScanConfigNvtsTestCase(
     GmpGetScanConfigNvtsTestMixin, Gmpv214TestCase
+):
+    pass
+
+
+class Gmpv214GetCertBundListTestCase(
+    GmpGetCertBundListTestMixin, Gmpv214TestCase
+):
+    pass
+
+
+class Gmpv214GetCpeListTestCase(GmpGetCpeListTestMixin, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214GetCveListTestCase(GmpGetCveListTestMixin, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214GetDfnCertListCase(GmpGetDfnCertListTestMixin, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214GetNvtListTestCase(GmpGetNvtListTestMixin, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214GetOvalDefListTestCase(
+    GmpGetOvalDefListTestMixin, Gmpv214TestCase
 ):
     pass
