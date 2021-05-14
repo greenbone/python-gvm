@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,24 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
-
-
-class GmpDeleteTLSCertificateTestCase:
-    def test_delete(self):
-        self.gmp.delete_tls_certificate('a1')
-
-        self.connection.send.has_been_called_with(
-            '<delete_tls_certificate tls_certificate_id="a1"/>'
-        )
-
-    def test_delete_ultimate(self):
-        with self.assertRaises(TypeError):
-            self.gmp.delete_tls_certificate('a1', ultimate=True)
-
-    def test_missing_tls_certificate_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_tls_certificate(None)
-
-        with self.assertRaises(GvmError):
-            self.gmp.delete_tls_certificate('')
+from .test_create_host import GmpCreateHostTestMixin
+from .test_delete_host import GmpDeleteHostTestMixin
+from .test_get_host import GmpGetHostTestMixin
+from .test_get_hosts import GmpGetHostsTestMixin
+from .test_modify_host import GmpModifyHostTestMixin

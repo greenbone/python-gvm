@@ -19,26 +19,27 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyTLSCertificateTestCase:
-    def test_modify_tls_certificate(self):
-        self.gmp.modify_tls_certificate('c1')
+class GmpGetHostTestMixin:
+    def test_get_host(self):
+        self.gmp.get_host('a1')
 
         self.connection.send.has_been_called_with(
-            '<modify_tls_certificate tls_certificate_id="c1"/>'
+            '<get_assets asset_id="a1" type="host"/>'
         )
 
-    def test_modify_tls_certificate_with_name(self):
-        self.gmp.modify_tls_certificate('c1', name='foo')
+        self.gmp.get_host(host_id='a1')
 
         self.connection.send.has_been_called_with(
-            '<modify_tls_certificate tls_certificate_id="c1">'
-            '<name>foo</name>'
-            '</modify_tls_certificate>'
+            '<get_assets asset_id="a1" type="host"/>'
         )
 
-    def test_missing_tls_certificate_id(self):
+    def test_get_host_missing_host_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_tls_certificate(name='foo', tls_certificate_id='')
+            self.gmp.get_host(
+                host_id=None,
+            )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_tls_certificate(name='foo', tls_certificate_id=None)
+            self.gmp.get_host(
+                host_id='',
+            )

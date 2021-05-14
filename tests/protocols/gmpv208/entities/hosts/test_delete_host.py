@@ -16,30 +16,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gvm.errors import GvmError
 
-class GmpGetTLSCertificatesTestCase:
-    def test_get_tls_certificates(self):
-        self.gmp.get_tls_certificates()
 
-        self.connection.send.has_been_called_with('<get_tls_certificates/>')
-
-    def test_get_tls_certificates_with_filter(self):
-        self.gmp.get_tls_certificates(filter='name=foo')
+class GmpDeleteHostTestMixin:
+    def test_delete_host(self):
+        self.gmp.delete_host(host_id='a1')
 
         self.connection.send.has_been_called_with(
-            '<get_tls_certificates filter="name=foo"/>'
+            '<delete_asset asset_id="a1"/>'
         )
 
-    def test_get_tls_certificates_with_include_certificate_data(self):
-        self.gmp.get_tls_certificates(include_certificate_data='1')
+    def test_delete_from_report(self):
+        self.gmp.delete_host(report_id='a1')
 
         self.connection.send.has_been_called_with(
-            '<get_tls_certificates include_certificate_data="1"/>'
+            '<delete_asset report_id="a1"/>'
         )
 
-    def test_get_tls_certificates_with_details(self):
-        self.gmp.get_tls_certificates(details='1')
+    def test_delete_passing_host_and_report(self):
+        self.gmp.delete_host(report_id='r1', host_id='a1')
 
         self.connection.send.has_been_called_with(
-            '<get_tls_certificates details="1"/>'
+            '<delete_asset asset_id="a1"/>'
         )
+
+    def test_missing_arguments(self):
+        with self.assertRaises(GvmError):
+            self.gmp.delete_host()

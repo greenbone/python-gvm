@@ -19,28 +19,35 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCreateTLSCertificateTestCase:
-    def test_create_tls_certificate(self):
-        self.gmp.create_tls_certificate('foo', 'c1', comment='bar')
-
-        self.connection.send.has_been_called_with(
-            '<create_tls_certificate>'
-            '<comment>bar</comment>'
-            '<name>foo</name>'
-            '<certificate>c1</certificate>'
-            '</create_tls_certificate>'
-        )
-
-    def test_missing_certificate(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.create_tls_certificate(name='foo', certificate='')
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.create_tls_certificate(name='foo', certificate=None)
-
+class GmpCreateHostTestMixin:
     def test_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_tls_certificate(name=None, certificate='c1')
+            self.gmp.create_host(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_tls_certificate(name='', certificate='c1')
+            self.gmp.create_host(name='')
+
+    def test_create_host_asset(self):
+        self.gmp.create_host(name='ipsum')
+
+        self.connection.send.has_been_called_with(
+            '<create_asset>'
+            '<asset>'
+            '<type>host</type>'
+            '<name>ipsum</name>'
+            '</asset>'
+            '</create_asset>'
+        )
+
+    def test_create_asset_with_comment(self):
+        self.gmp.create_host(name='ipsum', comment='lorem')
+
+        self.connection.send.has_been_called_with(
+            '<create_asset>'
+            '<asset>'
+            '<type>host</type>'
+            '<name>ipsum</name>'
+            '<comment>lorem</comment>'
+            '</asset>'
+            '</create_asset>'
+        )

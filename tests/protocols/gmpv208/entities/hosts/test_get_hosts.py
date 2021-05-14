@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,21 +16,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
 
+class GmpGetHostsTestMixin:
+    def test_get_hosts(self):
+        self.gmp.get_hosts()
 
-class GmpGetTlsCertificateTestCase:
-    def test_get_tls_certificate(self):
-        self.gmp.get_tls_certificate('t1')
+        self.connection.send.has_been_called_with('<get_assets type="host"/>')
+
+    def test_get_hosts_with_filter(self):
+        self.gmp.get_hosts(filter='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<get_tls_certificates tls_certificate_id="t1" '
-            'include_certificate_data="1" details="1"/>'
+            '<get_assets type="host" filter="foo=bar"/>'
         )
 
-    def test_fail_without_tls_certificate_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.get_tls_certificate(None)
+    def test_get_hosts_with_filter_id(self):
+        self.gmp.get_hosts(filter_id='f1')
 
-        with self.assertRaises(GvmError):
-            self.gmp.get_tls_certificate('')
+        self.connection.send.has_been_called_with(
+            '<get_assets type="host" filt_id="f1"/>'
+        )
