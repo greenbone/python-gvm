@@ -38,6 +38,17 @@ from gvm.protocols.gmpv208.entities.alerts import (
     get_alert_method_from_string,
 )
 from gvm.protocols.gmpv208.entities.audits import AuditsMixin
+from gvm.protocols.gmpv208.entities.credentials import (
+    CredentialFormat,
+    CredentialsMixin,
+    CredentialType,
+    get_credential_format_from_string,
+    get_credential_type_from_string,
+    get_snmp_auth_algorithm_from_string,
+    get_snmp_privacy_algorithm_from_string,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+)
 from gvm.protocols.gmpv208.entities.hosts import (
     HostsMixin,
 )
@@ -88,6 +99,7 @@ class Gmp(
     GmpV208Mixin,
     AlertsMixin,
     AuditsMixin,
+    CredentialsMixin,
     HostsMixin,
     NotesMixin,
     OperatingSystemsMixin,

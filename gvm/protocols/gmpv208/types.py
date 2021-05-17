@@ -26,31 +26,23 @@ from gvm.errors import InvalidArgument
 
 __all__ = [
     "AggregateStatistic",
-    "CredentialFormat",
-    "CredentialType",
     "EntityType",
     "FeedType",
     "FilterType",
     "HostsOrdering",
     "PermissionSubjectType",
     "ScannerType",
-    "SnmpAuthAlgorithm",
-    "SnmpPrivacyAlgorithm",
     "SortOrder",
     "TicketStatus",
     "TimeUnit",
     "UserAuthType",
     "get_aggregate_statistic_from_string",
-    "get_credential_format_from_string",
-    "get_credential_type_from_string",
     "get_entity_type_from_string",
     "get_feed_type_from_string",
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
     "get_permission_subject_type_from_string",
     "get_scanner_type_from_string",
-    "get_snmp_auth_algorithm_from_string",
-    "get_snmp_privacy_algorithm_from_string",
     "get_sort_order_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
@@ -338,34 +330,6 @@ def get_sort_order_from_string(
         ) from None
 
 
-class CredentialType(Enum):
-    """Enum for credential types"""
-
-    CLIENT_CERTIFICATE = 'cc'
-    SNMP = 'snmp'
-    USERNAME_PASSWORD = 'up'
-    USERNAME_SSH_KEY = 'usk'
-    SMIME_CERTIFICATE = 'smime'
-    PGP_ENCRYPTION_KEY = 'pgp'
-    PASSWORD_ONLY = 'pw'
-
-
-def get_credential_type_from_string(
-    credential_type: Optional[str],
-) -> Optional[CredentialType]:
-    """Convert a credential type string into a CredentialType instance"""
-    if not credential_type:
-        return None
-
-    try:
-        return CredentialType[credential_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='credential_type',
-            function=get_credential_type_from_string.__name__,
-        ) from None
-
-
 class TicketStatus(Enum):
     """Enum for ticket status"""
 
@@ -387,31 +351,6 @@ def get_ticket_status_from_string(
         raise InvalidArgument(
             argument='ticket_status',
             function=get_ticket_status_from_string.__name__,
-        ) from None
-
-
-class CredentialFormat(Enum):
-    """Enum for credential format"""
-
-    KEY = 'key'
-    RPM = 'rpm'
-    DEB = 'deb'
-    EXE = 'exe'
-    PEM = 'pem'
-
-
-def get_credential_format_from_string(
-    credential_format: Optional[str],
-) -> Optional[CredentialFormat]:
-    if not credential_format:
-        return None
-
-    try:
-        return CredentialFormat[credential_format.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='credential_format',
-            function=get_credential_format_from_string.__name__,
         ) from None
 
 
@@ -469,54 +408,6 @@ def get_permission_subject_type_from_string(
         raise InvalidArgument(
             argument='subject_type',
             function=get_permission_subject_type_from_string.__name__,
-        ) from None
-
-
-class SnmpAuthAlgorithm(Enum):
-    """Enum for SNMP auth algorithm"""
-
-    SHA1 = 'sha1'
-    MD5 = 'md5'
-
-
-def get_snmp_auth_algorithm_from_string(
-    algorithm: Optional[str],
-) -> Optional[SnmpAuthAlgorithm]:
-    """Convert a SNMP auth algorithm string into a SnmpAuthAlgorithm instance"""
-    if not algorithm:
-        return None
-
-    try:
-        return SnmpAuthAlgorithm[algorithm.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='algorithm',
-            function=get_snmp_auth_algorithm_from_string.__name__,
-        ) from None
-
-
-class SnmpPrivacyAlgorithm(Enum):
-    """Enum for SNMP privacy algorithm"""
-
-    AES = 'aes'
-    DES = 'des'
-
-
-def get_snmp_privacy_algorithm_from_string(
-    algorithm: Optional[str],
-) -> Optional[SnmpPrivacyAlgorithm]:
-    """Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
-    instance
-    """
-    if not algorithm:
-        return None
-
-    try:
-        return SnmpPrivacyAlgorithm[algorithm.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='algorithm',
-            function=get_snmp_privacy_algorithm_from_string.__name__,
         ) from None
 
 
