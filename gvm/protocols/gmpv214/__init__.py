@@ -37,6 +37,7 @@ from gvm.protocols.gmpv208.entities.alerts import (
     get_alert_event_from_string,
     get_alert_method_from_string,
 )
+from gvm.protocols.gmpv208.entities.audits import AuditsMixin
 from gvm.protocols.gmpv208.entities.hosts import HostsMixin
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
@@ -88,6 +89,7 @@ class Gmp(
     GmpV214Mixin,
     GmpV208Mixin,
     AlertsMixin,
+    AuditsMixin,
     HostsMixin,
     PortListMixin,
     NotesMixin,
