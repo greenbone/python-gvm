@@ -16,6 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+# pylint:  disable=redefined-builtin
+
 from collections.abc import Mapping
 from numbers import Integral
 from typing import Any, List, Optional
@@ -24,7 +26,7 @@ from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208.types import (
     HostsOrdering,
 )  # if I use latest, I get circular import :/
-from gvm.utils import is_list_like, to_bool, to_comma_list
+from gvm.utils import add_filter, is_list_like, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 
@@ -207,6 +209,66 @@ class TasksMixin:
         cmd.set_attribute("task_id", task_id)
         cmd.set_attribute("ultimate", to_bool(ultimate))
 
+        return self._send_xml_command(cmd)
+
+    def get_tasks(
+        self,
+        *,
+        filter: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        schedules_only: Optional[bool] = None,
+    ) -> Any:
+        """Request a list of tasks
+
+        Arguments:
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan tasks instead
+            details: Whether to include full task details
+            schedules_only: Whether to only include id, name and schedule
+                details
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_tasks")
+        cmd.set_attribute("usage_type", "scan")
+
+        add_filter(cmd, filter, filter_id)
+
+        if trash is not None:
+            cmd.set_attribute("trash", to_bool(trash))
+
+        if details is not None:
+            cmd.set_attribute("details", to_bool(details))
+
+        if schedules_only is not None:
+            cmd.set_attribute("schedules_only", to_bool(schedules_only))
+
+        return self._send_xml_command(cmd)
+
+    def get_task(self, task_id: str) -> Any:
+        """Request a single task
+
+        Arguments:
+            task_id: UUID of an existing task
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not task_id:
+            raise RequiredArgument(
+                function=self.get_task.__name__, argument='task_id'
+            )
+
+        cmd = XmlCommand("get_tasks")
+        cmd.set_attribute("task_id", task_id)
+        cmd.set_attribute("usage_type", "scan")
+
+        # for single entity always request all details
+        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
     def modify_task(

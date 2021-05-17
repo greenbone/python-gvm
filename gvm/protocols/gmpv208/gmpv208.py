@@ -1059,37 +1059,6 @@ class GmpV208Mixin(GvmProtocol):
         """
         return self.__get_config(policy_id, UsageType.POLICY, tasks=audits)
 
-    def get_tasks(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
-    ) -> Any:
-        """Request a list of tasks
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get the trashcan tasks instead
-            details: Whether to include full task details
-            schedules_only: Whether to only include id, name and schedule
-                details
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self.__get_tasks(
-            UsageType.SCAN,
-            filter=filter,
-            filter_id=filter_id,
-            trash=trash,
-            details=details,
-            schedules_only=schedules_only,
-        )
-
     def get_audits(
         self,
         *,
@@ -1120,17 +1089,6 @@ class GmpV208Mixin(GvmProtocol):
             details=details,
             schedules_only=schedules_only,
         )
-
-    def get_task(self, task_id: str) -> Any:
-        """Request a single task
-
-        Arguments:
-            task_id: UUID of an existing task
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self.__get_task(task_id, UsageType.SCAN)
 
     def get_audit(self, audit_id: str) -> Any:
         """Request a single audit
