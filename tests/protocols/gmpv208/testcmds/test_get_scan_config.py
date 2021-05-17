@@ -19,24 +19,25 @@
 from gvm.errors import GvmError
 
 
-class GmpDeleteConfigTestCase:
-    def test_delete(self):
-        self.gmp.delete_config('a1')
+class GmpGetConfigTestCase:
+    def test_get_scan_config(self):
+        self.gmp.get_scan_config('a1')
 
         self.connection.send.has_been_called_with(
-            '<delete_config config_id="a1" ultimate="0"/>'
+            '<get_configs config_id="a1" usage_type="scan" details="1"/>'
         )
 
-    def test_delete_ultimate(self):
-        self.gmp.delete_config('a1', ultimate=True)
+    def test_get_scan_config_with_tasks(self):
+        self.gmp.get_scan_config('a1', tasks=True)
 
         self.connection.send.has_been_called_with(
-            '<delete_config config_id="a1" ultimate="1"/>'
+            '<get_configs config_id="a1" usage_type="scan" '
+            'tasks="1" details="1"/>'
         )
 
-    def test_missing_config_id(self):
+    def test_get_scan_config_fail_without_scan_config_id(self):
         with self.assertRaises(GvmError):
-            self.gmp.delete_config(None)
+            self.gmp.get_scan_config(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.delete_config('')
+            self.gmp.get_scan_config('')

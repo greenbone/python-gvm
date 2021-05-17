@@ -19,36 +19,40 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyConfigSetCommentTestCase:
-    def test_modify_config_set_comment(self):
-        self.gmp.modify_config_set_comment('c1')
+class GmpCreateConfigTestCase:
+    def test_create_scan_config(self):
+        self.gmp.create_scan_config('a1', 'foo')
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            '<comment></comment>'
-            '</modify_config>'
+            '<create_config>'
+            '<copy>a1</copy>'
+            '<name>foo</name>'
+            '<usage_type>scan</usage_type>'
+            '</create_config>'
         )
 
-        self.gmp.modify_config_set_comment('c1', 'foo')
+    def test_create_scan_config_with_comment(self):
+        self.gmp.create_scan_config('a1', 'foo', comment='comment')
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            '<comment>foo</comment>'
-            '</modify_config>'
+            '<create_config>'
+            '<comment>comment</comment>'
+            '<copy>a1</copy>'
+            '<name>foo</name>'
+            '<usage_type>scan</usage_type>'
+            '</create_config>'
         )
 
-        self.gmp.modify_config_set_comment('c1', comment=None)
-
-        self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">' '<comment/>' '</modify_config>'
-        )
-
-    def test_modify_config_set_comment_missing_config_id(self):
+    def test_create_scan_config_missing_scan_config_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_comment(config_id=None)
+            self.gmp.create_scan_config(config_id='', name='foo')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_comment('')
+            self.gmp.create_scan_config(config_id=None, name='foo')
+
+    def test_create_scan_config_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_scan_config(config_id='c1', name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_comment(config_id='')
+            self.gmp.create_scan_config(config_id='c1', name='')

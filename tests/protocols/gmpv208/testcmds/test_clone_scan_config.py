@@ -16,28 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from gvm.errors import RequiredArgument
 
 
-class GmpGetConfigTestCase:
-    def test_get_config(self):
-        self.gmp.get_config('a1')
-
-        self.connection.send.has_been_called_with(
-            '<get_configs config_id="a1" usage_type="scan" details="1"/>'
-        )
-
-    def test_get_config_with_tasks(self):
-        self.gmp.get_config('a1', tasks=True)
+class GmpCloneConfigTestCase:
+    def test_clone(self):
+        self.gmp.clone_scan_config('a1')
 
         self.connection.send.has_been_called_with(
-            '<get_configs config_id="a1" usage_type="scan" '
-            'tasks="1" details="1"/>'
+            '<create_config><copy>a1</copy></create_config>'
         )
 
-    def test_fail_without_config_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.get_config(None)
+    def test_missing_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_scan_config('')
 
-        with self.assertRaises(GvmError):
-            self.gmp.get_config('')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_scan_config(None)

@@ -198,7 +198,7 @@ class PoliciesMixin:
             value: New value for the preference. None to delete the preference
                 and to use the default instead.
         """
-        self.modify_config_set_nvt_preference(
+        self.modify_scan_config_set_nvt_preference(
             config_id=policy_id, name=name, nvt_oid=nvt_oid, value=value
         )
 
@@ -209,7 +209,7 @@ class PoliciesMixin:
             config_id: UUID of policy to modify.
             name: New name for the config.
         """
-        self.modify_config_set_name(config_id=policy_id, name=name)
+        self.modify_scan_config_set_name(config_id=policy_id, name=name)
 
     def modify_policy_set_comment(
         self, policy_id: str, comment: Optional[str] = ""
@@ -220,7 +220,9 @@ class PoliciesMixin:
             policy_id: UUID of policy to modify.
             comment: Comment to set on a config. Default: ''
         """
-        self.modify_config_set_comment(config_id=policy_id, comment=comment)
+        self.modify_scan_config_set_comment(
+            config_id=policy_id, comment=comment
+        )
 
     def modify_policy_set_scanner_preference(
         self, policy_id: str, name: str, *, value: Optional[str] = None
@@ -234,7 +236,7 @@ class PoliciesMixin:
                 and to use the default instead.
 
         """
-        self.modify_config_set_scanner_preference(
+        self.modify_scan_config_set_scanner_preference(
             config_id=policy_id, name=name, value=value
         )
 
@@ -251,7 +253,7 @@ class PoliciesMixin:
             family: Name of the NVT family to include NVTs from
             nvt_oids: List of NVTs to select for the family.
         """
-        self.modify_config_set_nvt_selection(
+        self.modify_scan_config_set_nvt_selection(
             config_id=policy_id, family=family, nvt_oids=nvt_oids
         )
 
@@ -275,7 +277,7 @@ class PoliciesMixin:
             auto_add_new_families: Whether new families should be added to the
                 policy automatically. Default: True.
         """
-        self.modify_config_set_family_selection(
+        self.modify_scan_config_set_family_selection(
             config_id=policy_id,
             families=families,
             auto_add_new_families=auto_add_new_families,

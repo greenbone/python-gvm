@@ -32,8 +32,8 @@ class GmpImportConfigTestCase:
         '</get_configs_response>'
     )
 
-    def test_import_config(self):
-        self.gmp.import_config(self.CONFIG_XML_STRING)
+    def test_import_scan_config(self):
+        self.gmp.import_scan_config(self.CONFIG_XML_STRING)
 
         self.connection.send.has_been_called_with(
             '<create_config>'
@@ -41,13 +41,13 @@ class GmpImportConfigTestCase:
             '</create_config>'.format(config=self.CONFIG_XML_STRING)
         )
 
-    def test_import_missing_config_xml(self):
+    def test_import_missing_scan_config_xml(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.import_config(None)
+            self.gmp.import_scan_config(None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.import_config('')
+            self.gmp.import_scan_config('')
 
     def test_import_invalid_xml(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.import_config('abcdef')
+            self.gmp.import_scan_config('abcdef')

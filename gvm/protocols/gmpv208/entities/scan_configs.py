@@ -29,7 +29,7 @@ from gvm.xml import XmlCommand
 
 
 class ScanConfigsMixin:
-    def clone_config(self, config_id: str) -> Any:
+    def clone_scan_config(self, config_id: str) -> Any:
         """Clone a scan config from an existing one
 
         Arguments:
@@ -40,14 +40,14 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.clone_config.__name__, argument='config_id'
+                function=self.clone_scan_config.__name__, argument='config_id'
             )
 
         cmd = XmlCommand("create_config")
         cmd.add_element("copy", config_id)
         return self._send_xml_command(cmd)
 
-    def create_config(
+    def create_scan_config(
         self, config_id: str, name: str, *, comment: Optional[str] = None
     ) -> Any:
         """Create a new scan config
@@ -62,12 +62,12 @@ class ScanConfigsMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_config.__name__, argument='name'
+                function=self.create_scan_config.__name__, argument='name'
             )
 
         if not config_id:
             raise RequiredArgument(
-                function=self.create_config.__name__, argument='config_id'
+                function=self.create_scan_config.__name__, argument='config_id'
             )
 
         cmd = XmlCommand("create_config")
@@ -78,7 +78,7 @@ class ScanConfigsMixin:
         cmd.add_element("usage_type", "scan")
         return self._send_xml_command(cmd)
 
-    def create_config_from_osp_scanner(
+    def create_scan_config_from_osp_scanner(
         self, scanner_id: str, name: str, *, comment: Optional[str] = None
     ) -> Any:
         """Create a new scan config from an ospd scanner.
@@ -96,13 +96,13 @@ class ScanConfigsMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_config_from_osp_scanner.__name__,
+                function=self.create_scan_config_from_osp_scanner.__name__,
                 argument='name',
             )
 
         if not scanner_id:
             raise RequiredArgument(
-                function=self.create_config_from_osp_scanner.__name__,
+                function=self.create_scan_config_from_osp_scanner.__name__,
                 argument='scanner_id',
             )
 
@@ -114,7 +114,7 @@ class ScanConfigsMixin:
         cmd.add_element("usage_type", "scan")
         return self._send_xml_command(cmd)
 
-    def delete_config(
+    def delete_scan_config(
         self, config_id: str, *, ultimate: Optional[bool] = False
     ) -> Any:
         """Deletes an existing config
@@ -125,7 +125,7 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.delete_config.__name__, argument='config_id'
+                function=self.delete_scan_config.__name__, argument='config_id'
             )
 
         cmd = XmlCommand("delete_config")
@@ -134,7 +134,7 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
-    def get_configs(
+    def get_scan_configs(
         self,
         *,
         filter: Optional[str] = None,
@@ -184,7 +184,7 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
-    def get_config(
+    def get_scan_config(
         self, config_id: str, *, tasks: Optional[bool] = None
     ) -> Any:
         """Request a single scan config
@@ -198,7 +198,7 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.get_config.__name__, argument='config_id'
+                function=self.get_scan_config.__name__, argument='config_id'
             )
 
         cmd = XmlCommand("get_configs")
@@ -214,7 +214,7 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
-    def import_config(self, config: str) -> Any:
+    def import_scan_config(self, config: str) -> Any:
         """Import a scan config from XML
 
         Arguments:
@@ -226,7 +226,7 @@ class ScanConfigsMixin:
         """
         if not config:
             raise RequiredArgument(
-                function=self.import_config.__name__, argument='config'
+                function=self.import_scan_config.__name__, argument='config'
             )
 
         cmd = XmlCommand("create_config")
@@ -235,12 +235,12 @@ class ScanConfigsMixin:
             cmd.append_xml_str(config)
         except XMLSyntaxError as e:
             raise InvalidArgument(
-                function=self.import_config.__name__, argument='config'
+                function=self.import_scan_config.__name__, argument='config'
             ) from e
 
         return self._send_xml_command(cmd)
 
-    def modify_config_set_nvt_preference(
+    def modify_scan_config_set_nvt_preference(
         self,
         config_id: str,
         name: str,
@@ -259,19 +259,19 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_preference.__name__,
+                function=self.modify_scan_config_set_nvt_preference.__name__,
                 argument='config_id',
             )
 
         if not nvt_oid:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_preference.__name__,
+                function=self.modify_scan_config_set_nvt_preference.__name__,
                 argument='nvt_oid',
             )
 
         if not name:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_preference.__name__,
+                function=self.modify_scan_config_set_nvt_preference.__name__,
                 argument='name',
             )
 
@@ -288,7 +288,7 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
-    def modify_config_set_name(self, config_id: str, name: str) -> Any:
+    def modify_scan_config_set_name(self, config_id: str, name: str) -> Any:
         """Modifies the name of an existing scan config
 
         Arguments:
@@ -297,13 +297,14 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_name.__name__,
+                function=self.modify_scan_config_set_name.__name__,
                 argument='config_id',
             )
 
         if not name:
             raise RequiredArgument(
-                function=self.modify_config_set_name.__name__, argument='name'
+                function=self.modify_scan_config_set_name.__name__,
+                argument='name',
             )
 
         cmd = XmlCommand("modify_config")
@@ -313,7 +314,7 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
-    def modify_config_set_comment(
+    def modify_scan_config_set_comment(
         self, config_id: str, comment: Optional[str] = ""
     ) -> Any:
         """Modifies the comment of an existing scan config
@@ -324,7 +325,7 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_comment.__name__,
+                function=self.modify_scan_config_set_comment.__name__,
                 argument='config_id argument',
             )
 
@@ -335,7 +336,7 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
-    def modify_config_set_scanner_preference(
+    def modify_scan_config_set_scanner_preference(
         self, config_id: str, name: str, *, value: Optional[str] = None
     ) -> Any:
         """Modifies the scanner preferences of an existing scan config
@@ -349,13 +350,17 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_scanner_preference.__name__,
+                function=(
+                    self.modify_scan_config_set_scanner_preference.__name__
+                ),
                 argument='config_id',
             )
 
         if not name:
             raise RequiredArgument(
-                function=self.modify_config_set_scanner_preference.__name__,
+                function=(
+                    self.modify_scan_config_set_scanner_preference.__name__
+                ),
                 argument='name argument',
             )
 
@@ -371,7 +376,7 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
-    def modify_config_set_nvt_selection(
+    def modify_scan_config_set_nvt_selection(
         self, config_id: str, family: str, nvt_oids: List[str]
     ) -> Any:
         """Modifies the selected nvts of an existing scan config
@@ -386,19 +391,19 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_selection.__name__,
+                function=self.modify_scan_config_set_nvt_selection.__name__,
                 argument='config_id',
             )
 
         if not family:
             raise RequiredArgument(
-                function=self.modify_config_set_nvt_selection.__name__,
+                function=self.modify_scan_config_set_nvt_selection.__name__,
                 argument='family argument',
             )
 
         if not is_list_like(nvt_oids):
             raise InvalidArgumentType(
-                function=self.modify_config_set_nvt_selection.__name__,
+                function=self.modify_scan_config_set_nvt_selection.__name__,
                 argument='nvt_oids',
                 arg_type='list',
             )
@@ -414,7 +419,7 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
-    def modify_config_set_family_selection(
+    def modify_scan_config_set_family_selection(
         self,
         config_id: str,
         families: List[Tuple[str, bool, bool]],
@@ -435,13 +440,13 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config_set_family_selection.__name__,
+                function=self.modify_scan_config_set_family_selection.__name__,
                 argument='config_id',
             )
 
         if not is_list_like(families):
             raise InvalidArgumentType(
-                function=self.modify_config_set_family_selection.__name__,
+                function=self.modify_scan_config_set_family_selection.__name__,
                 argument='families',
                 arg_type='list',
             )
@@ -465,7 +470,9 @@ class ScanConfigsMixin:
                 family[2], bool
             ):
                 raise InvalidArgumentType(
-                    function=self.modify_config_set_family_selection.__name__,
+                    function=(
+                        self.modify_scan_config_set_family_selection.__name__
+                    ),
                     argument='families',
                     arg_type='[tuple(str, bool, bool)]',
                 )
@@ -475,7 +482,7 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
-    def modify_config(
+    def modify_scan_config(
         self, config_id: str, selection: Optional[str] = None, **kwargs
     ) -> Any:
         """Modifies an existing scan config.
@@ -498,16 +505,16 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.modify_config.__name__,
+                function=self.modify_scan_config.__name__,
                 argument='config_id argument',
             )
 
         if selection is None:
             deprecation(
                 "Using modify_config to update the comment of a scan config is"
-                "deprecated. Please use modify_config_set_comment instead."
+                "deprecated. Please use modify_scan_config_set_comment instead."
             )
-            return self.modify_config_set_comment(
+            return self.modify_scan_config_set_comment(
                 config_id, kwargs.get("comment")
             )
 
@@ -525,38 +532,42 @@ class ScanConfigsMixin:
 
         if selection == "nvt_pref":
             deprecation(
-                "Using modify_config to update a nvt preference of a scan "
+                "Using modify_scan_config to update a nvt preference of a scan "
                 "config is deprecated. Please use "
-                "modify_config_set_nvt_preference instead."
+                "modify_scan_config_set_nvt_preference instead."
             )
-            return self.modify_config_set_nvt_preference(config_id, **kwargs)
+            return self.modify_scan_config_set_nvt_preference(
+                config_id, **kwargs
+            )
 
         if selection == "scan_pref":
             deprecation(
-                "Using modify_config to update a scanner preference of a "
+                "Using modify_scan_config to update a scanner preference of a "
                 "scan config is deprecated. Please use "
-                "modify_config_set_scanner_preference instead."
+                "modify_scan_config_set_scanner_preference instead."
             )
-            return self.modify_config_set_scanner_preference(
+            return self.modify_scan_config_set_scanner_preference(
                 config_id, **kwargs
             )
 
         if selection == "nvt_selection":
             deprecation(
-                "Using modify_config to update a nvt selection of a "
+                "Using modify_scan_config to update a nvt selection of a "
                 "scan config is deprecated. Please use "
-                "modify_config_set_nvt_selection instead."
+                "modify_scan_config_set_nvt_selection instead."
             )
-            return self.modify_config_set_nvt_selection(config_id, **kwargs)
+            return self.modify_scan_config_set_nvt_selection(
+                config_id, **kwargs
+            )
 
         deprecation(
-            "Using modify_config to update a family selection of a "
+            "Using modify_scan_config to update a family selection of a "
             "scan config is deprecated. Please use "
-            "modify_config_set_family_selection instead."
+            "modify_scan_config_set_family_selection instead."
         )
-        return self.modify_config_set_family_selection(config_id, **kwargs)
+        return self.modify_scan_config_set_family_selection(config_id, **kwargs)
 
-    def sync_config(self) -> Any:
+    def sync_scan_config(self) -> Any:
         """Request an OSP config synchronization with scanner
 
         Returns:

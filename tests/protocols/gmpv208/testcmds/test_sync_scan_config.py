@@ -18,7 +18,7 @@
 
 
 class GmpSyncConfigCommandTestCase:
-    def test_sync_config(self):
-        self.gmp.sync_config()
+    def test_sync_scan_config(self):
+        self.gmp.sync_scan_config()
 
         self.connection.send.has_been_called_with('<sync_config/>')
