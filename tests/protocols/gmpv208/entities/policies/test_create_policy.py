@@ -16,27 +16,35 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from gvm.errors import RequiredArgument
 
 
-class GmpDeletePolicyTestCase:
-    def test_delete(self):
-        self.gmp.delete_policy('a1')
-
-        self.connection.send.has_been_called_with(
-            '<delete_config config_id="a1" ultimate="0"/>'
-        )
-
-    def test_delete_ultimate(self):
-        self.gmp.delete_policy('a1', ultimate=True)
+class GmpCreatePolicyTestMixin:
+    def test_create_policy(self):
+        self.gmp.create_policy('foo')
 
         self.connection.send.has_been_called_with(
-            '<delete_config config_id="a1" ultimate="1"/>'
+            '<create_config>'
+            '<copy>085569ce-73ed-11df-83c3-002264764cea</copy>'
+            '<name>foo</name>'
+            '<usage_type>policy</usage_type>'
+            '</create_config>'
         )
 
-    def test_missing_config_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_policy(None)
+    def test_create_with_policy_id(self):
+        self.gmp.create_policy('foo', policy_id='p1')
 
-        with self.assertRaises(GvmError):
-            self.gmp.delete_policy('')
+        self.connection.send.has_been_called_with(
+            '<create_config>'
+            '<copy>p1</copy>'
+            '<name>foo</name>'
+            '<usage_type>policy</usage_type>'
+            '</create_config>'
+        )
+
+    def test_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_policy(policy_id='c1', name=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_policy(policy_id='c1', name='')

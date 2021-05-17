@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
 
-class GmpModifyPolicySetFamilySelectionTestCase:
+class GmpModifyPolicySetFamilySelectionTestMixin:
     def test_modify_policy_set_family_selection(self):
         self.gmp.modify_policy_set_family_selection(
             policy_id='c1', families=[('foo', True, True)]

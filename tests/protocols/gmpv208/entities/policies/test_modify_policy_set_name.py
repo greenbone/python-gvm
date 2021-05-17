@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyPolicySetNameTestCase:
+class GmpModifyPolicySetNameTestMixin:
     def test_modify_policy_set_name(self):
         self.gmp.modify_policy_set_name('c1', 'foo')
 

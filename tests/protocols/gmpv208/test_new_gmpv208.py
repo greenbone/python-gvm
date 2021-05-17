@@ -62,72 +62,14 @@ class Gmpv208GetFeedTestCase(GmpGetFeedTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208ClonePolicyTestCase(GmpClonePolicyTestCase, Gmpv208TestCase):
-
-    pass
-
-
 class Gmpv208CreateCredentialTestCase(
     GmpCreateCredentialTestCase, Gmpv208TestCase
 ):
     pass
 
 
-class Gmpv208CreatePolicyTestCase(GmpCreatePolicyTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeletePolicyTestCase(GmpDeletePolicyTestCase, Gmpv208TestCase):
-
-    pass
-
-
-class Gmpv208GetPoliciesTestCase(GmpGetPoliciesTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetPolicyTestCase(GmpGetPolicyTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208ModifyCredentialTestCase(
     GmpModifyCredentialTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208ModifyPolicySetCommentTestCase(
-    GmpModifyPolicySetCommentTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208ModifyPolicySetNameTestCase(
-    GmpModifyPolicySetNameTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208ModifyPolicySetFamilySelectionTestCase(
-    GmpModifyPolicySetFamilySelectionTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208ModifyPolicySetNvtPreferenceTestCase(
-    GmpModifyPolicySetNvtPreferenceTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208ModifyPolicySetNvtSelectionTestCase(
-    GmpModifyPolicySetNvtSelectionTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208ModifyPolicySetScannerPreferenceTestCase(
-    GmpModifyPolicySetScannerPreferenceTestCase, Gmpv208TestCase
 ):
     pass
 

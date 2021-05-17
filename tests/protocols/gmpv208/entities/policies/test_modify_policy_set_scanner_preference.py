@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyPolicySetScannerPreferenceTestCase:
+class GmpModifyPolicySetScannerPreferenceTestMixin:
     def test_modify_policy_set_scanner_pref(self):
         self.gmp.modify_policy_set_scanner_preference(
             policy_id='c1', name='foo'

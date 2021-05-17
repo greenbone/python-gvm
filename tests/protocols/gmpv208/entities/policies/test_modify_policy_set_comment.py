@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyPolicySetCommentTestCase:
+class GmpModifyPolicySetCommentTestMixin:
     def test_modify_policy_set_comment(self):
         self.gmp.modify_policy_set_comment('c1')
 

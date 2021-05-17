@@ -16,20 +16,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from gvm.errors import GvmError
 
 
-class GmpClonePolicyTestCase:
-    def test_clone(self):
-        self.gmp.clone_policy('a1')
+class GmpGetPolicyTestMixin:
+    def test_get_policy(self):
+        self.gmp.get_policy('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_config><copy>a1</copy></create_config>'
+            '<get_configs config_id="a1" usage_type="policy" details="1"/>'
         )
 
-    def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_policy('')
+    def test_get_policy_with_audits(self):
+        self.gmp.get_policy('a1', audits=True)
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_policy(None)
+        self.connection.send.has_been_called_with(
+            '<get_configs config_id="a1" '
+            'usage_type="policy" tasks="1" details="1"/>'
+        )
+
+    def test_fail_without_policy_id(self):
+        with self.assertRaises(GvmError):
+            self.gmp.get_policy(None)
+
+        with self.assertRaises(GvmError):
+            self.gmp.get_policy('')

@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyPolicySetNvtPreferenceTestCase:
+class GmpModifyPolicySetNvtPreferenceTestMixin:
     def test_modify_policy_set_nvt_pref(self):
         self.gmp.modify_policy_set_nvt_preference(
             policy_id='c1', nvt_oid='o1', name='foo'

@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetPoliciesTestCase:
+class GmpGetPoliciesTestMixin:
     def test_get_policies_simple(self):
         self.gmp.get_policies()
 
