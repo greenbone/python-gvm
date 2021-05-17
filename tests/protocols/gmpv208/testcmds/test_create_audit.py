@@ -15,7 +15,6 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-import warnings
 
 from collections import OrderedDict
 
@@ -106,31 +105,6 @@ class GmpCreateAuditCommandTestCase:
 
     def test_create_audit_single_alert(self):
         # pylint: disable=invalid-name
-        with warnings.catch_warnings(record=True) as w:
-            warnings.simplefilter("always")
-
-            self.gmp.create_audit(
-                name='foo',
-                policy_id='c1',
-                target_id='t1',
-                scanner_id='s1',
-                alert_ids='a1',  # will be removed in future
-            )
-
-            self.assertEqual(len(w), 1)
-            self.assertTrue(issubclass(w[0].category, DeprecationWarning))
-
-        self.connection.send.has_been_called_with(
-            '<create_task>'
-            '<name>foo</name>'
-            '<usage_type>audit</usage_type>'
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            '<alert id="a1"/>'
-            '</create_task>'
-        )
-
         self.gmp.create_audit(
             name='foo',
             policy_id='c1',
