@@ -20,7 +20,7 @@ import warnings
 from gvm.errors import RequiredArgument, InvalidArgument
 
 
-class GmpModifyConfigTestCase:
+class GmpModifyScanConfigTestMixin:
     def test_modify_scan_config_invalid_selection(self):
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_scan_config(config_id='c1', selection='foo')

@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetConfigsTestCase:
+class GmpGetScanConfigsTestMixin:
     def test_get_scan_configs_simple(self):
         self.gmp.get_scan_configs()
 

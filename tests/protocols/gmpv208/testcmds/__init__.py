@@ -27,19 +27,11 @@ from .test_modify_permission import GmpModifyPermissionTestCase
 from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_tag import GmpModifyTagTestCase
 from .test_get_feed import GmpGetFeedTestCase
-from .test_clone_scan_config import GmpCloneConfigTestCase
 from .test_clone_policy import GmpClonePolicyTestCase
-from .test_create_scan_config import GmpCreateConfigTestCase
-from .test_create_scan_config_from_osp_scanner import (
-    GmpCreateConfigFromOSPScannerTestCase,
-)
 from .test_create_credential import GmpCreateCredentialTestCase
 from .test_create_policy import GmpCreatePolicyTestCase
 from .test_create_scanner import GmpCreateScannerTestCase
-from .test_delete_scan_config import GmpDeleteConfigTestCase
 from .test_delete_policy import GmpDeletePolicyTestCase
-from .test_get_scan_config import GmpGetConfigTestCase
-from .test_get_scan_configs import GmpGetConfigsTestCase
 from .test_get_policies import GmpGetPoliciesTestCase
 from .test_get_policy import GmpGetPolicyTestCase
 from .test_modify_credential import GmpModifyCredentialTestCase
@@ -123,33 +115,14 @@ from .test_get_user import GmpGetUserTestCase
 from .test_get_users import GmpGetUsersTestCase
 from .test_get_version import GmpGetVersionCommandTestCase
 from .test_help import GmpHelpTestCase
-from .test_import_scan_config import GmpImportConfigTestCase
 from .test_import_report_format import GmpImportReportFormatTestCase
 from .test_modify_auth import GmpModifyAuthTestCase
-from .test_modify_scan_config import GmpModifyConfigTestCase
-from .test_modify_scan_config_set_comment import (
-    GmpModifyConfigSetCommentTestCase,
-)
-from .test_modify_scan_config_set_name import GmpModifyConfigSetNameTestCase
-from .test_modify_scan_config_set_family_selection import (
-    GmpModifyConfigSetFamilySelectionTestCase,
-)
-from .test_modify_scan_config_set_nvt_preference import (
-    GmpModifyConfigSetNvtPreferenceTestCase,
-)
-from .test_modify_scan_config_set_nvt_selection import (
-    GmpModifyConfigSetNvtSelectionTestCase,
-)
-from .test_modify_scan_config_set_scanner_preference import (
-    GmpModifyConfigSetScannerPreferenceTestCase,
-)
 from .test_modify_group import GmpModifyGroupTestCase
 from .test_modify_role import GmpModifyRoleTestCase
 from .test_modify_setting import GmpModifySettingTestCase
 from .test_modify_user import GmpModifyUserTestCase
 from .test_restore import GmpRestoreTestCase
 from .test_sync_cert import GmpSyncCertCommandTestCase
-from .test_sync_scan_config import GmpSyncConfigCommandTestCase
 from .test_sync_feed import GmpSyncFeedCommandTestCase
 from .test_sync_scap import GmpSyncScapCommandTestCase
 from .test_verify_report_format import GmpVerifyReportFormatTestCase

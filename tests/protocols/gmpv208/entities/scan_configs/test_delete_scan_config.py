@@ -16,20 +16,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from gvm.errors import GvmError
 
 
-class GmpCloneConfigTestCase:
-    def test_clone(self):
-        self.gmp.clone_scan_config('a1')
+class GmpDeleteScanConfigTestMixin:
+    def test_delete_scan_config(self):
+        self.gmp.delete_scan_config('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_config><copy>a1</copy></create_config>'
+            '<delete_config config_id="a1" ultimate="0"/>'
         )
 
-    def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_scan_config('')
+    def test_delete_scan_config_ultimate(self):
+        self.gmp.delete_scan_config('a1', ultimate=True)
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_scan_config(None)
+        self.connection.send.has_been_called_with(
+            '<delete_config config_id="a1" ultimate="1"/>'
+        )
+
+    def test_delete_scan_config_missing_scan_config_id(self):
+        with self.assertRaises(GvmError):
+            self.gmp.delete_scan_config(None)
+
+        with self.assertRaises(GvmError):
+            self.gmp.delete_scan_config('')

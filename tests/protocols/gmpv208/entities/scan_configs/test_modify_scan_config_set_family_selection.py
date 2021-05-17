@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument, InvalidArgumentType, InvalidArgument
 
 
-class GmpModifyConfigSetFamilySelectionTestCase:
+class GmpModifyScanConfigSetFamilySelectionTestMixin:
     def test_modify_scan_config_set_family_selection(self):
         self.gmp.modify_scan_config_set_family_selection(
             config_id='c1', families=[('foo', True, True)]

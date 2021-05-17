@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpGetConfigTestCase:
+class GmpGetScanConfigTestMixin:
     def test_get_scan_config(self):
         self.gmp.get_scan_config('a1')
 

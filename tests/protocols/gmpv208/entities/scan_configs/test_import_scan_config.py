@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument, InvalidArgument
 
 
-class GmpImportConfigTestCase:
+class GmpImportScanConfigTestMixin:
 
     CONFIG_XML_STRING = (
         '<get_configs_response status="200" status_text="OK">'

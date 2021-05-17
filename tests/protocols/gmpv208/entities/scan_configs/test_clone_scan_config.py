@@ -16,9 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gvm.errors import RequiredArgument
 
-class GmpSyncConfigCommandTestCase:
-    def test_sync_scan_config(self):
-        self.gmp.sync_scan_config()
 
-        self.connection.send.has_been_called_with('<sync_config/>')
+class GmpCloneScanConfigTestMixin:
+    def test_clone(self):
+        self.gmp.clone_scan_config('a1')
+
+        self.connection.send.has_been_called_with(
+            '<create_config><copy>a1</copy></create_config>'
+        )
+
+    def test_missing_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_scan_config('')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_scan_config(None)

@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
 
-class GmpModifyConfigSetNvtSelectionTestCase:
+class GmpModifyScanConfigSetNvtSelectionTestMixin:
     def test_modify_scan_config_set_nvt_selection(self):
         self.gmp.modify_scan_config_set_nvt_selection(
             config_id='c1', family='foo', nvt_oids=['o1']
