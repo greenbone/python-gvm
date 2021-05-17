@@ -202,3 +202,21 @@ class GmpModifyAlertTestMixin:
             '<event>Task run status changed</event>'
             '</modify_alert>'
         )
+
+    def test_modify_missing_method_for_ticket_received(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=None,
+            )
+
+    def test_modify_missing_condition_for_ticket_received(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                condition=None,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.EMAIL,
+            )
