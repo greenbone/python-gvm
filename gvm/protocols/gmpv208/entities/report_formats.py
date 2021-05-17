@@ -53,12 +53,10 @@ def get_report_format_id_from_string(
     if not report_format:
         return None
 
-    report_format = report_format.lower()
-
     try:
         return ReportFormatType[report_format.replace(' ', '_').upper()]
     except KeyError:
         raise InvalidArgument(
             argument='report_format',
             function=get_report_format_id_from_string.__name__,
-        ) from None
+        ) from KeyError
