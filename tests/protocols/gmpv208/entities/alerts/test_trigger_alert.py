@@ -23,7 +23,7 @@ from gvm.protocols.gmpv208.entities.report_formats import (
 )
 
 
-class GmpTriggerAlertTestCase:
+class GmpTriggerAlertTestMixin:
     def test_trigger_alert_without_alert_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.trigger_alert(alert_id=None, report_id='r1')

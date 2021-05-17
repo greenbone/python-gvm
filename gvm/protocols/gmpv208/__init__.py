@@ -28,6 +28,15 @@ Module for communication with gvmd in
 from typing import Any, Callable, Optional
 
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
+from gvm.protocols.gmpv208.entities.alerts import (
+    AlertCondition,
+    AlertEvent,
+    AlertMethod,
+    AlertsMixin,
+    get_alert_condition_from_string,
+    get_alert_event_from_string,
+    get_alert_method_from_string,
+)
 from gvm.protocols.gmpv208.entities.port_lists import (
     get_port_range_type_from_string,
     PortListMixin,
@@ -67,6 +76,7 @@ PROTOCOL_VERSION = (20, 8)
 
 class Gmp(
     GmpV208Mixin,
+    AlertsMixin,
     NotesMixin,
     OverridesMixin,
     PortListMixin,

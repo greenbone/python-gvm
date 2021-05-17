@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import AlertCondition, AlertEvent, AlertMethod
 
 
-class GmpCreateAlertTestCase:
+class GmpCreateAlertTestMixin:
     def test_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_alert(

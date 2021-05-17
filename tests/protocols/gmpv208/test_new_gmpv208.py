@@ -107,14 +107,6 @@ class Gmpv208CreatePolicyTestCase(GmpCreatePolicyTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208ModifyAlertTestCase(GmpModifyAlertTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CreateAlertTestCase(GmpCreateAlertTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CreateTLSCertificateTestCase(
     GmpCreateTLSCertificateTestCase, Gmpv208TestCase
 ):
@@ -297,11 +289,6 @@ class Gmpv208AuthenticateTestCase(GmpAuthenticateTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneAlertTestCase(GmpCloneAlertTestCase, Gmpv208TestCase):
-
-    pass
-
-
 class Gmpv208CloneReportFormatTestCase(
     GmpCloneReportFormatTestCase, Gmpv208TestCase
 ):
@@ -369,10 +356,6 @@ class Gmpv208CreateUserTestCase(GmpCreateUserTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208DeleteAlertTestCase(GmpDeleteAlertTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208DeleteAssetTestCase(GmpDeleteAssetTestCase, Gmpv208TestCase):
     pass
 
@@ -432,14 +415,6 @@ class Gmpv208DescribeAuthCommandTestCase(
 class Gmpv208EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208GetAlertTestCase(GmpGetAlertTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetAlertsTestCase(GmpGetAlertsTestCase, Gmpv208TestCase):
     pass
 
 
@@ -660,14 +635,6 @@ class Gmpv208SyncFeedCommandTestCase(
 class Gmpv208SyncScapCommandTestCase(
     GmpSyncScapCommandTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208TestAlertTestCase(GmpTestAlertTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208TriggerAlertTestCase(GmpTriggerAlertTestCase, Gmpv208TestCase):
     pass
 
 

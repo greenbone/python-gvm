@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetAlertsTestCase:
+class GmpGetAlertsTestMixin:
     def test_get_alerts(self):
         self.gmp.get_alerts()
 

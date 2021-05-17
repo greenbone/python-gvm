@@ -16,18 +16,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from gvm.errors import RequiredArgument
 
 
-class GmpTestAlertTestCase:
-    def test_test_alert(self):
-        self.gmp.test_alert('a1')
+class GmpDeleteAlertTestMixin:
+    def test_delete(self):
+        self.gmp.delete_alert('a1')
 
-        self.connection.send.has_been_called_with('<test_alert alert_id="a1"/>')
+        self.connection.send.has_been_called_with(
+            '<delete_alert alert_id="a1" ultimate="0"/>'
+        )
 
-    def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.test_alert(None)
+    def test_delete_ultimate(self):
+        self.gmp.delete_alert('a1', ultimate=True)
 
-        with self.assertRaises(GvmError):
-            self.gmp.test_alert('')
+        self.connection.send.has_been_called_with(
+            '<delete_alert alert_id="a1" ultimate="1"/>'
+        )
+
+    def test_missing_alert_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.delete_alert(None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.delete_alert('')

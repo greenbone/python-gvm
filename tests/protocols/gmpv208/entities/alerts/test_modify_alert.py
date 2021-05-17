@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import AlertCondition, AlertEvent, AlertMethod
 
 
-class GmpModifyAlertTestCase:
+class GmpModifyAlertTestMixin:
     def test_modify_alert(self):
         self.gmp.modify_alert(alert_id='a1')
 
@@ -69,22 +69,25 @@ class GmpModifyAlertTestCase:
             self.gmp.modify_alert(
                 alert_id='a1',
                 condition='bar',
-                event='Task run status changed',
-                method='Email',
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+                method=AlertMethod.SCP,
             )
 
     def test_modify_alert_invalid_event(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
-                alert_id='a1', condition='Always', event='lorem', method='Email'
+                alert_id='a1',
+                condition=AlertCondition.ALWAYS,
+                event='lorem',
+                method=AlertMethod.SCP,
             )
 
     def test_modify_alert_invalid_method(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
                 alert_id='a1',
-                condition='Always',
-                event='Task run status changed',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
                 method='ipsum',
             )
 
@@ -202,3 +205,21 @@ class GmpModifyAlertTestCase:
             '<event>Task run status changed</event>'
             '</modify_alert>'
         )
+
+    def test_modify_missing_method_for_ticket_received(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=None,
+            )
+
+    def test_modify_missing_condition_for_ticket_received(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_alert(
+                alert_id='a1',
+                condition=None,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.EMAIL,
+            )
