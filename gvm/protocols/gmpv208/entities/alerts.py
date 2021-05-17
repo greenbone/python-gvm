@@ -202,8 +202,6 @@ def _check_event(
             raise InvalidArgument(
                 "Invalid method {} for event {}".format(method.name, event.name)
             )
-    elif event is not None:
-        raise InvalidArgument('Invalid event "{}"'.format(event.name))
 
 
 class AlertsMixin:
