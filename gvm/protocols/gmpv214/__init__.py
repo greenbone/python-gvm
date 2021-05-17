@@ -62,7 +62,7 @@ from gvm.protocols.gmpv208.entities.severity import (
     get_severity_level_from_string,
 )
 
-from gvm.protocols.gmpv208.entities.tasks import TaskMixin
+from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
 
@@ -96,7 +96,7 @@ class Gmp(
     ReportsMixin,
     ResultsMixin,
     TargetsMixin,
-    TaskMixin,
+    TasksMixin,
     TLSCertificateMixin,
     SecInfoMixin,
 ):

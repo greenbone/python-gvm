@@ -70,7 +70,7 @@ from gvm.protocols.gmpv208.entities.targets import (
     get_alive_test_from_string,
     TargetsMixin,
 )
-from gvm.protocols.gmpv208.entities.tasks import TaskMixin
+from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.connections import GvmConnection
 
@@ -92,7 +92,7 @@ class Gmp(
     ReportsMixin,
     ResultsMixin,
     TargetsMixin,
-    TaskMixin,
+    TasksMixin,
     TLSCertificateMixin,
     SecInfoMixin,
 ):

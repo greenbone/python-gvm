@@ -28,7 +28,7 @@ from gvm.utils import is_list_like, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 
-class TaskMixin:
+class TasksMixin:
     def clone_task(self, task_id: str) -> Any:
         """Clone an existing task
 
