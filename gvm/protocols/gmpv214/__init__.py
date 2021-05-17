@@ -42,6 +42,7 @@ from gvm.protocols.gmpv208.entities.hosts import HostsMixin
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
 )
+from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
 from gvm.protocols.gmpv208.entities.port_lists import (
     PortListMixin,
     PortRangeType,
@@ -91,6 +92,7 @@ class Gmp(
     AlertsMixin,
     AuditsMixin,
     HostsMixin,
+    PoliciesMixin,
     PortListMixin,
     NotesMixin,
     OperatingSystemsMixin,
