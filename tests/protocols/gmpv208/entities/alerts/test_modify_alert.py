@@ -69,22 +69,25 @@ class GmpModifyAlertTestMixin:
             self.gmp.modify_alert(
                 alert_id='a1',
                 condition='bar',
-                event='Task run status changed',
-                method='Email',
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
+                method=AlertMethod.SCP,
             )
 
     def test_modify_alert_invalid_event(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
-                alert_id='a1', condition='Always', event='lorem', method='Email'
+                alert_id='a1',
+                condition=AlertCondition.ALWAYS,
+                event='lorem',
+                method=AlertMethod.SCP,
             )
 
     def test_modify_alert_invalid_method(self):
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_alert(
                 alert_id='a1',
-                condition='Always',
-                event='Task run status changed',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TASK_RUN_STATUS_CHANGED,
                 method='ipsum',
             )
 
