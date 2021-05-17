@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,17 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv214TestCase
-from .testcmds import *  # pylint: disable=wildcard-import
-
-
-class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv214TestCase):
-    pass
+from .test_clone_note import GmpCloneNoteTestMixin
+from .test_create_note import GmpCreateNoteTestMixin
+from .test_delete_note import GmpDeleteNoteTestMixin
+from .test_get_note import GmpGetNoteTestMixin
+from .test_get_notes import GmpGetNotesTestMixin
+from .test_modify_note import GmpModifyNoteTestMixin

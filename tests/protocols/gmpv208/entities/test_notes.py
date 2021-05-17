@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,17 +16,36 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv214TestCase
-from .testcmds import *  # pylint: disable=wildcard-import
+from ...gmpv208 import Gmpv208TestCase
+from .notes import (
+    GmpCloneNoteTestMixin,
+    GmpCreateNoteTestMixin,
+    GmpDeleteNoteTestMixin,
+    GmpGetNoteTestMixin,
+    GmpGetNotesTestMixin,
+    GmpModifyNoteTestMixin,
+)
 
 
-class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
+class Gmpv208DeleteNoteTestCase(GmpDeleteNoteTestMixin, Gmpv208TestCase):
     pass
 
 
-class Gmpv214CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv214TestCase):
+class Gmpv208GetNoteTestCase(GmpGetNoteTestMixin, Gmpv208TestCase):
     pass
 
 
-class Gmpv214ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv214TestCase):
+class Gmpv208GetNotesTestCase(GmpGetNotesTestMixin, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208CloneNoteTestCase(GmpCloneNoteTestMixin, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208CreateNoteTestCase(GmpCreateNoteTestMixin, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208ModifyNoteTestCase(GmpModifyNoteTestMixin, Gmpv208TestCase):
     pass

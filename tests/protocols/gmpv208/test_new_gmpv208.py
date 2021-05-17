@@ -327,14 +327,6 @@ class Gmpv208CloneGroupTestCase(GmpCloneGroupTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneNoteTestCase(GmpCloneNoteTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CloneOverrideTestCase(GmpCloneOverrideTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208ClonePermissionTestCase(
     GmpClonePermissionTestCase, Gmpv208TestCase
 ):
@@ -369,14 +361,6 @@ class Gmpv208CreateHostTestCase(GmpCreateHostTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateNoteTestCase(GmpCreateNoteTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CreateOverrideTestCase(GmpCreateOverrideTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv208TestCase):
     pass
 
@@ -404,14 +388,6 @@ class Gmpv208DeleteFilterTestCase(GmpDeleteFilterTestCase, Gmpv208TestCase):
 
 
 class Gmpv208DeleteGroupTestCase(GmpDeleteGroupTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeleteNoteTestCase(GmpDeleteNoteTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeleteOverrideTestCase(GmpDeleteOverrideTestCase, Gmpv208TestCase):
     pass
 
 
@@ -500,22 +476,6 @@ class Gmpv208GetGroupTestCase(GmpGetGroupTestCase, Gmpv208TestCase):
 
 
 class Gmpv208GetGroupsTestCase(GmpGetGroupsTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetNoteTestCase(GmpGetNoteTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetNotesTestCase(GmpGetNotesTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetOverrideTestCase(GmpGetOverrideTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetOverridesTestCase(GmpGetOverridesTestCase, Gmpv208TestCase):
     pass
 
 
@@ -660,14 +620,6 @@ class Gmpv208ModifyConfigSetScannerPreferenceTestCase(
 
 
 class Gmpv208ModifyGroupTestCase(GmpModifyGroupTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyNoteTestCase(GmpModifyNoteTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyOverrideTestCase(GmpModifyOverrideTestCase, Gmpv208TestCase):
     pass
 
 

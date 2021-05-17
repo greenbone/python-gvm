@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetOverridesTestCase:
+class GmpGetOverridesTestMixin:
     def test_get_overrides(self):
         self.gmp.get_overrides()
 

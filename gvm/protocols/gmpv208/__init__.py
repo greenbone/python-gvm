@@ -34,6 +34,8 @@ from gvm.protocols.gmpv208.entities.port_lists import (
     PortRangeType,
 )
 from gvm.protocols.gmpv208.entities.reports import ReportsMixin
+from gvm.protocols.gmpv208.entities.notes import NotesMixin
+from gvm.protocols.gmpv208.entities.overrides import OverridesMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
@@ -44,10 +46,14 @@ from gvm.protocols.gmpv208.entities.secinfo import (
     InfoType,
     SecInfoMixin,
 )
+from gvm.protocols.gmpv208.entities.severity import (
+    SeverityLevel,
+    get_severity_level_from_string,
+)
 from gvm.protocols.gmpv208.entities.targets import (
     AliveTest,
     get_alive_test_from_string,
-    TargetMixin,
+    TargetsMixin,
 )
 from gvm.protocols.gmpv208.entities.tasks import TaskMixin
 from gvm.connections import GvmConnection
@@ -61,10 +67,12 @@ PROTOCOL_VERSION = (20, 8)
 
 class Gmp(
     GmpV208Mixin,
+    NotesMixin,
+    OverridesMixin,
     PortListMixin,
     ReportsMixin,
     ResultsMixin,
-    TargetMixin,
+    TargetsMixin,
     TaskMixin,
     SecInfoMixin,
 ):

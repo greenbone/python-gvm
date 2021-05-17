@@ -18,10 +18,6 @@
 
 # pylint: disable=no-member
 
-from .test_create_note import GmpCreateNoteTestCase
-from .test_create_override import GmpCreateOverrideTestCase
-from .test_modify_note import GmpModifyNoteTestCase
-from .test_modify_override import GmpModifyOverrideTestCase
 from .test_modify_user import GmpModifyUserTestCase
 from .test_create_scanner import GmpCreateScannerTestCase
 from .test_modify_scanner import GmpModifyScannerTestCase

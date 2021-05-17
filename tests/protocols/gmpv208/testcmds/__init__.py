@@ -92,8 +92,6 @@ from .test_clone_report_format import GmpCloneReportFormatTestCase
 from .test_clone_credential import GmpCloneCredentialTestCase
 from .test_clone_filter import GmpCloneFilterTestCase
 from .test_clone_group import GmpCloneGroupTestCase
-from .test_clone_note import GmpCloneNoteTestCase
-from .test_clone_override import GmpCloneOverrideTestCase
 from .test_clone_permission import GmpClonePermissionTestCase
 from .test_clone_role import GmpCloneRoleTestCase
 from .test_clone_scanner import GmpCloneScannerTestCase
@@ -102,8 +100,6 @@ from .test_clone_tag import GmpCloneTagTestCase
 from .test_clone_user import GmpCloneUserTestCase
 from .test_create_group import GmpCreateGroupTestCase
 from .test_create_host import GmpCreateHostTestCase
-from .test_create_note import GmpCreateNoteTestCase
-from .test_create_override import GmpCreateOverrideTestCase
 from .test_create_role import GmpCreateRoleTestCase
 from .test_create_user import GmpCreateUserTestCase
 from .test_delete_alert import GmpDeleteAlertTestCase
@@ -111,8 +107,6 @@ from .test_delete_asset import GmpDeleteAssetTestCase
 from .test_delete_credential import GmpDeleteCredentialTestCase
 from .test_delete_filter import GmpDeleteFilterTestCase
 from .test_delete_group import GmpDeleteGroupTestCase
-from .test_delete_note import GmpDeleteNoteTestCase
-from .test_delete_override import GmpDeleteOverrideTestCase
 from .test_delete_permission import GmpDeletePermissionTestCase
 from .test_delete_report_format import GmpDeleteReportFormatTestCase
 from .test_delete_role import GmpDeleteRoleTestCase
@@ -133,11 +127,6 @@ from .test_get_filter import GmpGetFilterTestCase
 from .test_get_filters import GmpGetFiltersTestCase
 from .test_get_group import GmpGetGroupTestCase
 from .test_get_groups import GmpGetGroupsTestCase
-
-from .test_get_note import GmpGetNoteTestCase
-from .test_get_notes import GmpGetNotesTestCase
-from .test_get_override import GmpGetOverrideTestCase
-from .test_get_overrides import GmpGetOverridesTestCase
 from .test_get_permission import GmpGetPermissionTestCase
 from .test_get_permissions import GmpGetPermissionsTestCase
 from .test_get_preference import GmpGetPreferenceTestCase
@@ -179,8 +168,6 @@ from .test_modify_config_set_scanner_preference import (
     GmpModifyConfigSetScannerPreferenceTestCase,
 )
 from .test_modify_group import GmpModifyGroupTestCase
-from .test_modify_note import GmpModifyNoteTestCase
-from .test_modify_override import GmpModifyOverrideTestCase
 from .test_modify_role import GmpModifyRoleTestCase
 from .test_modify_setting import GmpModifySettingTestCase
 from .test_modify_user import GmpModifyUserTestCase

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
-
-
-class GmpCloneOverrideTestCase:
-    def test_clone(self):
-        self.gmp.clone_override('a1')
-
-        self.connection.send.has_been_called_with(
-            '<create_override>' '<copy>a1</copy>' '</create_override>'
-        )
-
-    def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_override('')
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_override(None)
+from .test_create_override import GmpCreateOverrideTestMixin
+from .test_modify_override import GmpModifyOverrideTestMixin

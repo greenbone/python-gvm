@@ -19,23 +19,17 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetNoteTestCase:
-    def test_get_note(self):
-        self.gmp.get_note('n1')
+class GmpCloneOverrideTestMixin:
+    def test_clone(self):
+        self.gmp.clone_override('a1')
 
         self.connection.send.has_been_called_with(
-            '<get_notes note_id="n1" details="1"/>'
+            '<create_override>' '<copy>a1</copy>' '</create_override>'
         )
 
-        self.gmp.get_note(note_id='n1')
-
-        self.connection.send.has_been_called_with(
-            '<get_notes note_id="n1" details="1"/>'
-        )
-
-    def test_get_note_missing_note_id(self):
+    def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_note(note_id=None)
+            self.gmp.clone_override('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_note('')
+            self.gmp.clone_override(None)

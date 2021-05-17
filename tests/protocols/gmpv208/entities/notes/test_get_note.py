@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,17 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv214TestCase
-from .testcmds import *  # pylint: disable=wildcard-import
+from gvm.errors import RequiredArgument
 
 
-class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
-    pass
+class GmpGetNoteTestMixin:
+    def test_get_note(self):
+        self.gmp.get_note('n1')
 
+        self.connection.send.has_been_called_with(
+            '<get_notes note_id="n1" details="1"/>'
+        )
 
-class Gmpv214CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv214TestCase):
-    pass
+        self.gmp.get_note(note_id='n1')
 
+        self.connection.send.has_been_called_with(
+            '<get_notes note_id="n1" details="1"/>'
+        )
 
-class Gmpv214ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv214TestCase):
-    pass
+    def test_get_note_missing_note_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_note(note_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_note('')

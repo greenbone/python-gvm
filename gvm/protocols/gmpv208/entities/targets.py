@@ -68,7 +68,7 @@ def get_alive_test_from_string(
         ) from None
 
 
-class TargetMixin:
+class TargetsMixin:
     def clone_target(self, target_id: str) -> Any:
         """Clone an existing target
 

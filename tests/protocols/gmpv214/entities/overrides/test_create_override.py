@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2020-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -18,12 +18,12 @@
 
 from decimal import Decimal
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
+from gvm.errors import RequiredArgument
 
-from gvm.protocols.gmpv208 import SeverityLevel
+from gvm.protocols.gmpv214 import SeverityLevel
 
 
-class GmpCreateOverrideTestCase:
+class GmpCreateOverrideTestMixin:
     def test_create_override(self):
         self.gmp.create_override('foo', nvt_oid='oid1')
 
@@ -184,16 +184,8 @@ class GmpCreateOverrideTestCase:
             '<create_override>'
             '<text>foo</text>'
             '<nvt oid="oid1"/>'
-            '<threat>High</threat>'
             '</create_override>'
         )
-
-    def test_create_override_invalid_threat(self):
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_override('foo', nvt_oid='oid1', threat='')
-
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_override('foo', nvt_oid='oid1', threat='foo')
 
     def test_create_override_with_new_threat(self):
         self.gmp.create_override(
@@ -204,16 +196,8 @@ class GmpCreateOverrideTestCase:
             '<create_override>'
             '<text>foo</text>'
             '<nvt oid="oid1"/>'
-            '<new_threat>High</new_threat>'
             '</create_override>'
         )
-
-    def test_create_override_invalid_new_threat(self):
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_override('foo', nvt_oid='oid1', new_threat='')
-
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_override('foo', nvt_oid='oid1', new_threat='foo')
 
     def test_create_override_with_days_active(self):
         self.gmp.create_override('foo', nvt_oid='oid1', days_active=0)

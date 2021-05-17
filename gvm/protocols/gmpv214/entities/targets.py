@@ -23,14 +23,14 @@ from typing import Any, List, Optional
 from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208.entities.targets import (
     get_alive_test_from_string,
-    TargetMixin as Gmp208TargetMixin,
+    TargetsMixin as Gmp208TargetsMixin,
     AliveTest,
 )
 from gvm.utils import to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 
-class TargetMixin(Gmp208TargetMixin):
+class TargetsMixin(Gmp208TargetsMixin):
     def create_target(
         self,
         name: str,

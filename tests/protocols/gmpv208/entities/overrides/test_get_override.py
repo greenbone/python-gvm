@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetOverrideTestCase:
+class GmpGetOverrideTestMixin:
     def test_get_override(self):
         self.gmp.get_override('o1')
 
