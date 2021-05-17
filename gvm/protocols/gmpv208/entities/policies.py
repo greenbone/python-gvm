@@ -62,6 +62,8 @@ class PoliciesMixin:
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+        cmd = XmlCommand("create_config")
+
         if policy_id is None:
             policy_id = _EMPTY_POLICY_ID
         if not name:
@@ -69,12 +71,6 @@ class PoliciesMixin:
                 function=self.create_policy.__name__, argument='name'
             )
 
-        if not policy_id:
-            raise RequiredArgument(
-                function=self.create_policy.__name__, argument='policy_id'
-            )
-
-        cmd = XmlCommand("create_config")
         if comment is not None:
             cmd.add_element("comment", comment)
         cmd.add_element("copy", policy_id)
