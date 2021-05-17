@@ -62,22 +62,12 @@ class Gmpv208GetFeedTestCase(GmpGetFeedTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneAuditTestCase(GmpCloneAuditTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CloneConfigTestCase(GmpCloneConfigTestCase, Gmpv208TestCase):
     pass
 
 
 class Gmpv208ClonePolicyTestCase(GmpClonePolicyTestCase, Gmpv208TestCase):
 
-    pass
-
-
-class Gmpv208CreateAuditCommandTestCase(
-    GmpCreateAuditCommandTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -101,24 +91,11 @@ class Gmpv208CreatePolicyTestCase(GmpCreatePolicyTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208DeleteAuditTestCase(GmpDeleteAuditTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208DeleteConfigTestCase(GmpDeleteConfigTestCase, Gmpv208TestCase):
     pass
 
 
 class Gmpv208DeletePolicyTestCase(GmpDeletePolicyTestCase, Gmpv208TestCase):
-
-    pass
-
-
-class Gmpv208GetAuditTestCase(GmpGetAuditTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetAuditsTestCase(GmpGetAuditsTestCase, Gmpv208TestCase):
 
     pass
 
@@ -136,12 +113,6 @@ class Gmpv208GetPoliciesTestCase(GmpGetPoliciesTestCase, Gmpv208TestCase):
 
 
 class Gmpv208GetPolicyTestCase(GmpGetPolicyTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyAuditCommandTestCase(
-    GmpModifyAuditCommandTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -196,18 +167,6 @@ class Gmpv208CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv208TestCase):
 
 
 class Gmpv208ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ResumeAuditTestCase(GmpResumeAuditTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208StartAuditTestCase(GmpStartAuditTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208StopAuditTestCase(GmpStopAuditTestCase, Gmpv208TestCase):
     pass
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,12 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
-
-
-class GmpCloneAuditTestCase:
-    def test_clone(self):
-        self.gmp.clone_audit('a1')
-
-        self.connection.send.has_been_called_with(
-            '<create_task><copy>a1</copy></create_task>'
-        )
-
-    def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_audit('')
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_audit(None)
+from .test_clone_audit import GmpCloneAuditTestMixin
+from .test_create_audit import GmpCreateAuditTestMixin
+from .test_delete_audit import GmpDeleteAuditTestMixin
+from .test_get_audit import GmpGetAuditTestMixin
+from .test_get_audits import GmpGetAuditsTestMixin
+from .test_modify_audit import GmpModifyAuditTestMixin
+from .test_resume_audit import GmpResumeAuditTestMixin
+from .test_start_audit import GmpStartAuditTestMixin
+from .test_stop_audit import GmpStopAuditTestMixin

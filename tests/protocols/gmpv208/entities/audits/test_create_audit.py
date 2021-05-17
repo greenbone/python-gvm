@@ -23,7 +23,7 @@ from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import HostsOrdering
 
 
-class GmpCreateAuditCommandTestCase:
+class GmpCreateAuditTestMixin:
     def test_create_task(self):
         self.gmp.create_audit(
             name='foo', policy_id='c1', target_id='t1', scanner_id='s1'

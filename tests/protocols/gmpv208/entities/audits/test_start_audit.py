@@ -19,15 +19,15 @@
 from gvm.errors import GvmError
 
 
-class GmpResumeAuditTestCase:
-    def test_resume_audit(self):
-        self.gmp.resume_audit('a1')
+class GmpStartAuditTestMixin:
+    def test_start_audit(self):
+        self.gmp.start_audit('a1')
 
-        self.connection.send.has_been_called_with('<resume_task task_id="a1"/>')
+        self.connection.send.has_been_called_with('<start_task task_id="a1"/>')
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):
-            self.gmp.resume_audit(None)
+            self.gmp.start_audit(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.resume_audit('')
+            self.gmp.start_audit('')
