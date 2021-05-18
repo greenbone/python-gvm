@@ -24,7 +24,7 @@ from gvm.protocols.gmpv208 import (
 )
 
 
-class GmpCreateCredentialTestCase:
+class GmpCreateCredentialTestMixin:
     def test_create_up_credential_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(

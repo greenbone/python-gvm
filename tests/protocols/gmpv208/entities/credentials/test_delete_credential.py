@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpDeleteCredentialTestCase:
+class GmpDeleteCredentialTestMixin:
     def test_delete(self):
         self.gmp.delete_credential('a1')
 
