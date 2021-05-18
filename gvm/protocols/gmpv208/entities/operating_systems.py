@@ -96,7 +96,7 @@ class OperatingSystemsMixin:
         return self._send_xml_command(cmd)
 
     def modify_operating_system(
-        self, operating_system_id: str, *, comment: Optional[str] = ""
+        self, operating_system_id: str, *, comment: Optional[str] = None
     ) -> Any:
         """Modifies an existing operating_system.
 
