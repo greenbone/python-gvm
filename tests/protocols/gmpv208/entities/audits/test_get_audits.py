@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetAuditsTestCase:
+class GmpGetAuditsTestMixin:
     def test_get_audits_simple(self):
         self.gmp.get_audits()
 

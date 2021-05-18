@@ -37,6 +37,7 @@ from gvm.protocols.gmpv208.entities.alerts import (
     get_alert_event_from_string,
     get_alert_method_from_string,
 )
+from gvm.protocols.gmpv208.entities.audits import AuditsMixin
 from gvm.protocols.gmpv208.entities.hosts import HostsMixin
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
@@ -62,7 +63,7 @@ from gvm.protocols.gmpv208.entities.severity import (
     get_severity_level_from_string,
 )
 
-from gvm.protocols.gmpv208.entities.tasks import TaskMixin
+from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
 
@@ -88,6 +89,7 @@ class Gmp(
     GmpV214Mixin,
     GmpV208Mixin,
     AlertsMixin,
+    AuditsMixin,
     HostsMixin,
     PortListMixin,
     NotesMixin,
@@ -96,7 +98,7 @@ class Gmp(
     ReportsMixin,
     ResultsMixin,
     TargetsMixin,
-    TaskMixin,
+    TasksMixin,
     TLSCertificateMixin,
     SecInfoMixin,
 ):

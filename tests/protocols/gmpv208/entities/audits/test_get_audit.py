@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpGetAuditTestCase:
+class GmpGetAuditTestMixin:
     def test_get_audit(self):
         self.gmp.get_audit('a1')
 

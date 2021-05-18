@@ -16,18 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from gvm.errors import RequiredArgument
 
 
-class GmpStopAuditTestCase:
-    def test_stop_audit(self):
-        self.gmp.stop_audit('a1')
+class GmpCloneAuditTestMixin:
+    def test_clone(self):
+        self.gmp.clone_audit('a1')
 
-        self.connection.send.has_been_called_with('<stop_task task_id="a1"/>')
+        self.connection.send.has_been_called_with(
+            '<create_task><copy>a1</copy></create_task>'
+        )
 
     def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.stop_audit(None)
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_audit('')
 
-        with self.assertRaises(GvmError):
-            self.gmp.stop_audit('')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_audit(None)

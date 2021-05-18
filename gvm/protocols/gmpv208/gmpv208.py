@@ -25,7 +25,6 @@ Module for communication with gvmd in
 .. _Greenbone Management Protocol version 20.08:
     https://docs.greenbone.net/API/GMP/gmp-20.08.html
 """
-import collections
 import logging
 from numbers import Integral
 
@@ -143,61 +142,6 @@ class GmpV208Mixin(GvmProtocol):
             self._authenticated = True
 
         return self._transform(response)
-
-    def create_audit(
-        self,
-        name: str,
-        policy_id: str,
-        target_id: str,
-        scanner_id: str,
-        *,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[str] = None,
-        alert_ids: Optional[List[str]] = None,
-        comment: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None,
-    ) -> Any:
-        """Create a new audit task
-
-        Arguments:
-            name: Name of the new audit
-            policy_id: UUID of policy to use by the audit
-            target_id: UUID of target to be scanned
-            scanner_id: UUID of scanner to use for scanning the target
-            comment: Comment for the audit
-            alterable: Whether the task should be alterable
-            alert_ids: List of UUIDs for alerts to be applied to the audit
-            hosts_ordering: The order hosts are scanned in
-            schedule_id: UUID of a schedule when the audit should be run.
-            schedule_periods: A limit to the number of times the audit will be
-                scheduled, or 0 for no limit
-            observers: List of names or ids of users which should be allowed to
-                observe this audit
-            preferences: Name/Value pairs of scanner preferences.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-
-        return self.__create_task(
-            name=name,
-            config_id=policy_id,
-            target_id=target_id,
-            scanner_id=scanner_id,
-            usage_type=UsageType.AUDIT,
-            function=self.create_audit.__name__,
-            alterable=alterable,
-            hosts_ordering=hosts_ordering,
-            schedule_id=schedule_id,
-            alert_ids=alert_ids,
-            comment=comment,
-            schedule_periods=schedule_periods,
-            observers=observers,
-            preferences=preferences,
-        )
 
     def create_config(
         self, config_id: str, name: str, *, comment: Optional[str] = None
@@ -600,60 +544,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attributes(kwargs)
 
         return self._send_xml_command(cmd)
-
-    def modify_audit(
-        self,
-        audit_id: str,
-        *,
-        name: Optional[str] = None,
-        policy_id: Optional[str] = None,
-        target_id: Optional[str] = None,
-        scanner_id: Optional[str] = None,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        comment: Optional[str] = None,
-        alert_ids: Optional[List[str]] = None,
-        observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None,
-    ) -> Any:
-        """Modifies an existing task.
-
-        Arguments:
-            audit_id: UUID of audit to modify.
-            name: The name of the audit.
-            policy_id: UUID of policy to use by the audit
-            target_id: UUID of target to be scanned
-            scanner_id: UUID of scanner to use for scanning the target
-            comment: The comment on the audit.
-            alert_ids: List of UUIDs for alerts to be applied to the audit
-            hosts_ordering: The order hosts are scanned in
-            schedule_id: UUID of a schedule when the audit should be run.
-            schedule_periods: A limit to the number of times the audit will be
-                scheduled, or 0 for no limit.
-            observers: List of names or ids of users which should be allowed to
-                observe this audit
-            preferences: Name/Value pairs of scanner preferences.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        self.modify_task(
-            task_id=audit_id,
-            name=name,
-            config_id=policy_id,
-            target_id=target_id,
-            scanner_id=scanner_id,
-            alterable=alterable,
-            hosts_ordering=hosts_ordering,
-            schedule_id=schedule_id,
-            schedule_periods=schedule_periods,
-            comment=comment,
-            alert_ids=alert_ids,
-            observers=observers,
-            preferences=preferences,
-        )
 
     def modify_permission(
         self,
@@ -1059,108 +949,6 @@ class GmpV208Mixin(GvmProtocol):
         """
         return self.__get_config(policy_id, UsageType.POLICY, tasks=audits)
 
-    def get_tasks(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
-    ) -> Any:
-        """Request a list of tasks
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get the trashcan tasks instead
-            details: Whether to include full task details
-            schedules_only: Whether to only include id, name and schedule
-                details
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self.__get_tasks(
-            UsageType.SCAN,
-            filter=filter,
-            filter_id=filter_id,
-            trash=trash,
-            details=details,
-            schedules_only=schedules_only,
-        )
-
-    def get_audits(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
-    ) -> Any:
-        """Request a list of audits
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get the trashcan audits instead
-            details: Whether to include full audit details
-            schedules_only: Whether to only include id, name and schedule
-                details
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self.__get_tasks(
-            UsageType.AUDIT,
-            filter=filter,
-            filter_id=filter_id,
-            trash=trash,
-            details=details,
-            schedules_only=schedules_only,
-        )
-
-    def get_task(self, task_id: str) -> Any:
-        """Request a single task
-
-        Arguments:
-            task_id: UUID of an existing task
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self.__get_task(task_id, UsageType.SCAN)
-
-    def get_audit(self, audit_id: str) -> Any:
-        """Request a single audit
-
-        Arguments:
-            audit_id: UUID of an existing audit
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self.__get_task(audit_id, UsageType.AUDIT)
-
-    def clone_audit(self, audit_id: str) -> Any:
-        """Clone an existing audit
-
-        Arguments:
-            audit_id: UUID of existing audit to clone from
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not audit_id:
-            raise RequiredArgument(
-                function=self.clone_audit.__name__, argument='audit_id'
-            )
-
-        cmd = XmlCommand("create_task")
-        cmd.add_element("copy", audit_id)
-        return self._send_xml_command(cmd)
-
     def clone_policy(self, policy_id: str) -> Any:
         """Clone a policy from an existing one
 
@@ -1179,31 +967,10 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", policy_id)
         return self._send_xml_command(cmd)
 
-    def delete_audit(
-        self, audit_id: str, *, ultimate: Optional[bool] = False
-    ) -> Any:
-        """Deletes an existing audit
-
-        Arguments:
-            audit_id: UUID of the audit to be deleted.
-            ultimate: Whether to remove entirely, or to the trashcan.
-        """
-        if not audit_id:
-            raise RequiredArgument(
-                function=self.delete_audit.__name__, argument='audit_id'
-            )
-
-        cmd = XmlCommand("delete_task")
-        cmd.set_attribute("task_id", audit_id)
-        cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
     def delete_policy(
         self, policy_id: str, *, ultimate: Optional[bool] = False
     ) -> Any:
         """Deletes an existing policy
-
         Arguments:
             policy_id: UUID of the policy to be deleted.
             ultimate: Whether to remove entirely, or to the trashcan.
@@ -1216,118 +983,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd = XmlCommand("delete_config")
         cmd.set_attribute("config_id", policy_id)
         cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
-    def __create_task(
-        self,
-        name: str,
-        config_id: str,
-        target_id: str,
-        scanner_id: str,
-        usage_type: UsageType,
-        function: str,
-        *,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[str] = None,
-        alert_ids: Optional[List[str]] = None,
-        comment: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[List[str]] = None,
-        preferences: Optional[dict] = None,
-    ) -> Any:
-        if not name:
-            raise RequiredArgument(function=function, argument='name')
-
-        if not config_id:
-            raise RequiredArgument(function=function, argument='config_id')
-
-        if not target_id:
-            raise RequiredArgument(function=function, argument='target_id')
-
-        if not scanner_id:
-            raise RequiredArgument(function=function, argument='scanner_id')
-
-        # don't allow to create a container task with create_task
-        if target_id == '0':
-            raise InvalidArgument(function=function, argument='target_id')
-
-        cmd = XmlCommand("create_task")
-        cmd.add_element("name", name)
-        cmd.add_element("usage_type", usage_type.value)
-        cmd.add_element("config", attrs={"id": config_id})
-        cmd.add_element("target", attrs={"id": target_id})
-        cmd.add_element("scanner", attrs={"id": scanner_id})
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if alterable is not None:
-            cmd.add_element("alterable", to_bool(alterable))
-
-        if hosts_ordering:
-            if not isinstance(hosts_ordering, self.types.HostsOrdering):
-                raise InvalidArgumentType(
-                    function=function,
-                    argument='hosts_ordering',
-                    arg_type=HostsOrdering.__name__,
-                )
-            cmd.add_element("hosts_ordering", hosts_ordering.value)
-
-        if alert_ids:
-            if isinstance(alert_ids, str):
-                deprecation(
-                    "Please pass a list as alert_ids parameter to {}. "
-                    "Passing a string is deprecated and will be removed in "
-                    "future.".format(function)
-                )
-
-                # if a single id is given as a string wrap it into a list
-                alert_ids = [alert_ids]
-            if is_list_like(alert_ids):
-                # parse all given alert id's
-                for alert in alert_ids:
-                    cmd.add_element("alert", attrs={"id": str(alert)})
-
-        if schedule_id:
-            cmd.add_element("schedule", attrs={"id": schedule_id})
-
-            if schedule_periods is not None:
-                if (
-                    not isinstance(schedule_periods, Integral)
-                    or schedule_periods < 0
-                ):
-                    raise InvalidArgument(
-                        "schedule_periods must be an integer greater or equal "
-                        "than 0"
-                    )
-                cmd.add_element("schedule_periods", str(schedule_periods))
-
-        if observers is not None:
-            if not is_list_like(observers):
-                raise InvalidArgumentType(
-                    function=function, argument='observers', arg_type='list'
-                )
-
-            # gvmd splits by comma and space
-            # gvmd tries to lookup each value as user name and afterwards as
-            # user id. So both user name and user id are possible
-            cmd.add_element("observers", to_comma_list(observers))
-
-        if preferences is not None:
-            if not isinstance(preferences, collections.abc.Mapping):
-                raise InvalidArgumentType(
-                    function=function,
-                    argument='preferences',
-                    arg_type=collections.abc.Mapping.__name__,
-                )
-
-            _xmlprefs = cmd.add_element("preferences")
-            for pref_name, pref_value in preferences.items():
-                _xmlpref = _xmlprefs.add_element("preference")
-                _xmlpref.add_element("scanner_name", pref_name)
-                _xmlpref.add_element("value", str(pref_value))
 
         return self._send_xml_command(cmd)
 
@@ -1433,103 +1088,6 @@ class GmpV208Mixin(GvmProtocol):
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
-
-        return self._send_xml_command(cmd)
-
-    def __get_tasks(
-        self,
-        usage_type: UsageType,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
-    ) -> Any:
-        cmd = XmlCommand("get_tasks")
-        cmd.set_attribute("usage_type", usage_type.value)
-
-        add_filter(cmd, filter, filter_id)
-
-        if trash is not None:
-            cmd.set_attribute("trash", to_bool(trash))
-
-        if details is not None:
-            cmd.set_attribute("details", to_bool(details))
-
-        if schedules_only is not None:
-            cmd.set_attribute("schedules_only", to_bool(schedules_only))
-
-        return self._send_xml_command(cmd)
-
-    def __get_task(self, task_id: str, usage_type: UsageType) -> Any:
-        if not task_id:
-            raise RequiredArgument(
-                function=self.get_task.__name__, argument='task_id'
-            )
-
-        cmd = XmlCommand("get_tasks")
-        cmd.set_attribute("task_id", task_id)
-        cmd.set_attribute("usage_type", usage_type.value)
-
-        # for single entity always request all details
-        cmd.set_attribute("details", "1")
-        return self._send_xml_command(cmd)
-
-    def resume_audit(self, audit_id: str) -> Any:
-        """Resume an existing stopped audit
-
-        Arguments:
-            audit_id: UUID of the audit to be resumed
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not audit_id:
-            raise RequiredArgument(
-                function=self.resume_audit.__name__, argument='audit_id'
-            )
-
-        cmd = XmlCommand("resume_task")
-        cmd.set_attribute("task_id", audit_id)
-
-        return self._send_xml_command(cmd)
-
-    def start_audit(self, audit_id: str) -> Any:
-        """Start an existing audit
-
-        Arguments:
-            audit_id: UUID of the audit to be started
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not audit_id:
-            raise RequiredArgument(
-                function=self.start_audit.__name__, argument='audit_id'
-            )
-
-        cmd = XmlCommand("start_task")
-        cmd.set_attribute("task_id", audit_id)
-
-        return self._send_xml_command(cmd)
-
-    def stop_audit(self, audit_id: str) -> Any:
-        """Stop an existing running audit
-
-        Arguments:
-            audit_id: UUID of the audit to be stopped
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not audit_id:
-            raise RequiredArgument(
-                function=self.stop_audit.__name__, argument='audit_id'
-            )
-
-        cmd = XmlCommand("stop_task")
-        cmd.set_attribute("task_id", audit_id)
 
         return self._send_xml_command(cmd)
 

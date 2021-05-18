@@ -27,10 +27,8 @@ from .test_modify_permission import GmpModifyPermissionTestCase
 from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_tag import GmpModifyTagTestCase
 from .test_get_feed import GmpGetFeedTestCase
-from .test_clone_audit import GmpCloneAuditTestCase
 from .test_clone_config import GmpCloneConfigTestCase
 from .test_clone_policy import GmpClonePolicyTestCase
-from .test_create_audit import GmpCreateAuditCommandTestCase
 from .test_create_config import GmpCreateConfigTestCase
 from .test_create_config_from_osp_scanner import (
     GmpCreateConfigFromOSPScannerTestCase,
@@ -38,17 +36,13 @@ from .test_create_config_from_osp_scanner import (
 from .test_create_credential import GmpCreateCredentialTestCase
 from .test_create_policy import GmpCreatePolicyTestCase
 from .test_create_scanner import GmpCreateScannerTestCase
-from .test_delete_audit import GmpDeleteAuditTestCase
 from .test_delete_config import GmpDeleteConfigTestCase
 from .test_delete_policy import GmpDeletePolicyTestCase
-from .test_get_audit import GmpGetAuditTestCase
-from .test_get_audits import GmpGetAuditsTestCase
 from .test_get_config import GmpGetConfigTestCase
 from .test_get_configs import GmpGetConfigsTestCase
 from .test_get_policies import GmpGetPoliciesTestCase
 from .test_get_policy import GmpGetPolicyTestCase
 from .test_modify_credential import GmpModifyCredentialTestCase
-from .test_modify_audit import GmpModifyAuditCommandTestCase
 from .test_modify_policy_set_comment import GmpModifyPolicySetCommentTestCase
 from .test_modify_policy_set_family_selection import (
     GmpModifyPolicySetFamilySelectionTestCase,
@@ -65,9 +59,6 @@ from .test_modify_policy_set_scanner_preference import (
 )
 from .test_modify_scanner import GmpModifyScannerTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
-from .test_resume_audit import GmpResumeAuditTestCase
-from .test_start_audit import GmpStartAuditTestCase
-from .test_stop_audit import GmpStopAuditTestCase
 from .test_clone_ticket import GmpCloneTicketTestCase
 from .test_create_schedule import GmpCreateScheduleTestCase
 from .test_create_ticket import GmpCreateTicketTestCase

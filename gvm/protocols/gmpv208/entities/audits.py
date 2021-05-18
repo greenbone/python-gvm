@@ -30,58 +30,29 @@ from gvm.utils import add_filter, is_list_like, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 
-class TasksMixin:
-    def clone_task(self, task_id: str) -> Any:
-        """Clone an existing task
+class AuditsMixin:
+    def clone_audit(self, audit_id: str) -> Any:
+        """Clone an existing audit
 
         Arguments:
-            task_id: UUID of existing task to clone from
+            audit_id: UUID of existing audit to clone from
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not task_id:
+        if not audit_id:
             raise RequiredArgument(
-                function=self.clone_task.__name__, argument='task_id'
+                function=self.clone_audit.__name__, argument='audit_id'
             )
 
         cmd = XmlCommand("create_task")
-        cmd.add_element("copy", task_id)
+        cmd.add_element("copy", audit_id)
         return self._send_xml_command(cmd)
 
-    def create_container_task(
-        self, name: str, *, comment: Optional[str] = None
-    ) -> Any:
-        """Create a new container task
-
-        A container task is a "meta" task to import and view reports from other
-        systems.
-
-        Arguments:
-            name: Name of the task
-            comment: Comment for the task
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not name:
-            raise RequiredArgument(
-                function=self.create_container_task.__name__, argument='name'
-            )
-
-        cmd = XmlCommand("create_task")
-        cmd.add_element("name", name)
-        cmd.add_element("target", attrs={"id": "0"})
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        return self._send_xml_command(cmd)
-
-    def create_task(
+    def create_audit(
         self,
         name: str,
-        config_id: str,
+        policy_id: str,
         target_id: str,
         scanner_id: str,
         *,
@@ -94,36 +65,57 @@ class TasksMixin:
         observers: Optional[List[str]] = None,
         preferences: Optional[dict] = None,
     ) -> Any:
+        """Create a new audit task
+
+        Arguments:
+            name: Name of the new audit
+            policy_id: UUID of policy to use by the audit
+            target_id: UUID of target to be scanned
+            scanner_id: UUID of scanner to use for scanning the target
+            comment: Comment for the audit
+            alterable: Whether the task should be alterable
+            alert_ids: List of UUIDs for alerts to be applied to the audit
+            hosts_ordering: The order hosts are scanned in
+            schedule_id: UUID of a schedule when the audit should be run.
+            schedule_periods: A limit to the number of times the audit will be
+                scheduled, or 0 for no limit
+            observers: List of names or ids of users which should be allowed to
+                observe this audit
+            preferences: Name/Value pairs of scanner preferences.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+
         if not name:
             raise RequiredArgument(
-                function=self.create_task.__name__, argument='name'
+                function=self.create_audit.__name__, argument='name'
             )
-
-        if not config_id:
+        if not policy_id:
             raise RequiredArgument(
-                function=self.create_task.__name__, argument='config_id'
+                function=self.create_audit.__name__, argument='policy_id'
             )
 
         if not target_id:
             raise RequiredArgument(
-                function=self.create_task.__name__, argument='target_id'
+                function=self.create_audit.__name__, argument='target_id'
             )
 
         if not scanner_id:
             raise RequiredArgument(
-                function=self.create_task.__name__, argument='scanner_id'
+                function=self.create_audit.__name__, argument='scanner_id'
             )
 
         # don't allow to create a container task with create_task
         if target_id == '0':
             raise InvalidArgument(
-                function=self.create_task.__name__, argument='target_id'
+                function=self.create_audit.__name__, argument='target_id'
             )
 
         cmd = XmlCommand("create_task")
         cmd.add_element("name", name)
-        cmd.add_element("usage_type", "scan")
-        cmd.add_element("config", attrs={"id": config_id})
+        cmd.add_element("usage_type", "audit")
+        cmd.add_element("config", attrs={"id": policy_id})
         cmd.add_element("target", attrs={"id": target_id})
         cmd.add_element("scanner", attrs={"id": scanner_id})
 
@@ -136,7 +128,7 @@ class TasksMixin:
         if hosts_ordering:
             if not isinstance(hosts_ordering, self.types.HostsOrdering):
                 raise InvalidArgumentType(
-                    function=self.create_task.__name__,
+                    function=self.create_audit.__name__,
                     argument='hosts_ordering',
                     arg_type=HostsOrdering.__name__,
                 )
@@ -165,7 +157,7 @@ class TasksMixin:
         if observers is not None:
             if not is_list_like(observers):
                 raise InvalidArgumentType(
-                    function=self.create_task.__name__,
+                    function=self.create_audit.__name__,
                     argument='observers',
                     arg_type='list',
                 )
@@ -178,7 +170,7 @@ class TasksMixin:
         if preferences is not None:
             if not isinstance(preferences, Mapping):
                 raise InvalidArgumentType(
-                    function=self.create_task.__name__,
+                    function=self.create_audit.__name__,
                     argument='preferences',
                     arg_type=Mapping.__name__,
                 )
@@ -191,27 +183,27 @@ class TasksMixin:
 
         return self._send_xml_command(cmd)
 
-    def delete_task(
-        self, task_id: str, *, ultimate: Optional[bool] = False
+    def delete_audit(
+        self, audit_id: str, *, ultimate: Optional[bool] = False
     ) -> Any:
-        """Deletes an existing task
+        """Deletes an existing audit
 
         Arguments:
-            task_id: UUID of the task to be deleted.
+            audit_id: UUID of the audit to be deleted.
             ultimate: Whether to remove entirely, or to the trashcan.
         """
-        if not task_id:
+        if not audit_id:
             raise RequiredArgument(
-                function=self.delete_task.__name__, argument='task_id'
+                function=self.delete_audit.__name__, argument='audit_id'
             )
 
         cmd = XmlCommand("delete_task")
-        cmd.set_attribute("task_id", task_id)
+        cmd.set_attribute("task_id", audit_id)
         cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
 
-    def get_tasks(
+    def get_audits(
         self,
         *,
         filter: Optional[str] = None,
@@ -220,13 +212,13 @@ class TasksMixin:
         details: Optional[bool] = None,
         schedules_only: Optional[bool] = None,
     ) -> Any:
-        """Request a list of tasks
+        """Request a list of audits
 
         Arguments:
             filter: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get the trashcan tasks instead
-            details: Whether to include full task details
+            trash: Whether to get the trashcan audits instead
+            details: Whether to include full audit details
             schedules_only: Whether to only include id, name and schedule
                 details
 
@@ -234,7 +226,7 @@ class TasksMixin:
             The response. See :py:meth:`send_command` for details.
         """
         cmd = XmlCommand("get_tasks")
-        cmd.set_attribute("usage_type", "scan")
+        cmd.set_attribute("usage_type", "audit")
 
         add_filter(cmd, filter, filter_id)
 
@@ -249,34 +241,34 @@ class TasksMixin:
 
         return self._send_xml_command(cmd)
 
-    def get_task(self, task_id: str) -> Any:
-        """Request a single task
+    def get_audit(self, audit_id: str) -> Any:
+        """Request a single audit
 
         Arguments:
-            task_id: UUID of an existing task
+            audit_id: UUID of an existing audit
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not task_id:
+        if not audit_id:
             raise RequiredArgument(
-                function=self.get_task.__name__, argument='task_id'
+                function=self.get_task.__name__, argument='audit_id'
             )
 
         cmd = XmlCommand("get_tasks")
-        cmd.set_attribute("task_id", task_id)
-        cmd.set_attribute("usage_type", "scan")
+        cmd.set_attribute("task_id", audit_id)
+        cmd.set_attribute("usage_type", "audit")
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
-    def modify_task(
+    def modify_audit(
         self,
-        task_id: str,
+        audit_id: str,
         *,
         name: Optional[str] = None,
-        config_id: Optional[str] = None,
+        policy_id: Optional[str] = None,
         target_id: Optional[str] = None,
         scanner_id: Optional[str] = None,
         alterable: Optional[bool] = None,
@@ -291,31 +283,31 @@ class TasksMixin:
         """Modifies an existing task.
 
         Arguments:
-            task_id: UUID of task to modify.
-            name: The name of the task.
-            config_id: UUID of scan config to use by the task
+            audit_id: UUID of audit to modify.
+            name: The name of the audit.
+            policy_id: UUID of policy to use by the audit
             target_id: UUID of target to be scanned
             scanner_id: UUID of scanner to use for scanning the target
-            comment: The comment on the task.
-            alert_ids: List of UUIDs for alerts to be applied to the task
+            comment: The comment on the audit.
+            alert_ids: List of UUIDs for alerts to be applied to the audit
             hosts_ordering: The order hosts are scanned in
-            schedule_id: UUID of a schedule when the task should be run.
-            schedule_periods: A limit to the number of times the task will be
+            schedule_id: UUID of a schedule when the audit should be run.
+            schedule_periods: A limit to the number of times the audit will be
                 scheduled, or 0 for no limit.
             observers: List of names or ids of users which should be allowed to
-                observe this task
+                observe this audit
             preferences: Name/Value pairs of scanner preferences.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not task_id:
+        if not audit_id:
             raise RequiredArgument(
                 function=self.modify_task.__name__, argument='task_id argument'
             )
 
         cmd = XmlCommand("modify_task")
-        cmd.set_attribute("task_id", task_id)
+        cmd.set_attribute("task_id", audit_id)
 
         if name:
             cmd.add_element("name", name)
@@ -323,8 +315,8 @@ class TasksMixin:
         if comment:
             cmd.add_element("comment", comment)
 
-        if config_id:
-            cmd.add_element("config", attrs={"id": config_id})
+        if policy_id:
+            cmd.add_element("config", attrs={"id": policy_id})
 
         if target_id:
             cmd.add_element("target", attrs={"id": target_id})
@@ -398,82 +390,59 @@ class TasksMixin:
 
         return self._send_xml_command(cmd)
 
-    def move_task(self, task_id: str, *, slave_id: Optional[str] = None) -> Any:
-        """Move an existing task to another GMP slave scanner or the master
+    def resume_audit(self, audit_id: str) -> Any:
+        """Resume an existing stopped audit
 
         Arguments:
-            task_id: UUID of the task to be moved
-            slave_id: UUID of slave to reassign the task to, empty for master.
+            audit_id: UUID of the audit to be resumed
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not task_id:
+        if not audit_id:
             raise RequiredArgument(
-                function=self.move_task.__name__, argument='task_id'
-            )
-
-        cmd = XmlCommand("move_task")
-        cmd.set_attribute("task_id", task_id)
-
-        if slave_id is not None:
-            cmd.set_attribute("slave_id", slave_id)
-
-        return self._send_xml_command(cmd)
-
-    def start_task(self, task_id: str) -> Any:
-        """Start an existing task
-
-        Arguments:
-            task_id: UUID of the task to be started
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.start_task.__name__, argument='task_id'
-            )
-
-        cmd = XmlCommand("start_task")
-        cmd.set_attribute("task_id", task_id)
-
-        return self._send_xml_command(cmd)
-
-    def resume_task(self, task_id: str) -> Any:
-        """Resume an existing stopped task
-
-        Arguments:
-            task_id: UUID of the task to be resumed
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not task_id:
-            raise RequiredArgument(
-                function=self.resume_task.__name__, argument='task_id'
+                function=self.resume_audit.__name__, argument='audit_id'
             )
 
         cmd = XmlCommand("resume_task")
-        cmd.set_attribute("task_id", task_id)
+        cmd.set_attribute("task_id", audit_id)
 
         return self._send_xml_command(cmd)
 
-    def stop_task(self, task_id: str) -> Any:
-        """Stop an existing running task
+    def start_audit(self, audit_id: str) -> Any:
+        """Start an existing audit
 
         Arguments:
-            task_id: UUID of the task to be stopped
+            audit_id: UUID of the audit to be started
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
-        if not task_id:
+        if not audit_id:
             raise RequiredArgument(
-                function=self.stop_task.__name__, argument='task_id'
+                function=self.start_audit.__name__, argument='audit_id'
+            )
+
+        cmd = XmlCommand("start_task")
+        cmd.set_attribute("task_id", audit_id)
+
+        return self._send_xml_command(cmd)
+
+    def stop_audit(self, audit_id: str) -> Any:
+        """Stop an existing running audit
+
+        Arguments:
+            audit_id: UUID of the audit to be stopped
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not audit_id:
+            raise RequiredArgument(
+                function=self.stop_audit.__name__, argument='audit_id'
             )
 
         cmd = XmlCommand("stop_task")
-        cmd.set_attribute("task_id", task_id)
+        cmd.set_attribute("task_id", audit_id)
 
         return self._send_xml_command(cmd)

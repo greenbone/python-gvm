@@ -19,15 +19,24 @@
 from gvm.errors import GvmError
 
 
-class GmpStartAuditTestCase:
-    def test_start_audit(self):
-        self.gmp.start_audit('a1')
+class GmpDeleteAuditTestMixin:
+    def test_delete(self):
+        self.gmp.delete_audit('a1')
 
-        self.connection.send.has_been_called_with('<start_task task_id="a1"/>')
+        self.connection.send.has_been_called_with(
+            '<delete_task task_id="a1" ultimate="0"/>'
+        )
+
+    def test_delete_ultimate(self):
+        self.gmp.delete_audit('a1', ultimate=True)
+
+        self.connection.send.has_been_called_with(
+            '<delete_task task_id="a1" ultimate="1"/>'
+        )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):
-            self.gmp.start_audit(None)
+            self.gmp.delete_audit(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.start_audit('')
+            self.gmp.delete_audit('')

@@ -62,22 +62,12 @@ class Gmpv214GetFeedTestCase(GmpGetFeedTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneAuditTestCase(GmpCloneAuditTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CloneConfigTestCase(GmpCloneConfigTestCase, Gmpv214TestCase):
     pass
 
 
 class Gmpv214ClonePolicyTestCase(GmpClonePolicyTestCase, Gmpv214TestCase):
 
-    pass
-
-
-class Gmpv214CreateAuditCommandTestCase(
-    GmpCreateAuditCommandTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -101,24 +91,11 @@ class Gmpv214CreatePolicyTestCase(GmpCreatePolicyTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214DeleteAuditTestCase(GmpDeleteAuditTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214DeleteConfigTestCase(GmpDeleteConfigTestCase, Gmpv214TestCase):
     pass
 
 
 class Gmpv214DeletePolicyTestCase(GmpDeletePolicyTestCase, Gmpv214TestCase):
-
-    pass
-
-
-class Gmpv214GetAuditTestCase(GmpGetAuditTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetAuditsTestCase(GmpGetAuditsTestCase, Gmpv214TestCase):
 
     pass
 
@@ -136,12 +113,6 @@ class Gmpv214GetPoliciesTestCase(GmpGetPoliciesTestCase, Gmpv214TestCase):
 
 
 class Gmpv214GetPolicyTestCase(GmpGetPolicyTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyAuditCommandTestCase(
-    GmpModifyAuditCommandTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -188,18 +159,6 @@ class Gmpv214ModifyPolicySetScannerPreferenceTestCase(
 
 
 class Gmpv214ModifyTicketTestCase(GmpModifyTicketTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ResumeAuditTestCase(GmpResumeAuditTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214StartAuditTestCase(GmpStartAuditTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214StopAuditTestCase(GmpStopAuditTestCase, Gmpv214TestCase):
     pass
 
 

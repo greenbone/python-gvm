@@ -13,6 +13,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Introduced new explicit API calls for SecInfo: `get_nvt()`, `get_nvt_list()`, `get_cpe()`, `get_cpe_list()`, `get_cve()`, `get_cve_list()`, `get_cert_bund_advisory()`, `get_cert_bund_advisory_list()`, `get_dnf_cert_advisory()`, `get_dnf_cert_advisory_list()`, `get_oval_definition()`, `get_oval_definition_list()`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 
 ### Changed
+* Detached the Audit API calls from the GMP class into a new `AuditsMixin`. [#464](https://github.com/greenbone/python-gvm/pull/464)
 * Split up `get_asset(s)` into `get_host(s)` and `get_operating_system(s)`. [#459](https://github.com/greenbone/python-gvm/pull/459)
 * Split up `delete_asset` into `delete_host` and `delete_operating_system`. [#459](https://github.com/greenbone/python-gvm/pull/459)
 * Split up `modify_asset` into `modify_host` and `modify_operating_system`. [#459](https://github.com/greenbone/python-gvm/pull/459)
@@ -29,7 +30,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Detached the `PortListType` from the GMP types class. [#446](https://github.com/greenbone/python-gvm/pull/446)
 * Detached the ReportFormatType from the GMP types class. [#445](https://github.com/greenbone/python-gvm/pull/445)
 * Detached the Report API calls from the GMP class into a new `ReportMixin`. [#445](https://github.com/greenbone/python-gvm/pull/445)
-* Detached the Task API calls from the GMP class into a new `TaskMixin`. [#443](https://github.com/greenbone/python-gvm/pull/443)
+* Detached the Task API calls from the GMP class into a new `TasksMixin`. [#443](https://github.com/greenbone/python-gvm/pull/443)
 * Moved helper functions from gmp to utils. The response XML will not be recovered by the parser anymore! [#442](https://github.com/greenbone/python-gvm/pull/442)
 
 ### Deprecated
