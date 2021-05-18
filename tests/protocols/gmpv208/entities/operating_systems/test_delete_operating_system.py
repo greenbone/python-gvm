@@ -27,22 +27,6 @@ class GmpDeleteOperatingSystemTestMixin:
             '<delete_asset asset_id="a1"/>'
         )
 
-    def test_delete_operating_systems_from_report(self):
-        self.gmp.delete_operating_system(report_id='a1')
-
-        self.connection.send.has_been_called_with(
-            '<delete_asset report_id="a1"/>'
-        )
-
-    def test_delete_passing_asset_and_report(self):
-        self.gmp.delete_operating_system(
-            report_id='r1', operating_system_id='a1'
-        )
-
-        self.connection.send.has_been_called_with(
-            '<delete_asset asset_id="a1"/>'
-        )
-
     def test_missing_arguments(self):
         with self.assertRaises(GvmError):
-            self.gmp.delete_operating_system()
+            self.gmp.delete_operating_system(None)

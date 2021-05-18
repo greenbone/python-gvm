@@ -44,7 +44,7 @@ class GmpModifyOperatingSystemTestMixin:
             self.gmp.modify_operating_system('', comment='foo')
 
     def test_modify_operating_system_with_comment(self):
-        self.gmp.modify_operating_system('a1', 'foo')
+        self.gmp.modify_operating_system('a1', comment='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
@@ -60,7 +60,7 @@ class GmpModifyOperatingSystemTestMixin:
             '</modify_asset>'
         )
 
-        self.gmp.modify_operating_system('a1', '')
+        self.gmp.modify_operating_system('a1', comment='')
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
@@ -68,8 +68,10 @@ class GmpModifyOperatingSystemTestMixin:
             '</modify_asset>'
         )
 
-        self.gmp.modify_operating_system('a1', None)
+        self.gmp.modify_operating_system('a1', comment=None)
 
         self.connection.send.has_been_called_with(
-            '<modify_asset asset_id="a1">' '<comment/>' '</modify_asset>'
+            '<modify_asset asset_id="a1">'
+            '<comment></comment>'
+            '</modify_asset>'
         )
