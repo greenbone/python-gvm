@@ -43,7 +43,7 @@ class HostsMixin:
 
         cmd = XmlCommand("create_asset")
         host = cmd.add_element("asset")
-        host.add_element("type", "host")  # ignored for gmp7, required for gmp8
+        host.add_element("type", "host")
         host.add_element("name", name)
 
         if comment:
@@ -51,27 +51,20 @@ class HostsMixin:
 
         return self._send_xml_command(cmd)
 
-    def delete_host(
-        self, *, host_id: Optional[str] = None, report_id: Optional[str] = None
-    ) -> Any:
+    def delete_host(self, host_id: str) -> Any:
         """Deletes an existing host
 
         Arguments:
             host_id: UUID of the single host to delete.
-            report_id: UUID of report from which to get all
-                hosts to delete.
         """
-        if not host_id and not report_id:
+        if not host_id:
             raise RequiredArgument(
                 function=self.delete_host.__name__,
-                argument='host_id or report_id',
+                argument='host_id',
             )
 
         cmd = XmlCommand("delete_asset")
-        if host_id:
-            cmd.set_attribute("asset_id", host_id)
-        else:
-            cmd.set_attribute("report_id", report_id)
+        cmd.set_attribute("asset_id", host_id)
 
         return self._send_xml_command(cmd)
 
@@ -122,7 +115,9 @@ class HostsMixin:
 
         return self._send_xml_command(cmd)
 
-    def modify_host(self, host_id: str, comment: Optional[str] = "") -> Any:
+    def modify_host(
+        self, host_id: str, *, comment: Optional[str] = None
+    ) -> Any:
         """Modifies an existing host.
 
         Arguments:

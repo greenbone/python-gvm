@@ -28,28 +28,22 @@ from gvm.xml import XmlCommand
 class OperatingSystemsMixin:
     def delete_operating_system(
         self,
-        *,
-        operating_system_id: Optional[str] = None,
-        report_id: Optional[str] = None,
+        operating_system_id: str,
     ) -> Any:
         """Deletes an existing operating_system
 
         Arguments:
             operating_system_id: UUID of the single operating_system to delete.
-            report_id: UUID of report from which to get all
-                operating_systems to delete.
+
         """
-        if not operating_system_id and not report_id:
+        if not operating_system_id:
             raise RequiredArgument(
                 function=self.delete_operating_system.__name__,
                 argument='operating_system_id or report_id',
             )
 
         cmd = XmlCommand("delete_asset")
-        if operating_system_id:
-            cmd.set_attribute("asset_id", operating_system_id)
-        else:
-            cmd.set_attribute("report_id", report_id)
+        cmd.set_attribute("asset_id", operating_system_id)
 
         return self._send_xml_command(cmd)
 
@@ -102,7 +96,7 @@ class OperatingSystemsMixin:
         return self._send_xml_command(cmd)
 
     def modify_operating_system(
-        self, operating_system_id: str, comment: Optional[str] = ""
+        self, operating_system_id: str, *, comment: Optional[str] = ""
     ) -> Any:
         """Modifies an existing operating_system.
 
