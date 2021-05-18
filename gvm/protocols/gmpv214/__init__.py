@@ -66,7 +66,6 @@ from gvm.protocols.gmpv208.entities.report_formats import (
 )
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
-from gvm.protocols.gmpv208.entities.scanners import ScannersMixin
 from gvm.protocols.gmpv208.entities.secinfo import (
     get_info_type_from_string,
     InfoType,
@@ -86,6 +85,7 @@ from gvm.protocols.gmpv214.entities.notes import NotesMixin
 from gvm.protocols.gmpv214.entities.overrides import OverridesMixin
 from gvm.protocols.gmpv214.entities.scanners import (
     ScannerType,
+    ScannersMixin,
     get_scanner_type_from_string,
 )
 from gvm.protocols.gmpv214.entities.targets import (
