@@ -122,6 +122,8 @@ class TLSCertificateMixin:
             filter_id: UUID of an existing filter to use for the query
             include_certificate_data: Whether to include the certificate data in
                 the response
+            details: Whether to include additional details of the
+                tls certificates
 
         Returns:
             The response. See :py:meth:`send_command` for details.
