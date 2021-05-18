@@ -62,18 +62,6 @@ class Gmpv214GetFeedTestCase(GmpGetFeedTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreateCredentialTestCase(
-    GmpCreateCredentialTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyCredentialTestCase(
-    GmpModifyCredentialTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214ModifyTicketTestCase(GmpModifyTicketTestCase, Gmpv214TestCase):
     pass
 
@@ -125,12 +113,6 @@ class Gmpv214CloneReportFormatTestCase(
     pass
 
 
-class Gmpv214CloneCredentialTestCase(
-    GmpCloneCredentialTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214CloneFilterTestCase(GmpCloneFilterTestCase, Gmpv214TestCase):
     pass
 
@@ -151,10 +133,6 @@ class Gmpv214ClonePermissionTestCase(
 
 
 class Gmpv214CloneRoleTestCase(GmpCloneRoleTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CloneScannerTestCase(GmpCloneScannerTestCase, Gmpv214TestCase):
     pass
 
 
@@ -182,12 +160,6 @@ class Gmpv214CreateUserTestCase(GmpCreateUserTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214DeleteCredentialTestCase(
-    GmpDeleteCredentialTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214DeleteFilterTestCase(GmpDeleteFilterTestCase, Gmpv214TestCase):
     pass
 
@@ -212,10 +184,6 @@ class Gmpv214DeleteRoleTestCase(GmpDeleteRoleTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214DeleteScannerTestCase(GmpDeleteScannerTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv214TestCase):
     pass
 
@@ -237,14 +205,6 @@ class Gmpv214DescribeAuthCommandTestCase(
 class Gmpv214EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214GetCredentialTestCase(GmpGetCredentialTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetCredentialsTestCase(GmpGetCredentialsTestCase, Gmpv214TestCase):
     pass
 
 
@@ -301,14 +261,6 @@ class Gmpv214GetRoleTestCase(GmpGetRoleTestCase, Gmpv214TestCase):
 
 
 class Gmpv214GetRolesTestCase(GmpGetRolesTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetScannerTestCase(GmpGetScannerTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetScannersTestCase(GmpGetScannersTestCase, Gmpv214TestCase):
     pass
 
 
@@ -403,10 +355,6 @@ class Gmpv214SyncScapCommandTestCase(
 class Gmpv214VerifyReportFormatTestCase(
     GmpVerifyReportFormatTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214v7VerifyScannerTestCase(GmpVerifyScannerTestCase, Gmpv214TestCase):
     pass
 
 

@@ -17,16 +17,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from . import Gmpv214TestCase
-from .testcmds import *  # pylint: disable=wildcard-import
+from .testcmds import GmpModifyUserTestCase
 
 
 class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv214TestCase):
     pass

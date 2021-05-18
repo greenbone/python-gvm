@@ -62,27 +62,7 @@ class Gmpv208GetFeedTestCase(GmpGetFeedTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateCredentialTestCase(
-    GmpCreateCredentialTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208ModifyCredentialTestCase(
-    GmpModifyCredentialTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208ModifyTicketTestCase(GmpModifyTicketTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CreateScannerTestCase(GmpCreateScannerTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyScannerTestCase(GmpModifyScannerTestCase, Gmpv208TestCase):
     pass
 
 
@@ -133,12 +113,6 @@ class Gmpv208CloneReportFormatTestCase(
     pass
 
 
-class Gmpv208CloneCredentialTestCase(
-    GmpCloneCredentialTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208CloneFilterTestCase(GmpCloneFilterTestCase, Gmpv208TestCase):
     pass
 
@@ -159,10 +133,6 @@ class Gmpv208ClonePermissionTestCase(
 
 
 class Gmpv208CloneRoleTestCase(GmpCloneRoleTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CloneScannerTestCase(GmpCloneScannerTestCase, Gmpv208TestCase):
     pass
 
 
@@ -190,12 +160,6 @@ class Gmpv208CreateUserTestCase(GmpCreateUserTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208DeleteCredentialTestCase(
-    GmpDeleteCredentialTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208DeleteFilterTestCase(GmpDeleteFilterTestCase, Gmpv208TestCase):
     pass
 
@@ -220,10 +184,6 @@ class Gmpv208DeleteRoleTestCase(GmpDeleteRoleTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208DeleteScannerTestCase(GmpDeleteScannerTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv208TestCase):
     pass
 
@@ -245,14 +205,6 @@ class Gmpv208DescribeAuthCommandTestCase(
 class Gmpv208EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208GetCredentialTestCase(GmpGetCredentialTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetCredentialsTestCase(GmpGetCredentialsTestCase, Gmpv208TestCase):
     pass
 
 
@@ -309,14 +261,6 @@ class Gmpv208GetRoleTestCase(GmpGetRoleTestCase, Gmpv208TestCase):
 
 
 class Gmpv208GetRolesTestCase(GmpGetRolesTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetScannerTestCase(GmpGetScannerTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetScannersTestCase(GmpGetScannersTestCase, Gmpv208TestCase):
     pass
 
 
@@ -415,10 +359,6 @@ class Gmpv208SyncScapCommandTestCase(
 class Gmpv208VerifyReportFormatTestCase(
     GmpVerifyReportFormatTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208v7VerifyScannerTestCase(GmpVerifyScannerTestCase, Gmpv208TestCase):
     pass
 
 
