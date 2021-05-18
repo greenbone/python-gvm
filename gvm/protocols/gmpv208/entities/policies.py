@@ -51,7 +51,7 @@ class PoliciesMixin:
     def create_policy(
         self, name: str, *, policy_id: str = None, comment: Optional[str] = None
     ) -> Any:
-        """Create a new policy config
+        """Create a new policy
 
         Arguments:
             name: Name of the new policy
@@ -154,7 +154,7 @@ class PoliciesMixin:
 
         Arguments:
             policy_id: UUID of an existing policy
-            audits: Whether to get audits using this config
+            audits: Whether to get audits using this policy
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -202,8 +202,8 @@ class PoliciesMixin:
         """Modifies the name of an existing policy
 
         Arguments:
-            config_id: UUID of policy to modify.
-            name: New name for the config.
+            policy_id: UUID of policy to modify.
+            name: New name for the policy.
         """
         self.modify_scan_config_set_name(config_id=policy_id, name=name)
 
@@ -214,7 +214,9 @@ class PoliciesMixin:
 
         Arguments:
             policy_id: UUID of policy to modify.
-            comment: Comment to set on a config. Default: ''
+            comment: Comment to set on a policy. Default is an
+                empty comment and the previous comment will be
+                removed.
         """
         self.modify_scan_config_set_comment(
             config_id=policy_id, comment=comment
@@ -241,7 +243,7 @@ class PoliciesMixin:
     ) -> Any:
         """Modifies the selected nvts of an existing policy
 
-        The manager updates the given family in the config to include only the
+        The manager updates the given family in the policy to include only the
         given NVTs.
 
         Arguments:
