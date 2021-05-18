@@ -40,7 +40,7 @@ class GmpModifyHostTestMixin:
             self.gmp.modify_host('', comment='foo')
 
     def test_modify_host_with_comment(self):
-        self.gmp.modify_host('a1', 'foo')
+        self.gmp.modify_host('a1', comment='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
@@ -56,7 +56,7 @@ class GmpModifyHostTestMixin:
             '</modify_asset>'
         )
 
-        self.gmp.modify_host('a1', '')
+        self.gmp.modify_host('a1', comment='')
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
@@ -64,8 +64,10 @@ class GmpModifyHostTestMixin:
             '</modify_asset>'
         )
 
-        self.gmp.modify_host('a1', None)
+        self.gmp.modify_host('a1', comment=None)
 
         self.connection.send.has_been_called_with(
-            '<modify_asset asset_id="a1">' '<comment/>' '</modify_asset>'
+            '<modify_asset asset_id="a1">'
+            '<comment></comment>'
+            '</modify_asset>'
         )
