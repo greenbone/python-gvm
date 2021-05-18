@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetUserTestCase:
+class GmpGetUserTestMixin:
     def test_get_user(self):
         self.gmp.get_user('u1')
 

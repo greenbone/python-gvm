@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetUsersTestCase:
+class GmpGetUsersTestMixin:
     def test_get_users(self):
         self.gmp.get_users()
 
