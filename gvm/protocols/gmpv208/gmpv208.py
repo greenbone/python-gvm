@@ -37,6 +37,8 @@ from gvm.protocols.base import GvmProtocol
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
 )
+from gvm.protocols.gmpv208.entities.entities import EntityType
+
 from gvm.utils import (
     check_command_status,
     to_base64,
@@ -139,90 +141,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._transform(response)
 
-    def create_permission(
-        self,
-        name: str,
-        subject_id: str,
-        subject_type: PermissionSubjectType,
-        *,
-        resource_id: Optional[str] = None,
-        resource_type: Optional[EntityType] = None,
-        comment: Optional[str] = None,
-    ) -> Any:
-        """Create a new permission
-
-        Arguments:
-            name: Name of the new permission
-            subject_id: UUID of subject to whom the permission is granted
-            subject_type: Type of the subject user, group or role
-            comment: Comment for the permission
-            resource_id: UUID of entity to which the permission applies
-            resource_type: Type of the resource. For Super permissions user,
-                group or role
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not name:
-            raise RequiredArgument(
-                function=self.create_permission.__name__, argument='name'
-            )
-
-        if not subject_id:
-            raise RequiredArgument(
-                function=self.create_permission.__name__, argument='subject_id'
-            )
-
-        if not isinstance(subject_type, PermissionSubjectType):
-            raise InvalidArgumentType(
-                function=self.create_permission.__name__,
-                argument='subject_type',
-                arg_type=PermissionSubjectType.__name__,
-            )
-
-        cmd = XmlCommand("create_permission")
-        cmd.add_element("name", name)
-
-        _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
-        _xmlsubject.add_element("type", subject_type.value)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if resource_id or resource_type:
-            if not resource_id:
-                raise RequiredArgument(
-                    function=self.create_permission.__name__,
-                    argument='resource_id',
-                )
-
-            if not resource_type:
-                raise RequiredArgument(
-                    function=self.create_permission.__name__,
-                    argument='resource_type',
-                )
-
-            if not isinstance(resource_type, self.types.EntityType):
-                raise InvalidArgumentType(
-                    function=self.create_permission.__name__,
-                    argument='resource_type',
-                    arg_type=self.types.EntityType.__name__,
-                )
-
-            _xmlresource = cmd.add_element(
-                "resource", attrs={"id": resource_id}
-            )
-
-            _actual_resource_type = resource_type
-            if resource_type.value == EntityType.AUDIT.value:
-                _actual_resource_type = EntityType.TASK
-            elif resource_type.value == EntityType.POLICY.value:
-                _actual_resource_type = EntityType.SCAN_CONFIG
-
-            _xmlresource.add_element("type", _actual_resource_type.value)
-
-        return self._send_xml_command(cmd)
-
     def create_tag(
         self,
         name: str,
@@ -269,7 +187,7 @@ class GmpV208Mixin(GvmProtocol):
                 function=self.create_tag.__name__, argument='resource_type'
             )
 
-        if not isinstance(resource_type, self.types.EntityType):
+        if not isinstance(resource_type, EntityType):
             raise InvalidArgumentType(
                 function=self.create_tag.__name__,
                 argument='resource_type',
@@ -355,11 +273,11 @@ class GmpV208Mixin(GvmProtocol):
                 function=self.get_aggregates.__name__, argument='resource_type'
             )
 
-        if not isinstance(resource_type, self.types.EntityType):
+        if not isinstance(resource_type, EntityType):
             raise InvalidArgumentType(
                 function=self.get_aggregates.__name__,
                 argument='resource_type',
-                arg_type=self.types.EntityType.__name__,
+                arg_type=EntityType.__name__,
             )
 
         cmd = XmlCommand('get_aggregates')
@@ -472,96 +390,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_permission(
-        self,
-        permission_id: str,
-        *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        resource_id: Optional[str] = None,
-        resource_type: Optional[EntityType] = None,
-        subject_id: Optional[str] = None,
-        subject_type: Optional[PermissionSubjectType] = None,
-    ) -> Any:
-        """Modifies an existing permission.
-
-        Arguments:
-            permission_id: UUID of permission to be modified.
-            comment: The comment on the permission.
-            name: Permission name, currently the name of a command.
-            subject_id: UUID of subject to whom the permission is granted
-            subject_type: Type of the subject user, group or role
-            resource_id: UUID of entity to which the permission applies
-            resource_type: Type of the resource. For Super permissions user,
-                group or role
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not permission_id:
-            raise RequiredArgument(
-                function=self.modify_permission.__name__,
-                argument='permission_id',
-            )
-
-        cmd = XmlCommand("modify_permission")
-        cmd.set_attribute("permission_id", permission_id)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if name:
-            cmd.add_element("name", name)
-
-        if resource_id or resource_type:
-            if not resource_id:
-                raise RequiredArgument(
-                    function=self.modify_permission.__name__,
-                    argument='resource_id',
-                )
-
-            if not resource_type:
-                raise RequiredArgument(
-                    function=self.modify_permission.__name__,
-                    argument='resource_type',
-                )
-
-            if not isinstance(resource_type, self.types.EntityType):
-                raise InvalidArgumentType(
-                    function=self.modify_permission.__name__,
-                    argument='resource_type',
-                    arg_type=self.types.EntityType.__name__,
-                )
-
-            _xmlresource = cmd.add_element(
-                "resource", attrs={"id": resource_id}
-            )
-            _actual_resource_type = resource_type
-            if resource_type.value == EntityType.AUDIT.value:
-                _actual_resource_type = EntityType.TASK
-            elif resource_type.value == EntityType.POLICY.value:
-                _actual_resource_type = EntityType.SCAN_CONFIG
-            _xmlresource.add_element("type", _actual_resource_type.value)
-
-        if subject_id or subject_type:
-            if not subject_id:
-                raise RequiredArgument(
-                    function=self.modify_permission.__name__,
-                    argument='subject_id',
-                )
-
-            if not isinstance(subject_type, PermissionSubjectType):
-                raise InvalidArgumentType(
-                    function=self.modify_permission.__name__,
-                    argument='subject_type',
-                    arg_type=PermissionSubjectType.__name__,
-                )
-
-            _xmlsubject = cmd.add_element("subject", attrs={"id": subject_id})
-            _xmlsubject.add_element("type", subject_type.value)
-
-        return self._send_xml_command(cmd)
-
     def modify_tag(
         self,
         tag_id: str,
@@ -633,7 +461,7 @@ class GmpV208Mixin(GvmProtocol):
                 )
 
             if resource_type is not None:
-                if not isinstance(resource_type, self.types.EntityType):
+                if not isinstance(resource_type, EntityType):
                     raise InvalidArgumentType(
                         function=self.modify_tag.__name__,
                         argument="resource_type",
@@ -1203,25 +1031,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", group_id)
         return self._send_xml_command(cmd)
 
-    def clone_permission(self, permission_id: str) -> Any:
-        """Clone an existing permission
-
-        Arguments:
-            permission_id: UUID of an existing permission to clone from
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not permission_id:
-            raise RequiredArgument(
-                function=self.clone_permission.__name__,
-                argument='permission_id',
-            )
-
-        cmd = XmlCommand("create_permission")
-        cmd.add_element("copy", permission_id)
-        return self._send_xml_command(cmd)
-
     def clone_report_format(
         self, report_format_id: [Union[str, ReportFormatType]]
     ) -> Any:
@@ -1364,82 +1173,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", tag_id)
         return self._send_xml_command(cmd)
 
-    def create_user(
-        self,
-        name: str,
-        *,
-        password: Optional[str] = None,
-        hosts: Optional[List[str]] = None,
-        hosts_allow: Optional[bool] = False,
-        ifaces: Optional[List[str]] = None,
-        ifaces_allow: Optional[bool] = False,
-        role_ids: Optional[List[str]] = None,
-    ) -> Any:
-        """Create a new user
-
-        Arguments:
-            name: Name of the user
-            password: Password of the user
-            hosts: A list of host addresses (IPs, DNS names)
-            hosts_allow: If True allow only access to passed hosts otherwise
-                deny access. Default is False for deny hosts.
-            ifaces: A list of interface names
-            ifaces_allow: If True allow only access to passed interfaces
-                otherwise deny access. Default is False for deny interfaces.
-            role_ids: A list of role UUIDs for the user
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not name:
-            raise RequiredArgument(
-                function=self.create_user.__name__, argument='name'
-            )
-
-        cmd = XmlCommand("create_user")
-        cmd.add_element("name", name)
-
-        if password:
-            cmd.add_element("password", password)
-
-        if hosts:
-            cmd.add_element(
-                "hosts",
-                to_comma_list(hosts),
-                attrs={"allow": to_bool(hosts_allow)},
-            )
-
-        if ifaces:
-            cmd.add_element(
-                "ifaces",
-                to_comma_list(ifaces),
-                attrs={"allow": to_bool(ifaces_allow)},
-            )
-
-        if role_ids:
-            for role in role_ids:
-                cmd.add_element("role", attrs={"id": role})
-
-        return self._send_xml_command(cmd)
-
-    def clone_user(self, user_id: str) -> Any:
-        """Clone an existing user
-
-        Arguments:
-            user_id: UUID of existing user to clone from
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not user_id:
-            raise RequiredArgument(
-                function=self.clone_user.__name__, argument='user_id'
-            )
-
-        cmd = XmlCommand("create_user")
-        cmd.add_element("copy", user_id)
-        return self._send_xml_command(cmd)
-
     def delete_filter(
         self, filter_id: str, *, ultimate: Optional[bool] = False
     ) -> Any:
@@ -1476,27 +1209,6 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_group")
         cmd.set_attribute("group_id", group_id)
-        cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
-    def delete_permission(
-        self, permission_id: str, *, ultimate: Optional[bool] = False
-    ) -> Any:
-        """Deletes an existing permission
-
-        Arguments:
-            permission_id: UUID of the permission to be deleted.
-            ultimate: Whether to remove entirely, or to the trashcan.
-        """
-        if not permission_id:
-            raise RequiredArgument(
-                function=self.delete_permission.__name__,
-                argument='permission_id',
-            )
-
-        cmd = XmlCommand("delete_permission")
-        cmd.set_attribute("permission_id", permission_id)
         cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
@@ -1588,46 +1300,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd = XmlCommand("delete_tag")
         cmd.set_attribute("tag_id", tag_id)
         cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
-    def delete_user(
-        self,
-        user_id: str = None,
-        *,
-        name: Optional[str] = None,
-        inheritor_id: Optional[str] = None,
-        inheritor_name: Optional[str] = None,
-    ) -> Any:
-        """Deletes an existing user
-
-        Either user_id or name must be passed.
-
-        Arguments:
-            user_id: UUID of the task to be deleted.
-            name: The name of the user to be deleted.
-            inheritor_id: The ID of the inheriting user or "self". Overrides
-                inheritor_name.
-            inheritor_name: The name of the inheriting user.
-
-        """
-        if not user_id and not name:
-            raise RequiredArgument(
-                function=self.delete_user.__name__, argument='user_id or name'
-            )
-
-        cmd = XmlCommand("delete_user")
-
-        if user_id:
-            cmd.set_attribute("user_id", user_id)
-
-        if name:
-            cmd.set_attribute("name", name)
-
-        if inheritor_id:
-            cmd.set_attribute("inheritor_id", inheritor_id)
-        if inheritor_name:
-            cmd.set_attribute("inheritor_name", inheritor_name)
 
         return self._send_xml_command(cmd)
 
@@ -1763,51 +1435,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("group_id", group_id)
         return self._send_xml_command(cmd)
 
-    def get_permissions(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-    ) -> Any:
-        """Request a list of permissions
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get permissions in the trashcan instead
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_permissions")
-
-        add_filter(cmd, filter, filter_id)
-
-        if trash is not None:
-            cmd.set_attribute("trash", to_bool(trash))
-
-        return self._send_xml_command(cmd)
-
-    def get_permission(self, permission_id: str) -> Any:
-        """Request a single permission
-
-        Arguments:
-            permission_id: UUID of an existing permission
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_permissions")
-
-        if not permission_id:
-            raise RequiredArgument(
-                function=self.get_permission.__name__, argument='permission_id'
-            )
-
-        cmd.set_attribute("permission_id", permission_id)
-        return self._send_xml_command(cmd)
-
     def get_preferences(
         self, *, nvt_oid: Optional[str] = None, config_id: Optional[str] = None
     ) -> Any:
@@ -1918,12 +1545,10 @@ class GmpV208Mixin(GvmProtocol):
         Arguments:
             report_format_id: UUID of an existing report format
                               or ReportFormatType (enum)
-
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
         cmd = XmlCommand("get_report_formats")
-
         if not report_format_id:
             raise RequiredArgument(
                 function=self.get_report_format.__name__,
@@ -2176,43 +1801,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.set_attribute("tag_id", tag_id)
         return self._send_xml_command(cmd)
 
-    def get_users(
-        self, *, filter: Optional[str] = None, filter_id: Optional[str] = None
-    ) -> Any:
-        """Request a list of users
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_users")
-
-        add_filter(cmd, filter, filter_id)
-
-        return self._send_xml_command(cmd)
-
-    def get_user(self, user_id: str) -> Any:
-        """Request a single user
-
-        Arguments:
-            user_id: UUID of an existing user
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_users")
-
-        if not user_id:
-            raise RequiredArgument(
-                function=self.get_user.__name__, argument='user_id'
-            )
-
-        cmd.set_attribute("user_id", user_id)
-        return self._send_xml_command(cmd)
-
     def get_version(self) -> Any:
         """Get the Greenbone Manager Protocol version used by the remote gvmd
         Returns:
@@ -2448,104 +2036,6 @@ class GmpV208Mixin(GvmProtocol):
             cmd.add_element("name", name)
 
         cmd.add_element("value", to_base64(value))
-
-        return self._send_xml_command(cmd)
-
-    def modify_user(
-        self,
-        user_id: str = None,
-        name: str = None,
-        *,
-        new_name: Optional[str] = None,
-        comment: Optional[str] = None,
-        password: Optional[str] = None,
-        auth_source: Optional[UserAuthType] = None,
-        role_ids: Optional[List[str]] = None,
-        hosts: Optional[List[str]] = None,
-        hosts_allow: Optional[bool] = False,
-        ifaces: Optional[List[str]] = None,
-        ifaces_allow: Optional[bool] = False,
-        group_ids: Optional[List[str]] = None,
-    ) -> Any:
-        """Modifies an existing user. Most of the fields need to be supplied
-        for changing a single field even if no change is wanted for those.
-        Else empty values are inserted for the missing fields instead.
-        Arguments:
-            user_id: UUID of the user to be modified. Overrides name element
-                argument.
-            name: The name of the user to be modified. Either user_id or name
-                must be passed.
-            new_name: The new name for the user.
-            comment: Comment on the user.
-            password: The password for the user.
-            auth_source: Source allowed for authentication for this user.
-            roles_id: List of roles UUIDs for the user.
-            hosts: User access rules: List of hosts.
-            hosts_allow: Defines how the hosts list is to be interpreted.
-                If False (default) the list is treated as a deny list.
-                All hosts are allowed by default except those provided by
-                the hosts parameter. If True the list is treated as a
-                allow list. All hosts are denied by default except those
-                provided by the hosts parameter.
-            ifaces: User access rules: List of ifaces.
-            ifaces_allow: Defines how the ifaces list is to be interpreted.
-                If False (default) the list is treated as a deny list.
-                All ifaces are allowed by default except those provided by
-                the ifaces parameter. If True the list is treated as a
-                allow list. All ifaces are denied by default except those
-                provided by the ifaces parameter.
-            group_ids: List of group UUIDs for the user.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not user_id and not name:
-            raise RequiredArgument(
-                function=self.modify_user.__name__, argument='user_id or name'
-            )
-
-        cmd = XmlCommand("modify_user")
-
-        if user_id:
-            cmd.set_attribute("user_id", user_id)
-        else:
-            cmd.add_element("name", name)
-
-        if new_name:
-            cmd.add_element("new_name", new_name)
-
-        if role_ids:
-            for role in role_ids:
-                cmd.add_element("role", attrs={"id": role})
-
-        if hosts:
-            cmd.add_element(
-                "hosts",
-                to_comma_list(hosts),
-                attrs={"allow": to_bool(hosts_allow)},
-            )
-
-        if ifaces:
-            cmd.add_element(
-                "ifaces",
-                to_comma_list(ifaces),
-                attrs={"allow": to_bool(ifaces_allow)},
-            )
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if password:
-            cmd.add_element("password", password)
-
-        if auth_source:
-            _xmlauthsrc = cmd.add_element("sources")
-            _xmlauthsrc.add_element("source", auth_source.value)
-
-        if group_ids:
-            _xmlgroups = cmd.add_element("groups")
-            for group_id in group_ids:
-                _xmlgroups.add_element("group", attrs={"id": group_id})
 
         return self._send_xml_command(cmd)
 

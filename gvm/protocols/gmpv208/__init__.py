@@ -67,6 +67,11 @@ from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
 )
 from gvm.protocols.gmpv208.entities.overrides import OverridesMixin
+from gvm.protocols.gmpv208.entities.permissions import (
+    PermissionsMixin,
+    PermissionSubjectType,
+    get_permission_subject_type_from_string,
+)
 from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
@@ -118,6 +123,7 @@ class Gmp(
     NotesMixin,
     OperatingSystemsMixin,
     OverridesMixin,
+    PermissionsMixin,
     PoliciesMixin,
     PortListMixin,
     ReportsMixin,

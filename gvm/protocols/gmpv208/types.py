@@ -244,36 +244,6 @@ def get_hosts_ordering_from_string(
         ) from None
 
 
-class PermissionSubjectType(Enum):
-    """Enum for permission subject type"""
-
-    USER = 'user'
-    GROUP = 'group'
-    ROLE = 'role'
-
-
-def get_permission_subject_type_from_string(
-    subject_type: Optional[str],
-) -> Optional[PermissionSubjectType]:
-    """Convert a permission subject type string to an actual
-    PermissionSubjectType instance
-
-    Arguments:
-        subject_type: Permission subject type string to convert to a
-            PermissionSubjectType
-    """
-    if not subject_type:
-        return None
-
-    try:
-        return PermissionSubjectType[subject_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='subject_type',
-            function=get_permission_subject_type_from_string.__name__,
-        ) from None
-
-
 class TimeUnit(Enum):
     """Enum for time units"""
 
