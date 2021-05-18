@@ -70,6 +70,11 @@ from gvm.protocols.gmpv208.entities.report_formats import (
     get_report_format_id_from_string,
 )
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
+from gvm.protocols.gmpv208.entities.scanners import (
+    ScannersMixin,
+    ScannerType,
+    get_scanner_type_from_string,
+)
 from gvm.protocols.gmpv208.entities.secinfo import (
     get_info_type_from_string,
     InfoType,
@@ -112,6 +117,7 @@ class Gmp(
     TasksMixin,
     TLSCertificateMixin,
     ScanConfigsMixin,
+    ScannersMixin,
     SecInfoMixin,
 ):
 

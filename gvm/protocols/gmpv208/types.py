@@ -31,7 +31,6 @@ __all__ = [
     "FilterType",
     "HostsOrdering",
     "PermissionSubjectType",
-    "ScannerType",
     "SortOrder",
     "TicketStatus",
     "TimeUnit",
@@ -42,7 +41,6 @@ __all__ = [
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
     "get_permission_subject_type_from_string",
-    "get_scanner_type_from_string",
     "get_sort_order_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
@@ -243,64 +241,6 @@ def get_aggregate_statistic_from_string(
             argument='aggregate_statistic',
             function=get_aggregate_statistic_from_string.__name__,
         ) from None
-
-
-class ScannerType(Enum):
-    """Enum for scanner type"""
-
-    OSP_SCANNER_TYPE = "1"
-    OPENVAS_SCANNER_TYPE = "2"
-    CVE_SCANNER_TYPE = "3"
-    GMP_SCANNER_TYPE = "4"  # formerly slave scanner
-    GREENBONE_SENSOR_SCANNER_TYPE = "5"
-
-
-def get_scanner_type_from_string(
-    scanner_type: Optional[str],
-) -> Optional[ScannerType]:
-    """Convert a scanner type string to an actual ScannerType instance
-
-    Arguments:
-        scanner_type: Scanner type string to convert to a ScannerType
-    """
-    if not scanner_type:
-        return None
-
-    scanner_type = scanner_type.lower()
-
-    if (
-        scanner_type == ScannerType.OSP_SCANNER_TYPE.value
-        or scanner_type == 'osp'
-    ):
-        return ScannerType.OSP_SCANNER_TYPE
-
-    if (
-        scanner_type == ScannerType.OPENVAS_SCANNER_TYPE.value
-        or scanner_type == 'openvas'
-    ):
-        return ScannerType.OPENVAS_SCANNER_TYPE
-
-    if (
-        scanner_type == ScannerType.CVE_SCANNER_TYPE.value
-        or scanner_type == 'cve'
-    ):
-        return ScannerType.CVE_SCANNER_TYPE
-
-    if (
-        scanner_type == ScannerType.GMP_SCANNER_TYPE.value
-        or scanner_type == 'gmp'
-    ):
-        return ScannerType.GMP_SCANNER_TYPE
-
-    if (
-        scanner_type == ScannerType.GREENBONE_SENSOR_SCANNER_TYPE.value
-        or scanner_type == 'greenbone'
-    ):
-        return ScannerType.GREENBONE_SENSOR_SCANNER_TYPE
-
-    raise InvalidArgument(
-        argument='scanner_type', function=get_scanner_type_from_string.__name__
-    )
 
 
 class SortOrder(Enum):
