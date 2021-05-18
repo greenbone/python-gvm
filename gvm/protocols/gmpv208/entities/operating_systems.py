@@ -39,7 +39,7 @@ class OperatingSystemsMixin:
         if not operating_system_id:
             raise RequiredArgument(
                 function=self.delete_operating_system.__name__,
-                argument='operating_system_id or report_id',
+                argument='operating_system_id',
             )
 
         cmd = XmlCommand("delete_asset")
@@ -56,7 +56,6 @@ class OperatingSystemsMixin:
         """Request a list of operating_systems
 
         Arguments:
-            operating_system_type: Either 'os' or 'host'
             filter: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
 
@@ -77,7 +76,6 @@ class OperatingSystemsMixin:
 
         Arguments:
             operating_system_id: UUID of an existing operating_system
-            operating_system_type: Either 'os' or 'host'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -98,11 +96,12 @@ class OperatingSystemsMixin:
     def modify_operating_system(
         self, operating_system_id: str, *, comment: Optional[str] = None
     ) -> Any:
-        """Modifies an existing operating_system.
+        """Modifies an existing operating system.
 
         Arguments:
             operating_system_id: UUID of the operating_system to be modified.
-            comment: Comment for the operating_system.
+            comment: Comment for the operating_system. Not passing a comment
+                arguments clears the comment for this operating system.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -115,6 +114,8 @@ class OperatingSystemsMixin:
 
         cmd = XmlCommand("modify_asset")
         cmd.set_attribute("asset_id", operating_system_id)
+        if not comment:
+            comment = ""
         cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)

@@ -77,7 +77,6 @@ class HostsMixin:
         """Request a list of hosts
 
         Arguments:
-            host_type: Either 'os' or 'host'
             filter: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
 
@@ -98,7 +97,6 @@ class HostsMixin:
 
         Arguments:
             host_id: UUID of an existing host
-            host_type: Either 'os' or 'host'
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -122,7 +120,8 @@ class HostsMixin:
 
         Arguments:
             host_id: UUID of the host to be modified.
-            comment: Comment for the host.
+            comment: Comment for the host. Not passing a comment
+                arguments clears the comment for this host.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -134,6 +133,8 @@ class HostsMixin:
 
         cmd = XmlCommand("modify_asset")
         cmd.set_attribute("asset_id", host_id)
+        if not comment:
+            comment = ""
         cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
