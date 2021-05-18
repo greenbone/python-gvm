@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import PermissionSubjectType, EntityType
 
 
-class GmpModifyPermissionTestCase:
+class GmpModifyPermissionTestMixin:
     def test_modify_permission(self):
         self.gmp.modify_permission(permission_id='p1')
 

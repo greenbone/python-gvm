@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import PermissionSubjectType, EntityType
 
 
-class GmpCreatePermissionTestCase:
+class GmpCreatePermissionTestMixin:
     def test_create_permission(self):
         self.gmp.create_permission(
             'foo', subject_id='u1', subject_type=PermissionSubjectType.USER
