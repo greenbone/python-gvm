@@ -75,12 +75,6 @@ class Gmpv208ClonePolicyTestCase(GmpClonePolicyTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneTLSCertificateTestCase(
-    GmpCloneTLSCertificateTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208CreateAuditCommandTestCase(
     GmpCreateAuditCommandTestCase, Gmpv208TestCase
 ):
@@ -107,13 +101,6 @@ class Gmpv208CreatePolicyTestCase(GmpCreatePolicyTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateTLSCertificateTestCase(
-    GmpCreateTLSCertificateTestCase, Gmpv208TestCase
-):
-
-    pass
-
-
 class Gmpv208DeleteAuditTestCase(GmpDeleteAuditTestCase, Gmpv208TestCase):
     pass
 
@@ -124,12 +111,6 @@ class Gmpv208DeleteConfigTestCase(GmpDeleteConfigTestCase, Gmpv208TestCase):
 
 class Gmpv208DeletePolicyTestCase(GmpDeletePolicyTestCase, Gmpv208TestCase):
 
-    pass
-
-
-class Gmpv208DeleteTLSCertificateTestCase(
-    GmpDeleteTLSCertificateTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -155,18 +136,6 @@ class Gmpv208GetPoliciesTestCase(GmpGetPoliciesTestCase, Gmpv208TestCase):
 
 
 class Gmpv208GetPolicyTestCase(GmpGetPolicyTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetTlsCertificateTestCase(
-    GmpGetTlsCertificateTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208GetTLSCertificatesTestCase(
-    GmpGetTLSCertificatesTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -219,12 +188,6 @@ class Gmpv208ModifyPolicySetScannerPreferenceTestCase(
 
 
 class Gmpv208ModifyTicketTestCase(GmpModifyTicketTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyTLSCertificateTestCase(
-    GmpModifyTLSCertificateTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -344,19 +307,11 @@ class Gmpv208CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateHostTestCase(GmpCreateHostTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv208TestCase):
     pass
 
 
 class Gmpv208CreateUserTestCase(GmpCreateUserTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeleteAssetTestCase(GmpDeleteAssetTestCase, Gmpv208TestCase):
     pass
 
 
@@ -415,14 +370,6 @@ class Gmpv208DescribeAuthCommandTestCase(
 class Gmpv208EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208GetAssetTestCase(GmpGetAssetTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetAssetsTestCase(GmpGetAssetsTestCase, Gmpv208TestCase):
     pass
 
 
@@ -549,10 +496,6 @@ class Gmpv208ImportConfigTestCase(GmpImportConfigTestCase, Gmpv208TestCase):
 class Gmpv208ImportReportFormatTestCase(
     GmpImportReportFormatTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208ModifyAssetTestCase(GmpModifyAssetTestCase, Gmpv208TestCase):
     pass
 
 

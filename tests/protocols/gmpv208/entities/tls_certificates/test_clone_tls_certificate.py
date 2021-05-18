@@ -19,26 +19,19 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyTLSCertificateTestCase:
-    def test_modify_tls_certificate(self):
-        self.gmp.modify_tls_certificate('c1')
+class GmpCloneTLSCertificateTestMixin:
+    def test_clone(self):
+        self.gmp.clone_tls_certificate('a1')
 
         self.connection.send.has_been_called_with(
-            '<modify_tls_certificate tls_certificate_id="c1"/>'
+            '<create_tls_certificate>'
+            '<copy>a1</copy>'
+            '</create_tls_certificate>'
         )
 
-    def test_modify_tls_certificate_with_name(self):
-        self.gmp.modify_tls_certificate('c1', name='foo')
-
-        self.connection.send.has_been_called_with(
-            '<modify_tls_certificate tls_certificate_id="c1">'
-            '<name>foo</name>'
-            '</modify_tls_certificate>'
-        )
-
-    def test_missing_tls_certificate_id(self):
+    def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_tls_certificate(name='foo', tls_certificate_id='')
+            self.gmp.clone_tls_certificate('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_tls_certificate(name='foo', tls_certificate_id=None)
+            self.gmp.clone_tls_certificate(None)

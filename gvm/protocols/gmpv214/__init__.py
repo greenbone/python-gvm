@@ -37,6 +37,10 @@ from gvm.protocols.gmpv208.entities.alerts import (
     get_alert_event_from_string,
     get_alert_method_from_string,
 )
+from gvm.protocols.gmpv208.entities.hosts import HostsMixin
+from gvm.protocols.gmpv208.entities.operating_systems import (
+    OperatingSystemsMixin,
+)
 from gvm.protocols.gmpv208.entities.port_lists import (
     PortListMixin,
     PortRangeType,
@@ -59,7 +63,10 @@ from gvm.protocols.gmpv208.entities.severity import (
 )
 
 from gvm.protocols.gmpv208.entities.tasks import TaskMixin
+from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
+
+# NEW IN 214
 from gvm.protocols.gmpv214.entities.notes import NotesMixin
 from gvm.protocols.gmpv214.entities.overrides import OverridesMixin
 from gvm.protocols.gmpv214.entities.targets import (
@@ -81,13 +88,16 @@ class Gmp(
     GmpV214Mixin,
     GmpV208Mixin,
     AlertsMixin,
+    HostsMixin,
     PortListMixin,
     NotesMixin,
+    OperatingSystemsMixin,
     OverridesMixin,
     ReportsMixin,
     ResultsMixin,
     TargetsMixin,
     TaskMixin,
+    TLSCertificateMixin,
     SecInfoMixin,
 ):
 

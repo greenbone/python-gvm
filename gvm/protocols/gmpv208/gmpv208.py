@@ -438,49 +438,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_tls_certificate(
-        self,
-        name: str,
-        certificate: str,
-        *,
-        comment: Optional[str] = None,
-        trust: Optional[bool] = None,
-    ) -> Any:
-        """Create a new TLS certificate
-
-        Arguments:
-            name: Name of the TLS certificate, defaulting to the MD5
-                fingerprint.
-            certificate: The Base64 encoded certificate data (x.509 DER or PEM).
-            comment: Comment for the TLS certificate.
-            trust: Whether the certificate is trusted.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not name:
-            raise RequiredArgument(
-                function=self.create_tls_certificate.__name__, argument='name'
-            )
-        if not certificate:
-            raise RequiredArgument(
-                function=self.create_tls_certificate.__name__,
-                argument='certificate',
-            )
-
-        cmd = XmlCommand("create_tls_certificate")
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        cmd.add_element("name", name)
-        cmd.add_element("certificate", certificate)
-
-        if trust:
-            cmd.add_element("trust", to_bool(trust))
-
-        return self._send_xml_command(cmd)
-
     def get_aggregates(
         self,
         resource_type: EntityType,
@@ -641,67 +598,6 @@ class GmpV208Mixin(GvmProtocol):
 
         # Add additional keyword args as attributes for backward compatibility.
         cmd.set_attributes(kwargs)
-
-        return self._send_xml_command(cmd)
-
-    def get_tls_certificates(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        include_certificate_data: Optional[bool] = None,
-        details: Optional[bool] = None,
-    ) -> Any:
-        """Request a list of TLS certificates
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            include_certificate_data: Whether to include the certificate data in
-                the response
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-
-        cmd = XmlCommand("get_tls_certificates")
-
-        add_filter(cmd, filter, filter_id)
-
-        if details is not None:
-            cmd.set_attribute("details", to_bool(details))
-
-        if include_certificate_data is not None:
-            cmd.set_attribute(
-                "include_certificate_data", to_bool(include_certificate_data)
-            )
-
-        return self._send_xml_command(cmd)
-
-    def get_tls_certificate(self, tls_certificate_id: str) -> Any:
-        """Request a single TLS certificate
-
-        Arguments:
-            tls_certificate_id: UUID of an existing TLS certificate
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_tls_certificates")
-
-        if not tls_certificate_id:
-            raise RequiredArgument(
-                function=self.get_tls_certificate.__name__,
-                argument='tls_certificate_id',
-            )
-
-        cmd.set_attribute("tls_certificate_id", tls_certificate_id)
-
-        # for single tls certificate always request cert data
-        cmd.set_attribute("include_certificate_data", "1")
-
-        # for single entity always request all details
-        cmd.set_attribute("details", "1")
 
         return self._send_xml_command(cmd)
 
@@ -1035,45 +931,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_tls_certificate(
-        self,
-        tls_certificate_id: str,
-        *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        trust: Optional[bool] = None,
-    ) -> Any:
-        """Modifies an existing TLS certificate.
-
-        Arguments:
-            tls_certificate_id: UUID of the TLS certificate to be modified.
-            name: Name of the TLS certificate, defaulting to the MD5 fingerprint
-            comment: Comment for the TLS certificate.
-            trust: Whether the certificate is trusted.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not tls_certificate_id:
-            raise RequiredArgument(
-                function=self.modify_tls_certificate.__name__,
-                argument='tls_certificate_id',
-            )
-
-        cmd = XmlCommand("modify_tls_certificate")
-        cmd.set_attribute("tls_certificate_id", str(tls_certificate_id))
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if name:
-            cmd.add_element("name", name)
-
-        if trust:
-            cmd.add_element("trust", to_bool(trust))
-
-        return self._send_xml_command(cmd)
-
     def clone_ticket(self, ticket_id: str) -> Any:
         """Clone an existing ticket
 
@@ -1091,27 +948,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd = XmlCommand("create_ticket")
 
         _copy = cmd.add_element("copy", ticket_id)
-
-        return self._send_xml_command(cmd)
-
-    def clone_tls_certificate(self, tls_certificate_id: str) -> Any:
-        """Modifies an existing TLS certificate.
-
-        Arguments:
-            tls_certificate_id: The UUID of an existing TLS certificate
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not tls_certificate_id:
-            raise RequiredArgument(
-                function=self.clone_tls_certificate.__name__,
-                argument='tls_certificate_id',
-            )
-
-        cmd = XmlCommand("create_tls_certificate")
-
-        cmd.add_element("copy", tls_certificate_id)
 
         return self._send_xml_command(cmd)
 
@@ -1380,23 +1216,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd = XmlCommand("delete_config")
         cmd.set_attribute("config_id", policy_id)
         cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
-    def delete_tls_certificate(self, tls_certificate_id: str) -> Any:
-        """Deletes an existing tls certificate
-
-        Arguments:
-            tls_certificate_id: UUID of the tls certificate to be deleted.
-        """
-        if not tls_certificate_id:
-            raise RequiredArgument(
-                function=self.delete_tls_certificate.__name__,
-                argument='tls_certificate_id',
-            )
-
-        cmd = XmlCommand("delete_tls_certificate")
-        cmd.set_attribute("tls_certificate_id", tls_certificate_id)
 
         return self._send_xml_command(cmd)
 
@@ -2678,31 +2497,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", group_id)
         return self._send_xml_command(cmd)
 
-    def create_host(self, name: str, *, comment: Optional[str] = None) -> Any:
-        """Create a new host asset
-
-        Arguments:
-            name: Name for the new host asset
-            comment: Comment for the new host asset
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not name:
-            raise RequiredArgument(
-                function=self.create_host.__name__, argument='name'
-            )
-
-        cmd = XmlCommand("create_asset")
-        asset = cmd.add_element("asset")
-        asset.add_element("type", "host")  # ignored for gmp7, required for gmp8
-        asset.add_element("name", name)
-
-        if comment:
-            asset.add_element("comment", comment)
-
-        return self._send_xml_command(cmd)
-
     def clone_permission(self, permission_id: str) -> Any:
         """Clone an existing permission
 
@@ -3031,30 +2825,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", user_id)
         return self._send_xml_command(cmd)
 
-    def delete_asset(
-        self, *, asset_id: Optional[str] = None, report_id: Optional[str] = None
-    ) -> Any:
-        """Deletes an existing asset
-
-        Arguments:
-            asset_id: UUID of the single asset to delete.
-            report_id: UUID of report from which to get all
-                assets to delete.
-        """
-        if not asset_id and not report_id:
-            raise RequiredArgument(
-                function=self.delete_asset.__name__,
-                argument='asset_id or report_id',
-            )
-
-        cmd = XmlCommand("delete_asset")
-        if asset_id:
-            cmd.set_attribute("asset_id", asset_id)
-        else:
-            cmd.set_attribute("report_id", report_id)
-
-        return self._send_xml_command(cmd)
-
     def delete_config(
         self, config_id: str, *, ultimate: Optional[bool] = False
     ) -> Any:
@@ -3328,67 +3098,6 @@ class GmpV208Mixin(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         return self._send_xml_command(XmlCommand("empty_trashcan"))
-
-    def get_assets(
-        self,
-        asset_type: AssetType,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-    ) -> Any:
-        """Request a list of assets
-
-        Arguments:
-            asset_type: Either 'os' or 'host'
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not isinstance(asset_type, AssetType):
-            raise InvalidArgumentType(
-                function=self.get_assets.__name__,
-                argument='asset_type',
-                arg_type=AssetType.__name__,
-            )
-
-        cmd = XmlCommand("get_assets")
-
-        cmd.set_attribute("type", asset_type.value)
-
-        add_filter(cmd, filter, filter_id)
-
-        return self._send_xml_command(cmd)
-
-    def get_asset(self, asset_id: str, asset_type: AssetType) -> Any:
-        """Request a single asset
-
-        Arguments:
-            asset_id: UUID of an existing asset
-            asset_type: Either 'os' or 'host'
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_assets")
-
-        if not isinstance(asset_type, AssetType):
-            raise InvalidArgumentType(
-                function=self.get_asset.__name__,
-                argument='asset_type',
-                arg_type=AssetType.__name__,
-            )
-
-        if not asset_id:
-            raise RequiredArgument(
-                function=self.get_asset.__name__, argument='asset_id'
-            )
-
-        cmd.set_attribute("asset_id", asset_id)
-        cmd.set_attribute("type", asset_type.value)
-
-        return self._send_xml_command(cmd)
 
     def get_credentials(
         self,
@@ -4124,27 +3833,6 @@ class GmpV208Mixin(GvmProtocol):
                 )
 
             cmd.set_attribute("format", format)
-
-        return self._send_xml_command(cmd)
-
-    def modify_asset(self, asset_id: str, comment: Optional[str] = "") -> Any:
-        """Modifies an existing asset.
-
-        Arguments:
-            asset_id: UUID of the asset to be modified.
-            comment: Comment for the asset.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not asset_id:
-            raise RequiredArgument(
-                function=self.modify_asset.__name__, argument='asset_id'
-            )
-
-        cmd = XmlCommand("modify_asset")
-        cmd.set_attribute("asset_id", asset_id)
-        cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
 

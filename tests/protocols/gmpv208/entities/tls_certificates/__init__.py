@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,22 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
-
-
-class GmpCloneTLSCertificateTestCase:
-    def test_clone(self):
-        self.gmp.clone_tls_certificate('a1')
-
-        self.connection.send.has_been_called_with(
-            '<create_tls_certificate>'
-            '<copy>a1</copy>'
-            '</create_tls_certificate>'
-        )
-
-    def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_tls_certificate('')
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_tls_certificate(None)
+from .test_clone_tls_certificate import GmpCloneTLSCertificateTestMixin
+from .test_create_tls_certificate import GmpCreateTLSCertificateTestMixin
+from .test_delete_tls_certificate import GmpDeleteTLSCertificateTestMixin
+from .test_get_tls_certificate import GmpGetTLSCertificateTestMixin
+from .test_get_tls_certificates import GmpGetTLSCertificatesTestMixin
+from .test_modify_tls_certificate import GmpModifyTLSCertificateTestMixin

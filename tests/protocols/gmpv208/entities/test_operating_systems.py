@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,21 +16,34 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from ...gmpv208 import Gmpv208TestCase
+from .operating_systems import (
+    GmpDeleteOperatingSystemTestMixin,
+    GmpGetOperatingSystemsTestMixin,
+    GmpGetOperatingSystemTestMixin,
+    GmpModifyOperatingSystemTestMixin,
+)
 
 
-class GmpGetTlsCertificateTestCase:
-    def test_get_tls_certificate(self):
-        self.gmp.get_tls_certificate('t1')
+class Gmpv208DeleteOperatingSystemTestCase(
+    GmpDeleteOperatingSystemTestMixin, Gmpv208TestCase
+):
+    pass
 
-        self.connection.send.has_been_called_with(
-            '<get_tls_certificates tls_certificate_id="t1" '
-            'include_certificate_data="1" details="1"/>'
-        )
 
-    def test_fail_without_tls_certificate_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.get_tls_certificate(None)
+class Gmpv208GetOperatingSystemTestCase(
+    GmpGetOperatingSystemTestMixin, Gmpv208TestCase
+):
+    pass
 
-        with self.assertRaises(GvmError):
-            self.gmp.get_tls_certificate('')
+
+class Gmpv208GetOperatingSystemsTestCase(
+    GmpGetOperatingSystemsTestMixin, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208ModifyOperatingSystemTestCase(
+    GmpModifyOperatingSystemTestMixin, Gmpv208TestCase
+):
+    pass

@@ -75,12 +75,6 @@ class Gmpv214ClonePolicyTestCase(GmpClonePolicyTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneTLSCertificateTestCase(
-    GmpCloneTLSCertificateTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214CreateAuditCommandTestCase(
     GmpCreateAuditCommandTestCase, Gmpv214TestCase
 ):
@@ -107,13 +101,6 @@ class Gmpv214CreatePolicyTestCase(GmpCreatePolicyTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreateTLSCertificateTestCase(
-    GmpCreateTLSCertificateTestCase, Gmpv214TestCase
-):
-
-    pass
-
-
 class Gmpv214DeleteAuditTestCase(GmpDeleteAuditTestCase, Gmpv214TestCase):
     pass
 
@@ -124,12 +111,6 @@ class Gmpv214DeleteConfigTestCase(GmpDeleteConfigTestCase, Gmpv214TestCase):
 
 class Gmpv214DeletePolicyTestCase(GmpDeletePolicyTestCase, Gmpv214TestCase):
 
-    pass
-
-
-class Gmpv214DeleteTLSCertificateTestCase(
-    GmpDeleteTLSCertificateTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -155,18 +136,6 @@ class Gmpv214GetPoliciesTestCase(GmpGetPoliciesTestCase, Gmpv214TestCase):
 
 
 class Gmpv214GetPolicyTestCase(GmpGetPolicyTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetTlsCertificateTestCase(
-    GmpGetTlsCertificateTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214GetTLSCertificatesTestCase(
-    GmpGetTLSCertificatesTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -219,12 +188,6 @@ class Gmpv214ModifyPolicySetScannerPreferenceTestCase(
 
 
 class Gmpv214ModifyTicketTestCase(GmpModifyTicketTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyTLSCertificateTestCase(
-    GmpModifyTLSCertificateTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -336,19 +299,11 @@ class Gmpv214CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreateHostTestCase(GmpCreateHostTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv214TestCase):
     pass
 
 
 class Gmpv214CreateUserTestCase(GmpCreateUserTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteAssetTestCase(GmpDeleteAssetTestCase, Gmpv214TestCase):
     pass
 
 
@@ -407,14 +362,6 @@ class Gmpv214DescribeAuthCommandTestCase(
 class Gmpv214EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214GetAssetTestCase(GmpGetAssetTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetAssetsTestCase(GmpGetAssetsTestCase, Gmpv214TestCase):
     pass
 
 
@@ -541,10 +488,6 @@ class Gmpv214ImportConfigTestCase(GmpImportConfigTestCase, Gmpv214TestCase):
 class Gmpv214ImportReportFormatTestCase(
     GmpImportReportFormatTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214ModifyAssetTestCase(GmpModifyAssetTestCase, Gmpv214TestCase):
     pass
 
 

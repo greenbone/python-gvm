@@ -19,23 +19,9 @@
 from gvm.errors import GvmError
 
 
-class GmpDeleteAssetTestCase:
-    def test_delete_asset(self):
-        self.gmp.delete_asset(asset_id='a1')
-
-        self.connection.send.has_been_called_with(
-            '<delete_asset asset_id="a1"/>'
-        )
-
-    def test_delete_from_report(self):
-        self.gmp.delete_asset(report_id='a1')
-
-        self.connection.send.has_been_called_with(
-            '<delete_asset report_id="a1"/>'
-        )
-
-    def test_delete_passing_asset_and_report(self):
-        self.gmp.delete_asset(report_id='r1', asset_id='a1')
+class GmpDeleteOperatingSystemTestMixin:
+    def test_delete_operating_system(self):
+        self.gmp.delete_operating_system(operating_system_id='a1')
 
         self.connection.send.has_been_called_with(
             '<delete_asset asset_id="a1"/>'
@@ -43,4 +29,4 @@ class GmpDeleteAssetTestCase:
 
     def test_missing_arguments(self):
         with self.assertRaises(GvmError):
-            self.gmp.delete_asset()
+            self.gmp.delete_operating_system(None)

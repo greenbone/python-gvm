@@ -16,38 +16,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
 
+class GmpGetOperatingSystemsTestMixin:
+    def test_get_operating_systems(self):
+        self.gmp.get_operating_systems()
 
-class GmpCreateHostTestCase:
-    def test_missing_name(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.create_host(name=None)
+        self.connection.send.has_been_called_with('<get_assets type="os"/>')
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.create_host(name='')
-
-    def test_create_host_asset(self):
-        self.gmp.create_host(name='ipsum')
+    def test_get_operating_systems_with_filter(self):
+        self.gmp.get_operating_systems(filter='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<create_asset>'
-            '<asset>'
-            '<type>host</type>'
-            '<name>ipsum</name>'
-            '</asset>'
-            '</create_asset>'
+            '<get_assets type="os" filter="foo=bar"/>'
         )
 
-    def test_create_asset_with_comment(self):
-        self.gmp.create_host(name='ipsum', comment='lorem')
+    def test_get_operating_systems_with_filter_id(self):
+        self.gmp.get_operating_systems(filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<create_asset>'
-            '<asset>'
-            '<type>host</type>'
-            '<name>ipsum</name>'
-            '<comment>lorem</comment>'
-            '</asset>'
-            '</create_asset>'
+            '<get_assets type="os" filt_id="f1"/>'
         )

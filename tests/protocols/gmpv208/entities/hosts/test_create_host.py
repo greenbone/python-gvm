@@ -16,30 +16,38 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gvm.errors import RequiredArgument
 
-class GmpGetTLSCertificatesTestCase:
-    def test_get_tls_certificates(self):
-        self.gmp.get_tls_certificates()
 
-        self.connection.send.has_been_called_with('<get_tls_certificates/>')
+class GmpCreateHostTestMixin:
+    def test_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_host(name=None)
 
-    def test_get_tls_certificates_with_filter(self):
-        self.gmp.get_tls_certificates(filter='name=foo')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.create_host(name='')
+
+    def test_create_host_asset(self):
+        self.gmp.create_host(name='ipsum')
 
         self.connection.send.has_been_called_with(
-            '<get_tls_certificates filter="name=foo"/>'
+            '<create_asset>'
+            '<asset>'
+            '<type>host</type>'
+            '<name>ipsum</name>'
+            '</asset>'
+            '</create_asset>'
         )
 
-    def test_get_tls_certificates_with_include_certificate_data(self):
-        self.gmp.get_tls_certificates(include_certificate_data='1')
+    def test_create_asset_with_comment(self):
+        self.gmp.create_host(name='ipsum', comment='lorem')
 
         self.connection.send.has_been_called_with(
-            '<get_tls_certificates include_certificate_data="1"/>'
-        )
-
-    def test_get_tls_certificates_with_details(self):
-        self.gmp.get_tls_certificates(details='1')
-
-        self.connection.send.has_been_called_with(
-            '<get_tls_certificates details="1"/>'
+            '<create_asset>'
+            '<asset>'
+            '<type>host</type>'
+            '<name>ipsum</name>'
+            '<comment>lorem</comment>'
+            '</asset>'
+            '</create_asset>'
         )
