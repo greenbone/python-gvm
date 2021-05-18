@@ -2876,7 +2876,7 @@ class GmpV208Mixin(GvmProtocol):
         return self._send_xml_command(XmlCommand("get_version"))
 
     def help(
-        self, *, format: Optional[str] = None, help_type: Optional[str] = ""
+        self, *, format: Optional[str] = None, help_type: Optional[str] = None
     ) -> Any:
         """Get the help text
 

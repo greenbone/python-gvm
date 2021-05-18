@@ -208,7 +208,7 @@ class PoliciesMixin:
         self.modify_scan_config_set_name(config_id=policy_id, name=name)
 
     def modify_policy_set_comment(
-        self, policy_id: str, comment: Optional[str] = ""
+        self, policy_id: str, comment: Optional[str] = None
     ) -> Any:
         """Modifies the comment of an existing policy
 
