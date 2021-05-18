@@ -26,97 +26,20 @@ from gvm.errors import InvalidArgument
 
 __all__ = [
     "AggregateStatistic",
-    "EntityType",
     "FeedType",
     "FilterType",
     "HostsOrdering",
-    "PermissionSubjectType",
     "SortOrder",
     "TicketStatus",
     "TimeUnit",
-    "UserAuthType",
     "get_aggregate_statistic_from_string",
-    "get_entity_type_from_string",
     "get_feed_type_from_string",
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
-    "get_permission_subject_type_from_string",
     "get_sort_order_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
-    "get_user_auth_type_from_string",
 ]
-
-
-class EntityType(Enum):
-    """Enum for entity types"""
-
-    ALERT = "alert"
-    ASSET = "asset"
-    AUDIT = "audit"
-    CERT_BUND_ADV = "cert_bund_adv"
-    CPE = "cpe"
-    CREDENTIAL = "credential"
-    CVE = "cve"
-    DFN_CERT_ADV = "dfn_cert_adv"
-    FILTER = "filter"
-    GROUP = "group"
-    HOST = "host"
-    INFO = "info"
-    NOTE = "note"
-    NVT = "nvt"
-    OPERATING_SYSTEM = "os"
-    OVALDEF = "ovaldef"
-    OVERRIDE = "override"
-    PERMISSION = "permission"
-    POLICY = "policy"
-    PORT_LIST = "port_list"
-    REPORT = "report"
-    REPORT_FORMAT = "report_format"
-    RESULT = "result"
-    ROLE = "role"
-    SCAN_CONFIG = "config"
-    SCANNER = "scanner"
-    SCHEDULE = "schedule"
-    TAG = "tag"
-    TARGET = "target"
-    TASK = "task"
-    TICKET = "ticket"
-    TLS_CERTIFICATE = "tls_certificate"
-    USER = "user"
-    VULNERABILITY = "vuln"
-
-
-def get_entity_type_from_string(
-    entity_type: Optional[str],
-) -> Optional[EntityType]:
-    """Convert a entity type string to an actual EntityType instance
-
-    Arguments:
-        entity_type: Entity type string to convert to a EntityType
-    """
-    if not entity_type:
-        return None
-
-    if entity_type == 'vuln':
-        return EntityType.VULNERABILITY
-
-    if entity_type == 'os':
-        return EntityType.OPERATING_SYSTEM
-
-    if entity_type == 'config':
-        return EntityType.SCAN_CONFIG
-
-    if entity_type == 'tls_certificate':
-        return EntityType.TLS_CERTIFICATE
-
-    try:
-        return EntityType[entity_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='entity_type',
-            function=get_entity_type_from_string.__name__,
-        ) from None
 
 
 class FeedType(Enum):

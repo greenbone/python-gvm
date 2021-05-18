@@ -23,7 +23,6 @@ from gvm.errors import InvalidArgument
 
 from gvm.protocols.gmpv208.types import (
     AggregateStatistic,
-    EntityType,
     FeedType,
     FilterType,
     HostsOrdering,
@@ -33,7 +32,6 @@ from gvm.protocols.gmpv208.types import (
     TimeUnit,
     UserAuthType,
     get_aggregate_statistic_from_string,
-    get_entity_type_from_string,
     get_feed_type_from_string,
     get_filter_type_from_string,
     get_hosts_ordering_from_string,
@@ -47,7 +45,6 @@ from gvm.protocols.gmpv208.types import (
 
 __all__ = [
     "AggregateStatistic",
-    "EntityType",
     "FeedType",
     "FilterType",
     "HostsOrdering",
@@ -58,7 +55,6 @@ __all__ = [
     "TimeUnit",
     "UserAuthType",
     "get_aggregate_statistic_from_string",
-    "get_entity_type_from_string",
     "get_feed_type_from_string",
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",

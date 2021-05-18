@@ -1037,8 +1037,6 @@ class GmpV208Mixin(GvmProtocol):
                     icalendar=cal.to_ical(),
                     timezone='UTC'
                 )
-
-
         Arguments:
             name: Name of the new schedule
             icalendar: `iCalendar`_ (RFC 5545) based data.
@@ -2217,7 +2215,6 @@ class GmpV208Mixin(GvmProtocol):
 
     def get_version(self) -> Any:
         """Get the Greenbone Manager Protocol version used by the remote gvmd
-
         Returns:
             The response. See :py:meth:`send_command` for details.
         """

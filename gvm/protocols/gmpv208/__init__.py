@@ -49,6 +49,10 @@ from gvm.protocols.gmpv208.entities.credentials import (
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
 )
+from gvm.protocols.gmpv208.entities.entities import (
+    EntityType,
+    get_entity_type_from_string,
+)
 from gvm.protocols.gmpv208.entities.hosts import (
     HostsMixin,
 )
