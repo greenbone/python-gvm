@@ -27,20 +27,6 @@ class GmpDeleteHostTestMixin:
             '<delete_asset asset_id="a1"/>'
         )
 
-    def test_delete_from_report(self):
-        self.gmp.delete_host(report_id='a1')
-
-        self.connection.send.has_been_called_with(
-            '<delete_asset report_id="a1"/>'
-        )
-
-    def test_delete_passing_host_and_report(self):
-        self.gmp.delete_host(report_id='r1', host_id='a1')
-
-        self.connection.send.has_been_called_with(
-            '<delete_asset asset_id="a1"/>'
-        )
-
     def test_missing_arguments(self):
         with self.assertRaises(GvmError):
-            self.gmp.delete_host()
+            self.gmp.delete_host(None)

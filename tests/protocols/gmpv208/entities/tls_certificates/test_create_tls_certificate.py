@@ -21,7 +21,18 @@ from gvm.errors import RequiredArgument
 
 class GmpCreateTLSCertificateTestMixin:
     def test_create_tls_certificate(self):
-        self.gmp.create_tls_certificate('foo', 'c1', comment='bar')
+        self.gmp.create_tls_certificate('foo', 'c1', comment='bar', trust=True)
+
+        self.connection.send.has_been_called_with(
+            '<create_tls_certificate>'
+            '<comment>bar</comment>'
+            '<name>foo</name>'
+            '<certificate>c1</certificate>'
+            '<trust>1</trust>'
+            '</create_tls_certificate>'
+        )
+
+        self.gmp.create_tls_certificate('foo', 'c1', comment='bar', trust=False)
 
         self.connection.send.has_been_called_with(
             '<create_tls_certificate>'

@@ -13,9 +13,16 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Introduced new explicit API calls for SecInfo: `get_nvt()`, `get_nvt_list()`, `get_cpe()`, `get_cpe_list()`, `get_cve()`, `get_cve_list()`, `get_cert_bund_advisory()`, `get_cert_bund_advisory_list()`, `get_dnf_cert_advisory()`, `get_dnf_cert_advisory_list()`, `get_oval_definition()`, `get_oval_definition_list()`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 
 ### Changed
+* Detached the Scanner API calls from the GMP class into a new `ScannersMixin`. [#466](https://github.com/greenbone/python-gvm/pull/466)
+* Detached the Credential API calls from the GMP class into a new `CredentialsMixin`. [#466](https://github.com/greenbone/python-gvm/pull/466)
 * Changed all API calls for `_config` to `_scan_config` to match other Greenbone components. [#465](https://github.com/greenbone/python-gvm/pull/465)
 * Detached Config and Policy calls from GMP class into new `ScanConfigsMixin` and `PoliciesMixin`. [#465](https://github.com/greenbone/python-gvm/pull/465)
 * Detached the Audit API calls from the GMP class into a new `AuditsMixin`. [#464](https://github.com/greenbone/python-gvm/pull/464)
+* Split up `get_asset(s)` into `get_host(s)` and `get_operating_system(s)`. [#459](https://github.com/greenbone/python-gvm/pull/459)
+* Split up `delete_asset` into `delete_host` and `delete_operating_system`. [#459](https://github.com/greenbone/python-gvm/pull/459)
+* Split up `modify_asset` into `modify_host` and `modify_operating_system`. [#459](https://github.com/greenbone/python-gvm/pull/459)
+* Deleted `AssetType`. It is not required anymore. [#459](https://github.com/greenbone/python-gvm/pull/458)
+* Detach TLS-Certificates and assets into `TLSCertificatesMixin`, `HostsMixin` and `OperatingSystemsMixin`. [#459](https://github.com/greenbone/python-gvm/pull/458)
 * Detached the Alerts API calls from the GMP class into a new `AlertsMixin`. [#458](https://github.com/greenbone/python-gvm/pull/458)
 * Detached the Notes and Overrides API calls from the GMP class into a new `NotesMixin` and `OverridesMixin`. [#457](https://github.com/greenbone/python-gvm/pull/457)
 * Changed the API calls `get_nvt()` and `get_nvts()` to `get_scan_config_nvt()` and `get_scan_config_nvts()`.  [#456](https://github.com/greenbone/python-gvm/pull/456)
@@ -32,7 +39,8 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ### Deprecated
 ### Removed
-*  Remove deprecated `make_unique` parameter from `Targets`. [#446](https://github.com/greenbone/python-gvm/pull/446)
+* Remove support of delete host/operating system by a report . [#459](https://github.com/greenbone/python-gvm/pull/459)
+* Remove deprecated `make_unique` parameter from `Targets`. [#446](https://github.com/greenbone/python-gvm/pull/446)
 * Removed deprecated `Agents` completely. [#441](https://github.com/greenbone/python-gvm/pull/441)
 * **Dropped support** for GMP v7, v8 and v9! The oldest usable GMP version is 20.8 
   [#436](https://github.com/greenbone/python-gvm/pull/436)
