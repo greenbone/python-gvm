@@ -24,12 +24,6 @@ class Gmpv214CreateFilterTestCase(GmpCreateFilterTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreatePermissionTestCase(
-    GmpCreatePermissionTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214CreateTagTestCase(GmpCreateTagTestCase, Gmpv214TestCase):
     pass
 
@@ -39,12 +33,6 @@ class Gmpv214GetAggregatesTestCase(GmpGetAggregatesTestCase, Gmpv214TestCase):
 
 
 class Gmpv214ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyPermissionTestCase(
-    GmpModifyPermissionTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -126,12 +114,6 @@ class Gmpv214CloneGroupTestCase(GmpCloneGroupTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214ClonePermissionTestCase(
-    GmpClonePermissionTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214CloneRoleTestCase(GmpCloneRoleTestCase, Gmpv214TestCase):
     pass
 
@@ -144,10 +126,6 @@ class Gmpv214CloneTagTestCase(GmpCloneTagTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneUserTestCase(GmpCloneUserTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv214TestCase):
     pass
 
@@ -156,21 +134,11 @@ class Gmpv214CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreateUserTestCase(GmpCreateUserTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214DeleteFilterTestCase(GmpDeleteFilterTestCase, Gmpv214TestCase):
     pass
 
 
 class Gmpv214DeleteGroupTestCase(GmpDeleteGroupTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeletePermissionTestCase(
-    GmpDeletePermissionTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -189,10 +157,6 @@ class Gmpv214DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv214TestCase):
 
 
 class Gmpv214DeleteTagTestCase(GmpDeleteTagTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteUserTestCase(GmpDeleteUserTestCase, Gmpv214TestCase):
     pass
 
 
@@ -225,14 +189,6 @@ class Gmpv214GetGroupTestCase(GmpGetGroupTestCase, Gmpv214TestCase):
 
 
 class Gmpv214GetGroupsTestCase(GmpGetGroupsTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetPermissionTestCase(GmpGetPermissionTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetPermissionsTestCase(GmpGetPermissionsTestCase, Gmpv214TestCase):
     pass
 
 
@@ -291,14 +247,6 @@ class Gmpv214GetTagTestCase(GmpGetTagTestCase, Gmpv214TestCase):
 
 
 class Gmpv214GetTagsTestCase(GmpGetTagsTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetUserTestCase(GmpGetUserTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetUsersTestCase(GmpGetUsersTestCase, Gmpv214TestCase):
     pass
 
 
