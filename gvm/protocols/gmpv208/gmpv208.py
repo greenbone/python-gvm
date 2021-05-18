@@ -2889,6 +2889,9 @@ class GmpV208Mixin(GvmProtocol):
         """
         cmd = XmlCommand("help")
 
+        if not help_type:
+            help_type = ""
+
         if help_type not in ("", "brief"):
             raise InvalidArgument(
                 'help_type argument must be an empty string or "brief"'
