@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
-
-
-class GmpCloneScannerTestCase:
-    def test_clone(self):
-        self.gmp.clone_scanner('a1')
-
-        self.connection.send.has_been_called_with(
-            '<create_scanner>' '<copy>a1</copy>' '</create_scanner>'
-        )
-
-    def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_scanner('')
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_scanner(None)
+from .test_create_scanner import GmpCreateScannerTestMixin
+from .test_modify_scanner import GmpModifyScannerTestMixin

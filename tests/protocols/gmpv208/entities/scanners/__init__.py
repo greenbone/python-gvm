@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
-
-
-class GmpVerifyScannerTestCase:
-    def test_verify(self):
-        self.gmp.verify_scanner('a1')
-
-        self.connection.send.has_been_called_with(
-            '<verify_scanner scanner_id="a1"/>'
-        )
-
-    def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.verify_scanner(None)
-
-        with self.assertRaises(GvmError):
-            self.gmp.verify_scanner('')
+from .test_clone_scanner import GmpCloneScannerTestMixin
+from .test_create_scanner import GmpCreateScannerTestMixin
+from .test_delete_scanner import GmpDeleteScannerTestMixin
+from .test_get_scanner import GmpGetScannerTestMixin
+from .test_get_scanners import GmpGetScannersTestMixin
+from .test_modify_scanner import GmpModifyScannerTestMixin
+from .test_verify_scanner import GmpVerifyScannerTestMixin

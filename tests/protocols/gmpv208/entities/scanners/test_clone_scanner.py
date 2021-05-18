@@ -16,27 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from gvm.errors import RequiredArgument
 
 
-class GmpDeleteScannerTestCase:
-    def test_delete(self):
-        self.gmp.delete_scanner('a1')
-
-        self.connection.send.has_been_called_with(
-            '<delete_scanner scanner_id="a1" ultimate="0"/>'
-        )
-
-    def test_delete_ultimate(self):
-        self.gmp.delete_scanner('a1', ultimate=True)
+class GmpCloneScannerTestMixin:
+    def test_clone(self):
+        self.gmp.clone_scanner('a1')
 
         self.connection.send.has_been_called_with(
-            '<delete_scanner scanner_id="a1" ultimate="1"/>'
+            '<create_scanner>' '<copy>a1</copy>' '</create_scanner>'
         )
 
     def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_scanner(None)
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_scanner('')
 
-        with self.assertRaises(GvmError):
-            self.gmp.delete_scanner('')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_scanner(None)

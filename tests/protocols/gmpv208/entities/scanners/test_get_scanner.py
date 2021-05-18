@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetScannerTestCase:
+class GmpGetScannerTestMixin:
     def test_get_scanner(self):
         self.gmp.get_scanner('s1')
 
