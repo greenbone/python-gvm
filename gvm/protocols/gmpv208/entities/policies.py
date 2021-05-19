@@ -22,8 +22,8 @@
 
 from typing import Any, List, Optional, Tuple
 
-from gvm.errors import RequiredArgument
-from gvm.utils import add_filter, to_bool
+from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.utils import add_filter, to_base64, to_bool, is_list_like
 from gvm.xml import XmlCommand
 
 _EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
@@ -194,9 +194,36 @@ class PoliciesMixin:
             value: New value for the preference. None to delete the preference
                 and to use the default instead.
         """
-        self.modify_scan_config_set_nvt_preference(
-            config_id=policy_id, name=name, nvt_oid=nvt_oid, value=value
-        )
+        if not policy_id:
+            raise RequiredArgument(
+                function=self.modify_policy_set_nvt_preference.__name__,
+                argument='policy_id',
+            )
+
+        if not nvt_oid:
+            raise RequiredArgument(
+                function=self.modify_policy_set_nvt_preference.__name__,
+                argument='nvt_oid',
+            )
+
+        if not name:
+            raise RequiredArgument(
+                function=self.modify_policy_set_nvt_preference.__name__,
+                argument='name',
+            )
+
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(policy_id))
+
+        _xmlpref = cmd.add_element("preference")
+
+        _xmlpref.add_element("nvt", attrs={"oid": nvt_oid})
+        _xmlpref.add_element("name", name)
+
+        if value:
+            _xmlpref.add_element("value", to_base64(value))
+
+        return self._send_xml_command(cmd)
 
     def modify_policy_set_name(self, policy_id: str, name: str) -> Any:
         """Modifies the name of an existing policy
@@ -205,7 +232,24 @@ class PoliciesMixin:
             policy_id: UUID of policy to modify.
             name: New name for the policy.
         """
-        self.modify_scan_config_set_name(config_id=policy_id, name=name)
+        if not policy_id:
+            raise RequiredArgument(
+                function=self.modify_policy_set_name.__name__,
+                argument='policy_id',
+            )
+
+        if not name:
+            raise RequiredArgument(
+                function=self.modify_policy_set_name.__name__,
+                argument='name',
+            )
+
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(policy_id))
+
+        cmd.add_element("name", name)
+
+        return self._send_xml_command(cmd)
 
     def modify_policy_set_comment(
         self, policy_id: str, comment: Optional[str] = None
@@ -218,9 +262,19 @@ class PoliciesMixin:
                 empty comment and the previous comment will be
                 removed.
         """
-        self.modify_scan_config_set_comment(
-            config_id=policy_id, comment=comment
-        )
+        if not policy_id:
+            raise RequiredArgument(
+                function=self.modify_policy_set_comment.__name__,
+                argument='policy_id',
+            )
+
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(policy_id))
+        if not comment:
+            comment = ""
+        cmd.add_element("comment", comment)
+
+        return self._send_xml_command(cmd)
 
     def modify_policy_set_scanner_preference(
         self, policy_id: str, name: str, *, value: Optional[str] = None
@@ -234,9 +288,29 @@ class PoliciesMixin:
                 and to use the default instead.
 
         """
-        self.modify_scan_config_set_scanner_preference(
-            config_id=policy_id, name=name, value=value
-        )
+        if not policy_id:
+            raise RequiredArgument(
+                function=(self.modify_policy_set_scanner_preference.__name__),
+                argument='policy_id',
+            )
+
+        if not name:
+            raise RequiredArgument(
+                function=(self.modify_policy_set_scanner_preference.__name__),
+                argument='name argument',
+            )
+
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(policy_id))
+
+        _xmlpref = cmd.add_element("preference")
+
+        _xmlpref.add_element("name", name)
+
+        if value:
+            _xmlpref.add_element("value", to_base64(value))
+
+        return self._send_xml_command(cmd)
 
     def modify_policy_set_nvt_selection(
         self, policy_id: str, family: str, nvt_oids: List[str]
@@ -251,9 +325,35 @@ class PoliciesMixin:
             family: Name of the NVT family to include NVTs from
             nvt_oids: List of NVTs to select for the family.
         """
-        self.modify_scan_config_set_nvt_selection(
-            config_id=policy_id, family=family, nvt_oids=nvt_oids
-        )
+        if not policy_id:
+            raise RequiredArgument(
+                function=self.modify_policy_set_nvt_selection.__name__,
+                argument='policy_id',
+            )
+
+        if not family:
+            raise RequiredArgument(
+                function=self.modify_policy_set_nvt_selection.__name__,
+                argument='family argument',
+            )
+
+        if not is_list_like(nvt_oids):
+            raise InvalidArgumentType(
+                function=self.modify_policy_set_nvt_selection.__name__,
+                argument='nvt_oids',
+                arg_type='list',
+            )
+
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(policy_id))
+
+        _xmlnvtsel = cmd.add_element("nvt_selection")
+        _xmlnvtsel.add_element("family", family)
+
+        for nvt in nvt_oids:
+            _xmlnvtsel.add_element("nvt", attrs={"oid": nvt})
+
+        return self._send_xml_command(cmd)
 
     def modify_policy_set_family_selection(
         self,
@@ -275,8 +375,44 @@ class PoliciesMixin:
             auto_add_new_families: Whether new families should be added to the
                 policy automatically. Default: True.
         """
-        self.modify_scan_config_set_family_selection(
-            config_id=policy_id,
-            families=families,
-            auto_add_new_families=auto_add_new_families,
-        )
+        if not policy_id:
+            raise RequiredArgument(
+                function=self.modify_policy_set_family_selection.__name__,
+                argument='policy_id',
+            )
+
+        if not is_list_like(families):
+            raise InvalidArgumentType(
+                function=self.modify_policy_set_family_selection.__name__,
+                argument='families',
+                arg_type='list',
+            )
+
+        cmd = XmlCommand("modify_config")
+        cmd.set_attribute("config_id", str(policy_id))
+
+        _xmlfamsel = cmd.add_element("family_selection")
+        _xmlfamsel.add_element("growing", to_bool(auto_add_new_families))
+
+        for family in families:
+            _xmlfamily = _xmlfamsel.add_element("family")
+            _xmlfamily.add_element("name", family[0])
+
+            if len(family) != 3:
+                raise InvalidArgument(
+                    "Family must be a tuple of 3. (str, bool, bool)"
+                )
+
+            if not isinstance(family[1], bool) or not isinstance(
+                family[2], bool
+            ):
+                raise InvalidArgumentType(
+                    function=(self.modify_policy_set_family_selection.__name__),
+                    argument='families',
+                    arg_type='[tuple(str, bool, bool)]',
+                )
+
+            _xmlfamily.add_element("all", to_bool(family[2]))
+            _xmlfamily.add_element("growing", to_bool(family[1]))
+
+        return self._send_xml_command(cmd)
