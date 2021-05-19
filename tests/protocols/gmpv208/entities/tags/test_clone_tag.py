@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCloneTagTestCase:
+class GmpCloneTagTestMixin:
     def test_clone(self):
         self.gmp.clone_tag('a1')
 

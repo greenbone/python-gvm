@@ -24,10 +24,6 @@ class Gmpv214CreateFilterTestCase(GmpCreateFilterTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreateTagTestCase(GmpCreateTagTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetAggregatesTestCase(GmpGetAggregatesTestCase, Gmpv214TestCase):
     pass
 
@@ -39,10 +35,6 @@ class Gmpv214ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv214TestCase):
 class Gmpv214ModifyReportFormatTestCase(
     GmpModifyReportFormatTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214ModifyTagTestCase(GmpModifyTagTestCase, Gmpv214TestCase):
     pass
 
 
@@ -122,10 +114,6 @@ class Gmpv214CloneScheduleTestCase(GmpCloneScheduleTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneTagTestCase(GmpCloneTagTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv214TestCase):
     pass
 
@@ -153,10 +141,6 @@ class Gmpv214DeleteRoleTestCase(GmpDeleteRoleTestCase, Gmpv214TestCase):
 
 
 class Gmpv214DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteTagTestCase(GmpDeleteTagTestCase, Gmpv214TestCase):
     pass
 
 
@@ -239,14 +223,6 @@ class Gmpv214GetSettingsTestCase(GmpGetSettingsTestCase, Gmpv214TestCase):
 class Gmpv214GetSystemReportsTestCase(
     GmpGetSystemReportsTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214GetTagTestCase(GmpGetTagTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetTagsTestCase(GmpGetTagsTestCase, Gmpv214TestCase):
     pass
 
 

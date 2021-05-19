@@ -20,7 +20,7 @@ from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv208 import EntityType
 
 
-class GmpModifyTagTestCase:
+class GmpModifyTagTestMixin:
     def test_modify_tag(self):
         self.gmp.modify_tag(tag_id='t1')
 

@@ -20,7 +20,7 @@ from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import EntityType
 
 
-class GmpCreateTagTestCase:
+class GmpCreateTagTestMixin:
     def test_create_tag_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(

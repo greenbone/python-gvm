@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetTagTestCase:
+class GmpGetTagTestMixin:
     def test_get_tag(self):
         self.gmp.get_tag('t1')
 
