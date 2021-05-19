@@ -25,39 +25,15 @@ from typing import Optional
 from gvm.errors import InvalidArgument
 
 __all__ = [
-    "FeedType",
     "FilterType",
     "HostsOrdering",
     "TicketStatus",
     "TimeUnit",
-    "get_feed_type_from_string",
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
 ]
-
-
-class FeedType(Enum):
-    """Enum for feed types"""
-
-    NVT = "NVT"
-    CERT = "CERT"
-    SCAP = "SCAP"
-    GVMD_DATA = "GVMD_DATA"
-
-
-def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
-    """Convert a feed type string into a FeedType instance"""
-    if not feed_type:
-        return None
-
-    try:
-        return FeedType[feed_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='feed_type', function=get_feed_type_from_string.__name__
-        ) from None
 
 
 class FilterType(Enum):

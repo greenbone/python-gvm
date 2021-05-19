@@ -333,32 +333,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_feed(self, feed_type: Optional[FeedType]) -> Any:
-        """Request a single feed
-
-        Arguments:
-            feed_type: Type of single feed to get: NVT, CERT or SCAP
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not feed_type:
-            raise RequiredArgument(
-                function=self.get_feed.__name__, argument='feed_type'
-            )
-
-        if not isinstance(feed_type, FeedType):
-            raise InvalidArgumentType(
-                function=self.get_feed.__name__,
-                argument='feed_type',
-                arg_type=FeedType.__name__,
-            )
-
-        cmd = XmlCommand("get_feeds")
-        cmd.set_attribute("type", feed_type.value)
-
-        return self._send_xml_command(cmd)
-
     def create_ticket(
         self,
         *,
@@ -1162,14 +1136,6 @@ class GmpV208Mixin(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand("empty_trashcan"))
 
-    def get_feeds(self) -> Any:
-        """Request the list of feeds
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("get_feeds"))
-
     def get_filters(
         self,
         *,
@@ -1902,14 +1868,6 @@ class GmpV208Mixin(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         return self._send_xml_command(XmlCommand("sync_cert"))
-
-    def sync_feed(self) -> Any:
-        """Request a synchronization with the NVT feed service
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("sync_feed"))
 
     def sync_scap(self) -> Any:
         """Request a synchronization with the SCAP feed service
