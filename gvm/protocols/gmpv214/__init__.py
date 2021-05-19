@@ -38,6 +38,17 @@ from gvm.protocols.gmpv208.entities.alerts import (
     get_alert_method_from_string,
 )
 from gvm.protocols.gmpv208.entities.audits import AuditsMixin
+from gvm.protocols.gmpv208.entities.credentials import (
+    CredentialFormat,
+    CredentialsMixin,
+    CredentialType,
+    get_credential_format_from_string,
+    get_credential_type_from_string,
+    get_snmp_auth_algorithm_from_string,
+    get_snmp_privacy_algorithm_from_string,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+)
 from gvm.protocols.gmpv208.entities.hosts import HostsMixin
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
@@ -72,6 +83,11 @@ from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
 # NEW IN 214
 from gvm.protocols.gmpv214.entities.notes import NotesMixin
 from gvm.protocols.gmpv214.entities.overrides import OverridesMixin
+from gvm.protocols.gmpv214.entities.scanners import (
+    ScannerType,
+    ScannersMixin,
+    get_scanner_type_from_string,
+)
 from gvm.protocols.gmpv214.entities.targets import (
     AliveTest,
     get_alive_test_from_string,
@@ -92,6 +108,7 @@ class Gmp(
     GmpV208Mixin,
     AlertsMixin,
     AuditsMixin,
+    CredentialsMixin,
     HostsMixin,
     PoliciesMixin,
     PortListMixin,
@@ -104,6 +121,7 @@ class Gmp(
     TasksMixin,
     TLSCertificateMixin,
     ScanConfigsMixin,
+    ScannersMixin,
     SecInfoMixin,
 ):
 

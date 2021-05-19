@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -18,10 +18,10 @@
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
-from gvm.protocols.gmpv214 import ScannerType
+from gvm.protocols.gmpv208 import ScannerType
 
 
-class GmpCreateScannerTestCase:
+class GmpCreateScannerTestMixin:
     def test_create_scanner(self):
         self.gmp.create_scanner(
             name='foo',
@@ -143,15 +143,6 @@ class GmpCreateScannerTestCase:
                 host='localhost',
                 port=1234,
                 scanner_type='bar',
-                credential_id='c1',
-            )
-
-        with self.assertRaises(AttributeError):
-            self.gmp.create_scanner(
-                name='foo',
-                host='localhost',
-                port=1234,
-                scanner_type=ScannerType.GMP_SCANNER_TYPE,  # pylint: disable=no-member
                 credential_id='c1',
             )
 

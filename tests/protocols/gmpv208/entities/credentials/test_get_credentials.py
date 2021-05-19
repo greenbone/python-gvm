@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetCredentialsTestCase:
+class GmpGetCredentialsTestMixin:
     def test_get_credentials(self):
         self.gmp.get_credentials()
 

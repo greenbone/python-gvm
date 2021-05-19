@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetScannersTestCase:
+class GmpGetScannersTestMixin:
     def test_get_scanners(self):
         self.gmp.get_scanners()
 

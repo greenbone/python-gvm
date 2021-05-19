@@ -19,5 +19,3 @@
 # pylint: disable=no-member
 
 from .test_modify_user import GmpModifyUserTestCase
-from .test_create_scanner import GmpCreateScannerTestCase
-from .test_modify_scanner import GmpModifyScannerTestCase

@@ -21,7 +21,7 @@ from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208 import CredentialFormat
 
 
-class GmpGetCredentialTestCase:
+class GmpGetCredentialTestMixin:
     def test_get_credential(self):
         self.gmp.get_credential('id')
 

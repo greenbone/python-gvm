@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv214TestCase
-from .testcmds import GmpModifyUserTestCase
-
-
-class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
-    pass
+from .test_clone_credential import GmpCloneCredentialTestMixin
+from .test_create_credential import GmpCreateCredentialTestMixin
+from .test_delete_credential import GmpDeleteCredentialTestMixin
+from .test_get_credential import GmpGetCredentialTestMixin
+from .test_get_credentials import GmpGetCredentialsTestMixin
+from .test_modify_credential import GmpModifyCredentialTestMixin

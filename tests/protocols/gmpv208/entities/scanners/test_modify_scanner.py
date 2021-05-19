@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -17,10 +17,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
-from gvm.protocols.gmpv214 import ScannerType
+from gvm.protocols.gmpv208 import ScannerType
 
 
-class GmpModifyScannerTestCase:
+class GmpModifyScannerTestMixin:
     def test_modify_scanner(self):
         self.gmp.modify_scanner(scanner_id='s1')
 
@@ -129,13 +129,12 @@ class GmpModifyScannerTestCase:
         )
 
         self.gmp.modify_scanner(
-            scanner_id='s1',
-            scanner_type=ScannerType.GREENBONE_SENSOR_SCANNER_TYPE,
+            scanner_id='s1', scanner_type=ScannerType.GMP_SCANNER_TYPE
         )
 
         self.connection.send.has_been_called_with(
             '<modify_scanner scanner_id="s1">'
-            '<type>5</type>'
+            '<type>4</type>'
             '</modify_scanner>'
         )
 

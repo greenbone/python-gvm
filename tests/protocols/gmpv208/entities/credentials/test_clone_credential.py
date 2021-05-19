@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCloneCredentialTestCase:
+class GmpCloneCredentialTestMixin:
     def test_clone(self):
         self.gmp.clone_credential('a1')
 
