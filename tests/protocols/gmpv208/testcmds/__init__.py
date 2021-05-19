@@ -22,7 +22,6 @@ from .test_create_filter import GmpCreateFilterTestCase
 from .test_get_aggregates import GmpGetAggregatesTestCase
 from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_report_format import GmpModifyReportFormatTestCase
-from .test_get_feed import GmpGetFeedTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
 from .test_clone_ticket import GmpCloneTicketTestCase
 from .test_create_schedule import GmpCreateScheduleTestCase
@@ -49,7 +48,6 @@ from .test_delete_role import GmpDeleteRoleTestCase
 from .test_delete_schedule import GmpDeleteScheduleTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
-from .test_get_feeds import GmpGetFeedsTestCase
 from .test_get_filter import GmpGetFilterTestCase
 from .test_get_filters import GmpGetFiltersTestCase
 from .test_get_group import GmpGetGroupTestCase
@@ -74,7 +72,6 @@ from .test_modify_role import GmpModifyRoleTestCase
 from .test_modify_setting import GmpModifySettingTestCase
 from .test_restore import GmpRestoreTestCase
 from .test_sync_cert import GmpSyncCertCommandTestCase
-from .test_sync_feed import GmpSyncFeedCommandTestCase
 from .test_sync_scap import GmpSyncScapCommandTestCase
 from .test_verify_report_format import GmpVerifyReportFormatTestCase
 from .test_with_statement import GmpWithStatementTestCase

@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import FeedType
 
 
-class GmpGetFeedTestCase:
+class GmpGetFeedTestMixin:
     def test_get_feed(self):
         """
         Test basic get_feed calls with only resource_type except special

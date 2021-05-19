@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,9 +16,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from ...gmpv208 import Gmpv208TestCase
+from ...gmpv208.entities.feeds import (
+    GmpGetFeedsTestMixin,
+    GmpGetFeedTestMixin,
+    GmpSyncFeedTestMixin,
+)
 
-class GmpSyncFeedCommandTestCase:
-    def test_sync_feed(self):
-        self.gmp.sync_feed()
 
-        self.connection.send.has_been_called_with('<sync_feed/>')
+class Gmpv208GetFeedTestCase(GmpGetFeedTestMixin, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208GetFeedsTestCase(GmpGetFeedsTestMixin, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208SyncFeedTestMixin(GmpSyncFeedTestMixin, Gmpv208TestCase):
+    pass

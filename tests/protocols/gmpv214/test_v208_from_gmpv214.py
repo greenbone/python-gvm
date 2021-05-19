@@ -38,10 +38,6 @@ class Gmpv214ModifyReportFormatTestCase(
     pass
 
 
-class Gmpv214GetFeedTestCase(GmpGetFeedTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ModifyTicketTestCase(GmpModifyTicketTestCase, Gmpv214TestCase):
     pass
 
@@ -156,10 +152,6 @@ class Gmpv214EmptyTrashcanCommandTestCase(
     pass
 
 
-class Gmpv214GetFeedsTestCase(GmpGetFeedsTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetFilterTestCase(GmpGetFilterTestCase, Gmpv214TestCase):
     pass
 
@@ -260,12 +252,6 @@ class Gmpv214RestoreTestCase(GmpRestoreTestCase, Gmpv214TestCase):
 
 class Gmpv214SyncCertCommandTestCase(
     GmpSyncCertCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214SyncFeedCommandTestCase(
-    GmpSyncFeedCommandTestCase, Gmpv214TestCase
 ):
     pass
 
