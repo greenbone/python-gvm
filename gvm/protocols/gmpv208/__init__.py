@@ -49,6 +49,10 @@ from gvm.protocols.gmpv208.entities.credentials import (
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
 )
+from gvm.protocols.gmpv208.entities.entities import (
+    EntityType,
+    get_entity_type_from_string,
+)
 from gvm.protocols.gmpv208.entities.hosts import (
     HostsMixin,
 )
@@ -63,6 +67,11 @@ from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
 )
 from gvm.protocols.gmpv208.entities.overrides import OverridesMixin
+from gvm.protocols.gmpv208.entities.permissions import (
+    PermissionsMixin,
+    PermissionSubjectType,
+    get_permission_subject_type_from_string,
+)
 from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
@@ -91,6 +100,11 @@ from gvm.protocols.gmpv208.entities.targets import (
 )
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
+from gvm.protocols.gmpv208.entities.users import (
+    UserAuthType,
+    UsersMixin,
+    get_user_auth_type_from_string,
+)
 from gvm.connections import GvmConnection
 
 
@@ -109,6 +123,7 @@ class Gmp(
     NotesMixin,
     OperatingSystemsMixin,
     OverridesMixin,
+    PermissionsMixin,
     PoliciesMixin,
     PortListMixin,
     ReportsMixin,
@@ -119,6 +134,7 @@ class Gmp(
     ScanConfigsMixin,
     ScannersMixin,
     SecInfoMixin,
+    UsersMixin,
 ):
 
     types = types

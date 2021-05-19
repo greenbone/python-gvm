@@ -16,27 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from gvm.errors import RequiredArgument
 
 
-class GmpDeletePermissionTestCase:
-    def test_delete(self):
-        self.gmp.delete_permission('a1')
+class GmpGetUserTestMixin:
+    def test_get_user(self):
+        self.gmp.get_user('u1')
 
-        self.connection.send.has_been_called_with(
-            '<delete_permission permission_id="a1" ultimate="0"/>'
-        )
+        self.connection.send.has_been_called_with('<get_users user_id="u1"/>')
 
-    def test_delete_ultimate(self):
-        self.gmp.delete_permission('a1', ultimate=True)
+        self.gmp.get_user(user_id='u1')
 
-        self.connection.send.has_been_called_with(
-            '<delete_permission permission_id="a1" ultimate="1"/>'
-        )
+        self.connection.send.has_been_called_with('<get_users user_id="u1"/>')
 
-    def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_permission(None)
+    def test_get_user_missing_user_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_user(user_id=None)
 
-        with self.assertRaises(GvmError):
-            self.gmp.delete_permission('')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_user('')

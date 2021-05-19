@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpDeleteUserTestCase:
+class GmpDeleteUserTestMixin:
     def test_delete_user_with_user_id(self):
         self.gmp.delete_user('a1')
 

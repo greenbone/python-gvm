@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import PermissionSubjectType, EntityType
 
 
-class GmpModifyPermissionTestCase:
+class GmpModifyPermissionTestMixin:
     def test_modify_permission(self):
         self.gmp.modify_permission(permission_id='p1')
 
@@ -61,18 +61,52 @@ class GmpModifyPermissionTestCase:
             '</modify_permission>'
         )
 
+    def test_modify_permission_with_resource_id_and_type_audit(self):
+        self.gmp.modify_permission(
+            permission_id='p1', resource_id='r1', resource_type=EntityType.AUDIT
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_permission permission_id="p1">'
+            '<resource id="r1">'
+            '<type>task</type>'
+            '</resource>'
+            '</modify_permission>'
+        )
+
+    def test_modify_permission_with_resource_id_and_type_policy(self):
+        self.gmp.modify_permission(
+            permission_id='p1',
+            resource_id='r1',
+            resource_type=EntityType.POLICY,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_permission permission_id="p1">'
+            '<resource id="r1">'
+            '<type>config</type>'
+            '</resource>'
+            '</modify_permission>'
+        )
+
     def test_modify_permission_with_missing_resource_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1', resource_id='', resource_type='foo'
+                permission_id='p1',
+                resource_id='',
+                resource_type=EntityType.TASK,
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_permission(permission_id='p1', resource_type='foo')
+            self.gmp.modify_permission(
+                permission_id='p1', resource_type=EntityType.TASK
+            )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
-                permission_id='p1', resource_id=None, resource_type='foo'
+                permission_id='p1',
+                resource_id=None,
+                resource_type=EntityType.TASK,
             )
 
     def test_modify_permission_with_missing_resource_type(self):
@@ -87,6 +121,12 @@ class GmpModifyPermissionTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
                 permission_id='p1', resource_id='r1', resource_type=None
+            )
+
+    def test_modify_permission_with_invalid_resource_type(self):
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_permission(
+                permission_id='p1', resource_id='r1', resource_type='blah'
             )
 
     def test_modify_permission_with_subject_id_and_type(self):

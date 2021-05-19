@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCreateUserTestCase:
+class GmpCreateUserTestMixin:
     def test_create_user_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_user(name=None)

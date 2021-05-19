@@ -16,36 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gvm.errors import RequiredArgument
 
-class GmpGetPermissionsTestCase:
-    def test_get_permissions(self):
-        self.gmp.get_permissions()
 
-        self.connection.send.has_been_called_with('<get_permissions/>')
-
-    def test_get_permissions_with_filter(self):
-        self.gmp.get_permissions(filter='foo=bar')
+class GmpGetPermissionTestMixin:
+    def test_get_permission(self):
+        self.gmp.get_permission('p1')
 
         self.connection.send.has_been_called_with(
-            '<get_permissions filter="foo=bar"/>'
+            '<get_permissions permission_id="p1"/>'
         )
 
-    def test_get_permissions_with_filter_id(self):
-        self.gmp.get_permissions(filter_id='f1')
+        self.gmp.get_permission(permission_id='p1')
 
         self.connection.send.has_been_called_with(
-            '<get_permissions filt_id="f1"/>'
+            '<get_permissions permission_id="p1"/>'
         )
 
-    def test_get_permissions_with_trash(self):
-        self.gmp.get_permissions(trash=True)
+    def test_get_permission_missing_permission_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_permission(permission_id=None)
 
-        self.connection.send.has_been_called_with(
-            '<get_permissions trash="1"/>'
-        )
-
-        self.gmp.get_permissions(trash=False)
-
-        self.connection.send.has_been_called_with(
-            '<get_permissions trash="0"/>'
-        )
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_permission('')

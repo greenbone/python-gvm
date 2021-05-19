@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,48 +16,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=arguments-differ, redefined-builtin, too-many-lines
+# pylint:  disable=redefined-builtin, arguments-differ
+# MAYBE we should change filter to filter_string (everywhere)
 
-"""
-Module for communication with gvmd in
-`Greenbone Management Protocol version 21.04`_
+from typing import Any, List, Optional
 
-.. _Greenbone Management Protocol version 21.04:
-    https://docs.greenbone.net/API/GMP/gmp-21.04.html
-"""
-
-from typing import Any, List, Optional, Callable
-
+from gvm.errors import RequiredArgument
+from gvm.protocols.gmpv208.entities.users import (
+    UsersMixin as Gmp208UsersMixin,
+    UserAuthType,
+)
 from gvm.utils import to_comma_list, to_bool
 from gvm.xml import XmlCommand
 
-from gvm.connections import GvmConnection
-from gvm.errors import RequiredArgument
 
-from gvm.protocols.base import GvmProtocol
-
-from . import types
-from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
-
-_EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
-
-PROTOCOL_VERSION = (21, 4)
-
-
-class GmpV214Mixin(GvmProtocol):
-    types = types
-
-    def __init__(
-        self,
-        connection: GvmConnection,
-        *,
-        transform: Optional[Callable[[str], Any]] = None,
-    ):
-        super().__init__(connection, transform=transform)
-
-        # Is authenticated on gvmd
-        self._authenticated = False
-
+class UsersMixin(Gmp208UsersMixin):
     def modify_user(
         self,
         user_id: str = None,

@@ -24,12 +24,6 @@ class Gmpv208CreateFilterTestCase(GmpCreateFilterTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreatePermissionTestCase(
-    GmpCreatePermissionTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208CreateTagTestCase(GmpCreateTagTestCase, Gmpv208TestCase):
     pass
 
@@ -39,12 +33,6 @@ class Gmpv208GetAggregatesTestCase(GmpGetAggregatesTestCase, Gmpv208TestCase):
 
 
 class Gmpv208ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyPermissionTestCase(
-    GmpModifyPermissionTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -126,12 +114,6 @@ class Gmpv208CloneGroupTestCase(GmpCloneGroupTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208ClonePermissionTestCase(
-    GmpClonePermissionTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208CloneRoleTestCase(GmpCloneRoleTestCase, Gmpv208TestCase):
     pass
 
@@ -144,10 +126,6 @@ class Gmpv208CloneTagTestCase(GmpCloneTagTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneUserTestCase(GmpCloneUserTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv208TestCase):
     pass
 
@@ -156,21 +134,11 @@ class Gmpv208CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateUserTestCase(GmpCreateUserTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208DeleteFilterTestCase(GmpDeleteFilterTestCase, Gmpv208TestCase):
     pass
 
 
 class Gmpv208DeleteGroupTestCase(GmpDeleteGroupTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeletePermissionTestCase(
-    GmpDeletePermissionTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -189,10 +157,6 @@ class Gmpv208DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv208TestCase):
 
 
 class Gmpv208DeleteTagTestCase(GmpDeleteTagTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeleteUserTestCase(GmpDeleteUserTestCase, Gmpv208TestCase):
     pass
 
 
@@ -225,14 +189,6 @@ class Gmpv208GetGroupTestCase(GmpGetGroupTestCase, Gmpv208TestCase):
 
 
 class Gmpv208GetGroupsTestCase(GmpGetGroupsTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetPermissionTestCase(GmpGetPermissionTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetPermissionsTestCase(GmpGetPermissionsTestCase, Gmpv208TestCase):
     pass
 
 
@@ -294,14 +250,6 @@ class Gmpv208GetTagsTestCase(GmpGetTagsTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208GetUserTestCase(GmpGetUserTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetUsersTestCase(GmpGetUsersTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetVersionCommandTestCase(
     GmpGetVersionCommandTestCase, Gmpv208TestCase
 ):
@@ -327,10 +275,6 @@ class Gmpv208ModifyRoleTestCase(GmpModifyRoleTestCase, Gmpv208TestCase):
 
 
 class Gmpv208ModifySettingTestCase(GmpModifySettingTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyUserTestCase(GmpModifyUserTestCase, Gmpv208TestCase):
     pass
 
 

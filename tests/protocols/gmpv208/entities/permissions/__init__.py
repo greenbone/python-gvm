@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
-
-
-class GmpClonePermissionTestCase:
-    def test_clone(self):
-        self.gmp.clone_permission('a1')
-
-        self.connection.send.has_been_called_with(
-            '<create_permission>' '<copy>a1</copy>' '</create_permission>'
-        )
-
-    def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_permission('')
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_permission(None)
+from .test_clone_permission import GmpClonePermissionTestMixin
+from .test_create_permission import GmpCreatePermissionTestMixin
+from .test_delete_permission import GmpDeletePermissionTestMixin
+from .test_get_permission import GmpGetPermissionTestMixin
+from .test_get_permissions import GmpGetPermissionsTestMixin
+from .test_modify_permission import GmpModifyPermissionTestMixin

@@ -23,51 +23,39 @@ from gvm.errors import InvalidArgument
 
 from gvm.protocols.gmpv208.types import (
     AggregateStatistic,
-    EntityType,
     FeedType,
     FilterType,
     HostsOrdering,
-    PermissionSubjectType,
     SortOrder,
     TicketStatus,
     TimeUnit,
-    UserAuthType,
     get_aggregate_statistic_from_string,
-    get_entity_type_from_string,
     get_feed_type_from_string,
     get_filter_type_from_string,
     get_hosts_ordering_from_string,
-    get_permission_subject_type_from_string,
     get_sort_order_from_string,
     get_ticket_status_from_string,
     get_time_unit_from_string,
-    get_user_auth_type_from_string,
 )
 
 
 __all__ = [
     "AggregateStatistic",
-    "EntityType",
     "FeedType",
     "FilterType",
     "HostsOrdering",
-    "PermissionSubjectType",
     "SeverityLevel",
     "SortOrder",
     "TicketStatus",
     "TimeUnit",
-    "UserAuthType",
     "get_aggregate_statistic_from_string",
-    "get_entity_type_from_string",
     "get_feed_type_from_string",
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
-    "get_permission_subject_type_from_string",
     "get_severity_level_from_string",
     "get_sort_order_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
-    "get_user_auth_type_from_string",
 ]
 
 # move this: Severity Level !!!

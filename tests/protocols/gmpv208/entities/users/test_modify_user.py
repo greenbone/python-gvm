@@ -20,11 +20,17 @@ from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv208 import UserAuthType
 
 
-class GmpModifyUserTestCase:
+class GmpModifyUserTestMixin:
     def test_modify_user(self):
         self.gmp.modify_user(user_id='u1')
 
         self.connection.send.has_been_called_with('<modify_user user_id="u1"/>')
+
+        self.gmp.modify_user(name='u1')
+
+        self.connection.send.has_been_called_with(
+            '<modify_user>' '<name>u1</name>' '</modify_user>'
+        )
 
     def test_modify_user_missing_user_id(self):
         with self.assertRaises(RequiredArgument):
@@ -33,8 +39,15 @@ class GmpModifyUserTestCase:
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_user(user_id='')
 
+    def test_modify_user_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_user(name=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_user(name='')
+
     def test_modify_user_with_new_name(self):
-        self.gmp.modify_user(user_id='u1', name='foo')
+        self.gmp.modify_user(user_id='u1', new_name='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_user user_id="u1">'
@@ -50,6 +63,11 @@ class GmpModifyUserTestCase:
             '<comment>foo</comment>'
             '</modify_user>'
         )
+
+    def test_modify_user_with_user_id_and_name(self):
+        self.gmp.modify_user(user_id='u1', name='foo')
+
+        self.connection.send.has_been_called_with('<modify_user user_id="u1"/>')
 
     def test_modify_user_with_role_ids(self):
         self.gmp.modify_user(user_id='u1', role_ids=[])

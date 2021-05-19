@@ -19,23 +19,17 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetPermissionTestCase:
-    def test_get_permission(self):
-        self.gmp.get_permission('p1')
+class GmpClonePermissionTestMixin:
+    def test_clone(self):
+        self.gmp.clone_permission('a1')
 
         self.connection.send.has_been_called_with(
-            '<get_permissions permission_id="p1"/>'
+            '<create_permission>' '<copy>a1</copy>' '</create_permission>'
         )
 
-        self.gmp.get_permission(permission_id='p1')
-
-        self.connection.send.has_been_called_with(
-            '<get_permissions permission_id="p1"/>'
-        )
-
-    def test_get_permission_missing_permission_id(self):
+    def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_permission(permission_id=None)
+            self.gmp.clone_permission('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_permission('')
+            self.gmp.clone_permission(None)

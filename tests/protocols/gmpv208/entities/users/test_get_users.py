@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,9 +16,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv214TestCase
-from .testcmds import GmpModifyUserTestCase
 
+class GmpGetUsersTestMixin:
+    def test_get_users(self):
+        self.gmp.get_users()
 
-class Gmpv214ModifyUserTestCase(GmpModifyUserTestCase, Gmpv214TestCase):
-    pass
+        self.connection.send.has_been_called_with('<get_users/>')
+
+    def test_get_users_with_filter(self):
+        self.gmp.get_users(filter='foo=bar')
+
+        self.connection.send.has_been_called_with(
+            '<get_users filter="foo=bar"/>'
+        )
+
+    def test_get_users_with_filter_id(self):
+        self.gmp.get_users(filter_id='f1')
+
+        self.connection.send.has_been_called_with('<get_users filt_id="f1"/>')

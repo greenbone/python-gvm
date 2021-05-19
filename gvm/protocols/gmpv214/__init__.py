@@ -49,9 +49,18 @@ from gvm.protocols.gmpv208.entities.credentials import (
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
 )
+from gvm.protocols.gmpv208.entities.entities import (
+    EntityType,
+    get_entity_type_from_string,
+)
 from gvm.protocols.gmpv208.entities.hosts import HostsMixin
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
+)
+from gvm.protocols.gmpv208.entities.permissions import (
+    PermissionsMixin,
+    PermissionSubjectType,
+    get_permission_subject_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
 from gvm.protocols.gmpv208.entities.port_lists import (
@@ -78,6 +87,11 @@ from gvm.protocols.gmpv208.entities.severity import (
 
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
+from gvm.protocols.gmpv208.entities.users import (
+    UserAuthType,
+    get_user_auth_type_from_string,
+)
+
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
 
 # NEW IN 214
@@ -93,7 +107,8 @@ from gvm.protocols.gmpv214.entities.targets import (
     get_alive_test_from_string,
     TargetsMixin,
 )
-from gvm.protocols.gmpv214.gmpv214 import GmpV214Mixin
+from gvm.protocols.gmpv214.entities.users import UsersMixin
+
 from gvm.connections import GvmConnection
 
 
@@ -104,17 +119,17 @@ PROTOCOL_VERSION = (21, 4)
 
 
 class Gmp(
-    GmpV214Mixin,
     GmpV208Mixin,
     AlertsMixin,
     AuditsMixin,
     CredentialsMixin,
     HostsMixin,
-    PoliciesMixin,
-    PortListMixin,
     NotesMixin,
     OperatingSystemsMixin,
     OverridesMixin,
+    PermissionsMixin,
+    PoliciesMixin,
+    PortListMixin,
     ReportsMixin,
     ResultsMixin,
     TargetsMixin,
@@ -123,6 +138,7 @@ class Gmp(
     ScanConfigsMixin,
     ScannersMixin,
     SecInfoMixin,
+    UsersMixin,
 ):
 
     types = types
