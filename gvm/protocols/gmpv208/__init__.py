@@ -105,6 +105,7 @@ from gvm.protocols.gmpv208.entities.severity import (
     SeverityLevel,
     get_severity_level_from_string,
 )
+from gvm.protocols.gmpv208.entities.tags import TagsMixin
 from gvm.protocols.gmpv208.entities.targets import (
     AliveTest,
     get_alive_test_from_string,
@@ -142,6 +143,7 @@ class Gmp(
     PortListMixin,
     ReportsMixin,
     ResultsMixin,
+    TagsMixin,
     TargetsMixin,
     TasksMixin,
     TLSCertificateMixin,

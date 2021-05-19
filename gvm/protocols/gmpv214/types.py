@@ -38,5 +38,3 @@ __all__ = [
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
 ]
-
-# move this: Severity Level !!!
