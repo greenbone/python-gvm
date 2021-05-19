@@ -28,6 +28,13 @@ Module for communication with gvmd in
 
 from typing import Any, Callable, Optional
 
+from gvm.protocols.gmpv208.entities.aggregates import (
+    AggregatesMixin,
+    AggregateStatistic,
+    get_aggregate_statistic_from_string,
+    SortOrder,
+    get_sort_order_from_string,
+)
 from gvm.protocols.gmpv208.entities.alerts import (
     AlertCondition,
     AlertEvent,
@@ -120,6 +127,7 @@ PROTOCOL_VERSION = (21, 4)
 
 class Gmp(
     GmpV208Mixin,
+    AggregatesMixin,
     AlertsMixin,
     AuditsMixin,
     CredentialsMixin,

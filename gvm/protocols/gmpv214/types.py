@@ -22,38 +22,30 @@ from typing import Optional
 from gvm.errors import InvalidArgument
 
 from gvm.protocols.gmpv208.types import (
-    AggregateStatistic,
     FeedType,
     FilterType,
     HostsOrdering,
-    SortOrder,
     TicketStatus,
     TimeUnit,
-    get_aggregate_statistic_from_string,
     get_feed_type_from_string,
     get_filter_type_from_string,
     get_hosts_ordering_from_string,
-    get_sort_order_from_string,
     get_ticket_status_from_string,
     get_time_unit_from_string,
 )
 
 
 __all__ = [
-    "AggregateStatistic",
     "FeedType",
     "FilterType",
     "HostsOrdering",
     "SeverityLevel",
-    "SortOrder",
     "TicketStatus",
     "TimeUnit",
-    "get_aggregate_statistic_from_string",
     "get_feed_type_from_string",
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
     "get_severity_level_from_string",
-    "get_sort_order_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
 ]
