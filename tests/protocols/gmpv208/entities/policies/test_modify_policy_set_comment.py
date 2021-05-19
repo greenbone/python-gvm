@@ -29,7 +29,7 @@ class GmpModifyPolicySetCommentTestMixin:
             '</modify_config>'
         )
 
-        self.gmp.modify_policy_set_comment('c1', 'foo')
+        self.gmp.modify_policy_set_comment('c1', comment='foo')
 
         self.connection.send.has_been_called_with(
             '<modify_config config_id="c1">'
@@ -40,10 +40,12 @@ class GmpModifyPolicySetCommentTestMixin:
         self.gmp.modify_policy_set_comment('c1', comment=None)
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">' '<comment/>' '</modify_config>'
+            '<modify_config config_id="c1">'
+            '<comment></comment>'
+            '</modify_config>'
         )
 
-    def test_modify_policy_set_comment_missing_config_id(self):
+    def test_modify_policy_set_comment_missing_policy_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_policy_set_comment(policy_id=None)
 
