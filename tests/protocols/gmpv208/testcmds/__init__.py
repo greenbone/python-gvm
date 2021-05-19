@@ -19,7 +19,6 @@
 # pylint: disable=no-member
 
 from .test_create_filter import GmpCreateFilterTestCase
-from .test_get_aggregates import GmpGetAggregatesTestCase
 from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase

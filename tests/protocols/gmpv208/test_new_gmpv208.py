@@ -24,10 +24,6 @@ class Gmpv208CreateFilterTestCase(GmpCreateFilterTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208GetAggregatesTestCase(GmpGetAggregatesTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv208TestCase):
     pass
 
