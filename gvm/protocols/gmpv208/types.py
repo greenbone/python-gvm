@@ -216,34 +216,6 @@ def get_filter_type_from_string(
         ) from None
 
 
-class _UsageType(Enum):
-    """Enum for usage types"""
-
-    AUDIT = "audit"
-    POLICY = "policy"
-    SCAN = "scan"
-
-
-def __get_usage_type_from_string(
-    usage_type: Optional[str],
-) -> Optional[_UsageType]:
-    """Convert a usage type string to an actual _UsageType instance
-
-    Arguments:
-        entity_type: Usage type string to convert to a _UsageType
-    """
-    if not usage_type:
-        return None
-
-    try:
-        return _UsageType[usage_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='usage_type',
-            function=__get_usage_type_from_string.__name__,
-        ) from None
-
-
 class AggregateStatistic(Enum):
     """Enum for aggregate statistic types"""
 

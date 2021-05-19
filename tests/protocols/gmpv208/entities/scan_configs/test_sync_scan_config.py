@@ -17,8 +17,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpSyncConfigCommandTestCase:
-    def test_sync_config(self):
-        self.gmp.sync_config()
+class GmpSyncScanConfigTestMixin:
+    def test_sync_scan_config(self):
+        self.gmp.sync_scan_config()
 
         self.connection.send.has_been_called_with('<sync_config/>')

@@ -19,9 +19,9 @@
 from gvm.errors import RequiredArgument, InvalidArgumentType
 
 
-class GmpModifyConfigSetNvtSelectionTestCase:
-    def test_modify_config_set_nvt_selection(self):
-        self.gmp.modify_config_set_nvt_selection(
+class GmpModifyScanConfigSetNvtSelectionTestMixin:
+    def test_modify_scan_config_set_nvt_selection(self):
+        self.gmp.modify_scan_config_set_nvt_selection(
             config_id='c1', family='foo', nvt_oids=['o1']
         )
 
@@ -34,7 +34,7 @@ class GmpModifyConfigSetNvtSelectionTestCase:
             '</modify_config>'
         )
 
-        self.gmp.modify_config_set_nvt_selection(
+        self.gmp.modify_scan_config_set_nvt_selection(
             config_id='c1', family='foo', nvt_oids=['o1', 'o2']
         )
 
@@ -48,7 +48,7 @@ class GmpModifyConfigSetNvtSelectionTestCase:
             '</modify_config>'
         )
 
-        self.gmp.modify_config_set_nvt_selection('c1', 'foo', ['o1'])
+        self.gmp.modify_scan_config_set_nvt_selection('c1', 'foo', ['o1'])
 
         self.connection.send.has_been_called_with(
             '<modify_config config_id="c1">'
@@ -59,7 +59,7 @@ class GmpModifyConfigSetNvtSelectionTestCase:
             '</modify_config>'
         )
 
-        self.gmp.modify_config_set_nvt_selection('c1', 'foo', ('o1', 'o2'))
+        self.gmp.modify_scan_config_set_nvt_selection('c1', 'foo', ('o1', 'o2'))
 
         self.connection.send.has_been_called_with(
             '<modify_config config_id="c1">'
@@ -71,7 +71,7 @@ class GmpModifyConfigSetNvtSelectionTestCase:
             '</modify_config>'
         )
 
-        self.gmp.modify_config_set_nvt_selection(
+        self.gmp.modify_scan_config_set_nvt_selection(
             config_id='c1', family='foo', nvt_oids=[]
         )
 
@@ -83,44 +83,44 @@ class GmpModifyConfigSetNvtSelectionTestCase:
             '</modify_config>'
         )
 
-    def test_modify_config_set_nvt_selection_missing_config_id(self):
+    def test_modify_scan_config_set_nvt_selection_missing_config_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_nvt_selection(
+            self.gmp.modify_scan_config_set_nvt_selection(
                 config_id=None, family='foo', nvt_oids=['o1']
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_nvt_selection(
+            self.gmp.modify_scan_config_set_nvt_selection(
                 config_id='', family='foo', nvt_oids=['o1']
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_nvt_selection('', 'foo', ['o1'])
+            self.gmp.modify_scan_config_set_nvt_selection('', 'foo', ['o1'])
 
-    def test_modify_config_set_nvt_selection_missing_family(self):
+    def test_modify_scan_config_set_nvt_selection_missing_family(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_nvt_selection(
+            self.gmp.modify_scan_config_set_nvt_selection(
                 config_id='c1', family=None, nvt_oids=['o1']
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_nvt_selection(
+            self.gmp.modify_scan_config_set_nvt_selection(
                 config_id='c1', family='', nvt_oids=['o1']
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_config_set_nvt_selection('c1', '', ['o1'])
+            self.gmp.modify_scan_config_set_nvt_selection('c1', '', ['o1'])
 
-    def test_modify_config_set_nvt_selection_invalid_nvt_oids(self):
+    def test_modify_scan_config_set_nvt_selection_invalid_nvt_oids(self):
         with self.assertRaises(InvalidArgumentType):
-            self.gmp.modify_config_set_nvt_selection(
+            self.gmp.modify_scan_config_set_nvt_selection(
                 config_id='c1', family='foo', nvt_oids=None
             )
 
         with self.assertRaises(InvalidArgumentType):
-            self.gmp.modify_config_set_nvt_selection(
+            self.gmp.modify_scan_config_set_nvt_selection(
                 config_id='c1', family='foo', nvt_oids=''
             )
 
         with self.assertRaises(InvalidArgumentType):
-            self.gmp.modify_config_set_nvt_selection('c1', 'foo', '')
+            self.gmp.modify_scan_config_set_nvt_selection('c1', 'foo', '')

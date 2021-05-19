@@ -42,6 +42,7 @@ from gvm.protocols.gmpv208.entities.hosts import HostsMixin
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
 )
+from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
 from gvm.protocols.gmpv208.entities.port_lists import (
     PortListMixin,
     PortRangeType,
@@ -53,6 +54,7 @@ from gvm.protocols.gmpv208.entities.report_formats import (
     get_report_format_id_from_string,
 )
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
+from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
 from gvm.protocols.gmpv208.entities.secinfo import (
     get_info_type_from_string,
     InfoType,
@@ -91,6 +93,7 @@ class Gmp(
     AlertsMixin,
     AuditsMixin,
     HostsMixin,
+    PoliciesMixin,
     PortListMixin,
     NotesMixin,
     OperatingSystemsMixin,
@@ -100,6 +103,7 @@ class Gmp(
     TargetsMixin,
     TasksMixin,
     TLSCertificateMixin,
+    ScanConfigsMixin,
     SecInfoMixin,
 ):
 

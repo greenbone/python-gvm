@@ -13,6 +13,8 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Introduced new explicit API calls for SecInfo: `get_nvt()`, `get_nvt_list()`, `get_cpe()`, `get_cpe_list()`, `get_cve()`, `get_cve_list()`, `get_cert_bund_advisory()`, `get_cert_bund_advisory_list()`, `get_dnf_cert_advisory()`, `get_dnf_cert_advisory_list()`, `get_oval_definition()`, `get_oval_definition_list()`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 
 ### Changed
+* Changed all API calls for `_config` to `_scan_config` to match other Greenbone components. [#465](https://github.com/greenbone/python-gvm/pull/465)
+* Detached Config and Policy calls from GMP class into new `ScanConfigsMixin` and `PoliciesMixin`. [#465](https://github.com/greenbone/python-gvm/pull/465)
 * Detached the Audit API calls from the GMP class into a new `AuditsMixin`. [#464](https://github.com/greenbone/python-gvm/pull/464)
 * Split up `get_asset(s)` into `get_host(s)` and `get_operating_system(s)`. [#459](https://github.com/greenbone/python-gvm/pull/459)
 * Split up `delete_asset` into `delete_host` and `delete_operating_system`. [#459](https://github.com/greenbone/python-gvm/pull/459)

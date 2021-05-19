@@ -19,32 +19,38 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyPolicySetNameTestCase:
-    def test_modify_policy_set_name(self):
-        self.gmp.modify_policy_set_name('c1', 'foo')
+class GmpModifyPolicySetCommentTestMixin:
+    def test_modify_policy_set_comment(self):
+        self.gmp.modify_policy_set_comment('c1')
 
         self.connection.send.has_been_called_with(
             '<modify_config config_id="c1">'
-            '<name>foo</name>'
+            '<comment></comment>'
             '</modify_config>'
         )
 
-    def test_modify_policy_set_name_missing_config_id(self):
+        self.gmp.modify_policy_set_comment('c1', comment='foo')
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<comment>foo</comment>'
+            '</modify_config>'
+        )
+
+        self.gmp.modify_policy_set_comment('c1', comment=None)
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<comment></comment>'
+            '</modify_config>'
+        )
+
+    def test_modify_policy_set_comment_missing_policy_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_policy_set_name(policy_id=None, name='name')
+            self.gmp.modify_policy_set_comment(policy_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_policy_set_name('', name='name')
+            self.gmp.modify_policy_set_comment('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_policy_set_name(policy_id='', name='name')
-
-    def test_modify_policy_set_name_missing_name(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.modify_policy_set_name(policy_id='c', name='')
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.modify_policy_set_name(policy_id='c', name=None)
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.modify_policy_set_name('c', '')
+            self.gmp.modify_policy_set_comment(policy_id='')

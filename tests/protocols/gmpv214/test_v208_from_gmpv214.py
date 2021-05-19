@@ -62,98 +62,14 @@ class Gmpv214GetFeedTestCase(GmpGetFeedTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneConfigTestCase(GmpCloneConfigTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ClonePolicyTestCase(GmpClonePolicyTestCase, Gmpv214TestCase):
-
-    pass
-
-
-class Gmpv214CreateConfigTestCase(GmpCreateConfigTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CreateConfigFromOSPScannerTestCase(
-    GmpCreateConfigFromOSPScannerTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214CreateCredentialTestCase(
     GmpCreateCredentialTestCase, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv214CreatePolicyTestCase(GmpCreatePolicyTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteConfigTestCase(GmpDeleteConfigTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeletePolicyTestCase(GmpDeletePolicyTestCase, Gmpv214TestCase):
-
-    pass
-
-
-class Gmpv214GetConfigTestCase(GmpGetConfigTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetConfigsTestCase(GmpGetConfigsTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetPoliciesTestCase(GmpGetPoliciesTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetPolicyTestCase(GmpGetPolicyTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ModifyCredentialTestCase(
     GmpModifyCredentialTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyPolicySetCommentTestCase(
-    GmpModifyPolicySetCommentTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyPolicySetNameTestCase(
-    GmpModifyPolicySetNameTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyPolicySetFamilySelectionTestCase(
-    GmpModifyPolicySetFamilySelectionTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyPolicySetNvtPreferenceTestCase(
-    GmpModifyPolicySetNvtPreferenceTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyPolicySetNvtSelectionTestCase(
-    GmpModifyPolicySetNvtSelectionTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyPolicySetScannerPreferenceTestCase(
-    GmpModifyPolicySetScannerPreferenceTestCase, Gmpv214TestCase
 ):
     pass
 
@@ -440,10 +356,6 @@ class Gmpv214GetVersionCommandTestCase(
     pass
 
 
-class Gmpv214ImportConfigTestCase(GmpImportConfigTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ImportReportFormatTestCase(
     GmpImportReportFormatTestCase, Gmpv214TestCase
 ):
@@ -451,40 +363,6 @@ class Gmpv214ImportReportFormatTestCase(
 
 
 class Gmpv214ModifyAuthTestCase(GmpModifyAuthTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyConfigTestCase(GmpModifyConfigTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyConfigSetCommentTestCase(
-    GmpModifyConfigSetCommentTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyConfigSetFamilySelectionTestCase(
-    GmpModifyConfigSetFamilySelectionTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyConfigSetNvtPreferenceTestCase(
-    GmpModifyConfigSetNvtPreferenceTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyConfigSetNvtSelectionTestCase(
-    GmpModifyConfigSetNvtSelectionTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyConfigSetScannerPreferenceTestCase(
-    GmpModifyConfigSetScannerPreferenceTestCase, Gmpv214TestCase
-):
     pass
 
 
@@ -506,12 +384,6 @@ class Gmpv214RestoreTestCase(GmpRestoreTestCase, Gmpv214TestCase):
 
 class Gmpv214SyncCertCommandTestCase(
     GmpSyncCertCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214SyncConfigCommandTestCase(
-    GmpSyncConfigCommandTestCase, Gmpv214TestCase
 ):
     pass
 

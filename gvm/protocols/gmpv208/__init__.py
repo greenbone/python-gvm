@@ -52,11 +52,13 @@ from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
 )
 from gvm.protocols.gmpv208.entities.overrides import OverridesMixin
+from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
     get_report_format_id_from_string,
 )
+from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
 from gvm.protocols.gmpv208.entities.secinfo import (
     get_info_type_from_string,
     InfoType,
@@ -90,12 +92,14 @@ class Gmp(
     NotesMixin,
     OperatingSystemsMixin,
     OverridesMixin,
+    PoliciesMixin,
     PortListMixin,
     ReportsMixin,
     ResultsMixin,
     TargetsMixin,
     TasksMixin,
     TLSCertificateMixin,
+    ScanConfigsMixin,
     SecInfoMixin,
 ):
 
