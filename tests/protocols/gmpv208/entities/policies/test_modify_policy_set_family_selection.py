@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
+from gvm.errors import RequiredArgument, InvalidArgumentType, InvalidArgument
 
 
 class GmpModifyPolicySetFamilySelectionTestMixin:
@@ -188,3 +188,46 @@ class GmpModifyPolicySetFamilySelectionTestMixin:
             '</family_selection>'
             '</modify_config>'
         )
+
+        self.gmp.modify_policy_set_family_selection(
+            policy_id='c1',
+            families=[('foo', False, True), ('bar', True, False)],
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_config config_id="c1">'
+            '<family_selection>'
+            '<growing>1</growing>'
+            '<family>'
+            '<name>foo</name>'
+            '<all>1</all>'
+            '<growing>0</growing>'
+            '</family>'
+            '<family>'
+            '<name>bar</name>'
+            '<all>0</all>'
+            '<growing>1</growing>'
+            '</family>'
+            '</family_selection>'
+            '</modify_config>'
+        )
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_policy_set_family_selection(
+                policy_id='c1', families=[('foo', 'False', 'True')]
+            )
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_policy_set_family_selection(
+                policy_id='c1', families=[('foo', True, None)]
+            )
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_policy_set_family_selection(
+                policy_id='c1', families=[('foo', 'True', False)]
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_policy_set_family_selection(
+                policy_id='c1', families=[('foo',)]
+            )
