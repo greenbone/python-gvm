@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import EntityType
 
 
@@ -85,6 +85,15 @@ class GmpCreateTagTestMixin:
                 resource_type=EntityType.TASK,
             )
 
+    def test_create_tag_invalid_resource_type(self):
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.create_tag(
+                name='foo',
+                resource_type="Foo",
+                resource_filter=None,
+                resource_ids=['foo'],
+            )
+
     def test_create_tag_missing_resource_type(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_tag(
@@ -119,6 +128,38 @@ class GmpCreateTagTestMixin:
             '<name>foo</name>'
             '<resources filter="name=foo">'
             '<type>task</type>'
+            '</resources>'
+            '</create_tag>'
+        )
+
+    def test_create_tag_with_resource_filter_audit(self):
+        self.gmp.create_tag(
+            name='foo',
+            resource_filter='name=foo',
+            resource_type=EntityType.AUDIT,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resources filter="name=foo">'
+            '<type>task</type>'
+            '</resources>'
+            '</create_tag>'
+        )
+
+    def test_create_tag_with_resource_filter_policy(self):
+        self.gmp.create_tag(
+            name='foo',
+            resource_filter='name=foo',
+            resource_type=EntityType.POLICY,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_tag>'
+            '<name>foo</name>'
+            '<resources filter="name=foo">'
+            '<type>config</type>'
             '</resources>'
             '</create_tag>'
         )

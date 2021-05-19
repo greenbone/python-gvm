@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import EntityType
 
 
@@ -78,6 +78,36 @@ class GmpModifyTagTestMixin:
             '<modify_tag tag_id="t1">'
             '<resources filter="name=foo">'
             '<type>task</type>'
+            '</resources>'
+            '</modify_tag>'
+        )
+
+    def test_modify_tag_with_resource_filter_and_type_audit(self):
+        self.gmp.modify_tag(
+            tag_id='t1',
+            resource_filter='name=foo',
+            resource_type=EntityType.AUDIT,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">'
+            '<resources filter="name=foo">'
+            '<type>task</type>'
+            '</resources>'
+            '</modify_tag>'
+        )
+
+    def test_modify_tag_with_resource_filter_and_type_policy(self):
+        self.gmp.modify_tag(
+            tag_id='t1',
+            resource_filter='name=foo',
+            resource_type=EntityType.POLICY,
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_tag tag_id="t1">'
+            '<resources filter="name=foo">'
+            '<type>config</type>'
             '</resources>'
             '</modify_tag>'
         )
@@ -151,6 +181,12 @@ class GmpModifyTagTestMixin:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_tag(tag_id='t1', resource_filter='name=foo')
+
+    def test_modify_tag_with_invalid_resource_type(self):
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_tag(
+                tag_id='t1', resource_type="foo", resource_filter='name=foo'
+            )
 
     def test_modify_tag_with_missing_resource_filter_and_ids(self):
         self.gmp.modify_tag(tag_id='t1', resource_type=EntityType.TASK)
