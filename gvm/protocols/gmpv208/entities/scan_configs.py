@@ -315,13 +315,15 @@ class ScanConfigsMixin:
         return self._send_xml_command(cmd)
 
     def modify_scan_config_set_comment(
-        self, config_id: str, comment: Optional[str] = ""
+        self, config_id: str, *, comment: Optional[str] = None
     ) -> Any:
         """Modifies the comment of an existing scan config
 
         Arguments:
             config_id: UUID of scan config to modify.
-            comment: Comment to set on a config. Default: ''
+            comment: Comment to set on a config. Default is an
+                empty comment and the previous comment will be
+                removed.
         """
         if not config_id:
             raise RequiredArgument(
@@ -331,7 +333,8 @@ class ScanConfigsMixin:
 
         cmd = XmlCommand("modify_config")
         cmd.set_attribute("config_id", str(config_id))
-
+        if not comment:
+            comment = ""
         cmd.add_element("comment", comment)
 
         return self._send_xml_command(cmd)
@@ -515,7 +518,7 @@ class ScanConfigsMixin:
                 "deprecated. Please use modify_scan_config_set_comment instead."
             )
             return self.modify_scan_config_set_comment(
-                config_id, kwargs.get("comment")
+                config_id, comment=kwargs.get("comment")
             )
 
         if selection not in (
