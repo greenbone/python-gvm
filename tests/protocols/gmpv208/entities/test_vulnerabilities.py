@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,22 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from ...gmpv208 import Gmpv208TestCase
+from .vulnerabilities import (
+    GmpGetVulnerabilitiesTestMixin,
+    GmpGetVulnerabilityTestMixin,
+)
 
 
-class GmpGetVulnerabilityTestCase:
-    def test_get_vulnerability(self):
-        self.gmp.get_vulnerability('a1')
+class Gmpv208GetVulnerabilityTestCase(
+    GmpGetVulnerabilityTestMixin, Gmpv208TestCase
+):
+    pass
 
-        self.connection.send.has_been_called_with('<get_vulns vuln_id="a1"/>')
 
-        self.gmp.get_vulnerability(vulnerability_id='a1')
-
-        self.connection.send.has_been_called_with('<get_vulns vuln_id="a1"/>')
-
-    def test_get_vulnerability_invalid_vulnerability_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_vulnerability(vulnerability_id=None)
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_vulnerability(vulnerability_id='')
+class Gmpv208GetVulnerabilitiesTestCase(
+    GmpGetVulnerabilitiesTestMixin, Gmpv208TestCase
+):
+    pass

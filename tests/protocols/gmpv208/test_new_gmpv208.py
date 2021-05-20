@@ -20,18 +20,6 @@ from . import Gmpv208TestCase
 from .testcmds import *  # pylint: disable=unused-wildcard-import, wildcard-import
 
 
-class Gmpv208GetVulnerabilitiesTestCase(
-    GmpGetVulnerabilitiesTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208GetVulnerabilityTestCase(
-    GmpGetVulnerabilityTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208AuthenticateTestCase(GmpAuthenticateTestCase, Gmpv208TestCase):
     pass
 

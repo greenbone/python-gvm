@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetVulnerabilitiesTestCase:
+class GmpGetVulnerabilitiesTestMixin:
     def test_get_vulnerabilities(self):
         self.gmp.get_vulnerabilities()
 

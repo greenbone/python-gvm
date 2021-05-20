@@ -18,8 +18,6 @@
 
 # pylint: disable=no-member
 
-from .test_get_vulnerabilities import GmpGetVulnerabilitiesTestCase
-from .test_get_vulnerability import GmpGetVulnerabilityTestCase
 from .test_protocol_version import GmpProtocolVersionTestCase
 from .test_authenticate import GmpAuthenticateTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
