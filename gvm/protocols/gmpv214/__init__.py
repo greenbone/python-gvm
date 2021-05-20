@@ -70,6 +70,7 @@ from gvm.protocols.gmpv208.entities.filter import (
     FilterType,
     get_filter_type_from_string,
 )
+from gvm.protocols.gmpv208.entities.groups import GroupsMixin
 from gvm.protocols.gmpv208.entities.hosts import (
     HostsMixin,
     HostsOrdering,
@@ -151,6 +152,7 @@ class Gmp(
     CredentialsMixin,
     FeedsMixin,
     FiltersMixin,
+    GroupsMixin,
     HostsMixin,
     NotesMixin,
     OperatingSystemsMixin,
