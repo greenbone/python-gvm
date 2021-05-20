@@ -19,12 +19,10 @@
 # pylint: disable=no-member
 
 from .test_protocol_version import GmpProtocolVersionTestCase
-from .test_authenticate import GmpAuthenticateTestCase
-from .test_describe_auth import GmpDescribeAuthCommandTestCase
+
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
 from .test_get_system_reports import GmpGetSystemReportsTestCase
 from .test_get_version import GmpGetVersionCommandTestCase
 from .test_help import GmpHelpTestCase
-from .test_modify_auth import GmpModifyAuthTestCase
 from .test_restore_from_trashcan import GmpRestoreTestCase
 from .test_with_statement import GmpWithStatementTestCase

@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpAuthenticateTestCase:
+class GmpAuthenticateTestMixin:
     def test_missing_username(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.authenticate(None, 'foo')

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,9 +16,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from ...gmpv214 import Gmpv214TestCase
+from ...gmpv208.entities.authentication import (
+    GmpAuthenticateTestMixin,
+    GmpDescribeAuthTestMixin,
+    GmpModifyAuthTestMixin,
+)
 
-class GmpDescribeAuthCommandTestCase:
-    def test_describe_auth(self):
-        self.gmp.describe_auth()
 
-        self.connection.send.has_been_called_with('<describe_auth/>')
+class Gmpv214AuthenticateTestCase(GmpAuthenticateTestMixin, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214ModifyAuthTestCase(GmpModifyAuthTestMixin, Gmpv214TestCase):
+    pass
+
+
+class Gmpv214DescribeAuthCommandTestCase(
+    GmpDescribeAuthTestMixin, Gmpv214TestCase
+):
+    pass

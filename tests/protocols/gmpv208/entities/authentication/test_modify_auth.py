@@ -21,7 +21,7 @@ from collections import OrderedDict
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyAuthTestCase:
+class GmpModifyAuthTestMixin:
     def test_modify_auth(self):
         self.gmp.modify_auth(
             'foo', OrderedDict([('foo', 'bar'), ('lorem', 'ipsum')])
