@@ -24,7 +24,7 @@ class GmpGetReportFormatsTestCase:
         self.connection.send.has_been_called_with('<get_report_formats/>')
 
     def test_get_report_formats_with_filter(self):
-        self.gmp.get_report_formats(filter='foo=bar')
+        self.gmp.get_report_formats(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_report_formats filter="foo=bar"/>'

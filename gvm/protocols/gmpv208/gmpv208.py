@@ -28,15 +28,12 @@ Module for communication with gvmd in
 import logging
 from numbers import Integral
 
-from typing import Any, List, Optional, Callable, Union
-from lxml import etree
+from typing import Any, List, Optional, Callable
 
 from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.base import GvmProtocol
-from gvm.protocols.gmpv208.entities.report_formats import (
-    ReportFormatType,
-)
+
 
 from gvm.utils import (
     check_command_status,
@@ -228,60 +225,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", group_id)
         return self._send_xml_command(cmd)
 
-    def clone_report_format(
-        self, report_format_id: [Union[str, ReportFormatType]]
-    ) -> Any:
-        """Clone a report format from an existing one
-
-        Arguments:
-            report_format_id: UUID of the existing report format
-                              or ReportFormatType (enum)
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not report_format_id:
-            raise RequiredArgument(
-                function=self.clone_report_format.__name__,
-                argument='report_format_id',
-            )
-
-        cmd = XmlCommand("create_report_format")
-
-        if isinstance(report_format_id, ReportFormatType):
-            report_format_id = report_format_id.value
-
-        cmd.add_element("copy", report_format_id)
-        return self._send_xml_command(cmd)
-
-    def import_report_format(self, report_format: str) -> Any:
-        """Import a report format from XML
-
-        Arguments:
-            report_format: Report format XML as string to import. This XML must
-                contain a :code:`<get_report_formats_response>` root element.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not report_format:
-            raise RequiredArgument(
-                function=self.import_report_format.__name__,
-                argument='report_format',
-            )
-
-        cmd = XmlCommand("create_report_format")
-
-        try:
-            cmd.append_xml_str(report_format)
-        except etree.XMLSyntaxError as e:
-            raise InvalidArgument(
-                function=self.import_report_format.__name__,
-                argument='report_format',
-            ) from e
-
-        return self._send_xml_command(cmd)
-
     def create_role(
         self,
         name: str,
@@ -350,36 +293,6 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_group")
         cmd.set_attribute("group_id", group_id)
-        cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
-    def delete_report_format(
-        self,
-        report_format_id: Optional[Union[str, ReportFormatType]] = None,
-        *,
-        ultimate: Optional[bool] = False,
-    ) -> Any:
-        """Deletes an existing report format
-
-        Arguments:
-            report_format_id: UUID of the report format to be deleted.
-                              or ReportFormatType (enum)
-            ultimate: Whether to remove entirely, or to the trashcan.
-        """
-        if not report_format_id:
-            raise RequiredArgument(
-                function=self.delete_report_format.__name__,
-                argument='report_format_id',
-            )
-
-        cmd = XmlCommand("delete_report_format")
-
-        if isinstance(report_format_id, ReportFormatType):
-            report_format_id = report_format_id.value
-
-        cmd.set_attribute("report_format_id", report_format_id)
-
         cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
@@ -530,74 +443,6 @@ class GmpV208Mixin(GvmProtocol):
         if config_id:
             cmd.set_attribute("config_id", config_id)
 
-        return self._send_xml_command(cmd)
-
-    def get_report_formats(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-        alerts: Optional[bool] = None,
-        params: Optional[bool] = None,
-        details: Optional[bool] = None,
-    ) -> Any:
-        """Request a list of report formats
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get the trashcan report formats instead
-            alerts: Whether to include alerts that use the report format
-            params: Whether to include report format parameters
-            details: Include report format file, signature and parameters
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_report_formats")
-
-        add_filter(cmd, filter, filter_id)
-
-        if details is not None:
-            cmd.set_attribute("details", to_bool(details))
-
-        if alerts is not None:
-            cmd.set_attribute("alerts", to_bool(alerts))
-
-        if params is not None:
-            cmd.set_attribute("params", to_bool(params))
-
-        if trash is not None:
-            cmd.set_attribute("trash", to_bool(trash))
-
-        return self._send_xml_command(cmd)
-
-    def get_report_format(
-        self, report_format_id: Union[str, ReportFormatType]
-    ) -> Any:
-        """Request a single report format
-
-        Arguments:
-            report_format_id: UUID of an existing report format
-                              or ReportFormatType (enum)
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_report_formats")
-        if not report_format_id:
-            raise RequiredArgument(
-                function=self.get_report_format.__name__,
-                argument='report_format_id',
-            )
-
-        if isinstance(report_format_id, ReportFormatType):
-            report_format_id = report_format_id.value
-
-        cmd.set_attribute("report_format_id", report_format_id)
-
-        # for single entity always request all details
-        cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
 
     def get_roles(
@@ -839,61 +684,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def modify_report_format(
-        self,
-        report_format_id: Optional[Union[str, ReportFormatType]] = None,
-        *,
-        active: Optional[bool] = None,
-        name: Optional[str] = None,
-        summary: Optional[str] = None,
-        param_name: Optional[str] = None,
-        param_value: Optional[str] = None,
-    ) -> Any:
-        """Modifies an existing report format.
-
-        Arguments:
-            report_format_id: UUID of report format to modify
-                              or ReportFormatType (enum)
-            active: Whether the report format is active.
-            name: The name of the report format.
-            summary: A summary of the report format.
-            param_name: The name of the param.
-            param_value: The value of the param.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not report_format_id:
-            raise RequiredArgument(
-                function=self.modify_report_format.__name__,
-                argument='report_format_id ',
-            )
-
-        cmd = XmlCommand("modify_report_format")
-
-        if isinstance(report_format_id, ReportFormatType):
-            report_format_id = report_format_id.value
-
-        cmd.set_attribute("report_format_id", report_format_id)
-
-        if active is not None:
-            cmd.add_element("active", to_bool(active))
-
-        if name:
-            cmd.add_element("name", name)
-
-        if summary:
-            cmd.add_element("summary", summary)
-
-        if param_name:
-            _xmlparam = cmd.add_element("param")
-            _xmlparam.add_element("name", param_name)
-
-            if param_value is not None:
-                _xmlparam.add_element("value", param_value)
-
-        return self._send_xml_command(cmd)
-
     def modify_role(
         self,
         role_id: str,
@@ -1005,36 +795,3 @@ class GmpV208Mixin(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         return self._send_xml_command(XmlCommand("sync_scap"))
-
-    def verify_report_format(
-        self, report_format_id: Union[str, ReportFormatType]
-    ) -> Any:
-        """Verify an existing report format
-
-        Verifies the trust level of an existing report format. It will be
-        checked whether the signature of the report format currently matches the
-        report format. This includes the script and files used to generate
-        reports of this format. It is *not* verified if the report format works
-        as expected by the user.
-
-        Arguments:
-            report_format_id: UUID of the report format to be verified
-                              or ReportFormatType (enum)
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not report_format_id:
-            raise RequiredArgument(
-                function=self.verify_report_format.__name__,
-                argument='report_format_id',
-            )
-
-        cmd = XmlCommand("verify_report_format")
-
-        if isinstance(report_format_id, ReportFormatType):
-            report_format_id = report_format_id.value
-
-        cmd.set_attribute("report_format_id", report_format_id)
-
-        return self._send_xml_command(cmd)

@@ -92,6 +92,7 @@ from gvm.protocols.gmpv208.entities.port_lists import (
 from gvm.protocols.gmpv208.entities.reports import ReportsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
+    ReportFormatsMixin,
     get_report_format_id_from_string,
 )
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
@@ -156,6 +157,7 @@ class Gmp(
     PermissionsMixin,
     PoliciesMixin,
     PortListMixin,
+    ReportFormatsMixin,
     ReportsMixin,
     ResultsMixin,
     TagsMixin,
