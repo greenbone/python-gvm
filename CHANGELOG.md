@@ -13,6 +13,10 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Introduced new explicit API calls for SecInfo: `get_nvt()`, `get_nvt_list()`, `get_cpe()`, `get_cpe_list()`, `get_cve()`, `get_cve_list()`, `get_cert_bund_advisory()`, `get_cert_bund_advisory_list()`, `get_dnf_cert_advisory()`, `get_dnf_cert_advisory_list()`, `get_oval_definition()`, `get_oval_definition_list()`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 
 ### Changed
+* API changes: `get_setting(s)` -> `get_user_setting(s)`, `modify_setting` -> `modify_user_setting`. [#472](https://github.com/greenbone/python-gvm/pull/472)
+* Detached the Trashcan API calls from the GMP class into a new `TrashcanMixin`. [#472](https://github.com/greenbone/python-gvm/pull/472)
+* Detached the Authentication API calls from the GMP class into a new `AuthenticationMixin`. [#472](https://github.com/greenbone/python-gvm/pull/472)
+* Detached the Version API calls from the GMP class into a new `VersionMixin`. [#472](https://github.com/greenbone/python-gvm/pull/472)
 * Changed `filter` to `filter_string` in getter functions. [#470](https://github.com/greenbone/python-gvm/pull/470) [#471](https://github.com/greenbone/python-gvm/pull/471)
 * Detached the Preferences API calls from the GMP class into a new `PreferencesMixin`. [#471](https://github.com/greenbone/python-gvm/pull/471)
 * Detached the Settings API calls from the GMP class into a new `UserSettingsMixin`. [#471](https://github.com/greenbone/python-gvm/pull/471)
@@ -26,7 +30,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Detached the Schedules API calls from the GMP class into a new `SchedulesMixin`. [#469](https://github.com/greenbone/python-gvm/pull/469)
 * Detached the Filters API calls from the GMP class into a new `FiltersMixin`. [#469](https://github.com/greenbone/python-gvm/pull/469)
 * Detached the Tags API calls from the GMP class into a new `TagsMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468)
-* Detached the Feeds API calls from the GMP class into a new `FeedsMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468)
+* Detached the Feeds API calls from the GMP class into a new `FeedMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468) [#472](https://github.com/greenbone/python-gvm/pull/472)
 * Detached the Aggregates API calls from the GMP class into a new `AggregatesMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468)
 * Detached the EntityType from the GMP types class into a new `entites` file. [#467](https://github.com/greenbone/python-gvm/pull/467)
 * Detached the Users API calls from the GMP class into a new `UsersMixin`. [#467](https://github.com/greenbone/python-gvm/pull/467)
