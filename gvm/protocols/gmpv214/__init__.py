@@ -45,7 +45,6 @@ from gvm.protocols.gmpv208.entities.alerts import (
     get_alert_method_from_string,
 )
 from gvm.protocols.gmpv208.entities.audits import AuditsMixin
-from gvm.protocols.gmpv208.entities.authentication import AuthenticationMixin
 from gvm.protocols.gmpv208.entities.credentials import (
     CredentialFormat,
     CredentialsMixin,
@@ -121,6 +120,7 @@ from gvm.protocols.gmpv208.entities.users import (
 )
 from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
 
+from gvm.protocols.gmpv208.system.authentication import AuthenticationMixin
 from gvm.protocols.gmpv208.system.feed import (
     FeedType,
     FeedMixin,
