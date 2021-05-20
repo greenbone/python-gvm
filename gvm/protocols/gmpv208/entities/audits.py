@@ -23,9 +23,7 @@ from numbers import Integral
 from typing import Any, List, Optional
 
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
-from gvm.protocols.gmpv208.types import (
-    HostsOrdering,
-)  # if I use latest, I get circular import :/
+from gvm.protocols.gmpv208.entities.hosts import HostsOrdering
 from gvm.utils import add_filter, is_list_like, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
@@ -126,7 +124,7 @@ class AuditsMixin:
             cmd.add_element("alterable", to_bool(alterable))
 
         if hosts_ordering:
-            if not isinstance(hosts_ordering, self.types.HostsOrdering):
+            if not isinstance(hosts_ordering, HostsOrdering):
                 raise InvalidArgumentType(
                     function=self.create_audit.__name__,
                     argument='hosts_ordering',

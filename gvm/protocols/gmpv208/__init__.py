@@ -72,6 +72,8 @@ from gvm.protocols.gmpv208.entities.filter import (
 )
 from gvm.protocols.gmpv208.entities.hosts import (
     HostsMixin,
+    HostsOrdering,
+    get_hosts_ordering_from_string,
 )
 from gvm.protocols.gmpv208.entities.port_lists import (
     get_port_range_type_from_string,

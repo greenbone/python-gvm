@@ -70,7 +70,11 @@ from gvm.protocols.gmpv208.entities.filter import (
     FilterType,
     get_filter_type_from_string,
 )
-from gvm.protocols.gmpv208.entities.hosts import HostsMixin
+from gvm.protocols.gmpv208.entities.hosts import (
+    HostsMixin,
+    HostsOrdering,
+    get_hosts_ordering_from_string,
+)
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
 )
