@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from gvm.errors import RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv208.entities.port_lists import PortRangeType
 
@@ -82,6 +82,12 @@ class GmpCreatePortRangeTestMixin:
         with self.assertRaises(RequiredArgument):
             self.gmp.create_port_range(
                 port_list_id='pl1', start=1, end=1234, port_range_type=''
+            )
+
+    def test_create_port_range_invalid_port_range_type(self):
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.create_port_range(
+                port_list_id='pl1', start=1, end=1234, port_range_type="blubb"
             )
 
     def test_create_port_range(self):

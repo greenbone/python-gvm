@@ -207,7 +207,7 @@ class PortListMixin:
     def get_port_lists(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         details: Optional[bool] = None,
         targets: Optional[bool] = None,
@@ -216,7 +216,7 @@ class PortListMixin:
         """Request a list of port lists
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             details: Whether to include full port list details
             targets: Whether to include targets using this port list
@@ -227,7 +227,7 @@ class PortListMixin:
         """
         cmd = XmlCommand("get_port_lists")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if details is not None:
             cmd.set_attribute("details", to_bool(details))
