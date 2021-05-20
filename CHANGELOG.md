@@ -45,6 +45,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ### Deprecated
 ### Removed
+* Removed `TimeUnit`. It was used for schedules before iCal and is not required anymore.
 * Removed `Gmpv214Mixin`. [#467](https://github.com/greenbone/python-gvm/pull/467)
 * Remove support of delete host/operating system by a report . [#459](https://github.com/greenbone/python-gvm/pull/459)
 * Remove deprecated `make_unique` parameter from `Targets`. [#446](https://github.com/greenbone/python-gvm/pull/446)

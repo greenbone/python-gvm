@@ -28,11 +28,9 @@ __all__ = [
     "FilterType",
     "HostsOrdering",
     "TicketStatus",
-    "TimeUnit",
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
     "get_ticket_status_from_string",
-    "get_time_unit_from_string",
 ]
 
 
@@ -88,9 +86,6 @@ def get_filter_type_from_string(
 
     if filter_type == 'secinfo':
         return FilterType.ALL_SECINFO
-
-    if filter_type == 'tls_certificate':
-        return FilterType.TLS_CERTIFICATE
 
     try:
         return FilterType[filter_type.upper()]
@@ -149,31 +144,4 @@ def get_hosts_ordering_from_string(
         raise InvalidArgument(
             argument='hosts_ordering',
             function=get_hosts_ordering_from_string.__name__,
-        ) from None
-
-
-class TimeUnit(Enum):
-    """Enum for time units"""
-
-    SECOND = "second"
-    MINUTE = "minute"
-    HOUR = "hour"
-    DAY = "day"
-    WEEK = "week"
-    MONTH = "month"
-    YEAR = "year"
-    DECADE = "decade"
-
-
-def get_time_unit_from_string(time_unit: Optional[str]) -> Optional[TimeUnit]:
-    """Convert a time unit string into a TimeUnit instance"""
-    if not time_unit:
-        return None
-
-    try:
-        return TimeUnit[time_unit.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='severity_level',
-            function=get_time_unit_from_string.__name__,
         ) from None
