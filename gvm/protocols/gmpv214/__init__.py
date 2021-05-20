@@ -108,6 +108,10 @@ from gvm.protocols.gmpv208.entities.severity import (
 )
 from gvm.protocols.gmpv208.entities.tags import TagsMixin
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
+from gvm.protocols.gmpv208.entities.tickets import (
+    TicketStatus,
+    get_ticket_status_from_string,
+)
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
@@ -132,10 +136,6 @@ from gvm.protocols.gmpv214.entities.targets import (
 from gvm.protocols.gmpv214.entities.users import UsersMixin
 
 from gvm.connections import GvmConnection
-
-
-from . import types
-from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 
 PROTOCOL_VERSION = (21, 4)
 
@@ -167,9 +167,6 @@ class Gmp(
     SecInfoMixin,
     UsersMixin,
 ):
-
-    types = types
-
     def __init__(
         self,
         connection: GvmConnection,

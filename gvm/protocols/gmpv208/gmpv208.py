@@ -37,6 +37,7 @@ from gvm.protocols.base import GvmProtocol
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
 )
+from gvm.protocols.gmpv208.entities.tickets import TicketStatus
 
 from gvm.utils import (
     check_command_status,
@@ -46,10 +47,6 @@ from gvm.utils import (
     add_filter,
 )
 from gvm.xml import XmlCommand
-
-from . import types
-from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
-
 
 PROTOCOL_VERSION = (20, 8)
 
@@ -77,8 +74,6 @@ class GmpV208Mixin(GvmProtocol):
     .. _callable:
         https://docs.python.org/3/library/functions.html#callable
     """
-
-    types = types
 
     def __init__(
         self,
@@ -357,7 +352,7 @@ class GmpV208Mixin(GvmProtocol):
             _user.set_attribute("id", assigned_to_user_id)
 
         if status:
-            if not isinstance(status, self.types.TicketStatus):
+            if not isinstance(status, TicketStatus):
                 raise InvalidArgumentType(
                     function=self.modify_ticket.__name__,
                     argument='status',

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=too-many-lines
+# pylint:  disable=redefined-builtin
 
 from enum import Enum
 
 from typing import Optional
 
 from gvm.errors import InvalidArgument
-
-__all__ = [
-    "HostsOrdering",
-    "TicketStatus",
-    "get_hosts_ordering_from_string",
-    "get_ticket_status_from_string",
-]
 
 
 class TicketStatus(Enum):
@@ -53,31 +46,4 @@ def get_ticket_status_from_string(
         raise InvalidArgument(
             argument='ticket_status',
             function=get_ticket_status_from_string.__name__,
-        ) from None
-
-
-class HostsOrdering(Enum):
-    """Enum for host ordering during scans"""
-
-    SEQUENTIAL = "sequential"
-    RANDOM = "random"
-    REVERSE = "reverse"
-
-
-def get_hosts_ordering_from_string(
-    hosts_ordering: Optional[str],
-) -> Optional[HostsOrdering]:
-    """Convert a hosts ordering string to an actual HostsOrdering instance
-
-    Arguments:
-        hosts_ordering: Host ordering string to convert to a HostsOrdering
-    """
-    if not hosts_ordering:
-        return None
-    try:
-        return HostsOrdering[hosts_ordering.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='hosts_ordering',
-            function=get_hosts_ordering_from_string.__name__,
         ) from None
