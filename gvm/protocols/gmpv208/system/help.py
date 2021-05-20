@@ -85,6 +85,6 @@ class HelpMixin:
                     arg_type=HelpFormat.__name__,
                 )
 
-            cmd.set_attribute("format", format)
+            cmd.set_attribute("format", help_format.value)
 
         return self._send_xml_command(cmd)
