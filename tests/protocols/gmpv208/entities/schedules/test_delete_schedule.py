@@ -16,20 +16,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from gvm.errors import GvmError
 
 
-class GmpCloneScheduleTestCase:
-    def test_clone(self):
-        self.gmp.clone_schedule('a1')
+class GmpDeleteScheduleTestMixin:
+    def test_delete(self):
+        self.gmp.delete_schedule('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_schedule>' '<copy>a1</copy>' '</create_schedule>'
+            '<delete_schedule schedule_id="a1" ultimate="0"/>'
+        )
+
+    def test_delete_ultimate(self):
+        self.gmp.delete_schedule('a1', ultimate=True)
+
+        self.connection.send.has_been_called_with(
+            '<delete_schedule schedule_id="a1" ultimate="1"/>'
         )
 
     def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_schedule('')
+        with self.assertRaises(GvmError):
+            self.gmp.delete_schedule(None)
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_schedule(None)
+        with self.assertRaises(GvmError):
+            self.gmp.delete_schedule('')

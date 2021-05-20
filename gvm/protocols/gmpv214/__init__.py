@@ -65,7 +65,16 @@ from gvm.protocols.gmpv208.entities.feeds import (
     FeedsMixin,
     get_feed_type_from_string,
 )
-from gvm.protocols.gmpv208.entities.hosts import HostsMixin
+from gvm.protocols.gmpv208.entities.filter import (
+    FiltersMixin,
+    FilterType,
+    get_filter_type_from_string,
+)
+from gvm.protocols.gmpv208.entities.hosts import (
+    HostsMixin,
+    HostsOrdering,
+    get_hosts_ordering_from_string,
+)
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
 )
@@ -87,6 +96,7 @@ from gvm.protocols.gmpv208.entities.report_formats import (
 )
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
+from gvm.protocols.gmpv208.entities.schedules import SchedulesMixin
 from gvm.protocols.gmpv208.entities.secinfo import (
     get_info_type_from_string,
     InfoType,
@@ -98,6 +108,10 @@ from gvm.protocols.gmpv208.entities.severity import (
 )
 from gvm.protocols.gmpv208.entities.tags import TagsMixin
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
+from gvm.protocols.gmpv208.entities.tickets import (
+    TicketStatus,
+    get_ticket_status_from_string,
+)
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
@@ -123,10 +137,6 @@ from gvm.protocols.gmpv214.entities.users import UsersMixin
 
 from gvm.connections import GvmConnection
 
-
-from . import types
-from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
-
 PROTOCOL_VERSION = (21, 4)
 
 
@@ -137,6 +147,7 @@ class Gmp(
     AuditsMixin,
     CredentialsMixin,
     FeedsMixin,
+    FiltersMixin,
     HostsMixin,
     NotesMixin,
     OperatingSystemsMixin,
@@ -152,12 +163,10 @@ class Gmp(
     TLSCertificateMixin,
     ScanConfigsMixin,
     ScannersMixin,
+    SchedulesMixin,
     SecInfoMixin,
     UsersMixin,
 ):
-
-    types = types
-
     def __init__(
         self,
         connection: GvmConnection,

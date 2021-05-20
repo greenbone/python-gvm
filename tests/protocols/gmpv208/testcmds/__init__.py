@@ -18,37 +18,27 @@
 
 # pylint: disable=no-member
 
-from .test_create_filter import GmpCreateFilterTestCase
-from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
 from .test_clone_ticket import GmpCloneTicketTestCase
-from .test_create_schedule import GmpCreateScheduleTestCase
 from .test_create_ticket import GmpCreateTicketTestCase
 from .test_delete_ticket import GmpDeleteTicketTestCase
 from .test_get_ticket import GmpGetTicketTestCase
 from .test_get_tickets import GmpGetTargetsTestCase
 from .test_get_vulnerabilities import GmpGetVulnerabilitiesTestCase
 from .test_get_vulnerability import GmpGetVulnerabilityTestCase
-from .test_modify_schedule import GmpModifyScheduleTestCase
 from .test_protocol_version import GmpProtocolVersionTestCase
 from .test_authenticate import GmpAuthenticateTestCase
 from .test_clone_report_format import GmpCloneReportFormatTestCase
-from .test_clone_filter import GmpCloneFilterTestCase
 from .test_clone_group import GmpCloneGroupTestCase
 from .test_clone_role import GmpCloneRoleTestCase
-from .test_clone_schedule import GmpCloneScheduleTestCase
 from .test_create_group import GmpCreateGroupTestCase
 from .test_create_role import GmpCreateRoleTestCase
-from .test_delete_filter import GmpDeleteFilterTestCase
 from .test_delete_group import GmpDeleteGroupTestCase
 from .test_delete_report_format import GmpDeleteReportFormatTestCase
 from .test_delete_role import GmpDeleteRoleTestCase
-from .test_delete_schedule import GmpDeleteScheduleTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
-from .test_get_filter import GmpGetFilterTestCase
-from .test_get_filters import GmpGetFiltersTestCase
 from .test_get_group import GmpGetGroupTestCase
 from .test_get_groups import GmpGetGroupsTestCase
 from .test_get_preference import GmpGetPreferenceTestCase
@@ -57,8 +47,6 @@ from .test_get_report_format import GmpGetReportFormatTestCase
 from .test_get_report_formats import GmpGetReportFormatsTestCase
 from .test_get_role import GmpGetRoleTestCase
 from .test_get_roles import GmpGetRolesTestCase
-from .test_get_schedule import GmpGetScheduleTestCase
-from .test_get_schedules import GmpGetSchedulesTestCase
 from .test_get_setting import GmpGetSettingTestCase
 from .test_get_settings import GmpGetSettingsTestCase
 from .test_get_system_reports import GmpGetSystemReportsTestCase

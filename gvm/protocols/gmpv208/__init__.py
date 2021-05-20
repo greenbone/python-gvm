@@ -65,8 +65,15 @@ from gvm.protocols.gmpv208.entities.feeds import (
     FeedsMixin,
     get_feed_type_from_string,
 )
+from gvm.protocols.gmpv208.entities.filter import (
+    FiltersMixin,
+    FilterType,
+    get_filter_type_from_string,
+)
 from gvm.protocols.gmpv208.entities.hosts import (
     HostsMixin,
+    HostsOrdering,
+    get_hosts_ordering_from_string,
 )
 from gvm.protocols.gmpv208.entities.port_lists import (
     get_port_range_type_from_string,
@@ -96,6 +103,7 @@ from gvm.protocols.gmpv208.entities.scanners import (
     ScannerType,
     get_scanner_type_from_string,
 )
+from gvm.protocols.gmpv208.entities.schedules import SchedulesMixin
 from gvm.protocols.gmpv208.entities.secinfo import (
     get_info_type_from_string,
     InfoType,
@@ -112,6 +120,10 @@ from gvm.protocols.gmpv208.entities.targets import (
     TargetsMixin,
 )
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
+from gvm.protocols.gmpv208.entities.tickets import (
+    TicketStatus,
+    get_ticket_status_from_string,
+)
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
@@ -119,10 +131,6 @@ from gvm.protocols.gmpv208.entities.users import (
     get_user_auth_type_from_string,
 )
 from gvm.connections import GvmConnection
-
-
-from . import types
-from .types import *  # pylint: disable=unused-wildcard-import, wildcard-import
 
 PROTOCOL_VERSION = (20, 8)
 
@@ -134,6 +142,7 @@ class Gmp(
     AuditsMixin,
     CredentialsMixin,
     FeedsMixin,
+    FiltersMixin,
     HostsMixin,
     NotesMixin,
     OperatingSystemsMixin,
@@ -149,12 +158,10 @@ class Gmp(
     TLSCertificateMixin,
     ScanConfigsMixin,
     ScannersMixin,
+    SchedulesMixin,
     SecInfoMixin,
     UsersMixin,
 ):
-
-    types = types
-
     def __init__(
         self,
         connection: GvmConnection,

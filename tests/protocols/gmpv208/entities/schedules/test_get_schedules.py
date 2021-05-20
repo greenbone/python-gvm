@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetSchedulesTestCase:
+class GmpGetSchedulesTestMixin:
     def test_get_schedules(self):
         self.gmp.get_schedules()
 

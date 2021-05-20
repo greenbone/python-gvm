@@ -32,7 +32,7 @@ END:VCALENDAR
 """
 
 
-class GmpModifyScheduleTestCase:
+class GmpModifyScheduleTestMixin:
     def test_missing_schedule_id(self):
         with self.assertRaises(RequiredArgument) as cm:
             self.gmp.modify_schedule(schedule_id=None)

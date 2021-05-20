@@ -32,7 +32,7 @@ END:VCALENDAR
 """
 
 
-class GmpCreateScheduleTestCase:
+class GmpCreateScheduleTestMixin:
     def test_missing_name(self):
         with self.assertRaises(RequiredArgument) as cm:
             self.gmp.create_schedule(name=None, icalendar=ICAL, timezone='UTC')

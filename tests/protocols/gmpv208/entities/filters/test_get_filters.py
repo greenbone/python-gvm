@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetFiltersTestCase:
+class GmpGetFiltersTestMixin:
     def test_get_filters(self):
         self.gmp.get_filters()
 

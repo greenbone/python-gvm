@@ -18,11 +18,39 @@
 
 # pylint:  disable=redefined-builtin
 
+from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import RequiredArgument
+from gvm.errors import RequiredArgument, InvalidArgument
 from gvm.utils import add_filter
 from gvm.xml import XmlCommand
+
+
+class HostsOrdering(Enum):
+    """Enum for host ordering during scans"""
+
+    SEQUENTIAL = "sequential"
+    RANDOM = "random"
+    REVERSE = "reverse"
+
+
+def get_hosts_ordering_from_string(
+    hosts_ordering: Optional[str],
+) -> Optional[HostsOrdering]:
+    """Convert a hosts ordering string to an actual HostsOrdering instance
+
+    Arguments:
+        hosts_ordering: Host ordering string to convert to a HostsOrdering
+    """
+    if not hosts_ordering:
+        return None
+    try:
+        return HostsOrdering[hosts_ordering.upper()]
+    except KeyError:
+        raise InvalidArgument(
+            argument='hosts_ordering',
+            function=get_hosts_ordering_from_string.__name__,
+        ) from None
 
 
 class HostsMixin:

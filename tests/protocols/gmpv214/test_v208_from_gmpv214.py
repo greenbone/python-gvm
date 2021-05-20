@@ -20,14 +20,6 @@ from . import Gmpv214TestCase
 from ..gmpv208.testcmds import *  # pylint: disable=unused-wildcard-import,wildcard-import
 
 
-class Gmpv214CreateFilterTestCase(GmpCreateFilterTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ModifyReportFormatTestCase(
     GmpModifyReportFormatTestCase, Gmpv214TestCase
 ):
@@ -39,11 +31,6 @@ class Gmpv214ModifyTicketTestCase(GmpModifyTicketTestCase, Gmpv214TestCase):
 
 
 class Gmpv214CloneTicketTestCase(GmpCloneTicketTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CreateScheduleTestCase(GmpCreateScheduleTestCase, Gmpv214TestCase):
-
     pass
 
 
@@ -71,10 +58,6 @@ class Gmpv214GetVulnerabilityTestCase(
     pass
 
 
-class Gmpv214ModifyScheduleTestCase(GmpModifyScheduleTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214AuthenticateTestCase(GmpAuthenticateTestCase, Gmpv214TestCase):
     pass
 
@@ -82,10 +65,6 @@ class Gmpv214AuthenticateTestCase(GmpAuthenticateTestCase, Gmpv214TestCase):
 class Gmpv214CloneReportFormatTestCase(
     GmpCloneReportFormatTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214CloneFilterTestCase(GmpCloneFilterTestCase, Gmpv214TestCase):
     pass
 
 
@@ -102,19 +81,11 @@ class Gmpv214CloneRoleTestCase(GmpCloneRoleTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneScheduleTestCase(GmpCloneScheduleTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv214TestCase):
     pass
 
 
 class Gmpv214CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteFilterTestCase(GmpDeleteFilterTestCase, Gmpv214TestCase):
     pass
 
 
@@ -132,10 +103,6 @@ class Gmpv214DeleteRoleTestCase(GmpDeleteRoleTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214DescribeAuthCommandTestCase(
     GmpDescribeAuthCommandTestCase, Gmpv214TestCase
 ):
@@ -145,14 +112,6 @@ class Gmpv214DescribeAuthCommandTestCase(
 class Gmpv214EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214GetFilterTestCase(GmpGetFilterTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetFiltersTestCase(GmpGetFiltersTestCase, Gmpv214TestCase):
     pass
 
 
@@ -189,14 +148,6 @@ class Gmpv214GetRoleTestCase(GmpGetRoleTestCase, Gmpv214TestCase):
 
 
 class Gmpv214GetRolesTestCase(GmpGetRolesTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetScheduleTestCase(GmpGetScheduleTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetSchedulesTestCase(GmpGetSchedulesTestCase, Gmpv214TestCase):
     pass
 
 

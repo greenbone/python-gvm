@@ -13,6 +13,10 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Introduced new explicit API calls for SecInfo: `get_nvt()`, `get_nvt_list()`, `get_cpe()`, `get_cpe_list()`, `get_cve()`, `get_cve_list()`, `get_cert_bund_advisory()`, `get_cert_bund_advisory_list()`, `get_dnf_cert_advisory()`, `get_dnf_cert_advisory_list()`, `get_oval_definition()`, `get_oval_definition_list()`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 
 ### Changed
+* Detached the HostsOrdering Type from the GMP types class. [#469](https://github.com/greenbone/python-gvm/pull/469)
+* Detached the TicketStatus Type from the GMP types class. [#469](https://github.com/greenbone/python-gvm/pull/469)
+* Detached the Schedules API calls from the GMP class into a new `SchedulesMixin`. [#469](https://github.com/greenbone/python-gvm/pull/469)
+* Detached the Filters API calls from the GMP class into a new `FiltersMixin`. [#469](https://github.com/greenbone/python-gvm/pull/469)
 * Detached the Tags API calls from the GMP class into a new `TagsMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468)
 * Detached the Feeds API calls from the GMP class into a new `FeedsMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468)
 * Detached the Aggregates API calls from the GMP class into a new `AggregatesMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468)
@@ -45,6 +49,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ### Deprecated
 ### Removed
+* Removed `TimeUnit`. It was used for schedules before iCal and is not required anymore. [#469](https://github.com/greenbone/python-gvm/pull/469)
 * Removed `Gmpv214Mixin`. [#467](https://github.com/greenbone/python-gvm/pull/467)
 * Remove support of delete host/operating system by a report . [#459](https://github.com/greenbone/python-gvm/pull/459)
 * Remove deprecated `make_unique` parameter from `Targets`. [#446](https://github.com/greenbone/python-gvm/pull/446)
