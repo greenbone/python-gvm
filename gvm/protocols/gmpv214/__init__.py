@@ -65,6 +65,11 @@ from gvm.protocols.gmpv208.entities.feeds import (
     FeedsMixin,
     get_feed_type_from_string,
 )
+from gvm.protocols.gmpv208.entities.filter import (
+    FiltersMixin,
+    FilterType,
+    get_filter_type_from_string,
+)
 from gvm.protocols.gmpv208.entities.hosts import HostsMixin
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
@@ -138,6 +143,7 @@ class Gmp(
     AuditsMixin,
     CredentialsMixin,
     FeedsMixin,
+    FiltersMixin,
     HostsMixin,
     NotesMixin,
     OperatingSystemsMixin,

@@ -17,20 +17,16 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gvm.protocols.gmpv208.types import (
-    FilterType,
     HostsOrdering,
     TicketStatus,
-    get_filter_type_from_string,
     get_hosts_ordering_from_string,
     get_ticket_status_from_string,
 )
 
 
 __all__ = [
-    "FilterType",
     "HostsOrdering",
     "TicketStatus",
-    "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
     "get_ticket_status_from_string",
 ]

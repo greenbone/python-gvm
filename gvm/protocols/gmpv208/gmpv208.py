@@ -372,118 +372,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def create_filter(
-        self,
-        name: str,
-        *,
-        filter_type: Optional[FilterType] = None,
-        comment: Optional[str] = None,
-        term: Optional[str] = None,
-    ) -> Any:
-        """Create a new filter
-
-        Arguments:
-            name: Name of the new filter
-            filter_type: Filter for entity type
-            comment: Comment for the filter
-            term: Filter term e.g. 'name=foo'
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not name:
-            raise RequiredArgument(
-                function=self.create_filter.__name__, argument="name"
-            )
-
-        cmd = XmlCommand("create_filter")
-        _xmlname = cmd.add_element("name", name)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if term:
-            cmd.add_element("term", term)
-
-        if filter_type:
-            if not isinstance(filter_type, self.types.FilterType):
-                raise InvalidArgumentType(
-                    function=self.create_filter.__name__,
-                    argument="filter_type",
-                    arg_type=self.types.FilterType.__name__,
-                )
-
-            cmd.add_element("type", filter_type.value)
-
-        return self._send_xml_command(cmd)
-
-    def modify_filter(
-        self,
-        filter_id: str,
-        *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        term: Optional[str] = None,
-        filter_type: Optional[FilterType] = None,
-    ) -> Any:
-        """Modifies an existing filter.
-
-        Arguments:
-            filter_id: UUID of the filter to be modified
-            comment: Comment on filter.
-            name: Name of filter.
-            term: Filter term.
-            filter_type: Resource type filter applies to.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not filter_id:
-            raise RequiredArgument(
-                function=self.modify_filter.__name__, argument='filter_id'
-            )
-
-        cmd = XmlCommand("modify_filter")
-        cmd.set_attribute("filter_id", filter_id)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if name:
-            cmd.add_element("name", name)
-
-        if term:
-            cmd.add_element("term", term)
-
-        if filter_type:
-            if not isinstance(filter_type, self.types.FilterType):
-                raise InvalidArgumentType(
-                    function=self.modify_filter.__name__,
-                    argument='filter_type',
-                    arg_type=FilterType.__name__,
-                )
-            cmd.add_element("type", filter_type.value)
-
-        return self._send_xml_command(cmd)
-
-    def clone_filter(self, filter_id: str) -> Any:
-        """Clone an existing filter
-
-        Arguments:
-            filter_id: UUID of an existing filter to clone from
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not filter_id:
-            raise RequiredArgument(
-                function=self.clone_filter.__name__, argument='filter_id'
-            )
-
-        cmd = XmlCommand("create_filter")
-        cmd.add_element("copy", filter_id)
-        return self._send_xml_command(cmd)
-
     def create_group(
         self,
         name: str,
@@ -648,26 +536,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", role_id)
         return self._send_xml_command(cmd)
 
-    def delete_filter(
-        self, filter_id: str, *, ultimate: Optional[bool] = False
-    ) -> Any:
-        """Deletes an existing filter
-
-        Arguments:
-            filter_id: UUID of the filter to be deleted.
-            ultimate: Whether to remove entirely, or to the trashcan.
-        """
-        if not filter_id:
-            raise RequiredArgument(
-                function=self.delete_filter.__name__, argument='filter_id'
-            )
-
-        cmd = XmlCommand("delete_filter")
-        cmd.set_attribute("filter_id", filter_id)
-        cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
     def delete_group(
         self, group_id: str, *, ultimate: Optional[bool] = False
     ) -> Any:
@@ -759,63 +627,6 @@ class GmpV208Mixin(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         return self._send_xml_command(XmlCommand("empty_trashcan"))
-
-    def get_filters(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-        alerts: Optional[bool] = None,
-    ) -> Any:
-        """Request a list of filters
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get the trashcan filters instead
-            alerts: Whether to include list of alerts that use the filter.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_filters")
-
-        add_filter(cmd, filter, filter_id)
-
-        if trash is not None:
-            cmd.set_attribute("trash", to_bool(trash))
-
-        if alerts is not None:
-            cmd.set_attribute("alerts", to_bool(alerts))
-
-        return self._send_xml_command(cmd)
-
-    def get_filter(
-        self, filter_id: str, *, alerts: Optional[bool] = None
-    ) -> Any:
-        """Request a single filter
-
-        Arguments:
-            filter_id: UUID of an existing filter
-            alerts: Whether to include list of alerts that use the filter.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_filters")
-
-        if not filter_id:
-            raise RequiredArgument(
-                function=self.get_filter.__name__, argument='filter_id'
-            )
-
-        cmd.set_attribute("filter_id", filter_id)
-
-        if alerts is not None:
-            cmd.set_attribute("alerts", to_bool(alerts))
-
-        return self._send_xml_command(cmd)
 
     def get_groups(
         self,

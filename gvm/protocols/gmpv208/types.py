@@ -25,75 +25,11 @@ from typing import Optional
 from gvm.errors import InvalidArgument
 
 __all__ = [
-    "FilterType",
     "HostsOrdering",
     "TicketStatus",
-    "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
     "get_ticket_status_from_string",
 ]
-
-
-class FilterType(Enum):
-    """Enum for filter types"""
-
-    ALERT = "alert"
-    ASSET = "asset"
-    SCAN_CONFIG = "config"
-    CREDENTIAL = "credential"
-    FILTER = "filter"
-    GROUP = "group"
-    HOST = "host"
-    NOTE = "note"
-    OPERATING_SYSTEM = "os"
-    OVERRIDE = "override"
-    PERMISSION = "permission"
-    PORT_LIST = "port_list"
-    REPORT = "report"
-    REPORT_FORMAT = "report_format"
-    RESULT = "result"
-    ROLE = "role"
-    SCHEDULE = "schedule"
-    ALL_SECINFO = "secinfo"
-    TAG = "tag"
-    TARGET = "target"
-    TASK = "task"
-    TICKET = "ticket"
-    TLS_CERTIFICATE = "tls_certificate"
-    USER = "user"
-    VULNERABILITY = "vuln"
-
-
-def get_filter_type_from_string(
-    filter_type: Optional[str],
-) -> Optional[FilterType]:
-    """Convert a filter type string to an actual FilterType instance
-
-    Arguments:
-        filter_type (str): Filter type string to convert to a FilterType
-    """
-    if not filter_type:
-        return None
-
-    if filter_type == 'vuln':
-        return FilterType.VULNERABILITY
-
-    if filter_type == 'os':
-        return FilterType.OPERATING_SYSTEM
-
-    if filter_type == 'config':
-        return FilterType.SCAN_CONFIG
-
-    if filter_type == 'secinfo':
-        return FilterType.ALL_SECINFO
-
-    try:
-        return FilterType[filter_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='filter_type',
-            function=get_filter_type_from_string.__name__,
-        ) from None
 
 
 class TicketStatus(Enum):
