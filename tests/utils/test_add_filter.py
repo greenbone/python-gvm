@@ -27,7 +27,7 @@ class TestAddFilter(unittest.TestCase):
         cmd = XmlCommand("test")
         filter_string = "foo"
 
-        add_filter(cmd, filter=filter_string, filter_id=None)
+        add_filter(cmd, filter_string=filter_string, filter_id=None)
 
         self.assertEqual(cmd.to_string(), '<test filter="foo"/>')
 
@@ -35,7 +35,7 @@ class TestAddFilter(unittest.TestCase):
         cmd = XmlCommand("test")
         filter_id = "foo"
 
-        add_filter(cmd, filter=None, filter_id=filter_id)
+        add_filter(cmd, filter_string=None, filter_id=filter_id)
 
         self.assertEqual(cmd.to_string(), '<test filt_id="foo"/>')
 

@@ -16,10 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-# MAYBE we should change filter to filter_string (everywhere)
-
-
 from typing import Any, List, Optional
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
@@ -162,7 +158,7 @@ class OverridesMixin:
     def get_overrides(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         details: Optional[bool] = None,
         result: Optional[bool] = None,
@@ -170,7 +166,7 @@ class OverridesMixin:
         """Request a list of overrides
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             details: Whether to include full details
             result: Whether to include results using the override
@@ -180,7 +176,7 @@ class OverridesMixin:
         """
         cmd = XmlCommand("get_overrides")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if details is not None:
             cmd.set_attribute("details", to_bool(details))

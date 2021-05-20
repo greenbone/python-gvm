@@ -23,8 +23,8 @@ class GmpGetSchedulesTestMixin:
 
         self.connection.send.has_been_called_with('<get_schedules/>')
 
-    def test_get_schedules_with_filter(self):
-        self.gmp.get_schedules(filter='foo=bar')
+    def test_get_schedules_with_filter_string(self):
+        self.gmp.get_schedules(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_schedules filter="foo=bar"/>'

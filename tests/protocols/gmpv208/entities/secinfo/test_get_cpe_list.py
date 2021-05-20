@@ -23,8 +23,8 @@ class GmpGetCpeListTestMixin:
 
         self.connection.send.has_been_called_with('<get_info type="CPE"/>')
 
-    def test_get_cpe_list_with_filter(self):
-        self.gmp.get_cpe_list(filter='foo=bar')
+    def test_get_cpe_list_with_filter_string(self):
+        self.gmp.get_cpe_list(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" filter="foo=bar"/>'

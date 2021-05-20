@@ -16,9 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-# MAYBE we should change filter to filter_string (everywhere)
-
 from enum import Enum
 from typing import Any, Optional, Union
 
@@ -360,7 +357,7 @@ class AlertsMixin:
     def get_alerts(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         tasks: Optional[bool] = None,
@@ -377,7 +374,7 @@ class AlertsMixin:
         """
         cmd = XmlCommand("get_alerts")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if trash is not None:
             cmd.set_attribute("trash", to_bool(trash))
@@ -542,7 +539,7 @@ class AlertsMixin:
         alert_id: str,
         report_id: str,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         report_format_id: Optional[Union[str, ReportFormatType]] = None,
         delta_report_id: Optional[str] = None,
@@ -580,11 +577,7 @@ class AlertsMixin:
         cmd.set_attribute("report_id", report_id)
         cmd.set_attribute("alert_id", alert_id)
 
-        if filter:
-            cmd.set_attribute("filter", filter)
-
-        if filter_id:
-            cmd.set_attribute("filt_id", filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if report_format_id:
             if isinstance(report_format_id, ReportFormatType):

@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-
 from typing import Any, List, Optional
 
 from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
@@ -154,7 +152,7 @@ class TagsMixin:
     def get_tags(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         names_only: Optional[bool] = None,
@@ -162,7 +160,7 @@ class TagsMixin:
         """Request a list of tags
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             trash: Whether to get tags from the trashcan instead
             names_only: Whether to get only distinct tag names
@@ -172,7 +170,7 @@ class TagsMixin:
         """
         cmd = XmlCommand("get_tags")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if trash is not None:
             cmd.set_attribute("trash", to_bool(trash))

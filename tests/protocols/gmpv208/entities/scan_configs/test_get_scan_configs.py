@@ -25,8 +25,8 @@ class GmpGetScanConfigsTestMixin:
             '<get_configs usage_type="scan"/>'
         )
 
-    def test_get_scan_configs_with_filter(self):
-        self.gmp.get_scan_configs(filter='name=foo')
+    def test_get_scan_configs_with_filter_string(self):
+        self.gmp.get_scan_configs(filter_string='name=foo')
 
         self.connection.send.has_been_called_with(
             '<get_configs usage_type="scan" filter="name=foo"/>'

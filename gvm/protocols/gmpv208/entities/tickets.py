@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-
 from enum import Enum
 
 from typing import Any, Optional
@@ -147,13 +145,13 @@ class TicketsMixin:
         self,
         *,
         trash: Optional[bool] = None,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
     ) -> Any:
         """Request a list of tickets
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             trash: True to request the tickets in the trashcan
 
@@ -162,7 +160,7 @@ class TicketsMixin:
         """
         cmd = XmlCommand("get_tickets")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if trash is not None:
             cmd.set_attribute("trash", to_bool(trash))

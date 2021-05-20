@@ -23,8 +23,8 @@ class GmpGetOverridesTestMixin:
 
         self.connection.send.has_been_called_with('<get_overrides/>')
 
-    def test_get_overrides_with_filter(self):
-        self.gmp.get_overrides(filter='foo=bar')
+    def test_get_overrides_with_filter_string(self):
+        self.gmp.get_overrides(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_overrides filter="foo=bar"/>'

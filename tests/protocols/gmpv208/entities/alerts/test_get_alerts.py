@@ -32,8 +32,8 @@ class GmpGetAlertsTestMixin:
 
         self.connection.send.has_been_called_with('<get_alerts trash="0"/>')
 
-    def test_get_alerts_with_filter(self):
-        self.gmp.get_alerts(filter="foo=bar")
+    def test_get_alerts_with_filter_string(self):
+        self.gmp.get_alerts(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_alerts filter="foo=bar"/>'

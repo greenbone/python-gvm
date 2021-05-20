@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-# MAYBE we should change filter to filter_string (everywhere)
 
 from enum import Enum
 from typing import Any, Optional

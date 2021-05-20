@@ -74,8 +74,8 @@ class GmpGetInfoListTestMixin:
         with self.assertRaises(InvalidArgumentType):
             self.gmp.get_info_list(info_type='foo')
 
-    def test_get_info_list_with_filter(self):
-        self.gmp.get_info_list(InfoType.CPE, filter='foo=bar')
+    def test_get_info_list_with_filter_string(self):
+        self.gmp.get_info_list(InfoType.CPE, filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" filter="foo=bar"/>'

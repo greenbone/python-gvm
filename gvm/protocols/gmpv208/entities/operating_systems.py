@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-
 from typing import Any, Optional
 
 from gvm.errors import RequiredArgument
@@ -50,13 +48,13 @@ class OperatingSystemsMixin:
     def get_operating_systems(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
     ) -> Any:
         """Request a list of operating_systems
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
 
         Returns:
@@ -67,7 +65,7 @@ class OperatingSystemsMixin:
 
         cmd.set_attribute("type", "os")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         return self._send_xml_command(cmd)
 

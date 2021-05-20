@@ -23,8 +23,8 @@ class GmpGetPermissionsTestMixin:
 
         self.connection.send.has_been_called_with('<get_permissions/>')
 
-    def test_get_permissions_with_filter(self):
-        self.gmp.get_permissions(filter='foo=bar')
+    def test_get_permissions_with_filter_string(self):
+        self.gmp.get_permissions(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_permissions filter="foo=bar"/>'

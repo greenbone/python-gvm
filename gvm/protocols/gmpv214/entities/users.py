@@ -16,8 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin, arguments-differ
-# MAYBE we should change filter to filter_string (everywhere)
+# pylint: disable=arguments-differ
 
 from typing import Any, List, Optional
 

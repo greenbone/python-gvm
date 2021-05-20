@@ -23,8 +23,8 @@ class GmpGetOperatingSystemsTestMixin:
 
         self.connection.send.has_been_called_with('<get_assets type="os"/>')
 
-    def test_get_operating_systems_with_filter(self):
-        self.gmp.get_operating_systems(filter='foo=bar')
+    def test_get_operating_systems_with_filter_string(self):
+        self.gmp.get_operating_systems(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_assets type="os" filter="foo=bar"/>'

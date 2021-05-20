@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-
 from typing import Any, Optional
 
 from gvm.errors import RequiredArgument
@@ -51,7 +49,7 @@ class ResultsMixin:
     def get_results(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         task_id: Optional[str] = None,
         note_details: Optional[bool] = None,
@@ -61,7 +59,7 @@ class ResultsMixin:
         """Request a list of results
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             task_id: UUID of task for note and override handling
             note_details: If notes are included, whether to include note details
@@ -74,7 +72,7 @@ class ResultsMixin:
         """
         cmd = XmlCommand("get_results")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if task_id:
             cmd.set_attribute("task_id", task_id)

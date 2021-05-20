@@ -23,8 +23,8 @@ class GmpGetTagsTestMixin:
 
         self.connection.send.has_been_called_with('<get_tags/>')
 
-    def test_get_tags_with_filter(self):
-        self.gmp.get_tags(filter='foo=bar')
+    def test_get_tags_with_filter_string(self):
+        self.gmp.get_tags(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_tags filter="foo=bar"/>'
