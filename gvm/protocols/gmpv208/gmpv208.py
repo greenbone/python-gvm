@@ -138,19 +138,3 @@ class GmpV208Mixin(GvmProtocol):
             cmd.set_attribute("format", format)
 
         return self._send_xml_command(cmd)
-
-    def sync_cert(self) -> Any:
-        """Request a synchronization with the CERT feed service
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("sync_cert"))
-
-    def sync_scap(self) -> Any:
-        """Request a synchronization with the SCAP feed service
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("sync_scap"))
