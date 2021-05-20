@@ -121,6 +121,7 @@ from gvm.protocols.gmpv208.entities.targets import (
 )
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tickets import (
+    TicketsMixin,
     TicketStatus,
     get_ticket_status_from_string,
 )
@@ -155,6 +156,7 @@ class Gmp(
     TagsMixin,
     TargetsMixin,
     TasksMixin,
+    TicketsMixin,
     TLSCertificateMixin,
     ScanConfigsMixin,
     ScannersMixin,
