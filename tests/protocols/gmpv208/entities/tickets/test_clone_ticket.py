@@ -19,23 +19,26 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetTicketTestCase:
-    def test_get_ticket(self):
-        self.gmp.get_ticket('t1')
+class GmpCloneTicketTestMixin:
+    def test_clone(self):
+        self.gmp.clone_ticket('t1')
 
         self.connection.send.has_been_called_with(
-            '<get_tickets ticket_id="t1"/>'
+            '<create_ticket>' '<copy>t1</copy>' '</create_ticket>'
         )
 
-        self.gmp.get_ticket(ticket_id='t1')
+        self.gmp.clone_ticket(ticket_id='t1')
 
         self.connection.send.has_been_called_with(
-            '<get_tickets ticket_id="t1"/>'
+            '<create_ticket>' '<copy>t1</copy>' '</create_ticket>'
         )
 
-    def test_get_ticket_missing_user_id(self):
+    def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_ticket(ticket_id=None)
+            self.gmp.clone_ticket('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_ticket('')
+            self.gmp.clone_ticket(None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_ticket(ticket_id=None)

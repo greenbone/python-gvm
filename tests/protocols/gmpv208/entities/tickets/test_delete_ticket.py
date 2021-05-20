@@ -16,30 +16,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gvm.errors import RequiredArgument
 
-class GmpGetTargetsTestCase:
-    def test_get_tickets(self):
-        self.gmp.get_tickets()
 
-        self.connection.send.has_been_called_with('<get_tickets/>')
-
-    def test_get_tickets_with_filter(self):
-        self.gmp.get_tickets(filter='foo=bar')
+class GmpDeleteTicketTestMixin:
+    def test_delete(self):
+        self.gmp.delete_ticket('t1')
 
         self.connection.send.has_been_called_with(
-            '<get_tickets filter="foo=bar"/>'
+            '<delete_ticket ticket_id="t1" ultimate="0"/>'
         )
 
-    def test_get_tickets_with_filter_id(self):
-        self.gmp.get_tickets(filter_id='f1')
+    def test_delete_ultimate(self):
+        self.gmp.delete_ticket('t1', ultimate=True)
 
-        self.connection.send.has_been_called_with('<get_tickets filt_id="f1"/>')
+        self.connection.send.has_been_called_with(
+            '<delete_ticket ticket_id="t1" ultimate="1"/>'
+        )
 
-    def test_get_tickets_with_trash(self):
-        self.gmp.get_tickets(trash=True)
+    def test_missing_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.delete_ticket(None)
 
-        self.connection.send.has_been_called_with('<get_tickets trash="1"/>')
-
-        self.gmp.get_tickets(trash=False)
-
-        self.connection.send.has_been_called_with('<get_tickets trash="0"/>')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.delete_ticket('')

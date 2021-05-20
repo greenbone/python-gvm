@@ -20,7 +20,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import TicketStatus
 
 
-class GmpModifyTicketTestCase:
+class GmpModifyTicketTestMixin:
     def test_modify_ticket(self):
         self.gmp.modify_ticket('t1')
 

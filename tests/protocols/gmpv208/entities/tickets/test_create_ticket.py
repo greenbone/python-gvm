@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCreateTicketTestCase:
+class GmpCreateTicketTestMixin:
     def test_create_ticket(self):
         self.gmp.create_ticket(
             result_id='r1', assigned_to_user_id='u1', note='lorem ipsum'
