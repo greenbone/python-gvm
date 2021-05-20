@@ -28,9 +28,8 @@ Module for communication with gvmd in
 import logging
 from numbers import Integral
 
-from typing import Any, Optional, Callable
+from typing import Any, Optional
 
-from gvm.connections import GvmConnection
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.base import GvmProtocol
 
@@ -69,17 +68,6 @@ class GmpV208Mixin(GvmProtocol):
     .. _callable:
         https://docs.python.org/3/library/functions.html#callable
     """
-
-    def __init__(
-        self,
-        connection: GvmConnection,
-        *,
-        transform: Optional[Callable[[str], Any]] = None,
-    ):
-        super().__init__(connection, transform=transform)
-
-        # Is authenticated on gvmd
-        self._authenticated = False
 
     def is_authenticated(self) -> bool:
         """Checks if the user is authenticated
