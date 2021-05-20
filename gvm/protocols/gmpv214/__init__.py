@@ -28,13 +28,6 @@ Module for communication with gvmd in
 
 from typing import Any, Callable, Optional
 
-from gvm.protocols.gmpv208.entities.aggregates import (
-    AggregatesMixin,
-    AggregateStatistic,
-    get_aggregate_statistic_from_string,
-    SortOrder,
-    get_sort_order_from_string,
-)
 from gvm.protocols.gmpv208.entities.alerts import (
     AlertCondition,
     AlertEvent,
@@ -119,6 +112,13 @@ from gvm.protocols.gmpv208.entities.users import (
 )
 from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
 
+from gvm.protocols.gmpv208.system.aggregates import (
+    AggregatesMixin,
+    AggregateStatistic,
+    get_aggregate_statistic_from_string,
+    SortOrder,
+    get_sort_order_from_string,
+)
 from gvm.protocols.gmpv208.system.authentication import AuthenticationMixin
 from gvm.protocols.gmpv208.system.feed import (
     FeedType,
