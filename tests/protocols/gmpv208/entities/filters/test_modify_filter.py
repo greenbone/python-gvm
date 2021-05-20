@@ -20,7 +20,7 @@ from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import FilterType
 
 
-class GmpModifyFilterTestCase:
+class GmpModifyFilterTestMixin:
     def test_modify_filter(self):
         self.gmp.modify_filter(filter_id='f1')
 

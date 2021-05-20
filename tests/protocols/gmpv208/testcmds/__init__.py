@@ -18,8 +18,6 @@
 
 # pylint: disable=no-member
 
-from .test_create_filter import GmpCreateFilterTestCase
-from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
 from .test_clone_ticket import GmpCloneTicketTestCase
@@ -34,21 +32,17 @@ from .test_modify_schedule import GmpModifyScheduleTestCase
 from .test_protocol_version import GmpProtocolVersionTestCase
 from .test_authenticate import GmpAuthenticateTestCase
 from .test_clone_report_format import GmpCloneReportFormatTestCase
-from .test_clone_filter import GmpCloneFilterTestCase
 from .test_clone_group import GmpCloneGroupTestCase
 from .test_clone_role import GmpCloneRoleTestCase
 from .test_clone_schedule import GmpCloneScheduleTestCase
 from .test_create_group import GmpCreateGroupTestCase
 from .test_create_role import GmpCreateRoleTestCase
-from .test_delete_filter import GmpDeleteFilterTestCase
 from .test_delete_group import GmpDeleteGroupTestCase
 from .test_delete_report_format import GmpDeleteReportFormatTestCase
 from .test_delete_role import GmpDeleteRoleTestCase
 from .test_delete_schedule import GmpDeleteScheduleTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
-from .test_get_filter import GmpGetFilterTestCase
-from .test_get_filters import GmpGetFiltersTestCase
 from .test_get_group import GmpGetGroupTestCase
 from .test_get_groups import GmpGetGroupsTestCase
 from .test_get_preference import GmpGetPreferenceTestCase

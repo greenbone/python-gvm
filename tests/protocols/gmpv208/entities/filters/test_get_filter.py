@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetFilterTestCase:
+class GmpGetFilterTestMixin:
     def test_get_filter(self):
         self.gmp.get_filter('f1')
 

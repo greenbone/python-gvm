@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpDeleteFilterTestCase:
+class GmpDeleteFilterTestMixin:
     def test_delete(self):
         self.gmp.delete_filter('a1')
 

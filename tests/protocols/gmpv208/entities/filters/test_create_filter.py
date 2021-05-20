@@ -20,7 +20,7 @@ from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208 import FilterType
 
 
-class GmpCreateFilterTestCase:
+class GmpCreateFilterTestMixin:
     def test_all_available_filters_types_correct(self):
         for filter_type in list(FilterType):
             self.gmp.create_filter(

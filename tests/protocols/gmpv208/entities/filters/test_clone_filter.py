@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCloneFilterTestCase:
+class GmpCloneFilterTestMixin:
     def test_clone(self):
         self.gmp.clone_filter('a1')
 

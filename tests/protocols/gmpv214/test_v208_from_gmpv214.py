@@ -20,14 +20,6 @@ from . import Gmpv214TestCase
 from ..gmpv208.testcmds import *  # pylint: disable=unused-wildcard-import,wildcard-import
 
 
-class Gmpv214CreateFilterTestCase(GmpCreateFilterTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ModifyReportFormatTestCase(
     GmpModifyReportFormatTestCase, Gmpv214TestCase
 ):
@@ -85,10 +77,6 @@ class Gmpv214CloneReportFormatTestCase(
     pass
 
 
-class Gmpv214CloneFilterTestCase(GmpCloneFilterTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214HelpTestCase(GmpHelpTestCase, Gmpv214TestCase):
     pass
 
@@ -111,10 +99,6 @@ class Gmpv214CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv214TestCase):
 
 
 class Gmpv214CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteFilterTestCase(GmpDeleteFilterTestCase, Gmpv214TestCase):
     pass
 
 
@@ -145,14 +129,6 @@ class Gmpv214DescribeAuthCommandTestCase(
 class Gmpv214EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214GetFilterTestCase(GmpGetFilterTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetFiltersTestCase(GmpGetFiltersTestCase, Gmpv214TestCase):
     pass
 
 
