@@ -32,11 +32,10 @@ class GmpCreateTLSCertificateTestMixin:
             '</create_tls_certificate>'
         )
 
-        self.gmp.create_tls_certificate('foo', 'c1', comment='bar', trust=False)
+        self.gmp.create_tls_certificate('foo', 'c1', trust=False)
 
         self.connection.send.has_been_called_with(
             '<create_tls_certificate>'
-            '<comment>bar</comment>'
             '<name>foo</name>'
             '<certificate>c1</certificate>'
             '</create_tls_certificate>'
