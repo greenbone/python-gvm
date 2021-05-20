@@ -45,6 +45,7 @@ from gvm.protocols.gmpv208.entities.alerts import (
     get_alert_method_from_string,
 )
 from gvm.protocols.gmpv208.entities.audits import AuditsMixin
+from gvm.protocols.gmpv208.entities.authentication import AuthenticationMixin
 from gvm.protocols.gmpv208.entities.credentials import (
     CredentialFormat,
     CredentialsMixin,
@@ -148,6 +149,7 @@ class Gmp(
     AggregatesMixin,
     AlertsMixin,
     AuditsMixin,
+    AuthenticationMixin,
     CredentialsMixin,
     FeedsMixin,
     FiltersMixin,
@@ -178,6 +180,26 @@ class Gmp(
     UsersMixin,
     VulnerabilitiesMixin,
 ):
+    """Python interface for Greenbone Management Protocol
+
+    This class implements the `Greenbone Management Protocol version 20.08`_
+
+    Arguments:
+        connection: Connection to use to talk with the gvmd daemon. See
+            :mod:`gvm.connections` for possible connection types.
+        transform: Optional transform `callable`_ to convert response data.
+            After each request the callable gets passed the plain response data
+            which can be used to check the data and/or conversion into different
+            representations like a xml dom.
+
+            See :mod:`gvm.transforms` for existing transforms.
+
+    .. _Greenbone Management Protocol version 20.08:
+        https://docs.greenbone.net/API/GMP/gmp-20.08.html
+    .. _callable:
+        https://docs.python.org/3/library/functions.html#callable
+    """
+
     def __init__(
         self,
         connection: GvmConnection,

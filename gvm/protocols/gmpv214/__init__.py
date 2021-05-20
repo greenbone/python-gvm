@@ -45,6 +45,7 @@ from gvm.protocols.gmpv208.entities.alerts import (
     get_alert_method_from_string,
 )
 from gvm.protocols.gmpv208.entities.audits import AuditsMixin
+from gvm.protocols.gmpv208.entities.authentication import AuthenticationMixin
 from gvm.protocols.gmpv208.entities.credentials import (
     CredentialFormat,
     CredentialsMixin,
@@ -154,6 +155,7 @@ class Gmp(
     AggregatesMixin,
     AlertsMixin,
     AuditsMixin,
+    AuthenticationMixin,
     CredentialsMixin,
     FeedsMixin,
     FiltersMixin,
