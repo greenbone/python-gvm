@@ -24,7 +24,7 @@ class GmpGetRolesTestCase:
         self.connection.send.has_been_called_with('<get_roles/>')
 
     def test_get_roles_with_filter(self):
-        self.gmp.get_roles(filter='foo=bar')
+        self.gmp.get_roles(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_roles filter="foo=bar"/>'

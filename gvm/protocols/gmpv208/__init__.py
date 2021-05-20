@@ -98,6 +98,7 @@ from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatsMixin,
     get_report_format_id_from_string,
 )
+from gvm.protocols.gmpv208.entities.roles import RolesMixin
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
 from gvm.protocols.gmpv208.entities.scanners import (
     ScannersMixin,
@@ -155,6 +156,7 @@ class Gmp(
     ReportFormatsMixin,
     ReportsMixin,
     ResultsMixin,
+    RolesMixin,
     TagsMixin,
     TargetsMixin,
     TasksMixin,

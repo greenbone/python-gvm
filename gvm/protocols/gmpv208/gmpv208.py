@@ -225,58 +225,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", group_id)
         return self._send_xml_command(cmd)
 
-    def create_role(
-        self,
-        name: str,
-        *,
-        comment: Optional[str] = None,
-        users: Optional[List[str]] = None,
-    ) -> Any:
-        """Create a new role
-
-        Arguments:
-            name: Name of the role
-            comment: Comment for the role
-            users: List of user names to add to the role
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-
-        if not name:
-            raise RequiredArgument(
-                function=self.create_role.__name__, argument='name'
-            )
-
-        cmd = XmlCommand("create_role")
-        cmd.add_element("name", name)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if users:
-            cmd.add_element("users", to_comma_list(users))
-
-        return self._send_xml_command(cmd)
-
-    def clone_role(self, role_id: str) -> Any:
-        """Clone an existing role
-
-        Arguments:
-            role_id: UUID of an existing role to clone from
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not role_id:
-            raise RequiredArgument(
-                function=self.clone_role.__name__, argument='role_id'
-            )
-
-        cmd = XmlCommand("create_role")
-        cmd.add_element("copy", role_id)
-        return self._send_xml_command(cmd)
-
     def delete_group(
         self, group_id: str, *, ultimate: Optional[bool] = False
     ) -> Any:
@@ -293,26 +241,6 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("delete_group")
         cmd.set_attribute("group_id", group_id)
-        cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
-    def delete_role(
-        self, role_id: str, *, ultimate: Optional[bool] = False
-    ) -> Any:
-        """Deletes an existing role
-
-        Arguments:
-            role_id: UUID of the role to be deleted.
-            ultimate: Whether to remove entirely, or to the trashcan.
-        """
-        if not role_id:
-            raise RequiredArgument(
-                function=self.delete_role.__name__, argument='role_id'
-            )
-
-        cmd = XmlCommand("delete_role")
-        cmd.set_attribute("role_id", role_id)
         cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return self._send_xml_command(cmd)
@@ -443,50 +371,6 @@ class GmpV208Mixin(GvmProtocol):
         if config_id:
             cmd.set_attribute("config_id", config_id)
 
-        return self._send_xml_command(cmd)
-
-    def get_roles(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-    ) -> Any:
-        """Request a list of roles
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get the trashcan roles instead
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_roles")
-
-        add_filter(cmd, filter, filter_id)
-
-        if trash is not None:
-            cmd.set_attribute("trash", to_bool(trash))
-
-        return self._send_xml_command(cmd)
-
-    def get_role(self, role_id: str) -> Any:
-        """Request a single role
-
-        Arguments:
-            role_id: UUID of an existing role
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not role_id:
-            raise RequiredArgument(
-                function=self.get_role.__name__, argument='role_id'
-            )
-
-        cmd = XmlCommand("get_roles")
-        cmd.set_attribute("role_id", role_id)
         return self._send_xml_command(cmd)
 
     def get_settings(self, *, filter: Optional[str] = None) -> Any:
@@ -672,44 +556,6 @@ class GmpV208Mixin(GvmProtocol):
 
         cmd = XmlCommand("modify_group")
         cmd.set_attribute("group_id", group_id)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if name:
-            cmd.add_element("name", name)
-
-        if users:
-            cmd.add_element("users", to_comma_list(users))
-
-        return self._send_xml_command(cmd)
-
-    def modify_role(
-        self,
-        role_id: str,
-        *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        users: Optional[List[str]] = None,
-    ) -> Any:
-        """Modifies an existing role.
-
-        Arguments:
-            role_id: UUID of role to modify.
-            comment: Name of role.
-            name: Comment on role.
-            users: List of user names.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not role_id:
-            raise RequiredArgument(
-                function=self.modify_role.__name__, argument='role_id argument'
-            )
-
-        cmd = XmlCommand("modify_role")
-        cmd.set_attribute("role_id", role_id)
 
         if comment:
             cmd.add_element("comment", comment)
