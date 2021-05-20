@@ -129,6 +129,7 @@ from gvm.protocols.gmpv208.entities.tickets import (
     get_ticket_status_from_string,
 )
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
+from gvm.protocols.gmpv208.entities.user_settings import UserSettingsMixin
 from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
     UsersMixin,
@@ -168,6 +169,7 @@ class Gmp(
     ScannersMixin,
     SchedulesMixin,
     SecInfoMixin,
+    UserSettingsMixin,
     UsersMixin,
 ):
     def __init__(
