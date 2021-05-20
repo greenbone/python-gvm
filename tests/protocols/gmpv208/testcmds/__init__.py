@@ -18,7 +18,6 @@
 
 # pylint: disable=no-member
 
-from .test_modify_report_format import GmpModifyReportFormatTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
 from .test_clone_ticket import GmpCloneTicketTestCase
 from .test_create_ticket import GmpCreateTicketTestCase
@@ -29,13 +28,11 @@ from .test_get_vulnerabilities import GmpGetVulnerabilitiesTestCase
 from .test_get_vulnerability import GmpGetVulnerabilityTestCase
 from .test_protocol_version import GmpProtocolVersionTestCase
 from .test_authenticate import GmpAuthenticateTestCase
-from .test_clone_report_format import GmpCloneReportFormatTestCase
 from .test_clone_group import GmpCloneGroupTestCase
 from .test_clone_role import GmpCloneRoleTestCase
 from .test_create_group import GmpCreateGroupTestCase
 from .test_create_role import GmpCreateRoleTestCase
 from .test_delete_group import GmpDeleteGroupTestCase
-from .test_delete_report_format import GmpDeleteReportFormatTestCase
 from .test_delete_role import GmpDeleteRoleTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
@@ -43,8 +40,6 @@ from .test_get_group import GmpGetGroupTestCase
 from .test_get_groups import GmpGetGroupsTestCase
 from .test_get_preference import GmpGetPreferenceTestCase
 from .test_get_preferences import GmpGetPreferencesTestCase
-from .test_get_report_format import GmpGetReportFormatTestCase
-from .test_get_report_formats import GmpGetReportFormatsTestCase
 from .test_get_role import GmpGetRoleTestCase
 from .test_get_roles import GmpGetRolesTestCase
 from .test_get_setting import GmpGetSettingTestCase
@@ -52,7 +47,6 @@ from .test_get_settings import GmpGetSettingsTestCase
 from .test_get_system_reports import GmpGetSystemReportsTestCase
 from .test_get_version import GmpGetVersionCommandTestCase
 from .test_help import GmpHelpTestCase
-from .test_import_report_format import GmpImportReportFormatTestCase
 from .test_modify_auth import GmpModifyAuthTestCase
 from .test_modify_group import GmpModifyGroupTestCase
 from .test_modify_role import GmpModifyRoleTestCase
@@ -60,5 +54,4 @@ from .test_modify_setting import GmpModifySettingTestCase
 from .test_restore import GmpRestoreTestCase
 from .test_sync_cert import GmpSyncCertCommandTestCase
 from .test_sync_scap import GmpSyncScapCommandTestCase
-from .test_verify_report_format import GmpVerifyReportFormatTestCase
 from .test_with_statement import GmpWithStatementTestCase

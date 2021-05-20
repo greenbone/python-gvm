@@ -16,35 +16,40 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from gvm.errors import GvmError
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
     get_report_format_id_from_string,
 )
 
 
-class GmpCloneReportFormatTestCase:
-    def test_clone(self):
-        self.gmp.clone_report_format('a1')
+class GmpDeleteReportFormatTestMixin:
+    def test_delete(self):
+        self.gmp.delete_report_format('a1')
 
         self.connection.send.has_been_called_with(
-            '<create_report_format>' '<copy>a1</copy>' '</create_report_format>'
+            '<delete_report_format report_format_id="a1" ultimate="0"/>'
+        )
+
+    def test_delete_ultimate(self):
+        self.gmp.delete_report_format('a1', ultimate=True)
+
+        self.connection.send.has_been_called_with(
+            '<delete_report_format report_format_id="a1" ultimate="1"/>'
         )
 
     def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_report_format('')
+        with self.assertRaises(GvmError):
+            self.gmp.delete_report_format(None)
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_report_format(None)
+        with self.assertRaises(GvmError):
+            self.gmp.delete_report_format('')
 
-    def test_clone_with_type(self):
-        self.gmp.clone_report_format(ReportFormatType.SVG)
+    def test_delete_with_type(self):
+        self.gmp.delete_report_format(ReportFormatType.SVG)
 
         report_format_id = get_report_format_id_from_string('svg').value
-
         self.connection.send.has_been_called_with(
-            '<create_report_format>'
-            '<copy>{}</copy>'
-            '</create_report_format>'.format(report_format_id)
+            '<delete_report_format '
+            'report_format_id="{}" ultimate="0"/>'.format(report_format_id)
         )

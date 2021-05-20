@@ -20,12 +20,6 @@ from . import Gmpv208TestCase
 from .testcmds import *  # pylint: disable=unused-wildcard-import, wildcard-import
 
 
-class Gmpv208ModifyReportFormatTestCase(
-    GmpModifyReportFormatTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208ModifyTicketTestCase(GmpModifyTicketTestCase, Gmpv208TestCase):
     pass
 
@@ -62,12 +56,6 @@ class Gmpv208AuthenticateTestCase(GmpAuthenticateTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneReportFormatTestCase(
-    GmpCloneReportFormatTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
     pass
 
@@ -90,12 +78,6 @@ class Gmpv208CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv208TestCase):
 
 
 class Gmpv208DeleteGroupTestCase(GmpDeleteGroupTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeleteReportFormatTestCase(
-    GmpDeleteReportFormatTestCase, Gmpv208TestCase
-):
     pass
 
 
@@ -131,18 +113,6 @@ class Gmpv208GetPreferencesTestCase(GmpGetPreferencesTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208GetReportFormatTestCase(
-    GmpGetReportFormatTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208GetReportFormatsTestCase(
-    GmpGetReportFormatsTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208GetRoleTestCase(GmpGetRoleTestCase, Gmpv208TestCase):
     pass
 
@@ -167,12 +137,6 @@ class Gmpv208GetSystemReportsTestCase(
 
 class Gmpv208GetVersionCommandTestCase(
     GmpGetVersionCommandTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208ImportReportFormatTestCase(
-    GmpImportReportFormatTestCase, Gmpv208TestCase
 ):
     pass
 
@@ -205,12 +169,6 @@ class Gmpv208SyncCertCommandTestCase(
 
 class Gmpv208SyncScapCommandTestCase(
     GmpSyncScapCommandTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208VerifyReportFormatTestCase(
-    GmpVerifyReportFormatTestCase, Gmpv208TestCase
 ):
     pass
 

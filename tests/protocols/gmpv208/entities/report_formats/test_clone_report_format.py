@@ -23,38 +23,28 @@ from gvm.protocols.gmpv208.entities.report_formats import (
 )
 
 
-class GmpGetReportFormatTestCase:
-    def test_get_report_format(self):
-        self.gmp.get_report_format('rf1')
+class GmpCloneReportFormatTestMixin:
+    def test_clone(self):
+        self.gmp.clone_report_format('a1')
 
         self.connection.send.has_been_called_with(
-            '<get_report_formats report_format_id="rf1" details="1"/>'
+            '<create_report_format>' '<copy>a1</copy>' '</create_report_format>'
         )
 
-        self.gmp.get_report_format(report_format_id='rf1')
-
-        self.connection.send.has_been_called_with(
-            '<get_report_formats report_format_id="rf1" details="1"/>'
-        )
-
-    def test_get_report_format_missing_report_format_id(self):
+    def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_report_format(report_format_id=None)
+            self.gmp.clone_report_format('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_report_format('')
+            self.gmp.clone_report_format(None)
 
-    def test_get_report_format_type(self):
-        self.gmp.get_report_format(ReportFormatType.PDF)
-        report_format_id = get_report_format_id_from_string('pdf').value
-        self.connection.send.has_been_called_with(
-            '<get_report_formats '
-            'report_format_id="{}" details="1"/>'.format(report_format_id)
-        )
+    def test_clone_with_type(self):
+        self.gmp.clone_report_format(ReportFormatType.SVG)
 
-        self.gmp.get_report_format(report_format_id=ReportFormatType.PDF)
+        report_format_id = get_report_format_id_from_string('svg').value
 
         self.connection.send.has_been_called_with(
-            '<get_report_formats '
-            'report_format_id="{}" details="1"/>'.format(report_format_id)
+            '<create_report_format>'
+            '<copy>{}</copy>'
+            '</create_report_format>'.format(report_format_id)
         )

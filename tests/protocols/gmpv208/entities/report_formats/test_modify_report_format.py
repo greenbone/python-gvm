@@ -23,7 +23,7 @@ from gvm.protocols.gmpv208.entities.report_formats import (
 )
 
 
-class GmpModifyReportFormatTestCase:
+class GmpModifyReportFormatTestMixin:
     def test_modify_report_format(self):
         self.gmp.modify_report_format(report_format_id='rf1')
 
