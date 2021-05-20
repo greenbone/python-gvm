@@ -20,10 +20,6 @@ from . import Gmpv208TestCase
 from .testcmds import *  # pylint: disable=unused-wildcard-import, wildcard-import
 
 
-class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetSystemReportsTestCase(
     GmpGetSystemReportsTestCase, Gmpv208TestCase
 ):

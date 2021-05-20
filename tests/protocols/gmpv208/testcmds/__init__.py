@@ -19,5 +19,4 @@
 # pylint: disable=no-member
 
 from .test_get_system_reports import GmpGetSystemReportsTestCase
-from .test_help import GmpHelpTestCase
 from .test_with_statement import GmpWithStatementTestCase
