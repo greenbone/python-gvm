@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ...gmpv214 import Gmpv214TestCase
-from ...gmpv208.entities.trashcan import (
+from ...gmpv208.system.trashcan import (
     GmpEmptyTrashcanTestMixin,
     GmpRestoreFromTrashcanTestMixin,
 )
