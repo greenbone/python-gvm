@@ -90,6 +90,7 @@ from gvm.protocols.gmpv208.entities.port_lists import (
     PortRangeType,
     get_port_range_type_from_string,
 )
+from gvm.protocols.gmpv208.entities.preferences import PreferencesMixin
 from gvm.protocols.gmpv208.entities.reports import ReportsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
@@ -163,6 +164,7 @@ class Gmp(
     PermissionsMixin,
     PoliciesMixin,
     PortListMixin,
+    PreferencesMixin,
     ReportFormatsMixin,
     ReportsMixin,
     ResultsMixin,

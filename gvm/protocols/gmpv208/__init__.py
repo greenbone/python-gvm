@@ -93,6 +93,7 @@ from gvm.protocols.gmpv208.entities.permissions import (
     get_permission_subject_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
+from gvm.protocols.gmpv208.entities.preferences import PreferencesMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
@@ -157,6 +158,7 @@ class Gmp(
     PermissionsMixin,
     PoliciesMixin,
     PortListMixin,
+    PreferencesMixin,
     ReportFormatsMixin,
     ReportsMixin,
     ResultsMixin,

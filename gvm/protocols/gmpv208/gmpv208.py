@@ -138,67 +138,6 @@ class GmpV208Mixin(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand("empty_trashcan"))
 
-    def get_preferences(
-        self, *, nvt_oid: Optional[str] = None, config_id: Optional[str] = None
-    ) -> Any:
-        """Request a list of preferences
-
-        When the command includes a config_id attribute, the preference element
-        includes the preference name, type and value, and the NVT to which the
-        preference applies. Otherwise, the preference element includes just the
-        name and value, with the NVT and type built into the name.
-
-        Arguments:
-            nvt_oid: OID of nvt
-            config_id: UUID of scan config of which to show preference values
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_preferences")
-
-        if nvt_oid:
-            cmd.set_attribute("nvt_oid", nvt_oid)
-
-        if config_id:
-            cmd.set_attribute("config_id", config_id)
-
-        return self._send_xml_command(cmd)
-
-    def get_preference(
-        self,
-        name: str,
-        *,
-        nvt_oid: Optional[str] = None,
-        config_id: Optional[str] = None,
-    ) -> Any:
-        """Request a nvt preference
-
-        Arguments:
-            name: name of a particular preference
-            nvt_oid: OID of nvt
-            config_id: UUID of scan config of which to show preference values
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_preferences")
-
-        if not name:
-            raise RequiredArgument(
-                function=self.get_preference.__name__, argument='name'
-            )
-
-        cmd.set_attribute("preference", name)
-
-        if nvt_oid:
-            cmd.set_attribute("nvt_oid", nvt_oid)
-
-        if config_id:
-            cmd.set_attribute("config_id", config_id)
-
-        return self._send_xml_command(cmd)
-
     def get_system_reports(
         self,
         *,
