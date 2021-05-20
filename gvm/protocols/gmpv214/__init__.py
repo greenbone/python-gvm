@@ -87,6 +87,7 @@ from gvm.protocols.gmpv208.entities.report_formats import (
 )
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
+from gvm.protocols.gmpv208.entities.schedules import SchedulesMixin
 from gvm.protocols.gmpv208.entities.secinfo import (
     get_info_type_from_string,
     InfoType,
@@ -152,6 +153,7 @@ class Gmp(
     TLSCertificateMixin,
     ScanConfigsMixin,
     ScannersMixin,
+    SchedulesMixin,
     SecInfoMixin,
     UsersMixin,
 ):
