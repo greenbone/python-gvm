@@ -122,6 +122,8 @@ from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
     get_user_auth_type_from_string,
 )
+from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
+
 
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
 
@@ -176,6 +178,7 @@ class Gmp(
     SecInfoMixin,
     UserSettingsMixin,
     UsersMixin,
+    VulnerabilitiesMixin,
 ):
     def __init__(
         self,

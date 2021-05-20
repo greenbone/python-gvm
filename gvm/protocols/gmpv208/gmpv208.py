@@ -37,7 +37,6 @@ from gvm.protocols.base import GvmProtocol
 from gvm.utils import (
     check_command_status,
     to_bool,
-    add_filter,
 )
 from gvm.xml import XmlCommand
 
@@ -116,42 +115,6 @@ class GmpV208Mixin(GvmProtocol):
             self._authenticated = True
 
         return self._transform(response)
-
-    def get_vulnerabilities(
-        self, *, filter: Optional[str] = None, filter_id: Optional[str] = None
-    ) -> Any:
-        """Request a list of vulnerabilities
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_vulns")
-
-        add_filter(cmd, filter, filter_id)
-
-        return self._send_xml_command(cmd)
-
-    def get_vulnerability(self, vulnerability_id: str) -> Any:
-        """Request a single vulnerability
-
-        Arguments:
-            vulnerability_id: ID of an existing vulnerability
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not vulnerability_id:
-            raise RequiredArgument(
-                function=self.get_vulnerability.__name__,
-                argument='vulnerability_id',
-            )
-
-        cmd = XmlCommand("get_vulns")
-        cmd.set_attribute("vuln_id", vulnerability_id)
-        return self._send_xml_command(cmd)
 
     def describe_auth(self) -> Any:
         """Describe authentication methods

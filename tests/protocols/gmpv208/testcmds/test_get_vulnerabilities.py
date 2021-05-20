@@ -23,8 +23,8 @@ class GmpGetVulnerabilitiesTestCase:
 
         self.connection.send.has_been_called_with('<get_vulns/>')
 
-    def test_get_vulnerabilities_with_filter(self):
-        self.gmp.get_vulnerabilities(filter="foo=bar")
+    def test_get_vulnerabilities_with_filter_string(self):
+        self.gmp.get_vulnerabilities(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_vulns filter="foo=bar"/>'
