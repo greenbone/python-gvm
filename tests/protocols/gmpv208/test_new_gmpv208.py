@@ -52,14 +52,6 @@ class Gmpv208EmptyTrashcanCommandTestCase(
     pass
 
 
-class Gmpv208GetSettingTestCase(GmpGetSettingTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetSettingsTestCase(GmpGetSettingsTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetSystemReportsTestCase(
     GmpGetSystemReportsTestCase, Gmpv208TestCase
 ):
@@ -73,10 +65,6 @@ class Gmpv208GetVersionCommandTestCase(
 
 
 class Gmpv208ModifyAuthTestCase(GmpModifyAuthTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifySettingTestCase(GmpModifySettingTestCase, Gmpv208TestCase):
     pass
 
 

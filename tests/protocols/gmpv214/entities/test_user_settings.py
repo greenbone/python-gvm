@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from ...gmpv214 import Gmpv214TestCase
+from ...gmpv208.entities.user_settings import (
+    GmpGetSettingTestMixin,
+    GmpGetSettingsTestMixin,
+    GmpModifySettingTestMixin,
+)
 
 
-class GmpGetSettingTestCase:
-    def test_get_setting_simple(self):
-        self.gmp.get_setting('id')
+class Gmpv214GetSettingTestCase(GmpGetSettingTestMixin, Gmpv214TestCase):
+    pass
 
-        self.connection.send.has_been_called_with(
-            '<get_settings setting_id="id"/>'
-        )
 
-    def test_get_setting_missing_setting_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_setting(setting_id=None)
+class Gmpv214GetSettingsTestCase(GmpGetSettingsTestMixin, Gmpv214TestCase):
+    pass
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_setting('')
+
+class Gmpv214ModifySettingTestCase(GmpModifySettingTestMixin, Gmpv214TestCase):
+    pass

@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifySettingTestCase:
+class GmpModifySettingTestMixin:
     def test_modify_setting(self):
         self.gmp.modify_setting(setting_id='s1', value='bar')
 

@@ -52,14 +52,6 @@ class Gmpv214EmptyTrashcanCommandTestCase(
     pass
 
 
-class Gmpv214GetSettingTestCase(GmpGetSettingTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetSettingsTestCase(GmpGetSettingsTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetSystemReportsTestCase(
     GmpGetSystemReportsTestCase, Gmpv214TestCase
 ):
@@ -73,10 +65,6 @@ class Gmpv214GetVersionCommandTestCase(
 
 
 class Gmpv214ModifyAuthTestCase(GmpModifyAuthTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifySettingTestCase(GmpModifySettingTestCase, Gmpv214TestCase):
     pass
 
 
