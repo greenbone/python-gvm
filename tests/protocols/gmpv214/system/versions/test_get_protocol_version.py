@@ -17,6 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpProtocolVersionTestCase:
+class GmpGetProtocolVersionTestCase:
     def test_protocol_version(self):
-        self.assertEqual(self.gmp.get_protocol_version(), (8,))
+        self.assertEqual(self.gmp.get_protocol_version(), (21, 4))

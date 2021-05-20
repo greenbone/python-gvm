@@ -18,9 +18,6 @@
 
 # pylint: disable=no-member
 
-from .test_protocol_version import GmpProtocolVersionTestCase
-
 from .test_get_system_reports import GmpGetSystemReportsTestCase
-from .test_get_version import GmpGetVersionCommandTestCase
 from .test_help import GmpHelpTestCase
 from .test_with_statement import GmpWithStatementTestCase

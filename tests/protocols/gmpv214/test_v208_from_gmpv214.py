@@ -30,11 +30,5 @@ class Gmpv214GetSystemReportsTestCase(
     pass
 
 
-class Gmpv214GetVersionCommandTestCase(
-    GmpGetVersionCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214v7WithStatementTestCase(GmpWithStatementTestCase, Gmpv214TestCase):
     pass

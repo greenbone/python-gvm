@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,12 +16,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-class GmpGetVersionCommandTestCase:
-    def test_get_version(self):
-        self.gmp.get_version()
-
-        self.connection.connect.has_been_called()
-        self.connection.read.has_been_called()
-        self.connection.send.has_been_called()
-        self.connection.send.has_been_called_with('<get_version/>')
+from .test_get_protocol_version import GmpGetProtocolVersionTestCase
+from .test_get_version import GmpGetVersionTestCase
