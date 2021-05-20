@@ -23,8 +23,8 @@ class GmpGetUsersTestMixin:
 
         self.connection.send.has_been_called_with('<get_users/>')
 
-    def test_get_users_with_filter(self):
-        self.gmp.get_users(filter='foo=bar')
+    def test_get_users_with_filter_string(self):
+        self.gmp.get_users(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_users filter="foo=bar"/>'
