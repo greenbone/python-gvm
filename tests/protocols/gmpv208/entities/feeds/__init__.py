@@ -19,3 +19,5 @@
 from .test_get_feed import GmpGetFeedTestMixin
 from .test_get_feeds import GmpGetFeedsTestMixin
 from .test_sync_feed import GmpSyncFeedTestMixin
+from .test_sync_cert import GmpSyncCertTestMixin
+from .test_sync_scap import GmpSyncScapTestMixin

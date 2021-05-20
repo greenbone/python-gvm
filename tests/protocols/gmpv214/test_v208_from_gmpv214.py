@@ -60,17 +60,5 @@ class Gmpv214RestoreTestCase(GmpRestoreTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214SyncCertCommandTestCase(
-    GmpSyncCertCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214SyncScapCommandTestCase(
-    GmpSyncScapCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214v7WithStatementTestCase(GmpWithStatementTestCase, Gmpv214TestCase):
     pass

@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpSyncScapCommandTestCase:
+class GmpSyncScapTestMixin:
     def test_sync_scap(self):
         self.gmp.sync_scap()
 
