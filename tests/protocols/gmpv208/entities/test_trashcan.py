@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,18 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
+from ...gmpv208 import Gmpv208TestCase
+from .trashcan import (
+    GmpEmptyTrashcanTestMixin,
+    GmpRestoreFromTrashcanTestMixin,
+)
 
 
-class GmpRestoreTestCase:
-    def test_restore(self):
-        self.gmp.restore_from_trashcan('a1')
+class Gmpv208EmptyTrashcanTestCase(GmpEmptyTrashcanTestMixin, Gmpv208TestCase):
+    pass
 
-        self.connection.send.has_been_called_with('<restore id="a1"/>')
 
-    def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.restore_from_trashcan(None)
-
-        with self.assertRaises(GvmError):
-            self.gmp.restore_from_trashcan('')
+class Gmpv208RestoreFromTrashcanTestCase(
+    GmpRestoreFromTrashcanTestMixin, Gmpv208TestCase
+):
+    pass

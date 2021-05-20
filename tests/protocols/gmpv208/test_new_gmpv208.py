@@ -24,12 +24,6 @@ class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208EmptyTrashcanCommandTestCase(
-    GmpEmptyTrashcanCommandTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208GetSystemReportsTestCase(
     GmpGetSystemReportsTestCase, Gmpv208TestCase
 ):
@@ -39,10 +33,6 @@ class Gmpv208GetSystemReportsTestCase(
 class Gmpv208GetVersionCommandTestCase(
     GmpGetVersionCommandTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208RestoreTestCase(GmpRestoreTestCase, Gmpv208TestCase):
     pass
 
 

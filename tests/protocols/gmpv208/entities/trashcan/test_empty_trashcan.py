@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpEmptyTrashcanCommandTestCase:
+class GmpEmptyTrashcanTestMixin:
     def test_empty_trashcan(self):
         self.gmp.empty_trashcan()
 
