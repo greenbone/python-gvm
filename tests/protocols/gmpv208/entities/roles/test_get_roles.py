@@ -16,27 +16,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import GvmError
 
+class GmpGetRolesTestMixin:
+    def test_get_roles(self):
+        self.gmp.get_roles()
 
-class GmpDeleteRoleTestCase:
-    def test_delete(self):
-        self.gmp.delete_role('a1')
+        self.connection.send.has_been_called_with('<get_roles/>')
 
-        self.connection.send.has_been_called_with(
-            '<delete_role role_id="a1" ultimate="0"/>'
-        )
-
-    def test_delete_ultimate(self):
-        self.gmp.delete_role('a1', ultimate=True)
+    def test_get_roles_with_filter(self):
+        self.gmp.get_roles(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<delete_role role_id="a1" ultimate="1"/>'
+            '<get_roles filter="foo=bar"/>'
         )
 
-    def test_missing_id(self):
-        with self.assertRaises(GvmError):
-            self.gmp.delete_role(None)
+    def test_get_roles_with_filter_id(self):
+        self.gmp.get_roles(filter_id='f1')
 
-        with self.assertRaises(GvmError):
-            self.gmp.delete_role('')
+        self.connection.send.has_been_called_with('<get_roles filt_id="f1"/>')
+
+    def test_get_roles_with_trash(self):
+        self.gmp.get_roles(trash=True)
+
+        self.connection.send.has_been_called_with('<get_roles trash="1"/>')
+
+        self.gmp.get_roles(trash=False)
+
+        self.connection.send.has_been_called_with('<get_roles trash="0"/>')

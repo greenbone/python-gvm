@@ -65,23 +65,11 @@ class Gmpv214CloneGroupTestCase(GmpCloneGroupTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneRoleTestCase(GmpCloneRoleTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214DeleteGroupTestCase(GmpDeleteGroupTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteRoleTestCase(GmpDeleteRoleTestCase, Gmpv214TestCase):
     pass
 
 
@@ -113,14 +101,6 @@ class Gmpv214GetPreferencesTestCase(GmpGetPreferencesTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetRoleTestCase(GmpGetRoleTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetRolesTestCase(GmpGetRolesTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetSettingTestCase(GmpGetSettingTestCase, Gmpv214TestCase):
     pass
 
@@ -146,10 +126,6 @@ class Gmpv214ModifyAuthTestCase(GmpModifyAuthTestCase, Gmpv214TestCase):
 
 
 class Gmpv214ModifyGroupTestCase(GmpModifyGroupTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyRoleTestCase(GmpModifyRoleTestCase, Gmpv214TestCase):
     pass
 
 

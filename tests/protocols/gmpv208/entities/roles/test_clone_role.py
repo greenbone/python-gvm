@@ -19,19 +19,17 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetRoleTestCase:
-    def test_get_role(self):
-        self.gmp.get_role('r1')
+class GmpCloneRoleTestMixin:
+    def test_clone(self):
+        self.gmp.clone_role('a1')
 
-        self.connection.send.has_been_called_with('<get_roles role_id="r1"/>')
+        self.connection.send.has_been_called_with(
+            '<create_role>' '<copy>a1</copy>' '</create_role>'
+        )
 
-        self.gmp.get_role(role_id='r1')
-
-        self.connection.send.has_been_called_with('<get_roles role_id="r1"/>')
-
-    def test_get_role_missing_role_id(self):
+    def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_role(role_id=None)
+            self.gmp.clone_role('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_role('')
+            self.gmp.clone_role(None)

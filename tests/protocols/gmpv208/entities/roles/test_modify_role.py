@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyRoleTestCase:
+class GmpModifyRoleTestMixin:
     def test_modify_role(self):
         self.gmp.modify_role(role_id='r1')
 
