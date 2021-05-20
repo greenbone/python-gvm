@@ -145,9 +145,9 @@ from gvm.protocols.gmpv214.entities.targets import (
 )
 from gvm.protocols.gmpv214.entities.users import UsersMixin
 
-from gvm.connections import GvmConnection
+from gvm.protocols.gmpv214.system.version import VersionMixin
 
-PROTOCOL_VERSION = (21, 4)
+from gvm.connections import GvmConnection
 
 
 class Gmp(
@@ -184,6 +184,7 @@ class Gmp(
     SecInfoMixin,
     UserSettingsMixin,
     UsersMixin,
+    VersionMixin,
     VulnerabilitiesMixin,
 ):
     def __init__(
@@ -196,12 +197,3 @@ class Gmp(
 
         # Is authenticated on gvmd
         self._authenticated = False
-
-    @staticmethod
-    def get_protocol_version() -> tuple:
-        """Determine the Greenbone Management Protocol version.
-
-        Returns:
-            tuple: Implemented version of the Greenbone Management Protocol
-        """
-        return PROTOCOL_VERSION

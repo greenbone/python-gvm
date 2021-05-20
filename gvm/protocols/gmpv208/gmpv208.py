@@ -39,8 +39,6 @@ from gvm.utils import (
 )
 from gvm.xml import XmlCommand
 
-PROTOCOL_VERSION = (20, 8)
-
 
 logger = logging.getLogger(__name__)
 
@@ -96,13 +94,6 @@ class GmpV208Mixin(GvmProtocol):
             cmd.set_attribute("slave_id", slave_id)
 
         return self._send_xml_command(cmd)
-
-    def get_version(self) -> Any:
-        """Get the Greenbone Manager Protocol version used by the remote gvmd
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("get_version"))
 
     def help(
         self, *, format: Optional[str] = None, help_type: Optional[str] = None
