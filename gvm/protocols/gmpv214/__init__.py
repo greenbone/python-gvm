@@ -61,11 +61,6 @@ from gvm.protocols.gmpv208.entities.entities import (
     EntityType,
     get_entity_type_from_string,
 )
-from gvm.protocols.gmpv208.entities.feeds import (
-    FeedType,
-    FeedsMixin,
-    get_feed_type_from_string,
-)
 from gvm.protocols.gmpv208.entities.filter import (
     FiltersMixin,
     FilterType,
@@ -126,6 +121,11 @@ from gvm.protocols.gmpv208.entities.users import (
 )
 from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
 
+from gvm.protocols.gmpv208.system.feed import (
+    FeedType,
+    FeedMixin,
+    get_feed_type_from_string,
+)
 from gvm.protocols.gmpv208.system.trashcan import TrashcanMixin
 
 from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
@@ -157,7 +157,7 @@ class Gmp(
     AuditsMixin,
     AuthenticationMixin,
     CredentialsMixin,
-    FeedsMixin,
+    FeedMixin,
     FiltersMixin,
     GroupsMixin,
     HostsMixin,

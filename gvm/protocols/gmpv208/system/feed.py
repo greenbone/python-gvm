@@ -48,7 +48,7 @@ def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
         ) from None
 
 
-class FeedsMixin:
+class FeedMixin:
     def get_feeds(self) -> Any:
         """Request the list of feeds
 
