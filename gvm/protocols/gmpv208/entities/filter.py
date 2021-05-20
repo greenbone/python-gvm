@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-
 from enum import Enum
 from typing import Any, Optional
 
@@ -175,7 +173,7 @@ class FiltersMixin:
     def get_filters(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         alerts: Optional[bool] = None,
@@ -183,7 +181,7 @@ class FiltersMixin:
         """Request a list of filters
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             trash: Whether to get the trashcan filters instead
             alerts: Whether to include list of alerts that use the filter.
@@ -193,7 +191,7 @@ class FiltersMixin:
         """
         cmd = XmlCommand("get_filters")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if trash is not None:
             cmd.set_attribute("trash", to_bool(trash))

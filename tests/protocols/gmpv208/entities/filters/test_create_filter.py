@@ -46,6 +46,23 @@ class GmpCreateFilterTestMixin:
                 filter_type='foo',
             )
 
+    def test_create_filter_no_filter_type(self):
+        self.gmp.create_filter(
+            name='f1',
+            term='sort-reverse=threat result_hosts_only=1 '
+            'notes=1 overrides=1 levels=hml first=1 rows=1000',
+            comment='foo',
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_filter>'
+            '<name>f1</name>'
+            '<comment>foo</comment>'
+            '<term>sort-reverse=threat result_hosts_only=1 notes=1 '
+            'overrides=1 levels=hml first=1 rows=1000</term>'
+            '</create_filter>'
+        )
+
     def test_create_filter(self):
         self.gmp.create_filter(
             name='f1',
@@ -61,6 +78,21 @@ class GmpCreateFilterTestMixin:
             '<comment>foo</comment>'
             '<term>sort-reverse=threat result_hosts_only=1 notes=1 '
             'overrides=1 levels=hml first=1 rows=1000</term>'
+            '<type>task</type>'
+            '</create_filter>'
+        )
+
+    def test_create_filter_without_term(self):
+        self.gmp.create_filter(
+            name='f1',
+            filter_type=FilterType.TASK,
+            comment='foo',
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_filter>'
+            '<name>f1</name>'
+            '<comment>foo</comment>'
             '<type>task</type>'
             '</create_filter>'
         )

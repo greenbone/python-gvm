@@ -24,7 +24,7 @@ class GmpGetFiltersTestMixin:
         self.connection.send.has_been_called_with('<get_filters/>')
 
     def test_get_filters_with_filter(self):
-        self.gmp.get_filters(filter='foo=bar')
+        self.gmp.get_filters(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_filters filter="foo=bar"/>'
