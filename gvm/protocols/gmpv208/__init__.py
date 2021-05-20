@@ -125,7 +125,6 @@ from gvm.protocols.gmpv208.entities.tickets import (
     get_ticket_status_from_string,
 )
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
-from gvm.protocols.gmpv208.entities.user_settings import UserSettingsMixin
 from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
     UsersMixin,
@@ -140,6 +139,7 @@ from gvm.protocols.gmpv208.system.feed import (
     get_feed_type_from_string,
 )
 from gvm.protocols.gmpv208.system.trashcan import TrashcanMixin
+from gvm.protocols.gmpv208.system.user_settings import UserSettingsMixin
 from gvm.protocols.gmpv208.system.version import VersionMixin
 
 from gvm.connections import GvmConnection

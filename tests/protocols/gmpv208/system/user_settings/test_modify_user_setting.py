@@ -19,9 +19,9 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifySettingTestMixin:
-    def test_modify_setting(self):
-        self.gmp.modify_setting(setting_id='s1', value='bar')
+class GmpModifyUserSettingTestMixin:
+    def test_modify_user_setting(self):
+        self.gmp.modify_user_setting(setting_id='s1', value='bar')
 
         self.connection.send.has_been_called_with(
             '<modify_setting setting_id="s1">'
@@ -29,7 +29,7 @@ class GmpModifySettingTestMixin:
             '</modify_setting>'
         )
 
-        self.gmp.modify_setting(name='s1', value='bar')
+        self.gmp.modify_user_setting(name='s1', value='bar')
 
         self.connection.send.has_been_called_with(
             '<modify_setting>'
@@ -38,7 +38,7 @@ class GmpModifySettingTestMixin:
             '</modify_setting>'
         )
 
-        self.gmp.modify_setting(setting_id='s1', value='')
+        self.gmp.modify_user_setting(setting_id='s1', value='')
 
         self.connection.send.has_been_called_with(
             '<modify_setting setting_id="s1">'
@@ -46,20 +46,20 @@ class GmpModifySettingTestMixin:
             '</modify_setting>'
         )
 
-    def test_modify_setting_missing_setting_id(self):
+    def test_modify_user_setting_missing_setting_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_setting(setting_id=None)
+            self.gmp.modify_user_setting(setting_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_setting(setting_id='')
+            self.gmp.modify_user_setting(setting_id='')
 
     def test_modify_setting_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_setting(name=None)
+            self.gmp.modify_user_setting(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_setting(name='')
+            self.gmp.modify_user_setting(name='')
 
-    def test_modify_setting_missing_value(self):
+    def test_modify_user_setting_missing_value(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_setting(setting_id='s1', value=None)
+            self.gmp.modify_user_setting(setting_id='s1', value=None)

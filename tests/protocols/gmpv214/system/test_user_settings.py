@@ -17,20 +17,26 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ...gmpv214 import Gmpv214TestCase
-from ...gmpv208.entities.user_settings import (
-    GmpGetSettingTestMixin,
-    GmpGetSettingsTestMixin,
-    GmpModifySettingTestMixin,
+from ...gmpv208.system.user_settings import (
+    GmpGetUserSettingTestMixin,
+    GmpGetUserSettingsTestMixin,
+    GmpModifyUserSettingTestMixin,
 )
 
 
-class Gmpv214GetSettingTestCase(GmpGetSettingTestMixin, Gmpv214TestCase):
+class Gmpv214GetUserSettingTestCase(
+    GmpGetUserSettingTestMixin, Gmpv214TestCase
+):
     pass
 
 
-class Gmpv214GetSettingsTestCase(GmpGetSettingsTestMixin, Gmpv214TestCase):
+class Gmpv214GetUserSettingsTestCase(
+    GmpGetUserSettingsTestMixin, Gmpv214TestCase
+):
     pass
 
 
-class Gmpv214ModifySettingTestCase(GmpModifySettingTestMixin, Gmpv214TestCase):
+class Gmpv214ModifyUserSettingTestCase(
+    GmpModifyUserSettingTestMixin, Gmpv214TestCase
+):
     pass

@@ -18,19 +18,25 @@
 
 from ...gmpv208 import Gmpv208TestCase
 from .user_settings import (
-    GmpGetSettingTestMixin,
-    GmpGetSettingsTestMixin,
-    GmpModifySettingTestMixin,
+    GmpGetUserSettingTestMixin,
+    GmpGetUserSettingsTestMixin,
+    GmpModifyUserSettingTestMixin,
 )
 
 
-class Gmpv208GetSettingTestCase(GmpGetSettingTestMixin, Gmpv208TestCase):
+class Gmpv208GetUserSettingTestCase(
+    GmpGetUserSettingTestMixin, Gmpv208TestCase
+):
     pass
 
 
-class Gmpv208GetSettingsTestCase(GmpGetSettingsTestMixin, Gmpv208TestCase):
+class Gmpv208GetUserSettingsTestCase(
+    GmpGetUserSettingsTestMixin, Gmpv208TestCase
+):
     pass
 
 
-class Gmpv208ModifySettingTestCase(GmpModifySettingTestMixin, Gmpv208TestCase):
+class Gmpv208ModifyUserSettingTestCase(
+    GmpModifyUserSettingTestMixin, Gmpv208TestCase
+):
     pass

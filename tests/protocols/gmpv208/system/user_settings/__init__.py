@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,16 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
-class GmpGetSettingsTestMixin:
-    def test_get_settings(self):
-        self.gmp.get_settings()
-
-        self.connection.send.has_been_called_with('<get_settings/>')
-
-    def test_get_settings_with_filter_string(self):
-        self.gmp.get_settings(filter_string="foo=bar")
-
-        self.connection.send.has_been_called_with(
-            '<get_settings filter="foo=bar"/>'
-        )
+from .test_get_user_setting import GmpGetUserSettingTestMixin
+from .test_get_user_settings import GmpGetUserSettingsTestMixin
+from .test_modify_user_setting import GmpModifyUserSettingTestMixin

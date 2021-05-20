@@ -24,7 +24,7 @@ from gvm.xml import XmlCommand
 
 
 class UserSettingsMixin:
-    def get_settings(self, *, filter_string: Optional[str] = None) -> Any:
+    def get_user_settings(self, *, filter_string: Optional[str] = None) -> Any:
         """Request a list of user settings
 
         Arguments:
@@ -40,7 +40,7 @@ class UserSettingsMixin:
 
         return self._send_xml_command(cmd)
 
-    def get_setting(self, setting_id: str) -> Any:
+    def get_user_setting(self, setting_id: str) -> Any:
         """Request a single user setting
 
         Arguments:
@@ -53,13 +53,13 @@ class UserSettingsMixin:
 
         if not setting_id:
             raise RequiredArgument(
-                function=self.get_setting.__name__, argument='setting_id'
+                function=self.get_user_setting.__name__, argument='setting_id'
             )
 
         cmd.set_attribute("setting_id", setting_id)
         return self._send_xml_command(cmd)
 
-    def modify_setting(
+    def modify_user_setting(
         self,
         setting_id: Optional[str] = None,
         name: Optional[str] = None,
@@ -78,13 +78,14 @@ class UserSettingsMixin:
         """
         if not setting_id and not name:
             raise RequiredArgument(
-                function=self.modify_setting.__name__,
+                function=self.modify_user_setting.__name__,
                 argument='setting_id or name argument',
             )
 
         if value is None:
             raise RequiredArgument(
-                function=self.modify_setting.__name__, argument='value argument'
+                function=self.modify_user_setting.__name__,
+                argument='value argument',
             )
 
         cmd = XmlCommand("modify_setting")
