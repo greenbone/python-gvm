@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
-
-
-class GmpCloneScheduleTestCase:
-    def test_clone(self):
-        self.gmp.clone_schedule('a1')
-
-        self.connection.send.has_been_called_with(
-            '<create_schedule>' '<copy>a1</copy>' '</create_schedule>'
-        )
-
-    def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_schedule('')
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_schedule(None)
+from .test_clone_schedule import GmpCloneScheduleTestMixin
+from .test_create_schedule import GmpCreateScheduleTestMixin
+from .test_delete_schedule import GmpDeleteScheduleTestMixin
+from .test_get_schedule import GmpGetScheduleTestMixin
+from .test_get_schedules import GmpGetSchedulesTestMixin
+from .test_modify_schedule import GmpModifyScheduleTestMixin

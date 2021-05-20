@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetScheduleTestCase:
+class GmpGetScheduleTestMixin:
     def test_get_schedule(self):
         self.gmp.get_schedule('s1')
 
