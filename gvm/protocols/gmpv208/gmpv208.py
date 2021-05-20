@@ -94,38 +94,3 @@ class GmpV208Mixin(GvmProtocol):
             cmd.set_attribute("slave_id", slave_id)
 
         return self._send_xml_command(cmd)
-
-    def help(
-        self, *, format: Optional[str] = None, help_type: Optional[str] = None
-    ) -> Any:
-        """Get the help text
-
-        Arguments:
-            format: One of "html", "rnc", "text" or "xml
-            help_type: One of "brief" or "". Default ""
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("help")
-
-        if not help_type:
-            help_type = ""
-
-        if help_type not in ("", "brief"):
-            raise InvalidArgument(
-                'help_type argument must be an empty string or "brief"'
-            )
-
-        cmd.set_attribute("type", help_type)
-
-        if format:
-            if not format.lower() in ("html", "rnc", "text", "xml"):
-                raise InvalidArgument(
-                    "help format Argument must be one of html, rnc, text or "
-                    "xml"
-                )
-
-            cmd.set_attribute("format", format)
-
-        return self._send_xml_command(cmd)

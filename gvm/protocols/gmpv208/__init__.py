@@ -25,9 +25,9 @@ Module for communication with gvmd in
     https://docs.greenbone.net/API/GMP/gmp-20.08.html
 """
 
+import logging
 from typing import Any, Callable, Optional
 
-from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
 from gvm.protocols.gmpv208.entities.alerts import (
     AlertCondition,
     AlertEvent,
@@ -138,15 +138,21 @@ from gvm.protocols.gmpv208.system.feed import (
     FeedMixin,
     get_feed_type_from_string,
 )
+from gvm.protocols.gmpv208.system.help import (
+    HelpFormat,
+    HelpMixin,
+    get_help_format_from_string,
+)
 from gvm.protocols.gmpv208.system.trashcan import TrashcanMixin
 from gvm.protocols.gmpv208.system.user_settings import UserSettingsMixin
 from gvm.protocols.gmpv208.system.version import VersionMixin
 
 from gvm.connections import GvmConnection
 
+logger = logging.getLogger(__name__)
+
 
 class Gmp(
-    GmpV208Mixin,
     AggregatesMixin,
     AlertsMixin,
     AuditsMixin,
@@ -155,6 +161,7 @@ class Gmp(
     FeedMixin,
     FiltersMixin,
     GroupsMixin,
+    HelpMixin,
     HostsMixin,
     NotesMixin,
     OperatingSystemsMixin,
