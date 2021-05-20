@@ -37,7 +37,6 @@ from gvm.protocols.base import GvmProtocol
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
 )
-from gvm.protocols.gmpv208.entities.entities import EntityType
 
 from gvm.utils import (
     check_command_status,
@@ -141,341 +140,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._transform(response)
 
-    def create_tag(
-        self,
-        name: str,
-        resource_type: EntityType,
-        *,
-        resource_filter: Optional[str] = None,
-        resource_ids: Optional[List[str]] = None,
-        value: Optional[str] = None,
-        comment: Optional[str] = None,
-        active: Optional[bool] = None,
-    ) -> Any:
-        """Create a tag.
-
-        Arguments:
-            name: Name of the tag. A full tag name consisting of namespace and
-                predicate e.g. `foo:bar`.
-            resource_type: Entity type the tag is to be attached to.
-            resource_filter: Filter term to select resources the tag is to be
-                attached to. Only one of resource_filter or resource_ids can be
-                provided.
-            resource_ids: IDs of the resources the tag is to be attached to.
-                Only one of resource_filter or resource_ids can be provided.
-            value: Value associated with the tag.
-            comment: Comment for the tag.
-            active: Whether the tag should be active.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not name:
-            raise RequiredArgument(
-                function=self.create_tag.__name__, argument='name'
-            )
-
-        if resource_filter and resource_ids:
-            raise InvalidArgument(
-                "create_tag accepts either resource_filter or resource_ids "
-                "argument",
-                function=self.create_tag.__name__,
-            )
-
-        if not resource_type:
-            raise RequiredArgument(
-                function=self.create_tag.__name__, argument='resource_type'
-            )
-
-        if not isinstance(resource_type, EntityType):
-            raise InvalidArgumentType(
-                function=self.create_tag.__name__,
-                argument='resource_type',
-                arg_type=EntityType.__name__,
-            )
-
-        cmd = XmlCommand('create_tag')
-        cmd.add_element('name', name)
-
-        _xmlresources = cmd.add_element("resources")
-        if resource_filter is not None:
-            _xmlresources.set_attribute("filter", resource_filter)
-
-        for resource_id in resource_ids or []:
-            _xmlresources.add_element(
-                "resource", attrs={"id": str(resource_id)}
-            )
-
-        _actual_resource_type = resource_type
-        if resource_type.value == EntityType.AUDIT.value:
-            _actual_resource_type = EntityType.TASK
-        elif resource_type.value == EntityType.POLICY.value:
-            _actual_resource_type = EntityType.SCAN_CONFIG
-        _xmlresources.add_element("type", _actual_resource_type.value)
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if value:
-            cmd.add_element("value", value)
-
-        if active is not None:
-            if active:
-                cmd.add_element("active", "1")
-            else:
-                cmd.add_element("active", "0")
-
-        return self._send_xml_command(cmd)
-
-    def get_aggregates(
-        self,
-        resource_type: EntityType,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        sort_criteria: Optional[list] = None,
-        data_columns: Optional[list] = None,
-        group_column: Optional[str] = None,
-        subgroup_column: Optional[str] = None,
-        text_columns: Optional[list] = None,
-        first_group: Optional[int] = None,
-        max_groups: Optional[int] = None,
-        mode: Optional[int] = None,
-        **kwargs,
-    ) -> Any:
-        """Request aggregated information on a resource / entity type
-
-        Additional arguments can be set via the kwargs parameter for backward
-        compatibility with older versions of python-gvm, but are not validated.
-
-        Arguments:
-            resource_type: The entity type to gather data from
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            sort_criteria: List of sort criteria (dicts that can contain
-                a field, stat and order)
-            data_columns: List of fields to aggregate data from
-            group_column: The field to group the entities by
-            subgroup_column: The field to further group the entities
-                inside groups by
-            text_columns: List of simple text columns which no statistics
-                are calculated for
-            first_group: The index of the first aggregate group to return
-            max_groups: The maximum number of aggregate groups to return,
-                -1 for all
-            mode: Special mode for aggregation
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not resource_type:
-            raise RequiredArgument(
-                function=self.get_aggregates.__name__, argument='resource_type'
-            )
-
-        if not isinstance(resource_type, EntityType):
-            raise InvalidArgumentType(
-                function=self.get_aggregates.__name__,
-                argument='resource_type',
-                arg_type=EntityType.__name__,
-            )
-
-        cmd = XmlCommand('get_aggregates')
-
-        _actual_resource_type = resource_type
-        if resource_type.value == EntityType.AUDIT.value:
-            _actual_resource_type = EntityType.TASK
-            cmd.set_attribute('usage_type', 'audit')
-        elif resource_type.value == EntityType.POLICY.value:
-            _actual_resource_type = EntityType.SCAN_CONFIG
-            cmd.set_attribute('usage_type', 'policy')
-        elif resource_type.value == EntityType.SCAN_CONFIG.value:
-            cmd.set_attribute('usage_type', 'scan')
-        elif resource_type.value == EntityType.TASK.value:
-            cmd.set_attribute('usage_type', 'scan')
-        cmd.set_attribute('type', _actual_resource_type.value)
-
-        add_filter(cmd, filter, filter_id)
-
-        if first_group is not None:
-            if not isinstance(first_group, int):
-                raise InvalidArgumentType(
-                    function=self.get_aggregates.__name__,
-                    argument='first_group',
-                    arg_type=int.__name__,
-                )
-            cmd.set_attribute('first_group', str(first_group))
-
-        if max_groups is not None:
-            if not isinstance(max_groups, int):
-                raise InvalidArgumentType(
-                    function=self.get_aggregates.__name__,
-                    argument='max_groups',
-                    arg_type=int.__name__,
-                )
-            cmd.set_attribute('max_groups', str(max_groups))
-
-        if sort_criteria is not None:
-            if not isinstance(sort_criteria, list):
-                raise InvalidArgumentType(
-                    function=self.get_aggregates.__name__,
-                    argument='sort_criteria',
-                    arg_type=list.__name__,
-                )
-            for sort in sort_criteria:
-                if not isinstance(sort, dict):
-                    raise InvalidArgumentType(
-                        function=self.get_aggregates.__name__,
-                        argument='sort_criteria',
-                    )
-
-                sort_elem = cmd.add_element('sort')
-                if sort.get('field'):
-                    sort_elem.set_attribute('field', sort.get('field'))
-
-                if sort.get('stat'):
-                    if isinstance(sort['stat'], AggregateStatistic):
-                        sort_elem.set_attribute('stat', sort['stat'].value)
-                    else:
-                        stat = get_aggregate_statistic_from_string(sort['stat'])
-                        sort_elem.set_attribute('stat', stat.value)
-
-                if sort.get('order'):
-                    if isinstance(sort['order'], SortOrder):
-                        sort_elem.set_attribute('order', sort['order'].value)
-                    else:
-                        so = get_sort_order_from_string(sort['order'])
-                        sort_elem.set_attribute('order', so.value)
-
-        if data_columns is not None:
-            if not isinstance(data_columns, list):
-                raise InvalidArgumentType(
-                    function=self.get_aggregates.__name__,
-                    argument='data_columns',
-                    arg_type=list.__name__,
-                )
-            for column in data_columns:
-                cmd.add_element('data_column', column)
-
-        if group_column is not None:
-            cmd.set_attribute('group_column', group_column)
-
-        if subgroup_column is not None:
-            if not group_column:
-                raise RequiredArgument(
-                    '{} requires a group_column argument'
-                    ' if subgroup_column is given'.format(
-                        self.get_aggregates.__name__
-                    ),
-                    function=self.get_aggregates.__name__,
-                    argument='subgroup_column',
-                )
-            cmd.set_attribute('subgroup_column', subgroup_column)
-
-        if text_columns is not None:
-            if not isinstance(text_columns, list):
-                raise InvalidArgumentType(
-                    function=self.get_aggregates.__name__,
-                    argument='text_columns',
-                    arg_type=list.__name__,
-                )
-            for column in text_columns:
-                cmd.add_element('text_column', column)
-
-        if mode is not None:
-            cmd.set_attribute('mode', mode)
-
-        # Add additional keyword args as attributes for backward compatibility.
-        cmd.set_attributes(kwargs)
-
-        return self._send_xml_command(cmd)
-
-    def modify_tag(
-        self,
-        tag_id: str,
-        *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        value=None,
-        active=None,
-        resource_action: Optional[str] = None,
-        resource_type: Optional[EntityType] = None,
-        resource_filter: Optional[str] = None,
-        resource_ids: Optional[List[str]] = None,
-    ) -> Any:
-        """Modifies an existing tag.
-
-        Arguments:
-            tag_id: UUID of the tag.
-            comment: Comment to add to the tag.
-            name: Name of the tag.
-            value: Value of the tag.
-            active: Whether the tag is active.
-            resource_action: Whether to add or remove resources instead of
-                overwriting. One of '', 'add', 'set' or 'remove'.
-            resource_type: Type of the resources to which to attach the tag.
-                Required if resource_filter is set.
-            resource_filter: Filter term to select resources the tag is to be
-                attached to.
-            resource_ids: IDs of the resources to which to attach the tag.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not tag_id:
-            raise RequiredArgument(
-                function=self.modify_tag.__name__, argument='tag_id'
-            )
-
-        cmd = XmlCommand("modify_tag")
-        cmd.set_attribute("tag_id", str(tag_id))
-
-        if comment:
-            cmd.add_element("comment", comment)
-
-        if name:
-            cmd.add_element("name", name)
-
-        if value:
-            cmd.add_element("value", value)
-
-        if active is not None:
-            cmd.add_element("active", to_bool(active))
-
-        if resource_action or resource_filter or resource_ids or resource_type:
-            if resource_filter and not resource_type:
-                raise RequiredArgument(
-                    function=self.modify_tag.__name__, argument='resource_type'
-                )
-
-            _xmlresources = cmd.add_element("resources")
-            if resource_action is not None:
-                _xmlresources.set_attribute("action", resource_action)
-
-            if resource_filter is not None:
-                _xmlresources.set_attribute("filter", resource_filter)
-
-            for resource_id in resource_ids or []:
-                _xmlresources.add_element(
-                    "resource", attrs={"id": str(resource_id)}
-                )
-
-            if resource_type is not None:
-                if not isinstance(resource_type, EntityType):
-                    raise InvalidArgumentType(
-                        function=self.modify_tag.__name__,
-                        argument="resource_type",
-                        arg_type=EntityType.__name__,
-                    )
-                _actual_resource_type = resource_type
-                if resource_type.value == EntityType.AUDIT.value:
-                    _actual_resource_type = EntityType.TASK
-                elif resource_type.value == EntityType.POLICY.value:
-                    _actual_resource_type = EntityType.SCAN_CONFIG
-                _xmlresources.add_element("type", _actual_resource_type.value)
-
-        return self._send_xml_command(cmd)
-
     def clone_ticket(self, ticket_id: str) -> Any:
         """Clone an existing ticket
 
@@ -493,32 +157,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd = XmlCommand("create_ticket")
 
         _copy = cmd.add_element("copy", ticket_id)
-
-        return self._send_xml_command(cmd)
-
-    def get_feed(self, feed_type: Optional[FeedType]) -> Any:
-        """Request a single feed
-
-        Arguments:
-            feed_type: Type of single feed to get: NVT, CERT or SCAP
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not feed_type:
-            raise RequiredArgument(
-                function=self.get_feed.__name__, argument='feed_type'
-            )
-
-        if not isinstance(feed_type, FeedType):
-            raise InvalidArgumentType(
-                function=self.get_feed.__name__,
-                argument='feed_type',
-                arg_type=FeedType.__name__,
-            )
-
-        cmd = XmlCommand("get_feeds")
-        cmd.set_attribute("type", feed_type.value)
 
         return self._send_xml_command(cmd)
 
@@ -1155,24 +793,6 @@ class GmpV208Mixin(GvmProtocol):
         cmd.add_element("copy", schedule_id)
         return self._send_xml_command(cmd)
 
-    def clone_tag(self, tag_id: str) -> Any:
-        """Clone an existing tag
-
-        Arguments:
-            tag_id: UUID of an existing tag to clone from
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not tag_id:
-            raise RequiredArgument(
-                function=self.clone_tag.__name__, argument='tag_id'
-            )
-
-        cmd = XmlCommand("create_tag")
-        cmd.add_element("copy", tag_id)
-        return self._send_xml_command(cmd)
-
     def delete_filter(
         self, filter_id: str, *, ultimate: Optional[bool] = False
     ) -> Any:
@@ -1283,26 +903,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def delete_tag(
-        self, tag_id: str, *, ultimate: Optional[bool] = False
-    ) -> Any:
-        """Deletes an existing tag
-
-        Arguments:
-            tag_id: UUID of the tag to be deleted.
-            ultimate: Whether to remove entirely, or to the trashcan.
-        """
-        if not tag_id:
-            raise RequiredArgument(
-                function=self.delete_tag.__name__, argument='tag_id'
-            )
-
-        cmd = XmlCommand("delete_tag")
-        cmd.set_attribute("tag_id", tag_id)
-        cmd.set_attribute("ultimate", to_bool(ultimate))
-
-        return self._send_xml_command(cmd)
-
     def describe_auth(self) -> Any:
         """Describe authentication methods
 
@@ -1324,14 +924,6 @@ class GmpV208Mixin(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         return self._send_xml_command(XmlCommand("empty_trashcan"))
-
-    def get_feeds(self) -> Any:
-        """Request the list of feeds
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("get_feeds"))
 
     def get_filters(
         self,
@@ -1751,56 +1343,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_tags(
-        self,
-        *,
-        filter: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
-        names_only: Optional[bool] = None,
-    ) -> Any:
-        """Request a list of tags
-
-        Arguments:
-            filter: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get tags from the trashcan instead
-            names_only: Whether to get only distinct tag names
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_tags")
-
-        add_filter(cmd, filter, filter_id)
-
-        if trash is not None:
-            cmd.set_attribute("trash", to_bool(trash))
-
-        if names_only is not None:
-            cmd.set_attribute("names_only", to_bool(names_only))
-
-        return self._send_xml_command(cmd)
-
-    def get_tag(self, tag_id: str) -> Any:
-        """Request a single tag
-
-        Arguments:
-            tag_id: UUID of an existing tag
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        cmd = XmlCommand("get_tags")
-
-        if not tag_id:
-            raise RequiredArgument(
-                function=self.get_tag.__name__, argument='tag_id'
-            )
-
-        cmd.set_attribute("tag_id", tag_id)
-        return self._send_xml_command(cmd)
-
     def get_version(self) -> Any:
         """Get the Greenbone Manager Protocol version used by the remote gvmd
         Returns:
@@ -2068,14 +1610,6 @@ class GmpV208Mixin(GvmProtocol):
             The response. See :py:meth:`send_command` for details.
         """
         return self._send_xml_command(XmlCommand("sync_cert"))
-
-    def sync_feed(self) -> Any:
-        """Request a synchronization with the NVT feed service
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("sync_feed"))
 
     def sync_scap(self) -> Any:
         """Request a synchronization with the SCAP feed service

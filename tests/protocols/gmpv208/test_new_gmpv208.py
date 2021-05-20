@@ -24,14 +24,6 @@ class Gmpv208CreateFilterTestCase(GmpCreateFilterTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateTagTestCase(GmpCreateTagTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetAggregatesTestCase(GmpGetAggregatesTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv208TestCase):
     pass
 
@@ -39,14 +31,6 @@ class Gmpv208ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv208TestCase):
 class Gmpv208ModifyReportFormatTestCase(
     GmpModifyReportFormatTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208ModifyTagTestCase(GmpModifyTagTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetFeedTestCase(GmpGetFeedTestCase, Gmpv208TestCase):
     pass
 
 
@@ -122,10 +106,6 @@ class Gmpv208CloneScheduleTestCase(GmpCloneScheduleTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneTagTestCase(GmpCloneTagTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv208TestCase):
     pass
 
@@ -156,10 +136,6 @@ class Gmpv208DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208DeleteTagTestCase(GmpDeleteTagTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208DescribeAuthCommandTestCase(
     GmpDescribeAuthCommandTestCase, Gmpv208TestCase
 ):
@@ -169,10 +145,6 @@ class Gmpv208DescribeAuthCommandTestCase(
 class Gmpv208EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208GetFeedsTestCase(GmpGetFeedsTestCase, Gmpv208TestCase):
     pass
 
 
@@ -242,14 +214,6 @@ class Gmpv208GetSystemReportsTestCase(
     pass
 
 
-class Gmpv208GetTagTestCase(GmpGetTagTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetTagsTestCase(GmpGetTagsTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetVersionCommandTestCase(
     GmpGetVersionCommandTestCase, Gmpv208TestCase
 ):
@@ -284,12 +248,6 @@ class Gmpv208RestoreTestCase(GmpRestoreTestCase, Gmpv208TestCase):
 
 class Gmpv208SyncCertCommandTestCase(
     GmpSyncCertCommandTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208SyncFeedCommandTestCase(
-    GmpSyncFeedCommandTestCase, Gmpv208TestCase
 ):
     pass
 

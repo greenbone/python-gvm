@@ -28,6 +28,13 @@ Module for communication with gvmd in
 
 from typing import Any, Callable, Optional
 
+from gvm.protocols.gmpv208.entities.aggregates import (
+    AggregatesMixin,
+    AggregateStatistic,
+    get_aggregate_statistic_from_string,
+    SortOrder,
+    get_sort_order_from_string,
+)
 from gvm.protocols.gmpv208.entities.alerts import (
     AlertCondition,
     AlertEvent,
@@ -52,6 +59,11 @@ from gvm.protocols.gmpv208.entities.credentials import (
 from gvm.protocols.gmpv208.entities.entities import (
     EntityType,
     get_entity_type_from_string,
+)
+from gvm.protocols.gmpv208.entities.feeds import (
+    FeedType,
+    FeedsMixin,
+    get_feed_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.hosts import HostsMixin
 from gvm.protocols.gmpv208.entities.operating_systems import (
@@ -84,7 +96,7 @@ from gvm.protocols.gmpv208.entities.severity import (
     SeverityLevel,
     get_severity_level_from_string,
 )
-
+from gvm.protocols.gmpv208.entities.tags import TagsMixin
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.entities.users import (
@@ -120,9 +132,11 @@ PROTOCOL_VERSION = (21, 4)
 
 class Gmp(
     GmpV208Mixin,
+    AggregatesMixin,
     AlertsMixin,
     AuditsMixin,
     CredentialsMixin,
+    FeedsMixin,
     HostsMixin,
     NotesMixin,
     OperatingSystemsMixin,
@@ -132,6 +146,7 @@ class Gmp(
     PortListMixin,
     ReportsMixin,
     ResultsMixin,
+    TagsMixin,
     TargetsMixin,
     TasksMixin,
     TLSCertificateMixin,

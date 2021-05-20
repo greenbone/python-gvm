@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetTagsTestCase:
+class GmpGetTagsTestMixin:
     def test_get_tags(self):
         self.gmp.get_tags()
 

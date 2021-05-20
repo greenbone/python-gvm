@@ -13,6 +13,9 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Introduced new explicit API calls for SecInfo: `get_nvt()`, `get_nvt_list()`, `get_cpe()`, `get_cpe_list()`, `get_cve()`, `get_cve_list()`, `get_cert_bund_advisory()`, `get_cert_bund_advisory_list()`, `get_dnf_cert_advisory()`, `get_dnf_cert_advisory_list()`, `get_oval_definition()`, `get_oval_definition_list()`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 
 ### Changed
+* Detached the Tags API calls from the GMP class into a new `TagsMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468)
+* Detached the Feeds API calls from the GMP class into a new `FeedsMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468)
+* Detached the Aggregates API calls from the GMP class into a new `AggregatesMixin`. [#468](https://github.com/greenbone/python-gvm/pull/468)
 * Detached the EntityType from the GMP types class into a new `entites` file. [#467](https://github.com/greenbone/python-gvm/pull/467)
 * Detached the Users API calls from the GMP class into a new `UsersMixin`. [#467](https://github.com/greenbone/python-gvm/pull/467)
 * Detached the Permissions API calls from the GMP class into a new `PermissionsMixin`. [#467](https://github.com/greenbone/python-gvm/pull/467)

@@ -24,14 +24,6 @@ class Gmpv214CreateFilterTestCase(GmpCreateFilterTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreateTagTestCase(GmpCreateTagTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetAggregatesTestCase(GmpGetAggregatesTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv214TestCase):
     pass
 
@@ -39,14 +31,6 @@ class Gmpv214ModifyFilterTestCase(GmpModifyFilterTestCase, Gmpv214TestCase):
 class Gmpv214ModifyReportFormatTestCase(
     GmpModifyReportFormatTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214ModifyTagTestCase(GmpModifyTagTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetFeedTestCase(GmpGetFeedTestCase, Gmpv214TestCase):
     pass
 
 
@@ -122,10 +106,6 @@ class Gmpv214CloneScheduleTestCase(GmpCloneScheduleTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneTagTestCase(GmpCloneTagTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv214TestCase):
     pass
 
@@ -156,10 +136,6 @@ class Gmpv214DeleteScheduleTestCase(GmpDeleteScheduleTestCase, Gmpv214TestCase):
     pass
 
 
-class Gmpv214DeleteTagTestCase(GmpDeleteTagTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214DescribeAuthCommandTestCase(
     GmpDescribeAuthCommandTestCase, Gmpv214TestCase
 ):
@@ -169,10 +145,6 @@ class Gmpv214DescribeAuthCommandTestCase(
 class Gmpv214EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214GetFeedsTestCase(GmpGetFeedsTestCase, Gmpv214TestCase):
     pass
 
 
@@ -242,14 +214,6 @@ class Gmpv214GetSystemReportsTestCase(
     pass
 
 
-class Gmpv214GetTagTestCase(GmpGetTagTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetTagsTestCase(GmpGetTagsTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetVersionCommandTestCase(
     GmpGetVersionCommandTestCase, Gmpv214TestCase
 ):
@@ -284,12 +248,6 @@ class Gmpv214RestoreTestCase(GmpRestoreTestCase, Gmpv214TestCase):
 
 class Gmpv214SyncCertCommandTestCase(
     GmpSyncCertCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214SyncFeedCommandTestCase(
-    GmpSyncFeedCommandTestCase, Gmpv214TestCase
 ):
     pass
 

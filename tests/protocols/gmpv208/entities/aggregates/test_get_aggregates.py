@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 from gvm.protocols.gmpv208 import EntityType, AggregateStatistic, SortOrder
 
 
-class GmpGetAggregatesTestCase:
+class GmpGetAggregatesTestMixin:
     def test_get_aggregates(self):
         """
         Test basic get_aggregates calls with only resource_type except special

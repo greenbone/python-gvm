@@ -19,12 +19,8 @@
 # pylint: disable=no-member
 
 from .test_create_filter import GmpCreateFilterTestCase
-from .test_create_tag import GmpCreateTagTestCase
-from .test_get_aggregates import GmpGetAggregatesTestCase
 from .test_modify_filter import GmpModifyFilterTestCase
 from .test_modify_report_format import GmpModifyReportFormatTestCase
-from .test_modify_tag import GmpModifyTagTestCase
-from .test_get_feed import GmpGetFeedTestCase
 from .test_modify_ticket import GmpModifyTicketTestCase
 from .test_clone_ticket import GmpCloneTicketTestCase
 from .test_create_schedule import GmpCreateScheduleTestCase
@@ -42,7 +38,6 @@ from .test_clone_filter import GmpCloneFilterTestCase
 from .test_clone_group import GmpCloneGroupTestCase
 from .test_clone_role import GmpCloneRoleTestCase
 from .test_clone_schedule import GmpCloneScheduleTestCase
-from .test_clone_tag import GmpCloneTagTestCase
 from .test_create_group import GmpCreateGroupTestCase
 from .test_create_role import GmpCreateRoleTestCase
 from .test_delete_filter import GmpDeleteFilterTestCase
@@ -50,10 +45,8 @@ from .test_delete_group import GmpDeleteGroupTestCase
 from .test_delete_report_format import GmpDeleteReportFormatTestCase
 from .test_delete_role import GmpDeleteRoleTestCase
 from .test_delete_schedule import GmpDeleteScheduleTestCase
-from .test_delete_tag import GmpDeleteTagTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
-from .test_get_feeds import GmpGetFeedsTestCase
 from .test_get_filter import GmpGetFilterTestCase
 from .test_get_filters import GmpGetFiltersTestCase
 from .test_get_group import GmpGetGroupTestCase
@@ -69,8 +62,6 @@ from .test_get_schedules import GmpGetSchedulesTestCase
 from .test_get_setting import GmpGetSettingTestCase
 from .test_get_settings import GmpGetSettingsTestCase
 from .test_get_system_reports import GmpGetSystemReportsTestCase
-from .test_get_tag import GmpGetTagTestCase
-from .test_get_tags import GmpGetTagsTestCase
 from .test_get_version import GmpGetVersionCommandTestCase
 from .test_help import GmpHelpTestCase
 from .test_import_report_format import GmpImportReportFormatTestCase
@@ -80,7 +71,6 @@ from .test_modify_role import GmpModifyRoleTestCase
 from .test_modify_setting import GmpModifySettingTestCase
 from .test_restore import GmpRestoreTestCase
 from .test_sync_cert import GmpSyncCertCommandTestCase
-from .test_sync_feed import GmpSyncFeedCommandTestCase
 from .test_sync_scap import GmpSyncScapCommandTestCase
 from .test_verify_report_format import GmpVerifyReportFormatTestCase
 from .test_with_statement import GmpWithStatementTestCase

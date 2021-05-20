@@ -25,43 +25,15 @@ from typing import Optional
 from gvm.errors import InvalidArgument
 
 __all__ = [
-    "AggregateStatistic",
-    "FeedType",
     "FilterType",
     "HostsOrdering",
-    "SortOrder",
     "TicketStatus",
     "TimeUnit",
-    "get_aggregate_statistic_from_string",
-    "get_feed_type_from_string",
     "get_filter_type_from_string",
     "get_hosts_ordering_from_string",
-    "get_sort_order_from_string",
     "get_ticket_status_from_string",
     "get_time_unit_from_string",
 ]
-
-
-class FeedType(Enum):
-    """Enum for feed types"""
-
-    NVT = "NVT"
-    CERT = "CERT"
-    SCAP = "SCAP"
-    GVMD_DATA = "GVMD_DATA"
-
-
-def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
-    """Convert a feed type string into a FeedType instance"""
-    if not feed_type:
-        return None
-
-    try:
-        return FeedType[feed_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='feed_type', function=get_feed_type_from_string.__name__
-        ) from None
 
 
 class FilterType(Enum):
@@ -126,70 +98,6 @@ def get_filter_type_from_string(
         raise InvalidArgument(
             argument='filter_type',
             function=get_filter_type_from_string.__name__,
-        ) from None
-
-
-class AggregateStatistic(Enum):
-    """Enum for aggregate statistic types"""
-
-    COUNT = "count"  # Number of items
-    C_COUNT = "c_count"  # Cumulative number of items
-    C_SUM = "c_sum"  # Cumulative sum of values
-    MAX = "max"  # Maximum value
-    MEAN = "mean"  # Arithmetic mean of values
-    MIN = "min"  # Minimum value
-    SUM = "sum"  # Sum of values
-    TEXT = "text"  # Text column value
-    VALUE = "value"  # Group or subgroup column value
-
-
-def get_aggregate_statistic_from_string(
-    aggregate_statistic: Optional[str],
-) -> Optional[AggregateStatistic]:
-    """
-    Convert a aggregate statistic string to an actual AggregateStatistic
-    instance.
-
-    Arguments:
-        aggregate_statistic: Aggregate statistic string to convert to a
-            AggregateStatistic
-    """
-    if not aggregate_statistic:
-        return None
-
-    try:
-        return AggregateStatistic[aggregate_statistic.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='aggregate_statistic',
-            function=get_aggregate_statistic_from_string.__name__,
-        ) from None
-
-
-class SortOrder(Enum):
-    """Enum for sort order"""
-
-    ASCENDING = "ascending"
-    DESCENDING = "descending"
-
-
-def get_sort_order_from_string(
-    sort_order: Optional[str],
-) -> Optional[SortOrder]:
-    """
-    Convert a sort order string to an actual SortOrder instance.
-
-    Arguments:
-        sort_order: Sort order string to convert to a SortOrder
-    """
-    if not sort_order:
-        return None
-
-    try:
-        return SortOrder[sort_order.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='sort_order', function=get_sort_order_from_string.__name__
         ) from None
 
 

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,25 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.protocols.gmpv208.types import (
-    FilterType,
-    HostsOrdering,
-    TicketStatus,
-    TimeUnit,
-    get_filter_type_from_string,
-    get_hosts_ordering_from_string,
-    get_ticket_status_from_string,
-    get_time_unit_from_string,
-)
-
-
-__all__ = [
-    "FilterType",
-    "HostsOrdering",
-    "TicketStatus",
-    "TimeUnit",
-    "get_filter_type_from_string",
-    "get_hosts_ordering_from_string",
-    "get_ticket_status_from_string",
-    "get_time_unit_from_string",
-]
+from .test_clone_tag import GmpCloneTagTestMixin
+from .test_create_tag import GmpCreateTagTestMixin
+from .test_delete_tag import GmpDeleteTagTestMixin
+from .test_get_tag import GmpGetTagTestMixin
+from .test_get_tags import GmpGetTagsTestMixin
+from .test_modify_tag import GmpModifyTagTestMixin
