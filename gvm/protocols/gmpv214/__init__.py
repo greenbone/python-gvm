@@ -29,6 +29,8 @@ Module for communication with gvmd in
 import logging
 from typing import Any, Callable, Optional
 
+from gvm.protocols.base import GvmProtocol
+
 from gvm.protocols.gmpv208.entities.alerts import (
     AlertCondition,
     AlertEvent,
@@ -131,6 +133,7 @@ from gvm.protocols.gmpv208.system.help import (
     HelpMixin,
     get_help_format_from_string,
 )
+from gvm.protocols.gmpv208.system.system_reports import SystemReportsMixin
 from gvm.protocols.gmpv208.system.user_settings import UserSettingsMixin
 from gvm.protocols.gmpv208.system.trashcan import TrashcanMixin
 
@@ -157,6 +160,7 @@ logger = logging.getLogger(__name__)
 
 
 class Gmp(
+    GvmProtocol,
     AggregatesMixin,
     AlertsMixin,
     AuditsMixin,
@@ -188,6 +192,7 @@ class Gmp(
     ScannersMixin,
     SchedulesMixin,
     SecInfoMixin,
+    SystemReportsMixin,
     UserSettingsMixin,
     UsersMixin,
     VersionMixin,

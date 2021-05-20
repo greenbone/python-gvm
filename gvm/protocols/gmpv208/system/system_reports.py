@@ -18,32 +18,15 @@
 
 # pylint: disable=arguments-differ, redefined-builtin, too-many-lines
 
-"""
-Module for communication with gvmd in
-`Greenbone Management Protocol version 20.08`_
-
-.. _Greenbone Management Protocol version 20.08:
-    https://docs.greenbone.net/API/GMP/gmp-20.08.html
-"""
-import logging
 from numbers import Integral
-
 from typing import Any, Optional
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.base import GvmProtocol
-
-
-from gvm.utils import (
-    to_bool,
-)
+from gvm.utils import to_bool
 from gvm.xml import XmlCommand
 
 
-logger = logging.getLogger(__name__)
-
-
-class GmpV208Mixin(GvmProtocol):
+class SystemReportsMixin:
     def get_system_reports(
         self,
         *,
