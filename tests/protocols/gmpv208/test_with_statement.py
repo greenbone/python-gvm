@@ -16,8 +16,10 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from . import Gmpv208TestCase
 
-class GmpWithStatementTestCase:
+
+class GmpWithStatementTestMixin:
     def test_with_statement(self):
         self.connection.connect.has_not_been_called()
         self.connection.disconnect.has_not_been_called()
@@ -27,3 +29,7 @@ class GmpWithStatementTestCase:
 
         self.connection.connect.has_been_called()
         self.connection.disconnect.has_been_called()
+
+
+class Gmpv208WithStatementTestCase(GmpWithStatementTestMixin, Gmpv208TestCase):
+    pass
