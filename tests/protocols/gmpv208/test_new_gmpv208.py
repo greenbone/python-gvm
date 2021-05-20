@@ -40,19 +40,6 @@ class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneGroupTestCase(GmpCloneGroupTestCase, Gmpv208TestCase):
-
-    pass
-
-
-class Gmpv208CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeleteGroupTestCase(GmpDeleteGroupTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208DescribeAuthCommandTestCase(
     GmpDescribeAuthCommandTestCase, Gmpv208TestCase
 ):
@@ -62,14 +49,6 @@ class Gmpv208DescribeAuthCommandTestCase(
 class Gmpv208EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208GetGroupTestCase(GmpGetGroupTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetGroupsTestCase(GmpGetGroupsTestCase, Gmpv208TestCase):
     pass
 
 
@@ -102,10 +81,6 @@ class Gmpv208GetVersionCommandTestCase(
 
 
 class Gmpv208ModifyAuthTestCase(GmpModifyAuthTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyGroupTestCase(GmpModifyGroupTestCase, Gmpv208TestCase):
     pass
 
 

@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetGroupTestCase:
+class GmpGetGroupTestMixin:
     def test_get_group(self):
         self.gmp.get_group('f1')
 

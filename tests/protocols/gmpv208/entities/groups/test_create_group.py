@@ -19,53 +19,55 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpModifyGroupTestCase:
-    def test_modify_group(self):
-        self.gmp.modify_group(group_id='f1')
+class GmpCreateGroupTestMixin:
+    def test_create_group(self):
+        self.gmp.create_group(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1"/>'
+            '<create_group>' '<name>foo</name>' '</create_group>'
         )
 
-    def test_modify_group_missing_group_id(self):
+    def test_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_group(group_id=None)
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.modify_group(group_id='')
+            self.gmp.create_group(None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_group('')
+            self.gmp.create_group('')
 
-    def test_modify_group_with_comment(self):
-        self.gmp.modify_group(group_id='f1', comment='foo')
+    def test_create_group_with_comment(self):
+        self.gmp.create_group(name='foo', comment='bar')
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1">'
-            '<comment>foo</comment>'
-            '</modify_group>'
+            '<create_group>'
+            '<name>foo</name>'
+            '<comment>bar</comment>'
+            '</create_group>'
         )
 
-    def test_modify_group_with_name(self):
-        self.gmp.modify_group(group_id='f1', name='foo')
+    def test_create_special_group(self):
+        self.gmp.create_group(name='foo', special=True)
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1">' '<name>foo</name>' '</modify_group>'
+            '<create_group>'
+            '<name>foo</name>'
+            '<specials>'
+            '<full/>'
+            '</specials>'
+            '</create_group>'
         )
 
-    def test_modify_group_with_users(self):
-        self.gmp.modify_group(group_id='f1', users=['foo'])
+    def test_create_group_with_users(self):
+        self.gmp.create_group(name='foo', users=[])
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1">'
-            '<users>foo</users>'
-            '</modify_group>'
+            '<create_group>' '<name>foo</name>' '</create_group>'
         )
 
-        self.gmp.modify_group(group_id='f1', users=['foo', 'bar'])
+        self.gmp.create_group(name='foo', users=['u1', 'u2'])
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1">'
-            '<users>foo,bar</users>'
-            '</modify_group>'
+            '<create_group>'
+            '<name>foo</name>'
+            '<users>u1,u2</users>'
+            '</create_group>'
         )
