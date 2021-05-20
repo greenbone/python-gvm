@@ -23,8 +23,8 @@ class GmpGetTargetsTestMixin:
 
         self.connection.send.has_been_called_with('<get_targets/>')
 
-    def test_get_targets_with_filter(self):
-        self.gmp.get_targets(filter='foo=bar')
+    def test_get_targets_with_filter_string(self):
+        self.gmp.get_targets(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_targets filter="foo=bar"/>'
