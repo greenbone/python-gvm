@@ -132,9 +132,15 @@ class AuditsMixin:
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
 
-        if alert_ids:
-            if is_list_like(alert_ids):
-                # parse all given alert id's
+        if alert_ids is not None:
+            if not is_list_like(alert_ids):
+                raise InvalidArgumentType(
+                    function=self.modify_task.__name__,
+                    argument='alert_ids',
+                    arg_type='list',
+                )
+
+            if not len(alert_ids) == 0:
                 for alert in alert_ids:
                     cmd.add_element("alert", attrs={"id": str(alert)})
 
@@ -204,7 +210,7 @@ class AuditsMixin:
     def get_audits(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
@@ -213,7 +219,7 @@ class AuditsMixin:
         """Request a list of audits
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             trash: Whether to get the trashcan audits instead
             details: Whether to include full audit details
@@ -226,7 +232,7 @@ class AuditsMixin:
         cmd = XmlCommand("get_tasks")
         cmd.set_attribute("usage_type", "audit")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if trash is not None:
             cmd.set_attribute("trash", to_bool(trash))
