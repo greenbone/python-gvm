@@ -127,17 +127,6 @@ class GmpV208Mixin(GvmProtocol):
         """
         return self._send_xml_command(XmlCommand("describe_auth"))
 
-    def empty_trashcan(self) -> Any:
-        """Empty the trashcan
-
-        Remove all entities from the trashcan. **Attention:** this command can
-        not be reverted
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("empty_trashcan"))
-
     def get_system_reports(
         self,
         *,
@@ -257,25 +246,6 @@ class GmpV208Mixin(GvmProtocol):
             _xmlauthconf = _xmlgroup.add_element("auth_conf_setting")
             _xmlauthconf.add_element("key", key)
             _xmlauthconf.add_element("value", value)
-
-        return self._send_xml_command(cmd)
-
-    def restore(self, entity_id: str) -> Any:
-        """Restore an entity from the trashcan
-
-        Arguments:
-            entity_id: ID of the entity to be restored from the trashcan
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not entity_id:
-            raise RequiredArgument(
-                function=self.restore.__name__, argument='entity_id'
-            )
-
-        cmd = XmlCommand("restore")
-        cmd.set_attribute("id", entity_id)
 
         return self._send_xml_command(cmd)
 

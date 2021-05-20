@@ -21,13 +21,13 @@ from gvm.errors import GvmError
 
 class GmpRestoreTestCase:
     def test_restore(self):
-        self.gmp.restore('a1')
+        self.gmp.restore_from_trashcan('a1')
 
         self.connection.send.has_been_called_with('<restore id="a1"/>')
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):
-            self.gmp.restore(None)
+            self.gmp.restore_from_trashcan(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.restore('')
+            self.gmp.restore_from_trashcan('')
