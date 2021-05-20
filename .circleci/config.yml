@@ -45,7 +45,7 @@ commands:
           command: poetry run pip install codecov
       - run:
           name: Run unit tests
-          command: poetry run coverage run -m unittest
+          command: poetry run coverage run --branch -m unittest
       - run:
           name: Upload coverage to Codecov
           command: poetry run codecov
