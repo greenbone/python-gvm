@@ -24,8 +24,6 @@ from .test_protocol_version import GmpProtocolVersionTestCase
 from .test_authenticate import GmpAuthenticateTestCase
 from .test_describe_auth import GmpDescribeAuthCommandTestCase
 from .test_empty_trashcan import GmpEmptyTrashcanCommandTestCase
-from .test_get_preference import GmpGetPreferenceTestCase
-from .test_get_preferences import GmpGetPreferencesTestCase
 from .test_get_setting import GmpGetSettingTestCase
 from .test_get_settings import GmpGetSettingsTestCase
 from .test_get_system_reports import GmpGetSystemReportsTestCase

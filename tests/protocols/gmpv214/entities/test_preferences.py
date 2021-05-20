@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,23 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from ...gmpv214 import Gmpv214TestCase
+from ...gmpv208.entities.preferences import (
+    GmpGetPreferencesTestMixin,
+    GmpGetPreferenceTestMixin,
+)
 
-class GmpGetPreferencesTestCase:
-    def test_get_preferences(self):
-        self.gmp.get_preferences()
 
-        self.connection.send.has_been_called_with('<get_preferences/>')
+class Gmpv214GetPreferenceTestCase(GmpGetPreferenceTestMixin, Gmpv214TestCase):
+    pass
 
-    def test_get_preferences_with_nvt_oid(self):
-        self.gmp.get_preferences(nvt_oid='oid')
 
-        self.connection.send.has_been_called_with(
-            '<get_preferences nvt_oid="oid"/>'
-        )
-
-    def test_get_preferences_with_config_id(self):
-        self.gmp.get_preferences(config_id='c1')
-
-        self.connection.send.has_been_called_with(
-            '<get_preferences config_id="c1"/>'
-        )
+class Gmpv214GetPreferencesTestCase(
+    GmpGetPreferencesTestMixin, Gmpv214TestCase
+):
+    pass

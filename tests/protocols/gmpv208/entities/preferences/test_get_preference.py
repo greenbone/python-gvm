@@ -19,7 +19,7 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetPreferenceTestCase:
+class GmpGetPreferenceTestMixin:
     def test_get_preference(self):
         self.gmp.get_preference(name='foo')
 

@@ -52,14 +52,6 @@ class Gmpv214EmptyTrashcanCommandTestCase(
     pass
 
 
-class Gmpv214GetPreferenceTestCase(GmpGetPreferenceTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetPreferencesTestCase(GmpGetPreferencesTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214GetSettingTestCase(GmpGetSettingTestCase, Gmpv214TestCase):
     pass
 
