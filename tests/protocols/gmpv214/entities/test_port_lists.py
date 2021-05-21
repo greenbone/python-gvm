@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.port_lists import (
     GmpClonePortListTestMixin,
     GmpCreatePortListTestMixin,
@@ -29,43 +29,43 @@ from ...gmpv208.entities.port_lists import (
 )
 
 
-class Gmpv208ClonePortListTestCase(GmpClonePortListTestMixin, Gmpv208TestCase):
+class Gmpv214ClonePortListTestCase(GmpClonePortListTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208CreatePortListTestCase(
-    GmpCreatePortListTestMixin, Gmpv208TestCase
+class Gmpv214CreatePortListTestCase(
+    GmpCreatePortListTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208CreatePortRangeListTestCase(
-    GmpCreatePortRangeTestMixin, Gmpv208TestCase
+class Gmpv214CreatePortRangeListTestCase(
+    GmpCreatePortRangeTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208DeletePortListTestCase(
-    GmpDeletePortListTestMixin, Gmpv208TestCase
+class Gmpv214DeletePortListTestCase(
+    GmpDeletePortListTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208DeletePortRangeTestCase(
-    GmpDeletePortRangeTestMixin, Gmpv208TestCase
+class Gmpv214DeletePortRangeTestCase(
+    GmpDeletePortRangeTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208GetPortListTestCase(GmpGetPortListTestMixin, Gmpv208TestCase):
+class Gmpv214GetPortListTestCase(GmpGetPortListTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetPortListsTestCase(GmpGetPortListsTestMixin, Gmpv208TestCase):
+class Gmpv214GetPortListsTestCase(GmpGetPortListsTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208ModifyPortListTestCase(
-    GmpModifyPortListTestMixin, Gmpv208TestCase
+class Gmpv214ModifyPortListTestCase(
+    GmpModifyPortListTestMixin, Gmpv214TestCase
 ):
     pass

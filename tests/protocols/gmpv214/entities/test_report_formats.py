@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.report_formats import (
     GmpCloneReportFormatTestMixin,
     GmpImportReportFormatTestMixin,
@@ -28,43 +28,43 @@ from ...gmpv208.entities.report_formats import (
 )
 
 
-class Gmpv208DeleteReportFormatTestCase(
-    GmpDeleteReportFormatTestMixin, Gmpv208TestCase
+class Gmpv214DeleteReportFormatTestCase(
+    GmpDeleteReportFormatTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208GetReportFormatTestCase(
-    GmpGetReportFormatTestMixin, Gmpv208TestCase
+class Gmpv214GetReportFormatTestCase(
+    GmpGetReportFormatTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208GetReportFormatsTestCase(
-    GmpGetReportFormatsTestMixin, Gmpv208TestCase
+class Gmpv214GetReportFormatsTestCase(
+    GmpGetReportFormatsTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208CloneReportFormatTestCase(
-    GmpCloneReportFormatTestMixin, Gmpv208TestCase
+class Gmpv214CloneReportFormatTestCase(
+    GmpCloneReportFormatTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208ImportReportFormatTestCase(
-    GmpImportReportFormatTestMixin, Gmpv208TestCase
+class Gmpv214ImportReportFormatTestCase(
+    GmpImportReportFormatTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208ModifyReportFormatTestCase(
-    GmpModifyReportFormatTestMixin, Gmpv208TestCase
+class Gmpv214ModifyReportFormatTestCase(
+    GmpModifyReportFormatTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208VerifyReportFormatTestCase(
-    GmpVerifyReportFormatTestMixin, Gmpv208TestCase
+class Gmpv214VerifyReportFormatTestCase(
+    GmpVerifyReportFormatTestMixin, Gmpv214TestCase
 ):
     pass

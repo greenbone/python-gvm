@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.tags import (
     GmpCloneTagTestMixin,
     GmpCreateTagTestMixin,
@@ -27,25 +27,25 @@ from ...gmpv208.entities.tags import (
 )
 
 
-class Gmpv208DeleteTagTestCase(GmpDeleteTagTestMixin, Gmpv208TestCase):
+class Gmpv214DeleteTagTestCase(GmpDeleteTagTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetTagTestCase(GmpGetTagTestMixin, Gmpv208TestCase):
+class Gmpv214GetTagTestCase(GmpGetTagTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetTagsTestCase(GmpGetTagsTestMixin, Gmpv208TestCase):
+class Gmpv214GetTagsTestCase(GmpGetTagsTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208CloneTagTestCase(GmpCloneTagTestMixin, Gmpv208TestCase):
+class Gmpv214CloneTagTestCase(GmpCloneTagTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208CreateTagTestCase(GmpCreateTagTestMixin, Gmpv208TestCase):
+class Gmpv214CreateTagTestCase(GmpCreateTagTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208ModifyTagTestCase(GmpModifyTagTestMixin, Gmpv208TestCase):
+class Gmpv214ModifyTagTestCase(GmpModifyTagTestMixin, Gmpv214TestCase):
     pass

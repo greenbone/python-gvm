@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.roles import (
     GmpCloneRoleTestMixin,
     GmpCreateRoleTestMixin,
@@ -27,25 +27,25 @@ from ...gmpv208.entities.roles import (
 )
 
 
-class Gmpv208DeleteRoleTestCase(GmpDeleteRoleTestMixin, Gmpv208TestCase):
+class Gmpv214DeleteRoleTestCase(GmpDeleteRoleTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetRoleTestCase(GmpGetRoleTestMixin, Gmpv208TestCase):
+class Gmpv214GetRoleTestCase(GmpGetRoleTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetRolesTestCase(GmpGetRolesTestMixin, Gmpv208TestCase):
+class Gmpv214GetRolesTestCase(GmpGetRolesTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208CloneRoleTestCase(GmpCloneRoleTestMixin, Gmpv208TestCase):
+class Gmpv214CloneRoleTestCase(GmpCloneRoleTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208CreateRoleTestCase(GmpCreateRoleTestMixin, Gmpv208TestCase):
+class Gmpv214CreateRoleTestCase(GmpCreateRoleTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208ModifyRoleTestCase(GmpModifyRoleTestMixin, Gmpv208TestCase):
+class Gmpv214ModifyRoleTestCase(GmpModifyRoleTestMixin, Gmpv214TestCase):
     pass
