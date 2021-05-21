@@ -16,10 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-# MAYBE we should change filter to filter_string (everywhere)
-
-
 from typing import Any, List, Optional, Tuple
 
 from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
@@ -101,7 +97,7 @@ class PoliciesMixin:
         self,
         *,
         audits: Optional[bool] = None,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         details: Optional[bool] = None,
         families: Optional[bool] = None,
@@ -112,7 +108,7 @@ class PoliciesMixin:
 
         Arguments:
             audits: Whether to get audits using the policy
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             details: Whether to get  families, preferences, nvt selectors
                 and tasks.
@@ -128,7 +124,7 @@ class PoliciesMixin:
         cmd = XmlCommand("get_configs")
         cmd.set_attribute("usage_type", "policy")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if trash is not None:
             cmd.set_attribute("trash", to_bool(trash))

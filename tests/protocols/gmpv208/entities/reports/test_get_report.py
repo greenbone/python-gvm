@@ -31,8 +31,8 @@ class GmpGetReportTestMixin:
         with self.assertRaises(RequiredArgument):
             self.gmp.get_report('')
 
-    def test_get_report_with_filter(self):
-        self.gmp.get_report(report_id='r1', filter='name=foo')
+    def test_get_report_with_filter_string(self):
+        self.gmp.get_report(report_id='r1', filter_string='name=foo')
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" filter="name=foo" details="1"/>'

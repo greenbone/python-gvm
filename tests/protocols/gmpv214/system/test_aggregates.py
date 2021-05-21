@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,23 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from ...gmpv214 import Gmpv214TestCase
+from ...gmpv208.system.aggregates import (
+    GmpGetAggregatesTestMixin,
+)
 
-class GmpGetHostsTestMixin:
-    def test_get_hosts(self):
-        self.gmp.get_hosts()
 
-        self.connection.send.has_been_called_with('<get_assets type="host"/>')
-
-    def test_get_hosts_with_filter_string(self):
-        self.gmp.get_hosts(filter_string='foo=bar')
-
-        self.connection.send.has_been_called_with(
-            '<get_assets type="host" filter="foo=bar"/>'
-        )
-
-    def test_get_hosts_with_filter_id(self):
-        self.gmp.get_hosts(filter_id='f1')
-
-        self.connection.send.has_been_called_with(
-            '<get_assets type="host" filt_id="f1"/>'
-        )
+class Gmpv214GetAggregatesTestCase(GmpGetAggregatesTestMixin, Gmpv214TestCase):
+    pass

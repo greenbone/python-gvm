@@ -16,8 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-
 from enum import Enum
 from typing import Any, Optional
 
@@ -158,7 +156,7 @@ class SecInfoMixin:
     def get_cve_list(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         name: Optional[str] = None,
         details: Optional[bool] = None,
@@ -166,7 +164,7 @@ class SecInfoMixin:
         """Request a list of CVEs
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             name: Name or identifier of the requested information
             details: Whether to include information about references to this
@@ -178,7 +176,7 @@ class SecInfoMixin:
 
         return self.get_info_list(
             info_type=InfoType.CVE,
-            filter=filter,
+            filter_string=filter_string,
             filter_id=filter_id,
             name=name,
             details=details,
@@ -187,7 +185,7 @@ class SecInfoMixin:
     def get_cpe_list(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         name: Optional[str] = None,
         details: Optional[bool] = None,
@@ -195,7 +193,7 @@ class SecInfoMixin:
         """Request a list of CPEs
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             name: Name or identifier of the requested information
             details: Whether to include information about references to this
@@ -207,7 +205,7 @@ class SecInfoMixin:
 
         return self.get_info_list(
             info_type=InfoType.CPE,
-            filter=filter,
+            filter_string=filter_string,
             filter_id=filter_id,
             name=name,
             details=details,
@@ -216,7 +214,7 @@ class SecInfoMixin:
     def get_nvt_list(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         name: Optional[str] = None,
         details: Optional[bool] = None,
@@ -224,7 +222,7 @@ class SecInfoMixin:
         """Request a list of NVTs
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             name: Name or identifier of the requested information
             details: Whether to include information about references to this
@@ -236,7 +234,7 @@ class SecInfoMixin:
 
         return self.get_info_list(
             info_type=InfoType.NVT,
-            filter=filter,
+            filter_string=filter_string,
             filter_id=filter_id,
             name=name,
             details=details,
@@ -245,7 +243,7 @@ class SecInfoMixin:
     def get_dfn_cert_advisory_list(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         name: Optional[str] = None,
         details: Optional[bool] = None,
@@ -253,7 +251,7 @@ class SecInfoMixin:
         """Request a list of DFN-CERT Advisories
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             name: Name or identifier of the requested information
             details: Whether to include information about references to this
@@ -265,7 +263,7 @@ class SecInfoMixin:
 
         return self.get_info_list(
             info_type=InfoType.DFN_CERT_ADV,
-            filter=filter,
+            filter_string=filter_string,
             filter_id=filter_id,
             name=name,
             details=details,
@@ -274,7 +272,7 @@ class SecInfoMixin:
     def get_cert_bund_advisory_list(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         name: Optional[str] = None,
         details: Optional[bool] = None,
@@ -282,7 +280,7 @@ class SecInfoMixin:
         """Request a list of CERT-BUND Advisories
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             name: Name or identifier of the requested information
             details: Whether to include information about references to this
@@ -294,7 +292,7 @@ class SecInfoMixin:
 
         return self.get_info_list(
             info_type=InfoType.CERT_BUND_ADV,
-            filter=filter,
+            filter_string=filter_string,
             filter_id=filter_id,
             name=name,
             details=details,
@@ -303,7 +301,7 @@ class SecInfoMixin:
     def get_oval_definition_list(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         name: Optional[str] = None,
         details: Optional[bool] = None,
@@ -311,7 +309,7 @@ class SecInfoMixin:
         """Request a list of OVAL definitions
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             name: Name or identifier of the requested information
             details: Whether to include information about references to this
@@ -323,7 +321,7 @@ class SecInfoMixin:
 
         return self.get_info_list(
             info_type=InfoType.OVALDEF,
-            filter=filter,
+            filter_string=filter_string,
             filter_id=filter_id,
             name=name,
             details=details,
@@ -333,7 +331,7 @@ class SecInfoMixin:
         self,
         info_type: InfoType,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         name: Optional[str] = None,
         details: Optional[bool] = None,
@@ -343,7 +341,7 @@ class SecInfoMixin:
         Arguments:
             info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
                 DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             name: Name or identifier of the requested information
             details: Whether to include information about references to this
@@ -368,7 +366,7 @@ class SecInfoMixin:
 
         cmd.set_attribute("type", info_type.value)
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if name:
             cmd.set_attribute("name", name)
@@ -485,4 +483,57 @@ class SecInfoMixin:
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
+        return self._send_xml_command(cmd)
+
+    def get_nvt_preferences(
+        self,
+        *,
+        nvt_oid: Optional[str] = None,
+    ) -> Any:
+        """Request a list of preferences
+
+        The preference element includes just the
+        name and value, with the NVT and type built into the name.
+
+        Arguments:
+            nvt_oid: OID of nvt
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_preferences")
+
+        if nvt_oid:
+            cmd.set_attribute("nvt_oid", nvt_oid)
+
+        return self._send_xml_command(cmd)
+
+    def get_nvt_preference(
+        self,
+        name: str,
+        *,
+        nvt_oid: Optional[str] = None,
+    ) -> Any:
+        """Request a nvt preference
+
+        Arguments:
+            name: name of a particular preference
+            nvt_oid: OID of nvt
+            config_id: UUID of scan config of which to show preference values
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_preferences")
+
+        if not name:
+            raise RequiredArgument(
+                function=self.get_nvt_preference.__name__, argument='name'
+            )
+
+        cmd.set_attribute("preference", name)
+
+        if nvt_oid:
+            cmd.set_attribute("nvt_oid", nvt_oid)
+
         return self._send_xml_command(cmd)

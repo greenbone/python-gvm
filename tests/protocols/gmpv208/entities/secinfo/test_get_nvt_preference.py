@@ -16,23 +16,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gvm.errors import RequiredArgument
 
-class GmpGetHostsTestMixin:
-    def test_get_hosts(self):
-        self.gmp.get_hosts()
 
-        self.connection.send.has_been_called_with('<get_assets type="host"/>')
-
-    def test_get_hosts_with_filter_string(self):
-        self.gmp.get_hosts(filter_string='foo=bar')
+class GmpGetNvtPreferenceTestMixin:
+    def test_get_preference(self):
+        self.gmp.get_nvt_preference(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<get_assets type="host" filter="foo=bar"/>'
+            '<get_preferences preference="foo"/>'
         )
 
-    def test_get_hosts_with_filter_id(self):
-        self.gmp.get_hosts(filter_id='f1')
+    def test_get_nvt_preference_missing_name(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_nvt_preference(name=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_nvt_preference(name='')
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_nvt_preference('')
+
+    def test_get_nvt_preference_with_nvt_oid(self):
+        self.gmp.get_nvt_preference(name='foo', nvt_oid='oid')
 
         self.connection.send.has_been_called_with(
-            '<get_assets type="host" filt_id="f1"/>'
+            '<get_preferences preference="foo" nvt_oid="oid"/>'
         )

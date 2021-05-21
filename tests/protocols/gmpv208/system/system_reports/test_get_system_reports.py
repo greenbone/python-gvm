@@ -19,7 +19,7 @@
 from gvm.errors import InvalidArgument
 
 
-class GmpGetSystemReportsTestCase:
+class GmpGetSystemReportsTestMixin:
     def test_get_system_reports(self):
         self.gmp.get_system_reports()
 

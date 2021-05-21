@@ -17,10 +17,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ...gmpv214 import Gmpv214TestCase
-from ...gmpv208.entities.aggregates import (
-    GmpGetAggregatesTestMixin,
+from ...gmpv208.system.help import (
+    GmpHelpTestMixin,
 )
 
 
-class Gmpv214GetAggregatesTestCase(GmpGetAggregatesTestMixin, Gmpv214TestCase):
+class Gmpv214HelpTestCase(GmpHelpTestMixin, Gmpv214TestCase):
     pass

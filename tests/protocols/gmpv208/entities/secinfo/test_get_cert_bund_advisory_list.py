@@ -25,8 +25,8 @@ class GmpGetCertBundListTestMixin:
             '<get_info type="CERT_BUND_ADV"/>'
         )
 
-    def test_get_cve_list_with_filter(self):
-        self.gmp.get_cert_bund_advisory_list(filter='foo=bar')
+    def test_get_cve_list_with_filter_string(self):
+        self.gmp.get_cert_bund_advisory_list(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_info type="CERT_BUND_ADV" filter="foo=bar"/>'

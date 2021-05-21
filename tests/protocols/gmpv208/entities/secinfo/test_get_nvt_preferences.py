@@ -16,31 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import InvalidArgument
 
+class GmpGetNvtPreferencesTestMixin:
+    def test_get_nvt_preferences(self):
+        self.gmp.get_nvt_preferences()
 
-class GmpHelpTestCase:
-    def test_help(self):
-        self.gmp.help()
+        self.connection.send.has_been_called_with('<get_preferences/>')
 
-        self.connection.send.has_been_called_with('<help type=""/>')
-
-    def test_invalid_help_type(self):
-        with self.assertRaises(InvalidArgument):
-            self.gmp.help(help_type='foo')
-
-    def test_help_type_brief(self):
-        self.gmp.help(help_type='brief')
-
-        self.connection.send.has_been_called_with('<help type="brief"/>')
-
-    def test_invalid_format(self):
-        with self.assertRaises(InvalidArgument):
-            self.gmp.help(format='foo')
-
-    def test_html_format(self):
-        self.gmp.help(format='html')
+    def test_get_nvt_preferences_with_nvt_oid(self):
+        self.gmp.get_nvt_preferences(nvt_oid='oid')
 
         self.connection.send.has_been_called_with(
-            '<help type="" format="html"/>'
+            '<get_preferences nvt_oid="oid"/>'
         )

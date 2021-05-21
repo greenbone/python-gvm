@@ -23,8 +23,8 @@ class GmpGetOvalDefListTestMixin:
 
         self.connection.send.has_been_called_with('<get_info type="OVALDEF"/>')
 
-    def test_get_oval_definition_list_with_filter(self):
-        self.gmp.get_oval_definition_list(filter='foo=bar')
+    def test_get_oval_definition_list_with_filter_string(self):
+        self.gmp.get_oval_definition_list(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_info type="OVALDEF" filter="foo=bar"/>'

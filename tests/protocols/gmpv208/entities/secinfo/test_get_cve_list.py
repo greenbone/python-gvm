@@ -23,8 +23,8 @@ class GmpGetCveListTestMixin:
 
         self.connection.send.has_been_called_with('<get_info type="CVE"/>')
 
-    def test_get_cve_list_with_filter(self):
-        self.gmp.get_cve_list(filter='foo=bar')
+    def test_get_cve_list_with_filter_string(self):
+        self.gmp.get_cve_list(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_info type="CVE" filter="foo=bar"/>'

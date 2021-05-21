@@ -27,8 +27,10 @@ from .test_get_dfn_cert_advisory_list import GmpGetDfnCertListTestMixin
 from .test_get_info import GmpGetInfoTestMixin
 from .test_get_info_list import GmpGetInfoListTestMixin
 from .test_get_nvt import GmpGetNvtTestMixin
-from .test_get_nvt_list import GmpGetNvtListTestMixin
 from .test_get_nvt_families import GmpGetNvtFamiliesTestMixin
+from .test_get_nvt_list import GmpGetNvtListTestMixin
+from .test_get_nvt_preference import GmpGetNvtPreferenceTestMixin
+from .test_get_nvt_preferences import GmpGetNvtPreferencesTestMixin
 from .test_get_oval_definition import GmpGetOvalDefTestMixin
 from .test_get_oval_definition_list import GmpGetOvalDefListTestMixin
 from .test_get_scan_config_nvt import GmpGetScanConfigNvtTestMixin

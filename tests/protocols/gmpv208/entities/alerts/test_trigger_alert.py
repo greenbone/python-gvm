@@ -45,8 +45,10 @@ class GmpTriggerAlertTestMixin:
             '<get_reports report_id="r1" alert_id="a1"/>'
         )
 
-    def test_trigger_alert_with_filter(self):
-        self.gmp.trigger_alert(alert_id='a1', report_id='r1', filter='name=foo')
+    def test_trigger_alert_with_filter_string(self):
+        self.gmp.trigger_alert(
+            alert_id='a1', report_id='r1', filter_string='name=foo'
+        )
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1" filter="name=foo"/>'

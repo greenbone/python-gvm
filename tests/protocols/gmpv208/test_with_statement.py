@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,19 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv214TestCase
-from ..gmpv208.testcmds import *  # pylint: disable=unused-wildcard-import,wildcard-import
+from . import Gmpv208TestCase
 
 
-class Gmpv214HelpTestCase(GmpHelpTestCase, Gmpv214TestCase):
-    pass
+class GmpWithStatementTestMixin:
+    def test_with_statement(self):
+        self.connection.connect.has_not_been_called()
+        self.connection.disconnect.has_not_been_called()
+
+        with self.gmp:
+            pass
+
+        self.connection.connect.has_been_called()
+        self.connection.disconnect.has_been_called()
 
 
-class Gmpv214GetSystemReportsTestCase(
-    GmpGetSystemReportsTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214v7WithStatementTestCase(GmpWithStatementTestCase, Gmpv214TestCase):
+class Gmpv208WithStatementTestCase(GmpWithStatementTestMixin, Gmpv208TestCase):
     pass

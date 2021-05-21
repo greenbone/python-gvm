@@ -23,8 +23,8 @@ class GmpGetTicketsTestMixin:
 
         self.connection.send.has_been_called_with('<get_tickets/>')
 
-    def test_get_tickets_with_filter(self):
-        self.gmp.get_tickets(filter='foo=bar')
+    def test_get_tickets_with_filter_string(self):
+        self.gmp.get_tickets(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_tickets filter="foo=bar"/>'

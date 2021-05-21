@@ -23,8 +23,8 @@ class GmpGetResultsTestMixin:
 
         self.connection.send.has_been_called_with('<get_results/>')
 
-    def test_get_results_with_filter(self):
-        self.gmp.get_results(filter='foo=bar')
+    def test_get_results_with_filter_string(self):
+        self.gmp.get_results(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_results filter="foo=bar"/>'

@@ -75,9 +75,9 @@ def to_comma_list(value: List) -> str:
     return ",".join(value)
 
 
-def add_filter(cmd, filter, filter_id):
-    if filter:
-        cmd.set_attribute("filter", filter)
+def add_filter(cmd, filter_string, filter_id):
+    if filter_string:
+        cmd.set_attribute("filter", filter_string)
 
     if filter_id:
         cmd.set_attribute("filt_id", filter_id)

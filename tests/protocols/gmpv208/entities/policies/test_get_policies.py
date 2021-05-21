@@ -25,8 +25,8 @@ class GmpGetPoliciesTestMixin:
             '<get_configs usage_type="policy"/>'
         )
 
-    def test_get_policies_with_filter(self):
-        self.gmp.get_policies(filter='name=foo')
+    def test_get_policies_with_filter_string(self):
+        self.gmp.get_policies(filter_string='name=foo')
 
         self.connection.send.has_been_called_with(
             '<get_configs usage_type="policy" filter="name=foo"/>'

@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
 
 from enum import Enum
 from typing import Any, Optional
@@ -419,7 +418,7 @@ class CredentialsMixin:
     def get_credentials(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         scanners: Optional[bool] = None,
         trash: Optional[bool] = None,
@@ -428,7 +427,7 @@ class CredentialsMixin:
         """Request a list of credentials
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             scanners: Whether to include a list of scanners using the
                 credentials
@@ -440,7 +439,7 @@ class CredentialsMixin:
         """
         cmd = XmlCommand("get_credentials")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if scanners is not None:
             cmd.set_attribute("scanners", to_bool(scanners))

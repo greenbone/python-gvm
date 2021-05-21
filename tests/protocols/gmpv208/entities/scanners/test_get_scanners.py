@@ -23,8 +23,8 @@ class GmpGetScannersTestMixin:
 
         self.connection.send.has_been_called_with('<get_scanners/>')
 
-    def test_get_scanners_with_filter(self):
-        self.gmp.get_scanners(filter='foo=bar')
+    def test_get_scanners_with_filter_string(self):
+        self.gmp.get_scanners(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_scanners filter="foo=bar"/>'

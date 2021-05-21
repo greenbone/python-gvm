@@ -16,18 +16,4 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv214 import Gmpv214TestCase
-from ...gmpv208.entities.preferences import (
-    GmpGetPreferencesTestMixin,
-    GmpGetPreferenceTestMixin,
-)
-
-
-class Gmpv214GetPreferenceTestCase(GmpGetPreferenceTestMixin, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetPreferencesTestCase(
-    GmpGetPreferencesTestMixin, Gmpv214TestCase
-):
-    pass
+from .test_help import GmpHelpTestMixin

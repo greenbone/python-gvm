@@ -25,8 +25,8 @@ class GmpGetReportsTestMixin:
             '<get_reports ignore_pagination="1"/>'
         )
 
-    def test_get_reports_with_filter(self):
-        self.gmp.get_reports(filter='name=foo')
+    def test_get_reports_with_filter_string(self):
+        self.gmp.get_reports(filter_string='name=foo')
 
         self.connection.send.has_been_called_with(
             '<get_reports report_filter="name=foo" ignore_pagination="1"/>'

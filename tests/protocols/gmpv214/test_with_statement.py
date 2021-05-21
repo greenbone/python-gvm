@@ -16,23 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from . import Gmpv214TestCase
 
-class GmpGetHostsTestMixin:
-    def test_get_hosts(self):
-        self.gmp.get_hosts()
 
-        self.connection.send.has_been_called_with('<get_assets type="host"/>')
+class GmpWithStatementTestMixin:
+    def test_with_statement(self):
+        self.connection.connect.has_not_been_called()
+        self.connection.disconnect.has_not_been_called()
 
-    def test_get_hosts_with_filter_string(self):
-        self.gmp.get_hosts(filter_string='foo=bar')
+        with self.gmp:
+            pass
 
-        self.connection.send.has_been_called_with(
-            '<get_assets type="host" filter="foo=bar"/>'
-        )
+        self.connection.connect.has_been_called()
+        self.connection.disconnect.has_been_called()
 
-    def test_get_hosts_with_filter_id(self):
-        self.gmp.get_hosts(filter_id='f1')
 
-        self.connection.send.has_been_called_with(
-            '<get_assets type="host" filt_id="f1"/>'
-        )
+class Gmpv214WithStatementTestCase(GmpWithStatementTestMixin, Gmpv214TestCase):
+    pass

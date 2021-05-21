@@ -16,10 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint:  disable=redefined-builtin
-# MAYBE we should change filter to filter_string (everywhere)
-
-
 from typing import Any, List, Optional, Tuple
 from lxml.etree import XMLSyntaxError
 
@@ -137,7 +133,7 @@ class ScanConfigsMixin:
     def get_scan_configs(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
@@ -148,7 +144,7 @@ class ScanConfigsMixin:
         """Request a list of scan configs
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             trash: Whether to get the trashcan scan configs instead
             details: Whether to get config families, preferences, nvt selectors
@@ -165,7 +161,7 @@ class ScanConfigsMixin:
         cmd = XmlCommand("get_configs")
         cmd.set_attribute("usage_type", "scan")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if trash is not None:
             cmd.set_attribute("trash", to_bool(trash))
@@ -211,6 +207,69 @@ class ScanConfigsMixin:
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
+
+        return self._send_xml_command(cmd)
+
+    def get_scan_config_preferences(
+        self, *, nvt_oid: Optional[str] = None, config_id: Optional[str] = None
+    ) -> Any:
+        """Request a list of scan_config preferences
+
+        When the command includes a config_id attribute, the preference element
+        includes the preference name, type and value, and the NVT to which the
+        preference applies.
+        If the command includes a config_id and an nvt_oid, the preferencces for
+        the given nvt in the config will be shown.
+
+        Arguments:
+            nvt_oid: OID of nvt
+            config_id: UUID of scan config of which to show preference values
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_preferences")
+
+        if nvt_oid:
+            cmd.set_attribute("nvt_oid", nvt_oid)
+
+        if config_id:
+            cmd.set_attribute("config_id", config_id)
+
+        return self._send_xml_command(cmd)
+
+    def get_scan_config_preference(
+        self,
+        name: str,
+        *,
+        nvt_oid: Optional[str] = None,
+        config_id: Optional[str] = None,
+    ) -> Any:
+        """Request a nvt preference
+
+        Arguments:
+            name: name of a particular preference
+            nvt_oid: OID of nvt
+            config_id: UUID of scan config of which to show preference values
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_preferences")
+
+        if not name:
+            raise RequiredArgument(
+                function=self.get_scan_config_preference.__name__,
+                argument='name',
+            )
+
+        cmd.set_attribute("preference", name)
+
+        if nvt_oid:
+            cmd.set_attribute("nvt_oid", nvt_oid)
+
+        if config_id:
+            cmd.set_attribute("config_id", config_id)
 
         return self._send_xml_command(cmd)
 

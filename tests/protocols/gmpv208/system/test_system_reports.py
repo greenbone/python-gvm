@@ -16,19 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv208TestCase
-from .testcmds import *  # pylint: disable=unused-wildcard-import, wildcard-import
-
-
-class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
-    pass
+from ...gmpv208 import Gmpv208TestCase
+from .system_reports import GmpGetSystemReportsTestMixin
 
 
 class Gmpv208GetSystemReportsTestCase(
-    GmpGetSystemReportsTestCase, Gmpv208TestCase
+    GmpGetSystemReportsTestMixin, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208v7WithStatementTestCase(GmpWithStatementTestCase, Gmpv208TestCase):
     pass

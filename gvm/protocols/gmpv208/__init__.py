@@ -25,16 +25,11 @@ Module for communication with gvmd in
     https://docs.greenbone.net/API/GMP/gmp-20.08.html
 """
 
+import logging
 from typing import Any, Callable, Optional
 
-from gvm.protocols.gmpv208.gmpv208 import GmpV208Mixin
-from gvm.protocols.gmpv208.entities.aggregates import (
-    AggregatesMixin,
-    AggregateStatistic,
-    get_aggregate_statistic_from_string,
-    SortOrder,
-    get_sort_order_from_string,
-)
+from gvm.protocols.base import GvmProtocol
+
 from gvm.protocols.gmpv208.entities.alerts import (
     AlertCondition,
     AlertEvent,
@@ -88,7 +83,6 @@ from gvm.protocols.gmpv208.entities.permissions import (
     get_permission_subject_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
-from gvm.protocols.gmpv208.entities.preferences import PreferencesMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
@@ -132,21 +126,36 @@ from gvm.protocols.gmpv208.entities.users import (
 )
 from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
 
+from gvm.protocols.gmpv208.system.aggregates import (
+    AggregatesMixin,
+    AggregateStatistic,
+    get_aggregate_statistic_from_string,
+    SortOrder,
+    get_sort_order_from_string,
+)
 from gvm.protocols.gmpv208.system.authentication import AuthenticationMixin
 from gvm.protocols.gmpv208.system.feed import (
     FeedType,
     FeedMixin,
     get_feed_type_from_string,
 )
+from gvm.protocols.gmpv208.system.help import (
+    HelpFormat,
+    HelpMixin,
+    get_help_format_from_string,
+)
+from gvm.protocols.gmpv208.system.system_reports import SystemReportsMixin
 from gvm.protocols.gmpv208.system.trashcan import TrashcanMixin
 from gvm.protocols.gmpv208.system.user_settings import UserSettingsMixin
 from gvm.protocols.gmpv208.system.version import VersionMixin
 
 from gvm.connections import GvmConnection
 
+logger = logging.getLogger(__name__)
+
 
 class Gmp(
-    GmpV208Mixin,
+    GvmProtocol,
     AggregatesMixin,
     AlertsMixin,
     AuditsMixin,
@@ -155,6 +164,7 @@ class Gmp(
     FeedMixin,
     FiltersMixin,
     GroupsMixin,
+    HelpMixin,
     HostsMixin,
     NotesMixin,
     OperatingSystemsMixin,
@@ -162,7 +172,6 @@ class Gmp(
     PermissionsMixin,
     PoliciesMixin,
     PortListMixin,
-    PreferencesMixin,
     ReportFormatsMixin,
     ReportsMixin,
     ResultsMixin,
@@ -177,6 +186,7 @@ class Gmp(
     ScannersMixin,
     SchedulesMixin,
     SecInfoMixin,
+    SystemReportsMixin,
     UserSettingsMixin,
     UsersMixin,
     VersionMixin,
