@@ -41,7 +41,8 @@ Please consider to always use the **newest** version of `gvm-tools` and `python-
 We freqently update this projects to add features and keep them free from bugs.
 This is why installing `python-gvm` using pip is recommended.
 
-The current release of `python-gvm` can be used with all supported GOS versions.
+**To use `python-gvm` with an old GMP version (7, 8, 9) you must use a release version**
+**that is `<21.05`. In the `21.05` release the support of these versions have been dropped.**
 
 ### Requirements
 

@@ -24,10 +24,6 @@ Enums
     :members:
     :undoc-members:
 
-.. autoclass:: AssetType
-    :members:
-    :undoc-members:
-
 .. autoclass:: CredentialFormat
     :members:
     :undoc-members:
@@ -49,6 +45,10 @@ Enums
     :undoc-members:
 
 .. autoclass:: HostsOrdering
+    :members:
+    :undoc-members:
+
+.. autoclass:: HelpFormat
     :members:
     :undoc-members:
 
