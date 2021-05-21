@@ -60,11 +60,6 @@ from gvm.protocols.gmpv208.entities.entities import (
     EntityType,
     get_entity_type_from_string,
 )
-from gvm.protocols.gmpv208.entities.feeds import (
-    FeedType,
-    FeedsMixin,
-    get_feed_type_from_string,
-)
 from gvm.protocols.gmpv208.entities.filter import (
     FiltersMixin,
     FilterType,
@@ -130,16 +125,24 @@ from gvm.protocols.gmpv208.entities.tickets import (
     get_ticket_status_from_string,
 )
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
-from gvm.protocols.gmpv208.entities.user_settings import UserSettingsMixin
 from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
     UsersMixin,
     get_user_auth_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
-from gvm.connections import GvmConnection
 
-PROTOCOL_VERSION = (20, 8)
+from gvm.protocols.gmpv208.system.authentication import AuthenticationMixin
+from gvm.protocols.gmpv208.system.feed import (
+    FeedType,
+    FeedMixin,
+    get_feed_type_from_string,
+)
+from gvm.protocols.gmpv208.system.trashcan import TrashcanMixin
+from gvm.protocols.gmpv208.system.user_settings import UserSettingsMixin
+from gvm.protocols.gmpv208.system.version import VersionMixin
+
+from gvm.connections import GvmConnection
 
 
 class Gmp(
@@ -147,8 +150,9 @@ class Gmp(
     AggregatesMixin,
     AlertsMixin,
     AuditsMixin,
+    AuthenticationMixin,
     CredentialsMixin,
-    FeedsMixin,
+    FeedMixin,
     FiltersMixin,
     GroupsMixin,
     HostsMixin,
@@ -168,14 +172,36 @@ class Gmp(
     TasksMixin,
     TicketsMixin,
     TLSCertificateMixin,
+    TrashcanMixin,
     ScanConfigsMixin,
     ScannersMixin,
     SchedulesMixin,
     SecInfoMixin,
     UserSettingsMixin,
     UsersMixin,
+    VersionMixin,
     VulnerabilitiesMixin,
 ):
+    """Python interface for Greenbone Management Protocol
+
+    This class implements the `Greenbone Management Protocol version 20.08`_
+
+    Arguments:
+        connection: Connection to use to talk with the gvmd daemon. See
+            :mod:`gvm.connections` for possible connection types.
+        transform: Optional transform `callable`_ to convert response data.
+            After each request the callable gets passed the plain response data
+            which can be used to check the data and/or conversion into different
+            representations like a xml dom.
+
+            See :mod:`gvm.transforms` for existing transforms.
+
+    .. _Greenbone Management Protocol version 20.08:
+        https://docs.greenbone.net/API/GMP/gmp-20.08.html
+    .. _callable:
+        https://docs.python.org/3/library/functions.html#callable
+    """
+
     def __init__(
         self,
         connection: GvmConnection,
@@ -186,12 +212,3 @@ class Gmp(
 
         # Is authenticated on gvmd
         self._authenticated = False
-
-    @staticmethod
-    def get_protocol_version() -> tuple:
-        """Determine the Greenbone Management Protocol version.
-
-        Returns:
-            tuple: Implemented version of the Greenbone Management Protocol
-        """
-        return PROTOCOL_VERSION

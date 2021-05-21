@@ -30,114 +30,20 @@ from numbers import Integral
 
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.errors import InvalidArgument
 from gvm.protocols.base import GvmProtocol
 
 
 from gvm.utils import (
-    check_command_status,
     to_bool,
 )
 from gvm.xml import XmlCommand
-
-PROTOCOL_VERSION = (20, 8)
 
 
 logger = logging.getLogger(__name__)
 
 
 class GmpV208Mixin(GvmProtocol):
-    """Python interface for Greenbone Management Protocol
-
-    This class implements the `Greenbone Management Protocol version 20.08`_
-
-    Arguments:
-        connection: Connection to use to talk with the gvmd daemon. See
-            :mod:`gvm.connections` for possible connection types.
-        transform: Optional transform `callable`_ to convert response data.
-            After each request the callable gets passed the plain response data
-            which can be used to check the data and/or conversion into different
-            representations like a xml dom.
-
-            See :mod:`gvm.transforms` for existing transforms.
-
-    .. _Greenbone Management Protocol version 20.08:
-        https://docs.greenbone.net/API/GMP/gmp-20.08.html
-    .. _callable:
-        https://docs.python.org/3/library/functions.html#callable
-    """
-
-    def is_authenticated(self) -> bool:
-        """Checks if the user is authenticated
-
-        If the user is authenticated privileged GMP commands like get_tasks
-        may be send to gvmd.
-
-        Returns:
-            bool: True if an authenticated connection to gvmd has been
-            established.
-        """
-        return self._authenticated
-
-    def authenticate(self, username: str, password: str) -> Any:
-        """Authenticate to gvmd.
-
-        The generated authenticate command will be send to server.
-        Afterwards the response is read, transformed and returned.
-
-        Arguments:
-            username: Username
-            password: Password
-
-        Returns:
-            Transformed response from server.
-        """
-        cmd = XmlCommand("authenticate")
-
-        if not username:
-            raise RequiredArgument(
-                function=self.authenticate.__name__, argument='username'
-            )
-
-        if not password:
-            raise RequiredArgument(
-                function=self.authenticate.__name__, argument='password'
-            )
-
-        credentials = cmd.add_element("credentials")
-        credentials.add_element("username", username)
-        credentials.add_element("password", password)
-
-        self._send(cmd.to_string())
-        response = self._read()
-
-        if check_command_status(response):
-            self._authenticated = True
-
-        return self._transform(response)
-
-    def describe_auth(self) -> Any:
-        """Describe authentication methods
-
-        Returns a list of all used authentication methods if such a list is
-        available.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("describe_auth"))
-
-    def empty_trashcan(self) -> Any:
-        """Empty the trashcan
-
-        Remove all entities from the trashcan. **Attention:** this command can
-        not be reverted
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("empty_trashcan"))
-
     def get_system_reports(
         self,
         *,
@@ -189,13 +95,6 @@ class GmpV208Mixin(GvmProtocol):
 
         return self._send_xml_command(cmd)
 
-    def get_version(self) -> Any:
-        """Get the Greenbone Manager Protocol version used by the remote gvmd
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("get_version"))
-
     def help(
         self, *, format: Optional[str] = None, help_type: Optional[str] = None
     ) -> Any:
@@ -230,67 +129,3 @@ class GmpV208Mixin(GvmProtocol):
             cmd.set_attribute("format", format)
 
         return self._send_xml_command(cmd)
-
-    def modify_auth(self, group_name: str, auth_conf_settings: dict) -> Any:
-        """Modifies an existing auth.
-
-        Arguments:
-            group_name: Name of the group to be modified.
-            auth_conf_settings: The new auth config.
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not group_name:
-            raise RequiredArgument(
-                function=self.modify_auth.__name__, argument='group_name'
-            )
-        if not auth_conf_settings:
-            raise RequiredArgument(
-                function=self.modify_auth.__name__,
-                argument='auth_conf_settings',
-            )
-        cmd = XmlCommand("modify_auth")
-        _xmlgroup = cmd.add_element("group", attrs={"name": str(group_name)})
-
-        for key, value in auth_conf_settings.items():
-            _xmlauthconf = _xmlgroup.add_element("auth_conf_setting")
-            _xmlauthconf.add_element("key", key)
-            _xmlauthconf.add_element("value", value)
-
-        return self._send_xml_command(cmd)
-
-    def restore(self, entity_id: str) -> Any:
-        """Restore an entity from the trashcan
-
-        Arguments:
-            entity_id: ID of the entity to be restored from the trashcan
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        if not entity_id:
-            raise RequiredArgument(
-                function=self.restore.__name__, argument='entity_id'
-            )
-
-        cmd = XmlCommand("restore")
-        cmd.set_attribute("id", entity_id)
-
-        return self._send_xml_command(cmd)
-
-    def sync_cert(self) -> Any:
-        """Request a synchronization with the CERT feed service
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("sync_cert"))
-
-    def sync_scap(self) -> Any:
-        """Request a synchronization with the SCAP feed service
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
-        """
-        return self._send_xml_command(XmlCommand("sync_scap"))

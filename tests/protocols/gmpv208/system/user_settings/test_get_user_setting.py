@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,19 +16,20 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv208TestCase
-from .testcmds import *  # pylint: disable=unused-wildcard-import, wildcard-import
+from gvm.errors import RequiredArgument
 
 
-class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
-    pass
+class GmpGetUserSettingTestMixin:
+    def test_get_setting_simple(self):
+        self.gmp.get_user_setting('id')
 
+        self.connection.send.has_been_called_with(
+            '<get_settings setting_id="id"/>'
+        )
 
-class Gmpv208GetSystemReportsTestCase(
-    GmpGetSystemReportsTestCase, Gmpv208TestCase
-):
-    pass
+    def test_get_setting_missing_setting_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_user_setting(setting_id=None)
 
-
-class Gmpv208v7WithStatementTestCase(GmpWithStatementTestCase, Gmpv208TestCase):
-    pass
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_user_setting('')

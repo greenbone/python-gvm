@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,19 +16,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv208TestCase
-from .testcmds import *  # pylint: disable=unused-wildcard-import, wildcard-import
+from ...gmpv208 import Gmpv208TestCase
+from .versions import GmpGetVersionTestCase, GmpGetProtocolVersionTestCase
 
 
-class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
+class Gmpv208GetVersionCommandTestCase(GmpGetVersionTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208GetSystemReportsTestCase(
-    GmpGetSystemReportsTestCase, Gmpv208TestCase
+class Gmpv208GmpGetProtocolVersionTestCase(
+    GmpGetProtocolVersionTestCase, Gmpv208TestCase
 ):
-    pass
-
-
-class Gmpv208v7WithStatementTestCase(GmpWithStatementTestCase, Gmpv208TestCase):
     pass

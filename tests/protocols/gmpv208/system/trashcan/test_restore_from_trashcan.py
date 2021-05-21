@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,19 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv208TestCase
-from .testcmds import *  # pylint: disable=unused-wildcard-import, wildcard-import
+from gvm.errors import GvmError
 
 
-class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
-    pass
+class GmpRestoreFromTrashcanTestMixin:
+    def test_restore_from_trashcan(self):
+        self.gmp.restore_from_trashcan('a1')
 
+        self.connection.send.has_been_called_with('<restore id="a1"/>')
 
-class Gmpv208GetSystemReportsTestCase(
-    GmpGetSystemReportsTestCase, Gmpv208TestCase
-):
-    pass
+    def test_restore_from_trashcan_missing_id(self):
+        with self.assertRaises(GvmError):
+            self.gmp.restore_from_trashcan(None)
 
-
-class Gmpv208v7WithStatementTestCase(GmpWithStatementTestCase, Gmpv208TestCase):
-    pass
+        with self.assertRaises(GvmError):
+            self.gmp.restore_from_trashcan('')

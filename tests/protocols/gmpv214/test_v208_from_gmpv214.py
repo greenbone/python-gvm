@@ -20,54 +20,12 @@ from . import Gmpv214TestCase
 from ..gmpv208.testcmds import *  # pylint: disable=unused-wildcard-import,wildcard-import
 
 
-class Gmpv214AuthenticateTestCase(GmpAuthenticateTestCase, Gmpv214TestCase):
-    pass
-
-
 class Gmpv214HelpTestCase(GmpHelpTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DescribeAuthCommandTestCase(
-    GmpDescribeAuthCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214EmptyTrashcanCommandTestCase(
-    GmpEmptyTrashcanCommandTestCase, Gmpv214TestCase
-):
     pass
 
 
 class Gmpv214GetSystemReportsTestCase(
     GmpGetSystemReportsTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214GetVersionCommandTestCase(
-    GmpGetVersionCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214ModifyAuthTestCase(GmpModifyAuthTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214RestoreTestCase(GmpRestoreTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214SyncCertCommandTestCase(
-    GmpSyncCertCommandTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214SyncScapCommandTestCase(
-    GmpSyncScapCommandTestCase, Gmpv214TestCase
 ):
     pass
 

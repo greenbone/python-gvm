@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,19 +16,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from . import Gmpv208TestCase
-from .testcmds import *  # pylint: disable=unused-wildcard-import, wildcard-import
+
+from gvm.protocols.gmpv208.system.version import (
+    VersionMixin as Gmp208VersionMixin,
+)
+
+PROTOCOL_VERSION = (21, 4)
 
 
-class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
-    pass
+class VersionMixin(Gmp208VersionMixin):
+    @staticmethod
+    def get_protocol_version() -> tuple:
+        """Determine the Greenbone Management Protocol (gmp) version used
+        by python-gvm version.
 
-
-class Gmpv208GetSystemReportsTestCase(
-    GmpGetSystemReportsTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208v7WithStatementTestCase(GmpWithStatementTestCase, Gmpv208TestCase):
-    pass
+        Returns:
+            tuple: Implemented version of the Greenbone Management Protocol
+        """
+        return PROTOCOL_VERSION
