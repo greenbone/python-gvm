@@ -13,6 +13,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Introduced new explicit API calls for SecInfo: `get_nvt()`, `get_nvt_list()`, `get_cpe()`, `get_cpe_list()`, `get_cve()`, `get_cve_list()`, `get_cert_bund_advisory()`, `get_cert_bund_advisory_list()`, `get_dnf_cert_advisory()`, `get_dnf_cert_advisory_list()`, `get_oval_definition()`, `get_oval_definition_list()`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 
 ### Changed
+* Splitted up `get_preference(s)` into `get_nvt_preference(s)` and `get_scan_config_preference(s)`. [#473](https://github.com/greenbone/python-gvm/pull/473)
 * Improved and changed `help()`: Introduced `HelpFormat` Enum, changed `format` parameter to `help_format` using `HelpFormat`, changed `help_type` to `brief` and bool, as it only has two options (default and brief). [#473](https://github.com/greenbone/python-gvm/pull/473)
 * Changed `filter` to `filter_string` in getter functions. [#470](https://github.com/greenbone/python-gvm/pull/470) [#471](https://github.com/greenbone/python-gvm/pull/471) [#473](https://github.com/greenbone/python-gvm/pull/473)
 * API changes: `get_setting(s)` -> `get_user_setting(s)`, `modify_setting` -> `modify_user_setting`. [#472](https://github.com/greenbone/python-gvm/pull/472)
