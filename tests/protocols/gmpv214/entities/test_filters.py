@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.filters import (
     GmpCloneFilterTestMixin,
     GmpCreateFilterTestMixin,
@@ -27,25 +27,25 @@ from ...gmpv208.entities.filters import (
 )
 
 
-class Gmpv208DeleteFilterTestCase(GmpDeleteFilterTestMixin, Gmpv208TestCase):
+class Gmpv214DeleteFilterTestCase(GmpDeleteFilterTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetFilterTestCase(GmpGetFilterTestMixin, Gmpv208TestCase):
+class Gmpv214GetFilterTestCase(GmpGetFilterTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetFiltersTestCase(GmpGetFiltersTestMixin, Gmpv208TestCase):
+class Gmpv214GetFiltersTestCase(GmpGetFiltersTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208CloneFilterTestCase(GmpCloneFilterTestMixin, Gmpv208TestCase):
+class Gmpv214CloneFilterTestCase(GmpCloneFilterTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208CreateFilterTestCase(GmpCreateFilterTestMixin, Gmpv208TestCase):
+class Gmpv214CreateFilterTestCase(GmpCreateFilterTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208ModifyFilterTestCase(GmpModifyFilterTestMixin, Gmpv208TestCase):
+class Gmpv214ModifyFilterTestCase(GmpModifyFilterTestMixin, Gmpv214TestCase):
     pass
