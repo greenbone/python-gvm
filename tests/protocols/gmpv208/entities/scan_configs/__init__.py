@@ -24,6 +24,10 @@ from .test_create_scan_config_from_osp_scanner import (
 from .test_delete_scan_config import GmpDeleteScanConfigTestMixin
 from .test_get_scan_config import GmpGetScanConfigTestMixin
 from .test_get_scan_configs import GmpGetScanConfigsTestMixin
+from .test_get_scan_config_preference import GmpGetScanConfigPreferenceTestMixin
+from .test_get_scan_config_preferences import (
+    GmpGetScanConfigPreferencesTestMixin,
+)
 from .test_import_scan_config import GmpImportScanConfigTestMixin
 from .test_modify_scan_config import GmpModifyScanConfigTestMixin
 from .test_modify_scan_config_set_comment import (

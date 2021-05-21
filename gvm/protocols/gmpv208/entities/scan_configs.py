@@ -210,6 +210,69 @@ class ScanConfigsMixin:
 
         return self._send_xml_command(cmd)
 
+    def get_scan_config_preferences(
+        self, *, nvt_oid: Optional[str] = None, config_id: Optional[str] = None
+    ) -> Any:
+        """Request a list of scan_config preferences
+
+        When the command includes a config_id attribute, the preference element
+        includes the preference name, type and value, and the NVT to which the
+        preference applies.
+        If the command includes a config_id and an nvt_oid, the preferencces for
+        the given nvt in the config will be shown.
+
+        Arguments:
+            nvt_oid: OID of nvt
+            config_id: UUID of scan config of which to show preference values
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_preferences")
+
+        if nvt_oid:
+            cmd.set_attribute("nvt_oid", nvt_oid)
+
+        if config_id:
+            cmd.set_attribute("config_id", config_id)
+
+        return self._send_xml_command(cmd)
+
+    def get_scan_config_preference(
+        self,
+        name: str,
+        *,
+        nvt_oid: Optional[str] = None,
+        config_id: Optional[str] = None,
+    ) -> Any:
+        """Request a nvt preference
+
+        Arguments:
+            name: name of a particular preference
+            nvt_oid: OID of nvt
+            config_id: UUID of scan config of which to show preference values
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_preferences")
+
+        if not name:
+            raise RequiredArgument(
+                function=self.get_scan_config_preference.__name__,
+                argument='name',
+            )
+
+        cmd.set_attribute("preference", name)
+
+        if nvt_oid:
+            cmd.set_attribute("nvt_oid", nvt_oid)
+
+        if config_id:
+            cmd.set_attribute("config_id", config_id)
+
+        return self._send_xml_command(cmd)
+
     def import_scan_config(self, config: str) -> Any:
         """Import a scan config from XML
 

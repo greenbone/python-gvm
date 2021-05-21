@@ -24,6 +24,8 @@ from .scan_configs import (
     GmpDeleteScanConfigTestMixin,
     GmpGetScanConfigTestMixin,
     GmpGetScanConfigsTestMixin,
+    GmpGetScanConfigPreferencesTestMixin,
+    GmpGetScanConfigPreferenceTestMixin,
     GmpImportScanConfigTestMixin,
     GmpModifyScanConfigSetCommentTestMixin,
     GmpModifyScanConfigSetFamilySelectionTestMixin,
@@ -66,6 +68,18 @@ class Gmpv208GetScanConfigTestCase(GmpGetScanConfigTestMixin, Gmpv208TestCase):
 
 class Gmpv208GetScanConfigsTestCase(
     GmpGetScanConfigsTestMixin, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208GetScanConfigPreferenceTestCase(
+    GmpGetScanConfigPreferenceTestMixin, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208GetScanConfigPreferencesTestCase(
+    GmpGetScanConfigPreferencesTestMixin, Gmpv208TestCase
 ):
     pass
 

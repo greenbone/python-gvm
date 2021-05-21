@@ -29,8 +29,10 @@ from .secinfo import (
     GmpGetInfoListTestMixin,
     GmpGetInfoTestMixin,
     GmpGetNvtFamiliesTestMixin,
-    GmpGetNvtTestMixin,
     GmpGetNvtListTestMixin,
+    GmpGetNvtPreferencesTestMixin,
+    GmpGetNvtPreferenceTestMixin,
+    GmpGetNvtTestMixin,
     GmpGetOvalDefTestMixin,
     GmpGetOvalDefListTestMixin,
     GmpGetScanConfigNvtsTestMixin,
@@ -67,6 +69,18 @@ class Gmpv208GetInfoTestCase(GmpGetInfoTestMixin, Gmpv208TestCase):
 
 
 class Gmpv208GetNvtTestCase(GmpGetNvtTestMixin, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208GetNvtPreferenceTestCase(
+    GmpGetNvtPreferenceTestMixin, Gmpv208TestCase
+):
+    pass
+
+
+class Gmpv208GetNvtPreferencesTestCase(
+    GmpGetNvtPreferencesTestMixin, Gmpv208TestCase
+):
     pass
 
 

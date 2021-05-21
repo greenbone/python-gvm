@@ -1,0 +1,7 @@
+diff a/tests/protocols/gmpv208/entities/test_secinfo.py b/tests/protocols/gmpv208/entities/test_secinfo.py	(rejected hunks)
+@@ -74 +74,4 @@ class Gmpv208GetNvtTestCase(GmpGetNvtTestMixin, Gmpv208TestCase):
+-class Gmpv208GetNvtPreferenceTestCase(GmpGetNvtPreferenceTestMixin, Gmpv208TestCase):
++
++class Gmpv208GetNvtPreferenceTestCase(
++    GmpGetNvtPreferenceTestMixin, Gmpv208TestCase
++):

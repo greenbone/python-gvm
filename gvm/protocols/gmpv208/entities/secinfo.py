@@ -484,3 +484,56 @@ class SecInfoMixin:
         # for single entity always request all details
         cmd.set_attribute("details", "1")
         return self._send_xml_command(cmd)
+
+    def get_nvt_preferences(
+        self,
+        *,
+        nvt_oid: Optional[str] = None,
+    ) -> Any:
+        """Request a list of preferences
+
+        The preference element includes just the
+        name and value, with the NVT and type built into the name.
+
+        Arguments:
+            nvt_oid: OID of nvt
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_preferences")
+
+        if nvt_oid:
+            cmd.set_attribute("nvt_oid", nvt_oid)
+
+        return self._send_xml_command(cmd)
+
+    def get_nvt_preference(
+        self,
+        name: str,
+        *,
+        nvt_oid: Optional[str] = None,
+    ) -> Any:
+        """Request a nvt preference
+
+        Arguments:
+            name: name of a particular preference
+            nvt_oid: OID of nvt
+            config_id: UUID of scan config of which to show preference values
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_preferences")
+
+        if not name:
+            raise RequiredArgument(
+                function=self.get_nvt_preference.__name__, argument='name'
+            )
+
+        cmd.set_attribute("preference", name)
+
+        if nvt_oid:
+            cmd.set_attribute("nvt_oid", nvt_oid)
+
+        return self._send_xml_command(cmd)
