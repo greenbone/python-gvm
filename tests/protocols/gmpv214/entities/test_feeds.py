@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.feeds import (
     GmpGetFeedsTestMixin,
     GmpGetFeedTestMixin,
@@ -24,13 +24,13 @@ from ...gmpv208.entities.feeds import (
 )
 
 
-class Gmpv208GetFeedTestCase(GmpGetFeedTestMixin, Gmpv208TestCase):
+class Gmpv214GetFeedTestCase(GmpGetFeedTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetFeedsTestCase(GmpGetFeedsTestMixin, Gmpv208TestCase):
+class Gmpv214GetFeedsTestCase(GmpGetFeedsTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208SyncFeedTestMixin(GmpSyncFeedTestMixin, Gmpv208TestCase):
+class Gmpv214SyncFeedTestMixin(GmpSyncFeedTestMixin, Gmpv214TestCase):
     pass

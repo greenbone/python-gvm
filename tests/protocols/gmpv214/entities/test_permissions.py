@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208 import Gmpv208TestCase
+from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.permissions import (
     GmpClonePermissionTestMixin,
     GmpCreatePermissionTestMixin,
@@ -27,35 +27,35 @@ from ...gmpv208.entities.permissions import (
 )
 
 
-class Gmpv208DeletePermissionTestCase(
-    GmpDeletePermissionTestMixin, Gmpv208TestCase
+class Gmpv214DeletePermissionTestCase(
+    GmpDeletePermissionTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208GetPermissionTestCase(GmpGetPermissionTestMixin, Gmpv208TestCase):
+class Gmpv214GetPermissionTestCase(GmpGetPermissionTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv208GetPermissionsTestCase(
-    GmpGetPermissionsTestMixin, Gmpv208TestCase
+class Gmpv214GetPermissionsTestCase(
+    GmpGetPermissionsTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208ClonePermissionTestCase(
-    GmpClonePermissionTestMixin, Gmpv208TestCase
+class Gmpv214ClonePermissionTestCase(
+    GmpClonePermissionTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208CreatePermissionTestCase(
-    GmpCreatePermissionTestMixin, Gmpv208TestCase
+class Gmpv214CreatePermissionTestCase(
+    GmpCreatePermissionTestMixin, Gmpv214TestCase
 ):
     pass
 
 
-class Gmpv208ModifyPermissionTestCase(
-    GmpModifyPermissionTestMixin, Gmpv208TestCase
+class Gmpv214ModifyPermissionTestCase(
+    GmpModifyPermissionTestMixin, Gmpv214TestCase
 ):
     pass
