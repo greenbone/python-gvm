@@ -19,7 +19,7 @@
 from gvm.errors import GvmError
 
 
-class GmpDeleteGroupTestCase:
+class GmpDeleteGroupTestMixin:
     def test_delete(self):
         self.gmp.delete_group('a1')
 

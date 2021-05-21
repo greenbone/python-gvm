@@ -17,29 +17,20 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetGroupsTestCase:
-    def test_get_groups(self):
-        self.gmp.get_groups()
+class GmpGetVulnerabilitiesTestMixin:
+    def test_get_vulnerabilities(self):
+        self.gmp.get_vulnerabilities()
 
-        self.connection.send.has_been_called_with('<get_groups/>')
+        self.connection.send.has_been_called_with('<get_vulns/>')
 
-    def test_get_groups_with_filter(self):
-        self.gmp.get_groups(filter='foo=bar')
+    def test_get_vulnerabilities_with_filter_string(self):
+        self.gmp.get_vulnerabilities(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
-            '<get_groups filter="foo=bar"/>'
+            '<get_vulns filter="foo=bar"/>'
         )
 
-    def test_get_groups_with_filter_id(self):
-        self.gmp.get_groups(filter_id='f1')
+    def test_get_vulnerabilities_with_filter_id(self):
+        self.gmp.get_vulnerabilities(filter_id='f1')
 
-        self.connection.send.has_been_called_with('<get_groups filt_id="f1"/>')
-
-    def test_get_groups_with_trash(self):
-        self.gmp.get_groups(trash=True)
-
-        self.connection.send.has_been_called_with('<get_groups trash="1"/>')
-
-        self.gmp.get_groups(trash=False)
-
-        self.connection.send.has_been_called_with('<get_groups trash="0"/>')
+        self.connection.send.has_been_called_with('<get_vulns filt_id="f1"/>')

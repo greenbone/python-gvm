@@ -17,14 +17,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetSettingsTestCase:
+class GmpGetSettingsTestMixin:
     def test_get_settings(self):
         self.gmp.get_settings()
 
         self.connection.send.has_been_called_with('<get_settings/>')
 
-    def test_get_settings_with_filter(self):
-        self.gmp.get_settings(filter="foo=bar")
+    def test_get_settings_with_filter_string(self):
+        self.gmp.get_settings(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_settings filter="foo=bar"/>'

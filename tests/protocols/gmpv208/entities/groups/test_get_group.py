@@ -16,23 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gvm.errors import RequiredArgument
 
-class GmpGetPreferencesTestCase:
-    def test_get_preferences(self):
-        self.gmp.get_preferences()
 
-        self.connection.send.has_been_called_with('<get_preferences/>')
+class GmpGetGroupTestMixin:
+    def test_get_group(self):
+        self.gmp.get_group('f1')
 
-    def test_get_preferences_with_nvt_oid(self):
-        self.gmp.get_preferences(nvt_oid='oid')
+        self.connection.send.has_been_called_with('<get_groups group_id="f1"/>')
 
-        self.connection.send.has_been_called_with(
-            '<get_preferences nvt_oid="oid"/>'
-        )
+        self.gmp.get_group(group_id='f1')
 
-    def test_get_preferences_with_config_id(self):
-        self.gmp.get_preferences(config_id='c1')
+        self.connection.send.has_been_called_with('<get_groups group_id="f1"/>')
 
-        self.connection.send.has_been_called_with(
-            '<get_preferences config_id="c1"/>'
-        )
+    def test_get_group_missing_group_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_group(group_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_group('')

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,22 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from ...gmpv214 import Gmpv214TestCase
+from ...gmpv208.entities.preferences import (
+    GmpGetPreferencesTestMixin,
+    GmpGetPreferenceTestMixin,
+)
 
 
-class GmpGetGroupTestCase:
-    def test_get_group(self):
-        self.gmp.get_group('f1')
+class Gmpv214GetPreferenceTestCase(GmpGetPreferenceTestMixin, Gmpv214TestCase):
+    pass
 
-        self.connection.send.has_been_called_with('<get_groups group_id="f1"/>')
 
-        self.gmp.get_group(group_id='f1')
-
-        self.connection.send.has_been_called_with('<get_groups group_id="f1"/>')
-
-    def test_get_group_missing_group_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_group(group_id=None)
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_group('')
+class Gmpv214GetPreferencesTestCase(
+    GmpGetPreferencesTestMixin, Gmpv214TestCase
+):
+    pass

@@ -16,20 +16,23 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
 
+class GmpGetPreferencesTestMixin:
+    def test_get_preferences(self):
+        self.gmp.get_preferences()
 
-class GmpGetSettingTestCase:
-    def test_get_setting_simple(self):
-        self.gmp.get_setting('id')
+        self.connection.send.has_been_called_with('<get_preferences/>')
+
+    def test_get_preferences_with_nvt_oid(self):
+        self.gmp.get_preferences(nvt_oid='oid')
 
         self.connection.send.has_been_called_with(
-            '<get_settings setting_id="id"/>'
+            '<get_preferences nvt_oid="oid"/>'
         )
 
-    def test_get_setting_missing_setting_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_setting(setting_id=None)
+    def test_get_preferences_with_config_id(self):
+        self.gmp.get_preferences(config_id='c1')
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_setting('')
+        self.connection.send.has_been_called_with(
+            '<get_preferences config_id="c1"/>'
+        )

@@ -70,6 +70,7 @@ from gvm.protocols.gmpv208.entities.filter import (
     FilterType,
     get_filter_type_from_string,
 )
+from gvm.protocols.gmpv208.entities.groups import GroupsMixin
 from gvm.protocols.gmpv208.entities.hosts import (
     HostsMixin,
     HostsOrdering,
@@ -92,6 +93,7 @@ from gvm.protocols.gmpv208.entities.permissions import (
     get_permission_subject_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
+from gvm.protocols.gmpv208.entities.preferences import PreferencesMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
@@ -128,11 +130,13 @@ from gvm.protocols.gmpv208.entities.tickets import (
     get_ticket_status_from_string,
 )
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
+from gvm.protocols.gmpv208.entities.user_settings import UserSettingsMixin
 from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
     UsersMixin,
     get_user_auth_type_from_string,
 )
+from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
 from gvm.connections import GvmConnection
 
 PROTOCOL_VERSION = (20, 8)
@@ -146,6 +150,7 @@ class Gmp(
     CredentialsMixin,
     FeedsMixin,
     FiltersMixin,
+    GroupsMixin,
     HostsMixin,
     NotesMixin,
     OperatingSystemsMixin,
@@ -153,6 +158,7 @@ class Gmp(
     PermissionsMixin,
     PoliciesMixin,
     PortListMixin,
+    PreferencesMixin,
     ReportFormatsMixin,
     ReportsMixin,
     ResultsMixin,
@@ -166,7 +172,9 @@ class Gmp(
     ScannersMixin,
     SchedulesMixin,
     SecInfoMixin,
+    UserSettingsMixin,
     UsersMixin,
+    VulnerabilitiesMixin,
 ):
     def __init__(
         self,

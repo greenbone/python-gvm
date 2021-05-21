@@ -19,34 +19,17 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpGetPreferenceTestCase:
-    def test_get_preference(self):
-        self.gmp.get_preference(name='foo')
+class GmpCloneGroupTestMixin:
+    def test_clone(self):
+        self.gmp.clone_group('a1')
 
         self.connection.send.has_been_called_with(
-            '<get_preferences preference="foo"/>'
+            '<create_group>' '<copy>a1</copy>' '</create_group>'
         )
 
-    def test_get_preference_missing_name(self):
+    def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_preference(name=None)
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_preference(name='')
+            self.gmp.clone_group('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_preference('')
-
-    def test_get_preference_with_nvt_oid(self):
-        self.gmp.get_preference(name='foo', nvt_oid='oid')
-
-        self.connection.send.has_been_called_with(
-            '<get_preferences preference="foo" nvt_oid="oid"/>'
-        )
-
-    def test_get_preference_with_config_id(self):
-        self.gmp.get_preference(name='foo', config_id='c1')
-
-        self.connection.send.has_been_called_with(
-            '<get_preferences preference="foo" config_id="c1"/>'
-        )
+            self.gmp.clone_group(None)

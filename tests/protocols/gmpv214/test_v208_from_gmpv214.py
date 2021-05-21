@@ -20,36 +20,11 @@ from . import Gmpv214TestCase
 from ..gmpv208.testcmds import *  # pylint: disable=unused-wildcard-import,wildcard-import
 
 
-class Gmpv214GetVulnerabilitiesTestCase(
-    GmpGetVulnerabilitiesTestCase, Gmpv214TestCase
-):
-    pass
-
-
-class Gmpv214GetVulnerabilityTestCase(
-    GmpGetVulnerabilityTestCase, Gmpv214TestCase
-):
-    pass
-
-
 class Gmpv214AuthenticateTestCase(GmpAuthenticateTestCase, Gmpv214TestCase):
     pass
 
 
 class Gmpv214HelpTestCase(GmpHelpTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214CloneGroupTestCase(GmpCloneGroupTestCase, Gmpv214TestCase):
-
-    pass
-
-
-class Gmpv214CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214DeleteGroupTestCase(GmpDeleteGroupTestCase, Gmpv214TestCase):
     pass
 
 
@@ -62,30 +37,6 @@ class Gmpv214DescribeAuthCommandTestCase(
 class Gmpv214EmptyTrashcanCommandTestCase(
     GmpEmptyTrashcanCommandTestCase, Gmpv214TestCase
 ):
-    pass
-
-
-class Gmpv214GetGroupTestCase(GmpGetGroupTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetGroupsTestCase(GmpGetGroupsTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetPreferenceTestCase(GmpGetPreferenceTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetPreferencesTestCase(GmpGetPreferencesTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetSettingTestCase(GmpGetSettingTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214GetSettingsTestCase(GmpGetSettingsTestCase, Gmpv214TestCase):
     pass
 
 
@@ -102,14 +53,6 @@ class Gmpv214GetVersionCommandTestCase(
 
 
 class Gmpv214ModifyAuthTestCase(GmpModifyAuthTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifyGroupTestCase(GmpModifyGroupTestCase, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214ModifySettingTestCase(GmpModifySettingTestCase, Gmpv214TestCase):
     pass
 
 
