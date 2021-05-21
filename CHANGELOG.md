@@ -61,6 +61,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ### Deprecated
 ### Removed
+* Removed `sync_feed`, `sync_scap`, and `sync_cert` calls. [#472](https://github.com/greenbone/python-gvm/pull/472)
 * Removed `TimeUnit`. It was used for schedules before iCal and is not required anymore. [#469](https://github.com/greenbone/python-gvm/pull/469)
 * Removed `Gmpv214Mixin`. [#467](https://github.com/greenbone/python-gvm/pull/467)
 * Remove support of delete host/operating system by a report . [#459](https://github.com/greenbone/python-gvm/pull/459)
