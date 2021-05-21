@@ -20,9 +20,6 @@ from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.system.feed import (
     GmpGetFeedsTestMixin,
     GmpGetFeedTestMixin,
-    GmpSyncCertTestMixin,
-    GmpSyncFeedTestMixin,
-    GmpSyncScapTestMixin,
 )
 
 
@@ -31,16 +28,4 @@ class Gmpv214GetFeedTestCase(GmpGetFeedTestMixin, Gmpv214TestCase):
 
 
 class Gmpv214GetFeedsTestCase(GmpGetFeedsTestMixin, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214SyncCertTestMixin(GmpSyncCertTestMixin, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214SyncFeedTestMixin(GmpSyncFeedTestMixin, Gmpv214TestCase):
-    pass
-
-
-class Gmpv214SyncScapTestMixin(GmpSyncScapTestMixin, Gmpv214TestCase):
     pass
