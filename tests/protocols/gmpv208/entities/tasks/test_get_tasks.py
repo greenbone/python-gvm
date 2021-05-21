@@ -25,8 +25,8 @@ class GmpGetTasksTestMixin:
             '<get_tasks usage_type="scan"/>'
         )
 
-    def test_get_tasks_with_filter(self):
-        self.gmp.get_tasks(filter='name=foo')
+    def test_get_tasks_with_filter_string(self):
+        self.gmp.get_tasks(filter_string='name=foo')
 
         self.connection.send.has_been_called_with(
             '<get_tasks usage_type="scan" filter="name=foo"/>'

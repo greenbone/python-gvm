@@ -64,6 +64,18 @@ class GmpModifyTargetTestMixin:
             '</modify_target>'
         )
 
+    def test_modify_target_with_hosts_and_exclude_hosts(self):
+        self.gmp.modify_target(
+            target_id='t1', hosts=['foo', 'bar'], exclude_hosts=['foo']
+        )
+
+        self.connection.send.has_been_called_with(
+            '<modify_target target_id="t1">'
+            '<hosts>foo,bar</hosts>'
+            '<exclude_hosts>foo</exclude_hosts>'
+            '</modify_target>'
+        )
+
     def test_modify_target_with_name(self):
         self.gmp.modify_target(target_id='t1', name='foo')
 

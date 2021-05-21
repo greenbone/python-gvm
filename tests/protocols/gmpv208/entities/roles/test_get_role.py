@@ -16,21 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gvm.errors import RequiredArgument
 
-class GmpGetUsersTestMixin:
-    def test_get_users(self):
-        self.gmp.get_users()
 
-        self.connection.send.has_been_called_with('<get_users/>')
+class GmpGetRoleTestMixin:
+    def test_get_role(self):
+        self.gmp.get_role('r1')
 
-    def test_get_users_with_filter_string(self):
-        self.gmp.get_users(filter_string='foo=bar')
+        self.connection.send.has_been_called_with('<get_roles role_id="r1"/>')
 
-        self.connection.send.has_been_called_with(
-            '<get_users filter="foo=bar"/>'
-        )
+        self.gmp.get_role(role_id='r1')
 
-    def test_get_users_with_filter_id(self):
-        self.gmp.get_users(filter_id='f1')
+        self.connection.send.has_been_called_with('<get_roles role_id="r1"/>')
 
-        self.connection.send.has_been_called_with('<get_users filt_id="f1"/>')
+    def test_get_role_missing_role_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_role(role_id=None)
+
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_role('')

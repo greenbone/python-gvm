@@ -17,14 +17,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetReportFormatsTestCase:
+class GmpGetReportFormatsTestMixin:
     def test_get_report_formats(self):
         self.gmp.get_report_formats()
 
         self.connection.send.has_been_called_with('<get_report_formats/>')
 
     def test_get_report_formats_with_filter(self):
-        self.gmp.get_report_formats(filter='foo=bar')
+        self.gmp.get_report_formats(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
             '<get_report_formats filter="foo=bar"/>'

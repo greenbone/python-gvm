@@ -13,6 +13,10 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 * Introduced new explicit API calls for SecInfo: `get_nvt()`, `get_nvt_list()`, `get_cpe()`, `get_cpe_list()`, `get_cve()`, `get_cve_list()`, `get_cert_bund_advisory()`, `get_cert_bund_advisory_list()`, `get_dnf_cert_advisory()`, `get_dnf_cert_advisory_list()`, `get_oval_definition()`, `get_oval_definition_list()`. [#456](https://github.com/greenbone/python-gvm/pull/456)
 
 ### Changed
+* Changed `filter` to `filter_string` in getter functions. [#470](https://github.com/greenbone/python-gvm/pull/470)
+* Detached the ReportFormats API calls from the GMP class into a new `ReportFormatsMixin`. [#470](https://github.com/greenbone/python-gvm/pull/470)
+* Detached the Roles API calls from the GMP class into a new `RolesMixin`. [#470](https://github.com/greenbone/python-gvm/pull/470)
+* Detached the Tickets API calls from the GMP class into a new `TicketsMixin`. [#470](https://github.com/greenbone/python-gvm/pull/470)
 * Detached the HostsOrdering Type from the GMP types class. [#469](https://github.com/greenbone/python-gvm/pull/469)
 * Detached the TicketStatus Type from the GMP types class. [#469](https://github.com/greenbone/python-gvm/pull/469)
 * Detached the Schedules API calls from the GMP class into a new `SchedulesMixin`. [#469](https://github.com/greenbone/python-gvm/pull/469)

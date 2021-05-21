@@ -26,7 +26,7 @@ class GmpGetAuditsTestMixin:
         )
 
     def test_get_audits_with_filter(self):
-        self.gmp.get_audits(filter='name=foo')
+        self.gmp.get_audits(filter_string='name=foo')
 
         self.connection.send.has_been_called_with(
             '<get_tasks usage_type="audit" filter="name=foo"/>'

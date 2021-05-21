@@ -84,8 +84,7 @@ class UsersMixin(Gmp208UsersMixin):
 
         cmd = XmlCommand("modify_user")
 
-        if user_id:
-            cmd.set_attribute("user_id", user_id)
+        cmd.set_attribute("user_id", user_id)
 
         if name:
             cmd.add_element("new_name", name)

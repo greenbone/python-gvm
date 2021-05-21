@@ -15,3 +15,11 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+from .test_clone_report_format import GmpCloneReportFormatTestMixin
+from .test_import_report_format import GmpImportReportFormatTestMixin
+from .test_delete_report_format import GmpDeleteReportFormatTestMixin
+from .test_get_report_format import GmpGetReportFormatTestMixin
+from .test_get_report_formats import GmpGetReportFormatsTestMixin
+from .test_modify_report_format import GmpModifyReportFormatTestMixin
+from .test_verify_report_format import GmpVerifyReportFormatTestMixin

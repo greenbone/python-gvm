@@ -169,12 +169,15 @@ class UsersMixin:
         return self._send_xml_command(cmd)
 
     def get_users(
-        self, *, filter: Optional[str] = None, filter_id: Optional[str] = None
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[str] = None,
     ) -> Any:
         """Request a list of users
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
 
         Returns:
@@ -182,7 +185,7 @@ class UsersMixin:
         """
         cmd = XmlCommand("get_users")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         return self._send_xml_command(cmd)
 

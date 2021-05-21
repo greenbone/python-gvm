@@ -23,8 +23,8 @@ class GmpGetTLSCertificatesTestMixin:
 
         self.connection.send.has_been_called_with('<get_tls_certificates/>')
 
-    def test_get_tls_certificates_with_filter(self):
-        self.gmp.get_tls_certificates(filter='name=foo')
+    def test_get_tls_certificates_with_filter_string(self):
+        self.gmp.get_tls_certificates(filter_string='name=foo')
 
         self.connection.send.has_been_called_with(
             '<get_tls_certificates filter="name=foo"/>'

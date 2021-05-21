@@ -92,9 +92,11 @@ from gvm.protocols.gmpv208.entities.port_lists import (
 from gvm.protocols.gmpv208.entities.reports import ReportsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
+    ReportFormatsMixin,
     get_report_format_id_from_string,
 )
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
+from gvm.protocols.gmpv208.entities.roles import RolesMixin
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
 from gvm.protocols.gmpv208.entities.schedules import SchedulesMixin
 from gvm.protocols.gmpv208.entities.secinfo import (
@@ -110,6 +112,7 @@ from gvm.protocols.gmpv208.entities.tags import TagsMixin
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tickets import (
     TicketStatus,
+    TicketsMixin,
     get_ticket_status_from_string,
 )
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
@@ -155,11 +158,14 @@ class Gmp(
     PermissionsMixin,
     PoliciesMixin,
     PortListMixin,
+    ReportFormatsMixin,
     ReportsMixin,
     ResultsMixin,
+    RolesMixin,
     TagsMixin,
     TargetsMixin,
     TasksMixin,
+    TicketsMixin,
     TLSCertificateMixin,
     ScanConfigsMixin,
     ScannersMixin,

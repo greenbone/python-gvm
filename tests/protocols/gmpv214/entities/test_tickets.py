@@ -17,41 +17,35 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ...gmpv214 import Gmpv214TestCase
-from ...gmpv208.entities.schedules import (
-    GmpCloneScheduleTestMixin,
-    GmpCreateScheduleTestMixin,
-    GmpDeleteScheduleTestMixin,
-    GmpGetScheduleTestMixin,
-    GmpGetSchedulesTestMixin,
-    GmpModifyScheduleTestMixin,
+from ...gmpv208.entities.tickets import (
+    GmpCloneTicketTestMixin,
+    GmpCreateTicketTestMixin,
+    GmpDeleteTicketTestMixin,
+    GmpGetTicketTestMixin,
+    GmpGetTicketsTestMixin,
+    GmpModifyTicketTestMixin,
 )
 
 
-class Gmpv214DeleteScheduleTestCase(
-    GmpDeleteScheduleTestMixin, Gmpv214TestCase
-):
+class Gmpv214DeleteTicketTestCase(GmpDeleteTicketTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetScheduleTestCase(GmpGetScheduleTestMixin, Gmpv214TestCase):
+class Gmpv214GetTicketTestCase(GmpGetTicketTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214GetSchedulesTestCase(GmpGetSchedulesTestMixin, Gmpv214TestCase):
+class Gmpv214GetTicketsTestCase(GmpGetTicketsTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CloneScheduleTestCase(GmpCloneScheduleTestMixin, Gmpv214TestCase):
+class Gmpv214CloneTicketTestCase(GmpCloneTicketTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214CreateScheduleTestCase(
-    GmpCreateScheduleTestMixin, Gmpv214TestCase
-):
+class Gmpv214CreateTicketTestCase(GmpCreateTicketTestMixin, Gmpv214TestCase):
     pass
 
 
-class Gmpv214ModifyScheduleTestCase(
-    GmpModifyScheduleTestMixin, Gmpv214TestCase
-):
+class Gmpv214ModifyTicketTestCase(GmpModifyTicketTestMixin, Gmpv214TestCase):
     pass

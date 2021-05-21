@@ -117,6 +117,94 @@ class GmpCreateAlertTestMixin:
                 method=AlertMethod.HTTP_GET,
             )
 
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.UPDATED_SECINFO_ARRIVED,
+                method=AlertMethod.ALEMBA_VFIRE,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.UPDATED_SECINFO_ARRIVED,
+                method=AlertMethod.SOURCEFIRE_CONNECTOR,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.UPDATED_SECINFO_ARRIVED,
+                method=AlertMethod.START_TASK,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.UPDATED_SECINFO_ARRIVED,
+                method=AlertMethod.TIPPINGPOINT_SMS,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.UPDATED_SECINFO_ARRIVED,
+                method=AlertMethod.VERINICE_CONNECTOR,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.NEW_SECINFO_ARRIVED,
+                method=AlertMethod.HTTP_GET,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.NEW_SECINFO_ARRIVED,
+                method=AlertMethod.ALEMBA_VFIRE,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.NEW_SECINFO_ARRIVED,
+                method=AlertMethod.SOURCEFIRE_CONNECTOR,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.NEW_SECINFO_ARRIVED,
+                method=AlertMethod.START_TASK,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.NEW_SECINFO_ARRIVED,
+                method=AlertMethod.TIPPINGPOINT_SMS,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.NEW_SECINFO_ARRIVED,
+                method=AlertMethod.VERINICE_CONNECTOR,
+            )
+
     def test_missing_method_for_ticket_received(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_alert(
@@ -142,6 +230,70 @@ class GmpCreateAlertTestMixin:
                 condition=AlertCondition.ALWAYS,
                 event=AlertEvent.TICKET_RECEIVED,
                 method=AlertMethod.HTTP_GET,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.SCP,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.SEND,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.SMB,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.SNMP,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.ALEMBA_VFIRE,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.VERINICE_CONNECTOR,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.TIPPINGPOINT_SMS,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_alert(
+                name='foo',
+                condition=AlertCondition.ALWAYS,
+                event=AlertEvent.TICKET_RECEIVED,
+                method=AlertMethod.SOURCEFIRE_CONNECTOR,
             )
 
     def test_invalid_condition_for_task_run_status_changed(self):

@@ -110,7 +110,7 @@ class TLSCertificateMixin:
     def get_tls_certificates(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         include_certificate_data: Optional[bool] = None,
         details: Optional[bool] = None,
@@ -118,7 +118,7 @@ class TLSCertificateMixin:
         """Request a list of TLS certificates
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             include_certificate_data: Whether to include the certificate data in
                 the response
@@ -131,7 +131,7 @@ class TLSCertificateMixin:
 
         cmd = XmlCommand("get_tls_certificates")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if details is not None:
             cmd.set_attribute("details", to_bool(details))

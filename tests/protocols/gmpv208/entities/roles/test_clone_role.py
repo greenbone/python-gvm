@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2019-2021 Greenbone Networks GmbH
+# Copyright (C) 2018-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -19,24 +19,17 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpDeleteTicketTestCase:
-    def test_delete(self):
-        self.gmp.delete_ticket('t1')
+class GmpCloneRoleTestMixin:
+    def test_clone(self):
+        self.gmp.clone_role('a1')
 
         self.connection.send.has_been_called_with(
-            '<delete_ticket ticket_id="t1" ultimate="0"/>'
-        )
-
-    def test_delete_ultimate(self):
-        self.gmp.delete_ticket('t1', ultimate=True)
-
-        self.connection.send.has_been_called_with(
-            '<delete_ticket ticket_id="t1" ultimate="1"/>'
+            '<create_role>' '<copy>a1</copy>' '</create_role>'
         )
 
     def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.delete_ticket(None)
+            self.gmp.clone_role('')
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.delete_ticket('')
+            self.gmp.clone_role(None)

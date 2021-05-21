@@ -16,20 +16,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
 
+class GmpGetRolesTestMixin:
+    def test_get_roles(self):
+        self.gmp.get_roles()
 
-class GmpCloneRoleTestCase:
-    def test_clone(self):
-        self.gmp.clone_role('a1')
+        self.connection.send.has_been_called_with('<get_roles/>')
+
+    def test_get_roles_with_filter(self):
+        self.gmp.get_roles(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<create_role>' '<copy>a1</copy>' '</create_role>'
+            '<get_roles filter="foo=bar"/>'
         )
 
-    def test_missing_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_role('')
+    def test_get_roles_with_filter_id(self):
+        self.gmp.get_roles(filter_id='f1')
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.clone_role(None)
+        self.connection.send.has_been_called_with('<get_roles filt_id="f1"/>')
+
+    def test_get_roles_with_trash(self):
+        self.gmp.get_roles(trash=True)
+
+        self.connection.send.has_been_called_with('<get_roles trash="1"/>')
+
+        self.gmp.get_roles(trash=False)
+
+        self.connection.send.has_been_called_with('<get_roles trash="0"/>')

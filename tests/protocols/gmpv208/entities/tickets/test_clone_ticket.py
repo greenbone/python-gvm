@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2019-2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,30 +16,29 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from gvm.errors import RequiredArgument
 
-class GmpGetRolesTestCase:
-    def test_get_roles(self):
-        self.gmp.get_roles()
 
-        self.connection.send.has_been_called_with('<get_roles/>')
-
-    def test_get_roles_with_filter(self):
-        self.gmp.get_roles(filter='foo=bar')
+class GmpCloneTicketTestMixin:
+    def test_clone(self):
+        self.gmp.clone_ticket('t1')
 
         self.connection.send.has_been_called_with(
-            '<get_roles filter="foo=bar"/>'
+            '<create_ticket>' '<copy>t1</copy>' '</create_ticket>'
         )
 
-    def test_get_roles_with_filter_id(self):
-        self.gmp.get_roles(filter_id='f1')
+        self.gmp.clone_ticket(ticket_id='t1')
 
-        self.connection.send.has_been_called_with('<get_roles filt_id="f1"/>')
+        self.connection.send.has_been_called_with(
+            '<create_ticket>' '<copy>t1</copy>' '</create_ticket>'
+        )
 
-    def test_get_roles_with_trash(self):
-        self.gmp.get_roles(trash=True)
+    def test_missing_id(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_ticket('')
 
-        self.connection.send.has_been_called_with('<get_roles trash="1"/>')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_ticket(None)
 
-        self.gmp.get_roles(trash=False)
-
-        self.connection.send.has_been_called_with('<get_roles trash="0"/>')
+        with self.assertRaises(RequiredArgument):
+            self.gmp.clone_ticket(ticket_id=None)

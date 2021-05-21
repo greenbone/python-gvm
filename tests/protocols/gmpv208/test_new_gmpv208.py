@@ -20,32 +20,6 @@ from . import Gmpv208TestCase
 from .testcmds import *  # pylint: disable=unused-wildcard-import, wildcard-import
 
 
-class Gmpv208ModifyReportFormatTestCase(
-    GmpModifyReportFormatTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208ModifyTicketTestCase(GmpModifyTicketTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CloneTicketTestCase(GmpCloneTicketTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208CreateTicketTestCase(GmpCreateTicketTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeleteTicketTestCase(GmpDeleteTicketTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetTicketTestCase(GmpGetTicketTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetVulnerabilitiesTestCase(
     GmpGetVulnerabilitiesTestCase, Gmpv208TestCase
 ):
@@ -62,12 +36,6 @@ class Gmpv208AuthenticateTestCase(GmpAuthenticateTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneReportFormatTestCase(
-    GmpCloneReportFormatTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208HelpTestCase(GmpHelpTestCase, Gmpv208TestCase):
     pass
 
@@ -77,29 +45,11 @@ class Gmpv208CloneGroupTestCase(GmpCloneGroupTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CloneRoleTestCase(GmpCloneRoleTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208CreateGroupTestCase(GmpCreateGroupTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208CreateRoleTestCase(GmpCreateRoleTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208DeleteGroupTestCase(GmpDeleteGroupTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208DeleteReportFormatTestCase(
-    GmpDeleteReportFormatTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208DeleteRoleTestCase(GmpDeleteRoleTestCase, Gmpv208TestCase):
     pass
 
 
@@ -131,26 +81,6 @@ class Gmpv208GetPreferencesTestCase(GmpGetPreferencesTestCase, Gmpv208TestCase):
     pass
 
 
-class Gmpv208GetReportFormatTestCase(
-    GmpGetReportFormatTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208GetReportFormatsTestCase(
-    GmpGetReportFormatsTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208GetRoleTestCase(GmpGetRoleTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208GetRolesTestCase(GmpGetRolesTestCase, Gmpv208TestCase):
-    pass
-
-
 class Gmpv208GetSettingTestCase(GmpGetSettingTestCase, Gmpv208TestCase):
     pass
 
@@ -171,21 +101,11 @@ class Gmpv208GetVersionCommandTestCase(
     pass
 
 
-class Gmpv208ImportReportFormatTestCase(
-    GmpImportReportFormatTestCase, Gmpv208TestCase
-):
-    pass
-
-
 class Gmpv208ModifyAuthTestCase(GmpModifyAuthTestCase, Gmpv208TestCase):
     pass
 
 
 class Gmpv208ModifyGroupTestCase(GmpModifyGroupTestCase, Gmpv208TestCase):
-    pass
-
-
-class Gmpv208ModifyRoleTestCase(GmpModifyRoleTestCase, Gmpv208TestCase):
     pass
 
 
@@ -205,12 +125,6 @@ class Gmpv208SyncCertCommandTestCase(
 
 class Gmpv208SyncScapCommandTestCase(
     GmpSyncScapCommandTestCase, Gmpv208TestCase
-):
-    pass
-
-
-class Gmpv208VerifyReportFormatTestCase(
-    GmpVerifyReportFormatTestCase, Gmpv208TestCase
 ):
     pass
 

@@ -16,22 +16,27 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument
+from gvm.errors import GvmError
 
 
-class GmpGetRoleTestCase:
-    def test_get_role(self):
-        self.gmp.get_role('r1')
+class GmpDeleteRoleTestMixin:
+    def test_delete(self):
+        self.gmp.delete_role('a1')
 
-        self.connection.send.has_been_called_with('<get_roles role_id="r1"/>')
+        self.connection.send.has_been_called_with(
+            '<delete_role role_id="a1" ultimate="0"/>'
+        )
 
-        self.gmp.get_role(role_id='r1')
+    def test_delete_ultimate(self):
+        self.gmp.delete_role('a1', ultimate=True)
 
-        self.connection.send.has_been_called_with('<get_roles role_id="r1"/>')
+        self.connection.send.has_been_called_with(
+            '<delete_role role_id="a1" ultimate="1"/>'
+        )
 
-    def test_get_role_missing_role_id(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_role(role_id=None)
+    def test_missing_id(self):
+        with self.assertRaises(GvmError):
+            self.gmp.delete_role(None)
 
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_role('')
+        with self.assertRaises(GvmError):
+            self.gmp.delete_role('')

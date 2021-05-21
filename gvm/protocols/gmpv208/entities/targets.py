@@ -254,7 +254,7 @@ class TargetsMixin:
     def get_targets(
         self,
         *,
-        filter: Optional[str] = None,
+        filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
         trash: Optional[bool] = None,
         tasks: Optional[bool] = None,
@@ -262,7 +262,7 @@ class TargetsMixin:
         """Request a list of targets
 
         Arguments:
-            filter: Filter term to use for the query
+            filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             trash: Whether to get the trashcan targets instead
             tasks: Whether to include list of tasks that use the target
@@ -272,7 +272,7 @@ class TargetsMixin:
         """
         cmd = XmlCommand("get_targets")
 
-        add_filter(cmd, filter, filter_id)
+        add_filter(cmd, filter_string, filter_id)
 
         if trash is not None:
             cmd.set_attribute("trash", to_bool(trash))

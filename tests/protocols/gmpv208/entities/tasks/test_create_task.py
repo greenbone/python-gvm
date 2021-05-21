@@ -146,6 +146,35 @@ class GmpCreateTaskTestMixin:
             '</create_task>'
         )
 
+    def test_create_task_invalid_alerts(self):
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.create_task(
+                name='foo',
+                config_id='c1',
+                target_id='t1',
+                scanner_id='s1',
+                alert_ids='invalid',
+            )
+
+    def test_create_task_with_empty_alert_ids(self):
+        self.gmp.create_task(
+            name='foo',
+            config_id='c1',
+            target_id='t1',
+            scanner_id='s1',
+            alert_ids=[],
+        )
+
+        self.connection.send.has_been_called_with(
+            '<create_task>'
+            '<name>foo</name>'
+            '<usage_type>scan</usage_type>'
+            '<config id="c1"/>'
+            '<target id="t1"/>'
+            '<scanner id="s1"/>'
+            '</create_task>'
+        )
+
     def test_create_task_with_alterable(self):
         self.gmp.create_task(
             name='foo',
