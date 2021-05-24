@@ -67,7 +67,7 @@ def get_report_format_id_from_string(
 
 class ReportFormatsMixin:
     def clone_report_format(
-        self, report_format_id: [Union[str, ReportFormatType]]
+        self, report_format_id: Union[str, ReportFormatType]
     ) -> Any:
         """Clone a report format from an existing one
 
