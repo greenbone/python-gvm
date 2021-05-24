@@ -85,7 +85,7 @@ class PrettyPrintTestCase(unittest.TestCase):
 
     def test_pretty_print_with_string(self):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
-        # elem = secET.fromstring(xml_str)
+
         expected_xml_string = (
             '<test>\n'
             '  <this>\n'
@@ -98,6 +98,23 @@ class PrettyPrintTestCase(unittest.TestCase):
         pretty_print(xml_str, file=stringio)
 
         xml_string = stringio.getvalue()
+
+        self.assertEqual(xml_string, expected_xml_string)
+
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_pretty_print_with_string_to_stdout(self, mock_stdout):
+        xml_str = '<test><this><with id="a">and text</with></this></test>'
+
+        expected_xml_string = (
+            '<test>\n'
+            '  <this>\n'
+            '    <with id="a">and text</with>\n'
+            '  </this>\n'
+            '</test>\n'
+        )
+
+        pretty_print(xml_str, sys.stdout)
+        xml_string = mock_stdout.getvalue()
 
         self.assertEqual(xml_string, expected_xml_string)
 
