@@ -23,6 +23,7 @@ from unittest.mock import patch
 from io import StringIO
 
 import defusedxml.lxml as secET
+from gvm.errors import InvalidArgumentType
 from gvm.xml import pretty_print
 
 
@@ -160,6 +161,13 @@ class PrettyPrintTestCase(unittest.TestCase):
         xml_string = stringio.getvalue()
 
         self.assertEqual(xml_string, expected_xml_string)
+
+    def test_pretty_print_no_xml(self):
+        number = 1
+        stringio = StringIO()
+
+        with self.assertRaises(InvalidArgumentType):
+            pretty_print(number, file=stringio)
 
     def test_pretty_print_type_error(self):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
