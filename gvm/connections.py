@@ -96,7 +96,7 @@ class GvmConnection(XmlReader):
         self._socket = None
         self._timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
 
-    def _read(self):
+    def _read(self) -> bytes:
         return self._socket.recv(BUF_SIZE)
 
     def connect(self):
@@ -202,7 +202,7 @@ class SSHConnection(GvmConnection):
             password if password is not None else DEFAULT_SSH_PASSWORD
         )
 
-    def _send_all(self, data):
+    def _send_all(self, data) -> None:
         while data:
             sent = self._stdin.channel.send(data)
 
@@ -212,7 +212,7 @@ class SSHConnection(GvmConnection):
 
             data = data[sent:]
 
-    def connect(self):
+    def connect(self) -> None:
         """
         Connect to the SSH server and authenticate to it
         """
@@ -229,6 +229,7 @@ class SSHConnection(GvmConnection):
                 allow_agent=False,
                 look_for_keys=False,
             )
+
             self._stdin, self._stdout, self._stderr = self._socket.exec_command(
                 "", get_pty=False
             )
@@ -240,23 +241,26 @@ class SSHConnection(GvmConnection):
         ) as e:
             raise GvmError("SSH Connection failed", e) from None
 
-    def _read(self):
+    def _read(self) -> bytes:
         return self._stdout.channel.recv(BUF_SIZE)
 
-    def send(self, data: Union[bytes, str]):
+    def send(self, data: Union[bytes, str]) -> None:
         self._send_all(data)
 
     def finish_send(self):
         # shutdown socket for sending. only allow reading data afterwards
         self._stdout.channel.shutdown(socketlib.SHUT_WR)
 
-    def disconnect(self):
+    def disconnect(self) -> None:
         """Disconnect and close the connection to the remote server"""
         try:
             if self._socket is not None:
                 self._socket.close()
         except OSError as e:
             logger.debug("Connection closing error: %s", e)
+            raise e
+        except AttributeError as e:
+            logger.debug("Connection might already be closed. No socket found.")
 
         if self._socket:
             del self._socket, self._stdin, self._stdout, self._stderr
@@ -349,12 +353,12 @@ class UnixSocketConnection(GvmConnection):
         *,
         path: Optional[str] = DEFAULT_UNIX_SOCKET_PATH,
         timeout: Optional[int] = DEFAULT_TIMEOUT,
-    ):
+    ) -> None:
         super().__init__(timeout=timeout)
 
         self.path = path if path is not None else DEFAULT_UNIX_SOCKET_PATH
 
-    def connect(self):
+    def connect(self) -> None:
         """Connect to the UNIX socket"""
         self._socket = socketlib.socket(
             socketlib.AF_UNIX, socketlib.SOCK_STREAM

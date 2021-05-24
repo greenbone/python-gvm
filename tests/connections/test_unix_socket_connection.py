@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
+from unittest.mock import patch
 
 import os
 import socketserver
@@ -47,9 +48,9 @@ class ThreadedUnixStreamServer(
 
 
 class UnixSocketConnectionTestCase(unittest.TestCase):
-    # pylint: disable=protected-access
+    # pylint: disable=protected-access, invalid-name
     def setUp(self):
-        self.socketname = "%s/%s.sock" % (
+        self.socketname = "{}/{}.sock".format(
             tempfile.gettempdir(),
             str(uuid.uuid4()),
         )
@@ -68,37 +69,60 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         os.unlink(self.socketname)
 
     def test_unix_socket_connection_connect_read(self):
-        self.connection = UnixSocketConnection(
+        connection = UnixSocketConnection(
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
-        self.connection.connect()
-        self.connection.read()
-        self.connection.disconnect()
+        connection.connect()
+        connection.read()
+        connection.disconnect()
 
     def test_unix_socket_connection_connect_send_bytes_read(self):
-        self.connection = UnixSocketConnection(
+        connection = UnixSocketConnection(
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
-        self.connection.connect()
-        self.connection.send(bytes("<gmp/>", 'utf-8'))
-        self.connection.read()
-        self.connection.disconnect()
+        connection.connect()
+        connection.send(bytes("<gmp/>", 'utf-8'))
+        connection.read()
+        connection.disconnect()
 
     def test_unix_socket_connection_connect_send_str_read(self):
-        self.connection = UnixSocketConnection(
+        connection = UnixSocketConnection(
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
-        self.connection.connect()
-        self.connection.send("<gmp/>")
-        self.connection.read()
-        self.connection.disconnect()
+        connection.connect()
+        connection.send("<gmp/>")
+        connection.read()
+        connection.disconnect()
+
+    def test_unix_socket_connect_file_not_found(self):
+        connection = UnixSocketConnection(path="foo", timeout=DEFAULT_TIMEOUT)
+        with self.assertRaises(GvmError) as e:
+            connection.connect()
+            self.assertEqual(str(e), 'Socket foo does not exist')
+        connection.disconnect()
+
+    def test_unix_socket_connect_could_not_connect(self):
+        connection = UnixSocketConnection(
+            path=self.socketname, timeout=DEFAULT_TIMEOUT
+        )
+        with patch('socket.socket.connect') as ConnectMock:
+            connect_mock = ConnectMock
+            connect_mock.side_effect = ConnectionError
+            with self.assertRaises(GvmError) as e:
+                connection.connect()
+                self.assertEqual(
+                    str(e),
+                    'Could not connect to socket {}'.format(self.socketname),
+                )
+            connection.disconnect()
 
     def test_unix_socket_send_unconnected_socket(self):
-        self.connection = UnixSocketConnection(
+        connection = UnixSocketConnection(
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
-        with self.assertRaises(GvmError):
-            self.connection.send("<gmp>/")
+        with self.assertRaises(GvmError) as e:
+            connection.send("<gmp>/")
+            self.assertEqual(str(e), 'Socket is not connected')
 
     def test_init_no_args(self):
         connection = UnixSocketConnection()
