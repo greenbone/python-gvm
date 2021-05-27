@@ -125,7 +125,8 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection = SSHConnection()
 
             ssh_connection.connect()
-            ssh_connection.send("blah")
+            req = ssh_connection.send("blah")
+            self.assertEqual(req, 4)
 
     def test_send_error(self):
         with patch('paramiko.SSHClient') as SSHClientMock:
@@ -150,7 +151,8 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection = SSHConnection()
 
             ssh_connection.connect()
-            ssh_connection.send("blah")
+            req = ssh_connection.send("blah")
+            self.assertEqual(req, 4)
 
             stdin.channel.send.assert_called()
             with self.assertRaises(AssertionError):

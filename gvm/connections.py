@@ -202,6 +202,8 @@ class SSHConnection(GvmConnection):
         )
 
     def _send_all(self, data) -> None:
+        """Returns the sum of sent bytes if success"""
+        sent_sum = 0
         while data:
             sent = self._stdin.channel.send(data)
 
@@ -209,7 +211,10 @@ class SSHConnection(GvmConnection):
                 # Connection was closed by server
                 raise GvmError("Remote closed the connection")
 
+            sent_sum += sent
+
             data = data[sent:]
+        return sent_sum
 
     def connect(self) -> None:
         """
@@ -244,7 +249,7 @@ class SSHConnection(GvmConnection):
         return self._stdout.channel.recv(BUF_SIZE)
 
     def send(self, data: Union[bytes, str]) -> None:
-        self._send_all(data)
+        return self._send_all(data)
 
     def finish_send(self):
         # shutdown socket for sending. only allow reading data afterwards
