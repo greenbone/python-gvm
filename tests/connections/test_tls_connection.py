@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
+from unittest.mock import Mock, patch
 
 from gvm.connections import (
     TLSConnection,
@@ -27,7 +28,7 @@ from gvm.connections import (
 
 
 class TLSConnectionTestCase(unittest.TestCase):
-    # pylint: disable=protected-access
+    # pylint: disable=protected-access, invalid-name
     def test_init_no_args(self):
         connection = TLSConnection()
         self.check_default_values(connection)
@@ -52,3 +53,25 @@ class TLSConnectionTestCase(unittest.TestCase):
         self.assertEqual(tls_connection.port, DEFAULT_GVM_PORT)
         self.assertIsNone(tls_connection.password)
         self.assertEqual(tls_connection._timeout, DEFAULT_TIMEOUT)
+
+    def test_connect(self):
+        with patch('ssl.SSLContext') as SSHContextMock:
+            context_mock = SSHContextMock.return_value
+            connection = TLSConnection()
+            connection.connect()
+            context_mock.wrap_socket.assert_called_once()
+
+    def test_connect_auth(self):
+        with patch('ssl.SSLContext') as SSHContextMock:
+            context_mock = SSHContextMock.return_value
+            cert_file = Mock()
+            ca_file = Mock()
+            key_file = Mock()
+
+            connection = TLSConnection(
+                certfile=cert_file, cafile=ca_file, keyfile=key_file
+            )
+            connection.connect()
+            context_mock.load_cert_chain.assert_called_once()
+            context_mock.wrap_socket.assert_called_once()
+            self.assertFalse(context_mock.check_hostname)

@@ -17,21 +17,28 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from typing import Optional
+from typing import List, Optional, Union
 from io import IOBase
 
 import defusedxml.lxml as secET
 
 from defusedxml import DefusedXmlException
-from lxml import etree
+from lxml.etree import (
+    SubElement,
+    XMLParser,
+    Element,
+    tostring as xmltostring,
+    iselement as isxmlelement,
+    LxmlError,
+)
 
-from gvm.errors import GvmError
+from gvm.errors import GvmError, InvalidArgumentType
 
 
 def create_parser():
     # huge_tree => disable security restrictions and support very deep trees and
     #              very long text content (for get_reports)
-    return etree.XMLParser(encoding="utf-8", huge_tree=True)
+    return XMLParser(encoding="utf-8", huge_tree=True)
 
 
 class XmlCommandElement:
@@ -45,7 +52,7 @@ class XmlCommandElement:
         *,
         attrs: Optional[dict] = None,
     ):
-        node = etree.SubElement(self._element, name, attrib=attrs)
+        node = SubElement(self._element, name, attrib=attrs)
         node.text = text
         return XmlCommandElement(node)
 
@@ -67,7 +74,7 @@ class XmlCommandElement:
         self._element.append(node)
 
     def to_string(self) -> str:
-        return etree.tostring(self._element).decode("utf-8")
+        return xmltostring(self._element).decode("utf-8")
 
     def __str__(self):
         return self.to_string()
@@ -75,10 +82,13 @@ class XmlCommandElement:
 
 class XmlCommand(XmlCommandElement):
     def __init__(self, name):
-        super().__init__(etree.Element(name))
+        super().__init__(Element(name))
 
 
-def pretty_print(xml, file: IOBase = sys.stdout):
+def pretty_print(
+    xml: Union[str, List[Union[Element, str]], Element],
+    file: IOBase = sys.stdout,
+):
     """Prints beautiful XML-Code
 
     This function gets a string containing the xml, an object of
@@ -101,26 +111,30 @@ def pretty_print(xml, file: IOBase = sys.stdout):
 
     if isinstance(xml, list):
         for item in xml:
-            if etree.iselement(item):
+            if isxmlelement(item):
                 file.write(
-                    etree.tostring(item, pretty_print=True).decode(
+                    xmltostring(item, pretty_print=True).decode(
                         sys.getdefaultencoding() + '\n'
                     )
                 )
             else:
                 file.write(item + '\n')
-    elif etree.iselement(xml):
+    elif isxmlelement(xml):
         file.write(
-            etree.tostring(xml, pretty_print=True).decode(
+            xmltostring(xml, pretty_print=True).decode(
                 sys.getdefaultencoding() + '\n'
             )
         )
     elif isinstance(xml, str):
         tree = secET.fromstring(xml)
         file.write(
-            etree.tostring(tree, pretty_print=True).decode(
+            xmltostring(tree, pretty_print=True).decode(
                 sys.getdefaultencoding() + '\n'
             )
+        )
+    else:
+        raise InvalidArgumentType(
+            function=pretty_print.__name__, argument='xml', arg_type=''
         )
 
 
@@ -139,5 +153,5 @@ def validate_xml_string(xml_string: str):
     """
     try:
         secET.fromstring(xml_string)
-    except (DefusedXmlException, etree.LxmlError) as e:
+    except (DefusedXmlException, LxmlError) as e:
         raise GvmError("Invalid XML", e) from e
