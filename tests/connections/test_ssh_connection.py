@@ -51,7 +51,7 @@ class SSHConnectionTestCase(unittest.TestCase):
 
     def test_connect_error(self):
         ssh_connection = SSHConnection()
-        with self.assertRaises(GvmError):
+        with self.assertRaises(GvmError, msg="SSH Connection failed"):
             ssh_connection.connect()
 
     def test_connect(self):
@@ -88,8 +88,16 @@ class SSHConnectionTestCase(unittest.TestCase):
                 type(ssh_connection._socket)
 
             with self.assertRaises(AttributeError):
-                # disconnect twice should not work ...
-                ssh_connection.disconnect()
+                with self.assertLogs('foo', level='INFO') as cm:
+                    # disconnect twice should not work ...
+                    ssh_connection.disconnect()
+                    self.assertEqual(
+                        cm.output,
+                        [
+                            'Connection might already be'
+                            ' closed. No socket found.',
+                        ],
+                    )
 
             ssh_connection._socket = None
             ssh_connection.disconnect()
@@ -104,7 +112,9 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection.connect()
 
             with self.assertRaises(OSError):
-                ssh_connection.disconnect()
+                with self.assertLogs('foo', level='INFO') as cm:
+                    ssh_connection.disconnect()
+                    self.assertEqual(cm.output, ['Connection closing error: '])
 
     def test_send(self):
         with patch('paramiko.SSHClient') as SSHClientMock:
@@ -126,9 +136,10 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection = SSHConnection()
 
             ssh_connection.connect()
-            with self.assertRaises(GvmError) as e:
+            with self.assertRaises(
+                GvmError, msg='Remote closed the connection'
+            ):
                 ssh_connection.send("blah")
-                self.assertEqual(str(e), 'Remote closed the connection')
 
     def test_send_and_slice(self):
         with patch('paramiko.SSHClient') as SSHClientMock:

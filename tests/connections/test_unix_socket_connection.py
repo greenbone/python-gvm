@@ -98,9 +98,8 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
 
     def test_unix_socket_connect_file_not_found(self):
         connection = UnixSocketConnection(path="foo", timeout=DEFAULT_TIMEOUT)
-        with self.assertRaises(GvmError) as e:
+        with self.assertRaises(GvmError, msg='Socket foo does not exist'):
             connection.connect()
-            self.assertEqual(str(e), 'Socket foo does not exist')
         connection.disconnect()
 
     def test_unix_socket_connect_could_not_connect(self):

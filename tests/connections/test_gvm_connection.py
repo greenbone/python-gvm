@@ -52,14 +52,16 @@ class GvmConnectionTestCase(unittest.TestCase):
     def test_feed_xml_error(self):
         connection = GvmConnection()
         connection._start_xml()
-        with self.assertRaises(GvmError):
+        with self.assertRaises(
+            GvmError, msg='Cannot parse XML response. Response data read bla'
+        ):
             connection._feed_xml("bla")
 
     @patch('gvm.connections.GvmConnection._read')
     def test_read_no_data(self, _read_mock):
         _read_mock.return_value = None
         connection = GvmConnection()
-        with self.assertRaises(GvmError):
+        with self.assertRaises(GvmError, msg="Remote closed the connection"):
             connection.read()
 
     @patch('gvm.connections.GvmConnection._read')
@@ -68,6 +70,7 @@ class GvmConnectionTestCase(unittest.TestCase):
         # check in the loop
         _read_mock.side_effect = [b"<foo>xyz<bar></bar>", b"</foo>"]
         connection = GvmConnection(timeout=0)
-        with self.assertRaises(GvmError) as e:
+        with self.assertRaises(
+            GvmError, msg='Timeout while reading the response'
+        ):
             connection.read()
-            self.assertEqual(str(e), 'Timeout while reading the response')
