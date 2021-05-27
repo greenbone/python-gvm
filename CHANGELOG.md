@@ -6,6 +6,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ## [Unreleased]
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
+[Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.5.0...HEAD
+
+
+## [21.5.0] - 2021-05-25
 
 **Dropped support for GMP v7, v8 and v9!**
 
@@ -64,7 +74,6 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
   * Detached the Task API calls from the GMP class into a new `TasksMixin`. [#443](https://github.com/greenbone/python-gvm/pull/443)
 * Moved helper functions from gmp to utils. The response XML will not be recovered by the parser anymore! [#442](https://github.com/greenbone/python-gvm/pull/442)
 
-### Deprecated
 ### Removed
 * Removed `sync_feed`, `sync_scap`, and `sync_cert` calls. [#472](https://github.com/greenbone/python-gvm/pull/472)
 * Removed `TimeUnit`. It was used for schedules before iCal and is not required anymore. [#469](https://github.com/greenbone/python-gvm/pull/469)
@@ -79,10 +88,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
   [#439](https://github.com/greenbone/python-gvm/pull/439)
   [#444](https://github.com/greenbone/python-gvm/pull/444)
 
-### Fixed
-
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.4.0...HEAD
-
+[21.5.0]: https://github.com/greenbone/python-gvm/compare/v21.4.0...v21.5.0
 
 ## [21.4.0] - 2021-04-26
 ### Changed
