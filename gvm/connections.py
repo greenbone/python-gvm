@@ -201,7 +201,7 @@ class SSHConnection(GvmConnection):
             password if password is not None else DEFAULT_SSH_PASSWORD
         )
 
-    def _send_all(self, data) -> None:
+    def _send_all(self, data) -> int:
         """Returns the sum of sent bytes if success"""
         sent_sum = 0
         while data:
@@ -248,7 +248,7 @@ class SSHConnection(GvmConnection):
     def _read(self) -> bytes:
         return self._stdout.channel.recv(BUF_SIZE)
 
-    def send(self, data: Union[bytes, str]) -> None:
+    def send(self, data: Union[bytes, str]) -> int:
         return self._send_all(data)
 
     def finish_send(self):
