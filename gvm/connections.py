@@ -103,7 +103,7 @@ class GvmConnection(XmlReader):
         """Establish a connection to a remote server"""
         raise NotImplementedError
 
-    def send(self, data: Union[bytes, str]):
+    def send(self, data: Union[bytes, str]) -> None:
         """Send data to the connected remote server
 
         Arguments:
@@ -114,9 +114,9 @@ class GvmConnection(XmlReader):
             raise GvmError("Socket is not connected")
 
         if isinstance(data, str):
-            self._socket.sendall(data.encode())
+            return self._socket.sendall(data.encode())
         else:
-            self._socket.sendall(data)
+            return self._socket.sendall(data)
 
     def read(self) -> str:
         """Read data from the remote server

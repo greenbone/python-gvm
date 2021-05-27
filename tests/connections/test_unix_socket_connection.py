@@ -36,7 +36,7 @@ from gvm.errors import GvmError
 class DummyRequestHandler(socketserver.BaseRequestHandler):
     def handle(self):
         response = bytes(
-            "<gmp_response status=\"200\" status_text=\"OK\"/>", 'utf-8'
+            '<gmp_response status="200" status_text="OK"/>', 'utf-8'
         )
         self.request.sendall(response)
 
@@ -50,10 +50,7 @@ class ThreadedUnixStreamServer(
 class UnixSocketConnectionTestCase(unittest.TestCase):
     # pylint: disable=protected-access, invalid-name
     def setUp(self):
-        self.socketname = "{}/{}.sock".format(
-            tempfile.gettempdir(),
-            str(uuid.uuid4()),
-        )
+        self.socketname = f"{tempfile.gettempdir()}/{str(uuid.uuid4())}.sock"
         self.sockserv = ThreadedUnixStreamServer(
             self.socketname, DummyRequestHandler
         )
@@ -73,7 +70,8 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
         connection.connect()
-        connection.read()
+        resp = connection.read()
+        self.assertEqual(resp, '<gmp_response status="200" status_text="OK"/>')
         connection.disconnect()
 
     def test_unix_socket_connection_connect_send_bytes_read(self):
@@ -81,8 +79,10 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
         connection.connect()
-        connection.send(bytes("<gmp/>", 'utf-8'))
-        connection.read()
+        req = connection.send(bytes("<gmp/>", 'utf-8'))
+        self.assertIsNone(req)
+        resp = connection.read()
+        self.assertEqual(resp, '<gmp_response status="200" status_text="OK"/>')
         connection.disconnect()
 
     def test_unix_socket_connection_connect_send_str_read(self):
@@ -90,8 +90,10 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
         connection.connect()
-        connection.send("<gmp/>")
-        connection.read()
+        req = connection.send("<gmp/>")
+        self.assertIsNone(req)
+        resp = connection.read()
+        self.assertEqual(resp, '<gmp_response status="200" status_text="OK"/>')
         connection.disconnect()
 
     def test_unix_socket_connect_file_not_found(self):
@@ -108,21 +110,18 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         with patch('socket.socket.connect') as ConnectMock:
             connect_mock = ConnectMock
             connect_mock.side_effect = ConnectionError
-            with self.assertRaises(GvmError) as e:
+            with self.assertRaises(
+                GvmError, msg=f'Could not connect to socket {self.socketname}'
+            ):
                 connection.connect()
-                self.assertEqual(
-                    str(e),
-                    'Could not connect to socket {}'.format(self.socketname),
-                )
             connection.disconnect()
 
     def test_unix_socket_send_unconnected_socket(self):
         connection = UnixSocketConnection(
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
-        with self.assertRaises(GvmError) as e:
+        with self.assertRaises(GvmError, msg='Socket is not connected'):
             connection.send("<gmp>/")
-            self.assertEqual(str(e), 'Socket is not connected')
 
     def test_init_no_args(self):
         connection = UnixSocketConnection()
