@@ -19,10 +19,13 @@
 Module for connections to GVM server daemons like gvmd and ospd.
 """
 import logging
+import platform
 import socket as socketlib
 import ssl
+import sys
 import time
 
+from pathlib import Path
 from typing import Optional, Union
 
 import paramiko
@@ -43,6 +46,8 @@ DEFAULT_SSH_PORT = 22
 DEFAULT_SSH_USERNAME = "gmp"
 DEFAULT_SSH_PASSWORD = ""
 DEFAULT_HOSTNAME = '127.0.0.1'
+DEFAULT_KNOWN_HOSTS_FILE = ".ssh/known_hosts"
+DEFAULT_PKEY = ".ssh/id_rsa"
 MAX_SSH_DATA_LENGTH = 4095
 
 
@@ -221,7 +226,45 @@ class SSHConnection(GvmConnection):
         Connect to the SSH server and authenticate to it
         """
         self._socket = paramiko.SSHClient()
-        self._socket.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+
+        self._socket.set_missing_host_key_policy(paramiko.RejectPolicy())
+        # key_filename = Path.home() / DEFAULT_PKEY
+        if platform.system() != 'Windows':
+            known_hosts_file = Path.home() / DEFAULT_KNOWN_HOSTS_FILE
+            self._socket.load_host_keys(filename=known_hosts_file)
+            if not self._socket.get_host_keys().lookup(self.hostname):
+                print("Huh. I no Key!")
+                socket = socketlib.socket()
+                socket.connect((self.hostname, 22))
+                print("Connected ...")
+                trans = paramiko.transport.Transport(socket)
+                trans.start_client()
+                key = trans.get_remote_server_key()
+                print(key.get_fingerprint())
+                print(
+                    f"The authenticity of host '{self.hostname}' can't "
+                    "be established."
+                )
+                print(
+                    f"{key.get_name()} key fingerprint "
+                    f"is {key.get_fingerprint()}."
+                )
+                add = input(
+                    'Are you sure you want to continue connecting (yes/no)? '
+                )
+                while True:
+                    if add == 'yes':
+                        self._socket.get_host_keys().add(
+                            self.hostname, 'ssh-rsa', key
+                        )
+                        # TODO save to file? pylint: disable = fixme
+                        break
+                    elif add == 'no':
+                        return sys.exit('Host key verification failed.')
+                    else:
+                        add = int(input("Please type 'yes' or 'no': "))
+
+        print("OK connect now ...")
 
         try:
             self._socket.connect(
