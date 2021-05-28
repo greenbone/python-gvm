@@ -243,7 +243,7 @@ class SSHConnection(GvmConnection):
             paramiko.AuthenticationException,
             paramiko.SSHException,
         ) as e:
-            raise GvmError("SSH Connection failed", e) from None
+            raise GvmError(f"SSH Connection failed: {e}") from None
 
     def _read(self) -> bytes:
         return self._stdout.channel.recv(BUF_SIZE)
