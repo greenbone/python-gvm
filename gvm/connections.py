@@ -18,12 +18,15 @@
 """
 Module for connections to GVM server daemons like gvmd and ospd.
 """
+import base64
+import hashlib
 import logging
 import platform
 import socket as socketlib
 import ssl
 import sys
 import time
+
 
 from pathlib import Path
 from typing import Optional, Union
@@ -47,7 +50,6 @@ DEFAULT_SSH_USERNAME = "gmp"
 DEFAULT_SSH_PASSWORD = ""
 DEFAULT_HOSTNAME = '127.0.0.1'
 DEFAULT_KNOWN_HOSTS_FILE = ".ssh/known_hosts"
-DEFAULT_PKEY = ".ssh/id_rsa"
 MAX_SSH_DATA_LENGTH = 4095
 
 
@@ -194,6 +196,9 @@ class SSHConnection(GvmConnection):
         port: Optional[int] = DEFAULT_SSH_PORT,
         username: Optional[str] = DEFAULT_SSH_USERNAME,
         password: Optional[str] = DEFAULT_SSH_PASSWORD,
+        known_hosts_file: Optional[
+            str
+        ] = None,  # TODO: We need argparser to parse that arg pylint: disable = fixme
     ):
         super().__init__(timeout=timeout)
 
@@ -204,6 +209,11 @@ class SSHConnection(GvmConnection):
         )
         self.password = (
             password if password is not None else DEFAULT_SSH_PASSWORD
+        )
+        self.known_hosts_file = (
+            Path(known_hosts_file)
+            if known_hosts_file is not None
+            else Path.home() / DEFAULT_KNOWN_HOSTS_FILE
         )
 
     def _send_all(self, data) -> int:
@@ -221,50 +231,78 @@ class SSHConnection(GvmConnection):
             data = data[sent:]
         return sent_sum
 
-    def connect(self) -> None:
-        """
-        Connect to the SSH server and authenticate to it
-        """
-        self._socket = paramiko.SSHClient()
+    def _ssh_authentication(self) -> None:
+        """Search/add/save the servers key for the SSH authentication process"""
 
+        # set to reject policy (avoid MITM attacks)
         self._socket.set_missing_host_key_policy(paramiko.RejectPolicy())
-        # key_filename = Path.home() / DEFAULT_PKEY
+
+        # openssh is posix, so this is only a posix approach
         if platform.system() != 'Windows':
-            known_hosts_file = Path.home() / DEFAULT_KNOWN_HOSTS_FILE
-            self._socket.load_host_keys(filename=known_hosts_file)
+            # load the keys into paramiko and check if remote is in the list
+            self._socket.load_host_keys(filename=self.known_hosts_file)
             if not self._socket.get_host_keys().lookup(self.hostname):
-                print("Huh. I no Key!")
+                # Key not found, so connect to remote and fetch the key
                 socket = socketlib.socket()
                 socket.connect((self.hostname, 22))
-                print("Connected ...")
                 trans = paramiko.transport.Transport(socket)
                 trans.start_client()
                 key = trans.get_remote_server_key()
-                print(key.get_fingerprint())
+                # Ask user for permission to continue
+                # let it look like openssh
+                sha64_fingerprint = base64.b64encode(
+                    hashlib.sha256(base64.b64decode(key.get_base64())).digest()
+                )[:-1]
+                key_type = key.get_name().replace('ssh-', '').upper()
                 print(
                     f"The authenticity of host '{self.hostname}' can't "
                     "be established."
                 )
-                print(
-                    f"{key.get_name()} key fingerprint "
-                    f"is {key.get_fingerprint()}."
-                )
+                print(f"{key_type} key fingerprint " f"is {sha64_fingerprint}.")
                 add = input(
                     'Are you sure you want to continue connecting (yes/no)? '
                 )
                 while True:
                     if add == 'yes':
                         self._socket.get_host_keys().add(
-                            self.hostname, 'ssh-rsa', key
+                            self.hostname, key.get_name(), key
                         )
-                        # TODO save to file? pylint: disable = fixme
+                        # ask user if the key should be added permanently
+                        save = input(
+                            f'Do you want to add {self.hostname} '
+                            'to known_hosts (yes/no)? '
+                        )
+                        while True:
+                            if save == 'yes':
+                                self._socket.get_host_keys().save(
+                                    filename=self.known_hosts_file
+                                )
+                                break
+                            elif save == 'no':
+                                break
+                            else:
+                                save = input("Please type 'yes' or 'no': ")
+                        logger.warning(
+                            "Permanently added '%s' (%s) to "
+                            "the list of known hosts.",
+                            self.hostname,
+                            key_type,
+                        )
                         break
                     elif add == 'no':
                         return sys.exit('Host key verification failed.')
                     else:
-                        add = int(input("Please type 'yes' or 'no': "))
+                        add = input("Please type 'yes' or 'no': ")
+        else:
+            print("RIP.")
+            # TODO how to Windows? pylint: disable = fixme
 
-        print("OK connect now ...")
+    def connect(self) -> None:
+        """
+        Connect to the SSH server and authenticate to it
+        """
+        self._socket = paramiko.SSHClient()
+        self._ssh_authentication()
 
         try:
             self._socket.connect(
