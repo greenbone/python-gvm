@@ -18,18 +18,32 @@
 
 import unittest
 from unittest.mock import patch, Mock
+from pathlib import Path
 from gvm.connections import (
     SSHConnection,
     DEFAULT_SSH_PORT,
     DEFAULT_SSH_USERNAME,
     DEFAULT_SSH_PASSWORD,
     DEFAULT_HOSTNAME,
+    DEFAULT_KNOWN_HOSTS_FILE,
 )
 from gvm.errors import GvmError
 
 
 class SSHConnectionTestCase(unittest.TestCase):
     # pylint: disable=protected-access, invalid-name
+    def setUp(self):
+        self.known_hosts_file = Path('./known_hosts')
+        self.known_hosts_file.touch()
+        self.known_hosts_file.write_text(
+            '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI'
+            '1N53E5AABBIBLZWifs+DoMqI2250wiVrzQNpMbUwa1234567890YA'
+        )
+
+    def tearDown(self):
+        if self.known_hosts_file.exists():
+            self.known_hosts_file.unlink()
+
     def test_init_no_args(self):
         ssh_connection = SSHConnection()
 
@@ -48,6 +62,10 @@ class SSHConnectionTestCase(unittest.TestCase):
         self.assertEqual(ssh_connection.port, DEFAULT_SSH_PORT)
         self.assertEqual(ssh_connection.username, DEFAULT_SSH_USERNAME)
         self.assertEqual(ssh_connection.password, DEFAULT_SSH_PASSWORD)
+        self.assertEqual(
+            ssh_connection.known_hosts_file,
+            Path.home() / DEFAULT_KNOWN_HOSTS_FILE,
+        )
 
     def test_connect_error(self):
         ssh_connection = SSHConnection()
@@ -69,7 +87,9 @@ class SSHConnectionTestCase(unittest.TestCase):
         with patch('paramiko.SSHClient') as SSHClientMock:
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ['a', 'b', 'c']
-            ssh_connection = SSHConnection()
+            ssh_connection = SSHConnection(
+                known_hosts_file=self.known_hosts_file
+            )
 
             ssh_connection.connect()
             self.assertEqual(ssh_connection._stdin, 'a')
@@ -108,7 +128,9 @@ class SSHConnectionTestCase(unittest.TestCase):
             client_mock.exec_command.return_value = ['a', 'b', 'c']
             client_mock.close.side_effect = OSError
 
-            ssh_connection = SSHConnection()
+            ssh_connection = SSHConnection(
+                known_hosts_file=self.known_hosts_file
+            )
             ssh_connection.connect()
 
             with self.assertRaises(OSError):
@@ -122,7 +144,9 @@ class SSHConnectionTestCase(unittest.TestCase):
             stdin = Mock()
             stdin.channel.send.return_value = 4
             client_mock.exec_command.return_value = [stdin, None, None]
-            ssh_connection = SSHConnection()
+            ssh_connection = SSHConnection(
+                known_hosts_file=self.known_hosts_file
+            )
 
             ssh_connection.connect()
             req = ssh_connection.send("blah")
@@ -134,7 +158,9 @@ class SSHConnectionTestCase(unittest.TestCase):
             stdin = Mock()
             stdin.channel.send.return_value = None
             client_mock.exec_command.return_value = [stdin, None, None]
-            ssh_connection = SSHConnection()
+            ssh_connection = SSHConnection(
+                known_hosts_file=self.known_hosts_file
+            )
 
             ssh_connection.connect()
             with self.assertRaises(
@@ -148,7 +174,9 @@ class SSHConnectionTestCase(unittest.TestCase):
             stdin = Mock()
             stdin.channel.send.side_effect = [2, 2]
             client_mock.exec_command.return_value = [stdin, None, None]
-            ssh_connection = SSHConnection()
+            ssh_connection = SSHConnection(
+                known_hosts_file=self.known_hosts_file
+            )
 
             ssh_connection.connect()
             req = ssh_connection.send("blah")
@@ -164,7 +192,9 @@ class SSHConnectionTestCase(unittest.TestCase):
             stdout = Mock()
             stdout.channel.recv.return_value = b"foo bar baz"
             client_mock.exec_command.return_value = [None, stdout, None]
-            ssh_connection = SSHConnection()
+            ssh_connection = SSHConnection(
+                known_hosts_file=self.known_hosts_file
+            )
 
             ssh_connection.connect()
             recved = ssh_connection._read()
