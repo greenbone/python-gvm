@@ -196,9 +196,7 @@ class SSHConnection(GvmConnection):
         port: Optional[int] = DEFAULT_SSH_PORT,
         username: Optional[str] = DEFAULT_SSH_USERNAME,
         password: Optional[str] = DEFAULT_SSH_PASSWORD,
-        known_hosts_file: Optional[
-            str
-        ] = None,  # TODO: We need argparser to parse that arg pylint: disable = fixme
+        known_hosts_file: Optional[str] = None,
     ):
         super().__init__(timeout=timeout)
 
@@ -252,7 +250,7 @@ class SSHConnection(GvmConnection):
                 # let it look like openssh
                 sha64_fingerprint = base64.b64encode(
                     hashlib.sha256(base64.b64decode(key.get_base64())).digest()
-                )[:-1]
+                ).decode("utf-8")[:-1]
                 key_type = key.get_name().replace('ssh-', '').upper()
                 print(
                     f"The authenticity of host '{self.hostname}' can't "
@@ -277,17 +275,17 @@ class SSHConnection(GvmConnection):
                                 self._socket.get_host_keys().save(
                                     filename=self.known_hosts_file
                                 )
+                                logger.warning(
+                                    "Permanently added '%s' (%s) to "
+                                    "the list of known hosts.",
+                                    self.hostname,
+                                    key_type,
+                                )
                                 break
                             elif save == 'no':
                                 break
                             else:
                                 save = input("Please type 'yes' or 'no': ")
-                        logger.warning(
-                            "Permanently added '%s' (%s) to "
-                            "the list of known hosts.",
-                            self.hostname,
-                            key_type,
-                        )
                         break
                     elif add == 'no':
                         return sys.exit('Host key verification failed.')
