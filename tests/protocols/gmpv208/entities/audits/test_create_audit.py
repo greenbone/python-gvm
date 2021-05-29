@@ -24,7 +24,7 @@ from gvm.protocols.gmpv208 import HostsOrdering
 
 
 class GmpCreateAuditTestMixin:
-    def test_create_task(self):
+    def test_create_audit(self):
         self.gmp.create_audit(
             name='foo', policy_id='c1', target_id='t1', scanner_id='s1'
         )
