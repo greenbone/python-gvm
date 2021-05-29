@@ -91,6 +91,27 @@ class TasksMixin:
         observers: Optional[List[str]] = None,
         preferences: Optional[dict] = None,
     ) -> Any:
+        """Create a new scan task
+
+        Arguments:
+            name: Name of the new task
+            config_id: UUID of config to use by the task
+            target_id: UUID of target to be scanned
+            scanner_id: UUID of scanner to use for scanning the target
+            comment: Comment for the task
+            alterable: Whether the task should be alterable
+            alert_ids: List of UUIDs for alerts to be applied to the task
+            hosts_ordering: The order hosts are scanned in
+            schedule_id: UUID of a schedule when the task should be run.
+            schedule_periods: A limit to the number of times the task will be
+                scheduled, or 0 for no limit
+            observers: List of names or ids of users which should be allowed to
+                observe this task
+            preferences: Name/Value pairs of scanner preferences.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
         if not name:
             raise RequiredArgument(
                 function=self.create_task.__name__, argument='name'
