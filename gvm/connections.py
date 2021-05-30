@@ -243,18 +243,20 @@ class SSHConnection(GvmConnection):
             "be established."
         )
         print(f"{key_type} key fingerprint " f"is {sha64_fingerprint}.")
-        add = input('Are you sure you want to continue connecting (yes/no)? ')
+        print('Are you sure you want to continue connecting (yes/no)? ', end='')
+        add = input()
         while True:
             if add == 'yes':
                 hostkeys.add(self.hostname, key.get_name(), key)
                 # ask user if the key should be added permanently
-                save = input(
+                print(
                     f'Do you want to add {self.hostname} '
-                    'to known_hosts (yes/no)? '
+                    'to known_hosts (yes/no)? ',
+                    end='',
                 )
+                save = input()
                 while True:
                     if save == 'yes':
-                        print('YES!2')
                         try:
                             hostkeys.save(filename=self.known_hosts_file)
                         except OSError as e:
@@ -262,7 +264,7 @@ class SSHConnection(GvmConnection):
                                 'Something went wrong with writing '
                                 f'the known_hosts file: {e}'
                             ) from None
-                        logger.warning(
+                        logger.info(
                             "Warning: Permanently added '%s' (%s) to "
                             "the list of known hosts.",
                             self.hostname,
@@ -270,16 +272,24 @@ class SSHConnection(GvmConnection):
                         )
                         break
                     elif save == 'no':
+                        logger.info(
+                            "Warning: Host '%s' (%s) not added to "
+                            "the list of known hosts.",
+                            self.hostname,
+                            key_type,
+                        )
                         break
                     else:
-                        save = input("Please type 'yes' or 'no': ")
+                        print("Please type 'yes' or 'no': ", end='')
+                        save = input()
                 break
             elif add == 'no':
                 return sys.exit(
                     'User denied key. Host ' 'key verification failed.'
                 )
             else:
-                add = input("Please type 'yes' or 'no': ")
+                print("Please type 'yes' or 'no': ", end='')
+                add = input()
 
     def __get_remote_host_key(self):
         """Get the remote host key for ssh connection"""

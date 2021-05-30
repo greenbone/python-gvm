@@ -88,6 +88,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             self.assertEqual(ssh_connection._stdin, 'a')
             self.assertEqual(ssh_connection._stdout, 'b')
             self.assertEqual(ssh_connection._stderr, 'c')
+            ssh_connection.disconnect()
 
     def test_connect_unknown_host(self):
         ssh_connection = SSHConnection(
@@ -103,7 +104,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection.connect()
 
     @patch('builtins.input')
-    def test_connect_adding_hostkey(self, input_mock):
+    def test_connect_adding_and_save_hostkey(self, input_mock):
 
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
@@ -132,17 +133,15 @@ FsAQI=
 
         with self.assertLogs('gvm.connections', level='INFO') as cm:
             hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
-            print(hostkeys)
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
             )
             keys = self.known_hosts_file.read_text()
-            print(keys)
-            print(cm)
+
             self.assertEqual(
                 cm.output,
                 [
-                    "WARNING:gvm.connections:Warning: "
+                    "INFO:gvm.connections:Warning: "
                     f"Permanently added '{hostname}' ({key_type}) to "
                     "the list of known hosts."
                 ],
@@ -152,6 +151,107 @@ FsAQI=
                 '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
                 'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n'
                 f'0.0.0.0 {key.get_name()} {key.get_base64()}\n',
+            )
+
+    @patch('builtins.input')
+    def test_connect_adding_and_dont_save_hostkey(self, input_mock):
+
+        key_io = StringIO(
+            """-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXwAAAKhjwAdrY8AH
+awAAAAtzc2gtZWQyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXw
+AAAEA9tGQi2IrprbOSbDCF+RmAHd6meNSXBUQ2ekKXm4/8xnr1K9komH/1WBIvQbbtvnFV
+hryd62EfcgRFuLRiokNfAAAAI2FsZXhfZ2F5bm9yQEFsZXhzLU1hY0Jvb2stQWlyLmxvY2
+FsAQI=
+            -----END OPENSSH PRIVATE KEY-----"""
+        )
+        key = paramiko.Ed25519Key.from_private_key(key_io)
+        key_type = key.get_name().replace('ssh-', '').upper()
+        hostname = '0.0.0.0'
+        input_mock.side_effect = ['yes', 'no']
+        ssh_connection = SSHConnection(
+            hostname=hostname, known_hosts_file=self.known_hosts_file
+        )
+        ssh_connection._socket = paramiko.SSHClient()
+        keys = self.known_hosts_file.read_text()
+        self.assertEqual(
+            keys,
+            '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
+            'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n',
+        )
+
+        with self.assertLogs('gvm.connections', level='INFO') as cm:
+            hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
+            ssh_connection._ssh_authentication_input_loop(
+                hostkeys=hostkeys, key=key
+            )
+            keys = self.known_hosts_file.read_text()
+
+            self.assertEqual(
+                cm.output,
+                [
+                    "INFO:gvm.connections:Warning: "
+                    f"Host '{hostname}' ({key_type}) not added to "
+                    "the list of known hosts."
+                ],
+            )
+
+            self.assertEqual(
+                keys,
+                '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
+                'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n',
+            )
+
+    @patch('builtins.input')
+    @patch('sys.stdout', new_callable=StringIO)
+    def test_connect_wrong_input(self, stdout_mock, input_mock):
+
+        key_io = StringIO(
+            """-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXwAAAKhjwAdrY8AH
+awAAAAtzc2gtZWQyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXw
+AAAEA9tGQi2IrprbOSbDCF+RmAHd6meNSXBUQ2ekKXm4/8xnr1K9komH/1WBIvQbbtvnFV
+hryd62EfcgRFuLRiokNfAAAAI2FsZXhfZ2F5bm9yQEFsZXhzLU1hY0Jvb2stQWlyLmxvY2
+FsAQI=
+            -----END OPENSSH PRIVATE KEY-----"""
+        )
+        key = paramiko.Ed25519Key.from_private_key(key_io)
+        hostname = '0.0.0.0'
+        key_type = key.get_name().replace('ssh-', '').upper()
+        inputs = ['asd', 'yes', 'yoo', 'no']
+        input_mock.side_effect = inputs
+        ssh_connection = SSHConnection(
+            hostname=hostname, known_hosts_file=self.known_hosts_file
+        )
+        ssh_connection._socket = paramiko.SSHClient()
+
+        with self.assertLogs('gvm.connections', level='INFO') as cm:
+            hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
+            ssh_connection._ssh_authentication_input_loop(
+                hostkeys=hostkeys, key=key
+            )
+            ret = stdout_mock.getvalue()
+
+            self.assertEqual(
+                cm.output,
+                [
+                    "INFO:gvm.connections:Warning: "
+                    f"Host '{hostname}' ({key_type}) not added to "
+                    "the list of known hosts."
+                ],
+            )
+
+            self.assertEqual(
+                ret,
+                f"The authenticity of host '{hostname}' can't be established.\n"
+                f"{key_type} key fingerprint is "
+                "J6VESFdD3xSChn8y9PzWzeF+1tl892mOy2TqkMLO4ow.\n"
+                "Are you sure you want to continue connecting (yes/no)? "
+                "Please type 'yes' or 'no': "
+                "Do you want to add 0.0.0.0 to known_hosts (yes/no)? "
+                "Please type 'yes' or 'no': ",
             )
 
     def test_disconnect(self):
@@ -222,6 +322,7 @@ FsAQI=
             ssh_connection.connect()
             req = ssh_connection.send("blah")
             self.assertEqual(req, 4)
+            ssh_connection.disconnect()
 
     def test_send_error(self):
         with patch('paramiko.SSHClient') as SSHClientMock:
@@ -238,6 +339,7 @@ FsAQI=
                 GvmError, msg='Remote closed the connection'
             ):
                 ssh_connection.send("blah")
+            ssh_connection.disconnect()
 
     def test_send_and_slice(self):
         with patch('paramiko.SSHClient') as SSHClientMock:
@@ -256,6 +358,7 @@ FsAQI=
             stdin.channel.send.assert_called()
             with self.assertRaises(AssertionError):
                 stdin.channel.send.assert_called_once()
+            ssh_connection.disconnect()
 
     def test_read(self):
         with patch('paramiko.SSHClient') as SSHClientMock:
@@ -270,3 +373,4 @@ FsAQI=
             ssh_connection.connect()
             recved = ssh_connection._read()
             self.assertEqual(recved, b'foo bar baz')
+            ssh_connection.disconnect()
