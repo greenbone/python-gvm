@@ -254,6 +254,35 @@ FsAQI=
                 "Please type 'yes' or 'no': ",
             )
 
+    @patch('builtins.input')
+    def test_user_denies_auth(self, input_mock):
+
+        key_io = StringIO(
+            """-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXwAAAKhjwAdrY8AH
+awAAAAtzc2gtZWQyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXw
+AAAEA9tGQi2IrprbOSbDCF+RmAHd6meNSXBUQ2ekKXm4/8xnr1K9komH/1WBIvQbbtvnFV
+hryd62EfcgRFuLRiokNfAAAAI2FsZXhfZ2F5bm9yQEFsZXhzLU1hY0Jvb2stQWlyLmxvY2
+FsAQI=
+            -----END OPENSSH PRIVATE KEY-----"""
+        )
+        key = paramiko.Ed25519Key.from_private_key(key_io)
+        hostname = '0.0.0.0'
+        input_mock.return_value = 'no'
+        ssh_connection = SSHConnection(
+            hostname=hostname, known_hosts_file=self.known_hosts_file
+        )
+        ssh_connection._socket = paramiko.SSHClient()
+
+        with self.assertRaises(
+            SystemExit, msg='User denied key. Host key verification failed.'
+        ):
+            hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
+            ssh_connection._ssh_authentication_input_loop(
+                hostkeys=hostkeys, key=key
+            )
+
     def test_disconnect(self):
         with patch('paramiko.SSHClient') as SSHClientMock:
             client_mock = SSHClientMock.return_value
@@ -308,6 +337,22 @@ FsAQI=
                 with self.assertLogs('gvm.connections', level='INFO') as cm:
                     ssh_connection.disconnect()
                     self.assertEqual(cm.output, ['Connection closing error: '])
+
+    def test_trigger_paramiko_ssh_except_in_get_remote_key(self):
+        with patch('paramiko.transport.Transport') as SSHClientMock:
+            client_mock = SSHClientMock.return_value
+            client_mock.start_client.side_effect = paramiko.SSHException('foo')
+
+            ssh_connection = SSHConnection(
+                hostname="0.0.0.0",
+            )
+
+            with self.assertRaises(
+                GvmError,
+                msg="Couldn't establish a connection to fetch the"
+                "remote server key: foo",
+            ):
+                ssh_connection._get_remote_host_key()
 
     def test_send(self):
         with patch('paramiko.SSHClient') as SSHClientMock:

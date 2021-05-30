@@ -285,13 +285,13 @@ class SSHConnection(GvmConnection):
                 break
             elif add == 'no':
                 return sys.exit(
-                    'User denied key. Host ' 'key verification failed.'
+                    'User denied key. Host key verification failed.'
                 )
             else:
                 print("Please type 'yes' or 'no': ", end='')
                 add = input()
 
-    def __get_remote_host_key(self):
+    def _get_remote_host_key(self):
         """Get the remote host key for ssh connection"""
         try:
             tmp_socket = socketlib.socket()
@@ -339,7 +339,7 @@ class SSHConnection(GvmConnection):
             if not hostkeys.lookup(self.hostname):
                 # Key not found, so connect to remote and fetch the key
                 # with the paramiko Transport protocol
-                key = self.__get_remote_host_key()
+                key = self._get_remote_host_key()
 
                 self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
         else:
