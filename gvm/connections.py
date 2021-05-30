@@ -229,68 +229,109 @@ class SSHConnection(GvmConnection):
             data = data[sent:]
         return sent_sum
 
+    def _ssh_authentication_input_loop(
+        self, hostkeys: paramiko.HostKeys, key: paramiko.PKey
+    ) -> None:
+        # Ask user for permission to continue
+        # let it look like openssh
+        sha64_fingerprint = base64.b64encode(
+            hashlib.sha256(base64.b64decode(key.get_base64())).digest()
+        ).decode("utf-8")[:-1]
+        key_type = key.get_name().replace('ssh-', '').upper()
+        print(
+            f"The authenticity of host '{self.hostname}' can't "
+            "be established."
+        )
+        print(f"{key_type} key fingerprint " f"is {sha64_fingerprint}.")
+        add = input('Are you sure you want to continue connecting (yes/no)? ')
+        while True:
+            if add == 'yes':
+                hostkeys.add(self.hostname, key.get_name(), key)
+                # ask user if the key should be added permanently
+                save = input(
+                    f'Do you want to add {self.hostname} '
+                    'to known_hosts (yes/no)? '
+                )
+                while True:
+                    if save == 'yes':
+                        print('YES!2')
+                        try:
+                            hostkeys.save(filename=self.known_hosts_file)
+                        except OSError as e:
+                            raise GvmError(
+                                'Something went wrong with writing '
+                                f'the known_hosts file: {e}'
+                            ) from None
+                        logger.warning(
+                            "Warning: Permanently added '%s' (%s) to "
+                            "the list of known hosts.",
+                            self.hostname,
+                            key_type,
+                        )
+                        break
+                    elif save == 'no':
+                        break
+                    else:
+                        save = input("Please type 'yes' or 'no': ")
+                break
+            elif add == 'no':
+                return sys.exit(
+                    'User denied key. Host ' 'key verification failed.'
+                )
+            else:
+                add = input("Please type 'yes' or 'no': ")
+
+    def __get_remote_host_key(self):
+        """Get the remote host key for ssh connection"""
+        try:
+            tmp_socket = socketlib.socket()
+            tmp_socket.connect((self.hostname, 22))
+        except OSError as e:
+            raise GvmError(
+                "Couldn't establish a connection to fetch the"
+                f"remote server key: {e}"
+            ) from None
+
+        trans = paramiko.transport.Transport(tmp_socket)
+        try:
+            trans.start_client()
+        except paramiko.SSHException as e:
+            raise GvmError(
+                "Couldn't establish a connection to fetch the"
+                f"remote server key: {e}"
+            ) from None
+        key = trans.get_remote_server_key()
+        try:
+            trans.close()
+        except paramiko.SSHException as e:
+            raise GvmError(
+                "Couldn't close the connection to fetch the"
+                f"remote server key: {e}"
+            ) from None
+        return key
+
     def _ssh_authentication(self) -> None:
         """Search/add/save the servers key for the SSH authentication process"""
 
         # set to reject policy (avoid MITM attacks)
         self._socket.set_missing_host_key_policy(paramiko.RejectPolicy())
-
         # openssh is posix, so this is only a posix approach
         if platform.system() != 'Windows':
-            # load the keys into paramiko and check if remote is in the list
-            self._socket.load_host_keys(filename=self.known_hosts_file)
-            if not self._socket.get_host_keys().lookup(self.hostname):
+            try:
+                # load the keys into paramiko and check if remote is in the list
+                self._socket.load_host_keys(filename=self.known_hosts_file)
+            except OSError as e:
+                raise GvmError(
+                    'Something went wrong with reading '
+                    f'the known_hosts file: {e}'
+                ) from None
+            hostkeys = self._socket.get_host_keys()
+            if not hostkeys.lookup(self.hostname):
                 # Key not found, so connect to remote and fetch the key
-                socket = socketlib.socket()
-                socket.connect((self.hostname, 22))
-                trans = paramiko.transport.Transport(socket)
-                trans.start_client()
-                key = trans.get_remote_server_key()
-                # Ask user for permission to continue
-                # let it look like openssh
-                sha64_fingerprint = base64.b64encode(
-                    hashlib.sha256(base64.b64decode(key.get_base64())).digest()
-                ).decode("utf-8")[:-1]
-                key_type = key.get_name().replace('ssh-', '').upper()
-                print(
-                    f"The authenticity of host '{self.hostname}' can't "
-                    "be established."
-                )
-                print(f"{key_type} key fingerprint " f"is {sha64_fingerprint}.")
-                add = input(
-                    'Are you sure you want to continue connecting (yes/no)? '
-                )
-                while True:
-                    if add == 'yes':
-                        self._socket.get_host_keys().add(
-                            self.hostname, key.get_name(), key
-                        )
-                        # ask user if the key should be added permanently
-                        save = input(
-                            f'Do you want to add {self.hostname} '
-                            'to known_hosts (yes/no)? '
-                        )
-                        while True:
-                            if save == 'yes':
-                                self._socket.get_host_keys().save(
-                                    filename=self.known_hosts_file
-                                )
-                                logger.warning(
-                                    "Permanently added '%s' (%s) to "
-                                    "the list of known hosts.",
-                                    self.hostname,
-                                    key_type,
-                                )
-                                break
-                            elif save == 'no':
-                                break
-                            else:
-                                save = input("Please type 'yes' or 'no': ")
-                        break
-                    elif add == 'no':
-                        return sys.exit('Host key verification failed.')
-                    else:
-                        add = input("Please type 'yes' or 'no': ")
+                # with the paramiko Transport protocol
+                key = self.__get_remote_host_key()
+
+                self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
         else:
             print("RIP.")
             # TODO how to Windows? pylint: disable = fixme
@@ -321,6 +362,7 @@ class SSHConnection(GvmConnection):
             paramiko.BadHostKeyException,
             paramiko.AuthenticationException,
             paramiko.SSHException,
+            ConnectionError,
         ) as e:
             raise GvmError(f"SSH Connection failed: {e}") from None
 

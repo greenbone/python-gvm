@@ -16,9 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from io import StringIO
 import unittest
 from unittest.mock import patch, Mock
 from pathlib import Path
+import paramiko
 from gvm.connections import (
     SSHConnection,
     DEFAULT_SSH_PORT,
@@ -33,12 +35,12 @@ from gvm.errors import GvmError
 class SSHConnectionTestCase(unittest.TestCase):
     # pylint: disable=protected-access, invalid-name
     def setUp(self):
-        self.known_hosts_file = Path('./known_hosts')
-        self.known_hosts_file.touch()
-        self.known_hosts_file.write_text(
-            '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI'
-            '1N53E5AABBIBLZWifs+DoMqI2250wiVrzQNpMbUwa1234567890YA'
-        )
+        self.known_hosts_file = Path('known_hosts')
+        with self.known_hosts_file.open("a") as fp:
+            fp.write(
+                '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
+                'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n'
+            )
 
     def tearDown(self):
         if self.known_hosts_file.exists():
@@ -68,7 +70,9 @@ class SSHConnectionTestCase(unittest.TestCase):
         )
 
     def test_connect_error(self):
-        ssh_connection = SSHConnection()
+        print(self.known_hosts_file.read_text())
+
+        ssh_connection = SSHConnection(known_hosts_file=self.known_hosts_file)
         with self.assertRaises(GvmError, msg="SSH Connection failed"):
             ssh_connection.connect()
 
@@ -76,12 +80,79 @@ class SSHConnectionTestCase(unittest.TestCase):
         with patch('paramiko.SSHClient') as SSHClientMock:
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ['a', 'b', 'c']
-            ssh_connection = SSHConnection()
+            ssh_connection = SSHConnection(
+                known_hosts_file=self.known_hosts_file
+            )
 
             ssh_connection.connect()
             self.assertEqual(ssh_connection._stdin, 'a')
             self.assertEqual(ssh_connection._stdout, 'b')
             self.assertEqual(ssh_connection._stderr, 'c')
+
+    def test_connect_unknown_host(self):
+        ssh_connection = SSHConnection(
+            hostname='0.0.0.1', known_hosts_file=self.known_hosts_file
+        )
+        with self.assertRaises(
+            GvmError,
+            msg=(
+                "Could'nt establish a connection to fetch the remote "
+                "server key: [Errno 65] No route to host"
+            ),
+        ):
+            ssh_connection.connect()
+
+    @patch('builtins.input')
+    def test_connect_adding_hostkey(self, input_mock):
+
+        key_io = StringIO(
+            """-----BEGIN OPENSSH PRIVATE KEY-----
+b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
+QyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXwAAAKhjwAdrY8AH
+awAAAAtzc2gtZWQyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXw
+AAAEA9tGQi2IrprbOSbDCF+RmAHd6meNSXBUQ2ekKXm4/8xnr1K9komH/1WBIvQbbtvnFV
+hryd62EfcgRFuLRiokNfAAAAI2FsZXhfZ2F5bm9yQEFsZXhzLU1hY0Jvb2stQWlyLmxvY2
+FsAQI=
+            -----END OPENSSH PRIVATE KEY-----"""
+        )
+        key = paramiko.Ed25519Key.from_private_key(key_io)
+        key_type = key.get_name().replace('ssh-', '').upper()
+        hostname = '0.0.0.0'
+        input_mock.side_effect = ['yes', 'yes']
+        ssh_connection = SSHConnection(
+            hostname=hostname, known_hosts_file=self.known_hosts_file
+        )
+        ssh_connection._socket = paramiko.SSHClient()
+        keys = self.known_hosts_file.read_text()
+        self.assertEqual(
+            keys,
+            '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
+            'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n',
+        )
+
+        with self.assertLogs('gvm.connections', level='INFO') as cm:
+            hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
+            print(hostkeys)
+            ssh_connection._ssh_authentication_input_loop(
+                hostkeys=hostkeys, key=key
+            )
+            keys = self.known_hosts_file.read_text()
+            print(keys)
+            print(cm)
+            self.assertEqual(
+                cm.output,
+                [
+                    "WARNING:gvm.connections:Warning: "
+                    f"Permanently added '{hostname}' ({key_type}) to "
+                    "the list of known hosts."
+                ],
+            )
+            self.assertEqual(
+                keys,
+                '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
+                'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n'
+                f'0.0.0.0 {key.get_name()} {key.get_base64()}\n',
+            )
 
     def test_disconnect(self):
         with patch('paramiko.SSHClient') as SSHClientMock:
@@ -108,7 +179,7 @@ class SSHConnectionTestCase(unittest.TestCase):
                 type(ssh_connection._socket)
 
             with self.assertRaises(AttributeError):
-                with self.assertLogs('foo', level='INFO') as cm:
+                with self.assertLogs('gvm.connections', level='INFO') as cm:
                     # disconnect twice should not work ...
                     ssh_connection.disconnect()
                     self.assertEqual(
@@ -134,7 +205,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection.connect()
 
             with self.assertRaises(OSError):
-                with self.assertLogs('foo', level='INFO') as cm:
+                with self.assertLogs('gvm.connections', level='INFO') as cm:
                     ssh_connection.disconnect()
                     self.assertEqual(cm.output, ['Connection closing error: '])
 
