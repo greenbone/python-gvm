@@ -241,7 +241,7 @@ class SSHConnection(GvmConnection):
             f"The authenticity of host '{self.hostname}' can't "
             "be established."
         )
-        print(f"{key_type} key fingerprint " f"is {sha64_fingerprint}.")
+        print(f"{key_type} key fingerprint is {sha64_fingerprint}.")
         print('Are you sure you want to continue connecting (yes/no)? ', end='')
         add = input()
         while True:
@@ -298,7 +298,7 @@ class SSHConnection(GvmConnection):
         except OSError as e:
             raise GvmError(
                 "Couldn't establish a connection to fetch the"
-                f"remote server key: {e}"
+                f" remote server key: {e}"
             ) from None
 
         trans = paramiko.transport.Transport(tmp_socket)
@@ -306,14 +306,14 @@ class SSHConnection(GvmConnection):
             trans.start_client()
         except paramiko.SSHException as e:
             raise GvmError(
-                "Couldn't fetch the" f"remote server key: {e}"
+                f"Couldn't fetch the remote server key: {e}"
             ) from None
         key = trans.get_remote_server_key()
         try:
             trans.close()
         except paramiko.SSHException as e:
             raise GvmError(
-                "Couldn't close the connection to the" f"remote server key: {e}"
+                f"Couldn't close the connection to the remote server key: {e}"
             ) from None
         return key
 
