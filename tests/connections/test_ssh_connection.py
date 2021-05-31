@@ -339,8 +339,8 @@ FsAQI=
                     self.assertEqual(cm.output, ['Connection closing error: '])
 
     def test_trigger_paramiko_ssh_except_in_get_remote_key(self):
-        with patch('paramiko.transport.Transport') as SSHClientMock:
-            client_mock = SSHClientMock.return_value
+        with patch('paramiko.transport.Transport') as TransportMock:
+            client_mock = TransportMock.return_value
             client_mock.start_client.side_effect = paramiko.SSHException('foo')
 
             ssh_connection = SSHConnection(
@@ -349,7 +349,38 @@ FsAQI=
 
             with self.assertRaises(
                 GvmError,
+                msg="Couldn't fetch the remote server key: foo",
+            ):
+                ssh_connection._get_remote_host_key()
+
+    def test_trigger_oserror_in_get_remote_key_connect(self):
+        with patch('socket.socket') as SocketMock:
+            client_mock = SocketMock.return_value
+            client_mock.connect.side_effect = OSError('foo')
+
+            ssh_connection = SSHConnection(
+                hostname="0.0.0.0",
+            )
+
+            with self.assertRaises(
+                GvmError,
                 msg="Couldn't establish a connection to fetch the"
+                "remote server key: foo",
+            ):
+                ssh_connection._get_remote_host_key()
+
+    def test_trigger_oserror_in_get_remote_key_disconnect(self):
+        with patch('socket.socket') as SocketMock:
+            client_mock = SocketMock.return_value
+            client_mock.disconnect.side_effect = OSError('foo')
+
+            ssh_connection = SSHConnection(
+                hostname="0.0.0.0",
+            )
+
+            with self.assertRaises(
+                GvmError,
+                msg="Couldn't close the connection to the"
                 "remote server key: foo",
             ):
                 ssh_connection._get_remote_host_key()
