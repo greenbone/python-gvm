@@ -8,6 +8,8 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 ## [Unreleased]
 ### Added
 ### Changed
+* For SSH Connections: Reject unknown hosts, ask user if he wants to connect to unknown remote host and ask user if he wants to add the host to `known_hosts` [#486](https://github.com/greenbone/python-gvm/pull/486)
+
 ### Deprecated
 ### Removed
 ### Fixed

@@ -370,9 +370,9 @@ FsAQI=
                 ssh_connection._get_remote_host_key()
 
     def test_trigger_oserror_in_get_remote_key_disconnect(self):
-        with patch('socket.socket') as SocketMock:
-            client_mock = SocketMock.return_value
-            client_mock.disconnect.side_effect = OSError('foo')
+        with patch('paramiko.transport.Transport') as TransportMock:
+            client_mock = TransportMock.return_value
+            client_mock.close.side_effect = paramiko.SSHException('foo')
 
             ssh_connection = SSHConnection(
                 hostname="0.0.0.0",
