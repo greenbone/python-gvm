@@ -21,7 +21,6 @@ Module for connections to GVM server daemons like gvmd and ospd.
 import base64
 import hashlib
 import logging
-import platform
 import socket as socketlib
 import ssl
 import sys
@@ -307,16 +306,14 @@ class SSHConnection(GvmConnection):
             trans.start_client()
         except paramiko.SSHException as e:
             raise GvmError(
-                "Couldn't establish a connection to fetch the"
-                f"remote server key: {e}"
+                "Couldn't fetch the" f"remote server key: {e}"
             ) from None
         key = trans.get_remote_server_key()
         try:
             trans.close()
         except paramiko.SSHException as e:
             raise GvmError(
-                "Couldn't close the connection to fetch the"
-                f"remote server key: {e}"
+                "Couldn't close the connection to the" f"remote server key: {e}"
             ) from None
         return key
 
@@ -325,26 +322,23 @@ class SSHConnection(GvmConnection):
 
         # set to reject policy (avoid MITM attacks)
         self._socket.set_missing_host_key_policy(paramiko.RejectPolicy())
-        # openssh is posix, so this is only a posix approach
-        if platform.system() != 'Windows':
-            try:
-                # load the keys into paramiko and check if remote is in the list
-                self._socket.load_host_keys(filename=self.known_hosts_file)
-            except OSError as e:
-                raise GvmError(
-                    'Something went wrong with reading '
-                    f'the known_hosts file: {e}'
-                ) from None
-            hostkeys = self._socket.get_host_keys()
-            if not hostkeys.lookup(self.hostname):
-                # Key not found, so connect to remote and fetch the key
-                # with the paramiko Transport protocol
-                key = self._get_remote_host_key()
+        # openssh is posix, so this might only a posix approach
+        # https://stackoverflow.com/q/32945533
+        try:
+            # load the keys into paramiko and check if remote is in the list
+            self._socket.load_host_keys(filename=self.known_hosts_file)
+        except OSError as e:
+            raise GvmError(
+                'Something went wrong with reading '
+                f'the known_hosts file: {e}'
+            ) from None
+        hostkeys = self._socket.get_host_keys()
+        if not hostkeys.lookup(self.hostname):
+            # Key not found, so connect to remote and fetch the key
+            # with the paramiko Transport protocol
+            key = self._get_remote_host_key()
 
-                self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
-        else:
-            print("RIP.")
-            # TODO how to Windows? pylint: disable = fixme
+            self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
 
     def connect(self) -> None:
         """
