@@ -175,7 +175,7 @@ class PoliciesMixin:
         return self._send_xml_command(cmd)
 
     def import_policy(self, policy: str) -> Any:
-        """Import a scan config from XML
+        """Import a policy from XML
 
         Arguments:
             policy: Policy XML as string to import. This XML must
