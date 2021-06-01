@@ -7,6 +7,8 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 
 ## [Unreleased]
 ### Added
+Add `import_policy` API call [#496](https://github.com/greenbone/python-gvm/pull/496)
+
 ### Changed
 ### Deprecated
 ### Removed

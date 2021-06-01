@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from typing import Any, List, Optional, Tuple
+from lxml.etree import XMLSyntaxError
 
 from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 from gvm.utils import add_filter, to_base64, to_bool, is_list_like
@@ -170,6 +171,32 @@ class PoliciesMixin:
 
         # for single entity always request all details
         cmd.set_attribute("details", "1")
+
+        return self._send_xml_command(cmd)
+
+    def import_policy(self, policy: str) -> Any:
+        """Import a policy from XML
+
+        Arguments:
+            policy: Policy XML as string to import. This XML must
+                contain a :code:`<get_configs_response>` root element.
+
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        if not policy:
+            raise RequiredArgument(
+                function=self.import_policy.__name__, argument='policy'
+            )
+
+        cmd = XmlCommand("create_config")
+
+        try:
+            cmd.append_xml_str(policy)
+        except XMLSyntaxError as e:
+            raise InvalidArgument(
+                function=self.import_policy.__name__, argument='policy'
+            ) from e
 
         return self._send_xml_command(cmd)
 

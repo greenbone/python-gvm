@@ -23,6 +23,7 @@ from .policies import (
     GmpDeletePolicyTestMixin,
     GmpGetPolicyTestMixin,
     GmpGetPoliciesTestMixin,
+    GmpImportPolicyTestMixin,
     GmpModifyPolicySetCommentTestMixin,
     GmpModifyPolicySetFamilySelectionTestMixin,
     GmpModifyPolicySetNameTestMixin,
@@ -49,6 +50,10 @@ class Gmpv208GetPolicyTestCase(GmpGetPolicyTestMixin, Gmpv208TestCase):
 
 
 class Gmpv208GetPoliciesTestCase(GmpGetPoliciesTestMixin, Gmpv208TestCase):
+    pass
+
+
+class Gmpv208ImportPolicyTestCase(GmpImportPolicyTestMixin, Gmpv208TestCase):
     pass
 
 
