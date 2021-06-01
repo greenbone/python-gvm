@@ -178,7 +178,7 @@ class PoliciesMixin:
         """Import a scan config from XML
 
         Arguments:
-            policy: Scan Config XML as string to import. This XML must
+            policy: Policy XML as string to import. This XML must
                 contain a :code:`<get_configs_response>` root element.
 
         Returns:
