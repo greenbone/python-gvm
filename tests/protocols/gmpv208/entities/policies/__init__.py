@@ -21,6 +21,7 @@ from .test_create_policy import GmpCreatePolicyTestMixin
 from .test_delete_policy import GmpDeletePolicyTestMixin
 from .test_get_policy import GmpGetPolicyTestMixin
 from .test_get_policies import GmpGetPoliciesTestMixin
+from .test_import_policy import GmpImportPolicyTestMixin
 from .test_modify_policy_set_comment import (
     GmpModifyPolicySetCommentTestMixin,
 )
