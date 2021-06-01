@@ -13,6 +13,7 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 ### Deprecated
 ### Removed
 ### Fixed
+* Export `HelpFormat` and `get_help_format_from_string()` [#495](https://github.com/greenbone/python-gvm/pull/495)
 
 [Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.5.0...HEAD
 
