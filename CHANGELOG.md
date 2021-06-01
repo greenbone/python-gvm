@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Calendar Versioning](https://calver.org)html).
 
+## [Unreleased]
+### Added
+### Changed
+### Deprecated
+### Removed
+### Fixed
+
+[Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.5.1...HEAD
+
+
 ## [21.5.1] - 2021-06-01
 ### Changed
 * For SSH Connections: Reject unknown hosts, ask user if he wants to connect to unknown remote host and ask user if he wants to add the host to `known_hosts` [#486](https://github.com/greenbone/python-gvm/pull/486)
