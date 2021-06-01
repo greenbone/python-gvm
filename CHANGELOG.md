@@ -5,17 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Calendar Versioning](https://calver.org)html).
 
-## [Unreleased]
+## [21.5.2] - 2021-06-01
 ### Added
 Add `import_policy` API call [#496](https://github.com/greenbone/python-gvm/pull/496)
 
-### Changed
-### Deprecated
-### Removed
-### Fixed
-
-[Unreleased]: https://github.com/greenbone/python-gvm/compare/v21.5.1...HEAD
-
+[21.5.2]: https://github.com/greenbone/python-gvm/compare/v21.5.1...v21.5.2
 
 ## [21.5.1] - 2021-06-01
 ### Changed
