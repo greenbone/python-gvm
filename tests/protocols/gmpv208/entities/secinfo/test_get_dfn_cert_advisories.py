@@ -17,42 +17,44 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetOvalDefListTestMixin:
-    def test_get_oval_definition_list(self):
-        self.gmp.get_oval_definition_list()
-
-        self.connection.send.has_been_called_with('<get_info type="OVALDEF"/>')
-
-    def test_get_oval_definition_list_with_filter_string(self):
-        self.gmp.get_oval_definition_list(filter_string='foo=bar')
+class GmpGetDfnCertListTestMixin:
+    def test_get_cpes(self):
+        self.gmp.get_dfn_cert_advisories()
 
         self.connection.send.has_been_called_with(
-            '<get_info type="OVALDEF" filter="foo=bar"/>'
+            '<get_info type="DFN_CERT_ADV"/>'
         )
 
-    def test_get_oval_definition_list_with_filter_id(self):
-        self.gmp.get_oval_definition_list(filter_id='f1')
+    def test_get_cves_with_filter_string(self):
+        self.gmp.get_dfn_cert_advisories(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<get_info type="OVALDEF" filt_id="f1"/>'
+            '<get_info type="DFN_CERT_ADV" filter="foo=bar"/>'
         )
 
-    def test_get_oval_definition_list_with_name(self):
-        self.gmp.get_oval_definition_list(name='foo')
+    def test_get_cves_with_filter_id(self):
+        self.gmp.get_dfn_cert_advisories(filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<get_info type="OVALDEF" name="foo"/>'
+            '<get_info type="DFN_CERT_ADV" filt_id="f1"/>'
         )
 
-    def test_get_oval_definition_list_with_details(self):
-        self.gmp.get_oval_definition_list(details=True)
+    def test_get_cves_with_name(self):
+        self.gmp.get_dfn_cert_advisories(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<get_info type="OVALDEF" details="1"/>'
+            '<get_info type="DFN_CERT_ADV" name="foo"/>'
         )
 
-        self.gmp.get_oval_definition_list(details=False)
+    def test_get_cves_with_details(self):
+        self.gmp.get_dfn_cert_advisories(details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_info type="OVALDEF" details="0"/>'
+            '<get_info type="DFN_CERT_ADV" details="1"/>'
+        )
+
+        self.gmp.get_dfn_cert_advisories(details=False)
+
+        self.connection.send.has_been_called_with(
+            '<get_info type="DFN_CERT_ADV" details="0"/>'
         )

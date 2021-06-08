@@ -17,44 +17,42 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetDfnCertListTestMixin:
-    def test_get_cpe_list(self):
-        self.gmp.get_dfn_cert_advisory_list()
+class GmpGetNvtListTestMixin:
+    def test_get_cpes(self):
+        self.gmp.get_nvts()
+
+        self.connection.send.has_been_called_with('<get_info type="NVT"/>')
+
+    def test_get_nvts_with_filter_string(self):
+        self.gmp.get_nvts(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<get_info type="DFN_CERT_ADV"/>'
+            '<get_info type="NVT" filter="foo=bar"/>'
         )
 
-    def test_get_cve_list_with_filter_string(self):
-        self.gmp.get_dfn_cert_advisory_list(filter_string='foo=bar')
+    def test_get_nvts_with_filter_id(self):
+        self.gmp.get_nvts(filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<get_info type="DFN_CERT_ADV" filter="foo=bar"/>'
+            '<get_info type="NVT" filt_id="f1"/>'
         )
 
-    def test_get_cve_list_with_filter_id(self):
-        self.gmp.get_dfn_cert_advisory_list(filter_id='f1')
+    def test_get_nvts_with_name(self):
+        self.gmp.get_nvts(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<get_info type="DFN_CERT_ADV" filt_id="f1"/>'
+            '<get_info type="NVT" name="foo"/>'
         )
 
-    def test_get_cve_list_with_name(self):
-        self.gmp.get_dfn_cert_advisory_list(name='foo')
+    def test_get_nvts_with_details(self):
+        self.gmp.get_nvts(details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_info type="DFN_CERT_ADV" name="foo"/>'
+            '<get_info type="NVT" details="1"/>'
         )
 
-    def test_get_cve_list_with_details(self):
-        self.gmp.get_dfn_cert_advisory_list(details=True)
+        self.gmp.get_nvts(details=False)
 
         self.connection.send.has_been_called_with(
-            '<get_info type="DFN_CERT_ADV" details="1"/>'
-        )
-
-        self.gmp.get_dfn_cert_advisory_list(details=False)
-
-        self.connection.send.has_been_called_with(
-            '<get_info type="DFN_CERT_ADV" details="0"/>'
+            '<get_info type="NVT" details="0"/>'
         )
