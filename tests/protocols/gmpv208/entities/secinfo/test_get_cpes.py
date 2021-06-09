@@ -17,42 +17,42 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 
-class GmpGetNvtListTestMixin:
-    def test_get_cpe_list(self):
-        self.gmp.get_nvt_list()
+class GmpGetCpeListTestMixin:
+    def test_get_cpes(self):
+        self.gmp.get_cpes()
 
-        self.connection.send.has_been_called_with('<get_info type="NVT"/>')
+        self.connection.send.has_been_called_with('<get_info type="CPE"/>')
 
-    def test_get_nvt_list_with_filter_string(self):
-        self.gmp.get_nvt_list(filter_string='foo=bar')
+    def test_get_cpes_with_filter_string(self):
+        self.gmp.get_cpes(filter_string='foo=bar')
 
         self.connection.send.has_been_called_with(
-            '<get_info type="NVT" filter="foo=bar"/>'
+            '<get_info type="CPE" filter="foo=bar"/>'
         )
 
-    def test_get_nvt_list_with_filter_id(self):
-        self.gmp.get_nvt_list(filter_id='f1')
+    def test_get_cpes_with_filter_id(self):
+        self.gmp.get_cpes(filter_id='f1')
 
         self.connection.send.has_been_called_with(
-            '<get_info type="NVT" filt_id="f1"/>'
+            '<get_info type="CPE" filt_id="f1"/>'
         )
 
-    def test_get_nvt_list_with_name(self):
-        self.gmp.get_nvt_list(name='foo')
+    def test_get_cpes_with_name(self):
+        self.gmp.get_cpes(name='foo')
 
         self.connection.send.has_been_called_with(
-            '<get_info type="NVT" name="foo"/>'
+            '<get_info type="CPE" name="foo"/>'
         )
 
-    def test_get_nvt_list_with_details(self):
-        self.gmp.get_nvt_list(details=True)
+    def test_get_cpes_with_details(self):
+        self.gmp.get_cpes(details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_info type="NVT" details="1"/>'
+            '<get_info type="CPE" details="1"/>'
         )
 
-        self.gmp.get_nvt_list(details=False)
+        self.gmp.get_cpes(details=False)
 
         self.connection.send.has_been_called_with(
-            '<get_info type="NVT" details="0"/>'
+            '<get_info type="CPE" details="0"/>'
         )

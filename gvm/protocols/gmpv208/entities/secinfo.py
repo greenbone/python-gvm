@@ -153,7 +153,7 @@ class SecInfoMixin:
         cmd.set_attribute("preference_count", "1")
         return self._send_xml_command(cmd)
 
-    def get_cve_list(
+    def get_cves(
         self,
         *,
         filter_string: Optional[str] = None,
@@ -182,7 +182,7 @@ class SecInfoMixin:
             details=details,
         )
 
-    def get_cpe_list(
+    def get_cpes(
         self,
         *,
         filter_string: Optional[str] = None,
@@ -211,7 +211,7 @@ class SecInfoMixin:
             details=details,
         )
 
-    def get_nvt_list(
+    def get_nvts(
         self,
         *,
         filter_string: Optional[str] = None,
@@ -240,7 +240,7 @@ class SecInfoMixin:
             details=details,
         )
 
-    def get_dfn_cert_advisory_list(
+    def get_dfn_cert_advisories(
         self,
         *,
         filter_string: Optional[str] = None,
@@ -269,7 +269,7 @@ class SecInfoMixin:
             details=details,
         )
 
-    def get_cert_bund_advisory_list(
+    def get_cert_bund_advisories(
         self,
         *,
         filter_string: Optional[str] = None,
@@ -298,7 +298,7 @@ class SecInfoMixin:
             details=details,
         )
 
-    def get_oval_definition_list(
+    def get_oval_definitions(
         self,
         *,
         filter_string: Optional[str] = None,
