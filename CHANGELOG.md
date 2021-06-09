@@ -8,6 +8,14 @@ and this project adheres to [Calendar Versioning](https://calver.org)html).
 ## [Unreleased]
 ### Added
 ### Changed
+* Changed API calls for SecInfo [#501](https://github.com/greenbone/python-gvm/pull/501):
+  * `get_nvt_list()` -> `get_nvts()`
+  * `get_cpe_list()` -> `get_cpes()`
+  * `get_cve_list()` -> `get_cves()`
+  * `get_cert_bund_advisory_list()` -> `get_cert_bund_advisories()`
+  * `get_dnf_cert_advisory_list()` -> `get_dnf_cert_advisories()`
+  * `get_oval_definition_list()` -> `get_oval_definitions()`
+
 ### Deprecated
 ### Removed
 ### Fixed
