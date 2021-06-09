@@ -7,9 +7,9 @@ on:
 jobs:
   build-and-release:
     env:
-      GITHUB_USER: ${{ secrets.BOT_USER }}
-      GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
-      SIGNING_KEY: ${{ secrets.BOT_SIGNING_KEY }}
+      GITHUB_USER: ${{ secrets.GREENBONE_BOT }}
+      GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
+      SIGNING_KEY: ${{ secrets.GREENBONE_BOT_SIGNING_KEY }}
     name: Build and release with pontos
     # If the label 'make release' is set
     # If PR is closed because of an merge
