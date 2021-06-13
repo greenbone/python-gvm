@@ -29,7 +29,7 @@ wrapt = ">=1.11,<1.13"
 
 [[package]]
 name = "autohooks"
-version = "21.3.0"
+version = "21.6.0"
 description = "Library for managing git hooks"
 category = "dev"
 optional = false
@@ -364,13 +364,14 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "pontos"
-version = "21.6.2"
+version = "21.6.3"
 description = "Common utilities and tools maintained by Greenbone Networks"
 category = "dev"
 optional = false
 python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
+colorful = ">=0.5.4,<0.6.0"
 packaging = ">=20.3,<21.0"
 requests = ">=2.24.0,<3.0.0"
 tomlkit = ">=0.5.11"
@@ -665,7 +666,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.0"
-content-hash = "820c3323f4a31ab0fd559d9d4508f8a66342b7b82005d7a57e8291fa0d44c0b3"
+content-hash = "17171ca1bae125d26ef7f220bd0e6793cedb16fc9d5ed7d2bd0479047482e685"
 
 [metadata.files]
 alabaster = [
@@ -681,8 +682,8 @@ astroid = [
     {file = "astroid-2.5.6.tar.gz", hash = "sha256:8a398dfce302c13f14bab13e2b14fe385d32b73f4e4853b9bdfb64598baa1975"},
 ]
 autohooks = [
-    {file = "autohooks-21.3.0-py3-none-any.whl", hash = "sha256:7674ff73741825de83a5b3a5fb701528571810e8d67d3800f4d9167be43f1550"},
-    {file = "autohooks-21.3.0.tar.gz", hash = "sha256:9759b446f4f14712f87b1ce30f9d3cb37a78168e75235b381772cc2356296c6d"},
+    {file = "autohooks-21.6.0-py3-none-any.whl", hash = "sha256:756c42f05ea24228d94c3ea3af9ab755547a3bd972edc0cebb8bb11ad6c28169"},
+    {file = "autohooks-21.6.0.tar.gz", hash = "sha256:237d558eb57b599401a68def3a2e1217d16ea3dc1e520ce0f9947bb4a9cb656b"},
 ]
 autohooks-plugin-black = [
     {file = "autohooks-plugin-black-1.2.0.tar.gz", hash = "sha256:e69a18209f3fd584da903e87faf0e3685caa4d51a9e870ddb3c2b1aef93387b8"},
@@ -983,8 +984,8 @@ pathspec = [
     {file = "pathspec-0.8.1.tar.gz", hash = "sha256:86379d6b86d75816baba717e64b1a3a3469deb93bb76d613c9ce79edc5cb68fd"},
 ]
 pontos = [
-    {file = "pontos-21.6.2-py3-none-any.whl", hash = "sha256:aef7b01045443b52be18fd78b0b4e7c9d2049c0fe9e133f487a132cf75dc043b"},
-    {file = "pontos-21.6.2.tar.gz", hash = "sha256:24c1e5be0f9daa9802916b673196f4a9d63eab9822c0d659796572770c2367f2"},
+    {file = "pontos-21.6.3-py3-none-any.whl", hash = "sha256:6600377ab6fc2bed41e439d21146dae25dbef6800834f7f764ed97dfe0ab0db2"},
+    {file = "pontos-21.6.3.tar.gz", hash = "sha256:484b981de10bc6fc90f9f2085eff0826dd4911ba077b53257faf2d765e738b5f"},
 ]
 pycparser = [
     {file = "pycparser-2.20-py2.py3-none-any.whl", hash = "sha256:7582ad22678f0fcd81102833f60ef8d0e57288b6b5fb00323d101be910e35705"},
