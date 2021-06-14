@@ -54,15 +54,15 @@ black = "*"
 
 [[package]]
 name = "autohooks-plugin-pylint"
-version = "1.2.0"
-description = "Autohooks plugin for code linting via pylint"
+version = "21.6.0"
+description = "An autohooks plugin for python code linting via pylint"
 category = "dev"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-autohooks = ">=1.1"
-pylint = "*"
+autohooks = ">=2.2.0"
+pylint = ">=2.8.3,<3.0.0"
 
 [[package]]
 name = "babel"
@@ -666,7 +666,7 @@ testing = ["pytest (>=4.6)", "pytest-checkdocs (>=1.2.3)", "pytest-flake8", "pyt
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.0"
-content-hash = "747e5472c9cfad505d582bb20de4b1524b49fc51fa25ee847d15267e853ca352"
+content-hash = "98a1462a158339b42abac04088358db4fff3129bb51611b3de16a9e0e347419e"
 
 [metadata.files]
 alabaster = [
@@ -690,8 +690,8 @@ autohooks-plugin-black = [
     {file = "autohooks_plugin_black-1.2.0-py3-none-any.whl", hash = "sha256:5099f620e01d3fcfd70195e63f101d003528b40475e921829a9ebde000f2c5ee"},
 ]
 autohooks-plugin-pylint = [
-    {file = "autohooks-plugin-pylint-1.2.0.tar.gz", hash = "sha256:b1acc77b7845622d969ea2bfe5d8a95ae16a80c2282ca43888f522c9be479d10"},
-    {file = "autohooks_plugin_pylint-1.2.0-py3-none-any.whl", hash = "sha256:f08cef7ce4374661a2087e621e8fda411f3b2c19ebb7c92c7ac47b57892f7a3d"},
+    {file = "autohooks-plugin-pylint-21.6.0.tar.gz", hash = "sha256:6f1a486f19c8012618fecd9eaa985f5da3ef5c954b32d823323439547b947302"},
+    {file = "autohooks_plugin_pylint-21.6.0-py3-none-any.whl", hash = "sha256:0d6ab34739d4c494012aa1647c02e6a4fb9474e4050432ee82f378fcd05c70e4"},
 ]
 babel = [
     {file = "Babel-2.9.1-py2.py3-none-any.whl", hash = "sha256:ab49e12b91d937cd11f0b67cb259a57ab4ad2b59ac7a3b41d6c06c0ac5b0def9"},
