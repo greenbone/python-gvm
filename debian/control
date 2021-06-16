@@ -3,7 +3,8 @@ Section: admin
 Priority: optional
 Maintainer: Greenbone Networks GmbH <info@greenbone.net>
 Uploaders: Sascha Howey <sascha.howey@greenbone.net>,
- Raphael Grewe <raphael.grewe@greenbone.net>
+ Raphael Grewe <raphael.grewe@greenbone.net>,
+ Hendrik Deuper <hendrik.deuper@greenbone.net>,
 Build-Depends:
   debhelper (>= 12),
   python3-all,
