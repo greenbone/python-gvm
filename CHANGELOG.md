@@ -24,6 +24,8 @@ and this project adheres to [Calendar Versioning](https://calver.org).
   * `get_cert_bund_advisory_list()` -> `get_cert_bund_advisories()`
   * `get_dnf_cert_advisory_list()` -> `get_dnf_cert_advisories()`
   * `get_oval_definition_list()` -> `get_oval_definitions()`
+### Removed
+* Removed debug print statement in `check_command_status()` [#506](https://github.com/greenbone/python-gvm/pull/506)
 
 [21.6.0]: https://github.com/greenbone/python-gvm/compare/v21.5.2...v21.6.0
 
