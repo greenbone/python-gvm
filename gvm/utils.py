@@ -52,7 +52,6 @@ def check_command_status(xml: str) -> bool:
 
     try:
         root = etree.XML(xml, parser=create_parser())
-        print(etree.tostring(root))
         status = root.attrib["status"]
         return status is not None and status[0] == "2"
     except KeyError as e:
