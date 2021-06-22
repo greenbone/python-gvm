@@ -1,3 +1,10 @@
+python-gvm (21.6.0-gos2008~1) gos20.08; urgency=medium
+
+  * New upstream release 21.6.0-gos2008~1. (PL-540)
+  * Update gbp.conf.
+
+ -- Hendrik Deuper <hendrik.deuper@greenbone.net>  Tue, 22 Jun 2021 12:42:48 +0200
+
 python-gvm (21.5.2-gos2008~2) gos20.08; urgency=medium
 
   * Added self to uploaders.
