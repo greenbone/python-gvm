@@ -45,7 +45,7 @@ autohooks = "^21.3.0"
 autohooks-plugin-pylint = "^21.6.0"
 autohooks-plugin-black = "^1.2.0"
 black = "21.6b0"
-pontos = "^21.6.12"
+pontos = "^21.7.1"
 
 
 [tool.black]
