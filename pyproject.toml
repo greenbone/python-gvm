@@ -43,7 +43,7 @@ sphinx = "^4.1.0"
 sphinx-autodoc-typehints = "^1.12.0"
 autohooks = "^21.3.0"
 autohooks-plugin-pylint = "^21.6.0"
-autohooks-plugin-black = "^1.2.0"
+autohooks-plugin-black = "^21.7.0"
 black = "21.6b0"
 pontos = "^21.7.2"
 
