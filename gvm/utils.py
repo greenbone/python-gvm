@@ -54,7 +54,7 @@ def check_command_status(xml: str) -> bool:
         root = etree.XML(xml, parser=create_parser())
         status = root.attrib["status"]
         return status is not None and status[0] == "2"
-    except KeyError as e:
+    except KeyError:
         print(logger)
         logger.error("Not received an status code within the response.")
     except etree.Error as e:
