@@ -388,7 +388,7 @@ class SSHConnection(GvmConnection):
         except OSError as e:
             logger.debug("Connection closing error: %s", e)
             raise e
-        except AttributeError as e:
+        except AttributeError:
             logger.debug("Connection might already be closed. No socket found.")
 
         if self._socket:

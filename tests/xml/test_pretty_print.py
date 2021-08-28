@@ -39,10 +39,10 @@ class PrettyPrintTestCase(unittest.TestCase):
             '</test>\n'
         )
 
-        with open('test.file', 'w') as f:
+        with open('test.file', 'w', encoding="utf-8") as f:
             pretty_print(elem, file=f)
 
-        with open('test.file', 'r') as f:
+        with open('test.file', 'r', encoding="utf-8") as f:
             xml_string = f.read()
 
         self.assertEqual(xml_string, expected_xml_string)
