@@ -8,6 +8,8 @@ and this project adheres to [Calendar Versioning](https://calver.org).
 ## [Unreleased]
 ### Added
 ### Changed
+* Switch to [`poetry-core`](https://github.com/python-poetry/poetry-core) as build backend
+
 ### Deprecated
 ### Removed
 ### Fixed
