@@ -98,21 +98,17 @@ class OverridesMixin(Gmp208OverridesMixin):
             cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
+            major, minor = self.get_protocol_version()
             deprecation(
                 "The threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f" version {major}{minor}"
             )
 
         if new_threat is not None:
+            major, minor = self.get_protocol_version()
             deprecation(
                 "The new_threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f" version {major}{minor}"
             )
 
         return self._send_xml_command(cmd)
@@ -186,21 +182,17 @@ class OverridesMixin(Gmp208OverridesMixin):
             cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
+            major, minor = self.get_protocol_version()
             deprecation(
                 "The threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f" version {major}{minor}"
             )
 
         if new_threat is not None:
+            major, minor = self.get_protocol_version()
             deprecation(
                 "The new_threat parameter has been removed in GMP"
-                " version {}{}".format(
-                    self.get_protocol_version()[0],
-                    self.get_protocol_version()[1],
-                )
+                f" version {major}{minor}"
             )
 
         return self._send_xml_command(cmd)

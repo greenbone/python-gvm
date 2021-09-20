@@ -239,7 +239,7 @@ class TicketsMixin:
                 )
 
             cmd.add_element('status', status.value)
-            cmd.add_element('{}_note'.format(status.name.lower()), note)
+            cmd.add_element(f'{status.name.lower()}_note', note)
 
         if comment:
             cmd.add_element("comment", comment)

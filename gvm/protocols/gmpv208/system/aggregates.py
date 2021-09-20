@@ -228,10 +228,8 @@ class AggregatesMixin:
         if subgroup_column is not None:
             if not group_column:
                 raise RequiredArgument(
-                    '{} requires a group_column argument'
-                    ' if subgroup_column is given'.format(
-                        self.get_aggregates.__name__
-                    ),
+                    f'{self.get_aggregates.__name__} requires a group_column'
+                    ' argument if subgroup_column is given',
                     function=self.get_aggregates.__name__,
                     argument='subgroup_column',
                 )

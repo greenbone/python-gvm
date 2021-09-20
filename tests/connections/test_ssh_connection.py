@@ -36,7 +36,7 @@ class SSHConnectionTestCase(unittest.TestCase):
     # pylint: disable=protected-access, invalid-name
     def setUp(self):
         self.known_hosts_file = Path('known_hosts')
-        with self.known_hosts_file.open("a") as fp:
+        with self.known_hosts_file.open("a", encoding='utf-8') as fp:
             fp.write(
                 '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
                 'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n'
@@ -70,7 +70,7 @@ class SSHConnectionTestCase(unittest.TestCase):
         )
 
     def test_connect_error(self):
-        print(self.known_hosts_file.read_text())
+        print(self.known_hosts_file.read_text(encoding='utf-8'))
 
         ssh_connection = SSHConnection(known_hosts_file=self.known_hosts_file)
         with self.assertRaises(GvmError, msg="SSH Connection failed"):
@@ -124,7 +124,7 @@ FsAQI=
             hostname=hostname, known_hosts_file=self.known_hosts_file
         )
         ssh_connection._socket = paramiko.SSHClient()
-        keys = self.known_hosts_file.read_text()
+        keys = self.known_hosts_file.read_text(encoding='utf-8')
         self.assertEqual(
             keys,
             '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
@@ -136,7 +136,7 @@ FsAQI=
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
             )
-            keys = self.known_hosts_file.read_text()
+            keys = self.known_hosts_file.read_text(encoding='utf-8')
 
             self.assertEqual(
                 cm.output,
@@ -174,7 +174,7 @@ FsAQI=
             hostname=hostname, known_hosts_file=self.known_hosts_file
         )
         ssh_connection._socket = paramiko.SSHClient()
-        keys = self.known_hosts_file.read_text()
+        keys = self.known_hosts_file.read_text(encoding='utf-8')
         self.assertEqual(
             keys,
             '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
@@ -186,7 +186,7 @@ FsAQI=
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
             )
-            keys = self.known_hosts_file.read_text()
+            keys = self.known_hosts_file.read_text(encoding='utf-8')
 
             self.assertEqual(
                 cm.output,

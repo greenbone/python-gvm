@@ -51,7 +51,7 @@ def get_alert_event_from_string(
         raise InvalidArgument(
             argument='alert_event',
             function=get_alert_event_from_string.__name__,
-        ) from KeyError
+        ) from None
 
 
 class AlertCondition(Enum):
@@ -78,7 +78,7 @@ def get_alert_condition_from_string(
         raise InvalidArgument(
             argument='alert_condition',
             function=get_alert_condition_from_string.__name__,
-        ) from KeyError
+        ) from None
 
 
 class AlertMethod(Enum):
@@ -111,7 +111,7 @@ def get_alert_method_from_string(
         raise InvalidArgument(
             argument='alert_method',
             function=get_alert_method_from_string.__name__,
-        ) from KeyError
+        ) from None
 
 
 def _check_event(
@@ -120,13 +120,11 @@ def _check_event(
     if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
         if not condition:
             raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
+                f"condition is required for event {event.name}"
             )
 
         if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
+            raise RequiredArgument(f"method is required for event {event.name}")
 
         if condition not in (
             AlertCondition.ALWAYS,
@@ -136,9 +134,7 @@ def _check_event(
             AlertCondition.SEVERITY_CHANGED,
         ):
             raise InvalidArgument(
-                "Invalid condition {} for event {}".format(
-                    condition.name, event.name
-                )
+                f"Invalid condition {condition.name} for event {event.name}"
             )
     elif event in (
         AlertEvent.NEW_SECINFO_ARRIVED,
@@ -146,19 +142,15 @@ def _check_event(
     ):
         if not condition:
             raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
+                f"condition is required for event {event.name}"
             )
 
         if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
+            raise RequiredArgument(f"method is required for event {event.name}")
 
         if condition != AlertCondition.ALWAYS:
             raise InvalidArgument(
-                "Invalid condition {} for event {}".format(
-                    condition.name, event.name
-                )
+                f"Invalid condition {condition.name} for event {event.name}"
             )
         if method not in (
             AlertMethod.SCP,
@@ -169,7 +161,7 @@ def _check_event(
             AlertMethod.EMAIL,
         ):
             raise InvalidArgument(
-                "Invalid method {} for event {}".format(method.name, event.name)
+                f"Invalid method {method.name} for event {event.name}"
             )
     elif event in (
         AlertEvent.TICKET_RECEIVED,
@@ -178,18 +170,14 @@ def _check_event(
     ):
         if not condition:
             raise RequiredArgument(
-                "condition is required for event {}".format(event.name)
+                f"condition is required for event {event.name}"
             )
 
         if not method:
-            raise RequiredArgument(
-                "method is required for event {}".format(event.name)
-            )
+            raise RequiredArgument(f"method is required for event {event.name}")
         if condition != AlertCondition.ALWAYS:
             raise InvalidArgument(
-                "Invalid condition {} for event {}".format(
-                    condition.name, event.name
-                )
+                f"Invalid condition {condition.name} for event {event.name}"
             )
         if method not in (
             AlertMethod.EMAIL,
@@ -197,7 +185,7 @@ def _check_event(
             AlertMethod.SYSLOG,
         ):
             raise InvalidArgument(
-                "Invalid method {} for event {}".format(method.name, event.name)
+                f"Invalid method {method.name} for event {event.name}"
             )
 
 

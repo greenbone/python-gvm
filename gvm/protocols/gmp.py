@@ -104,7 +104,7 @@ class Gmp(GvmProtocol):
         else:
             raise GvmError(
                 'Remote manager daemon uses an unsupported version of GMP. '
-                'The GMP version was {}.'.format(version)
+                f'The GMP version was {version}.'
             )
 
         return gmp_class(self._connection, transform=self._gmp_transform)

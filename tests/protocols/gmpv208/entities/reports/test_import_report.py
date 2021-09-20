@@ -37,11 +37,9 @@ class GmpImportReportTestMixin:
 
         self.connection.send.has_been_called_with(
             '<create_report>'
-            '<task id="{task}"/>'
-            '{report}'
-            '</create_report>'.format(
-                task=self.TASK_ID, report=self.REPORT_XML_STRING
-            )
+            f'<task id="{self.TASK_ID}"/>'
+            f'{self.REPORT_XML_STRING}'
+            '</create_report>'
         )
 
     def test_import_report_missing_report(self):
@@ -71,12 +69,10 @@ class GmpImportReportTestMixin:
 
         self.connection.send.has_been_called_with(
             '<create_report>'
-            '<task id="{task}"/>'
+            f'<task id="{self.TASK_ID}"/>'
             '<in_assets>0</in_assets>'
-            '{report}'
-            '</create_report>'.format(
-                task=self.TASK_ID, report=self.REPORT_XML_STRING
-            )
+            f'{self.REPORT_XML_STRING}'
+            '</create_report>'
         )
 
         self.gmp.import_report(
@@ -85,10 +81,8 @@ class GmpImportReportTestMixin:
 
         self.connection.send.has_been_called_with(
             '<create_report>'
-            '<task id="{task}"/>'
+            f'<task id="{self.TASK_ID}"/>'
             '<in_assets>1</in_assets>'
-            '{report}'
-            '</create_report>'.format(
-                task=self.TASK_ID, report=self.REPORT_XML_STRING
-            )
+            f'{self.REPORT_XML_STRING}'
+            '</create_report>'
         )

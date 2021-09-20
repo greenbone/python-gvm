@@ -29,7 +29,7 @@ author = 'Greenbone Networks GmbH'
 
 # The short X.Y version
 
-version = '{0}.{1}'.format(gvm.__version__[0], gvm.__version__[1])
+version = f'{gvm.__version__[0]}.{gvm.__version__[1]}'
 # The full version, including alpha/beta/rc tags
 release = gvm.get_version()
 

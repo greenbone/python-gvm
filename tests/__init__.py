@@ -32,17 +32,15 @@ class CallableMock:
         self.result = value
 
     def has_not_been_called(self):
-        assert len(self.calls) == 0, "{0} has been called.".format(self.name)
+        assert len(self.calls) == 0, f"{self.name} has been called."
 
     def has_been_called(self):
-        assert len(self.calls) > 0, "{0} has not been called.".format(self.name)
+        assert len(self.calls) > 0, f"{self.name} has not been called."
 
     def has_been_called_times(self, times):
         assert (
             len(self.calls) == times
-        ), "{name} has not been called {times}" " times.".format(
-            name=self.name, times=times
-        )
+        ), f"{self.name} has not been called {times} times."
 
     def has_been_called_with(self, *args, **kwargs):
         if len(self.calls) == 0:

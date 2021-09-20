@@ -50,9 +50,7 @@ def check_command_status(root: etree.Element):
     elif status[0] == "5":
         raise GvmServerError(status=status, message=root.get("status_text"))
     elif status[0] != "2":
-        raise GvmError(
-            "Error in response. {0}".format(root.get("status_text")), root
-        )
+        raise GvmError(f"Error in response. {root.get('status_text')}", root)
 
 
 class CheckCommandTransform(EtreeTransform):
