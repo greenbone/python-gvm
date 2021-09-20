@@ -43,7 +43,5 @@ class GmpVerifyReportFormatTestMixin:
 
         report_format_id = get_report_format_id_from_string('svg').value
         self.connection.send.has_been_called_with(
-            '<verify_report_format report_format_id="{}"/>'.format(
-                report_format_id
-            )
+            f'<verify_report_format report_format_id="{report_format_id}"/>'
         )

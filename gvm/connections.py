@@ -496,13 +496,9 @@ class UnixSocketConnection(GvmConnection):
         try:
             self._socket.connect(self.path)
         except FileNotFoundError:
-            raise GvmError(
-                "Socket {path} does not exist".format(path=self.path)
-            ) from None
+            raise GvmError(f"Socket {self.path} does not exist") from None
         except ConnectionError:
-            raise GvmError(
-                "Could not connect to socket {}".format(self.path)
-            ) from None
+            raise GvmError(f"Could not connect to socket {self.path}") from None
 
 
 class DebugConnection:

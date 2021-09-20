@@ -181,7 +181,7 @@ class ReportsMixin:
             cmd.append_xml_str(report)
         except XMLSyntaxError as e:
             raise InvalidArgument(
-                "Invalid xml passed as report to import_report {}".format(e)
+                f"Invalid xml passed as report to import_report {e}"
             ) from None
 
         return self._send_xml_command(cmd)

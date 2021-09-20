@@ -37,10 +37,7 @@ class GmpImportReportFormatTestMixin:
 
         self.connection.send.has_been_called_with(
             '<create_report_format>'
-            '{report_format}'
-            '</create_report_format>'.format(
-                report_format=self.REPORT_FORMAT_XML_STRING
-            )
+            f'{self.REPORT_FORMAT_XML_STRING}</create_report_format>'
         )
 
     def test_import_missing_report_format_xml(self):

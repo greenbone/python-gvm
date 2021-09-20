@@ -28,8 +28,8 @@ class GmpCloneTargetTestMixin:
 
         self.connection.send.has_been_called_with(
             '<create_target>'
-            '<copy>{copy}</copy>'
-            '</create_target>'.format(copy=self.TARGET_ID)
+            f'<copy>{self.TARGET_ID}</copy>'
+            '</create_target>'
         )
 
     def test_missing_id(self):

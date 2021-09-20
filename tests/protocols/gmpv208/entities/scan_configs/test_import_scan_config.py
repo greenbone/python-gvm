@@ -36,9 +36,7 @@ class GmpImportScanConfigTestMixin:
         self.gmp.import_scan_config(self.CONFIG_XML_STRING)
 
         self.connection.send.has_been_called_with(
-            '<create_config>'
-            '{config}'
-            '</create_config>'.format(config=self.CONFIG_XML_STRING)
+            '<create_config>' f'{self.CONFIG_XML_STRING}' '</create_config>'
         )
 
     def test_import_missing_scan_config_xml(self):

@@ -69,8 +69,8 @@ class GmpModifyScheduleTestMixin:
 
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1">'
-            '<icalendar>{}</icalendar>'
-            "</modify_schedule>".format(ICAL)
+            f'<icalendar>{ICAL}</icalendar>'
+            '</modify_schedule>'
         )
 
     def test_modify_schedule_with_timezone(self):
@@ -79,5 +79,5 @@ class GmpModifyScheduleTestMixin:
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1">'
             '<timezone>Europe/Berlin</timezone>'
-            "</modify_schedule>"
+            '</modify_schedule>'
         )

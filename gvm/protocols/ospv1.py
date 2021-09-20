@@ -68,8 +68,7 @@ def create_vt_selection_element(_xmlvtselection, vt_selection):
                 )
         else:
             raise InvalidArgument(
-                "It was not possible to add {} to the VTs "
-                "selection.".format(vt_id)
+                f"It was not possible to add {vt_id} to the VTs selection."
             )
 
     return _xmlvtselection
