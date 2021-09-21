@@ -218,7 +218,7 @@ class ScanConfigsMixin:
         When the command includes a config_id attribute, the preference element
         includes the preference name, type and value, and the NVT to which the
         preference applies.
-        If the command includes a config_id and an nvt_oid, the preferencces for
+        If the command includes a config_id and an nvt_oid, the preferences for
         the given nvt in the config will be shown.
 
         Arguments:
@@ -549,7 +549,7 @@ class ScanConfigsMixin:
     ) -> Any:
         """Modifies an existing scan config.
 
-        DEPRECATED. Please use *modify_config_set_* methods instead.
+        DEPRECATED. Please use *modify_scan_config_set_* methods instead.
 
         modify_config has four modes to operate depending on the selection.
 

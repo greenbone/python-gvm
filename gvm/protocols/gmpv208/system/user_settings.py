@@ -65,7 +65,7 @@ class UserSettingsMixin:
         name: Optional[str] = None,
         value: Optional[str] = None,
     ) -> Any:
-        """Modifies an existing usersetting.
+        """Modifies an existing user setting.
 
         Arguments:
             setting_id: UUID of the setting to be changed.

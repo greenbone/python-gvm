@@ -216,7 +216,7 @@ class SchedulesMixin:
                 missing timezone information this timezone gets applied.
                 Otherwise the datetime values from the icalendar data are
                 displayed in this timezone
-            commenhedule.
+            comment: Comment on schedule.
 
         Returns:
             The response. See :py:meth:`send_command` for details.
