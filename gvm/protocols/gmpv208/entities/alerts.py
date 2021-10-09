@@ -64,21 +64,21 @@ class AlertCondition(Enum):
     FILTER_COUNT_CHANGED = 'Filter count changed'
     FILTER_COUNT_AT_LEAST = 'Filter count at least'
 
+    @classmethod
+    def from_string(
+        cls, alert_condition: Optional[str]
+    ) -> Optional["AlertCondition"]:
+        """Convert an alert condition string into a AlertCondition instance"""
+        if not alert_condition:
+            return None
 
-def get_alert_condition_from_string(
-    alert_condition: Optional[str],
-) -> Optional[AlertCondition]:
-    """Convert an alert condition string into a AlertCondition instance"""
-    if not alert_condition:
-        return None
-
-    try:
-        return AlertCondition[alert_condition.replace(' ', '_').upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='alert_condition',
-            function=get_alert_condition_from_string.__name__,
-        ) from None
+        try:
+            return cls[alert_condition.replace(' ', '_').upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='alert_condition',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class AlertMethod(Enum):
