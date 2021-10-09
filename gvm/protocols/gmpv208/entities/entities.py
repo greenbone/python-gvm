@@ -60,34 +60,35 @@ class EntityType(Enum):
     USER = "user"
     VULNERABILITY = "vuln"
 
+    @classmethod
+    def from_string(
+        cls,
+        entity_type: Optional[str],
+    ) -> Optional["EntityType"]:
+        """Convert a entity type string to an actual EntityType instance
 
-def get_entity_type_from_string(
-    entity_type: Optional[str],
-) -> Optional[EntityType]:
-    """Convert a entity type string to an actual EntityType instance
+        Arguments:
+            entity_type: Entity type string to convert to a EntityType
+        """
+        if not entity_type:
+            return None
 
-    Arguments:
-        entity_type: Entity type string to convert to a EntityType
-    """
-    if not entity_type:
-        return None
+        if entity_type == 'vuln':
+            return cls.VULNERABILITY
 
-    if entity_type == 'vuln':
-        return EntityType.VULNERABILITY
+        if entity_type == 'os':
+            return cls.OPERATING_SYSTEM
 
-    if entity_type == 'os':
-        return EntityType.OPERATING_SYSTEM
+        if entity_type == 'config':
+            return cls.SCAN_CONFIG
 
-    if entity_type == 'config':
-        return EntityType.SCAN_CONFIG
+        if entity_type == 'tls_certificate':
+            return cls.TLS_CERTIFICATE
 
-    if entity_type == 'tls_certificate':
-        return EntityType.TLS_CERTIFICATE
-
-    try:
-        return EntityType[entity_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='entity_type',
-            function=get_entity_type_from_string.__name__,
-        ) from None
+        try:
+            return cls[entity_type.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='entity_type',
+                function=cls.from_string.__name__,
+            ) from None

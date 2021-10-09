@@ -46,7 +46,6 @@ from gvm.protocols.gmpv208.entities.credentials import (
 )
 from gvm.protocols.gmpv208.entities.entities import (
     EntityType,
-    get_entity_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.filter import (
     FiltersMixin,
