@@ -19,7 +19,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import CredentialFormat
+from gvm.protocols.gmpv214 import CredentialFormat
 
 
 class GetCredentialFromatFromStringTestCase(unittest.TestCase):
