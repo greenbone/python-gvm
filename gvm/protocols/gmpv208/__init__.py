@@ -35,9 +35,6 @@ from gvm.protocols.gmpv208.entities.alerts import (
     AlertEvent,
     AlertMethod,
     AlertsMixin,
-    get_alert_condition_from_string,
-    get_alert_event_from_string,
-    get_alert_method_from_string,
 )
 from gvm.protocols.gmpv208.entities.audits import AuditsMixin
 from gvm.protocols.gmpv208.entities.credentials import (
