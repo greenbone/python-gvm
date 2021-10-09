@@ -19,28 +19,28 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import HostsOrdering, get_hosts_ordering_from_string
+from gvm.protocols.gmpv208 import HostsOrdering
 
 
 class GetHostsOrderingFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            get_hosts_ordering_from_string('foo')
+            HostsOrdering.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = get_hosts_ordering_from_string(None)
+        ct = HostsOrdering.from_string(None)
         self.assertIsNone(ct)
-        ct = get_hosts_ordering_from_string('')
+        ct = HostsOrdering.from_string('')
         self.assertIsNone(ct)
 
     def test_sequential(self):
-        ct = get_hosts_ordering_from_string("sequential")
+        ct = HostsOrdering.from_string("sequential")
         self.assertEqual(ct, HostsOrdering.SEQUENTIAL)
 
     def test_random(self):
-        ct = get_hosts_ordering_from_string("random")
+        ct = HostsOrdering.from_string("random")
         self.assertEqual(ct, HostsOrdering.RANDOM)
 
     def test_reverse(self):
-        ct = get_hosts_ordering_from_string("reverse")
+        ct = HostsOrdering.from_string("reverse")
         self.assertEqual(ct, HostsOrdering.REVERSE)

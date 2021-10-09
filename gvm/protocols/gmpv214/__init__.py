@@ -51,13 +51,11 @@ from gvm.protocols.gmpv208.entities.entities import (
 from gvm.protocols.gmpv208.entities.filter import (
     FiltersMixin,
     FilterType,
-    get_filter_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.groups import GroupsMixin
 from gvm.protocols.gmpv208.entities.hosts import (
     HostsMixin,
     HostsOrdering,
-    get_hosts_ordering_from_string,
 )
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
