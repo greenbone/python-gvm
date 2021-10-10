@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2020-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -20,10 +20,10 @@
 
 """
 Module for communication with gvmd in
-`Greenbone Management Protocol version 21.04`_
+`Greenbone Management Protocol version 21.10`_
 
-.. _Greenbone Management Protocol version 21.04:
-    https://docs.greenbone.net/API/GMP/gmp-21.04.html
+.. _Greenbone Management Protocol version 21.10:
+    https://docs.greenbone.net/API/GMP/gmp-21.10.html
 """
 
 import logging
@@ -128,7 +128,8 @@ from gvm.protocols.gmpv214.entities.targets import (
 )
 from gvm.protocols.gmpv214.entities.users import UsersMixin
 
-from gvm.protocols.gmpv214.system.version import VersionMixin
+# NEW IN 2110
+from gvm.protocols.gmpv2110.system.version import VersionMixin
 
 from gvm.connections import GvmConnection
 
@@ -201,7 +202,7 @@ class Gmp(
 ):
     """Python interface for Greenbone Management Protocol
 
-    This class implements the `Greenbone Management Protocol version 21.04`_
+    This class implements the `Greenbone Management Protocol version 21.10`_
 
     Arguments:
         connection: Connection to use to talk with the gvmd daemon. See
@@ -213,8 +214,8 @@ class Gmp(
 
             See :mod:`gvm.transforms` for existing transforms.
 
-    .. _Greenbone Management Protocol version 21.04:
-        https://docs.greenbone.net/API/GMP/gmp-21.04.html
+    .. _Greenbone Management Protocol version 21.10:
+        https://docs.greenbone.net/API/GMP/gmp-21.10.html
     .. _callable:
         https://docs.python.org/3/library/functions.html#callable
     """

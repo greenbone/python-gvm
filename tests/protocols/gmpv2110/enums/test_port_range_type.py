@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,19 +16,30 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=no-member
-
 import unittest
 
-from gvm.protocols.next import Gmp, Osp
+from gvm.errors import InvalidArgument
+from gvm.protocols.gmpv2110 import PortRangeType
 
 
-class LatestProtocolsTestCase(unittest.TestCase):
-    def test_gmp_version(self):
-        self.assertEqual(Gmp.get_protocol_version(), (21, 10))
+class GetPortRangeTypeFromStringTestCase(unittest.TestCase):
+    def test_invalid(self):
+        with self.assertRaises(InvalidArgument):
+            PortRangeType.from_string('foo')
 
-    def test_osp_version(self):
-        self.assertEqual(Osp.get_protocol_version(), (1, 2))
+    def test_none_or_empty(self):
+        ct = PortRangeType.from_string(None)
+        self.assertIsNone(ct)
+        ct = PortRangeType.from_string('')
+        self.assertIsNone(ct)
+
+    def test_tcp(self):
+        ct = PortRangeType.from_string('tcp')
+        self.assertEqual(ct, PortRangeType.TCP)
+
+    def test_udp(self):
+        ct = PortRangeType.from_string('udp')
+        self.assertEqual(ct, PortRangeType.UDP)
 
 
 if __name__ == '__main__':

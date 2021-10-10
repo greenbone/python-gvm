@@ -16,20 +16,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=no-member
-
-import unittest
-
-from gvm.protocols.next import Gmp, Osp
+from . import Gmpv2110TestCase
 
 
-class LatestProtocolsTestCase(unittest.TestCase):
-    def test_gmp_version(self):
-        self.assertEqual(Gmp.get_protocol_version(), (21, 10))
+class GmpWithStatementTestMixin:
+    def test_with_statement(self):
+        self.connection.connect.has_not_been_called()
+        self.connection.disconnect.has_not_been_called()
 
-    def test_osp_version(self):
-        self.assertEqual(Osp.get_protocol_version(), (1, 2))
+        with self.gmp:
+            pass
+
+        self.connection.connect.has_been_called()
+        self.connection.disconnect.has_been_called()
 
 
-if __name__ == '__main__':
-    unittest.main()
+class Gmpv2110WithStatementTestCase(
+    GmpWithStatementTestMixin, Gmpv2110TestCase
+):
+    pass

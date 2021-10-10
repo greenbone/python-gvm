@@ -25,6 +25,8 @@ and `OSP version 1`_ are supported.
     https://docs.greenbone.net/API/GMP/gmp-20.08.html
 .. _GMP version 21.04:
     https://docs.greenbone.net/API/GMP/gmp-21.04.html
+.. _GMP version 21.10:
+    https://docs.greenbone.net/API/GMP/gmp-21.10.html
 .. _OSP version 1:
     https://docs.greenbone.net/API/OSP/osp-1.2.html
 """
