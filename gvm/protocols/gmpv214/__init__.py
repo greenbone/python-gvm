@@ -63,13 +63,11 @@ from gvm.protocols.gmpv208.entities.operating_systems import (
 from gvm.protocols.gmpv208.entities.permissions import (
     PermissionsMixin,
     PermissionSubjectType,
-    get_permission_subject_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
 from gvm.protocols.gmpv208.entities.port_lists import (
     PortListMixin,
     PortRangeType,
-    get_port_range_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.reports import ReportsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (

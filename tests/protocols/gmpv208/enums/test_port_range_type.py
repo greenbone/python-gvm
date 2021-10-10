@@ -19,29 +19,26 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208.entities.port_lists import (
-    PortRangeType,
-    get_port_range_type_from_string,
-)
+from gvm.protocols.gmpv208 import PortRangeType
 
 
 class GetPortRangeTypeFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            get_port_range_type_from_string('foo')
+            PortRangeType.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = get_port_range_type_from_string(None)
+        ct = PortRangeType.from_string(None)
         self.assertIsNone(ct)
-        ct = get_port_range_type_from_string('')
+        ct = PortRangeType.from_string('')
         self.assertIsNone(ct)
 
     def test_tcp(self):
-        ct = get_port_range_type_from_string('tcp')
+        ct = PortRangeType.from_string('tcp')
         self.assertEqual(ct, PortRangeType.TCP)
 
     def test_udp(self):
-        ct = get_port_range_type_from_string('udp')
+        ct = PortRangeType.from_string('udp')
         self.assertEqual(ct, PortRangeType.UDP)
 
 

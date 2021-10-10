@@ -32,27 +32,28 @@ class PermissionSubjectType(Enum):
     GROUP = 'group'
     ROLE = 'role'
 
+    @classmethod
+    def from_string(
+        cls,
+        subject_type: Optional[str],
+    ) -> Optional["PermissionSubjectType"]:
+        """Convert a permission subject type string to an actual
+        PermissionSubjectType instance
 
-def get_permission_subject_type_from_string(
-    subject_type: Optional[str],
-) -> Optional[PermissionSubjectType]:
-    """Convert a permission subject type string to an actual
-    PermissionSubjectType instance
+        Arguments:
+            subject_type: Permission subject type string to convert to a
+                PermissionSubjectType
+        """
+        if not subject_type:
+            return None
 
-    Arguments:
-        subject_type: Permission subject type string to convert to a
-            PermissionSubjectType
-    """
-    if not subject_type:
-        return None
-
-    try:
-        return PermissionSubjectType[subject_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='subject_type',
-            function=get_permission_subject_type_from_string.__name__,
-        ) from None
+        try:
+            return cls[subject_type.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='subject_type',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class PermissionsMixin:
