@@ -75,14 +75,12 @@ from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
     ReportFormatsMixin,
-    get_report_format_id_from_string,
 )
 from gvm.protocols.gmpv208.entities.roles import RolesMixin
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
 from gvm.protocols.gmpv208.entities.scanners import (
     ScannersMixin,
     ScannerType,
-    get_scanner_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.schedules import SchedulesMixin
 from gvm.protocols.gmpv208.entities.secinfo import (

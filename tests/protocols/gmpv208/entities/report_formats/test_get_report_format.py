@@ -17,10 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv208.entities.report_formats import (
-    ReportFormatType,
-    get_report_format_id_from_string,
-)
+from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 
 
 class GmpGetReportFormatTestMixin:
@@ -46,7 +43,7 @@ class GmpGetReportFormatTestMixin:
 
     def test_get_report_format_type(self):
         self.gmp.get_report_format(ReportFormatType.PDF)
-        report_format_id = get_report_format_id_from_string('pdf').value
+        report_format_id = ReportFormatType.from_string('pdf').value
         self.connection.send.has_been_called_with(
             '<get_report_formats '
             f'report_format_id="{report_format_id}" details="1"/>'

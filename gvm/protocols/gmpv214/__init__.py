@@ -73,7 +73,6 @@ from gvm.protocols.gmpv208.entities.reports import ReportsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
     ReportFormatsMixin,
-    get_report_format_id_from_string,
 )
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.roles import RolesMixin
@@ -130,7 +129,6 @@ from gvm.protocols.gmpv214.entities.overrides import OverridesMixin
 from gvm.protocols.gmpv214.entities.scanners import (
     ScannerType,
     ScannersMixin,
-    get_scanner_type_from_string,
 )
 from gvm.protocols.gmpv214.entities.targets import (
     AliveTest,
