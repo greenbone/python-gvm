@@ -19,35 +19,35 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv214 import HelpFormat
+from gvm.protocols.gmpv214 import FeedType
 
 
-class GetHelpFormatFromStringTestCase(unittest.TestCase):
+class GetFeedTypeFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            HelpFormat.from_string('foo')
+            FeedType.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = HelpFormat.from_string(None)
+        ct = FeedType.from_string(None)
         self.assertIsNone(ct)
-        ct = HelpFormat.from_string('')
+        ct = FeedType.from_string('')
         self.assertIsNone(ct)
 
-    def test_task_run_status_changed(self):
-        ct = HelpFormat.from_string('HtMl')
-        self.assertEqual(ct, HelpFormat.HTML)
+    def test_nvt(self):
+        ct = FeedType.from_string('nvt')
+        self.assertEqual(ct, FeedType.NVT)
 
-    def test_new_secinfo_arrived(self):
-        ct = HelpFormat.from_string('rNc')
-        self.assertEqual(ct, HelpFormat.RNC)
+    def test_cert(self):
+        ct = FeedType.from_string('cert')
+        self.assertEqual(ct, FeedType.CERT)
 
-    def test_updated_secinfo_arrived(self):
-        ct = HelpFormat.from_string('tExT')
-        self.assertEqual(ct, HelpFormat.TEXT)
+    def test_scap(self):
+        ct = FeedType.from_string('scap')
+        self.assertEqual(ct, FeedType.SCAP)
 
-    def test_ticket_received(self):
-        ct = HelpFormat.from_string('XmL')
-        self.assertEqual(ct, HelpFormat.XML)
+    def test_gvmd_data(self):
+        ct = FeedType.from_string('gvmd_data')
+        self.assertEqual(ct, FeedType.GVMD_DATA)
 
 
 if __name__ == '__main__':

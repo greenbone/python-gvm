@@ -60,10 +60,6 @@ from .gmpv214 import (
     SortOrder,
     TicketStatus,
     UserAuthType,
-    get_aggregate_statistic_from_string,
-    get_feed_type_from_string,
-    get_help_format_from_string,
-    get_sort_order_from_string,
 )
 from .ospv1 import Osp
 
@@ -93,8 +89,4 @@ __all__ = [
     "SortOrder",
     "TicketStatus",
     "UserAuthType",
-    "get_aggregate_statistic_from_string",
-    "get_feed_type_from_string",
-    "get_help_format_from_string",
-    "get_sort_order_from_string",
 ]

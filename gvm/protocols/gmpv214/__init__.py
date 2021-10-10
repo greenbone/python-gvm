@@ -100,20 +100,16 @@ from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
 from gvm.protocols.gmpv208.system.aggregates import (
     AggregatesMixin,
     AggregateStatistic,
-    get_aggregate_statistic_from_string,
     SortOrder,
-    get_sort_order_from_string,
 )
 from gvm.protocols.gmpv208.system.authentication import AuthenticationMixin
 from gvm.protocols.gmpv208.system.feed import (
     FeedType,
     FeedMixin,
-    get_feed_type_from_string,
 )
 from gvm.protocols.gmpv208.system.help import (
     HelpFormat,
     HelpMixin,
-    get_help_format_from_string,
 )
 from gvm.protocols.gmpv208.system.system_reports import SystemReportsMixin
 from gvm.protocols.gmpv208.system.user_settings import UserSettingsMixin
