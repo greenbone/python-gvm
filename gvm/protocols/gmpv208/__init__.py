@@ -93,14 +93,12 @@ from gvm.protocols.gmpv208.entities.severity import (
 from gvm.protocols.gmpv208.entities.tags import TagsMixin
 from gvm.protocols.gmpv208.entities.targets import (
     AliveTest,
-    get_alive_test_from_string,
     TargetsMixin,
 )
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tickets import (
     TicketsMixin,
     TicketStatus,
-    get_ticket_status_from_string,
 )
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.entities.users import (
