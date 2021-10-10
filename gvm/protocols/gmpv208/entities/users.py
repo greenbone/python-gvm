@@ -32,21 +32,22 @@ class UserAuthType(Enum):
     LDAP_CONNECT = 'ldap_connect'
     RADIUS_CONNECT = 'radius_connect'
 
+    @classmethod
+    def from_string(
+        cls,
+        user_auth_type: Optional[str],
+    ) -> Optional["UserAuthType"]:
+        """Convert a user auth type string into a UserAuthType instance"""
+        if not user_auth_type:
+            return None
 
-def get_user_auth_type_from_string(
-    user_auth_type: Optional[str],
-) -> Optional[UserAuthType]:
-    """Convert a user auth type string into a UserAuthType instance"""
-    if not user_auth_type:
-        return None
-
-    try:
-        return UserAuthType[user_auth_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='user_auth_type',
-            function=get_user_auth_type_from_string.__name__,
-        ) from None
+        try:
+            return cls[user_auth_type.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='user_auth_type',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class UsersMixin:

@@ -104,7 +104,6 @@ from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
     UsersMixin,
-    get_user_auth_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
 

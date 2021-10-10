@@ -64,7 +64,6 @@ from .gmpv208 import (
     get_feed_type_from_string,
     get_help_format_from_string,
     get_sort_order_from_string,
-    get_user_auth_type_from_string,
 )
 from .ospv1 import Osp
 
@@ -98,5 +97,4 @@ __all__ = [
     "get_feed_type_from_string",
     "get_help_format_from_string",
     "get_sort_order_from_string",
-    "get_user_auth_type_from_string",
 ]
