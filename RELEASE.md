@@ -67,7 +67,7 @@ if it has been lost.
   ```sh
   git remote add upstream git@github.com:greenbone/python-gvm.git
   git fetch upstream
-  git rebase update/master
+  git rebase update/main
   ```
 
 * Get the current version number
