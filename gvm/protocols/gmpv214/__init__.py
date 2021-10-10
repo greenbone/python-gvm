@@ -79,13 +79,11 @@ from gvm.protocols.gmpv208.entities.roles import RolesMixin
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
 from gvm.protocols.gmpv208.entities.schedules import SchedulesMixin
 from gvm.protocols.gmpv208.entities.secinfo import (
-    get_info_type_from_string,
     InfoType,
     SecInfoMixin,
 )
 from gvm.protocols.gmpv208.entities.severity import (
     SeverityLevel,
-    get_severity_level_from_string,
 )
 from gvm.protocols.gmpv208.entities.tags import TagsMixin
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin

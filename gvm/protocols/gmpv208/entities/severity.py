@@ -36,18 +36,19 @@ class SeverityLevel(Enum):
     ALARM = "Alarm"
     DEBUG = "Debug"
 
+    @classmethod
+    def from_string(
+        cls,
+        severity_level: Optional[str],
+    ) -> Optional["SeverityLevel"]:
+        """Convert a severity level string into a SeverityLevel instance"""
+        if not severity_level:
+            return None
 
-def get_severity_level_from_string(
-    severity_level: Optional[str],
-) -> Optional[SeverityLevel]:
-    """Convert a severity level string into a SeverityLevel instance"""
-    if not severity_level:
-        return None
-
-    try:
-        return SeverityLevel[severity_level.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='severity_level',
-            function=get_severity_level_from_string.__name__,
-        ) from None
+        try:
+            return cls[severity_level.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='severity_level',
+                function=cls.from_string.__name__,
+            ) from None

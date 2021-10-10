@@ -34,21 +34,21 @@ class InfoType(Enum):
     OVALDEF = "OVALDEF"
     NVT = "NVT"
 
+    @classmethod
+    def from_string(cls, info_type: Optional[str]) -> Optional["InfoType"]:
+        """Convert a info type string to an actual InfoType instance
 
-def get_info_type_from_string(info_type: Optional[str]) -> Optional[InfoType]:
-    """Convert a info type string to an actual InfoType instance
-
-    Arguments:
-        info_type: Info type string to convert to a InfoType
-    """
-    if not info_type:
-        return None
-    try:
-        return InfoType[info_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='info_type', function=get_info_type_from_string.__name__
-        ) from None
+        Arguments:
+            info_type: Info type string to convert to a InfoType
+        """
+        if not info_type:
+            return None
+        try:
+            return cls[info_type.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='info_type', function=cls.from_string.__name__
+            ) from None
 
 
 class SecInfoMixin:
