@@ -35,39 +35,32 @@ from gvm.protocols.gmpv208.entities.alerts import (
     AlertEvent,
     AlertMethod,
     AlertsMixin,
-    get_alert_condition_from_string,
-    get_alert_event_from_string,
-    get_alert_method_from_string,
 )
 from gvm.protocols.gmpv208.entities.audits import AuditsMixin
 from gvm.protocols.gmpv208.entities.credentials import (
     CredentialFormat,
     CredentialsMixin,
     CredentialType,
-    get_credential_format_from_string,
-    get_credential_type_from_string,
-    get_snmp_auth_algorithm_from_string,
-    get_snmp_privacy_algorithm_from_string,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
 )
 from gvm.protocols.gmpv208.entities.entities import (
     EntityType,
-    get_entity_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.filter import (
     FiltersMixin,
     FilterType,
-    get_filter_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.groups import GroupsMixin
 from gvm.protocols.gmpv208.entities.hosts import (
     HostsMixin,
     HostsOrdering,
-    get_hosts_ordering_from_string,
+)
+from gvm.protocols.gmpv208.entities.permissions import (
+    PermissionsMixin,
+    PermissionSubjectType,
 )
 from gvm.protocols.gmpv208.entities.port_lists import (
-    get_port_range_type_from_string,
     PortListMixin,
     PortRangeType,
 )
@@ -77,72 +70,56 @@ from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
 )
 from gvm.protocols.gmpv208.entities.overrides import OverridesMixin
-from gvm.protocols.gmpv208.entities.permissions import (
-    PermissionsMixin,
-    PermissionSubjectType,
-    get_permission_subject_type_from_string,
-)
 from gvm.protocols.gmpv208.entities.policies import PoliciesMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
     ReportFormatType,
     ReportFormatsMixin,
-    get_report_format_id_from_string,
 )
 from gvm.protocols.gmpv208.entities.roles import RolesMixin
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
 from gvm.protocols.gmpv208.entities.scanners import (
     ScannersMixin,
     ScannerType,
-    get_scanner_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.schedules import SchedulesMixin
 from gvm.protocols.gmpv208.entities.secinfo import (
-    get_info_type_from_string,
     InfoType,
     SecInfoMixin,
 )
 from gvm.protocols.gmpv208.entities.severity import (
     SeverityLevel,
-    get_severity_level_from_string,
 )
 from gvm.protocols.gmpv208.entities.tags import TagsMixin
 from gvm.protocols.gmpv208.entities.targets import (
     AliveTest,
-    get_alive_test_from_string,
     TargetsMixin,
 )
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
 from gvm.protocols.gmpv208.entities.tickets import (
     TicketsMixin,
     TicketStatus,
-    get_ticket_status_from_string,
 )
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
 from gvm.protocols.gmpv208.entities.users import (
     UserAuthType,
     UsersMixin,
-    get_user_auth_type_from_string,
 )
 from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
 
 from gvm.protocols.gmpv208.system.aggregates import (
     AggregatesMixin,
     AggregateStatistic,
-    get_aggregate_statistic_from_string,
     SortOrder,
-    get_sort_order_from_string,
 )
 from gvm.protocols.gmpv208.system.authentication import AuthenticationMixin
 from gvm.protocols.gmpv208.system.feed import (
     FeedType,
     FeedMixin,
-    get_feed_type_from_string,
 )
 from gvm.protocols.gmpv208.system.help import (
     HelpFormat,
     HelpMixin,
-    get_help_format_from_string,
 )
 from gvm.protocols.gmpv208.system.system_reports import SystemReportsMixin
 from gvm.protocols.gmpv208.system.trashcan import TrashcanMixin

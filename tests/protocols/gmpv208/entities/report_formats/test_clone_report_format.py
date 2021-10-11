@@ -17,10 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv208.entities.report_formats import (
-    ReportFormatType,
-    get_report_format_id_from_string,
-)
+from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 
 
 class GmpCloneReportFormatTestMixin:
@@ -41,7 +38,7 @@ class GmpCloneReportFormatTestMixin:
     def test_clone_with_type(self):
         self.gmp.clone_report_format(ReportFormatType.SVG)
 
-        report_format_id = get_report_format_id_from_string('svg').value
+        report_format_id = ReportFormatType.from_string('svg').value
 
         self.connection.send.has_been_called_with(
             '<create_report_format>'

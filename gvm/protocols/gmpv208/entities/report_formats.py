@@ -48,21 +48,22 @@ class ReportFormatType(Enum):
     VERINICE_ITG = '50c9950a-f326-11e4-800c-28d24461215b'
     XML = 'a994b278-1f62-11e1-96ac-406186ea4fc5'
 
+    @classmethod
+    def from_string(
+        cls,
+        report_format: Optional[str],
+    ) -> Optional["ReportFormatType"]:
+        """Convert an report format name into a ReportFormatType instance"""
+        if not report_format:
+            return None
 
-def get_report_format_id_from_string(
-    report_format: Optional[str],
-) -> Optional[ReportFormatType]:
-    """Convert an report format name into a ReportFormatType instance"""
-    if not report_format:
-        return None
-
-    try:
-        return ReportFormatType[report_format.replace(' ', '_').upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='report_format',
-            function=get_report_format_id_from_string.__name__,
-        ) from KeyError
+        try:
+            return cls[report_format.replace(' ', '_').upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='report_format',
+                function=cls.from_string.__name__,
+            ) from KeyError
 
 
 class ReportFormatsMixin:

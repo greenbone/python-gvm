@@ -22,46 +22,44 @@ from gvm.errors import InvalidArgument
 from gvm.protocols.gmpv214 import (
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
-    get_snmp_auth_algorithm_from_string,
-    get_snmp_privacy_algorithm_from_string,
 )
 
 
 class GetSnmpAuthAlgorithmFromStringTestCase(unittest.TestCase):
     def test_invalid_status(self):
         with self.assertRaises(InvalidArgument):
-            get_snmp_auth_algorithm_from_string('foo')
+            SnmpAuthAlgorithm.from_string('foo')
 
     def test_none_or_empty_type(self):
-        ts = get_snmp_auth_algorithm_from_string(None)
+        ts = SnmpAuthAlgorithm.from_string(None)
         self.assertIsNone(ts)
-        ts = get_snmp_auth_algorithm_from_string('')
+        ts = SnmpAuthAlgorithm.from_string('')
         self.assertIsNone(ts)
 
     def test_sha1(self):
-        ts = get_snmp_auth_algorithm_from_string('sha1')
+        ts = SnmpAuthAlgorithm.from_string('sha1')
         self.assertEqual(ts, SnmpAuthAlgorithm.SHA1)
 
     def test_md5(self):
-        ts = get_snmp_auth_algorithm_from_string('md5')
+        ts = SnmpAuthAlgorithm.from_string('md5')
         self.assertEqual(ts, SnmpAuthAlgorithm.MD5)
 
 
 class GetSnmpPrivacyAlgorithmFromStringTestCase(unittest.TestCase):
     def test_invalid_status(self):
         with self.assertRaises(InvalidArgument):
-            get_snmp_privacy_algorithm_from_string('foo')
+            SnmpPrivacyAlgorithm.from_string('foo')
 
     def test_none_or_empty_type(self):
-        ts = get_snmp_privacy_algorithm_from_string(None)
+        ts = SnmpPrivacyAlgorithm.from_string(None)
         self.assertIsNone(ts)
-        ts = get_snmp_privacy_algorithm_from_string('')
+        ts = SnmpPrivacyAlgorithm.from_string('')
         self.assertIsNone(ts)
 
     def test_aes(self):
-        ts = get_snmp_privacy_algorithm_from_string('aes')
+        ts = SnmpPrivacyAlgorithm.from_string('aes')
         self.assertEqual(ts, SnmpPrivacyAlgorithm.AES)
 
     def test_des(self):
-        ts = get_snmp_privacy_algorithm_from_string('des')
+        ts = SnmpPrivacyAlgorithm.from_string('des')
         self.assertEqual(ts, SnmpPrivacyAlgorithm.DES)

@@ -42,29 +42,30 @@ class AliveTest(Enum):
     )
     CONSIDER_ALIVE = 'Consider Alive'
 
+    @classmethod
+    def from_string(
+        cls,
+        alive_test: Optional[str],
+    ) -> Optional["AliveTest"]:
+        """Convert an alive test string into a AliveTest instance"""
+        if not alive_test:
+            return None
 
-def get_alive_test_from_string(
-    alive_test: Optional[str],
-) -> Optional[AliveTest]:
-    """Convert an alive test string into a AliveTest instance"""
-    if not alive_test:
-        return None
+        alive_test = alive_test.lower()
 
-    alive_test = alive_test.lower()
-
-    try:
-        return AliveTest[
-            alive_test.replace(',', '')
-            .replace(' ', '_')
-            .replace('-', '_')
-            .replace('&', 'and')
-            .upper()
-        ]
-    except KeyError:
-        raise InvalidArgument(
-            argument='alive_test',
-            function=get_alive_test_from_string.__name__,
-        ) from None
+        try:
+            return cls[
+                alive_test.replace(',', '')
+                .replace(' ', '_')
+                .replace('-', '_')
+                .replace('&', 'and')
+                .upper()
+            ]
+        except KeyError:
+            raise InvalidArgument(
+                argument='alive_test',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class TargetsMixin:
@@ -130,7 +131,7 @@ class TargetsMixin:
         """
 
         cmd = XmlCommand("create_target")
-        _xmlname = cmd.add_element("name", name)
+        cmd.add_element("name", name)
 
         if not name:
             raise RequiredArgument(

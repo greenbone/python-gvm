@@ -19,47 +19,44 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv214 import (
-    CredentialType,
-    get_credential_type_from_string,
-)
+from gvm.protocols.gmpv214 import CredentialType
 
 
 class GetCredentialTypeFromStringTestCase(unittest.TestCase):
     def test_invalid_type(self):
         with self.assertRaises(InvalidArgument):
-            get_credential_type_from_string('foo')
+            CredentialType.from_string('foo')
 
     def test_none_or_empty_type(self):
-        ct = get_credential_type_from_string(None)
+        ct = CredentialType.from_string(None)
         self.assertIsNone(ct)
-        ct = get_credential_type_from_string('')
+        ct = CredentialType.from_string('')
         self.assertIsNone(ct)
 
     def test_client_certificate(self):
-        ct = get_credential_type_from_string('client_certificate')
+        ct = CredentialType.from_string('client_certificate')
         self.assertEqual(ct, CredentialType.CLIENT_CERTIFICATE)
 
     def test_snmp(self):
-        ct = get_credential_type_from_string('snmp')
+        ct = CredentialType.from_string('snmp')
         self.assertEqual(ct, CredentialType.SNMP)
 
     def test_username_password(self):
-        ct = get_credential_type_from_string('username_password')
+        ct = CredentialType.from_string('username_password')
         self.assertEqual(ct, CredentialType.USERNAME_PASSWORD)
 
     def test_username_ssh_key(self):
-        ct = get_credential_type_from_string('username_ssh_key')
+        ct = CredentialType.from_string('username_ssh_key')
         self.assertEqual(ct, CredentialType.USERNAME_SSH_KEY)
 
     def test_smime_certificate(self):
-        ct = get_credential_type_from_string('smime_certificate')
+        ct = CredentialType.from_string('smime_certificate')
         self.assertEqual(ct, CredentialType.SMIME_CERTIFICATE)
 
     def test_pgp_encryption_key(self):
-        ct = get_credential_type_from_string('pgp_encryption_key')
+        ct = CredentialType.from_string('pgp_encryption_key')
         self.assertEqual(ct, CredentialType.PGP_ENCRYPTION_KEY)
 
     def test_password_only(self):
-        ct = get_credential_type_from_string('password_only')
+        ct = CredentialType.from_string('password_only')
         self.assertEqual(ct, CredentialType.PASSWORD_ONLY)

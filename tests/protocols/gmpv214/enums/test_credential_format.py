@@ -19,31 +19,39 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import UserAuthType
+from gvm.protocols.gmpv214 import CredentialFormat
 
 
-class GetUserAuthTypeFromStringTestCase(unittest.TestCase):
+class GetCredentialFromatFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            UserAuthType.from_string('foo')
+            CredentialFormat.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = UserAuthType.from_string(None)
+        ct = CredentialFormat.from_string(None)
         self.assertIsNone(ct)
-        ct = UserAuthType.from_string('')
+        ct = CredentialFormat.from_string('')
         self.assertIsNone(ct)
 
-    def test_file(self):
-        ct = UserAuthType.from_string('file')
-        self.assertEqual(ct, UserAuthType.FILE)
+    def test_key(self):
+        ct = CredentialFormat.from_string('key')
+        self.assertEqual(ct, CredentialFormat.KEY)
 
-    def test_radius_connect(self):
-        ct = UserAuthType.from_string('radius_connect')
-        self.assertEqual(ct, UserAuthType.RADIUS_CONNECT)
+    def test_rpm(self):
+        ct = CredentialFormat.from_string('rpm')
+        self.assertEqual(ct, CredentialFormat.RPM)
 
-    def test_ldap_connect(self):
-        ct = UserAuthType.from_string('ldap_connect')
-        self.assertEqual(ct, UserAuthType.LDAP_CONNECT)
+    def test_deb(self):
+        ct = CredentialFormat.from_string('deb')
+        self.assertEqual(ct, CredentialFormat.DEB)
+
+    def test_exe(self):
+        ct = CredentialFormat.from_string('exe')
+        self.assertEqual(ct, CredentialFormat.EXE)
+
+    def test_pem(self):
+        ct = CredentialFormat.from_string('pem')
+        self.assertEqual(ct, CredentialFormat.PEM)
 
 
 if __name__ == '__main__':

@@ -19,26 +19,26 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import SortOrder, get_sort_order_from_string
+from gvm.protocols.gmpv208 import SortOrder
 
 
 class GetSortOrderFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            get_sort_order_from_string('foo')
+            SortOrder.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = get_sort_order_from_string(None)
+        ct = SortOrder.from_string(None)
         self.assertIsNone(ct)
-        ct = get_sort_order_from_string('')
+        ct = SortOrder.from_string('')
         self.assertIsNone(ct)
 
     def test_ascending(self):
-        ct = get_sort_order_from_string('ascending')
+        ct = SortOrder.from_string('ascending')
         self.assertEqual(ct, SortOrder.ASCENDING)
 
     def test_descending(self):
-        ct = get_sort_order_from_string('descending')
+        ct = SortOrder.from_string('descending')
         self.assertEqual(ct, SortOrder.DESCENDING)
 
 

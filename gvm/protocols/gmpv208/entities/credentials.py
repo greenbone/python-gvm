@@ -34,20 +34,21 @@ class CredentialFormat(Enum):
     EXE = 'exe'
     PEM = 'pem'
 
+    @classmethod
+    def from_string(
+        cls,
+        credential_format: Optional[str],
+    ) -> Optional["CredentialFormat"]:
+        if not credential_format:
+            return None
 
-def get_credential_format_from_string(
-    credential_format: Optional[str],
-) -> Optional[CredentialFormat]:
-    if not credential_format:
-        return None
-
-    try:
-        return CredentialFormat[credential_format.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='credential_format',
-            function=get_credential_format_from_string.__name__,
-        ) from None
+        try:
+            return cls[credential_format.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='credential_format',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class CredentialType(Enum):
@@ -61,21 +62,22 @@ class CredentialType(Enum):
     PGP_ENCRYPTION_KEY = 'pgp'
     PASSWORD_ONLY = 'pw'
 
+    @classmethod
+    def from_string(
+        cls,
+        credential_type: Optional[str],
+    ) -> Optional["CredentialType"]:
+        """Convert a credential type string into a CredentialType instance"""
+        if not credential_type:
+            return None
 
-def get_credential_type_from_string(
-    credential_type: Optional[str],
-) -> Optional[CredentialType]:
-    """Convert a credential type string into a CredentialType instance"""
-    if not credential_type:
-        return None
-
-    try:
-        return CredentialType[credential_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='credential_type',
-            function=get_credential_type_from_string.__name__,
-        ) from None
+        try:
+            return cls[credential_type.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='credential_type',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class SnmpAuthAlgorithm(Enum):
@@ -84,21 +86,23 @@ class SnmpAuthAlgorithm(Enum):
     SHA1 = 'sha1'
     MD5 = 'md5'
 
+    @classmethod
+    def from_string(
+        cls,
+        algorithm: Optional[str],
+    ) -> Optional["SnmpAuthAlgorithm"]:
+        """Convert a SNMP auth algorithm string into a
+        SnmpAuthAlgorithm instance"""
+        if not algorithm:
+            return None
 
-def get_snmp_auth_algorithm_from_string(
-    algorithm: Optional[str],
-) -> Optional[SnmpAuthAlgorithm]:
-    """Convert a SNMP auth algorithm string into a SnmpAuthAlgorithm instance"""
-    if not algorithm:
-        return None
-
-    try:
-        return SnmpAuthAlgorithm[algorithm.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='algorithm',
-            function=get_snmp_auth_algorithm_from_string.__name__,
-        ) from None
+        try:
+            return cls[algorithm.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='algorithm',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class SnmpPrivacyAlgorithm(Enum):
@@ -107,23 +111,24 @@ class SnmpPrivacyAlgorithm(Enum):
     AES = 'aes'
     DES = 'des'
 
+    @classmethod
+    def from_string(
+        cls,
+        algorithm: Optional[str],
+    ) -> Optional["SnmpPrivacyAlgorithm"]:
+        """Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
+        instance
+        """
+        if not algorithm:
+            return None
 
-def get_snmp_privacy_algorithm_from_string(
-    algorithm: Optional[str],
-) -> Optional[SnmpPrivacyAlgorithm]:
-    """Convert a SNMP privacy algorithm string into a SnmpPrivacyAlgorithm
-    instance
-    """
-    if not algorithm:
-        return None
-
-    try:
-        return SnmpPrivacyAlgorithm[algorithm.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='algorithm',
-            function=get_snmp_privacy_algorithm_from_string.__name__,
-        ) from None
+        try:
+            return cls[algorithm.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='algorithm',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class CredentialsMixin:

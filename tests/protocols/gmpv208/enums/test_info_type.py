@@ -19,47 +19,47 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import InfoType, get_info_type_from_string
+from gvm.protocols.gmpv208 import InfoType
 
 
 class GetInfoTypeFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            get_info_type_from_string('foo')
+            InfoType.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = get_info_type_from_string(None)
+        ct = InfoType.from_string(None)
         self.assertIsNone(ct)
-        ct = get_info_type_from_string('')
+        ct = InfoType.from_string('')
         self.assertIsNone(ct)
 
     def test_cert_bund_adv(self):
-        ct = get_info_type_from_string('cert_bund_adv')
+        ct = InfoType.from_string('cert_bund_adv')
         self.assertEqual(ct, InfoType.CERT_BUND_ADV)
 
     def test_cpe(self):
-        ct = get_info_type_from_string('cpe')
+        ct = InfoType.from_string('cpe')
         self.assertEqual(ct, InfoType.CPE)
 
     def test_cve(self):
-        ct = get_info_type_from_string('cve')
+        ct = InfoType.from_string('cve')
         self.assertEqual(ct, InfoType.CVE)
 
     def test_dfn_cert_adv(self):
-        ct = get_info_type_from_string('dfn_cert_adv')
+        ct = InfoType.from_string('dfn_cert_adv')
         self.assertEqual(ct, InfoType.DFN_CERT_ADV)
 
     def test_nvt(self):
-        ct = get_info_type_from_string('nvt')
+        ct = InfoType.from_string('nvt')
         self.assertEqual(ct, InfoType.NVT)
 
     def test_ovaldef(self):
-        ct = get_info_type_from_string('ovaldef')
+        ct = InfoType.from_string('ovaldef')
         self.assertEqual(ct, InfoType.OVALDEF)
 
     def test_allinfo(self):
         with self.assertRaises(InvalidArgument):
-            get_info_type_from_string('allinfo')
+            InfoType.from_string('allinfo')
 
 
 if __name__ == '__main__':

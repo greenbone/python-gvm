@@ -31,25 +31,28 @@ class PortRangeType(Enum):
     TCP = 'TCP'
     UDP = 'UDP'
 
+    @classmethod
+    def from_string(
+        cls,
+        port_range_type: Optional[str],
+    ) -> Optional["PortRangeType"]:
+        """Convert a port range type string to an actual
+        PortRangeType instance
 
-def get_port_range_type_from_string(
-    port_range_type: Optional[str],
-) -> Optional[PortRangeType]:
-    """Convert a port range type string to an actual PortRangeType instance
+        Arguments:
+            port_range_type: Port range type string to
+            convert to a PortRangeType
+        """
+        if not port_range_type:
+            return None
 
-    Arguments:
-        port_range_type: Port range type string to convert to a PortRangeType
-    """
-    if not port_range_type:
-        return None
-
-    try:
-        return PortRangeType[port_range_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='port_range_type',
-            function=get_port_range_type_from_string.__name__,
-        ) from None
+        try:
+            return cls[port_range_type.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='port_range_type',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class PortListMixin:

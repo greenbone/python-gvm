@@ -40,28 +40,29 @@ class AggregateStatistic(Enum):
     TEXT = "text"  # Text column value
     VALUE = "value"  # Group or subgroup column value
 
+    @classmethod
+    def from_string(
+        cls,
+        aggregate_statistic: Optional[str],
+    ) -> Optional["AggregateStatistic"]:
+        """
+        Convert a aggregate statistic string to an actual AggregateStatistic
+        instance.
 
-def get_aggregate_statistic_from_string(
-    aggregate_statistic: Optional[str],
-) -> Optional[AggregateStatistic]:
-    """
-    Convert a aggregate statistic string to an actual AggregateStatistic
-    instance.
+        Arguments:
+            aggregate_statistic: Aggregate statistic string to convert to a
+                AggregateStatistic
+        """
+        if not aggregate_statistic:
+            return None
 
-    Arguments:
-        aggregate_statistic: Aggregate statistic string to convert to a
-            AggregateStatistic
-    """
-    if not aggregate_statistic:
-        return None
-
-    try:
-        return AggregateStatistic[aggregate_statistic.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='aggregate_statistic',
-            function=get_aggregate_statistic_from_string.__name__,
-        ) from None
+        try:
+            return cls[aggregate_statistic.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='aggregate_statistic',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class SortOrder(Enum):
@@ -70,25 +71,26 @@ class SortOrder(Enum):
     ASCENDING = "ascending"
     DESCENDING = "descending"
 
+    @classmethod
+    def from_string(
+        cls,
+        sort_order: Optional[str],
+    ) -> Optional["SortOrder"]:
+        """
+        Convert a sort order string to an actual SortOrder instance.
 
-def get_sort_order_from_string(
-    sort_order: Optional[str],
-) -> Optional[SortOrder]:
-    """
-    Convert a sort order string to an actual SortOrder instance.
+        Arguments:
+            sort_order: Sort order string to convert to a SortOrder
+        """
+        if not sort_order:
+            return None
 
-    Arguments:
-        sort_order: Sort order string to convert to a SortOrder
-    """
-    if not sort_order:
-        return None
-
-    try:
-        return SortOrder[sort_order.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='sort_order', function=get_sort_order_from_string.__name__
-        ) from None
+        try:
+            return cls[sort_order.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='sort_order', function=cls.from_string.__name__
+            ) from None
 
 
 class AggregatesMixin:
@@ -202,14 +204,14 @@ class AggregatesMixin:
                     if isinstance(sort['stat'], AggregateStatistic):
                         sort_elem.set_attribute('stat', sort['stat'].value)
                     else:
-                        stat = get_aggregate_statistic_from_string(sort['stat'])
+                        stat = AggregateStatistic.from_string(sort['stat'])
                         sort_elem.set_attribute('stat', stat.value)
 
                 if sort.get('order'):
                     if isinstance(sort['order'], SortOrder):
                         sort_elem.set_attribute('order', sort['order'].value)
                     else:
-                        so = get_sort_order_from_string(sort['order'])
+                        so = SortOrder.from_string(sort['order'])
                         sort_elem.set_attribute('order', so.value)
 
         if data_columns is not None:

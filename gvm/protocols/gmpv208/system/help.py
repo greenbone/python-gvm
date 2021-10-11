@@ -31,25 +31,26 @@ class HelpFormat(Enum):
     TEXT = "text"
     XML = "xml"
 
+    @classmethod
+    def from_string(
+        cls,
+        sort_order: Optional[str],
+    ) -> Optional["HelpFormat"]:
+        """
+        Convert a sort order string to an actual SortOrder instance.
 
-def get_help_format_from_string(
-    sort_order: Optional[str],
-) -> Optional[HelpFormat]:
-    """
-    Convert a sort order string to an actual SortOrder instance.
+        Arguments:
+            sort_order: Sort order string to convert to a SortOrder
+        """
+        if not sort_order:
+            return None
 
-    Arguments:
-        sort_order: Sort order string to convert to a SortOrder
-    """
-    if not sort_order:
-        return None
-
-    try:
-        return HelpFormat[sort_order.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='sort_order', function=get_help_format_from_string.__name__
-        ) from None
+        try:
+            return cls[sort_order.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='sort_order', function=cls.from_string.__name__
+            ) from None
 
 
 class HelpMixin:
