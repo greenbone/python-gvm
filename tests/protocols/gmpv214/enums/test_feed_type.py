@@ -19,31 +19,35 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import UserAuthType
+from gvm.protocols.gmpv214 import FeedType
 
 
-class GetUserAuthTypeFromStringTestCase(unittest.TestCase):
+class GetFeedTypeFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            UserAuthType.from_string('foo')
+            FeedType.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = UserAuthType.from_string(None)
+        ct = FeedType.from_string(None)
         self.assertIsNone(ct)
-        ct = UserAuthType.from_string('')
+        ct = FeedType.from_string('')
         self.assertIsNone(ct)
 
-    def test_file(self):
-        ct = UserAuthType.from_string('file')
-        self.assertEqual(ct, UserAuthType.FILE)
+    def test_nvt(self):
+        ct = FeedType.from_string('nvt')
+        self.assertEqual(ct, FeedType.NVT)
 
-    def test_radius_connect(self):
-        ct = UserAuthType.from_string('radius_connect')
-        self.assertEqual(ct, UserAuthType.RADIUS_CONNECT)
+    def test_cert(self):
+        ct = FeedType.from_string('cert')
+        self.assertEqual(ct, FeedType.CERT)
 
-    def test_ldap_connect(self):
-        ct = UserAuthType.from_string('ldap_connect')
-        self.assertEqual(ct, UserAuthType.LDAP_CONNECT)
+    def test_scap(self):
+        ct = FeedType.from_string('scap')
+        self.assertEqual(ct, FeedType.SCAP)
+
+    def test_gvmd_data(self):
+        ct = FeedType.from_string('gvmd_data')
+        self.assertEqual(ct, FeedType.GVMD_DATA)
 
 
 if __name__ == '__main__':

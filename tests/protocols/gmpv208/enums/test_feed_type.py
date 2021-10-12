@@ -19,34 +19,34 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import FeedType, get_feed_type_from_string
+from gvm.protocols.gmpv208 import FeedType
 
 
 class GetFeedTypeFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            get_feed_type_from_string('foo')
+            FeedType.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = get_feed_type_from_string(None)
+        ct = FeedType.from_string(None)
         self.assertIsNone(ct)
-        ct = get_feed_type_from_string('')
+        ct = FeedType.from_string('')
         self.assertIsNone(ct)
 
     def test_nvt(self):
-        ct = get_feed_type_from_string('nvt')
+        ct = FeedType.from_string('nvt')
         self.assertEqual(ct, FeedType.NVT)
 
     def test_cert(self):
-        ct = get_feed_type_from_string('cert')
+        ct = FeedType.from_string('cert')
         self.assertEqual(ct, FeedType.CERT)
 
     def test_scap(self):
-        ct = get_feed_type_from_string('scap')
+        ct = FeedType.from_string('scap')
         self.assertEqual(ct, FeedType.SCAP)
 
     def test_gvmd_data(self):
-        ct = get_feed_type_from_string('gvmd_data')
+        ct = FeedType.from_string('gvmd_data')
         self.assertEqual(ct, FeedType.GVMD_DATA)
 
 

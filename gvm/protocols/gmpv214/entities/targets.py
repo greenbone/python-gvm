@@ -22,7 +22,6 @@ from typing import Any, List, Optional
 
 from gvm.errors import RequiredArgument, InvalidArgumentType
 from gvm.protocols.gmpv208.entities.targets import (
-    get_alive_test_from_string,
     TargetsMixin as Gmp208TargetsMixin,
     AliveTest,
 )
@@ -82,7 +81,7 @@ class TargetsMixin(Gmp208TargetsMixin):
             )
 
         cmd = XmlCommand("create_target")
-        _xmlname = cmd.add_element("name", name)
+        cmd.add_element("name", name)
 
         if asset_hosts_filter:
             cmd.add_element(

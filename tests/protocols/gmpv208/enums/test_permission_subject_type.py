@@ -19,33 +19,30 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import (
-    PermissionSubjectType,
-    get_permission_subject_type_from_string,
-)
+from gvm.protocols.gmpv208 import PermissionSubjectType
 
 
 class GetPermissionSubjectTypeFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            get_permission_subject_type_from_string('foo')
+            PermissionSubjectType.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = get_permission_subject_type_from_string(None)
+        ct = PermissionSubjectType.from_string(None)
         self.assertIsNone(ct)
-        ct = get_permission_subject_type_from_string('')
+        ct = PermissionSubjectType.from_string('')
         self.assertIsNone(ct)
 
     def test_user(self):
-        ct = get_permission_subject_type_from_string('user')
+        ct = PermissionSubjectType.from_string('user')
         self.assertEqual(ct, PermissionSubjectType.USER)
 
     def test_role(self):
-        ct = get_permission_subject_type_from_string('role')
+        ct = PermissionSubjectType.from_string('role')
         self.assertEqual(ct, PermissionSubjectType.ROLE)
 
     def test_group(self):
-        ct = get_permission_subject_type_from_string('group')
+        ct = PermissionSubjectType.from_string('group')
         self.assertEqual(ct, PermissionSubjectType.GROUP)
 
 

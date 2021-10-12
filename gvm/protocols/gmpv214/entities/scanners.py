@@ -35,47 +35,42 @@ class ScannerType(Enum):
     CVE_SCANNER_TYPE = "3"
     GREENBONE_SENSOR_SCANNER_TYPE = "5"
 
+    @classmethod
+    def from_string(
+        cls,
+        scanner_type: Optional[str],
+    ) -> Optional["ScannerType"]:
+        """Convert a scanner type string to an actual ScannerType instance
 
-def get_scanner_type_from_string(
-    scanner_type: Optional[str],
-) -> Optional[ScannerType]:
-    """Convert a scanner type string to an actual ScannerType instance
+        Arguments:
+            scanner_type: Scanner type string to convert to a ScannerType
+        """
+        if not scanner_type:
+            return None
 
-    Arguments:
-        scanner_type: Scanner type string to convert to a ScannerType
-    """
-    if not scanner_type:
-        return None
+        scanner_type = scanner_type.lower()
 
-    scanner_type = scanner_type.lower()
+        if scanner_type == cls.OSP_SCANNER_TYPE.value or scanner_type == 'osp':
+            return cls.OSP_SCANNER_TYPE
 
-    if (
-        scanner_type == ScannerType.OSP_SCANNER_TYPE.value
-        or scanner_type == 'osp'
-    ):
-        return ScannerType.OSP_SCANNER_TYPE
+        if (
+            scanner_type == cls.OPENVAS_SCANNER_TYPE.value
+            or scanner_type == 'openvas'
+        ):
+            return cls.OPENVAS_SCANNER_TYPE
 
-    if (
-        scanner_type == ScannerType.OPENVAS_SCANNER_TYPE.value
-        or scanner_type == 'openvas'
-    ):
-        return ScannerType.OPENVAS_SCANNER_TYPE
+        if scanner_type == cls.CVE_SCANNER_TYPE.value or scanner_type == 'cve':
+            return cls.CVE_SCANNER_TYPE
 
-    if (
-        scanner_type == ScannerType.CVE_SCANNER_TYPE.value
-        or scanner_type == 'cve'
-    ):
-        return ScannerType.CVE_SCANNER_TYPE
+        if (
+            scanner_type == cls.GREENBONE_SENSOR_SCANNER_TYPE.value
+            or scanner_type == 'greenbone'
+        ):
+            return cls.GREENBONE_SENSOR_SCANNER_TYPE
 
-    if (
-        scanner_type == ScannerType.GREENBONE_SENSOR_SCANNER_TYPE.value
-        or scanner_type == 'greenbone'
-    ):
-        return ScannerType.GREENBONE_SENSOR_SCANNER_TYPE
-
-    raise InvalidArgument(
-        argument='scanner_type', function=get_scanner_type_from_string.__name__
-    )
+        raise InvalidArgument(
+            argument='scanner_type', function=cls.from_string.__name__
+        )
 
 
 class ScannersMixin(Gmp208ScannersMixin):

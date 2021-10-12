@@ -19,31 +19,31 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import UserAuthType
+from gvm.protocols.gmpv214 import PermissionSubjectType
 
 
-class GetUserAuthTypeFromStringTestCase(unittest.TestCase):
+class GetPermissionSubjectTypeFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            UserAuthType.from_string('foo')
+            PermissionSubjectType.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = UserAuthType.from_string(None)
+        ct = PermissionSubjectType.from_string(None)
         self.assertIsNone(ct)
-        ct = UserAuthType.from_string('')
+        ct = PermissionSubjectType.from_string('')
         self.assertIsNone(ct)
 
-    def test_file(self):
-        ct = UserAuthType.from_string('file')
-        self.assertEqual(ct, UserAuthType.FILE)
+    def test_user(self):
+        ct = PermissionSubjectType.from_string('user')
+        self.assertEqual(ct, PermissionSubjectType.USER)
 
-    def test_radius_connect(self):
-        ct = UserAuthType.from_string('radius_connect')
-        self.assertEqual(ct, UserAuthType.RADIUS_CONNECT)
+    def test_role(self):
+        ct = PermissionSubjectType.from_string('role')
+        self.assertEqual(ct, PermissionSubjectType.ROLE)
 
-    def test_ldap_connect(self):
-        ct = UserAuthType.from_string('ldap_connect')
-        self.assertEqual(ct, UserAuthType.LDAP_CONNECT)
+    def test_group(self):
+        ct = PermissionSubjectType.from_string('group')
+        self.assertEqual(ct, PermissionSubjectType.GROUP)
 
 
 if __name__ == '__main__':

@@ -32,18 +32,18 @@ class FeedType(Enum):
     SCAP = "SCAP"
     GVMD_DATA = "GVMD_DATA"
 
+    @classmethod
+    def from_string(cls, feed_type: Optional[str]) -> Optional["FeedType"]:
+        """Convert a feed type string into a FeedType instance"""
+        if not feed_type:
+            return None
 
-def get_feed_type_from_string(feed_type: Optional[str]) -> Optional[FeedType]:
-    """Convert a feed type string into a FeedType instance"""
-    if not feed_type:
-        return None
-
-    try:
-        return FeedType[feed_type.upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='feed_type', function=get_feed_type_from_string.__name__
-        ) from None
+        try:
+            return cls[feed_type.upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='feed_type', function=cls.from_string.__name__
+            ) from None
 
 
 class FeedMixin:

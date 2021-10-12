@@ -19,28 +19,28 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv214 import TicketStatus, get_ticket_status_from_string
+from gvm.protocols.gmpv214 import TicketStatus
 
 
 class GetTicketStatusFromStringTestCase(unittest.TestCase):
     def test_invalid_status(self):
         with self.assertRaises(InvalidArgument):
-            get_ticket_status_from_string('foo')
+            TicketStatus.from_string('foo')
 
     def test_none_or_empty_type(self):
-        ts = get_ticket_status_from_string(None)
+        ts = TicketStatus.from_string(None)
         self.assertIsNone(ts)
-        ts = get_ticket_status_from_string('')
+        ts = TicketStatus.from_string('')
         self.assertIsNone(ts)
 
     def test_ticket_status_open(self):
-        ts = get_ticket_status_from_string('open')
+        ts = TicketStatus.from_string('open')
         self.assertEqual(ts, TicketStatus.OPEN)
 
     def test_ticket_status_fixed(self):
-        ts = get_ticket_status_from_string('fixed')
+        ts = TicketStatus.from_string('fixed')
         self.assertEqual(ts, TicketStatus.FIXED)
 
     def test_ticket_status_closed(self):
-        ts = get_ticket_status_from_string('closed')
+        ts = TicketStatus.from_string('closed')
         self.assertEqual(ts, TicketStatus.CLOSED)

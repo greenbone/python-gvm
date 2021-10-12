@@ -19,34 +19,34 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv214 import HelpFormat, get_help_format_from_string
+from gvm.protocols.gmpv214 import HelpFormat
 
 
 class GetHelpFormatFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            get_help_format_from_string('foo')
+            HelpFormat.from_string('foo')
 
     def test_none_or_empty(self):
-        ct = get_help_format_from_string(None)
+        ct = HelpFormat.from_string(None)
         self.assertIsNone(ct)
-        ct = get_help_format_from_string('')
+        ct = HelpFormat.from_string('')
         self.assertIsNone(ct)
 
     def test_task_run_status_changed(self):
-        ct = get_help_format_from_string('HtMl')
+        ct = HelpFormat.from_string('HtMl')
         self.assertEqual(ct, HelpFormat.HTML)
 
     def test_new_secinfo_arrived(self):
-        ct = get_help_format_from_string('rNc')
+        ct = HelpFormat.from_string('rNc')
         self.assertEqual(ct, HelpFormat.RNC)
 
     def test_updated_secinfo_arrived(self):
-        ct = get_help_format_from_string('tExT')
+        ct = HelpFormat.from_string('tExT')
         self.assertEqual(ct, HelpFormat.TEXT)
 
     def test_ticket_received(self):
-        ct = get_help_format_from_string('XmL')
+        ct = HelpFormat.from_string('XmL')
         self.assertEqual(ct, HelpFormat.XML)
 
 

@@ -37,21 +37,22 @@ class AlertEvent(Enum):
     ASSIGNED_TICKET_CHANGED = 'Assigned ticket changed'
     OWNED_TICKET_CHANGED = 'Owned ticket changed'
 
+    @classmethod
+    def from_string(
+        cls,
+        alert_event: Optional[str],
+    ) -> Optional["AlertEvent"]:
+        """Convert an alert event string into a AlertEvent instance"""
+        if not alert_event:
+            return None
 
-def get_alert_event_from_string(
-    alert_event: Optional[str],
-) -> Optional[AlertEvent]:
-    """Convert an alert event string into a AlertEvent instance"""
-    if not alert_event:
-        return None
-
-    try:
-        return AlertEvent[alert_event.replace(' ', '_').upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='alert_event',
-            function=get_alert_event_from_string.__name__,
-        ) from None
+        try:
+            return cls[alert_event.replace(' ', '_').upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='alert_event',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class AlertCondition(Enum):
@@ -64,21 +65,21 @@ class AlertCondition(Enum):
     FILTER_COUNT_CHANGED = 'Filter count changed'
     FILTER_COUNT_AT_LEAST = 'Filter count at least'
 
+    @classmethod
+    def from_string(
+        cls, alert_condition: Optional[str]
+    ) -> Optional["AlertCondition"]:
+        """Convert an alert condition string into a AlertCondition instance"""
+        if not alert_condition:
+            return None
 
-def get_alert_condition_from_string(
-    alert_condition: Optional[str],
-) -> Optional[AlertCondition]:
-    """Convert an alert condition string into a AlertCondition instance"""
-    if not alert_condition:
-        return None
-
-    try:
-        return AlertCondition[alert_condition.replace(' ', '_').upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='alert_condition',
-            function=get_alert_condition_from_string.__name__,
-        ) from None
+        try:
+            return cls[alert_condition.replace(' ', '_').upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='alert_condition',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 class AlertMethod(Enum):
@@ -97,21 +98,22 @@ class AlertMethod(Enum):
     TIPPINGPOINT_SMS = "TippingPoint SMS"
     ALEMBA_VFIRE = "Alemba vFire"
 
+    @classmethod
+    def from_string(
+        cls,
+        alert_method: Optional[str],
+    ) -> Optional["AlertMethod"]:
+        """Convert an alert method string into a AlertCondition instance"""
+        if not alert_method:
+            return None
 
-def get_alert_method_from_string(
-    alert_method: Optional[str],
-) -> Optional[AlertMethod]:
-    """Convert an alert method string into a AlertCondition instance"""
-    if not alert_method:
-        return None
-
-    try:
-        return AlertMethod[alert_method.replace(' ', '_').upper()]
-    except KeyError:
-        raise InvalidArgument(
-            argument='alert_method',
-            function=get_alert_method_from_string.__name__,
-        ) from None
+        try:
+            return cls[alert_method.replace(' ', '_').upper()]
+        except KeyError:
+            raise InvalidArgument(
+                argument='alert_method',
+                function=cls.from_string.__name__,
+            ) from None
 
 
 def _check_event(
