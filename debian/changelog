@@ -1,3 +1,11 @@
+python-gvm (21.10.0-gos2008~1) gos20.08; urgency=medium
+
+  * New upstream release 21.10.0-gos2008~1. (PL-684)
+  * Update gbp.conf.
+  * Add self to Uploaders.
+
+ -- Lukas Hannigbrinck <lukas.hannigbrinck@greenbone.net>  Wed, 27 Oct 2021 14:15:55 +0000
+
 python-gvm (21.6.0-gos2008~1) gos20.08; urgency=medium
 
   * New upstream release 21.6.0-gos2008~1. (PL-540)
