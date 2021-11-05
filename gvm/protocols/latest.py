@@ -15,27 +15,26 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-"""Latest supported stable protocols.
+"""Latest supported protocols, including unstable ones.
 
-This module exposes the latest supported protocols for the newest stable
-release branch of GVM.
+This module exposes the latest supported protocols of GVM including versions
+not yet released as stable.
 
-The provided Gmp class implements the latest `Greenbone Management
-Protocol`_.
+The provided Gmp class implements the latest `Greenbone Management Protocol`.
 The provided Osp class implements the latest Open Scanner Protocol.
 
 For details about the possible supported protocol versions please take a look at
 :py:mod:`gvm.protocols`.
 
 Exports:
-  - :py:class:`gvm.protocols.gmpv208.Gmp`
+  - :py:class:`gvm.protocols.gmpv214.Gmp`
   - :py:class:`gvm.protocols.ospv1.Osp`
 
 .. _Greenbone Management Protocol:
     https://docs.greenbone.net/API/GMP/gmp.html
 """
 
-from .gmpv208 import (
+from .gmpv214 import (
     Gmp,
     AggregateStatistic,
     AlertCondition,

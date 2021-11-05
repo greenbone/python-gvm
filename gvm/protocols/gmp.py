@@ -27,6 +27,7 @@ from gvm.protocols.base import GvmProtocol, GvmConnection
 
 from gvm.protocols.gmpv208 import Gmp as Gmpv208
 from gvm.protocols.gmpv214 import Gmp as Gmpv214
+from gvm.protocols.gmpv2110 import Gmp as Gmpv2110
 
 from gvm.transforms import EtreeCheckCommandTransform
 
@@ -95,16 +96,19 @@ class Gmp(GvmProtocol):
         """Determine supported GMP version of the remote daemon and return a
         corresponding Gmp class instance
         """
-        version = self.determine_remote_gmp_version()
-        major_version = int(version.split('.')[0])
+        version_str = self.determine_remote_gmp_version().split('.', 1)
+        major_version = int(version_str[0])
+        minor_version = int(version_str[1])
         if major_version == 20:
             gmp_class = Gmpv208
-        elif major_version == 21:
+        elif major_version == 21 and minor_version == 4:
             gmp_class = Gmpv214
+        elif major_version == 21 and minor_version == 10:
+            gmp_class = Gmpv2110
         else:
             raise GvmError(
                 'Remote manager daemon uses an unsupported version of GMP. '
-                f'The GMP version was {version}.'
+                f'The GMP version was {major_version}.{minor_version}'
             )
 
         return gmp_class(self._connection, transform=self._gmp_transform)

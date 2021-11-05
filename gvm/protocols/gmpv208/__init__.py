@@ -130,32 +130,6 @@ from gvm.connections import GvmConnection
 
 logger = logging.getLogger(__name__)
 
-_TYPE_FIELDS = [
-    AggregateStatistic,
-    AlertCondition,
-    AlertEvent,
-    AlertMethod,
-    AliveTest,
-    CredentialFormat,
-    CredentialType,
-    EntityType,
-    FeedType,
-    FilterType,
-    HostsOrdering,
-    InfoType,
-    HelpFormat,
-    PortRangeType,
-    PermissionSubjectType,
-    ReportFormatType,
-    ScannerType,
-    SeverityLevel,
-    SnmpAuthAlgorithm,
-    SnmpPrivacyAlgorithm,
-    SortOrder,
-    TicketStatus,
-    UserAuthType,
-]
-
 
 class Gmp(
     GvmProtocol,
@@ -221,10 +195,6 @@ class Gmp(
         *,
         transform: Optional[Callable[[str], Any]] = None,
     ):
-        self.types = {}
-        for t in _TYPE_FIELDS:
-            self.types[t.__name__] = t
-
         super().__init__(connection, transform=transform)
 
         # Is authenticated on gvmd

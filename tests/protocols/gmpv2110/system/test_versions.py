@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2021 Greenbone Networks GmbH
+# Copyright (C) 2021 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=no-member
-
-import unittest
-
-from gvm.protocols.next import Gmp, Osp
+from ...gmpv2110 import Gmpv2110TestCase
+from ...gmpv208.system.versions import GmpGetVersionTestCase
+from .versions import GmpGetProtocolVersionTestCase
 
 
-class LatestProtocolsTestCase(unittest.TestCase):
-    def test_gmp_version(self):
-        self.assertEqual(Gmp.get_protocol_version(), (21, 10))
-
-    def test_osp_version(self):
-        self.assertEqual(Osp.get_protocol_version(), (1, 2))
+class Gmpv2110GetVersionCommandTestCase(
+    GmpGetVersionTestCase, Gmpv2110TestCase
+):
+    pass
 
 
-if __name__ == '__main__':
-    unittest.main()
+class Gmpv2110GmpGetProtocolVersionTestCase(
+    GmpGetProtocolVersionTestCase, Gmpv2110TestCase
+):
+    pass
