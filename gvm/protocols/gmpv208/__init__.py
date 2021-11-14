@@ -29,6 +29,7 @@ import logging
 from typing import Any, Callable, Optional
 
 from gvm.protocols.base import GvmProtocol
+from gvm.utils import to_dotted_types_dict
 
 from gvm.protocols.gmpv208.entities.alerts import (
     AlertCondition,
@@ -222,6 +223,8 @@ class Gmp(
         transform: Optional[Callable[[str], Any]] = None,
     ):
         super().__init__(connection, transform=transform)
+
+        self.types = to_dotted_types_dict(_TYPE_FIELDS)
 
         # Is authenticated on gvmd
         self._authenticated = False
