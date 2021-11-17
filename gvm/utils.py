@@ -30,6 +30,14 @@ from gvm.xml import create_parser
 logger = logging.getLogger(__name__)
 
 
+class TypesDict(dict):
+    """For dot.notation access to dictionary attributes"""
+
+    __getattr__ = dict.get
+    __setattr__ = dict.__setitem__
+    __delattr__ = dict.__delitem__
+
+
 def deprecation(message: str):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
 
@@ -60,6 +68,14 @@ def check_command_status(xml: str) -> bool:
     except etree.Error as e:
         logger.error("etree.XML(xml): %s", e)
         return False
+
+
+def to_dotted_types_dict(types: List) -> TypesDict:
+    """Create a dictionary accessible via dot notation"""
+    dic = {}
+    for typ in types:
+        dic[typ.__name__] = typ
+    return TypesDict(dic)
 
 
 def to_bool(value: bool) -> str:
