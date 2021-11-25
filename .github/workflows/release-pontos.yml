@@ -25,10 +25,10 @@ jobs:
         persist-credentials: false
     - name: Set up Python
       uses: actions/setup-python@v2
-      with:
-        python-version: 3.8
     - name: Install poetry and dependencies
       uses: greenbone/actions/poetry@v1
+      with:
+        version: 3.8
     - name: Tell git who I am
       run: |
         git config --global user.name "${{ env.GITHUB_USER }}"
