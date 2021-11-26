@@ -10,7 +10,6 @@ on:
 
 jobs:
   build-and-release:
-    env:
     name: Build and release with pontos
     runs-on: 'ubuntu-latest'
     steps:
