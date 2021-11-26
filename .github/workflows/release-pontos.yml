@@ -6,13 +6,6 @@ on:
 
 jobs:
   build-and-release:
-    env:
-      GITHUB_USER: ${{ secrets.GREENBONE_BOT }}
-      GITHUB_MAIL: ${{ secrets.GREENBONE_BOT_MAIL }}
-      GITHUB_TOKEN: ${{ secrets.GREENBONE_BOT_TOKEN }}
-      GPG_KEY: ${{ secrets.GPG_KEY }}
-      GPG_FINGERPRINT: ${{ secrets.GPG_FINGERPRINT }}
-      GPG_PASSPHRASE: ${{ secrets.GPG_PASSPHRASE }}
     name: Build and release with pontos
     # If the label 'make release' is set. If PR is closed because of an merge
     if: contains( github.event.pull_request.labels.*.name, 'make release') && github.event.pull_request.merged == true
@@ -29,3 +22,4 @@ jobs:
         gpg-key: ${{ secrets.GPG_KEY }}
         gpg-fingerprint: ${{ secrets.GPG_FINGERPRINT }}
         gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        strategy: calendar

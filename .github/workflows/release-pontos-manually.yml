@@ -10,7 +10,6 @@ on:
 
 jobs:
   build-and-release:
-    env:
     name: Build and release with pontos
     runs-on: 'ubuntu-latest'
     steps:
@@ -26,3 +25,4 @@ jobs:
         gpg-key: ${{ secrets.GPG_KEY }}
         gpg-fingerprint: ${{ secrets.GPG_FINGERPRINT }}
         gpg-passphrase: ${{ secrets.GPG_PASSPHRASE }}
+        strategy: calendar
