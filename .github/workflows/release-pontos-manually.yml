@@ -1,4 +1,4 @@
-name: Release Python package with pontos
+name: Manually release Python package with pontos
 
 on:
   workflow_dispatch:
@@ -14,7 +14,7 @@ jobs:
     runs-on: 'ubuntu-latest'
     steps:
     - name: Release with release action
-      uses: greenbone/actions/release@v1
+      uses: greenbone/actions/release-python@v1
       with:
         version: 3.8
         conventional-commits: true
