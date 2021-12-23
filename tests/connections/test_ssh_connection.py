@@ -104,6 +104,22 @@ class SSHConnectionTestCase(unittest.TestCase):
         ):
             ssh_connection.connect()
 
+    def test_connect_denied_known_hosts_file(self):
+        if os.path.exists(self.known_hosts_file):
+            os.chmod(self.known_hosts_file, 0000)
+
+        ssh_connection = SSHConnection(
+            hostname='0.0.0.1', known_hosts_file=self.known_hosts_file
+        )
+        with self.assertRaises(
+            GvmError,
+            msg=(
+                "Could'nt establish a connection to fetch the remote "
+                "server key: [Errno 65] No route to host"
+            ),
+        ):
+            ssh_connection.connect()
+
     def test_connect_no_known_hosts_file(self):
         if os.path.exists(self.known_hosts_file):
             os.remove(self.known_hosts_file)
