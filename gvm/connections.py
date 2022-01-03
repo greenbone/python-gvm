@@ -25,6 +25,7 @@ import socket as socketlib
 import ssl
 import sys
 import time
+import errno
 
 
 from pathlib import Path
@@ -328,10 +329,11 @@ class SSHConnection(GvmConnection):
             # load the keys into paramiko and check if remote is in the list
             self._socket.load_host_keys(filename=self.known_hosts_file)
         except OSError as e:
-            raise GvmError(
-                'Something went wrong with reading '
-                f'the known_hosts file: {e}'
-            ) from None
+            if e.errno != errno.ENOENT:
+                raise GvmError(
+                    'Something went wrong with reading '
+                    f'the known_hosts file: {e}'
+                ) from None
         hostkeys = self._socket.get_host_keys()
         if not hostkeys.lookup(self.hostname):
             # Key not found, so connect to remote and fetch the key
