@@ -1,0 +1,12 @@
+name: Call GOS-CI by a reusable workflow
+
+# Triggers the workflow on push events
+on: [push]
+
+jobs:
+  gos-ci:
+    uses: greenbone/gos-ci/.github/workflows/gos-ci.yml@main
+    secrets:
+      GOS_CI_REGISTRY: ${{ secrets.GOS_CI_REGISTRY }}
+      GOS_REPOSITORY_HOST: ${{ secrets.GOS_REPOSITORY_HOST }}
+      GOS_REPOSITORY_KEY: ${{ secrets.GOS_REPOSITORY_KEY }}
