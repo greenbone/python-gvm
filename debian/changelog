@@ -1,3 +1,11 @@
+python-gvm (21.10.0-gos2008~2) gos20.08; urgency=medium
+
+  * Migrate CI from Gitlab to Github
+    + Delete old .gitlab-ci.yml file
+    + Create new workflow files for Github Actions
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Tue, 18 Jan 2022 17:33:48 +0100
+
 python-gvm (21.10.0-gos2008~1) gos20.08; urgency=medium
 
   * New upstream release 21.10.0-gos2008~1. (PL-684)
