@@ -21,7 +21,7 @@ Module for communication with gvmd
 """
 from typing import Any, Optional, Callable, Union
 
-from gvm.errors import GvmError
+from gvm.errors import GvmClientError, GvmError
 
 from gvm.protocols.base import GvmProtocol, GvmConnection
 
@@ -48,7 +48,7 @@ class Gmp(GvmProtocol):
 
             from gvm.protocols.gmp import Gmp
 
-            with Gmp(connection) as gmp:
+            with Gmp(connection).supported_gmp as gmp:
                 # gmp can be an instance of gvm.protocols.gmpv208.Gmp,
                 # gvm.protocols.gmpv214.Gmp depending
                 # on the supported GMP version of the remote manager daemon
@@ -113,9 +113,12 @@ class Gmp(GvmProtocol):
 
         return gmp_class(self._connection, transform=self._gmp_transform)
 
+    @property
+    def supported_gmp(self):
+        return self.determine_supported_gmp()
+
     def __enter__(self):
-        gmp = self.determine_supported_gmp()
-
-        gmp.connect()
-
-        return gmp
+        raise GvmClientError(
+            'You may not use Gmp for context directly. Please use property '
+            'supported_gmp instead.'
+        )
