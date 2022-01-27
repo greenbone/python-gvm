@@ -71,8 +71,6 @@ class SSHConnectionTestCase(unittest.TestCase):
         )
 
     def test_connect_error(self):
-        print(self.known_hosts_file.read_text(encoding='utf-8'))
-
         ssh_connection = SSHConnection(known_hosts_file=self.known_hosts_file)
         with self.assertRaises(GvmError, msg="SSH Connection failed"):
             ssh_connection.connect()
@@ -119,6 +117,8 @@ class SSHConnectionTestCase(unittest.TestCase):
             ),
         ):
             ssh_connection.connect()
+        with self.assertRaises(AttributeError):
+            ssh_connection.disconnect()
 
     def test_connect_no_known_hosts_file(self):
         if os.path.exists(self.known_hosts_file):
@@ -316,7 +316,8 @@ FsAQI=
                 hostkeys=hostkeys, key=key
             )
 
-    def test_disconnect(self):
+    @patch('builtins.input', side_effect=['yes', 'yes'])
+    def test_disconnect(self, _input_mock):
         with patch('paramiko.SSHClient') as SSHClientMock:
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ['a', 'b', 'c']
@@ -355,7 +356,8 @@ FsAQI=
             ssh_connection._socket = None
             ssh_connection.disconnect()
 
-    def test_disconnect_os_error(self):
+    @patch('builtins.input', side_effect=['yes', 'yes'])
+    def test_disconnect_os_error(self, _input_mock):
         with patch('paramiko.SSHClient') as SSHClientMock:
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ['a', 'b', 'c']
@@ -371,7 +373,8 @@ FsAQI=
                     ssh_connection.disconnect()
                     self.assertEqual(cm.output, ['Connection closing error: '])
 
-    def test_trigger_paramiko_ssh_except_in_get_remote_key(self):
+    @patch('builtins.input', side_effect=['yes', 'yes'])
+    def test_trigger_paramiko_ssh_except_in_get_remote_key(self, _input_mock):
         with patch('paramiko.transport.Transport') as TransportMock:
             client_mock = TransportMock.return_value
             client_mock.start_client.side_effect = paramiko.SSHException('foo')
@@ -385,8 +388,10 @@ FsAQI=
                 msg="Couldn't fetch the remote server key: foo",
             ):
                 ssh_connection._get_remote_host_key()
+            ssh_connection.disconnect()
 
-    def test_trigger_oserror_in_get_remote_key_connect(self):
+    @patch('builtins.input', side_effect=['yes', 'yes'])
+    def test_trigger_oserror_in_get_remote_key_connect(self, _input_mock):
         with patch('socket.socket') as SocketMock:
             client_mock = SocketMock.return_value
             client_mock.connect.side_effect = OSError('foo')
@@ -401,8 +406,10 @@ FsAQI=
                 "remote server key: foo",
             ):
                 ssh_connection._get_remote_host_key()
+            ssh_connection.disconnect()
 
-    def test_trigger_oserror_in_get_remote_key_disconnect(self):
+    @patch('builtins.input', side_effect=['yes', 'yes'])
+    def test_trigger_oserror_in_get_remote_key_disconnect(self, _input_mock):
         with patch('paramiko.transport.Transport') as TransportMock:
             client_mock = TransportMock.return_value
             client_mock.close.side_effect = paramiko.SSHException('foo')
@@ -417,8 +424,10 @@ FsAQI=
                 "remote server key: foo",
             ):
                 ssh_connection._get_remote_host_key()
+            ssh_connection.disconnect()
 
-    def test_send(self):
+    @patch('builtins.input', side_effect=['yes', 'yes'])
+    def test_send(self, _input_mock):
         with patch('paramiko.SSHClient') as SSHClientMock:
             client_mock = SSHClientMock.return_value
             stdin = Mock()
@@ -433,7 +442,8 @@ FsAQI=
             self.assertEqual(req, 4)
             ssh_connection.disconnect()
 
-    def test_send_error(self):
+    @patch('builtins.input', side_effect=['yes', 'yes'])
+    def test_send_error(self, _input_mock):
         with patch('paramiko.SSHClient') as SSHClientMock:
             client_mock = SSHClientMock.return_value
             stdin = Mock()
@@ -450,7 +460,8 @@ FsAQI=
                 ssh_connection.send("blah")
             ssh_connection.disconnect()
 
-    def test_send_and_slice(self):
+    @patch('builtins.input', side_effect=['yes', 'yes'])
+    def test_send_and_slice(self, _input_mock):
         with patch('paramiko.SSHClient') as SSHClientMock:
             client_mock = SSHClientMock.return_value
             stdin = Mock()
@@ -469,7 +480,8 @@ FsAQI=
                 stdin.channel.send.assert_called_once()
             ssh_connection.disconnect()
 
-    def test_read(self):
+    @patch('builtins.input', side_effect=['yes', 'yes'])
+    def test_read(self, _input_mock):
         with patch('paramiko.SSHClient') as SSHClientMock:
             client_mock = SSHClientMock.return_value
             stdout = Mock()
