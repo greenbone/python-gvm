@@ -19,7 +19,8 @@
 """
 Module for communication with gvmd
 """
-from typing import Any, Optional, Callable, Union
+from types import TracebackType
+from typing import Any, Optional, Callable, Union, Type
 
 from gvm.errors import GvmError
 
@@ -114,8 +115,17 @@ class Gmp(GvmProtocol):
         return gmp_class(self._connection, transform=self._gmp_transform)
 
     def __enter__(self):
-        gmp = self.determine_supported_gmp()
+        self._gmp = self.determine_supported_gmp()
 
-        gmp.connect()
+        self._gmp.connect()
 
-        return gmp
+        return self._gmp
+
+    def __exit__(
+        self,
+        exc_type: Optional[Type[BaseException]],
+        exc_value: Optional[BaseException],
+        traceback: Optional[TracebackType],
+    ) -> Any:
+        self._gmp.disconnect()
+        self._gmp = None
