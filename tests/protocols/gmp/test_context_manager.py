@@ -17,6 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import unittest
+from unittest.mock import MagicMock, patch
 
 from tests.protocols import GmpTestCase
 
@@ -114,6 +115,21 @@ class GmpContextManagerTestCase(GmpTestCase):
         with self.assertRaises(GvmError):
             with self.gmp:
                 pass
+
+    @patch("gvm.protocols.gmp.Gmpv214")
+    def test_connect_disconnect(self, gmp_mock: MagicMock):
+        self.connection.read.return_value(
+            '<get_version_response status="200" status_text="OK">'
+            '<version>21.04</version>'
+            '</get_version_response>'
+        )
+
+        with self.gmp:
+            gmp_mock.assert_called_once()
+
+        mock_instance = gmp_mock.return_value
+        mock_instance.connect.assert_called_once()
+        mock_instance.disconnect.assert_called_once()
 
 
 if __name__ == '__main__':
