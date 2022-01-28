@@ -17,9 +17,8 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ...gmpv2110 import Gmpv2110TestCase
-from .users import GmpModifyUserTestMixin
+from .users import GmpCreateUserTestMixin, GmpModifyUserTestMixin
 from ...gmpv208.entities.users import (
-    GmpCreateUserTestMixin,
     GmpCloneUserTestMixin,
     GmpDeleteUserTestMixin,
     GmpGetUsersTestMixin,

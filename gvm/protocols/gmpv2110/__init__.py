@@ -127,9 +127,10 @@ from gvm.protocols.gmpv214.entities.targets import (
     AliveTest,
     TargetsMixin,
 )
-from gvm.protocols.gmpv214.entities.users import UsersMixin
 
 # NEW IN 2110
+from gvm.protocols.gmpv2110.entities.users import UsersMixin
+
 from gvm.protocols.gmpv2110.system.version import VersionMixin
 
 from gvm.connections import GvmConnection
