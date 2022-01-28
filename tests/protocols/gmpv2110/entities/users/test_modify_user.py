@@ -16,6 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from unittest.mock import patch, call
 from gvm.errors import RequiredArgument
 from gvm.protocols.gmpv2110 import UserAuthType
 
@@ -156,43 +157,44 @@ class GmpModifyUserTestMixin:
             '</modify_user>'
         )
 
-    def test_modify_user_with_ifaces(self):
+    @patch('gvm.protocols.gmpv2110.entities.users.deprecation')
+    def test_modify_user_with_ifaces(self, deprecation_mock):
         self.gmp.modify_user(user_id='u1', ifaces=[])
 
         self.connection.send.has_been_called_with('<modify_user user_id="u1"/>')
 
-        self.gmp.modify_user(user_id='u1', ifaces=['foo'])
+        self.gmp.modify_user(user_id='u2', ifaces=['foo'])
 
-        self.connection.send.has_been_called_with(
-            '<modify_user user_id="u1">'
-            '<ifaces allow="0">foo</ifaces>'
-            '</modify_user>'
-        )
+        self.connection.send.has_been_called_with('<modify_user user_id="u2"/>')
 
-        self.gmp.modify_user(user_id='u1', ifaces=['foo', 'bar'])
+        self.gmp.modify_user(user_id='u3', ifaces=['foo', 'bar'])
 
-        self.connection.send.has_been_called_with(
-            '<modify_user user_id="u1">'
-            '<ifaces allow="0">foo,bar</ifaces>'
-            '</modify_user>'
-        )
+        self.connection.send.has_been_called_with('<modify_user user_id="u3"/>')
 
         self.gmp.modify_user(
-            user_id='u1', ifaces=['foo', 'bar'], ifaces_allow=False
+            user_id='u4', ifaces=['foo', 'bar'], ifaces_allow=False
         )
 
-        self.connection.send.has_been_called_with(
-            '<modify_user user_id="u1">'
-            '<ifaces allow="0">foo,bar</ifaces>'
-            '</modify_user>'
-        )
+        self.connection.send.has_been_called_with('<modify_user user_id="u4"/>')
 
         self.gmp.modify_user(
-            user_id='u1', ifaces=['foo', 'bar'], ifaces_allow=True
+            user_id='u5', ifaces=['foo', 'bar'], ifaces_allow=True
         )
 
-        self.connection.send.has_been_called_with(
-            '<modify_user user_id="u1">'
-            '<ifaces allow="1">foo,bar</ifaces>'
-            '</modify_user>'
-        )
+        self.connection.send.has_been_called_with('<modify_user user_id="u5"/>')
+
+        # pylint: disable=line-too-long
+        deprecation_calls = [
+            call('The ifaces parameter has been removed in GMP version 2110'),
+            call('The ifaces parameter has been removed in GMP version 2110'),
+            call('The ifaces parameter has been removed in GMP version 2110'),
+            call(
+                'The ifaces_allow parameter has been removed in GMP version 2110'
+            ),
+            call('The ifaces parameter has been removed in GMP version 2110'),
+            call(
+                'The ifaces_allow parameter has been removed in GMP version 2110'
+            ),
+        ]
+        # pylint: enable=line-too-long
+        deprecation_mock.assert_has_calls(deprecation_calls)
