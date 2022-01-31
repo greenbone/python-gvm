@@ -520,7 +520,7 @@ test = ["pytest", "pytest-cov", "html5lib", "cython", "typed-ast"]
 
 [[package]]
 name = "sphinx-autodoc-typehints"
-version = "1.15.3"
+version = "1.16.0"
 description = "Type hints (PEP 484) support for the Sphinx autodoc extension"
 category = "dev"
 optional = false
@@ -530,7 +530,7 @@ python-versions = ">=3.7"
 Sphinx = ">=4"
 
 [package.extras]
-testing = ["covdefaults (>=2)", "coverage (>=6)", "diff-cover (>=6.4)", "pytest (>=6)", "pytest-cov (>=3)", "sphobjinv (>=2)", "typing-extensions (>=3.5)"]
+testing = ["covdefaults (>=2)", "coverage (>=6)", "diff-cover (>=6.4)", "nptyping (>=1)", "pytest (>=6)", "pytest-cov (>=3)", "sphobjinv (>=2)", "typing-extensions (>=3.5)"]
 type_comments = ["typed-ast (>=1.4.0)"]
 
 [[package]]
@@ -680,7 +680,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.0"
-content-hash = "57f1d9b7d651e2de757e339561643a44231bb8c6f7fbecfd2b96b60ae8139722"
+content-hash = "3bf35f1b465c9d8bcc737e398269b14ea889d84f89c7cc1af226536f85aee85a"
 
 [metadata.files]
 alabaster = [
@@ -1161,8 +1161,8 @@ sphinx = [
     {file = "Sphinx-4.4.0.tar.gz", hash = "sha256:6caad9786055cb1fa22b4a365c1775816b876f91966481765d7d50e9f0dd35cc"},
 ]
 sphinx-autodoc-typehints = [
-    {file = "sphinx_autodoc_typehints-1.15.3-py3-none-any.whl", hash = "sha256:5bf7ae28f98dd2cae8b93c4f723fb5f4761ae340194d02d2742a81c7694d2e0a"},
-    {file = "sphinx_autodoc_typehints-1.15.3.tar.gz", hash = "sha256:91eb3c227ff0824bee39fabf92d92e21835546903d2ddde5467fd9b6fa10ad7f"},
+    {file = "sphinx_autodoc_typehints-1.16.0-py3-none-any.whl", hash = "sha256:b5efe1fb5754349f849ca09b1f5c9b4bb37f1e360f00fbde003b12c60d67cc3a"},
+    {file = "sphinx_autodoc_typehints-1.16.0.tar.gz", hash = "sha256:21df6ee692c2c8366f6df13b13e4d4ab8af25cc0dfb65e2d182351528b6eb704"},
 ]
 sphinxcontrib-applehelp = [
     {file = "sphinxcontrib-applehelp-1.0.2.tar.gz", hash = "sha256:a072735ec80e7675e3f432fcae8610ecf509c5f1869d17e2eecff44389cdbc58"},
