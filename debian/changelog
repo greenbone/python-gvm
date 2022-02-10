@@ -1,3 +1,9 @@
+python-gvm (21.11.0-gos2110~1) abomination; urgency=medium
+
+  * Prepare everything for Debian Bullseye.
+
+ -- Hendrik Deuper <hendrik.deuper@greenbone.net>  Thu, 10 Feb 2022 09:28:13 +0000
+
 python-gvm (21.10.0-gos2008~2) gos20.08; urgency=medium
 
   * Migrate CI from Gitlab to Github
