@@ -8,15 +8,16 @@ Uploaders: Sascha Howey <sascha.howey@greenbone.net>,
  Carlos A. Parra F. <carlos.parra@greenbone.net>,
  Lukas Hannigbrinck <lukas.hannigbrinck@greenbone.net>,
 Build-Depends:
-  debhelper (>= 12),
+  debhelper-compat (= 13),
+  dh-python,
   python3-all,
   python3-setuptools,
   python3-lxml,
   python3-defusedxml,
   python3-paramiko,
   dh-python
-Standards-Version: 4.4.1
-X-Python3-Version: >= 3.7
+Standards-Version: 4.5.1
+X-Python3-Version: >= 3.9
 
 Package: python3-gvm
 Architecture: all
