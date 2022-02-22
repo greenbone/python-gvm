@@ -1,3 +1,11 @@
+python-gvm (21.11.0-gos2110~2) abomination; urgency=medium
+
+  * Add patch for PR 633.
+    Update the series file.
+    Closes: PR-263
+
+ -- Lukas Hannigbrinck <lukas.hannigbrinck@greenbone.net>  Tue, 22 Feb 2022 15:49:29 +0100
+
 python-gvm (21.11.0-gos2110~1) abomination; urgency=medium
 
   * Prepare everything for Debian Bullseye.
