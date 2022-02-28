@@ -34,9 +34,9 @@ from gvm.transforms import EtreeCheckCommandTransform
 
 from gvm.xml import XmlCommand
 
-SUPPORTED_GMP_VERSIONS = Union[
+SUPPORTED_GMP_VERSIONS = Union[ # pylint: disable=invalid-name
     Gmpv208, Gmpv214, Gmpv224
-]  # pylint: disable=invalid-name
+]
 
 
 class Gmp(GvmProtocol):
