@@ -19,4 +19,4 @@
 
 class GmpGetProtocolVersionTestCase:
     def test_protocol_version(self):
-        self.assertEqual(self.gmp.get_protocol_version(), (21, 10))
+        self.assertEqual(self.gmp.get_protocol_version(), (22, 4))
