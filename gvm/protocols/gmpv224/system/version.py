@@ -21,7 +21,7 @@ from gvm.protocols.gmpv208.system.version import (
     VersionMixin as Gmp208VersionMixin,
 )
 
-PROTOCOL_VERSION = (21, 10)
+PROTOCOL_VERSION = (22, 4)
 
 
 class VersionMixin(Gmp208VersionMixin):
