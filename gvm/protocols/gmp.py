@@ -28,13 +28,15 @@ from gvm.protocols.base import GvmProtocol, GvmConnection
 
 from gvm.protocols.gmpv208 import Gmp as Gmpv208
 from gvm.protocols.gmpv214 import Gmp as Gmpv214
-from gvm.protocols.gmpv2110 import Gmp as Gmpv2110
+from gvm.protocols.gmpv224 import Gmp as Gmpv224
 
 from gvm.transforms import EtreeCheckCommandTransform
 
 from gvm.xml import XmlCommand
 
-SUPPORTED_GMP_VERSIONS = Union[Gmpv208, Gmpv214]  # pylint: disable=invalid-name
+SUPPORTED_GMP_VERSIONS = Union[  # pylint: disable=invalid-name
+    Gmpv208, Gmpv214, Gmpv224
+]
 
 
 class Gmp(GvmProtocol):
@@ -104,8 +106,8 @@ class Gmp(GvmProtocol):
             gmp_class = Gmpv208
         elif major_version == 21 and minor_version == 4:
             gmp_class = Gmpv214
-        elif major_version == 21 and minor_version == 10:
-            gmp_class = Gmpv2110
+        elif major_version == 22 and minor_version == 4:
+            gmp_class = Gmpv224
         else:
             raise GvmError(
                 'Remote manager daemon uses an unsupported version of GMP. '

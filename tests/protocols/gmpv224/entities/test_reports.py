@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2022 Greenbone Networks GmbH
+# Copyright (C) 2021-2022 Greenbone Networks GmbH
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,26 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=no-member
-
-import unittest
-
-from gvm.protocols.next import Gmp, Osp
-
-
-class LatestProtocolsTestCase(unittest.TestCase):
-    def test_gmp_version(self):
-        self.assertEqual(Gmp.get_protocol_version(), (22, 4))
-
-    def test_osp_version(self):
-        self.assertEqual(Osp.get_protocol_version(), (1, 2))
+from ...gmpv224 import Gmpv224TestCase
+from ...gmpv208.entities.reports import (
+    GmpDeleteReportTestMixin,
+    GmpGetReportsTestMixin,
+    GmpGetReportTestMixin,
+    GmpImportReportTestMixin,
+)
 
 
-if __name__ == '__main__':
-    unittest.main()
+class Gmpv224DeleteReportTestCase(GmpDeleteReportTestMixin, Gmpv224TestCase):
+    pass
+
+
+class Gmpv224GetReportTestCase(GmpGetReportTestMixin, Gmpv224TestCase):
+    pass
+
+
+class Gmpv224GetReportsTestCase(GmpGetReportsTestMixin, Gmpv224TestCase):
+    pass
+
+
+class Gmpv224ImportReportTestCase(GmpImportReportTestMixin, Gmpv224TestCase):
+    pass
