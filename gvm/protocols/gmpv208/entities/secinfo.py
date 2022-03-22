@@ -340,7 +340,7 @@ class SecInfoMixin:
 
         Arguments:
             info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
-                DFN_CERT_ADV, OVALDEF, NVT or ALLINFO
+                DFN_CERT_ADV, OVALDEF or NVT
             filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             name: Name or identifier of the requested information
