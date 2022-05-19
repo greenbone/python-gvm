@@ -467,6 +467,15 @@ class TLSConnection(GvmConnection):
         self._socket = self._new_socket()
         self._socket.connect((self.hostname, int(self.port)))
 
+    def disconnect(self):
+        """Close the SSL layer then disconnect from the remote server"""
+        try:
+            if self._socket is not None:
+                self._socket = self._socket.unwrap()
+        except OSError as e:
+            logger.debug("Connection closing error: %s", e)
+        return super(TLSConnection, self).disconnect()
+
 
 class UnixSocketConnection(GvmConnection):
     """
