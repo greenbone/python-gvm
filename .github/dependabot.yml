@@ -1,11 +1,17 @@
 version: 2
 updates:
+
 - package-ecosystem: pip
   directory: "/"
   schedule:
-    interval: weekly
+    interval: "weekly"
     time: "04:00"
   open-pull-requests-limit: 10
   allow:
   - dependency-type: direct
   - dependency-type: indirect
+
+- package-ecosystem: "github-actions"
+  directory: "/"
+  schedule:
+    interval: "weekly"
