@@ -48,7 +48,7 @@ class NotesMixin:
                 always, 0 off
             hosts: A list of hosts addresses
             port: Port to which the override applies, needs to be a string
-                  e.g. 80/tcp
+                  in the form {number}/{protocol}
             result_id: UUID of a result to which note applies
             severity: Severity to which note applies
             task_id: UUID of task to which note applies
@@ -218,7 +218,7 @@ class NotesMixin:
             days_active: Days note will be active. -1 on always, 0 off.
             hosts: A list of hosts addresses
             port: Port to which the override applies, needs to be a string
-                  e.g. 80/tcp
+                  in the form {number}/{protocol}
             result_id: Result to which note applies.
             severity: Severity to which note applies.
             task_id: Task to which note applies.

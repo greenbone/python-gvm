@@ -48,7 +48,7 @@ class OverridesMixin:
             days_active: Days override will be active. -1 on always, 0 off
             hosts: A list of host addresses
             port: Port to which the override applies, needs to be a string
-                  e.g. 80/tcp
+                  in the form {number}/{protocol}
             result_id: UUID of a result to which override applies
             severity: Severity to which override applies
             new_severity: New severity for result
@@ -238,7 +238,7 @@ class OverridesMixin:
                 0 off.
             hosts: A list of host addresses
             port: Port to which the override applies, needs to be a string
-                  e.g. 80/tcp
+                  in the form {number}/{protocol}
             result_id: Result to which override applies.
             severity: Severity to which override applies.
             new_severity: New severity score for result.
