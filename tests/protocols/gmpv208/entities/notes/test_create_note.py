@@ -18,7 +18,7 @@
 
 from decimal import Decimal
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv208 import SeverityLevel
 
@@ -69,23 +69,13 @@ class GmpCreateNoteTestMixin:
         )
 
     def test_create_note_with_port(self):
-        self.gmp.create_note('foo', nvt_oid='oid1', port='666')
+        self.gmp.create_note('foo', nvt_oid='oid1', port='666/tcp')
 
         self.connection.send.has_been_called_with(
             '<create_note>'
             '<text>foo</text>'
             '<nvt oid="oid1"/>'
-            '<port>666</port>'
-            '</create_note>'
-        )
-
-        self.gmp.create_note('foo', nvt_oid='oid1', port=666)
-
-        self.connection.send.has_been_called_with(
-            '<create_note>'
-            '<text>foo</text>'
-            '<nvt oid="oid1"/>'
-            '<port>666</port>'
+            '<port>666/tcp</port>'
             '</create_note>'
         )
 
@@ -190,3 +180,10 @@ class GmpCreateNoteTestMixin:
             '<active>3600</active>'
             '</create_note>'
         )
+
+    def test_create_note_with_invalid_port(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_note(text='foo', nvt_oid='oid1', port='123')
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_note(text='foo', nvt_oid='oid1', port='tcp/123')
