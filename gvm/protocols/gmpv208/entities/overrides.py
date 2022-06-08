@@ -86,8 +86,7 @@ class OverridesMixin:
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.create_override.__name__,
-                    argument='port'
+                    function=self.create_override.__name__, argument='port'
                 )
 
         if result_id:
@@ -276,8 +275,7 @@ class OverridesMixin:
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.modify_override.__name__,
-                    argument='port'
+                    function=self.modify_override.__name__, argument='port'
                 )
 
         if result_id:

@@ -241,4 +241,6 @@ class GmpModifyOverrideTestMixin:
             self.gmp.modify_override(override_id='o1', text='foo', port='123')
 
         with self.assertRaises(InvalidArgument):
-            self.gmp.modify_override(override_id='o1', text='foo', port='tcp/123')
+            self.gmp.modify_override(
+                override_id='o1', text='foo', port='tcp/123'
+            )

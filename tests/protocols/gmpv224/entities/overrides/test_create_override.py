@@ -79,7 +79,6 @@ class GmpCreateOverrideTestMixin:
             '</create_override>'
         )
 
-
     def test_create_override_with_result_id(self):
         self.gmp.create_override('foo', nvt_oid='oid1', result_id='r1')
 

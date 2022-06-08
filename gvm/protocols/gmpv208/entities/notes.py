@@ -83,8 +83,7 @@ class NotesMixin:
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.create_note.__name__,
-                    argument='port'
+                    function=self.create_note.__name__, argument='port'
                 )
 
         if result_id:
@@ -254,8 +253,7 @@ class NotesMixin:
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.modify_note.__name__,
-                    argument='port'
+                    function=self.modify_note.__name__, argument='port'
                 )
 
         if result_id:
