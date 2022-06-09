@@ -19,12 +19,12 @@
 
 from typing import Any, List, Optional
 
-from gvm.errors import RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208.entities.overrides import (
     OverridesMixin as Gmp208OverridesMixin,
 )
 from gvm.protocols.gmpv208.entities.severity import Severity
-from gvm.utils import deprecation, to_comma_list
+from gvm.utils import check_port, deprecation, to_comma_list
 from gvm.xml import XmlCommand
 
 
@@ -36,7 +36,7 @@ class OverridesMixin(Gmp208OverridesMixin):
         *,
         days_active: Optional[int] = None,
         hosts: Optional[List[str]] = None,
-        port: Optional[int] = None,
+        port: Optional[str] = None,
         result_id: Optional[str] = None,
         severity: Optional[Severity] = None,
         new_severity: Optional[Severity] = None,
@@ -51,7 +51,8 @@ class OverridesMixin(Gmp208OverridesMixin):
             nvt_id: OID of the nvt to which override applies
             days_active: Days override will be active. -1 on always, 0 off
             hosts: A list of host addresses
-            port: Port to which the override applies
+            port: Port to which the override applies, needs to be a string
+                  in the form {number}/{protocol}
             result_id: UUID of a result to which override applies
             severity: Severity to which override applies
             new_severity: New severity for result
@@ -83,7 +84,12 @@ class OverridesMixin(Gmp208OverridesMixin):
             cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
-            cmd.add_element("port", str(port))
+            if check_port(port):
+                cmd.add_element("port", str(port))
+            else:
+                raise InvalidArgument(
+                    function=self.create_override.__name__, argument='port'
+                )
 
         if result_id:
             cmd.add_element("result", attrs={"id": result_id})
@@ -120,7 +126,7 @@ class OverridesMixin(Gmp208OverridesMixin):
         *,
         days_active: Optional[int] = None,
         hosts: Optional[List[str]] = None,
-        port: Optional[int] = None,
+        port: Optional[str] = None,
         result_id: Optional[str] = None,
         severity: Optional[Severity] = None,
         new_severity: Optional[Severity] = None,
@@ -136,7 +142,8 @@ class OverridesMixin(Gmp208OverridesMixin):
             days_active: Days override will be active. -1 on always,
                 0 off.
             hosts: A list of host addresses
-            port: Port to which override applies.
+            port: Port to which the override applies, needs to be a string
+                  in the form {number}/{protocol}
             result_id: Result to which override applies.
             severity: Severity to which override applies.
             new_severity: New severity score for result.
@@ -167,7 +174,12 @@ class OverridesMixin(Gmp208OverridesMixin):
             cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
-            cmd.add_element("port", str(port))
+            if check_port(port):
+                cmd.add_element("port", str(port))
+            else:
+                raise InvalidArgument(
+                    function=self.modify_override.__name__, argument='port'
+                )
 
         if result_id:
             cmd.add_element("result", attrs={"id": result_id})

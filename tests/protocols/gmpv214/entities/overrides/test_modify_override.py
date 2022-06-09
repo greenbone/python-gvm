@@ -18,7 +18,7 @@
 
 from decimal import Decimal
 
-from gvm.errors import RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 
 from gvm.protocols.gmpv214 import SeverityLevel
 
@@ -82,21 +82,12 @@ class GmpModifyOverrideTestMixin:
         )
 
     def test_modify_override_with_port(self):
-        self.gmp.modify_override(override_id='o1', text='foo', port='123')
+        self.gmp.modify_override(override_id='o1', text='foo', port='123/udp')
 
         self.connection.send.has_been_called_with(
             '<modify_override override_id="o1">'
             '<text>foo</text>'
-            '<port>123</port>'
-            '</modify_override>'
-        )
-
-        self.gmp.modify_override(override_id='o1', text='foo', port=123)
-
-        self.connection.send.has_been_called_with(
-            '<modify_override override_id="o1">'
-            '<text>foo</text>'
-            '<port>123</port>'
+            '<port>123/udp</port>'
             '</modify_override>'
         )
 
@@ -224,3 +215,12 @@ class GmpModifyOverrideTestMixin:
             '<text>foo</text>'
             '</modify_override>'
         )
+
+    def test_modify_override_with_invalid_port(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_override(override_id='o1', text='foo', port='123')
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_override(
+                override_id='o1', text='foo', port='tcp/123'
+            )

@@ -18,7 +18,7 @@
 
 from decimal import Decimal
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, RequiredArgument, InvalidArgumentType
 
 from gvm.protocols.gmpv208 import SeverityLevel
 
@@ -80,21 +80,12 @@ class GmpModifyNoteTestMixin:
         )
 
     def test_modify_note_with_port(self):
-        self.gmp.modify_note(note_id='n1', text='foo', port='123')
+        self.gmp.modify_note(note_id='n1', text='foo', port='123/tcp')
 
         self.connection.send.has_been_called_with(
             '<modify_note note_id="n1">'
             '<text>foo</text>'
-            '<port>123</port>'
-            '</modify_note>'
-        )
-
-        self.gmp.modify_note(note_id='n1', text='foo', port=123)
-
-        self.connection.send.has_been_called_with(
-            '<modify_note note_id="n1">'
-            '<text>foo</text>'
-            '<port>123</port>'
+            '<port>123/tcp</port>'
             '</modify_note>'
         )
 
@@ -183,3 +174,10 @@ class GmpModifyNoteTestMixin:
 
         with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_note(note_id='n1', text='foo', threat='foo')
+
+    def test_modify_note_with_invalid_port(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_note(note_id='o1', text='foo', port='123')
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_note(note_id='o1', text='foo', port='tcp/123')

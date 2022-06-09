@@ -19,10 +19,10 @@
 
 from typing import Any, List, Optional
 
-from gvm.errors import RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208.entities.notes import NotesMixin as Gmp208NotesMixin
 from gvm.protocols.gmpv208.entities.severity import Severity
-from gvm.utils import deprecation, to_comma_list
+from gvm.utils import check_port, deprecation, to_comma_list
 from gvm.xml import XmlCommand
 
 
@@ -48,7 +48,8 @@ class NotesMixin(Gmp208NotesMixin):
             days_active: Days note will be active. -1 on
                 always, 0 off
             hosts: A list of hosts addresses
-            port: Port to which the note applies
+            port: Port to which the override applies, needs to be a string
+                  in the form {number}/{protocol}
             result_id: UUID of a result to which note applies
             severity: Severity to which note applies
             task_id: UUID of task to which note applies
@@ -78,7 +79,12 @@ class NotesMixin(Gmp208NotesMixin):
             cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
-            cmd.add_element("port", str(port))
+            if check_port(port):
+                cmd.add_element("port", str(port))
+            else:
+                raise InvalidArgument(
+                    function=self.create_note.__name__, argument='port'
+                )
 
         if result_id:
             cmd.add_element("result", attrs={"id": result_id})
@@ -118,7 +124,8 @@ class NotesMixin(Gmp208NotesMixin):
             text: The text of the note.
             days_active: Days note will be active. -1 on always, 0 off.
             hosts: A list of hosts addresses
-            port: Port to which note applies.
+            port: Port to which the override applies, needs to be a string
+                  in the form {number}/{protocol}
             result_id: Result to which note applies.
             severity: Severity to which note applies.
             task_id: Task to which note applies.
@@ -148,7 +155,12 @@ class NotesMixin(Gmp208NotesMixin):
             cmd.add_element("hosts", to_comma_list(hosts))
 
         if port:
-            cmd.add_element("port", str(port))
+            if check_port(port):
+                cmd.add_element("port", str(port))
+            else:
+                raise InvalidArgument(
+                    function=self.modify_note.__name__, argument='port'
+                )
 
         if result_id:
             cmd.add_element("result", attrs={"id": result_id})

@@ -100,3 +100,13 @@ def add_filter(cmd, filter_string, filter_id):
 
 def is_list_like(value: Any) -> bool:
     return isinstance(value, (list, tuple))
+
+
+def check_port(value: str) -> bool:
+    try:
+        port, type = value.split('/', maxsplit=1)
+        if port.isdigit() and type:
+            return True
+        return False
+    except ValueError:
+        return False
