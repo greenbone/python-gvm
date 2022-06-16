@@ -89,7 +89,7 @@ class NotesMixin(Gmp208NotesMixin):
         if result_id:
             cmd.add_element("result", attrs={"id": result_id})
 
-        if severity:
+        if severity is not None:
             cmd.add_element("severity", str(severity))
 
         if task_id:
@@ -165,7 +165,7 @@ class NotesMixin(Gmp208NotesMixin):
         if result_id:
             cmd.add_element("result", attrs={"id": result_id})
 
-        if severity:
+        if severity is not None:
             cmd.add_element("severity", str(severity))
 
         if task_id:

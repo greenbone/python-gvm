@@ -94,10 +94,10 @@ class OverridesMixin(Gmp208OverridesMixin):
         if result_id:
             cmd.add_element("result", attrs={"id": result_id})
 
-        if severity:
+        if severity is not None:
             cmd.add_element("severity", str(severity))
 
-        if new_severity:
+        if new_severity is not None:
             cmd.add_element("new_severity", str(new_severity))
 
         if task_id:
@@ -184,10 +184,10 @@ class OverridesMixin(Gmp208OverridesMixin):
         if result_id:
             cmd.add_element("result", attrs={"id": result_id})
 
-        if severity:
+        if severity is not None:
             cmd.add_element("severity", str(severity))
 
-        if new_severity:
+        if new_severity is not None:
             cmd.add_element("new_severity", str(new_severity))
 
         if task_id:
