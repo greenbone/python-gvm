@@ -19,6 +19,7 @@
 # pylint: disable=arguments-differ, redefined-builtin
 
 import base64
+import re
 import warnings
 import logging
 
@@ -103,10 +104,9 @@ def is_list_like(value: Any) -> bool:
 
 
 def check_port(value: str) -> bool:
-    try:
-        port, type = value.split('/', maxsplit=1)
-        if port.isdigit() and type:
-            return True
-        return False
-    except ValueError:
-        return False
+    pattern = re.compile(
+        r"^(cpe:[^\s]+|(general|[1-9][0-9]{0,4})/[0-9A-Za-z]+)$"
+    )
+    if pattern.fullmatch(value):
+        return True
+    return False
