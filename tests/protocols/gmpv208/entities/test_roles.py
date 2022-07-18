@@ -21,8 +21,8 @@ from .roles import (
     GmpCloneRoleTestMixin,
     GmpCreateRoleTestMixin,
     GmpDeleteRoleTestMixin,
-    GmpGetRoleTestMixin,
     GmpGetRolesTestMixin,
+    GmpGetRoleTestMixin,
     GmpModifyRoleTestMixin,
 )
 

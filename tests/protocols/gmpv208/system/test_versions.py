@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ...gmpv208 import Gmpv208TestCase
-from .versions import GmpGetVersionTestCase, GmpGetProtocolVersionTestCase
+from .versions import GmpGetProtocolVersionTestCase, GmpGetVersionTestCase
 
 
 class Gmpv208GetVersionCommandTestCase(GmpGetVersionTestCase, Gmpv208TestCase):

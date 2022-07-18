@@ -21,11 +21,9 @@
 from typing import Any, List, Optional
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv214.entities.users import (
-    UsersMixin as Gmp214UsersMixin,
-    UserAuthType,
-)
-from gvm.utils import deprecation, to_comma_list, to_bool
+from gvm.protocols.gmpv214.entities.users import UserAuthType
+from gvm.protocols.gmpv214.entities.users import UsersMixin as Gmp214UsersMixin
+from gvm.utils import deprecation, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 

@@ -16,17 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv224 import Gmpv224TestCase
 from ...gmpv208.entities.scanners import (
     GmpCloneScannerTestMixin,
     GmpDeleteScannerTestMixin,
-    GmpGetScannerTestMixin,
     GmpGetScannersTestMixin,
+    GmpGetScannerTestMixin,
 )
-from .scanners import (
-    GmpCreateScannerTestMixin,
-    GmpModifyScannerTestMixin,
-)
+from ...gmpv224 import Gmpv224TestCase
+from .scanners import GmpCreateScannerTestMixin, GmpModifyScannerTestMixin
 
 
 class Gmpv224DeleteScannerTestCase(GmpDeleteScannerTestMixin, Gmpv224TestCase):

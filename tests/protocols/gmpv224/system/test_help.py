@@ -16,10 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from ...gmpv208.system.help import GmpHelpTestMixin
 from ...gmpv224 import Gmpv224TestCase
-from ...gmpv208.system.help import (
-    GmpHelpTestMixin,
-)
 
 
 class Gmpv224HelpTestCase(GmpHelpTestMixin, Gmpv224TestCase):

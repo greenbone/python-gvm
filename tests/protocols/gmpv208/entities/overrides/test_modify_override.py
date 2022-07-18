@@ -18,8 +18,7 @@
 
 from decimal import Decimal
 
-from gvm.errors import InvalidArgument, RequiredArgument, InvalidArgumentType
-
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208 import SeverityLevel
 
 

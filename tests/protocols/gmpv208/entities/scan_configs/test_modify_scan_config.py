@@ -17,7 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import warnings
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 
 
 class GmpModifyScanConfigTestMixin:

@@ -21,8 +21,8 @@ from .notes import (
     GmpCloneNoteTestMixin,
     GmpCreateNoteTestMixin,
     GmpDeleteNoteTestMixin,
-    GmpGetNoteTestMixin,
     GmpGetNotesTestMixin,
+    GmpGetNoteTestMixin,
     GmpModifyNoteTestMixin,
 )
 

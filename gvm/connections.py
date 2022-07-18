@@ -19,24 +19,20 @@
 Module for connections to GVM server daemons like gvmd and ospd.
 """
 import base64
+import errno
 import hashlib
 import logging
 import socket as socketlib
 import ssl
 import sys
 import time
-import errno
-
-
 from pathlib import Path
 from typing import Optional, Union
 
 import paramiko
-
 from lxml import etree
 
 from gvm.errors import GvmError
-
 
 logger = logging.getLogger(__name__)
 

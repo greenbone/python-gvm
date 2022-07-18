@@ -16,17 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.notes import (
     GmpCloneNoteTestMixin,
     GmpDeleteNoteTestMixin,
-    GmpGetNoteTestMixin,
     GmpGetNotesTestMixin,
+    GmpGetNoteTestMixin,
 )
-from .notes import (
-    GmpCreateNoteTestMixin,
-    GmpModifyNoteTestMixin,
-)
+from ...gmpv214 import Gmpv214TestCase
+from .notes import GmpCreateNoteTestMixin, GmpModifyNoteTestMixin
 
 
 class Gmpv214DeleteNoteTestCase(GmpDeleteNoteTestMixin, Gmpv214TestCase):

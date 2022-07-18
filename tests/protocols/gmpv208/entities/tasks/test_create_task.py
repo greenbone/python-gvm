@@ -18,8 +18,7 @@
 
 from collections import OrderedDict
 
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
-
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208 import HostsOrdering
 
 

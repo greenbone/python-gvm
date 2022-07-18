@@ -19,10 +19,10 @@
 from enum import Enum
 from typing import Any, Optional
 
-from gvm.protocols.gmpv208.entities.entities import (
-    EntityType,
-)  # if I use latest, I get circular import :/
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+
+# if I use latest, I get circular import :/
+from gvm.protocols.gmpv208.entities.entities import EntityType
 from gvm.utils import add_filter
 from gvm.xml import XmlCommand
 

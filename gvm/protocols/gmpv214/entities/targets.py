@@ -20,10 +20,10 @@
 
 from typing import Any, List, Optional
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
+from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.protocols.gmpv208.entities.targets import AliveTest
 from gvm.protocols.gmpv208.entities.targets import (
     TargetsMixin as Gmp208TargetsMixin,
-    AliveTest,
 )
 from gvm.utils import to_bool, to_comma_list
 from gvm.xml import XmlCommand

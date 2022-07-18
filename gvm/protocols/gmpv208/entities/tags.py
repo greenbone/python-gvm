@@ -18,7 +18,7 @@
 
 from typing import Any, List, Optional
 
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208.entities.entities import EntityType
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand

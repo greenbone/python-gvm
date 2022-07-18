@@ -16,19 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-from unittest.mock import patch
-
 import os
 import socketserver
 import tempfile
 import threading
+import unittest
 import uuid
+from unittest.mock import patch
 
 from gvm.connections import (
-    UnixSocketConnection,
     DEFAULT_TIMEOUT,
     DEFAULT_UNIX_SOCKET_PATH,
+    UnixSocketConnection,
 )
 from gvm.errors import GvmError
 

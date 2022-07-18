@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv224 import Gmpv224TestCase
 from ...gmpv208.entities.tls_certificates import (
     GmpCloneTLSCertificateTestMixin,
     GmpCreateTLSCertificateTestMixin,
@@ -25,6 +24,7 @@ from ...gmpv208.entities.tls_certificates import (
     GmpGetTLSCertificateTestMixin,
     GmpModifyTLSCertificateTestMixin,
 )
+from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CloneTLSCertificateTestCase(

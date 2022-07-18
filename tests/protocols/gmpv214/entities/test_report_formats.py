@@ -16,16 +16,16 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.report_formats import (
     GmpCloneReportFormatTestMixin,
-    GmpImportReportFormatTestMixin,
     GmpDeleteReportFormatTestMixin,
-    GmpGetReportFormatTestMixin,
     GmpGetReportFormatsTestMixin,
+    GmpGetReportFormatTestMixin,
+    GmpImportReportFormatTestMixin,
     GmpModifyReportFormatTestMixin,
     GmpVerifyReportFormatTestMixin,
 )
+from ...gmpv214 import Gmpv214TestCase
 
 
 class Gmpv214DeleteReportFormatTestCase(

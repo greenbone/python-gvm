@@ -18,11 +18,11 @@
 
 import sys
 import unittest
-
-from unittest.mock import patch
 from io import StringIO
+from unittest.mock import patch
 
 import defusedxml.lxml as secET
+
 from gvm.errors import InvalidArgumentType
 from gvm.xml import pretty_print
 

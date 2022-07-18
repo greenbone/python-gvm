@@ -20,18 +20,14 @@
 Module for communication with gvmd
 """
 from types import TracebackType
-from typing import Any, Optional, Callable, Union, Type
+from typing import Any, Callable, Optional, Type, Union
 
 from gvm.errors import GvmError
-
-from gvm.protocols.base import GvmProtocol, GvmConnection
-
+from gvm.protocols.base import GvmConnection, GvmProtocol
 from gvm.protocols.gmpv208 import Gmp as Gmpv208
 from gvm.protocols.gmpv214 import Gmp as Gmpv214
 from gvm.protocols.gmpv224 import Gmp as Gmpv224
-
 from gvm.transforms import EtreeCheckCommandTransform
-
 from gvm.xml import XmlCommand
 
 SUPPORTED_GMP_VERSIONS = Union[  # pylint: disable=invalid-name

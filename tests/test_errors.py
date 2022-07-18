@@ -19,12 +19,12 @@
 import unittest
 
 from gvm.errors import (
+    GvmError,
+    GvmResponseError,
+    GvmServerError,
     InvalidArgument,
     InvalidArgumentType,
     RequiredArgument,
-    GvmError,
-    GvmServerError,
-    GvmResponseError,
 )
 
 

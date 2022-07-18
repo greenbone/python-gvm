@@ -17,7 +17,6 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gvm.errors import InvalidArgumentType, RequiredArgument
-
 from gvm.protocols.gmpv208 import CredentialFormat
 
 

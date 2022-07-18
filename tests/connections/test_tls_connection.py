@@ -20,10 +20,10 @@ import unittest
 from unittest.mock import Mock, patch
 
 from gvm.connections import (
-    TLSConnection,
-    DEFAULT_HOSTNAME,
     DEFAULT_GVM_PORT,
+    DEFAULT_HOSTNAME,
     DEFAULT_TIMEOUT,
+    TLSConnection,
 )
 
 

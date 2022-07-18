@@ -29,9 +29,8 @@ Module for communication with gvmd in
 import logging
 from typing import Any, Callable, Optional
 
+from gvm.connections import GvmConnection
 from gvm.protocols.base import GvmProtocol
-from gvm.utils import to_dotted_types_dict
-
 from gvm.protocols.gmpv208.entities.alerts import (
     AlertCondition,
     AlertEvent,
@@ -46,18 +45,10 @@ from gvm.protocols.gmpv208.entities.credentials import (
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
 )
-from gvm.protocols.gmpv208.entities.entities import (
-    EntityType,
-)
-from gvm.protocols.gmpv208.entities.filter import (
-    FiltersMixin,
-    FilterType,
-)
+from gvm.protocols.gmpv208.entities.entities import EntityType
+from gvm.protocols.gmpv208.entities.filter import FiltersMixin, FilterType
 from gvm.protocols.gmpv208.entities.groups import GroupsMixin
-from gvm.protocols.gmpv208.entities.hosts import (
-    HostsMixin,
-    HostsOrdering,
-)
+from gvm.protocols.gmpv208.entities.hosts import HostsMixin, HostsOrdering
 from gvm.protocols.gmpv208.entities.operating_systems import (
     OperatingSystemsMixin,
 )
@@ -70,68 +61,43 @@ from gvm.protocols.gmpv208.entities.port_lists import (
     PortListMixin,
     PortRangeType,
 )
-from gvm.protocols.gmpv208.entities.reports import ReportsMixin
 from gvm.protocols.gmpv208.entities.report_formats import (
-    ReportFormatType,
     ReportFormatsMixin,
+    ReportFormatType,
 )
+from gvm.protocols.gmpv208.entities.reports import ReportsMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.roles import RolesMixin
 from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
 from gvm.protocols.gmpv208.entities.schedules import SchedulesMixin
-from gvm.protocols.gmpv208.entities.secinfo import (
-    InfoType,
-    SecInfoMixin,
-)
-from gvm.protocols.gmpv208.entities.severity import (
-    SeverityLevel,
-)
+from gvm.protocols.gmpv208.entities.secinfo import InfoType, SecInfoMixin
+from gvm.protocols.gmpv208.entities.severity import SeverityLevel
 from gvm.protocols.gmpv208.entities.tags import TagsMixin
 from gvm.protocols.gmpv208.entities.tasks import TasksMixin
-from gvm.protocols.gmpv208.entities.tickets import (
-    TicketStatus,
-    TicketsMixin,
-)
+from gvm.protocols.gmpv208.entities.tickets import TicketsMixin, TicketStatus
 from gvm.protocols.gmpv208.entities.tls_certificates import TLSCertificateMixin
-from gvm.protocols.gmpv208.entities.users import (
-    UserAuthType,
-)
+from gvm.protocols.gmpv208.entities.users import UserAuthType
 from gvm.protocols.gmpv208.entities.vulnerabilities import VulnerabilitiesMixin
-
 from gvm.protocols.gmpv208.system.aggregates import (
     AggregatesMixin,
     AggregateStatistic,
     SortOrder,
 )
 from gvm.protocols.gmpv208.system.authentication import AuthenticationMixin
-from gvm.protocols.gmpv208.system.feed import (
-    FeedType,
-    FeedMixin,
-)
-from gvm.protocols.gmpv208.system.help import (
-    HelpFormat,
-    HelpMixin,
-)
+from gvm.protocols.gmpv208.system.feed import FeedMixin, FeedType
+from gvm.protocols.gmpv208.system.help import HelpFormat, HelpMixin
 from gvm.protocols.gmpv208.system.system_reports import SystemReportsMixin
-from gvm.protocols.gmpv208.system.user_settings import UserSettingsMixin
 from gvm.protocols.gmpv208.system.trashcan import TrashcanMixin
+from gvm.protocols.gmpv208.system.user_settings import UserSettingsMixin
 
 # NEW IN 214
 from gvm.protocols.gmpv214.entities.notes import NotesMixin
 from gvm.protocols.gmpv214.entities.overrides import OverridesMixin
-from gvm.protocols.gmpv214.entities.scanners import (
-    ScannerType,
-    ScannersMixin,
-)
-from gvm.protocols.gmpv214.entities.targets import (
-    AliveTest,
-    TargetsMixin,
-)
+from gvm.protocols.gmpv214.entities.scanners import ScannersMixin, ScannerType
+from gvm.protocols.gmpv214.entities.targets import AliveTest, TargetsMixin
 from gvm.protocols.gmpv214.entities.users import UsersMixin
-
 from gvm.protocols.gmpv214.system.version import VersionMixin
-
-from gvm.connections import GvmConnection
+from gvm.utils import to_dotted_types_dict
 
 logger = logging.getLogger(__name__)
 

@@ -19,9 +19,9 @@
 
 from typing import Any, List, Optional
 
-from gvm.errors import InvalidArgument, RequiredArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208.entities.severity import Severity, SeverityLevel
-from gvm.utils import add_filter, check_port, to_comma_list, to_bool
+from gvm.utils import add_filter, check_port, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 

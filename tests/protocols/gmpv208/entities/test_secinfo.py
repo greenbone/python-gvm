@@ -18,14 +18,14 @@
 
 from ...gmpv208 import Gmpv208TestCase
 from .secinfo import (
-    GmpGetCertBundTestMixin,
     GmpGetCertBundListTestMixin,
-    GmpGetCpeTestMixin,
+    GmpGetCertBundTestMixin,
     GmpGetCpeListTestMixin,
-    GmpGetCveTestMixin,
+    GmpGetCpeTestMixin,
     GmpGetCveListTestMixin,
-    GmpGetDfnCertTestMixin,
+    GmpGetCveTestMixin,
     GmpGetDfnCertListTestMixin,
+    GmpGetDfnCertTestMixin,
     GmpGetInfoListTestMixin,
     GmpGetInfoTestMixin,
     GmpGetNvtFamiliesTestMixin,
@@ -33,8 +33,8 @@ from .secinfo import (
     GmpGetNvtPreferencesTestMixin,
     GmpGetNvtPreferenceTestMixin,
     GmpGetNvtTestMixin,
-    GmpGetOvalDefTestMixin,
     GmpGetOvalDefListTestMixin,
+    GmpGetOvalDefTestMixin,
     GmpGetScanConfigNvtsTestMixin,
     GmpGetScanConfigNvtTestMixin,
 )

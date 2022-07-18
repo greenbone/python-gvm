@@ -19,7 +19,7 @@
 import unittest
 from unittest.mock import patch
 
-from gvm.connections import GvmConnection, DEFAULT_TIMEOUT
+from gvm.connections import DEFAULT_TIMEOUT, GvmConnection
 from gvm.errors import GvmError
 
 

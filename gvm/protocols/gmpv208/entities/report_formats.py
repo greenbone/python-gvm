@@ -18,6 +18,7 @@
 
 from enum import Enum
 from typing import Any, Optional, Union
+
 from lxml.etree import XMLSyntaxError
 
 from gvm.errors import InvalidArgument, RequiredArgument

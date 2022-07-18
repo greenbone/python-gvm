@@ -21,8 +21,8 @@ from .users import (
     GmpCloneUserTestMixin,
     GmpCreateUserTestMixin,
     GmpDeleteUserTestMixin,
-    GmpGetUserTestMixin,
     GmpGetUsersTestMixin,
+    GmpGetUserTestMixin,
     GmpModifyUserTestMixin,
 )
 

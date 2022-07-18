@@ -16,15 +16,15 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv224 import Gmpv224TestCase
 from ...gmpv208.entities.groups import (
     GmpCloneGroupTestMixin,
     GmpCreateGroupTestMixin,
     GmpDeleteGroupTestMixin,
-    GmpGetGroupTestMixin,
     GmpGetGroupsTestMixin,
+    GmpGetGroupTestMixin,
     GmpModifyGroupTestMixin,
 )
+from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224DeleteGroupTestCase(GmpDeleteGroupTestMixin, Gmpv224TestCase):

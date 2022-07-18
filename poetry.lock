@@ -46,6 +46,18 @@ autohooks = ">=21.6.0"
 black = ">=20.8"
 
 [[package]]
+name = "autohooks-plugin-isort"
+version = "22.3.0"
+description = "An autohooks plugin for python code formatting via isort"
+category = "dev"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[package.dependencies]
+autohooks = ">=21.6.0"
+isort = ">=5.8.0,<6.0.0"
+
+[[package]]
 name = "autohooks-plugin-pylint"
 version = "21.6.0"
 description = "An autohooks plugin for python code linting via pylint"
@@ -687,7 +699,7 @@ testing = ["pytest (>=6)", "pytest-checkdocs (>=2.4)", "pytest-flake8", "pytest-
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.7.0"
-content-hash = "f9b037d7dd911b33500c623f520dc5cb05ea192bbfba7c0357ac0279d9747208"
+content-hash = "4412eb41b5a4f8820f86edc04fd61dfbc21aa1c8b5f3255f16382cf2e89c356e"
 
 [metadata.files]
 alabaster = [
@@ -705,6 +717,9 @@ autohooks = [
 autohooks-plugin-black = [
     {file = "autohooks-plugin-black-22.7.0.tar.gz", hash = "sha256:39193d8a85df4d0d80b920b1b8b5cf6d257ad502364d0c0bf5c7ff0717b14091"},
     {file = "autohooks_plugin_black-22.7.0-py3-none-any.whl", hash = "sha256:a420e1e351346e4326aba5d68db2a8c953742ea859e07dd27df6d1957e4a879b"},
+]
+autohooks-plugin-isort = [
+    {file = "autohooks_plugin_isort-22.3.0-py3-none-any.whl", hash = "sha256:4b85ee96a501d6cb29c005dca44dc4638d0b548a0302e8bbfa1bea0fad7d3f40"},
 ]
 autohooks-plugin-pylint = [
     {file = "autohooks-plugin-pylint-21.6.0.tar.gz", hash = "sha256:6f1a486f19c8012618fecd9eaa985f5da3ef5c954b32d823323439547b947302"},

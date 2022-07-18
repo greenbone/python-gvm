@@ -20,7 +20,7 @@
 from enum import Enum
 from typing import Any, List, Optional
 
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 

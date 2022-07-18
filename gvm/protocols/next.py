@@ -35,7 +35,6 @@ Exports:
 """
 
 from .gmpv224 import (
-    Gmp,
     AggregateStatistic,
     AlertCondition,
     AlertEvent,
@@ -46,6 +45,7 @@ from .gmpv224 import (
     EntityType,
     FeedType,
     FilterType,
+    Gmp,
     HelpFormat,
     HostsOrdering,
     InfoType,

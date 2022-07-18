@@ -19,13 +19,13 @@
 from ...gmpv208 import Gmpv208TestCase
 from .scan_configs import (
     GmpCloneScanConfigTestMixin,
-    GmpCreateScanConfigTestMixin,
     GmpCreateScanConfigFromOSPScannerTestMixin,
+    GmpCreateScanConfigTestMixin,
     GmpDeleteScanConfigTestMixin,
-    GmpGetScanConfigTestMixin,
-    GmpGetScanConfigsTestMixin,
     GmpGetScanConfigPreferencesTestMixin,
     GmpGetScanConfigPreferenceTestMixin,
+    GmpGetScanConfigsTestMixin,
+    GmpGetScanConfigTestMixin,
     GmpImportScanConfigTestMixin,
     GmpModifyScanConfigSetCommentTestMixin,
     GmpModifyScanConfigSetFamilySelectionTestMixin,

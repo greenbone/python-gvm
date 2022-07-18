@@ -16,19 +16,21 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from io import StringIO
 import os
 import unittest
-from unittest.mock import patch, Mock
+from io import StringIO
 from pathlib import Path
+from unittest.mock import Mock, patch
+
 import paramiko
+
 from gvm.connections import (
-    SSHConnection,
-    DEFAULT_SSH_PORT,
-    DEFAULT_SSH_USERNAME,
-    DEFAULT_SSH_PASSWORD,
     DEFAULT_HOSTNAME,
     DEFAULT_KNOWN_HOSTS_FILE,
+    DEFAULT_SSH_PASSWORD,
+    DEFAULT_SSH_PORT,
+    DEFAULT_SSH_USERNAME,
+    SSHConnection,
 )
 from gvm.errors import GvmError
 

@@ -17,12 +17,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from typing import Any, Optional, Union
+
 from lxml.etree import XMLSyntaxError
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208.entities.report_formats import (
-    ReportFormatType,
-)  # if I use latest, I get circular import :/
+
+# if I use latest, I get circular import :/
+from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 

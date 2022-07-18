@@ -19,10 +19,10 @@
 from enum import Enum
 from typing import Any, Optional, Union
 
-from gvm.protocols.gmpv208.entities.report_formats import (
-    ReportFormatType,
-)  # if I use latest, I get circular import :/
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+
+# if I use latest, I get circular import :/
+from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 

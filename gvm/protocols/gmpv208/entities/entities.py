@@ -19,6 +19,7 @@
 
 from enum import Enum
 from typing import Optional
+
 from gvm.errors import InvalidArgument
 
 

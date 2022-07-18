@@ -16,9 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
-
-from gvm.protocols.gmpv208 import EntityType, AggregateStatistic, SortOrder
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.protocols.gmpv208 import AggregateStatistic, EntityType, SortOrder
 
 
 class GmpGetAggregatesTestMixin:

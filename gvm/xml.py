@@ -17,20 +17,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from typing import List, Optional, Union
 from io import IOBase
+from typing import List, Optional, Union
 
 import defusedxml.lxml as secET
-
 from defusedxml import DefusedXmlException
-from lxml.etree import (
-    SubElement,
-    XMLParser,
-    Element,
-    tostring as xmltostring,
-    iselement as isxmlelement,
-    LxmlError,
-)
+from lxml.etree import Element, LxmlError, SubElement, XMLParser
+from lxml.etree import iselement as isxmlelement
+from lxml.etree import tostring as xmltostring
 
 from gvm.errors import GvmError, InvalidArgumentType
 

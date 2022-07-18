@@ -16,5 +16,5 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from .test_get_vulnerability import GmpGetVulnerabilityTestMixin
 from .test_get_vulnerabilities import GmpGetVulnerabilitiesTestMixin
+from .test_get_vulnerability import GmpGetVulnerabilityTestMixin

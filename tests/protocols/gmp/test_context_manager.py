@@ -19,13 +19,11 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from tests.protocols import GmpTestCase
-
 from gvm.errors import GvmError
-
 from gvm.protocols.gmp import Gmp
 from gvm.protocols.gmpv208 import Gmp as Gmpv208
 from gvm.protocols.gmpv214 import Gmp as Gmpv214
+from tests.protocols import GmpTestCase
 
 
 class GmpContextManagerTestCase(GmpTestCase):

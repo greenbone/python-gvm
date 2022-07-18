@@ -18,7 +18,6 @@
 
 from gvm.errors import RequiredArgument
 
-
 ICAL = """
 BEGIN:VCALENDAR
 VERSION:2.0

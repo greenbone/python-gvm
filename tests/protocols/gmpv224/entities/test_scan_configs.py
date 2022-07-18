@@ -16,14 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv224 import Gmpv224TestCase
 from ...gmpv208.entities.scan_configs import (
     GmpCloneScanConfigTestMixin,
-    GmpCreateScanConfigTestMixin,
     GmpCreateScanConfigFromOSPScannerTestMixin,
+    GmpCreateScanConfigTestMixin,
     GmpDeleteScanConfigTestMixin,
-    GmpGetScanConfigTestMixin,
     GmpGetScanConfigsTestMixin,
+    GmpGetScanConfigTestMixin,
     GmpImportScanConfigTestMixin,
     GmpModifyScanConfigSetCommentTestMixin,
     GmpModifyScanConfigSetFamilySelectionTestMixin,
@@ -34,6 +33,7 @@ from ...gmpv208.entities.scan_configs import (
     GmpModifyScanConfigTestMixin,
     GmpSyncScanConfigTestMixin,
 )
+from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CloneScanConfigTestCase(

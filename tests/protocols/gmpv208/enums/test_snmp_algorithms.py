@@ -19,10 +19,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import (
-    SnmpAuthAlgorithm,
-    SnmpPrivacyAlgorithm,
-)
+from gvm.protocols.gmpv208 import SnmpAuthAlgorithm, SnmpPrivacyAlgorithm
 
 
 class GetSnmpAuthAlgorithmFromStringTestCase(unittest.TestCase):

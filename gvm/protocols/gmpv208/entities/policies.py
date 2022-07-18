@@ -17,10 +17,11 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from typing import Any, List, Optional, Tuple
+
 from lxml.etree import XMLSyntaxError
 
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
-from gvm.utils import add_filter, to_base64, to_bool, is_list_like
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.utils import add_filter, is_list_like, to_base64, to_bool
 from gvm.xml import XmlCommand
 
 _EMPTY_POLICY_ID = "085569ce-73ed-11df-83c3-002264764cea"

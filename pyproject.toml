@@ -45,9 +45,9 @@ sphinx-autodoc-typehints = "^1.18.3"
 autohooks = ">=22.7.2"
 autohooks-plugin-pylint = ">=21.6.0"
 autohooks-plugin-black = ">=22.7.0"
+autohooks-plugin-isort = ">=22.3.0"
 black = ">=22.6.0"
 pontos = ">=22.7.2"
-
 
 [tool.black]
 line-length = 80
@@ -67,9 +67,17 @@ exclude = '''
 )/
 '''
 
+[tool.isort]
+profile = "black"
+line_length = 80
+
 [tool.autohooks]
 mode = "poetry"
-pre-commit = ['autohooks.plugins.black', 'autohooks.plugins.pylint']
+pre-commit = [
+  'autohooks.plugins.black',
+  'autohooks.plugins.isort',
+  'autohooks.plugins.pylint',
+]
 
 [tool.pontos.version]
 version-module-file = "gvm/__version__.py"
