@@ -28,9 +28,9 @@ from gvm.xml import XmlCommand
 class PermissionSubjectType(Enum):
     """Enum for permission subject type"""
 
-    USER = 'user'
-    GROUP = 'group'
-    ROLE = 'role'
+    USER = "user"
+    GROUP = "group"
+    ROLE = "role"
 
     @classmethod
     def from_string(
@@ -51,7 +51,7 @@ class PermissionSubjectType(Enum):
             return cls[subject_type.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='subject_type',
+                argument="subject_type",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -69,7 +69,7 @@ class PermissionsMixin:
         if not permission_id:
             raise RequiredArgument(
                 function=self.clone_permission.__name__,
-                argument='permission_id',
+                argument="permission_id",
             )
 
         cmd = XmlCommand("create_permission")
@@ -102,18 +102,18 @@ class PermissionsMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_permission.__name__, argument='name'
+                function=self.create_permission.__name__, argument="name"
             )
 
         if not subject_id:
             raise RequiredArgument(
-                function=self.create_permission.__name__, argument='subject_id'
+                function=self.create_permission.__name__, argument="subject_id"
             )
 
         if not isinstance(subject_type, PermissionSubjectType):
             raise InvalidArgumentType(
                 function=self.create_permission.__name__,
-                argument='subject_type',
+                argument="subject_type",
                 arg_type=PermissionSubjectType.__name__,
             )
 
@@ -130,19 +130,19 @@ class PermissionsMixin:
             if not resource_id:
                 raise RequiredArgument(
                     function=self.create_permission.__name__,
-                    argument='resource_id',
+                    argument="resource_id",
                 )
 
             if not resource_type:
                 raise RequiredArgument(
                     function=self.create_permission.__name__,
-                    argument='resource_type',
+                    argument="resource_type",
                 )
 
             if not isinstance(resource_type, EntityType):
                 raise InvalidArgumentType(
                     function=self.create_permission.__name__,
-                    argument='resource_type',
+                    argument="resource_type",
                     arg_type=EntityType.__name__,
                 )
 
@@ -172,7 +172,7 @@ class PermissionsMixin:
         if not permission_id:
             raise RequiredArgument(
                 function=self.delete_permission.__name__,
-                argument='permission_id',
+                argument="permission_id",
             )
 
         cmd = XmlCommand("delete_permission")
@@ -220,7 +220,7 @@ class PermissionsMixin:
 
         if not permission_id:
             raise RequiredArgument(
-                function=self.get_permission.__name__, argument='permission_id'
+                function=self.get_permission.__name__, argument="permission_id"
             )
 
         cmd.set_attribute("permission_id", permission_id)
@@ -255,7 +255,7 @@ class PermissionsMixin:
         if not permission_id:
             raise RequiredArgument(
                 function=self.modify_permission.__name__,
-                argument='permission_id',
+                argument="permission_id",
             )
 
         cmd = XmlCommand("modify_permission")
@@ -271,19 +271,19 @@ class PermissionsMixin:
             if not resource_id:
                 raise RequiredArgument(
                     function=self.modify_permission.__name__,
-                    argument='resource_id',
+                    argument="resource_id",
                 )
 
             if not resource_type:
                 raise RequiredArgument(
                     function=self.modify_permission.__name__,
-                    argument='resource_type',
+                    argument="resource_type",
                 )
 
             if not isinstance(resource_type, EntityType):
                 raise InvalidArgumentType(
                     function=self.modify_permission.__name__,
-                    argument='resource_type',
+                    argument="resource_type",
                     arg_type=EntityType.__name__,
                 )
 
@@ -301,13 +301,13 @@ class PermissionsMixin:
             if not subject_id:
                 raise RequiredArgument(
                     function=self.modify_permission.__name__,
-                    argument='subject_id',
+                    argument="subject_id",
                 )
 
             if not isinstance(subject_type, PermissionSubjectType):
                 raise InvalidArgumentType(
                     function=self.modify_permission.__name__,
-                    argument='subject_type',
+                    argument="subject_type",
                     arg_type=PermissionSubjectType.__name__,
                 )
 

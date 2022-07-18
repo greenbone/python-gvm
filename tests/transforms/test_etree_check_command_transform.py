@@ -29,16 +29,16 @@ class EtreeCheckCommandTransformTestCase(unittest.TestCase):
         transform = EtreeCheckCommandTransform()
 
         with self.assertRaises(GvmError):
-            transform('<foo/>')
+            transform("<foo/>")
 
     def test_no_success_status_transform(self):
         transform = EtreeCheckCommandTransform()
 
-        root = etree.Element('foo_response')
-        root.set('status', '400')
-        root.set('status_text', 'Foo error')
+        root = etree.Element("foo_response")
+        root.set("status", "400")
+        root.set("status_text", "Foo error")
 
-        response = etree.tostring(root).decode('utf-8')
+        response = etree.tostring(root).decode("utf-8")
 
         with self.assertRaises(GvmError):
             transform(response)
@@ -46,13 +46,13 @@ class EtreeCheckCommandTransformTestCase(unittest.TestCase):
     def test_success_response(self):
         transform = EtreeCheckCommandTransform()
 
-        root = etree.Element('foo_response')
-        root.set('status', '200')
+        root = etree.Element("foo_response")
+        root.set("status", "200")
 
-        response = etree.tostring(root).decode('utf-8')
+        response = etree.tostring(root).decode("utf-8")
 
         result = transform(response)
 
         self.assertTrue(etree.iselement(result))
-        self.assertEqual(result.tag, 'foo_response')
-        self.assertEqual(result.get('status'), '200')
+        self.assertEqual(result.tag, "foo_response")
+        self.assertEqual(result.get("status"), "200")

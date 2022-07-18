@@ -30,12 +30,12 @@ class TestDeprecation(unittest.TestCase):
 
             warnings.simplefilter("always")
 
-            deprecation('I am deprecated')
+            deprecation("I am deprecated")
 
             self.assertEqual(len(w), 1)
             self.assertTrue(issubclass(w[0].category, DeprecationWarning))
-            self.assertIn(str(w[0].message), 'I am deprecated')
+            self.assertIn(str(w[0].message), "I am deprecated")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

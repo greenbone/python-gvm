@@ -36,7 +36,7 @@ class TagsMixin:
         """
         if not tag_id:
             raise RequiredArgument(
-                function=self.clone_tag.__name__, argument='tag_id'
+                function=self.clone_tag.__name__, argument="tag_id"
             )
 
         cmd = XmlCommand("create_tag")
@@ -74,7 +74,7 @@ class TagsMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_tag.__name__, argument='name'
+                function=self.create_tag.__name__, argument="name"
             )
 
         if resource_filter and resource_ids:
@@ -86,18 +86,18 @@ class TagsMixin:
 
         if not resource_type:
             raise RequiredArgument(
-                function=self.create_tag.__name__, argument='resource_type'
+                function=self.create_tag.__name__, argument="resource_type"
             )
 
         if not isinstance(resource_type, EntityType):
             raise InvalidArgumentType(
                 function=self.create_tag.__name__,
-                argument='resource_type',
+                argument="resource_type",
                 arg_type=EntityType.__name__,
             )
 
-        cmd = XmlCommand('create_tag')
-        cmd.add_element('name', name)
+        cmd = XmlCommand("create_tag")
+        cmd.add_element("name", name)
 
         _xmlresources = cmd.add_element("resources")
         if resource_filter is not None:
@@ -140,7 +140,7 @@ class TagsMixin:
         """
         if not tag_id:
             raise RequiredArgument(
-                function=self.delete_tag.__name__, argument='tag_id'
+                function=self.delete_tag.__name__, argument="tag_id"
             )
 
         cmd = XmlCommand("delete_tag")
@@ -193,7 +193,7 @@ class TagsMixin:
 
         if not tag_id:
             raise RequiredArgument(
-                function=self.get_tag.__name__, argument='tag_id'
+                function=self.get_tag.__name__, argument="tag_id"
             )
 
         cmd.set_attribute("tag_id", tag_id)
@@ -233,7 +233,7 @@ class TagsMixin:
         """
         if not tag_id:
             raise RequiredArgument(
-                function=self.modify_tag.__name__, argument='tag_id'
+                function=self.modify_tag.__name__, argument="tag_id"
             )
 
         cmd = XmlCommand("modify_tag")
@@ -254,7 +254,7 @@ class TagsMixin:
         if resource_action or resource_filter or resource_ids or resource_type:
             if resource_filter and not resource_type:
                 raise RequiredArgument(
-                    function=self.modify_tag.__name__, argument='resource_type'
+                    function=self.modify_tag.__name__, argument="resource_type"
                 )
 
             _xmlresources = cmd.add_element("resources")

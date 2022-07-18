@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument
 
 class GmpGetUserSettingTestMixin:
     def test_get_setting_simple(self):
-        self.gmp.get_user_setting('id')
+        self.gmp.get_user_setting("id")
 
         self.connection.send.has_been_called_with(
             '<get_settings setting_id="id"/>'
@@ -32,4 +32,4 @@ class GmpGetUserSettingTestMixin:
             self.gmp.get_user_setting(setting_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_user_setting('')
+            self.gmp.get_user_setting("")

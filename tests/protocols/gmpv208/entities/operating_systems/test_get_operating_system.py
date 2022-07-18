@@ -21,12 +21,12 @@ from gvm.errors import RequiredArgument
 
 class GmpGetOperatingSystemTestMixin:
     def test_get_operating_system(self):
-        self.gmp.get_operating_system('a1')
+        self.gmp.get_operating_system("a1")
 
         self.connection.send.has_been_called_with(
             '<get_assets asset_id="a1" type="os"/>'
         )
-        self.gmp.get_operating_system(operating_system_id='a1')
+        self.gmp.get_operating_system(operating_system_id="a1")
 
         self.connection.send.has_been_called_with(
             '<get_assets asset_id="a1" type="os"/>'
@@ -37,4 +37,4 @@ class GmpGetOperatingSystemTestMixin:
             self.gmp.get_operating_system(operating_system_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_operating_system(operating_system_id='')
+            self.gmp.get_operating_system(operating_system_id="")

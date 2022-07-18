@@ -28,8 +28,8 @@ from gvm.xml import XmlCommand
 class PortRangeType(Enum):
     """Enum for port range type"""
 
-    TCP = 'TCP'
-    UDP = 'UDP'
+    TCP = "TCP"
+    UDP = "UDP"
 
     @classmethod
     def from_string(
@@ -50,7 +50,7 @@ class PortRangeType(Enum):
             return cls[port_range_type.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='port_range_type',
+                argument="port_range_type",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -67,7 +67,7 @@ class PortListMixin:
         """
         if not port_list_id:
             raise RequiredArgument(
-                function=self.clone_port_list.__name__, argument='port_list_id'
+                function=self.clone_port_list.__name__, argument="port_list_id"
             )
 
         cmd = XmlCommand("create_port_list")
@@ -90,12 +90,12 @@ class PortListMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_port_list.__name__, argument='name'
+                function=self.create_port_list.__name__, argument="name"
             )
 
         if not port_range:
             raise RequiredArgument(
-                function=self.create_port_list.__name__, argument='port_range'
+                function=self.create_port_list.__name__, argument="port_range"
             )
 
         cmd = XmlCommand("create_port_list")
@@ -131,29 +131,29 @@ class PortListMixin:
         if not port_list_id:
             raise RequiredArgument(
                 function=self.create_port_range.__name__,
-                argument='port_list_id',
+                argument="port_list_id",
             )
 
         if not port_range_type:
             raise RequiredArgument(
                 function=self.create_port_range.__name__,
-                argument='port_range_type',
+                argument="port_range_type",
             )
 
         if not start:
             raise RequiredArgument(
-                function=self.create_port_range.__name__, argument='start'
+                function=self.create_port_range.__name__, argument="start"
             )
 
         if not end:
             raise RequiredArgument(
-                function=self.create_port_range.__name__, argument='end'
+                function=self.create_port_range.__name__, argument="end"
             )
 
         if not isinstance(port_range_type, PortRangeType):
             raise InvalidArgumentType(
                 function=self.create_port_range.__name__,
-                argument='port_range_type',
+                argument="port_range_type",
                 arg_type=PortRangeType.__name__,
             )
 
@@ -179,7 +179,7 @@ class PortListMixin:
         """
         if not port_list_id:
             raise RequiredArgument(
-                function=self.delete_port_list.__name__, argument='port_list_id'
+                function=self.delete_port_list.__name__, argument="port_list_id"
             )
 
         cmd = XmlCommand("delete_port_list")
@@ -197,7 +197,7 @@ class PortListMixin:
         if not port_range_id:
             raise RequiredArgument(
                 function=self.delete_port_range.__name__,
-                argument='port_range_id',
+                argument="port_range_id",
             )
 
         cmd = XmlCommand("delete_port_range")
@@ -254,7 +254,7 @@ class PortListMixin:
 
         if not port_list_id:
             raise RequiredArgument(
-                function=self.get_port_list.__name__, argument='port_list_id'
+                function=self.get_port_list.__name__, argument="port_list_id"
             )
 
         cmd.set_attribute("port_list_id", port_list_id)
@@ -283,7 +283,7 @@ class PortListMixin:
         """
         if not port_list_id:
             raise RequiredArgument(
-                function=self.modify_port_list.__name__, argument='port_list_id'
+                function=self.modify_port_list.__name__, argument="port_list_id"
             )
         cmd = XmlCommand("modify_port_list")
         cmd.set_attribute("port_list_id", port_list_id)

@@ -21,13 +21,13 @@ from gvm.errors import RequiredArgument
 
 class GmpGetTicketTestMixin:
     def test_get_ticket(self):
-        self.gmp.get_ticket('t1')
+        self.gmp.get_ticket("t1")
 
         self.connection.send.has_been_called_with(
             '<get_tickets ticket_id="t1"/>'
         )
 
-        self.gmp.get_ticket(ticket_id='t1')
+        self.gmp.get_ticket(ticket_id="t1")
 
         self.connection.send.has_been_called_with(
             '<get_tickets ticket_id="t1"/>'
@@ -38,4 +38,4 @@ class GmpGetTicketTestMixin:
             self.gmp.get_ticket(ticket_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_ticket('')
+            self.gmp.get_ticket("")

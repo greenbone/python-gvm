@@ -21,17 +21,17 @@ class GmpGetFiltersTestMixin:
     def test_get_filters(self):
         self.gmp.get_filters()
 
-        self.connection.send.has_been_called_with('<get_filters/>')
+        self.connection.send.has_been_called_with("<get_filters/>")
 
     def test_get_filters_with_filter_string(self):
-        self.gmp.get_filters(filter_string='foo=bar')
+        self.gmp.get_filters(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_filters filter="foo=bar"/>'
         )
 
     def test_get_filters_with_filter_id(self):
-        self.gmp.get_filters(filter_id='f1')
+        self.gmp.get_filters(filter_id="f1")
 
         self.connection.send.has_been_called_with('<get_filters filt_id="f1"/>')
 

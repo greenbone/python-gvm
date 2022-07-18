@@ -50,26 +50,26 @@ class ScannerType(Enum):
 
         scanner_type = scanner_type.lower()
 
-        if scanner_type == cls.OSP_SCANNER_TYPE.value or scanner_type == 'osp':
+        if scanner_type == cls.OSP_SCANNER_TYPE.value or scanner_type == "osp":
             return cls.OSP_SCANNER_TYPE
 
         if (
             scanner_type == cls.OPENVAS_SCANNER_TYPE.value
-            or scanner_type == 'openvas'
+            or scanner_type == "openvas"
         ):
             return cls.OPENVAS_SCANNER_TYPE
 
-        if scanner_type == cls.CVE_SCANNER_TYPE.value or scanner_type == 'cve':
+        if scanner_type == cls.CVE_SCANNER_TYPE.value or scanner_type == "cve":
             return cls.CVE_SCANNER_TYPE
 
         if (
             scanner_type == cls.GREENBONE_SENSOR_SCANNER_TYPE.value
-            or scanner_type == 'greenbone'
+            or scanner_type == "greenbone"
         ):
             return cls.GREENBONE_SENSOR_SCANNER_TYPE
 
         raise InvalidArgument(
-            argument='scanner_type', function=cls.from_string.__name__
+            argument="scanner_type", function=cls.from_string.__name__
         )
 
 
@@ -103,33 +103,33 @@ class ScannersMixin(Gmp208ScannersMixin):
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_scanner.__name__, argument='name'
+                function=self.create_scanner.__name__, argument="name"
             )
 
         if not host:
             raise RequiredArgument(
-                function=self.create_scanner.__name__, argument='host'
+                function=self.create_scanner.__name__, argument="host"
             )
 
         if not port:
             raise RequiredArgument(
-                function=self.create_scanner.__name__, argument='port'
+                function=self.create_scanner.__name__, argument="port"
             )
 
         if not scanner_type:
             raise RequiredArgument(
-                function=self.create_scanner.__name__, argument='scanner_type'
+                function=self.create_scanner.__name__, argument="scanner_type"
             )
 
         if not credential_id:
             raise RequiredArgument(
-                function=self.create_scanner.__name__, argument='credential_id'
+                function=self.create_scanner.__name__, argument="credential_id"
             )
 
         if not isinstance(scanner_type, ScannerType):
             raise InvalidArgumentType(
                 function=self.create_scanner.__name__,
-                argument='scanner_type',
+                argument="scanner_type",
                 arg_type=ScannerType.__name__,
             )
 
@@ -180,7 +180,7 @@ class ScannersMixin(Gmp208ScannersMixin):
         if not scanner_id:
             raise RequiredArgument(
                 function=self.modify_scanner.__name__,
-                argument='scanner_id argument',
+                argument="scanner_id argument",
             )
 
         cmd = XmlCommand("modify_scanner")
@@ -190,7 +190,7 @@ class ScannersMixin(Gmp208ScannersMixin):
             if not isinstance(scanner_type, ScannerType):
                 raise InvalidArgumentType(
                     function=self.modify_scanner.__name__,
-                    argument='scanner_type',
+                    argument="scanner_type",
                     arg_type=ScannerType.__name__,
                 )
 

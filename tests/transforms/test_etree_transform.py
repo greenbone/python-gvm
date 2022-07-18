@@ -26,7 +26,7 @@ from gvm.transforms import EtreeTransform
 class EtreeTransformTestCase(unittest.TestCase):
     def test_transform_response(self):
         transform = EtreeTransform()
-        result = transform('<foo/>')
+        result = transform("<foo/>")
 
         self.assertTrue(etree.iselement(result))
 
@@ -35,6 +35,6 @@ class EtreeTransformTestCase(unittest.TestCase):
         result = transform('<foo id="bar"><lorem/><ipsum/></foo>')
 
         self.assertTrue(etree.iselement(result))
-        self.assertEqual(result.tag, 'foo')
-        self.assertEqual(result.get('id'), 'bar')
+        self.assertEqual(result.tag, "foo")
+        self.assertEqual(result.get("id"), "bar")
         self.assertEqual(len(result), 2)

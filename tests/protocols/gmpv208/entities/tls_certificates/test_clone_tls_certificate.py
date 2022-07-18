@@ -21,17 +21,17 @@ from gvm.errors import RequiredArgument
 
 class GmpCloneTLSCertificateTestMixin:
     def test_clone(self):
-        self.gmp.clone_tls_certificate('a1')
+        self.gmp.clone_tls_certificate("a1")
 
         self.connection.send.has_been_called_with(
-            '<create_tls_certificate>'
-            '<copy>a1</copy>'
-            '</create_tls_certificate>'
+            "<create_tls_certificate>"
+            "<copy>a1</copy>"
+            "</create_tls_certificate>"
         )
 
     def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.clone_tls_certificate('')
+            self.gmp.clone_tls_certificate("")
 
         with self.assertRaises(RequiredArgument):
             self.gmp.clone_tls_certificate(None)

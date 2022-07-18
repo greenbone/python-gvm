@@ -63,12 +63,12 @@ class OverridesMixin:
         """
         if not text:
             raise RequiredArgument(
-                function=self.create_override.__name__, argument='text'
+                function=self.create_override.__name__, argument="text"
             )
 
         if not nvt_oid:
             raise RequiredArgument(
-                function=self.create_override.__name__, argument='nvt_oid'
+                function=self.create_override.__name__, argument="nvt_oid"
             )
 
         cmd = XmlCommand("create_override")
@@ -86,7 +86,7 @@ class OverridesMixin:
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.create_override.__name__, argument='port'
+                    function=self.create_override.__name__, argument="port"
                 )
 
         if result_id:
@@ -134,7 +134,7 @@ class OverridesMixin:
         """
         if not override_id:
             raise RequiredArgument(
-                function=self.clone_override.__name__, argument='override_id'
+                function=self.clone_override.__name__, argument="override_id"
             )
 
         cmd = XmlCommand("create_override")
@@ -152,7 +152,7 @@ class OverridesMixin:
         """
         if not override_id:
             raise RequiredArgument(
-                function=self.delete_override.__name__, argument='override_id'
+                function=self.delete_override.__name__, argument="override_id"
             )
 
         cmd = XmlCommand("delete_override")
@@ -205,7 +205,7 @@ class OverridesMixin:
 
         if not override_id:
             raise RequiredArgument(
-                function=self.get_override.__name__, argument='override_id'
+                function=self.get_override.__name__, argument="override_id"
             )
 
         cmd.set_attribute("override_id", override_id)
@@ -253,11 +253,11 @@ class OverridesMixin:
         """
         if not override_id:
             raise RequiredArgument(
-                function=self.modify_override.__name__, argument='override_id'
+                function=self.modify_override.__name__, argument="override_id"
             )
         if not text:
             raise RequiredArgument(
-                function=self.modify_override.__name__, argument='text'
+                function=self.modify_override.__name__, argument="text"
             )
 
         cmd = XmlCommand("modify_override")
@@ -275,7 +275,7 @@ class OverridesMixin:
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.modify_override.__name__, argument='port'
+                    function=self.modify_override.__name__, argument="port"
                 )
 
         if result_id:
@@ -294,7 +294,7 @@ class OverridesMixin:
             if not isinstance(threat, SeverityLevel):
                 raise InvalidArgumentType(
                     function=self.modify_override.__name__,
-                    argument='threat',
+                    argument="threat",
                     arg_type=SeverityLevel.__name__,
                 )
             cmd.add_element("threat", threat.value)
@@ -303,7 +303,7 @@ class OverridesMixin:
             if not isinstance(new_threat, SeverityLevel):
                 raise InvalidArgumentType(
                     function=self.modify_override.__name__,
-                    argument='new_threat',
+                    argument="new_threat",
                     arg_type=SeverityLevel.__name__,
                 )
 

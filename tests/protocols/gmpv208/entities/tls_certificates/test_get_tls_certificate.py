@@ -21,7 +21,7 @@ from gvm.errors import GvmError
 
 class GmpGetTLSCertificateTestMixin:
     def test_get_tls_certificate(self):
-        self.gmp.get_tls_certificate('t1')
+        self.gmp.get_tls_certificate("t1")
 
         self.connection.send.has_been_called_with(
             '<get_tls_certificates tls_certificate_id="t1" '
@@ -33,4 +33,4 @@ class GmpGetTLSCertificateTestMixin:
             self.gmp.get_tls_certificate(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.get_tls_certificate('')
+            self.gmp.get_tls_certificate("")

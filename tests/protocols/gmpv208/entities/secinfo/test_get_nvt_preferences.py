@@ -21,10 +21,10 @@ class GmpGetNvtPreferencesTestMixin:
     def test_get_nvt_preferences(self):
         self.gmp.get_nvt_preferences()
 
-        self.connection.send.has_been_called_with('<get_preferences/>')
+        self.connection.send.has_been_called_with("<get_preferences/>")
 
     def test_get_nvt_preferences_with_nvt_oid(self):
-        self.gmp.get_nvt_preferences(nvt_oid='oid')
+        self.gmp.get_nvt_preferences(nvt_oid="oid")
 
         self.connection.send.has_been_called_with(
             '<get_preferences nvt_oid="oid"/>'

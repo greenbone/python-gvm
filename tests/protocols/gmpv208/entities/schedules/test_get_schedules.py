@@ -21,17 +21,17 @@ class GmpGetSchedulesTestMixin:
     def test_get_schedules(self):
         self.gmp.get_schedules()
 
-        self.connection.send.has_been_called_with('<get_schedules/>')
+        self.connection.send.has_been_called_with("<get_schedules/>")
 
     def test_get_schedules_with_filter_string(self):
-        self.gmp.get_schedules(filter_string='foo=bar')
+        self.gmp.get_schedules(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_schedules filter="foo=bar"/>'
         )
 
     def test_get_schedules_with_filter_id(self):
-        self.gmp.get_schedules(filter_id='f1')
+        self.gmp.get_schedules(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_schedules filt_id="f1"/>'

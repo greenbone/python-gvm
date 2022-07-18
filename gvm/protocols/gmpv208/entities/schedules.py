@@ -35,7 +35,7 @@ class SchedulesMixin:
         """
         if not schedule_id:
             raise RequiredArgument(
-                function=self.clone_schedule.__name__, argument='schedule_id'
+                function=self.clone_schedule.__name__, argument="schedule_id"
             )
 
         cmd = XmlCommand("create_schedule")
@@ -97,15 +97,15 @@ class SchedulesMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_schedule.__name__, argument='name'
+                function=self.create_schedule.__name__, argument="name"
             )
         if not icalendar:
             raise RequiredArgument(
-                function=self.create_schedule.__name__, argument='icalendar'
+                function=self.create_schedule.__name__, argument="icalendar"
             )
         if not timezone:
             raise RequiredArgument(
-                function=self.create_schedule.__name__, argument='timezone'
+                function=self.create_schedule.__name__, argument="timezone"
             )
 
         cmd = XmlCommand("create_schedule")
@@ -130,7 +130,7 @@ class SchedulesMixin:
         """
         if not schedule_id:
             raise RequiredArgument(
-                function=self.delete_schedule.__name__, argument='schedule_id'
+                function=self.delete_schedule.__name__, argument="schedule_id"
             )
 
         cmd = XmlCommand("delete_schedule")
@@ -186,7 +186,7 @@ class SchedulesMixin:
 
         if not schedule_id:
             raise RequiredArgument(
-                function=self.get_schedule.__name__, argument='schedule_id'
+                function=self.get_schedule.__name__, argument="schedule_id"
             )
 
         cmd.set_attribute("schedule_id", schedule_id)
@@ -226,7 +226,7 @@ class SchedulesMixin:
         """
         if not schedule_id:
             raise RequiredArgument(
-                function=self.modify_schedule.__name__, argument='schedule_id'
+                function=self.modify_schedule.__name__, argument="schedule_id"
             )
 
         cmd = XmlCommand("modify_schedule")

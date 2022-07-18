@@ -21,17 +21,17 @@ class GmpGetGroupsTestMixin:
     def test_get_groups(self):
         self.gmp.get_groups()
 
-        self.connection.send.has_been_called_with('<get_groups/>')
+        self.connection.send.has_been_called_with("<get_groups/>")
 
     def test_get_groups_with_filter_string(self):
-        self.gmp.get_groups(filter_string='foo=bar')
+        self.gmp.get_groups(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_groups filter="foo=bar"/>'
         )
 
     def test_get_groups_with_filter_id(self):
-        self.gmp.get_groups(filter_id='f1')
+        self.gmp.get_groups(filter_id="f1")
 
         self.connection.send.has_been_called_with('<get_groups filt_id="f1"/>')
 

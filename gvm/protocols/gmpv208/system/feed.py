@@ -42,7 +42,7 @@ class FeedType(Enum):
             return cls[feed_type.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='feed_type', function=cls.from_string.__name__
+                argument="feed_type", function=cls.from_string.__name__
             ) from None
 
 
@@ -66,13 +66,13 @@ class FeedMixin:
         """
         if not feed_type:
             raise RequiredArgument(
-                function=self.get_feed.__name__, argument='feed_type'
+                function=self.get_feed.__name__, argument="feed_type"
             )
 
         if not isinstance(feed_type, FeedType):
             raise InvalidArgumentType(
                 function=self.get_feed.__name__,
-                argument='feed_type',
+                argument="feed_type",
                 arg_type=FeedType.__name__,
             )
 

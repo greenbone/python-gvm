@@ -27,8 +27,8 @@ class TestToBase64(unittest.TestCase):
         self.assertEqual(b"Zm9v", foo64)
 
         bar64 = to_base64("bar")
-        self.assertEqual(b'YmFy', bar64)
+        self.assertEqual(b"YmFy", bar64)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

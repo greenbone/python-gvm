@@ -28,9 +28,9 @@ from gvm.xml import XmlCommand
 class TicketStatus(Enum):
     """Enum for ticket status"""
 
-    OPEN = 'Open'
-    FIXED = 'Fixed'
-    CLOSED = 'Closed'
+    OPEN = "Open"
+    FIXED = "Fixed"
+    CLOSED = "Closed"
 
     @classmethod
     def from_string(
@@ -45,7 +45,7 @@ class TicketStatus(Enum):
             return cls[ticket_status.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='ticket_status',
+                argument="ticket_status",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -62,7 +62,7 @@ class TicketsMixin:
         """
         if not ticket_id:
             raise RequiredArgument(
-                function=self.clone_ticket.__name__, argument='ticket_id'
+                function=self.clone_ticket.__name__, argument="ticket_id"
             )
 
         cmd = XmlCommand("create_ticket")
@@ -92,18 +92,18 @@ class TicketsMixin:
         """
         if not result_id:
             raise RequiredArgument(
-                function=self.create_ticket.__name__, argument='result_id'
+                function=self.create_ticket.__name__, argument="result_id"
             )
 
         if not assigned_to_user_id:
             raise RequiredArgument(
                 function=self.create_ticket.__name__,
-                argument='assigned_to_user_id',
+                argument="assigned_to_user_id",
             )
 
         if not note:
             raise RequiredArgument(
-                function=self.create_ticket.__name__, argument='note'
+                function=self.create_ticket.__name__, argument="note"
             )
 
         cmd = XmlCommand("create_ticket")
@@ -133,7 +133,7 @@ class TicketsMixin:
         """
         if not ticket_id:
             raise RequiredArgument(
-                function=self.delete_ticket.__name__, argument='ticket_id'
+                function=self.delete_ticket.__name__, argument="ticket_id"
             )
 
         cmd = XmlCommand("delete_ticket")
@@ -179,7 +179,7 @@ class TicketsMixin:
         """
         if not ticket_id:
             raise RequiredArgument(
-                function=self.get_ticket.__name__, argument='ticket_id'
+                function=self.get_ticket.__name__, argument="ticket_id"
             )
 
         cmd = XmlCommand("get_tickets")
@@ -210,17 +210,17 @@ class TicketsMixin:
         """
         if not ticket_id:
             raise RequiredArgument(
-                function=self.modify_ticket.__name__, argument='ticket_id'
+                function=self.modify_ticket.__name__, argument="ticket_id"
             )
 
         if status and not note:
             raise RequiredArgument(
-                function=self.modify_ticket.__name__, argument='note'
+                function=self.modify_ticket.__name__, argument="note"
             )
 
         if note and not status:
             raise RequiredArgument(
-                function=self.modify_ticket.__name__, argument='status'
+                function=self.modify_ticket.__name__, argument="status"
             )
 
         cmd = XmlCommand("modify_ticket")
@@ -235,12 +235,12 @@ class TicketsMixin:
             if not isinstance(status, TicketStatus):
                 raise InvalidArgumentType(
                     function=self.modify_ticket.__name__,
-                    argument='status',
+                    argument="status",
                     arg_type=TicketStatus.__name__,
                 )
 
-            cmd.add_element('status', status.value)
-            cmd.add_element(f'{status.name.lower()}_note', note)
+            cmd.add_element("status", status.value)
+            cmd.add_element(f"{status.name.lower()}_note", note)
 
         if comment:
             cmd.add_element("comment", comment)

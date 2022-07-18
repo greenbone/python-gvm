@@ -49,6 +49,6 @@ class SeverityLevel(Enum):
             return cls[severity_level.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='severity_level',
+                argument="severity_level",
                 function=cls.from_string.__name__,
             ) from None

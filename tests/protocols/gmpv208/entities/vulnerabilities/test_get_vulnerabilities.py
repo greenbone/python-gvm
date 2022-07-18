@@ -21,7 +21,7 @@ class GmpGetVulnerabilitiesTestMixin:
     def test_get_vulnerabilities(self):
         self.gmp.get_vulnerabilities()
 
-        self.connection.send.has_been_called_with('<get_vulns/>')
+        self.connection.send.has_been_called_with("<get_vulns/>")
 
     def test_get_vulnerabilities_with_filter_string(self):
         self.gmp.get_vulnerabilities(filter_string="foo=bar")
@@ -31,6 +31,6 @@ class GmpGetVulnerabilitiesTestMixin:
         )
 
     def test_get_vulnerabilities_with_filter_id(self):
-        self.gmp.get_vulnerabilities(filter_id='f1')
+        self.gmp.get_vulnerabilities(filter_id="f1")
 
         self.connection.send.has_been_called_with('<get_vulns filt_id="f1"/>')

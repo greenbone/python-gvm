@@ -28,18 +28,18 @@ class GmpWithStatementTestMixin:
             # Test that the values are equal
             self.assertEquals(
                 self.gmp.types.AlertEvent.TASK_RUN_STATUS_CHANGED.value,
-                'Task run status changed',
+                "Task run status changed",
             )
             self.assertEquals(
-                self.gmp.types.PermissionSubjectType.USER.value, 'user'
+                self.gmp.types.PermissionSubjectType.USER.value, "user"
             )
             self.assertEquals(
-                self.gmp.types.HostsOrdering.RANDOM.value, 'random'
+                self.gmp.types.HostsOrdering.RANDOM.value, "random"
             )
 
             # Test usability of from_string
             self.assertEquals(
-                self.gmp.types.HostsOrdering.from_string('reverse'),
+                self.gmp.types.HostsOrdering.from_string("reverse"),
                 self.gmp.types.HostsOrdering.REVERSE,
             )
 

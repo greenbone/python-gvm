@@ -36,11 +36,11 @@ from gvm.errors import GvmError
 class SSHConnectionTestCase(unittest.TestCase):
     # pylint: disable=protected-access, invalid-name
     def setUp(self):
-        self.known_hosts_file = Path('known_hosts')
-        with self.known_hosts_file.open("a", encoding='utf-8') as fp:
+        self.known_hosts_file = Path("known_hosts")
+        with self.known_hosts_file.open("a", encoding="utf-8") as fp:
             fp.write(
-                '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
-                'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n'
+                "127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi"
+                "fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n"
             )
 
     def tearDown(self):
@@ -71,29 +71,29 @@ class SSHConnectionTestCase(unittest.TestCase):
         )
 
     def test_connect_error(self):
-        print(self.known_hosts_file.read_text(encoding='utf-8'))
+        print(self.known_hosts_file.read_text(encoding="utf-8"))
 
         ssh_connection = SSHConnection(known_hosts_file=self.known_hosts_file)
         with self.assertRaises(GvmError, msg="SSH Connection failed"):
             ssh_connection.connect()
 
     def test_connect(self):
-        with patch('paramiko.SSHClient') as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:
             client_mock = SSHClientMock.return_value
-            client_mock.exec_command.return_value = ['a', 'b', 'c']
+            client_mock.exec_command.return_value = ["a", "b", "c"]
             ssh_connection = SSHConnection(
                 known_hosts_file=self.known_hosts_file
             )
 
             ssh_connection.connect()
-            self.assertEqual(ssh_connection._stdin, 'a')
-            self.assertEqual(ssh_connection._stdout, 'b')
-            self.assertEqual(ssh_connection._stderr, 'c')
+            self.assertEqual(ssh_connection._stdin, "a")
+            self.assertEqual(ssh_connection._stdout, "b")
+            self.assertEqual(ssh_connection._stderr, "c")
             ssh_connection.disconnect()
 
     def test_connect_unknown_host(self):
         ssh_connection = SSHConnection(
-            hostname='0.0.0.1', known_hosts_file=self.known_hosts_file
+            hostname="0.0.0.1", known_hosts_file=self.known_hosts_file
         )
         with self.assertRaises(
             GvmError,
@@ -109,7 +109,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             os.chmod(self.known_hosts_file, 0000)
 
         ssh_connection = SSHConnection(
-            hostname='0.0.0.1', known_hosts_file=self.known_hosts_file
+            hostname="0.0.0.1", known_hosts_file=self.known_hosts_file
         )
         with self.assertRaises(
             GvmError,
@@ -125,7 +125,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             os.remove(self.known_hosts_file)
 
         ssh_connection = SSHConnection(
-            hostname='0.0.0.1', known_hosts_file=self.known_hosts_file
+            hostname="0.0.0.1", known_hosts_file=self.known_hosts_file
         )
         with self.assertRaises(
             GvmError,
@@ -136,7 +136,7 @@ class SSHConnectionTestCase(unittest.TestCase):
         ):
             ssh_connection.connect()
 
-    @patch('builtins.input')
+    @patch("builtins.input")
     def test_connect_adding_and_save_hostkey(self, input_mock):
 
         key_io = StringIO(
@@ -150,26 +150,26 @@ FsAQI=
             -----END OPENSSH PRIVATE KEY-----"""
         )
         key = paramiko.Ed25519Key.from_private_key(key_io)
-        key_type = key.get_name().replace('ssh-', '').upper()
-        hostname = '0.0.0.0'
-        input_mock.side_effect = ['yes', 'yes']
+        key_type = key.get_name().replace("ssh-", "").upper()
+        hostname = "0.0.0.0"
+        input_mock.side_effect = ["yes", "yes"]
         ssh_connection = SSHConnection(
             hostname=hostname, known_hosts_file=self.known_hosts_file
         )
         ssh_connection._socket = paramiko.SSHClient()
-        keys = self.known_hosts_file.read_text(encoding='utf-8')
+        keys = self.known_hosts_file.read_text(encoding="utf-8")
         self.assertEqual(
             keys,
-            '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
-            'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n',
+            "127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi"
+            "fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n",
         )
 
-        with self.assertLogs('gvm.connections', level='INFO') as cm:
+        with self.assertLogs("gvm.connections", level="INFO") as cm:
             hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
             )
-            keys = self.known_hosts_file.read_text(encoding='utf-8')
+            keys = self.known_hosts_file.read_text(encoding="utf-8")
 
             self.assertEqual(
                 cm.output,
@@ -181,12 +181,12 @@ FsAQI=
             )
             self.assertEqual(
                 keys,
-                '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
-                'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n'
-                f'0.0.0.0 {key.get_name()} {key.get_base64()}\n',
+                "127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi"
+                "fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n"
+                f"0.0.0.0 {key.get_name()} {key.get_base64()}\n",
             )
 
-    @patch('builtins.input')
+    @patch("builtins.input")
     def test_connect_adding_and_dont_save_hostkey(self, input_mock):
 
         key_io = StringIO(
@@ -200,26 +200,26 @@ FsAQI=
             -----END OPENSSH PRIVATE KEY-----"""
         )
         key = paramiko.Ed25519Key.from_private_key(key_io)
-        key_type = key.get_name().replace('ssh-', '').upper()
-        hostname = '0.0.0.0'
-        input_mock.side_effect = ['yes', 'no']
+        key_type = key.get_name().replace("ssh-", "").upper()
+        hostname = "0.0.0.0"
+        input_mock.side_effect = ["yes", "no"]
         ssh_connection = SSHConnection(
             hostname=hostname, known_hosts_file=self.known_hosts_file
         )
         ssh_connection._socket = paramiko.SSHClient()
-        keys = self.known_hosts_file.read_text(encoding='utf-8')
+        keys = self.known_hosts_file.read_text(encoding="utf-8")
         self.assertEqual(
             keys,
-            '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
-            'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n',
+            "127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi"
+            "fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n",
         )
 
-        with self.assertLogs('gvm.connections', level='INFO') as cm:
+        with self.assertLogs("gvm.connections", level="INFO") as cm:
             hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
             )
-            keys = self.known_hosts_file.read_text(encoding='utf-8')
+            keys = self.known_hosts_file.read_text(encoding="utf-8")
 
             self.assertEqual(
                 cm.output,
@@ -232,12 +232,12 @@ FsAQI=
 
             self.assertEqual(
                 keys,
-                '127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi'
-                'fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n',
+                "127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi"
+                "fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n",
             )
 
-    @patch('builtins.input')
-    @patch('sys.stdout', new_callable=StringIO)
+    @patch("builtins.input")
+    @patch("sys.stdout", new_callable=StringIO)
     def test_connect_wrong_input(self, stdout_mock, input_mock):
 
         key_io = StringIO(
@@ -251,16 +251,16 @@ FsAQI=
             -----END OPENSSH PRIVATE KEY-----"""
         )
         key = paramiko.Ed25519Key.from_private_key(key_io)
-        hostname = '0.0.0.0'
-        key_type = key.get_name().replace('ssh-', '').upper()
-        inputs = ['asd', 'yes', 'yoo', 'no']
+        hostname = "0.0.0.0"
+        key_type = key.get_name().replace("ssh-", "").upper()
+        inputs = ["asd", "yes", "yoo", "no"]
         input_mock.side_effect = inputs
         ssh_connection = SSHConnection(
             hostname=hostname, known_hosts_file=self.known_hosts_file
         )
         ssh_connection._socket = paramiko.SSHClient()
 
-        with self.assertLogs('gvm.connections', level='INFO') as cm:
+        with self.assertLogs("gvm.connections", level="INFO") as cm:
             hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
@@ -287,7 +287,7 @@ FsAQI=
                 "Please type 'yes' or 'no': ",
             )
 
-    @patch('builtins.input')
+    @patch("builtins.input")
     def test_user_denies_auth(self, input_mock):
 
         key_io = StringIO(
@@ -301,15 +301,15 @@ FsAQI=
             -----END OPENSSH PRIVATE KEY-----"""
         )
         key = paramiko.Ed25519Key.from_private_key(key_io)
-        hostname = '0.0.0.0'
-        input_mock.return_value = 'no'
+        hostname = "0.0.0.0"
+        input_mock.return_value = "no"
         ssh_connection = SSHConnection(
             hostname=hostname, known_hosts_file=self.known_hosts_file
         )
         ssh_connection._socket = paramiko.SSHClient()
 
         with self.assertRaises(
-            SystemExit, msg='User denied key. Host key verification failed.'
+            SystemExit, msg="User denied key. Host key verification failed."
         ):
             hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
             ssh_connection._ssh_authentication_input_loop(
@@ -317,17 +317,17 @@ FsAQI=
             )
 
     def test_disconnect(self):
-        with patch('paramiko.SSHClient') as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:
             client_mock = SSHClientMock.return_value
-            client_mock.exec_command.return_value = ['a', 'b', 'c']
+            client_mock.exec_command.return_value = ["a", "b", "c"]
             ssh_connection = SSHConnection(
                 known_hosts_file=self.known_hosts_file
             )
 
             ssh_connection.connect()
-            self.assertEqual(ssh_connection._stdin, 'a')
-            self.assertEqual(ssh_connection._stdout, 'b')
-            self.assertEqual(ssh_connection._stderr, 'c')
+            self.assertEqual(ssh_connection._stdin, "a")
+            self.assertEqual(ssh_connection._stdout, "b")
+            self.assertEqual(ssh_connection._stderr, "c")
 
             ssh_connection.disconnect()
             # make sure the attributes have been deleted
@@ -341,14 +341,14 @@ FsAQI=
                 type(ssh_connection._socket)
 
             with self.assertRaises(AttributeError):
-                with self.assertLogs('gvm.connections', level='INFO') as cm:
+                with self.assertLogs("gvm.connections", level="INFO") as cm:
                     # disconnect twice should not work ...
                     ssh_connection.disconnect()
                     self.assertEqual(
                         cm.output,
                         [
-                            'Connection might already be'
-                            ' closed. No socket found.',
+                            "Connection might already be"
+                            " closed. No socket found.",
                         ],
                     )
 
@@ -356,9 +356,9 @@ FsAQI=
             ssh_connection.disconnect()
 
     def test_disconnect_os_error(self):
-        with patch('paramiko.SSHClient') as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:
             client_mock = SSHClientMock.return_value
-            client_mock.exec_command.return_value = ['a', 'b', 'c']
+            client_mock.exec_command.return_value = ["a", "b", "c"]
             client_mock.close.side_effect = OSError
 
             ssh_connection = SSHConnection(
@@ -367,14 +367,14 @@ FsAQI=
             ssh_connection.connect()
 
             with self.assertRaises(OSError):
-                with self.assertLogs('gvm.connections', level='INFO') as cm:
+                with self.assertLogs("gvm.connections", level="INFO") as cm:
                     ssh_connection.disconnect()
-                    self.assertEqual(cm.output, ['Connection closing error: '])
+                    self.assertEqual(cm.output, ["Connection closing error: "])
 
     def test_trigger_paramiko_ssh_except_in_get_remote_key(self):
-        with patch('paramiko.transport.Transport') as TransportMock:
+        with patch("paramiko.transport.Transport") as TransportMock:
             client_mock = TransportMock.return_value
-            client_mock.start_client.side_effect = paramiko.SSHException('foo')
+            client_mock.start_client.side_effect = paramiko.SSHException("foo")
 
             ssh_connection = SSHConnection(
                 hostname="0.0.0.0",
@@ -387,9 +387,9 @@ FsAQI=
                 ssh_connection._get_remote_host_key()
 
     def test_trigger_oserror_in_get_remote_key_connect(self):
-        with patch('socket.socket') as SocketMock:
+        with patch("socket.socket") as SocketMock:
             client_mock = SocketMock.return_value
-            client_mock.connect.side_effect = OSError('foo')
+            client_mock.connect.side_effect = OSError("foo")
 
             ssh_connection = SSHConnection(
                 hostname="0.0.0.0",
@@ -403,9 +403,9 @@ FsAQI=
                 ssh_connection._get_remote_host_key()
 
     def test_trigger_oserror_in_get_remote_key_disconnect(self):
-        with patch('paramiko.transport.Transport') as TransportMock:
+        with patch("paramiko.transport.Transport") as TransportMock:
             client_mock = TransportMock.return_value
-            client_mock.close.side_effect = paramiko.SSHException('foo')
+            client_mock.close.side_effect = paramiko.SSHException("foo")
 
             ssh_connection = SSHConnection(
                 hostname="0.0.0.0",
@@ -419,7 +419,7 @@ FsAQI=
                 ssh_connection._get_remote_host_key()
 
     def test_send(self):
-        with patch('paramiko.SSHClient') as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:
             client_mock = SSHClientMock.return_value
             stdin = Mock()
             stdin.channel.send.return_value = 4
@@ -434,7 +434,7 @@ FsAQI=
             ssh_connection.disconnect()
 
     def test_send_error(self):
-        with patch('paramiko.SSHClient') as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:
             client_mock = SSHClientMock.return_value
             stdin = Mock()
             stdin.channel.send.return_value = None
@@ -445,13 +445,13 @@ FsAQI=
 
             ssh_connection.connect()
             with self.assertRaises(
-                GvmError, msg='Remote closed the connection'
+                GvmError, msg="Remote closed the connection"
             ):
                 ssh_connection.send("blah")
             ssh_connection.disconnect()
 
     def test_send_and_slice(self):
-        with patch('paramiko.SSHClient') as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:
             client_mock = SSHClientMock.return_value
             stdin = Mock()
             stdin.channel.send.side_effect = [2, 2]
@@ -470,7 +470,7 @@ FsAQI=
             ssh_connection.disconnect()
 
     def test_read(self):
-        with patch('paramiko.SSHClient') as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:
             client_mock = SSHClientMock.return_value
             stdout = Mock()
             stdout.channel.recv.return_value = b"foo bar baz"
@@ -481,5 +481,5 @@ FsAQI=
 
             ssh_connection.connect()
             recved = ssh_connection._read()
-            self.assertEqual(recved, b'foo bar baz')
+            self.assertEqual(recved, b"foo bar baz")
             ssh_connection.disconnect()

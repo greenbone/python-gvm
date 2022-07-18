@@ -23,20 +23,20 @@ from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 class GmpTriggerAlertTestMixin:
     def test_trigger_alert_without_alert_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.trigger_alert(alert_id=None, report_id='r1')
+            self.gmp.trigger_alert(alert_id=None, report_id="r1")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.trigger_alert(alert_id='', report_id='r1')
+            self.gmp.trigger_alert(alert_id="", report_id="r1")
 
     def test_trigger_alert_without_report_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.trigger_alert(alert_id='a1', report_id=None)
+            self.gmp.trigger_alert(alert_id="a1", report_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.trigger_alert(alert_id='a1', report_id='')
+            self.gmp.trigger_alert(alert_id="a1", report_id="")
 
     def test_trigger_alert(self):
-        self.gmp.trigger_alert(alert_id='a1', report_id='r1')
+        self.gmp.trigger_alert(alert_id="a1", report_id="r1")
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1"/>'
@@ -44,7 +44,7 @@ class GmpTriggerAlertTestMixin:
 
     def test_trigger_alert_with_filter_string(self):
         self.gmp.trigger_alert(
-            alert_id='a1', report_id='r1', filter_string='name=foo'
+            alert_id="a1", report_id="r1", filter_string="name=foo"
         )
 
         self.connection.send.has_been_called_with(
@@ -52,7 +52,7 @@ class GmpTriggerAlertTestMixin:
         )
 
     def test_trigger_alert_with_filter_id(self):
-        self.gmp.trigger_alert(alert_id="a1", report_id='r1', filter_id='f1')
+        self.gmp.trigger_alert(alert_id="a1", report_id="r1", filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1" filt_id="f1"/>'
@@ -60,7 +60,7 @@ class GmpTriggerAlertTestMixin:
 
     def test_trigger_alert_with_report_format_id(self):
         self.gmp.trigger_alert(
-            alert_id="a1", report_id='r1', report_format_id='bar'
+            alert_id="a1", report_id="r1", report_format_id="bar"
         )
 
         self.connection.send.has_been_called_with(
@@ -69,10 +69,10 @@ class GmpTriggerAlertTestMixin:
 
     def test_trigger_alert_with_report_format_type(self):
         self.gmp.trigger_alert(
-            alert_id="a1", report_id='r1', report_format_id=ReportFormatType.SVG
+            alert_id="a1", report_id="r1", report_format_id=ReportFormatType.SVG
         )
 
-        report_format_id = ReportFormatType.from_string('svg').value
+        report_format_id = ReportFormatType.from_string("svg").value
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" alert_id="a1" '
@@ -81,7 +81,7 @@ class GmpTriggerAlertTestMixin:
 
     def test_trigger_alert_with_delta_report_id(self):
         self.gmp.trigger_alert(
-            alert_id='a1', report_id='r1', delta_report_id='r2'
+            alert_id="a1", report_id="r1", delta_report_id="r2"
         )
 
         self.connection.send.has_been_called_with(

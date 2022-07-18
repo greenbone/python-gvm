@@ -21,14 +21,14 @@ from gvm.errors import GvmError
 
 class GmpDeleteScanConfigTestMixin:
     def test_delete_scan_config(self):
-        self.gmp.delete_scan_config('a1')
+        self.gmp.delete_scan_config("a1")
 
         self.connection.send.has_been_called_with(
             '<delete_config config_id="a1" ultimate="0"/>'
         )
 
     def test_delete_scan_config_ultimate(self):
-        self.gmp.delete_scan_config('a1', ultimate=True)
+        self.gmp.delete_scan_config("a1", ultimate=True)
 
         self.connection.send.has_been_called_with(
             '<delete_config config_id="a1" ultimate="1"/>'
@@ -39,4 +39,4 @@ class GmpDeleteScanConfigTestMixin:
             self.gmp.delete_scan_config(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.delete_scan_config('')
+            self.gmp.delete_scan_config("")

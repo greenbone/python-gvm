@@ -33,8 +33,8 @@ class TestIsListLike(unittest.TestCase):
 
         self.assertTrue(is_list_like(["1", "2"]))
 
-        self.assertTrue(is_list_like(('2', '3')))
+        self.assertTrue(is_list_like(("2", "3")))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

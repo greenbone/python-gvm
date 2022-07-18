@@ -21,17 +21,17 @@ class GmpGetPortListsTestMixin:
     def test_get_port_lists(self):
         self.gmp.get_port_lists()
 
-        self.connection.send.has_been_called_with('<get_port_lists/>')
+        self.connection.send.has_been_called_with("<get_port_lists/>")
 
     def test_get_port_lists_with_filter_string(self):
-        self.gmp.get_port_lists(filter_string='foo=bar')
+        self.gmp.get_port_lists(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_port_lists filter="foo=bar"/>'
         )
 
     def test_get_port_lists_with_filter_id(self):
-        self.gmp.get_port_lists(filter_id='f1')
+        self.gmp.get_port_lists(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_port_lists filt_id="f1"/>'

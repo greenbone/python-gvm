@@ -23,7 +23,7 @@ from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
 from gvm.utils import add_filter, to_base64, to_bool, is_list_like
 from gvm.xml import XmlCommand
 
-_EMPTY_POLICY_ID = '085569ce-73ed-11df-83c3-002264764cea'
+_EMPTY_POLICY_ID = "085569ce-73ed-11df-83c3-002264764cea"
 
 
 class PoliciesMixin:
@@ -38,7 +38,7 @@ class PoliciesMixin:
         """
         if not policy_id:
             raise RequiredArgument(
-                function=self.clone_policy.__name__, argument='policy_id'
+                function=self.clone_policy.__name__, argument="policy_id"
             )
 
         cmd = XmlCommand("create_config")
@@ -65,7 +65,7 @@ class PoliciesMixin:
             policy_id = _EMPTY_POLICY_ID
         if not name:
             raise RequiredArgument(
-                function=self.create_policy.__name__, argument='name'
+                function=self.create_policy.__name__, argument="name"
             )
 
         if comment is not None:
@@ -85,7 +85,7 @@ class PoliciesMixin:
         """
         if not policy_id:
             raise RequiredArgument(
-                function=self.delete_policy.__name__, argument='policy_id'
+                function=self.delete_policy.__name__, argument="policy_id"
             )
 
         cmd = XmlCommand("delete_config")
@@ -158,7 +158,7 @@ class PoliciesMixin:
         """
         if not policy_id:
             raise RequiredArgument(
-                function=self.get_policy.__name__, argument='policy_id'
+                function=self.get_policy.__name__, argument="policy_id"
             )
 
         cmd = XmlCommand("get_configs")
@@ -186,7 +186,7 @@ class PoliciesMixin:
         """
         if not policy:
             raise RequiredArgument(
-                function=self.import_policy.__name__, argument='policy'
+                function=self.import_policy.__name__, argument="policy"
             )
 
         cmd = XmlCommand("create_config")
@@ -195,7 +195,7 @@ class PoliciesMixin:
             cmd.append_xml_str(policy)
         except XMLSyntaxError as e:
             raise InvalidArgument(
-                function=self.import_policy.__name__, argument='policy'
+                function=self.import_policy.__name__, argument="policy"
             ) from e
 
         return self._send_xml_command(cmd)
@@ -220,19 +220,19 @@ class PoliciesMixin:
         if not policy_id:
             raise RequiredArgument(
                 function=self.modify_policy_set_nvt_preference.__name__,
-                argument='policy_id',
+                argument="policy_id",
             )
 
         if not nvt_oid:
             raise RequiredArgument(
                 function=self.modify_policy_set_nvt_preference.__name__,
-                argument='nvt_oid',
+                argument="nvt_oid",
             )
 
         if not name:
             raise RequiredArgument(
                 function=self.modify_policy_set_nvt_preference.__name__,
-                argument='name',
+                argument="name",
             )
 
         cmd = XmlCommand("modify_config")
@@ -258,13 +258,13 @@ class PoliciesMixin:
         if not policy_id:
             raise RequiredArgument(
                 function=self.modify_policy_set_name.__name__,
-                argument='policy_id',
+                argument="policy_id",
             )
 
         if not name:
             raise RequiredArgument(
                 function=self.modify_policy_set_name.__name__,
-                argument='name',
+                argument="name",
             )
 
         cmd = XmlCommand("modify_config")
@@ -288,7 +288,7 @@ class PoliciesMixin:
         if not policy_id:
             raise RequiredArgument(
                 function=self.modify_policy_set_comment.__name__,
-                argument='policy_id',
+                argument="policy_id",
             )
 
         cmd = XmlCommand("modify_config")
@@ -314,13 +314,13 @@ class PoliciesMixin:
         if not policy_id:
             raise RequiredArgument(
                 function=(self.modify_policy_set_scanner_preference.__name__),
-                argument='policy_id',
+                argument="policy_id",
             )
 
         if not name:
             raise RequiredArgument(
                 function=(self.modify_policy_set_scanner_preference.__name__),
-                argument='name argument',
+                argument="name argument",
             )
 
         cmd = XmlCommand("modify_config")
@@ -351,20 +351,20 @@ class PoliciesMixin:
         if not policy_id:
             raise RequiredArgument(
                 function=self.modify_policy_set_nvt_selection.__name__,
-                argument='policy_id',
+                argument="policy_id",
             )
 
         if not family:
             raise RequiredArgument(
                 function=self.modify_policy_set_nvt_selection.__name__,
-                argument='family argument',
+                argument="family argument",
             )
 
         if not is_list_like(nvt_oids):
             raise InvalidArgumentType(
                 function=self.modify_policy_set_nvt_selection.__name__,
-                argument='nvt_oids',
-                arg_type='list',
+                argument="nvt_oids",
+                arg_type="list",
             )
 
         cmd = XmlCommand("modify_config")
@@ -401,14 +401,14 @@ class PoliciesMixin:
         if not policy_id:
             raise RequiredArgument(
                 function=self.modify_policy_set_family_selection.__name__,
-                argument='policy_id',
+                argument="policy_id",
             )
 
         if not is_list_like(families):
             raise InvalidArgumentType(
                 function=self.modify_policy_set_family_selection.__name__,
-                argument='families',
-                arg_type='list',
+                argument="families",
+                arg_type="list",
             )
 
         cmd = XmlCommand("modify_config")
@@ -431,8 +431,8 @@ class PoliciesMixin:
             ):
                 raise InvalidArgumentType(
                     function=(self.modify_policy_set_family_selection.__name__),
-                    argument='families',
-                    arg_type='[tuple(str, bool, bool)]',
+                    argument="families",
+                    arg_type="[tuple(str, bool, bool)]",
                 )
 
             _xmlfamily.add_element("all", to_bool(family[2]))

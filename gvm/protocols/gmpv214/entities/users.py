@@ -79,7 +79,7 @@ class UsersMixin(Gmp208UsersMixin):
         """
         if not user_id:
             raise RequiredArgument(
-                function=self.modify_user.__name__, argument='user_id'
+                function=self.modify_user.__name__, argument="user_id"
             )
 
         cmd = XmlCommand("modify_user")

@@ -65,12 +65,12 @@ class OverridesMixin(Gmp208OverridesMixin):
         """
         if not text:
             raise RequiredArgument(
-                function=self.create_override.__name__, argument='text'
+                function=self.create_override.__name__, argument="text"
             )
 
         if not nvt_oid:
             raise RequiredArgument(
-                function=self.create_override.__name__, argument='nvt_oid'
+                function=self.create_override.__name__, argument="nvt_oid"
             )
 
         cmd = XmlCommand("create_override")
@@ -88,7 +88,7 @@ class OverridesMixin(Gmp208OverridesMixin):
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.create_override.__name__, argument='port'
+                    function=self.create_override.__name__, argument="port"
                 )
 
         if result_id:
@@ -156,11 +156,11 @@ class OverridesMixin(Gmp208OverridesMixin):
         """
         if not override_id:
             raise RequiredArgument(
-                function=self.modify_override.__name__, argument='override_id'
+                function=self.modify_override.__name__, argument="override_id"
             )
         if not text:
             raise RequiredArgument(
-                function=self.modify_override.__name__, argument='text'
+                function=self.modify_override.__name__, argument="text"
             )
 
         cmd = XmlCommand("modify_override")
@@ -178,7 +178,7 @@ class OverridesMixin(Gmp208OverridesMixin):
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.modify_override.__name__, argument='port'
+                    function=self.modify_override.__name__, argument="port"
                 )
 
         if result_id:

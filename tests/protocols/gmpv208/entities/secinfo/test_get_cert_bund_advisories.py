@@ -26,21 +26,21 @@ class GmpGetCertBundListTestMixin:
         )
 
     def test_get_cves_with_filter_string(self):
-        self.gmp.get_cert_bund_advisories(filter_string='foo=bar')
+        self.gmp.get_cert_bund_advisories(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_info type="CERT_BUND_ADV" filter="foo=bar"/>'
         )
 
     def test_get_cves_with_filter_id(self):
-        self.gmp.get_cert_bund_advisories(filter_id='f1')
+        self.gmp.get_cert_bund_advisories(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_info type="CERT_BUND_ADV" filt_id="f1"/>'
         )
 
     def test_get_cves_with_name(self):
-        self.gmp.get_cert_bund_advisories(name='foo')
+        self.gmp.get_cert_bund_advisories(name="foo")
 
         self.connection.send.has_been_called_with(
             '<get_info type="CERT_BUND_ADV" name="foo"/>'

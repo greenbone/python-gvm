@@ -21,11 +21,11 @@ from gvm.errors import RequiredArgument
 
 class GmpGetTagTestMixin:
     def test_get_tag(self):
-        self.gmp.get_tag('t1')
+        self.gmp.get_tag("t1")
 
         self.connection.send.has_been_called_with('<get_tags tag_id="t1"/>')
 
-        self.gmp.get_tag(tag_id='t1')
+        self.gmp.get_tag(tag_id="t1")
 
         self.connection.send.has_been_called_with('<get_tags tag_id="t1"/>')
 
@@ -34,4 +34,4 @@ class GmpGetTagTestMixin:
             self.gmp.get_tag(tag_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_tag('')
+            self.gmp.get_tag("")

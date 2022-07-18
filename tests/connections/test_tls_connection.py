@@ -55,14 +55,14 @@ class TLSConnectionTestCase(unittest.TestCase):
         self.assertEqual(tls_connection._timeout, DEFAULT_TIMEOUT)
 
     def test_connect(self):
-        with patch('ssl.SSLContext') as SSHContextMock:
+        with patch("ssl.SSLContext") as SSHContextMock:
             context_mock = SSHContextMock.return_value
             connection = TLSConnection()
             connection.connect()
             context_mock.wrap_socket.assert_called_once()
 
     def test_connect_auth(self):
-        with patch('ssl.SSLContext') as SSHContextMock:
+        with patch("ssl.SSLContext") as SSHContextMock:
             context_mock = SSHContextMock.return_value
             cert_file = Mock()
             ca_file = Mock()

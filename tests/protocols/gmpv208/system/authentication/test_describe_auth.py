@@ -21,4 +21,4 @@ class GmpDescribeAuthTestMixin:
     def test_describe_auth(self):
         self.gmp.describe_auth()
 
-        self.connection.send.has_been_called_with('<describe_auth/>')
+        self.connection.send.has_been_called_with("<describe_auth/>")

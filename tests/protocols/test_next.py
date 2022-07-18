@@ -31,5 +31,5 @@ class LatestProtocolsTestCase(unittest.TestCase):
         self.assertEqual(Osp.get_protocol_version(), (1, 2))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

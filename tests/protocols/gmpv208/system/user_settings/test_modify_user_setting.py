@@ -21,29 +21,29 @@ from gvm.errors import RequiredArgument
 
 class GmpModifyUserSettingTestMixin:
     def test_modify_user_setting(self):
-        self.gmp.modify_user_setting(setting_id='s1', value='bar')
+        self.gmp.modify_user_setting(setting_id="s1", value="bar")
 
         self.connection.send.has_been_called_with(
             '<modify_setting setting_id="s1">'
-            '<value>YmFy</value>'
-            '</modify_setting>'
+            "<value>YmFy</value>"
+            "</modify_setting>"
         )
 
-        self.gmp.modify_user_setting(name='s1', value='bar')
+        self.gmp.modify_user_setting(name="s1", value="bar")
 
         self.connection.send.has_been_called_with(
-            '<modify_setting>'
-            '<name>s1</name>'
-            '<value>YmFy</value>'
-            '</modify_setting>'
+            "<modify_setting>"
+            "<name>s1</name>"
+            "<value>YmFy</value>"
+            "</modify_setting>"
         )
 
-        self.gmp.modify_user_setting(setting_id='s1', value='')
+        self.gmp.modify_user_setting(setting_id="s1", value="")
 
         self.connection.send.has_been_called_with(
             '<modify_setting setting_id="s1">'
-            '<value></value>'
-            '</modify_setting>'
+            "<value></value>"
+            "</modify_setting>"
         )
 
     def test_modify_user_setting_missing_setting_id(self):
@@ -51,15 +51,15 @@ class GmpModifyUserSettingTestMixin:
             self.gmp.modify_user_setting(setting_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_user_setting(setting_id='')
+            self.gmp.modify_user_setting(setting_id="")
 
     def test_modify_setting_missing_name(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_user_setting(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_user_setting(name='')
+            self.gmp.modify_user_setting(name="")
 
     def test_modify_user_setting_missing_value(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_user_setting(setting_id='s1', value=None)
+            self.gmp.modify_user_setting(setting_id="s1", value=None)

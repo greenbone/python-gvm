@@ -37,7 +37,7 @@ class OperatingSystemsMixin:
         if not operating_system_id:
             raise RequiredArgument(
                 function=self.delete_operating_system.__name__,
-                argument='operating_system_id',
+                argument="operating_system_id",
             )
 
         cmd = XmlCommand("delete_asset")
@@ -83,7 +83,7 @@ class OperatingSystemsMixin:
         if not operating_system_id:
             raise RequiredArgument(
                 function=self.get_operating_system.__name__,
-                argument='operating_system_id',
+                argument="operating_system_id",
             )
 
         cmd.set_attribute("asset_id", operating_system_id)
@@ -107,7 +107,7 @@ class OperatingSystemsMixin:
         if not operating_system_id:
             raise RequiredArgument(
                 function=self.modify_operating_system.__name__,
-                argument='operating_system_id',
+                argument="operating_system_id",
             )
 
         cmd = XmlCommand("modify_asset")

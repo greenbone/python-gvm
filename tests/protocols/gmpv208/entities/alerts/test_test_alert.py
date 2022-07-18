@@ -21,7 +21,7 @@ from gvm.errors import GvmError
 
 class GmpTestAlertTestMixin:
     def test_test_alert(self):
-        self.gmp.test_alert('a1')
+        self.gmp.test_alert("a1")
 
         self.connection.send.has_been_called_with('<test_alert alert_id="a1"/>')
 
@@ -30,4 +30,4 @@ class GmpTestAlertTestMixin:
             self.gmp.test_alert(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.test_alert('')
+            self.gmp.test_alert("")

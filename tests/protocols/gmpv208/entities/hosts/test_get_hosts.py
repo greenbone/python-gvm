@@ -24,14 +24,14 @@ class GmpGetHostsTestMixin:
         self.connection.send.has_been_called_with('<get_assets type="host"/>')
 
     def test_get_hosts_with_filter_string(self):
-        self.gmp.get_hosts(filter_string='foo=bar')
+        self.gmp.get_hosts(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_assets type="host" filter="foo=bar"/>'
         )
 
     def test_get_hosts_with_filter_id(self):
-        self.gmp.get_hosts(filter_id='f1')
+        self.gmp.get_hosts(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_assets type="host" filt_id="f1"/>'

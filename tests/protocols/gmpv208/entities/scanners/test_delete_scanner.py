@@ -21,14 +21,14 @@ from gvm.errors import GvmError
 
 class GmpDeleteScannerTestMixin:
     def test_delete(self):
-        self.gmp.delete_scanner('a1')
+        self.gmp.delete_scanner("a1")
 
         self.connection.send.has_been_called_with(
             '<delete_scanner scanner_id="a1" ultimate="0"/>'
         )
 
     def test_delete_ultimate(self):
-        self.gmp.delete_scanner('a1', ultimate=True)
+        self.gmp.delete_scanner("a1", ultimate=True)
 
         self.connection.send.has_been_called_with(
             '<delete_scanner scanner_id="a1" ultimate="1"/>'
@@ -39,4 +39,4 @@ class GmpDeleteScannerTestMixin:
             self.gmp.delete_scanner(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.delete_scanner('')
+            self.gmp.delete_scanner("")

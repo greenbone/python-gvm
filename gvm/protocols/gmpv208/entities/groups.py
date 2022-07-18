@@ -35,7 +35,7 @@ class GroupsMixin:
         """
         if not group_id:
             raise RequiredArgument(
-                function=self.clone_group.__name__, argument='group_id'
+                function=self.clone_group.__name__, argument="group_id"
             )
 
         cmd = XmlCommand("create_group")
@@ -64,7 +64,7 @@ class GroupsMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_group.__name__, argument='name'
+                function=self.create_group.__name__, argument="name"
             )
 
         cmd = XmlCommand("create_group")
@@ -93,7 +93,7 @@ class GroupsMixin:
         """
         if not group_id:
             raise RequiredArgument(
-                function=self.delete_group.__name__, argument='group_id'
+                function=self.delete_group.__name__, argument="group_id"
             )
 
         cmd = XmlCommand("delete_group")
@@ -141,7 +141,7 @@ class GroupsMixin:
 
         if not group_id:
             raise RequiredArgument(
-                function=self.get_group.__name__, argument='group_id'
+                function=self.get_group.__name__, argument="group_id"
             )
 
         cmd.set_attribute("group_id", group_id)
@@ -168,7 +168,7 @@ class GroupsMixin:
         """
         if not group_id:
             raise RequiredArgument(
-                function=self.modify_group.__name__, argument='group_id'
+                function=self.modify_group.__name__, argument="group_id"
             )
 
         cmd = XmlCommand("modify_group")

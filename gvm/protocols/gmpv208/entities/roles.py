@@ -35,7 +35,7 @@ class RolesMixin:
         """
         if not role_id:
             raise RequiredArgument(
-                function=self.clone_role.__name__, argument='role_id'
+                function=self.clone_role.__name__, argument="role_id"
             )
 
         cmd = XmlCommand("create_role")
@@ -62,7 +62,7 @@ class RolesMixin:
 
         if not name:
             raise RequiredArgument(
-                function=self.create_role.__name__, argument='name'
+                function=self.create_role.__name__, argument="name"
             )
 
         cmd = XmlCommand("create_role")
@@ -87,7 +87,7 @@ class RolesMixin:
         """
         if not role_id:
             raise RequiredArgument(
-                function=self.delete_role.__name__, argument='role_id'
+                function=self.delete_role.__name__, argument="role_id"
             )
 
         cmd = XmlCommand("delete_role")
@@ -133,7 +133,7 @@ class RolesMixin:
         """
         if not role_id:
             raise RequiredArgument(
-                function=self.get_role.__name__, argument='role_id'
+                function=self.get_role.__name__, argument="role_id"
             )
 
         cmd = XmlCommand("get_roles")
@@ -161,7 +161,7 @@ class RolesMixin:
         """
         if not role_id:
             raise RequiredArgument(
-                function=self.modify_role.__name__, argument='role_id argument'
+                function=self.modify_role.__name__, argument="role_id argument"
             )
 
         cmd = XmlCommand("modify_role")

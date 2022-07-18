@@ -29,7 +29,7 @@ class OSPDeleteScanTestCase(unittest.TestCase):
         self.osp = Osp(self.connection)
 
     def test_delete_scan(self):
-        self.osp.delete_scan(scan_id='123-456')
+        self.osp.delete_scan(scan_id="123-456")
 
         self.connection.send.has_been_called_with(
             '<delete_scan scan_id="123-456"/>'
@@ -40,5 +40,5 @@ class OSPDeleteScanTestCase(unittest.TestCase):
             self.osp.delete_scan()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

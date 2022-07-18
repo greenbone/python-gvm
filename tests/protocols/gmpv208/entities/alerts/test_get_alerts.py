@@ -21,7 +21,7 @@ class GmpGetAlertsTestMixin:
     def test_get_alerts(self):
         self.gmp.get_alerts()
 
-        self.connection.send.has_been_called_with('<get_alerts/>')
+        self.connection.send.has_been_called_with("<get_alerts/>")
 
     def test_get_alerts_with_trash(self):
         self.gmp.get_alerts(trash=True)
@@ -40,7 +40,7 @@ class GmpGetAlertsTestMixin:
         )
 
     def test_get_alerts_with_filter_id(self):
-        self.gmp.get_alerts(filter_id='f1')
+        self.gmp.get_alerts(filter_id="f1")
 
         self.connection.send.has_been_called_with('<get_alerts filt_id="f1"/>')
 

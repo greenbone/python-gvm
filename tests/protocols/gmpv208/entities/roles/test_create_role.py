@@ -21,10 +21,10 @@ from gvm.errors import RequiredArgument
 
 class GmpCreateRoleTestMixin:
     def test_create_role(self):
-        self.gmp.create_role(name='foo')
+        self.gmp.create_role(name="foo")
 
         self.connection.send.has_been_called_with(
-            '<create_role>' '<name>foo</name>' '</create_role>'
+            "<create_role>" "<name>foo</name>" "</create_role>"
         )
 
     def test_missing_name(self):
@@ -32,30 +32,30 @@ class GmpCreateRoleTestMixin:
             self.gmp.create_role(None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_role('')
+            self.gmp.create_role("")
 
     def test_create_role_with_comment(self):
-        self.gmp.create_role(name='foo', comment='bar')
+        self.gmp.create_role(name="foo", comment="bar")
 
         self.connection.send.has_been_called_with(
-            '<create_role>'
-            '<name>foo</name>'
-            '<comment>bar</comment>'
-            '</create_role>'
+            "<create_role>"
+            "<name>foo</name>"
+            "<comment>bar</comment>"
+            "</create_role>"
         )
 
     def test_create_role_with_users(self):
-        self.gmp.create_role(name='foo', users=[])
+        self.gmp.create_role(name="foo", users=[])
 
         self.connection.send.has_been_called_with(
-            '<create_role>' '<name>foo</name>' '</create_role>'
+            "<create_role>" "<name>foo</name>" "</create_role>"
         )
 
-        self.gmp.create_role(name='foo', users=['u1', 'u2'])
+        self.gmp.create_role(name="foo", users=["u1", "u2"])
 
         self.connection.send.has_been_called_with(
-            '<create_role>'
-            '<name>foo</name>'
-            '<users>u1,u2</users>'
-            '</create_role>'
+            "<create_role>"
+            "<name>foo</name>"
+            "<users>u1,u2</users>"
+            "</create_role>"
         )

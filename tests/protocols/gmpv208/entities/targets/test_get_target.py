@@ -21,13 +21,13 @@ from gvm.errors import RequiredArgument
 
 class GmpGetTargetTestMixin:
     def test_get_target(self):
-        self.gmp.get_target('t1')
+        self.gmp.get_target("t1")
 
         self.connection.send.has_been_called_with(
             '<get_targets target_id="t1"/>'
         )
 
-        self.gmp.get_target(target_id='t1')
+        self.gmp.get_target(target_id="t1")
 
         self.connection.send.has_been_called_with(
             '<get_targets target_id="t1"/>'
@@ -38,16 +38,16 @@ class GmpGetTargetTestMixin:
             self.gmp.get_target(target_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_target('')
+            self.gmp.get_target("")
 
     def test_get_target_with_tasks(self):
-        self.gmp.get_target(target_id='t1', tasks=True)
+        self.gmp.get_target(target_id="t1", tasks=True)
 
         self.connection.send.has_been_called_with(
             '<get_targets target_id="t1" tasks="1"/>'
         )
 
-        self.gmp.get_target(target_id='t1', tasks=False)
+        self.gmp.get_target(target_id="t1", tasks=False)
 
         self.connection.send.has_been_called_with(
             '<get_targets target_id="t1" tasks="0"/>'

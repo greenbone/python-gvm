@@ -40,5 +40,5 @@ class TestAddFilter(unittest.TestCase):
         self.assertEqual(cmd.to_string(), '<test filt_id="foo"/>')
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

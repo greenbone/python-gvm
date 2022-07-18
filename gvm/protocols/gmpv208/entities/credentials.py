@@ -28,11 +28,11 @@ from gvm.xml import XmlCommand
 class CredentialFormat(Enum):
     """Enum for credential format"""
 
-    KEY = 'key'
-    RPM = 'rpm'
-    DEB = 'deb'
-    EXE = 'exe'
-    PEM = 'pem'
+    KEY = "key"
+    RPM = "rpm"
+    DEB = "deb"
+    EXE = "exe"
+    PEM = "pem"
 
     @classmethod
     def from_string(
@@ -46,7 +46,7 @@ class CredentialFormat(Enum):
             return cls[credential_format.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='credential_format',
+                argument="credential_format",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -54,13 +54,13 @@ class CredentialFormat(Enum):
 class CredentialType(Enum):
     """Enum for credential types"""
 
-    CLIENT_CERTIFICATE = 'cc'
-    SNMP = 'snmp'
-    USERNAME_PASSWORD = 'up'
-    USERNAME_SSH_KEY = 'usk'
-    SMIME_CERTIFICATE = 'smime'
-    PGP_ENCRYPTION_KEY = 'pgp'
-    PASSWORD_ONLY = 'pw'
+    CLIENT_CERTIFICATE = "cc"
+    SNMP = "snmp"
+    USERNAME_PASSWORD = "up"
+    USERNAME_SSH_KEY = "usk"
+    SMIME_CERTIFICATE = "smime"
+    PGP_ENCRYPTION_KEY = "pgp"
+    PASSWORD_ONLY = "pw"
 
     @classmethod
     def from_string(
@@ -75,7 +75,7 @@ class CredentialType(Enum):
             return cls[credential_type.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='credential_type',
+                argument="credential_type",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -83,8 +83,8 @@ class CredentialType(Enum):
 class SnmpAuthAlgorithm(Enum):
     """Enum for SNMP auth algorithm"""
 
-    SHA1 = 'sha1'
-    MD5 = 'md5'
+    SHA1 = "sha1"
+    MD5 = "md5"
 
     @classmethod
     def from_string(
@@ -100,7 +100,7 @@ class SnmpAuthAlgorithm(Enum):
             return cls[algorithm.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='algorithm',
+                argument="algorithm",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -108,8 +108,8 @@ class SnmpAuthAlgorithm(Enum):
 class SnmpPrivacyAlgorithm(Enum):
     """Enum for SNMP privacy algorithm"""
 
-    AES = 'aes'
-    DES = 'des'
+    AES = "aes"
+    DES = "des"
 
     @classmethod
     def from_string(
@@ -126,7 +126,7 @@ class SnmpPrivacyAlgorithm(Enum):
             return cls[algorithm.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='algorithm',
+                argument="algorithm",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -144,7 +144,7 @@ class CredentialsMixin:
         if not credential_id:
             raise RequiredArgument(
                 function=self.clone_credential.__name__,
-                argument='credential_id',
+                argument="credential_id",
             )
 
         cmd = XmlCommand("create_credential")
@@ -282,13 +282,13 @@ class CredentialsMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_credential.__name__, argument='name'
+                function=self.create_credential.__name__, argument="name"
             )
 
         if not isinstance(credential_type, CredentialType):
             raise InvalidArgumentType(
                 function=self.create_credential.__name__,
-                argument='credential_type',
+                argument="credential_type",
                 arg_type=CredentialType.__name__,
             )
 
@@ -310,7 +310,7 @@ class CredentialsMixin:
             if not certificate:
                 raise RequiredArgument(
                     function=self.create_credential.__name__,
-                    argument='certificate',
+                    argument="certificate",
                 )
 
             cmd.add_element("certificate", certificate)
@@ -322,14 +322,14 @@ class CredentialsMixin:
         ):
             if not login:
                 raise RequiredArgument(
-                    function=self.create_credential.__name__, argument='login'
+                    function=self.create_credential.__name__, argument="login"
                 )
 
             cmd.add_element("login", login)
 
         if credential_type == CredentialType.PASSWORD_ONLY and not password:
             raise RequiredArgument(
-                function=self.create_credential.__name__, argument='password'
+                function=self.create_credential.__name__, argument="password"
             )
 
         if (
@@ -343,7 +343,7 @@ class CredentialsMixin:
             if not private_key:
                 raise RequiredArgument(
                     function=self.create_credential.__name__,
-                    argument='private_key',
+                    argument="private_key",
                 )
 
             _xmlkey = cmd.add_element("key")
@@ -360,7 +360,7 @@ class CredentialsMixin:
             if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgumentType(
                     function=self.create_credential.__name__,
-                    argument='auth_algorithm',
+                    argument="auth_algorithm",
                     arg_type=SnmpAuthAlgorithm.__name__,
                 )
 
@@ -376,7 +376,7 @@ class CredentialsMixin:
                     if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                         raise InvalidArgumentType(
                             function=self.create_credential.__name__,
-                            argument='privacy_algorithm',
+                            argument="privacy_algorithm",
                             arg_type=SnmpPrivacyAlgorithm.__name__,
                         )
 
@@ -391,7 +391,7 @@ class CredentialsMixin:
             if not public_key:
                 raise RequiredArgument(
                     function=self.create_credential.__name__,
-                    argument='public_key',
+                    argument="public_key",
                 )
 
             _xmlkey = cmd.add_element("key")
@@ -411,7 +411,7 @@ class CredentialsMixin:
         if not credential_id:
             raise RequiredArgument(
                 function=self.delete_credential.__name__,
-                argument='credential_id',
+                argument="credential_id",
             )
 
         cmd = XmlCommand("delete_credential")
@@ -479,7 +479,7 @@ class CredentialsMixin:
         """
         if not credential_id:
             raise RequiredArgument(
-                function=self.get_credential.__name__, argument='credential_id'
+                function=self.get_credential.__name__, argument="credential_id"
             )
 
         cmd = XmlCommand("get_credentials")
@@ -489,7 +489,7 @@ class CredentialsMixin:
             if not isinstance(credential_format, CredentialFormat):
                 raise InvalidArgumentType(
                     function=self.get_credential.__name__,
-                    argument='credential_format',
+                    argument="credential_format",
                     arg_type=CredentialFormat.__name__,
                 )
 
@@ -545,7 +545,7 @@ class CredentialsMixin:
         if not credential_id:
             raise RequiredArgument(
                 function=self.modify_credential.__name__,
-                argument='credential_id',
+                argument="credential_id",
             )
 
         cmd = XmlCommand("modify_credential")
@@ -572,7 +572,7 @@ class CredentialsMixin:
         ):
             raise RequiredArgument(
                 function=self.modify_credential.__name__,
-                argument='key_phrase and private_key',
+                argument="key_phrase and private_key",
             )
 
         if login:
@@ -585,7 +585,7 @@ class CredentialsMixin:
             if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
                 raise InvalidArgumentType(
                     function=self.modify_credential.__name__,
-                    argument='auth_algorithm',
+                    argument="auth_algorithm",
                     arg_type=SnmpAuthAlgorithm.__name__,
                 )
             cmd.add_element("auth_algorithm", auth_algorithm.value)
@@ -600,7 +600,7 @@ class CredentialsMixin:
                 if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
                     raise InvalidArgumentType(
                         function=self.modify_credential.__name__,
-                        argument='privacy_algorithm',
+                        argument="privacy_algorithm",
                         arg_type=SnmpPrivacyAlgorithm.__name__,
                     )
 

@@ -21,4 +21,4 @@ class GmpEmptyTrashcanTestMixin:
     def test_empty_trashcan(self):
         self.gmp.empty_trashcan()
 
-        self.connection.send.has_been_called_with('<empty_trashcan/>')
+        self.connection.send.has_been_called_with("<empty_trashcan/>")

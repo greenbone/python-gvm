@@ -53,12 +53,12 @@ class AuthenticationMixin:
 
         if not username:
             raise RequiredArgument(
-                function=self.authenticate.__name__, argument='username'
+                function=self.authenticate.__name__, argument="username"
             )
 
         if not password:
             raise RequiredArgument(
-                function=self.authenticate.__name__, argument='password'
+                function=self.authenticate.__name__, argument="password"
             )
 
         credentials = cmd.add_element("credentials")
@@ -96,12 +96,12 @@ class AuthenticationMixin:
         """
         if not group_name:
             raise RequiredArgument(
-                function=self.modify_auth.__name__, argument='group_name'
+                function=self.modify_auth.__name__, argument="group_name"
             )
         if not auth_conf_settings:
             raise RequiredArgument(
                 function=self.modify_auth.__name__,
-                argument='auth_conf_settings',
+                argument="auth_conf_settings",
             )
         cmd = XmlCommand("modify_auth")
         _xmlgroup = cmd.add_element("group", attrs={"name": str(group_name)})

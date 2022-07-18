@@ -21,15 +21,15 @@ from gvm.errors import RequiredArgument
 
 class GmpCloneTagTestMixin:
     def test_clone(self):
-        self.gmp.clone_tag('a1')
+        self.gmp.clone_tag("a1")
 
         self.connection.send.has_been_called_with(
-            '<create_tag>' '<copy>a1</copy>' '</create_tag>'
+            "<create_tag>" "<copy>a1</copy>" "</create_tag>"
         )
 
     def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.clone_tag('')
+            self.gmp.clone_tag("")
 
         with self.assertRaises(RequiredArgument):
             self.gmp.clone_tag(None)

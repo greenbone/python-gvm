@@ -25,21 +25,21 @@ from gvm.xml import validate_xml_string
 class ValidXmlStringTestCase(unittest.TestCase):
     def test_missing_closing_tag(self):
         with self.assertRaises(GvmError):
-            validate_xml_string('<foo>')
+            validate_xml_string("<foo>")
 
     def test_invalid_tag(self):
         with self.assertRaises(GvmError):
-            validate_xml_string('<foo&bar/>')
+            validate_xml_string("<foo&bar/>")
 
     def test_xml_bomb(self):
         xml = (
-            '<!DOCTYPE xmlbomb ['
+            "<!DOCTYPE xmlbomb ["
             '<!ENTITY a "1234567890" >'
             '<!ENTITY b "&a;&a;&a;&a;&a;&a;&a;&a;">'
             '<!ENTITY c "&b;&b;&b;&b;&b;&b;&b;&b;">'
             '<!ENTITY d "&c;&c;&c;&c;&c;&c;&c;&c;">'
-            ']>'
-            '<bomb>&c;</bomb>'
+            "]>"
+            "<bomb>&c;</bomb>"
         )
         with self.assertRaises(GvmError):
             validate_xml_string(xml)

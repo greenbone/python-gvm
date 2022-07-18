@@ -21,13 +21,13 @@ from gvm.errors import RequiredArgument
 
 class GmpGetHostTestMixin:
     def test_get_host(self):
-        self.gmp.get_host('a1')
+        self.gmp.get_host("a1")
 
         self.connection.send.has_been_called_with(
             '<get_assets asset_id="a1" type="host"/>'
         )
 
-        self.gmp.get_host(host_id='a1')
+        self.gmp.get_host(host_id="a1")
 
         self.connection.send.has_been_called_with(
             '<get_assets asset_id="a1" type="host"/>'
@@ -41,5 +41,5 @@ class GmpGetHostTestMixin:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.get_host(
-                host_id='',
+                host_id="",
             )

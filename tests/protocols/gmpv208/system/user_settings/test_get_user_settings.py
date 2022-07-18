@@ -21,7 +21,7 @@ class GmpGetUserSettingsTestMixin:
     def test_get_settings(self):
         self.gmp.get_user_settings()
 
-        self.connection.send.has_been_called_with('<get_settings/>')
+        self.connection.send.has_been_called_with("<get_settings/>")
 
     def test_get_settings_with_filter_string(self):
         self.gmp.get_user_settings(filter_string="foo=bar")

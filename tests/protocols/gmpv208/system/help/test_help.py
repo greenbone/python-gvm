@@ -33,7 +33,7 @@ class GmpHelpTestMixin:
 
     def test_invalid_help_format(self):
         with self.assertRaises(InvalidArgumentType):
-            self.gmp.help(help_format='foo')
+            self.gmp.help(help_format="foo")
 
     def test_html_format(self):
         self.gmp.help(help_format=HelpFormat.HTML)

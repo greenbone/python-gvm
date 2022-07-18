@@ -21,7 +21,7 @@ class GmpGetScanConfigNvtsTestMixin:
     def test_get_scan_config_nvts_simple(self):
         self.gmp.get_scan_config_nvts()
 
-        self.connection.send.has_been_called_with('<get_nvts/>')
+        self.connection.send.has_been_called_with("<get_nvts/>")
 
     def test_get_scan_config_nvts_with_details(self):
         self.gmp.get_scan_config_nvts(details=True)
@@ -58,7 +58,7 @@ class GmpGetScanConfigNvtsTestMixin:
         self.connection.send.has_been_called_with('<get_nvts timeout="0"/>')
 
     def test_get_scan_config_nvts_with_config_id(self):
-        self.gmp.get_scan_config_nvts(config_id='config_id')
+        self.gmp.get_scan_config_nvts(config_id="config_id")
 
         self.connection.send.has_been_called_with(
             '<get_nvts config_id="config_id"/>'
@@ -66,7 +66,7 @@ class GmpGetScanConfigNvtsTestMixin:
 
     def test_get_scan_config_nvts_with_preferences_config_id(self):
         self.gmp.get_scan_config_nvts(
-            preferences_config_id='preferences_config_id'
+            preferences_config_id="preferences_config_id"
         )
 
         self.connection.send.has_been_called_with(
@@ -74,19 +74,19 @@ class GmpGetScanConfigNvtsTestMixin:
         )
 
     def test_get_scan_config_nvts_with_family(self):
-        self.gmp.get_scan_config_nvts(family='family')
+        self.gmp.get_scan_config_nvts(family="family")
 
         self.connection.send.has_been_called_with('<get_nvts family="family"/>')
 
     def test_get_scan_config_nvts_with_sort_order(self):
-        self.gmp.get_scan_config_nvts(sort_order='sort_order')
+        self.gmp.get_scan_config_nvts(sort_order="sort_order")
 
         self.connection.send.has_been_called_with(
             '<get_nvts sort_order="sort_order"/>'
         )
 
     def test_get_scan_config_nvts_with_sort_field(self):
-        self.gmp.get_scan_config_nvts(sort_field='sort_field')
+        self.gmp.get_scan_config_nvts(sort_field="sort_field")
 
         self.connection.send.has_been_called_with(
             '<get_nvts sort_field="sort_field"/>'

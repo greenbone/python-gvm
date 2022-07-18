@@ -24,7 +24,7 @@ class CallableMock:
         self.result = None
 
     def __call__(self, *args, **kwargs):
-        self.calls.append({'args': args, 'kwargs': kwargs})
+        self.calls.append({"args": args, "kwargs": kwargs})
 
         return self.result
 
@@ -55,11 +55,11 @@ class CallableMock:
 
         # not sure if this is correct
         assert (
-            lastcall['args'] == args and lastcall['kwargs'] == kwargs
+            lastcall["args"] == args and lastcall["kwargs"] == kwargs
         ), resp.format(
             name=self.name,
             eargs=args,
             ekwargs=kwargs,
-            rargs=lastcall['args'],
-            rkwargs=lastcall['kwargs'],
+            rargs=lastcall["args"],
+            rkwargs=lastcall["kwargs"],
         )

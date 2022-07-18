@@ -58,7 +58,7 @@ class UsersMixin(Gmp214UsersMixin):
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_user.__name__, argument='name'
+                function=self.create_user.__name__, argument="name"
             )
 
         cmd = XmlCommand("create_user")
@@ -138,7 +138,7 @@ class UsersMixin(Gmp214UsersMixin):
         """
         if not user_id:
             raise RequiredArgument(
-                function=self.modify_user.__name__, argument='user_id'
+                function=self.modify_user.__name__, argument="user_id"
             )
 
         cmd = XmlCommand("modify_user")

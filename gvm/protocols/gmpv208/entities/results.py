@@ -37,7 +37,7 @@ class ResultsMixin:
 
         if not result_id:
             raise RequiredArgument(
-                function=self.get_result.__name__, argument='result_id'
+                function=self.get_result.__name__, argument="result_id"
             )
 
         cmd.set_attribute("result_id", result_id)

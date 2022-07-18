@@ -37,7 +37,7 @@ class TLSCertificateMixin:
         if not tls_certificate_id:
             raise RequiredArgument(
                 function=self.clone_tls_certificate.__name__,
-                argument='tls_certificate_id',
+                argument="tls_certificate_id",
             )
 
         cmd = XmlCommand("create_tls_certificate")
@@ -68,12 +68,12 @@ class TLSCertificateMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_tls_certificate.__name__, argument='name'
+                function=self.create_tls_certificate.__name__, argument="name"
             )
         if not certificate:
             raise RequiredArgument(
                 function=self.create_tls_certificate.__name__,
-                argument='certificate',
+                argument="certificate",
             )
 
         cmd = XmlCommand("create_tls_certificate")
@@ -98,7 +98,7 @@ class TLSCertificateMixin:
         if not tls_certificate_id:
             raise RequiredArgument(
                 function=self.delete_tls_certificate.__name__,
-                argument='tls_certificate_id',
+                argument="tls_certificate_id",
             )
 
         cmd = XmlCommand("delete_tls_certificate")
@@ -156,7 +156,7 @@ class TLSCertificateMixin:
         if not tls_certificate_id:
             raise RequiredArgument(
                 function=self.get_tls_certificate.__name__,
-                argument='tls_certificate_id',
+                argument="tls_certificate_id",
             )
 
         cmd.set_attribute("tls_certificate_id", tls_certificate_id)
@@ -191,7 +191,7 @@ class TLSCertificateMixin:
         if not tls_certificate_id:
             raise RequiredArgument(
                 function=self.modify_tls_certificate.__name__,
-                argument='tls_certificate_id',
+                argument="tls_certificate_id",
             )
 
         cmd = XmlCommand("modify_tls_certificate")

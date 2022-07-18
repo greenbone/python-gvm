@@ -53,14 +53,14 @@ class GmpGetFeedTestMixin:
             self.gmp.get_feed(feed_type=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_feed(feed_type='')
+            self.gmp.get_feed(feed_type="")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_feed('')
+            self.gmp.get_feed("")
 
     def test_get_feed_invalid_type(self):
         """
         Test get_feed calls with invalid resource_type
         """
         with self.assertRaises(InvalidArgumentType):
-            self.gmp.get_feed('foo')
+            self.gmp.get_feed("foo")

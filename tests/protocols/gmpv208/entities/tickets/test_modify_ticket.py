@@ -22,13 +22,13 @@ from gvm.protocols.gmpv208 import TicketStatus
 
 class GmpModifyTicketTestMixin:
     def test_modify_ticket(self):
-        self.gmp.modify_ticket('t1')
+        self.gmp.modify_ticket("t1")
 
         self.connection.send.has_been_called_with(
             '<modify_ticket ticket_id="t1"/>'
         )
 
-        self.gmp.modify_ticket(ticket_id='t1')
+        self.gmp.modify_ticket(ticket_id="t1")
 
         self.connection.send.has_been_called_with(
             '<modify_ticket ticket_id="t1"/>'
@@ -36,7 +36,7 @@ class GmpModifyTicketTestMixin:
 
     def test_missing_ticket_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_ticket('')
+            self.gmp.modify_ticket("")
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_ticket(None)
@@ -45,69 +45,69 @@ class GmpModifyTicketTestMixin:
             self.gmp.modify_ticket(ticket_id=None)
 
     def test_modify_ticket_with_comment(self):
-        self.gmp.modify_ticket(ticket_id='t1', comment='bar')
+        self.gmp.modify_ticket(ticket_id="t1", comment="bar")
 
         self.connection.send.has_been_called_with(
             '<modify_ticket ticket_id="t1">'
-            '<comment>bar</comment>'
-            '</modify_ticket>'
+            "<comment>bar</comment>"
+            "</modify_ticket>"
         )
 
     def test_modify_ticket_with_assigned_to_user_id(self):
-        self.gmp.modify_ticket(ticket_id='t1', assigned_to_user_id='u1')
+        self.gmp.modify_ticket(ticket_id="t1", assigned_to_user_id="u1")
 
         self.connection.send.has_been_called_with(
             '<modify_ticket ticket_id="t1">'
-            '<assigned_to>'
+            "<assigned_to>"
             '<user id="u1"/>'
-            '</assigned_to>'
-            '</modify_ticket>'
+            "</assigned_to>"
+            "</modify_ticket>"
         )
 
     def test_modify_ticket_invalid_status(self):
         with self.assertRaises(InvalidArgumentType):
-            self.gmp.modify_ticket(ticket_id='t1', status='foobar', note='bar')
+            self.gmp.modify_ticket(ticket_id="t1", status="foobar", note="bar")
 
     def test_modify_ticket_open(self):
         self.gmp.modify_ticket(
-            ticket_id='t1', status=TicketStatus.OPEN, note='lorem ipsum'
+            ticket_id="t1", status=TicketStatus.OPEN, note="lorem ipsum"
         )
 
         self.connection.send.has_been_called_with(
             '<modify_ticket ticket_id="t1">'
-            '<status>Open</status>'
-            '<open_note>lorem ipsum</open_note>'
-            '</modify_ticket>'
+            "<status>Open</status>"
+            "<open_note>lorem ipsum</open_note>"
+            "</modify_ticket>"
         )
 
     def test_modify_ticket_fixed(self):
         self.gmp.modify_ticket(
-            ticket_id='t1', status=TicketStatus.FIXED, note='lorem ipsum'
+            ticket_id="t1", status=TicketStatus.FIXED, note="lorem ipsum"
         )
 
         self.connection.send.has_been_called_with(
             '<modify_ticket ticket_id="t1">'
-            '<status>Fixed</status>'
-            '<fixed_note>lorem ipsum</fixed_note>'
-            '</modify_ticket>'
+            "<status>Fixed</status>"
+            "<fixed_note>lorem ipsum</fixed_note>"
+            "</modify_ticket>"
         )
 
     def test_modify_ticket_closed(self):
         self.gmp.modify_ticket(
-            ticket_id='t1', status=TicketStatus.CLOSED, note='lorem ipsum'
+            ticket_id="t1", status=TicketStatus.CLOSED, note="lorem ipsum"
         )
 
         self.connection.send.has_been_called_with(
             '<modify_ticket ticket_id="t1">'
-            '<status>Closed</status>'
-            '<closed_note>lorem ipsum</closed_note>'
-            '</modify_ticket>'
+            "<status>Closed</status>"
+            "<closed_note>lorem ipsum</closed_note>"
+            "</modify_ticket>"
         )
 
     def test_modify_ticket_status_without_note(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_ticket(ticket_id='t1', status=TicketStatus.CLOSED)
+            self.gmp.modify_ticket(ticket_id="t1", status=TicketStatus.CLOSED)
 
     def test_modify_ticket_note_without_status(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_ticket(ticket_id='t1', note='foo')
+            self.gmp.modify_ticket(ticket_id="t1", note="foo")

@@ -48,7 +48,7 @@ class HostsOrdering(Enum):
             return cls[hosts_ordering.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='hosts_ordering',
+                argument="hosts_ordering",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -66,7 +66,7 @@ class HostsMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_host.__name__, argument='name'
+                function=self.create_host.__name__, argument="name"
             )
 
         cmd = XmlCommand("create_asset")
@@ -88,7 +88,7 @@ class HostsMixin:
         if not host_id:
             raise RequiredArgument(
                 function=self.delete_host.__name__,
-                argument='host_id',
+                argument="host_id",
             )
 
         cmd = XmlCommand("delete_asset")
@@ -133,7 +133,7 @@ class HostsMixin:
 
         if not host_id:
             raise RequiredArgument(
-                function=self.get_host.__name__, argument='host_id'
+                function=self.get_host.__name__, argument="host_id"
             )
 
         cmd.set_attribute("asset_id", host_id)
@@ -156,7 +156,7 @@ class HostsMixin:
         """
         if not host_id:
             raise RequiredArgument(
-                function=self.modify_host.__name__, argument='host_id'
+                function=self.modify_host.__name__, argument="host_id"
             )
 
         cmd = XmlCommand("modify_asset")

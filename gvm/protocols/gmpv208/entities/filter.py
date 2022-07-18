@@ -66,23 +66,23 @@ class FilterType(Enum):
         if not filter_type:
             return None
 
-        if filter_type == 'vuln':
+        if filter_type == "vuln":
             return cls.VULNERABILITY
 
-        if filter_type == 'os':
+        if filter_type == "os":
             return cls.OPERATING_SYSTEM
 
-        if filter_type == 'config':
+        if filter_type == "config":
             return cls.SCAN_CONFIG
 
-        if filter_type == 'secinfo':
+        if filter_type == "secinfo":
             return cls.ALL_SECINFO
 
         try:
             return cls[filter_type.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='filter_type',
+                argument="filter_type",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -99,7 +99,7 @@ class FiltersMixin:
         """
         if not filter_id:
             raise RequiredArgument(
-                function=self.clone_filter.__name__, argument='filter_id'
+                function=self.clone_filter.__name__, argument="filter_id"
             )
 
         cmd = XmlCommand("create_filter")
@@ -162,7 +162,7 @@ class FiltersMixin:
         """
         if not filter_id:
             raise RequiredArgument(
-                function=self.delete_filter.__name__, argument='filter_id'
+                function=self.delete_filter.__name__, argument="filter_id"
             )
 
         cmd = XmlCommand("delete_filter")
@@ -218,7 +218,7 @@ class FiltersMixin:
 
         if not filter_id:
             raise RequiredArgument(
-                function=self.get_filter.__name__, argument='filter_id'
+                function=self.get_filter.__name__, argument="filter_id"
             )
 
         cmd.set_attribute("filter_id", filter_id)
@@ -251,7 +251,7 @@ class FiltersMixin:
         """
         if not filter_id:
             raise RequiredArgument(
-                function=self.modify_filter.__name__, argument='filter_id'
+                function=self.modify_filter.__name__, argument="filter_id"
             )
 
         cmd = XmlCommand("modify_filter")
@@ -270,7 +270,7 @@ class FiltersMixin:
             if not isinstance(filter_type, FilterType):
                 raise InvalidArgumentType(
                     function=self.modify_filter.__name__,
-                    argument='filter_type',
+                    argument="filter_type",
                     arg_type=FilterType.__name__,
                 )
             cmd.add_element("type", filter_type.value)

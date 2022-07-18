@@ -263,7 +263,7 @@ class Osp(GvmProtocol):
                 cmd.set_attribute("ports", ports)
         else:
             raise RequiredArgument(
-                function=self.start_scan.__name__, argument='targets'
+                function=self.start_scan.__name__, argument="targets"
             )
 
         if vt_selection:
@@ -285,7 +285,7 @@ class Osp(GvmProtocol):
         """
         if not scan_id:
             raise RequiredArgument(
-                function=self.stop_scan.__name__, argument='scan_id'
+                function=self.stop_scan.__name__, argument="scan_id"
             )
 
         cmd = XmlCommand("stop_scan")

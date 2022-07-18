@@ -26,14 +26,14 @@ class GmpGetReportsTestMixin:
         )
 
     def test_get_reports_with_filter_string(self):
-        self.gmp.get_reports(filter_string='name=foo')
+        self.gmp.get_reports(filter_string="name=foo")
 
         self.connection.send.has_been_called_with(
             '<get_reports report_filter="name=foo" ignore_pagination="1"/>'
         )
 
     def test_get_reports_with_filter_id(self):
-        self.gmp.get_reports(filter_id='f1')
+        self.gmp.get_reports(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_reports report_filt_id="f1" ignore_pagination="1"/>'

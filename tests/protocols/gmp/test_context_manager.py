@@ -35,8 +35,8 @@ class GmpContextManagerTestCase(GmpTestCase):
     def test_select_gmpv7(self):
         self.connection.read.return_value(
             '<get_version_response status="200" status_text="OK">'
-            '<version>7.0</version>'
-            '</get_version_response>'
+            "<version>7.0</version>"
+            "</get_version_response>"
         )
 
         with self.assertRaises(GvmError):
@@ -46,8 +46,8 @@ class GmpContextManagerTestCase(GmpTestCase):
     def test_select_gmpv8(self):
         self.connection.read.return_value(
             '<get_version_response status="200" status_text="OK">'
-            '<version>8.0</version>'
-            '</get_version_response>'
+            "<version>8.0</version>"
+            "</get_version_response>"
         )
 
         with self.assertRaises(GvmError):
@@ -57,8 +57,8 @@ class GmpContextManagerTestCase(GmpTestCase):
     def test_select_gmpv9(self):
         self.connection.read.return_value(
             '<get_version_response status="200" status_text="OK">'
-            '<version>9.0</version>'
-            '</get_version_response>'
+            "<version>9.0</version>"
+            "</get_version_response>"
         )
 
         with self.assertRaises(GvmError):
@@ -68,8 +68,8 @@ class GmpContextManagerTestCase(GmpTestCase):
     def test_select_gmpv208(self):
         self.connection.read.return_value(
             '<get_version_response status="200" status_text="OK">'
-            '<version>20.08</version>'
-            '</get_version_response>'
+            "<version>20.08</version>"
+            "</get_version_response>"
         )
 
         with self.gmp as gmp:
@@ -79,8 +79,8 @@ class GmpContextManagerTestCase(GmpTestCase):
     def test_select_gmpv214(self):
         self.connection.read.return_value(
             '<get_version_response status="200" status_text="OK">'
-            '<version>21.04</version>'
-            '</get_version_response>'
+            "<version>21.04</version>"
+            "</get_version_response>"
         )
 
         with self.gmp as gmp:
@@ -90,8 +90,8 @@ class GmpContextManagerTestCase(GmpTestCase):
     def test_unknown_protocol(self):
         self.connection.read.return_value(
             '<get_version_response status="200" status_text="OK">'
-            '<version>1.0</version>'
-            '</get_version_response>'
+            "<version>1.0</version>"
+            "</get_version_response>"
         )
 
         with self.assertRaises(GvmError):
@@ -101,8 +101,8 @@ class GmpContextManagerTestCase(GmpTestCase):
     def test_missing_version_in_response(self):
         self.connection.read.return_value(
             '<get_version_response status="200" status_text="OK">'
-            '<foo>bar</foo>'
-            '</get_version_response>'
+            "<foo>bar</foo>"
+            "</get_version_response>"
         )
 
         with self.assertRaises(GvmError):
@@ -110,7 +110,7 @@ class GmpContextManagerTestCase(GmpTestCase):
                 pass
 
     def test_invalid_response(self):
-        self.connection.read.return_value('<get_foo_response/>')
+        self.connection.read.return_value("<get_foo_response/>")
 
         with self.assertRaises(GvmError):
             with self.gmp:
@@ -120,8 +120,8 @@ class GmpContextManagerTestCase(GmpTestCase):
     def test_connect_disconnect(self, gmp_mock: MagicMock):
         self.connection.read.return_value(
             '<get_version_response status="200" status_text="OK">'
-            '<version>21.04</version>'
-            '</get_version_response>'
+            "<version>21.04</version>"
+            "</get_version_response>"
         )
 
         with self.gmp:
@@ -132,5 +132,5 @@ class GmpContextManagerTestCase(GmpTestCase):
         mock_instance.disconnect.assert_called_once()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

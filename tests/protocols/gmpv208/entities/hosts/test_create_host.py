@@ -25,29 +25,29 @@ class GmpCreateHostTestMixin:
             self.gmp.create_host(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_host(name='')
+            self.gmp.create_host(name="")
 
     def test_create_host_asset(self):
-        self.gmp.create_host(name='ipsum')
+        self.gmp.create_host(name="ipsum")
 
         self.connection.send.has_been_called_with(
-            '<create_asset>'
-            '<asset>'
-            '<type>host</type>'
-            '<name>ipsum</name>'
-            '</asset>'
-            '</create_asset>'
+            "<create_asset>"
+            "<asset>"
+            "<type>host</type>"
+            "<name>ipsum</name>"
+            "</asset>"
+            "</create_asset>"
         )
 
     def test_create_asset_with_comment(self):
-        self.gmp.create_host(name='ipsum', comment='lorem')
+        self.gmp.create_host(name="ipsum", comment="lorem")
 
         self.connection.send.has_been_called_with(
-            '<create_asset>'
-            '<asset>'
-            '<type>host</type>'
-            '<name>ipsum</name>'
-            '<comment>lorem</comment>'
-            '</asset>'
-            '</create_asset>'
+            "<create_asset>"
+            "<asset>"
+            "<type>host</type>"
+            "<name>ipsum</name>"
+            "<comment>lorem</comment>"
+            "</asset>"
+            "</create_asset>"
         )

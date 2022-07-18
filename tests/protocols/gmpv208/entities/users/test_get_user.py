@@ -21,11 +21,11 @@ from gvm.errors import RequiredArgument
 
 class GmpGetUserTestMixin:
     def test_get_user(self):
-        self.gmp.get_user('u1')
+        self.gmp.get_user("u1")
 
         self.connection.send.has_been_called_with('<get_users user_id="u1"/>')
 
-        self.gmp.get_user(user_id='u1')
+        self.gmp.get_user(user_id="u1")
 
         self.connection.send.has_been_called_with('<get_users user_id="u1"/>')
 
@@ -34,4 +34,4 @@ class GmpGetUserTestMixin:
             self.gmp.get_user(user_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_user('')
+            self.gmp.get_user("")

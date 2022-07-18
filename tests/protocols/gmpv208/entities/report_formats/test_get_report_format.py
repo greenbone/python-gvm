@@ -22,13 +22,13 @@ from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 
 class GmpGetReportFormatTestMixin:
     def test_get_report_format(self):
-        self.gmp.get_report_format('rf1')
+        self.gmp.get_report_format("rf1")
 
         self.connection.send.has_been_called_with(
             '<get_report_formats report_format_id="rf1" details="1"/>'
         )
 
-        self.gmp.get_report_format(report_format_id='rf1')
+        self.gmp.get_report_format(report_format_id="rf1")
 
         self.connection.send.has_been_called_with(
             '<get_report_formats report_format_id="rf1" details="1"/>'
@@ -39,19 +39,19 @@ class GmpGetReportFormatTestMixin:
             self.gmp.get_report_format(report_format_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_report_format('')
+            self.gmp.get_report_format("")
 
     def test_get_report_format_type(self):
         self.gmp.get_report_format(ReportFormatType.PDF)
-        report_format_id = ReportFormatType.from_string('pdf').value
+        report_format_id = ReportFormatType.from_string("pdf").value
         self.connection.send.has_been_called_with(
-            '<get_report_formats '
+            "<get_report_formats "
             f'report_format_id="{report_format_id}" details="1"/>'
         )
 
         self.gmp.get_report_format(report_format_id=ReportFormatType.PDF)
 
         self.connection.send.has_been_called_with(
-            '<get_report_formats '
+            "<get_report_formats "
             f'report_format_id="{report_format_id}" details="1"/>'
         )

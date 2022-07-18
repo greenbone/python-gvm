@@ -23,7 +23,7 @@ from gvm.utils import check_command_status
 
 class TestCheckCommandStatus(unittest.TestCase):
     def test_check_command_status_empty(self):
-        with self.assertLogs('gvm.utils', level="ERROR") as error_logger:
+        with self.assertLogs("gvm.utils", level="ERROR") as error_logger:
             false = check_command_status(xml=False)
             self.assertFalse(false)
 
@@ -42,25 +42,25 @@ class TestCheckCommandStatus(unittest.TestCase):
             '<authenticatio status="400" ><asaaa<fsd'
             'fsn_response status_text="Auth failed"/>'
         )
-        with self.assertLogs('gvm.utils', level="ERROR") as error_logger:
+        with self.assertLogs("gvm.utils", level="ERROR") as error_logger:
             self.assertFalse(check_command_status(xml=response))
         self.assertEqual(
             error_logger.output,
             [
-                'ERROR:gvm.utils:etree.XML(xml): error parsing attribute name, '
-                'line 1, column 36 (<string>, line 1)'
+                "ERROR:gvm.utils:etree.XML(xml): error parsing attribute name, "
+                "line 1, column 36 (<string>, line 1)"
             ],
         )
 
     def test_check_command_status_error(self):
-        response = '<a><b/></a>'
-        with self.assertLogs('gvm.utils', level="ERROR") as error_logger:
+        response = "<a><b/></a>"
+        with self.assertLogs("gvm.utils", level="ERROR") as error_logger:
             self.assertFalse(check_command_status(xml=response))
         self.assertEqual(
             error_logger.output,
             [
-                'ERROR:gvm.utils:Not received an '
-                'status code within the response.'
+                "ERROR:gvm.utils:Not received an "
+                "status code within the response."
             ],
         )
 
@@ -71,5 +71,5 @@ class TestCheckCommandStatus(unittest.TestCase):
         self.assertTrue(check_command_status(xml=response))
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
