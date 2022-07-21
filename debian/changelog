@@ -1,3 +1,10 @@
+python-gvm (22.6.1-gos2204~1) abomination; urgency=medium
+
+  * New upstream release.
+  * Update patches.
+
+ -- Hendrik Deuper <hendrik.deuper@greenbone.net>  Thu, 21 Jul 2022 14:01:16 +0000
+
 python-gvm (21.11.0-gos2110~2) abomination; urgency=medium
 
   * Add patch for PR 633.
