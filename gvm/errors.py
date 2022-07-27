@@ -62,7 +62,7 @@ class GvmServerError(GvmError):
         self.status = status
 
     def __str__(self):
-        return f'Server Error {self.status}. {self.message}'
+        return f"Server Error {self.status}. {self.message}"
 
     def __repr__(self):
         return (
@@ -87,7 +87,7 @@ class GvmResponseError(GvmClientError):
         self.status = status
 
     def __str__(self):
-        return f'Response Error {self.status}. {self.message}'
+        return f"Response Error {self.status}. {self.message}"
 
     def __repr__(self):
         return (

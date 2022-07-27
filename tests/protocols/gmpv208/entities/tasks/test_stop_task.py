@@ -21,7 +21,7 @@ from gvm.errors import GvmError
 
 class GmpStopTaskTestMixin:
     def test_stop_task(self):
-        self.gmp.stop_task('a1')
+        self.gmp.stop_task("a1")
 
         self.connection.send.has_been_called_with('<stop_task task_id="a1"/>')
 
@@ -30,4 +30,4 @@ class GmpStopTaskTestMixin:
             self.gmp.stop_task(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.stop_task('')
+            self.gmp.stop_task("")

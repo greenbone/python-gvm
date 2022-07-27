@@ -21,14 +21,14 @@ from gvm.errors import GvmError
 
 class GmpGetPolicyTestMixin:
     def test_get_policy(self):
-        self.gmp.get_policy('a1')
+        self.gmp.get_policy("a1")
 
         self.connection.send.has_been_called_with(
             '<get_configs config_id="a1" usage_type="policy" details="1"/>'
         )
 
     def test_get_policy_with_audits(self):
-        self.gmp.get_policy('a1', audits=True)
+        self.gmp.get_policy("a1", audits=True)
 
         self.connection.send.has_been_called_with(
             '<get_configs config_id="a1" '
@@ -40,4 +40,4 @@ class GmpGetPolicyTestMixin:
             self.gmp.get_policy(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.get_policy('')
+            self.gmp.get_policy("")

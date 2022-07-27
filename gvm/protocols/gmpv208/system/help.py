@@ -49,7 +49,7 @@ class HelpFormat(Enum):
             return cls[sort_order.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='sort_order', function=cls.from_string.__name__
+                argument="sort_order", function=cls.from_string.__name__
             ) from None
 
 
@@ -82,7 +82,7 @@ class HelpMixin:
             if not isinstance(help_format, HelpFormat):
                 raise InvalidArgumentType(
                     function=self.help.__name__,
-                    argument='feed_type',
+                    argument="feed_type",
                     arg_type=HelpFormat.__name__,
                 )
 

@@ -19,9 +19,9 @@
 
 from typing import Any, List, Optional
 
-from gvm.errors import InvalidArgument, RequiredArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208.entities.severity import Severity, SeverityLevel
-from gvm.utils import add_filter, check_port, to_comma_list, to_bool
+from gvm.utils import add_filter, check_port, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 
@@ -60,12 +60,12 @@ class NotesMixin:
         """
         if not text:
             raise RequiredArgument(
-                function=self.create_note.__name__, argument='text'
+                function=self.create_note.__name__, argument="text"
             )
 
         if not nvt_oid:
             raise RequiredArgument(
-                function=self.create_note.__name__, argument='nvt_oid'
+                function=self.create_note.__name__, argument="nvt_oid"
             )
 
         cmd = XmlCommand("create_note")
@@ -83,7 +83,7 @@ class NotesMixin:
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.create_note.__name__, argument='port'
+                    function=self.create_note.__name__, argument="port"
                 )
 
         if result_id:
@@ -118,7 +118,7 @@ class NotesMixin:
         """
         if not note_id:
             raise RequiredArgument(
-                function=self.clone_note.__name__, argument='note_id'
+                function=self.clone_note.__name__, argument="note_id"
             )
 
         cmd = XmlCommand("create_note")
@@ -136,7 +136,7 @@ class NotesMixin:
         """
         if not note_id:
             raise RequiredArgument(
-                function=self.delete_note.__name__, argument='note_id'
+                function=self.delete_note.__name__, argument="note_id"
             )
 
         cmd = XmlCommand("delete_note")
@@ -187,7 +187,7 @@ class NotesMixin:
         """
         if not note_id:
             raise RequiredArgument(
-                function=self.get_note.__name__, argument='note_id'
+                function=self.get_note.__name__, argument="note_id"
             )
 
         cmd = XmlCommand("get_notes")
@@ -230,12 +230,12 @@ class NotesMixin:
         """
         if not note_id:
             raise RequiredArgument(
-                function=self.modify_note.__name__, argument='note_id'
+                function=self.modify_note.__name__, argument="note_id"
             )
 
         if not text:
             raise RequiredArgument(
-                function=self.modify_note.__name__, argument='text'
+                function=self.modify_note.__name__, argument="text"
             )
 
         cmd = XmlCommand("modify_note")
@@ -253,7 +253,7 @@ class NotesMixin:
                 cmd.add_element("port", str(port))
             else:
                 raise InvalidArgument(
-                    function=self.modify_note.__name__, argument='port'
+                    function=self.modify_note.__name__, argument="port"
                 )
 
         if result_id:
@@ -270,7 +270,7 @@ class NotesMixin:
             if not isinstance(threat, SeverityLevel):
                 raise InvalidArgumentType(
                     function=self.modify_note.__name__,
-                    argument='threat',
+                    argument="threat",
                     arg_type=SeverityLevel.__name__,
                 )
 

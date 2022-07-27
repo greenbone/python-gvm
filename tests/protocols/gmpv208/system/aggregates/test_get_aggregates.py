@@ -16,9 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
-
-from gvm.protocols.gmpv208 import EntityType, AggregateStatistic, SortOrder
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.protocols.gmpv208 import AggregateStatistic, EntityType, SortOrder
 
 
 class GmpGetAggregatesTestMixin:
@@ -140,17 +139,17 @@ class GmpGetAggregatesTestMixin:
             self.gmp.get_aggregates(resource_type=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_aggregates(resource_type='')
+            self.gmp.get_aggregates(resource_type="")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_aggregates('')
+            self.gmp.get_aggregates("")
 
     def test_get_aggregates_invalid_resource_type(self):
         """
         Test get_aggregates calls with invalid resource_type
         """
         with self.assertRaises(InvalidArgumentType):
-            self.gmp.get_aggregates(resource_type='foo')
+            self.gmp.get_aggregates(resource_type="foo")
 
     def test_get_aggregates_sort_criteria(self):
         """
@@ -158,13 +157,13 @@ class GmpGetAggregatesTestMixin:
         """
         self.gmp.get_aggregates(
             EntityType.NVT,
-            group_column='family',
+            group_column="family",
             sort_criteria=[
-                {'field': 'severity', 'stat': 'mean', 'order': 'descending'},
-                {'stat': 'count', 'order': 'descending'},
-                {'field': 'family', 'order': 'ascending'},
+                {"field": "severity", "stat": "mean", "order": "descending"},
+                {"stat": "count", "order": "descending"},
+                {"field": "family", "order": "ascending"},
             ],
-            data_columns=['severity'],
+            data_columns=["severity"],
         )
 
         self.connection.send.has_been_called_with(
@@ -172,8 +171,8 @@ class GmpGetAggregatesTestMixin:
             '<sort field="severity" stat="mean" order="descending"/>'
             '<sort stat="count" order="descending"/>'
             '<sort field="family" order="ascending"/>'
-            '<data_column>severity</data_column>'
-            '</get_aggregates>'
+            "<data_column>severity</data_column>"
+            "</get_aggregates>"
         )
 
     def test_get_aggregates_sort_criteria_enum(self):
@@ -182,22 +181,22 @@ class GmpGetAggregatesTestMixin:
         """
         self.gmp.get_aggregates(
             EntityType.NVT,
-            group_column='family',
+            group_column="family",
             sort_criteria=[
                 {
-                    'field': 'severity',
-                    'stat': AggregateStatistic.MEAN,
-                    'order': SortOrder.DESCENDING,
+                    "field": "severity",
+                    "stat": AggregateStatistic.MEAN,
+                    "order": SortOrder.DESCENDING,
                 }
             ],
-            data_columns=['severity'],
+            data_columns=["severity"],
         )
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="nvt" group_column="family">'
             '<sort field="severity" stat="mean" order="descending"/>'
-            '<data_column>severity</data_column>'
-            '</get_aggregates>'
+            "<data_column>severity</data_column>"
+            "</get_aggregates>"
         )
 
     def test_get_aggregates_invalid_sort_criteria(self):
@@ -206,24 +205,24 @@ class GmpGetAggregatesTestMixin:
         """
         with self.assertRaises(InvalidArgumentType):
             self.gmp.get_aggregates(
-                resource_type=EntityType.ALERT, sort_criteria='INVALID'
+                resource_type=EntityType.ALERT, sort_criteria="INVALID"
             )
 
         with self.assertRaises(InvalidArgumentType):
             self.gmp.get_aggregates(
-                resource_type=EntityType.ALERT, sort_criteria=['INVALID']
+                resource_type=EntityType.ALERT, sort_criteria=["INVALID"]
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.get_aggregates(
                 resource_type=EntityType.ALERT,
-                sort_criteria=[{'stat': 'INVALID'}],
+                sort_criteria=[{"stat": "INVALID"}],
             )
 
         with self.assertRaises(InvalidArgument):
             self.gmp.get_aggregates(
                 resource_type=EntityType.ALERT,
-                sort_criteria=[{'order': 'INVALID'}],
+                sort_criteria=[{"order": "INVALID"}],
             )
 
     def test_get_aggregates_group_limits(self):
@@ -255,14 +254,14 @@ class GmpGetAggregatesTestMixin:
         Test get_aggregates calls with data_columns
         """
         self.gmp.get_aggregates(
-            EntityType.CPE, data_columns=['severity', 'cves']
+            EntityType.CPE, data_columns=["severity", "cves"]
         )
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="cpe">'
-            '<data_column>severity</data_column>'
-            '<data_column>cves</data_column>'
-            '</get_aggregates>'
+            "<data_column>severity</data_column>"
+            "<data_column>cves</data_column>"
+            "</get_aggregates>"
         )
 
     def test_get_aggregates_invalid_data_columns(self):
@@ -271,14 +270,14 @@ class GmpGetAggregatesTestMixin:
         """
         with self.assertRaises(InvalidArgumentType):
             self.gmp.get_aggregates(
-                resource_type=EntityType.ALERT, data_columns='INVALID'
+                resource_type=EntityType.ALERT, data_columns="INVALID"
             )
 
     def test_get_aggregates_group_column(self):
         """
         Test get_aggregates calls with group_column
         """
-        self.gmp.get_aggregates(EntityType.NVT, group_column='family')
+        self.gmp.get_aggregates(EntityType.NVT, group_column="family")
 
         self.connection.send.has_been_called_with(
             '<get_aggregates type="nvt" group_column="family"/>'
@@ -290,8 +289,8 @@ class GmpGetAggregatesTestMixin:
         """
         self.gmp.get_aggregates(
             EntityType.NVT,
-            group_column='family',
-            subgroup_column='solution_type',
+            group_column="family",
+            subgroup_column="solution_type",
         )
 
         self.connection.send.has_been_called_with(
@@ -306,14 +305,14 @@ class GmpGetAggregatesTestMixin:
         """
         with self.assertRaises(RequiredArgument):
             self.gmp.get_aggregates(
-                resource_type=EntityType.NVT, subgroup_column='solution_type'
+                resource_type=EntityType.NVT, subgroup_column="solution_type"
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.get_aggregates(
                 resource_type=EntityType.NVT,
-                group_column='',
-                subgroup_column='solution_type',
+                group_column="",
+                subgroup_column="solution_type",
             )
 
     def test_get_aggregates_text_columns(self):
@@ -323,15 +322,15 @@ class GmpGetAggregatesTestMixin:
         self.gmp.get_aggregates(
             EntityType.SCAN_CONFIG,
             group_column="uuid",
-            text_columns=['name', 'comment'],
+            text_columns=["name", "comment"],
         )
 
         self.connection.send.has_been_called_with(
             '<get_aggregates usage_type="scan" type="config"'
             ' group_column="uuid">'
-            '<text_column>name</text_column>'
-            '<text_column>comment</text_column>'
-            '</get_aggregates>'
+            "<text_column>name</text_column>"
+            "<text_column>comment</text_column>"
+            "</get_aggregates>"
         )
 
     def test_get_aggregates_invalid_text_columns(self):
@@ -340,7 +339,7 @@ class GmpGetAggregatesTestMixin:
         """
         with self.assertRaises(InvalidArgumentType):
             self.gmp.get_aggregates(
-                resource_type=EntityType.ALERT, text_columns='INVALID'
+                resource_type=EntityType.ALERT, text_columns="INVALID"
             )
 
     def test_get_aggregates_mode(self):
@@ -348,7 +347,7 @@ class GmpGetAggregatesTestMixin:
         Test get_aggregates calls with mode
         """
         self.gmp.get_aggregates(
-            EntityType.NVT, group_column='name', mode='word_counts'
+            EntityType.NVT, group_column="name", mode="word_counts"
         )
 
         self.connection.send.has_been_called_with(

@@ -18,7 +18,6 @@
 
 from gvm.errors import RequiredArgument
 
-
 ICAL = """
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -41,13 +40,13 @@ class GmpModifyScheduleTestMixin:
         self.assertEqual(ex.argument, "schedule_id")
 
         with self.assertRaises(RequiredArgument) as cm:
-            self.gmp.modify_schedule(schedule_id='')
+            self.gmp.modify_schedule(schedule_id="")
 
         ex = cm.exception
         self.assertEqual(ex.argument, "schedule_id")
 
     def test_modify_schedule_with_name(self):
-        self.gmp.modify_schedule(schedule_id='s1', name='foo')
+        self.gmp.modify_schedule(schedule_id="s1", name="foo")
 
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1">'
@@ -69,8 +68,8 @@ class GmpModifyScheduleTestMixin:
 
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1">'
-            f'<icalendar>{ICAL}</icalendar>'
-            '</modify_schedule>'
+            f"<icalendar>{ICAL}</icalendar>"
+            "</modify_schedule>"
         )
 
     def test_modify_schedule_with_timezone(self):
@@ -78,6 +77,6 @@ class GmpModifyScheduleTestMixin:
 
         self.connection.send.has_been_called_with(
             '<modify_schedule schedule_id="s1">'
-            '<timezone>Europe/Berlin</timezone>'
-            '</modify_schedule>'
+            "<timezone>Europe/Berlin</timezone>"
+            "</modify_schedule>"
         )

@@ -46,7 +46,7 @@ class TrashcanMixin:
         if not entity_id:
             raise RequiredArgument(
                 function=self.restore_from_trashcan.__name__,
-                argument='entity_id',
+                argument="entity_id",
             )
 
         cmd = XmlCommand("restore")

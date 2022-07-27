@@ -21,14 +21,14 @@ from gvm.errors import RequiredArgument
 
 class GmpDeleteTicketTestMixin:
     def test_delete(self):
-        self.gmp.delete_ticket('t1')
+        self.gmp.delete_ticket("t1")
 
         self.connection.send.has_been_called_with(
             '<delete_ticket ticket_id="t1" ultimate="0"/>'
         )
 
     def test_delete_ultimate(self):
-        self.gmp.delete_ticket('t1', ultimate=True)
+        self.gmp.delete_ticket("t1", ultimate=True)
 
         self.connection.send.has_been_called_with(
             '<delete_ticket ticket_id="t1" ultimate="1"/>'
@@ -39,4 +39,4 @@ class GmpDeleteTicketTestMixin:
             self.gmp.delete_ticket(None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.delete_ticket('')
+            self.gmp.delete_ticket("")

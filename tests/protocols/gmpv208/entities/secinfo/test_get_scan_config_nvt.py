@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument
 
 class GmpGetScanConfigNvtTestMixin:
     def test_get_scan_config_nvt_with_nvt_oid(self):
-        self.gmp.get_scan_config_nvt(nvt_oid='nvt_oid')
+        self.gmp.get_scan_config_nvt(nvt_oid="nvt_oid")
 
         self.connection.send.has_been_called_with(
             (
@@ -35,7 +35,7 @@ class GmpGetScanConfigNvtTestMixin:
             self.gmp.get_scan_config_nvt(nvt_oid=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_scan_config_nvt(nvt_oid='')
+            self.gmp.get_scan_config_nvt(nvt_oid="")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_scan_config_nvt('')
+            self.gmp.get_scan_config_nvt("")

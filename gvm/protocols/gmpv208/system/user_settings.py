@@ -53,7 +53,7 @@ class UserSettingsMixin:
 
         if not setting_id:
             raise RequiredArgument(
-                function=self.get_user_setting.__name__, argument='setting_id'
+                function=self.get_user_setting.__name__, argument="setting_id"
             )
 
         cmd.set_attribute("setting_id", setting_id)
@@ -79,13 +79,13 @@ class UserSettingsMixin:
         if not setting_id and not name:
             raise RequiredArgument(
                 function=self.modify_user_setting.__name__,
-                argument='setting_id or name argument',
+                argument="setting_id or name argument",
             )
 
         if value is None:
             raise RequiredArgument(
                 function=self.modify_user_setting.__name__,
-                argument='value argument',
+                argument="value argument",
             )
 
         cmd = XmlCommand("modify_setting")

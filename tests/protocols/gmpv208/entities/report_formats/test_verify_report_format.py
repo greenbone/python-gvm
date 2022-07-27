@@ -22,7 +22,7 @@ from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 
 class GmpVerifyReportFormatTestMixin:
     def test_verify(self):
-        self.gmp.verify_report_format('a1')
+        self.gmp.verify_report_format("a1")
 
         self.connection.send.has_been_called_with(
             '<verify_report_format report_format_id="a1"/>'
@@ -33,12 +33,12 @@ class GmpVerifyReportFormatTestMixin:
             self.gmp.verify_report_format(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.verify_report_format('')
+            self.gmp.verify_report_format("")
 
     def test_verify_with_type(self):
         self.gmp.verify_report_format(ReportFormatType.SVG)
 
-        report_format_id = ReportFormatType.from_string('svg').value
+        report_format_id = ReportFormatType.from_string("svg").value
         self.connection.send.has_been_called_with(
             f'<verify_report_format report_format_id="{report_format_id}"/>'
         )

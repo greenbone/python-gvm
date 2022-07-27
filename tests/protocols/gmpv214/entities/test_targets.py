@@ -16,14 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv214 import Gmpv214TestCase
-from .targets import GmpCreateTargetTestMixin, GmpModifyTargetTestMixin
 from ...gmpv208.entities.targets import (
     GmpCloneTargetTestMixin,
     GmpDeleteTargetTestMixin,
     GmpGetTargetsTestMixin,
     GmpGetTargetTestMixin,
 )
+from ...gmpv214 import Gmpv214TestCase
+from .targets import GmpCreateTargetTestMixin, GmpModifyTargetTestMixin
 
 
 class Gmpv214CloneTargetTestCase(GmpCloneTargetTestMixin, Gmpv214TestCase):

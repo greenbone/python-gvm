@@ -21,17 +21,17 @@ class GmpGetReportFormatsTestMixin:
     def test_get_report_formats(self):
         self.gmp.get_report_formats()
 
-        self.connection.send.has_been_called_with('<get_report_formats/>')
+        self.connection.send.has_been_called_with("<get_report_formats/>")
 
     def test_get_report_formats_with_filter_string(self):
-        self.gmp.get_report_formats(filter_string='foo=bar')
+        self.gmp.get_report_formats(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_report_formats filter="foo=bar"/>'
         )
 
     def test_get_report_formats_with_filter_id(self):
-        self.gmp.get_report_formats(filter_id='f1')
+        self.gmp.get_report_formats(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_report_formats filt_id="f1"/>'

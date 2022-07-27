@@ -16,8 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
-
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208 import InfoType
 
 
@@ -65,31 +64,31 @@ class GmpGetInfoListTestMixin:
             self.gmp.get_info_list(info_type=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_info_list(info_type='')
+            self.gmp.get_info_list(info_type="")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_info_list('')
+            self.gmp.get_info_list("")
 
     def test_get_info_list_invalid_info_type(self):
         with self.assertRaises(InvalidArgumentType):
-            self.gmp.get_info_list(info_type='foo')
+            self.gmp.get_info_list(info_type="foo")
 
     def test_get_info_list_with_filter_string(self):
-        self.gmp.get_info_list(InfoType.CPE, filter_string='foo=bar')
+        self.gmp.get_info_list(InfoType.CPE, filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" filter="foo=bar"/>'
         )
 
     def test_get_info_list_with_filter_id(self):
-        self.gmp.get_info_list(info_type=InfoType.CPE, filter_id='f1')
+        self.gmp.get_info_list(info_type=InfoType.CPE, filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" filt_id="f1"/>'
         )
 
     def test_get_info_list_with_name(self):
-        self.gmp.get_info_list(info_type=InfoType.CPE, name='foo')
+        self.gmp.get_info_list(info_type=InfoType.CPE, name="foo")
 
         self.connection.send.has_been_called_with(
             '<get_info type="CPE" name="foo"/>'

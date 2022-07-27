@@ -17,20 +17,14 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import sys
-from typing import List, Optional, Union
 from io import IOBase
+from typing import List, Optional, Union
 
 import defusedxml.lxml as secET
-
 from defusedxml import DefusedXmlException
-from lxml.etree import (
-    SubElement,
-    XMLParser,
-    Element,
-    tostring as xmltostring,
-    iselement as isxmlelement,
-    LxmlError,
-)
+from lxml.etree import Element, LxmlError, SubElement, XMLParser
+from lxml.etree import iselement as isxmlelement
+from lxml.etree import tostring as xmltostring
 
 from gvm.errors import GvmError, InvalidArgumentType
 
@@ -106,7 +100,7 @@ def pretty_print(
     """
     if not isinstance(file, IOBase):
         raise TypeError(
-            f'Type needs to be from IOBase, not {type(file)}.'
+            f"Type needs to be from IOBase, not {type(file)}."
         ) from None
 
     if isinstance(xml, list):
@@ -114,27 +108,27 @@ def pretty_print(
             if isxmlelement(item):
                 file.write(
                     xmltostring(item, pretty_print=True).decode(
-                        sys.getdefaultencoding() + '\n'
+                        sys.getdefaultencoding() + "\n"
                     )
                 )
             else:
-                file.write(item + '\n')
+                file.write(item + "\n")
     elif isxmlelement(xml):
         file.write(
             xmltostring(xml, pretty_print=True).decode(
-                sys.getdefaultencoding() + '\n'
+                sys.getdefaultencoding() + "\n"
             )
         )
     elif isinstance(xml, str):
         tree = secET.fromstring(xml)
         file.write(
             xmltostring(tree, pretty_print=True).decode(
-                sys.getdefaultencoding() + '\n'
+                sys.getdefaultencoding() + "\n"
             )
         )
     else:
         raise InvalidArgumentType(
-            function=pretty_print.__name__, argument='xml', arg_type=''
+            function=pretty_print.__name__, argument="xml", arg_type=""
         )
 
 

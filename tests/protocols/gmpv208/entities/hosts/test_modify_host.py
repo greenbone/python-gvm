@@ -21,53 +21,53 @@ from gvm.errors import RequiredArgument
 
 class GmpModifyHostTestMixin:
     def test_modify_host(self):
-        self.gmp.modify_host(host_id='a1')
+        self.gmp.modify_host(host_id="a1")
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment></comment>'
-            '</modify_asset>'
+            "<comment></comment>"
+            "</modify_asset>"
         )
 
     def test_modify_host_without_host_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_host(host_id=None, comment='foo')
+            self.gmp.modify_host(host_id=None, comment="foo")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_host(host_id='', comment='foo')
+            self.gmp.modify_host(host_id="", comment="foo")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_host('', comment='foo')
+            self.gmp.modify_host("", comment="foo")
 
     def test_modify_host_with_comment(self):
-        self.gmp.modify_host('a1', comment='foo')
+        self.gmp.modify_host("a1", comment="foo")
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment>foo</comment>'
-            '</modify_asset>'
+            "<comment>foo</comment>"
+            "</modify_asset>"
         )
 
-        self.gmp.modify_host('a1', comment='foo')
+        self.gmp.modify_host("a1", comment="foo")
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment>foo</comment>'
-            '</modify_asset>'
+            "<comment>foo</comment>"
+            "</modify_asset>"
         )
 
-        self.gmp.modify_host('a1', comment='')
+        self.gmp.modify_host("a1", comment="")
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment></comment>'
-            '</modify_asset>'
+            "<comment></comment>"
+            "</modify_asset>"
         )
 
-        self.gmp.modify_host('a1', comment=None)
+        self.gmp.modify_host("a1", comment=None)
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment></comment>'
-            '</modify_asset>'
+            "<comment></comment>"
+            "</modify_asset>"
         )

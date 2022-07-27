@@ -21,11 +21,9 @@
 from typing import Any, List, Optional
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv214.entities.users import (
-    UsersMixin as Gmp214UsersMixin,
-    UserAuthType,
-)
-from gvm.utils import deprecation, to_comma_list, to_bool
+from gvm.protocols.gmpv214.entities.users import UserAuthType
+from gvm.protocols.gmpv214.entities.users import UsersMixin as Gmp214UsersMixin
+from gvm.utils import deprecation, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 
@@ -58,7 +56,7 @@ class UsersMixin(Gmp214UsersMixin):
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_user.__name__, argument='name'
+                function=self.create_user.__name__, argument="name"
             )
 
         cmd = XmlCommand("create_user")
@@ -138,7 +136,7 @@ class UsersMixin(Gmp214UsersMixin):
         """
         if not user_id:
             raise RequiredArgument(
-                function=self.modify_user.__name__, argument='user_id'
+                function=self.modify_user.__name__, argument="user_id"
             )
 
         cmd = XmlCommand("modify_user")

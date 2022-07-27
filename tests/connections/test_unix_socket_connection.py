@@ -16,19 +16,18 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-import unittest
-from unittest.mock import patch
-
 import os
 import socketserver
 import tempfile
 import threading
+import unittest
 import uuid
+from unittest.mock import patch
 
 from gvm.connections import (
-    UnixSocketConnection,
     DEFAULT_TIMEOUT,
     DEFAULT_UNIX_SOCKET_PATH,
+    UnixSocketConnection,
 )
 from gvm.errors import GvmError
 
@@ -36,7 +35,7 @@ from gvm.errors import GvmError
 class DummyRequestHandler(socketserver.BaseRequestHandler):
     def handle(self):
         response = bytes(
-            '<gmp_response status="200" status_text="OK"/>', 'utf-8'
+            '<gmp_response status="200" status_text="OK"/>', "utf-8"
         )
         self.request.sendall(response)
 
@@ -79,7 +78,7 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
         connection.connect()
-        req = connection.send(bytes("<gmp/>", 'utf-8'))
+        req = connection.send(bytes("<gmp/>", "utf-8"))
         self.assertIsNone(req)
         resp = connection.read()
         self.assertEqual(resp, '<gmp_response status="200" status_text="OK"/>')
@@ -98,7 +97,7 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
 
     def test_unix_socket_connect_file_not_found(self):
         connection = UnixSocketConnection(path="foo", timeout=DEFAULT_TIMEOUT)
-        with self.assertRaises(GvmError, msg='Socket foo does not exist'):
+        with self.assertRaises(GvmError, msg="Socket foo does not exist"):
             connection.connect()
         connection.disconnect()
 
@@ -106,11 +105,11 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         connection = UnixSocketConnection(
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
-        with patch('socket.socket.connect') as ConnectMock:
+        with patch("socket.socket.connect") as ConnectMock:
             connect_mock = ConnectMock
             connect_mock.side_effect = ConnectionError
             with self.assertRaises(
-                GvmError, msg=f'Could not connect to socket {self.socketname}'
+                GvmError, msg=f"Could not connect to socket {self.socketname}"
             ):
                 connection.connect()
             connection.disconnect()
@@ -119,7 +118,7 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         connection = UnixSocketConnection(
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
-        with self.assertRaises(GvmError, msg='Socket is not connected'):
+        with self.assertRaises(GvmError, msg="Socket is not connected"):
             connection.send("<gmp>/")
 
     def test_init_no_args(self):
@@ -135,5 +134,5 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         self.assertEqual(connection.path, DEFAULT_UNIX_SOCKET_PATH)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

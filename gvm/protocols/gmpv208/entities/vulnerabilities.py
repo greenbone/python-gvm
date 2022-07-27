@@ -56,7 +56,7 @@ class VulnerabilitiesMixin:
         if not vulnerability_id:
             raise RequiredArgument(
                 function=self.get_vulnerability.__name__,
-                argument='vulnerability_id',
+                argument="vulnerability_id",
             )
 
         cmd = XmlCommand("get_vulns")

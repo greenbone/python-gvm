@@ -19,10 +19,10 @@
 from enum import Enum
 from typing import Any, Optional, Union
 
-from gvm.protocols.gmpv208.entities.report_formats import (
-    ReportFormatType,
-)  # if I use latest, I get circular import :/
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+
+# if I use latest, I get circular import :/
+from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 
@@ -30,12 +30,12 @@ from gvm.xml import XmlCommand
 class AlertEvent(Enum):
     """Enum for alert event types"""
 
-    TASK_RUN_STATUS_CHANGED = 'Task run status changed'
-    UPDATED_SECINFO_ARRIVED = 'Updated SecInfo arrived'
-    NEW_SECINFO_ARRIVED = 'New SecInfo arrived'
-    TICKET_RECEIVED = 'Ticket received'
-    ASSIGNED_TICKET_CHANGED = 'Assigned ticket changed'
-    OWNED_TICKET_CHANGED = 'Owned ticket changed'
+    TASK_RUN_STATUS_CHANGED = "Task run status changed"
+    UPDATED_SECINFO_ARRIVED = "Updated SecInfo arrived"
+    NEW_SECINFO_ARRIVED = "New SecInfo arrived"
+    TICKET_RECEIVED = "Ticket received"
+    ASSIGNED_TICKET_CHANGED = "Assigned ticket changed"
+    OWNED_TICKET_CHANGED = "Owned ticket changed"
 
     @classmethod
     def from_string(
@@ -47,10 +47,10 @@ class AlertEvent(Enum):
             return None
 
         try:
-            return cls[alert_event.replace(' ', '_').upper()]
+            return cls[alert_event.replace(" ", "_").upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='alert_event',
+                argument="alert_event",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -58,12 +58,12 @@ class AlertEvent(Enum):
 class AlertCondition(Enum):
     """Enum for alert condition types"""
 
-    ALWAYS = 'Always'
-    ERROR = 'Error'
-    SEVERITY_AT_LEAST = 'Severity at least'
-    SEVERITY_CHANGED = 'Severity changed'
-    FILTER_COUNT_CHANGED = 'Filter count changed'
-    FILTER_COUNT_AT_LEAST = 'Filter count at least'
+    ALWAYS = "Always"
+    ERROR = "Error"
+    SEVERITY_AT_LEAST = "Severity at least"
+    SEVERITY_CHANGED = "Severity changed"
+    FILTER_COUNT_CHANGED = "Filter count changed"
+    FILTER_COUNT_AT_LEAST = "Filter count at least"
 
     @classmethod
     def from_string(
@@ -74,10 +74,10 @@ class AlertCondition(Enum):
             return None
 
         try:
-            return cls[alert_condition.replace(' ', '_').upper()]
+            return cls[alert_condition.replace(" ", "_").upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='alert_condition',
+                argument="alert_condition",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -108,10 +108,10 @@ class AlertMethod(Enum):
             return None
 
         try:
-            return cls[alert_method.replace(' ', '_').upper()]
+            return cls[alert_method.replace(" ", "_").upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='alert_method',
+                argument="alert_method",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -203,7 +203,7 @@ class AlertsMixin:
         """
         if not alert_id:
             raise RequiredArgument(
-                function=self.clone_alert.__name__, argument='alert_id'
+                function=self.clone_alert.__name__, argument="alert_id"
             )
 
         cmd = XmlCommand("create_alert")
@@ -251,42 +251,42 @@ class AlertsMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_alert.__name__, argument='name'
+                function=self.create_alert.__name__, argument="name"
             )
 
         if not condition:
             raise RequiredArgument(
-                function=self.create_alert.__name__, argument='condition'
+                function=self.create_alert.__name__, argument="condition"
             )
 
         if not event:
             raise RequiredArgument(
-                function=self.create_alert.__name__, argument='event'
+                function=self.create_alert.__name__, argument="event"
             )
 
         if not method:
             raise RequiredArgument(
-                function=self.create_alert.__name__, argument='method'
+                function=self.create_alert.__name__, argument="method"
             )
 
         if not isinstance(condition, AlertCondition):
             raise InvalidArgumentType(
                 function=self.create_alert.__name__,
-                argument='condition',
+                argument="condition",
                 arg_type=AlertCondition.__name__,
             )
 
         if not isinstance(event, AlertEvent):
             raise InvalidArgumentType(
                 function=self.create_alert.__name__,
-                argument='even',
+                argument="even",
                 arg_type=AlertEvent.__name__,
             )
 
         if not isinstance(method, AlertMethod):
             raise InvalidArgumentType(
                 function=self.create_alert.__name__,
-                argument='method',
+                argument="method",
                 arg_type=AlertMethod.__name__,
             )
 
@@ -335,7 +335,7 @@ class AlertsMixin:
         """
         if not alert_id:
             raise RequiredArgument(
-                function=self.delete_alert.__name__, argument='alert_id'
+                function=self.delete_alert.__name__, argument="alert_id"
             )
 
         cmd = XmlCommand("delete_alert")
@@ -387,7 +387,7 @@ class AlertsMixin:
 
         if not alert_id:
             raise RequiredArgument(
-                function=self.get_alert.__name__, argument='alert_id'
+                function=self.get_alert.__name__, argument="alert_id"
             )
 
         cmd.set_attribute("alert_id", alert_id)
@@ -441,7 +441,7 @@ class AlertsMixin:
 
         if not alert_id:
             raise RequiredArgument(
-                function=self.modify_alert.__name__, argument='alert_id'
+                function=self.modify_alert.__name__, argument="alert_id"
             )
 
         cmd = XmlCommand("modify_alert")
@@ -460,7 +460,7 @@ class AlertsMixin:
             if not isinstance(condition, AlertCondition):
                 raise InvalidArgumentType(
                     function=self.modify_alert.__name__,
-                    argument='condition',
+                    argument="condition",
                     arg_type=AlertCondition.__name__,
                 )
 
@@ -475,7 +475,7 @@ class AlertsMixin:
             if not isinstance(method, AlertMethod):
                 raise InvalidArgumentType(
                     function=self.modify_alert.__name__,
-                    argument='method',
+                    argument="method",
                     arg_type=AlertMethod.__name__,
                 )
 
@@ -490,7 +490,7 @@ class AlertsMixin:
             if not isinstance(event, AlertEvent):
                 raise InvalidArgumentType(
                     function=self.modify_alert.__name__,
-                    argument='event',
+                    argument="event",
                     arg_type=AlertEvent.__name__,
                 )
 
@@ -554,13 +554,13 @@ class AlertsMixin:
         if not alert_id:
             raise RequiredArgument(
                 function=self.trigger_alert.__name__,
-                argument='alert_id argument',
+                argument="alert_id argument",
             )
 
         if not report_id:
             raise RequiredArgument(
                 function=self.trigger_alert.__name__,
-                argument='report_id argument',
+                argument="report_id argument",
             )
 
         cmd = XmlCommand("get_reports")

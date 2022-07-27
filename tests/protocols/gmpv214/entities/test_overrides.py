@@ -16,17 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.overrides import (
     GmpCloneOverrideTestMixin,
     GmpDeleteOverrideTestMixin,
     GmpGetOverridesTestMixin,
     GmpGetOverrideTestMixin,
 )
-from .overrides import (
-    GmpCreateOverrideTestMixin,
-    GmpModifyOverrideTestMixin,
-)
+from ...gmpv214 import Gmpv214TestCase
+from .overrides import GmpCreateOverrideTestMixin, GmpModifyOverrideTestMixin
 
 
 class Gmpv214CloneOverrideTestCase(GmpCloneOverrideTestMixin, Gmpv214TestCase):

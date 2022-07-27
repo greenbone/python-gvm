@@ -30,5 +30,5 @@ class TestToBool(unittest.TestCase):
         self.assertEqual("0", false)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

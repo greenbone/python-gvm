@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.alerts import (
     GmpCloneAlertTestMixin,
     GmpCreateAlertTestMixin,
@@ -27,6 +26,7 @@ from ...gmpv208.entities.alerts import (
     GmpTestAlertTestMixin,
     GmpTriggerAlertTestMixin,
 )
+from ...gmpv214 import Gmpv214TestCase
 
 
 class Gmpv214CloneAlertTestCase(GmpCloneAlertTestMixin, Gmpv214TestCase):

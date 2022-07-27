@@ -16,8 +16,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.system.versions import GmpGetVersionTestCase
+from ...gmpv214 import Gmpv214TestCase
 from .versions import GmpGetProtocolVersionTestCase
 
 

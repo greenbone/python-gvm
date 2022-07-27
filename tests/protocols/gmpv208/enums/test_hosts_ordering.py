@@ -25,12 +25,12 @@ from gvm.protocols.gmpv208 import HostsOrdering
 class GetHostsOrderingFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            HostsOrdering.from_string('foo')
+            HostsOrdering.from_string("foo")
 
     def test_none_or_empty(self):
         ct = HostsOrdering.from_string(None)
         self.assertIsNone(ct)
-        ct = HostsOrdering.from_string('')
+        ct = HostsOrdering.from_string("")
         self.assertIsNone(ct)
 
     def test_sequential(self):

@@ -21,17 +21,17 @@ class GmpGetResultsTestMixin:
     def test_get_results(self):
         self.gmp.get_results()
 
-        self.connection.send.has_been_called_with('<get_results/>')
+        self.connection.send.has_been_called_with("<get_results/>")
 
     def test_get_results_with_filter_string(self):
-        self.gmp.get_results(filter_string='foo=bar')
+        self.gmp.get_results(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_results filter="foo=bar"/>'
         )
 
     def test_get_results_with_filter_id(self):
-        self.gmp.get_results(filter_id='f1')
+        self.gmp.get_results(filter_id="f1")
 
         self.connection.send.has_been_called_with('<get_results filt_id="f1"/>')
 
@@ -71,6 +71,6 @@ class GmpGetResultsTestMixin:
         self.connection.send.has_been_called_with('<get_results details="0"/>')
 
     def test_get_results_with_task_id(self):
-        self.gmp.get_results(task_id='t1')
+        self.gmp.get_results(task_id="t1")
 
         self.connection.send.has_been_called_with('<get_results task_id="t1"/>')

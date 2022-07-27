@@ -21,8 +21,8 @@ from .permissions import (
     GmpClonePermissionTestMixin,
     GmpCreatePermissionTestMixin,
     GmpDeletePermissionTestMixin,
-    GmpGetPermissionTestMixin,
     GmpGetPermissionsTestMixin,
+    GmpGetPermissionTestMixin,
     GmpModifyPermissionTestMixin,
 )
 

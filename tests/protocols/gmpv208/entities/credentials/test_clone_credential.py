@@ -21,15 +21,15 @@ from gvm.errors import RequiredArgument
 
 class GmpCloneCredentialTestMixin:
     def test_clone(self):
-        self.gmp.clone_credential('a1')
+        self.gmp.clone_credential("a1")
 
         self.connection.send.has_been_called_with(
-            '<create_credential>' '<copy>a1</copy>' '</create_credential>'
+            "<create_credential>" "<copy>a1</copy>" "</create_credential>"
         )
 
     def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.clone_credential('')
+            self.gmp.clone_credential("")
 
         with self.assertRaises(RequiredArgument):
             self.gmp.clone_credential(None)

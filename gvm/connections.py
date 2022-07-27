@@ -19,24 +19,20 @@
 Module for connections to GVM server daemons like gvmd and ospd.
 """
 import base64
+import errno
 import hashlib
 import logging
 import socket as socketlib
 import ssl
 import sys
 import time
-import errno
-
-
 from pathlib import Path
 from typing import Optional, Union
 
 import paramiko
-
 from lxml import etree
 
 from gvm.errors import GvmError
-
 
 logger = logging.getLogger(__name__)
 
@@ -48,7 +44,7 @@ DEFAULT_UNIX_SOCKET_PATH = "/var/run/gvmd.sock"
 DEFAULT_SSH_PORT = 22
 DEFAULT_SSH_USERNAME = "gmp"
 DEFAULT_SSH_PASSWORD = ""
-DEFAULT_HOSTNAME = '127.0.0.1'
+DEFAULT_HOSTNAME = "127.0.0.1"
 DEFAULT_KNOWN_HOSTS_FILE = ".ssh/known_hosts"
 MAX_SSH_DATA_LENGTH = 4095
 
@@ -237,32 +233,32 @@ class SSHConnection(GvmConnection):
         sha64_fingerprint = base64.b64encode(
             hashlib.sha256(base64.b64decode(key.get_base64())).digest()
         ).decode("utf-8")[:-1]
-        key_type = key.get_name().replace('ssh-', '').upper()
+        key_type = key.get_name().replace("ssh-", "").upper()
         print(
             f"The authenticity of host '{self.hostname}' can't "
             "be established."
         )
         print(f"{key_type} key fingerprint is {sha64_fingerprint}.")
-        print('Are you sure you want to continue connecting (yes/no)? ', end='')
+        print("Are you sure you want to continue connecting (yes/no)? ", end="")
         add = input()
         while True:
-            if add == 'yes':
+            if add == "yes":
                 hostkeys.add(self.hostname, key.get_name(), key)
                 # ask user if the key should be added permanently
                 print(
-                    f'Do you want to add {self.hostname} '
-                    'to known_hosts (yes/no)? ',
-                    end='',
+                    f"Do you want to add {self.hostname} "
+                    "to known_hosts (yes/no)? ",
+                    end="",
                 )
                 save = input()
                 while True:
-                    if save == 'yes':
+                    if save == "yes":
                         try:
                             hostkeys.save(filename=self.known_hosts_file)
                         except OSError as e:
                             raise GvmError(
-                                'Something went wrong with writing '
-                                f'the known_hosts file: {e}'
+                                "Something went wrong with writing "
+                                f"the known_hosts file: {e}"
                             ) from None
                         logger.info(
                             "Warning: Permanently added '%s' (%s) to "
@@ -271,7 +267,7 @@ class SSHConnection(GvmConnection):
                             key_type,
                         )
                         break
-                    elif save == 'no':
+                    elif save == "no":
                         logger.info(
                             "Warning: Host '%s' (%s) not added to "
                             "the list of known hosts.",
@@ -280,15 +276,15 @@ class SSHConnection(GvmConnection):
                         )
                         break
                     else:
-                        print("Please type 'yes' or 'no': ", end='')
+                        print("Please type 'yes' or 'no': ", end="")
                         save = input()
                 break
-            elif add == 'no':
+            elif add == "no":
                 return sys.exit(
-                    'User denied key. Host key verification failed.'
+                    "User denied key. Host key verification failed."
                 )
             else:
-                print("Please type 'yes' or 'no': ", end='')
+                print("Please type 'yes' or 'no': ", end="")
                 add = input()
 
     def _get_remote_host_key(self):
@@ -331,8 +327,8 @@ class SSHConnection(GvmConnection):
         except OSError as e:
             if e.errno != errno.ENOENT:
                 raise GvmError(
-                    'Something went wrong with reading '
-                    f'the known_hosts file: {e}'
+                    "Something went wrong with reading "
+                    f"the known_hosts file: {e}"
                 ) from None
         hostkeys = self._socket.get_host_keys()
         if not hostkeys.lookup(self.hostname):

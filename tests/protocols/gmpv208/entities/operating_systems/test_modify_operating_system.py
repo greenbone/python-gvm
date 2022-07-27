@@ -21,57 +21,57 @@ from gvm.errors import RequiredArgument
 
 class GmpModifyOperatingSystemTestMixin:
     def test_modify_operating_system(self):
-        self.gmp.modify_operating_system(operating_system_id='a1')
+        self.gmp.modify_operating_system(operating_system_id="a1")
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment></comment>'
-            '</modify_asset>'
+            "<comment></comment>"
+            "</modify_asset>"
         )
 
     def test_modify_operating_system_without_operating_system_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_operating_system(
-                operating_system_id=None, comment='foo'
+                operating_system_id=None, comment="foo"
             )
 
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_operating_system(
-                operating_system_id='', comment='foo'
+                operating_system_id="", comment="foo"
             )
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_operating_system('', comment='foo')
+            self.gmp.modify_operating_system("", comment="foo")
 
     def test_modify_operating_system_with_comment(self):
-        self.gmp.modify_operating_system('a1', comment='foo')
+        self.gmp.modify_operating_system("a1", comment="foo")
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment>foo</comment>'
-            '</modify_asset>'
+            "<comment>foo</comment>"
+            "</modify_asset>"
         )
 
-        self.gmp.modify_operating_system('a1', comment='foo')
+        self.gmp.modify_operating_system("a1", comment="foo")
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment>foo</comment>'
-            '</modify_asset>'
+            "<comment>foo</comment>"
+            "</modify_asset>"
         )
 
-        self.gmp.modify_operating_system('a1', comment='')
+        self.gmp.modify_operating_system("a1", comment="")
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment></comment>'
-            '</modify_asset>'
+            "<comment></comment>"
+            "</modify_asset>"
         )
 
-        self.gmp.modify_operating_system('a1', comment=None)
+        self.gmp.modify_operating_system("a1", comment=None)
 
         self.connection.send.has_been_called_with(
             '<modify_asset asset_id="a1">'
-            '<comment></comment>'
-            '</modify_asset>'
+            "<comment></comment>"
+            "</modify_asset>"
         )

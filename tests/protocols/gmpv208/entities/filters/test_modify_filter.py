@@ -16,64 +16,64 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208 import FilterType
 
 
 class GmpModifyFilterTestMixin:
     def test_modify_filter(self):
-        self.gmp.modify_filter(filter_id='f1')
+        self.gmp.modify_filter(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<modify_filter filter_id="f1"/>'
         )
 
     def test_modify_filter_with_filter_type(self):
-        self.gmp.modify_filter(filter_id='f1', filter_type=FilterType.TASK)
+        self.gmp.modify_filter(filter_id="f1", filter_type=FilterType.TASK)
 
         self.connection.send.has_been_called_with(
             '<modify_filter filter_id="f1">'
-            '<type>task</type>'
-            '</modify_filter>'
+            "<type>task</type>"
+            "</modify_filter>"
         )
 
     def test_modify_filter_invalid_filter_type(self):
         with self.assertRaises(InvalidArgumentType):
-            self.gmp.modify_filter(filter_id='f1', filter_type='foo')
+            self.gmp.modify_filter(filter_id="f1", filter_type="foo")
 
     def test_modify_filter_missing_filter_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_filter(filter_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_filter(filter_id='')
+            self.gmp.modify_filter(filter_id="")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.modify_filter('')
+            self.gmp.modify_filter("")
 
     def test_modify_filter_with_comment(self):
-        self.gmp.modify_filter(filter_id='f1', comment='foo')
+        self.gmp.modify_filter(filter_id="f1", comment="foo")
 
         self.connection.send.has_been_called_with(
             '<modify_filter filter_id="f1">'
-            '<comment>foo</comment>'
-            '</modify_filter>'
+            "<comment>foo</comment>"
+            "</modify_filter>"
         )
 
     def test_modify_filter_with_name(self):
-        self.gmp.modify_filter(filter_id='f1', name='foo')
+        self.gmp.modify_filter(filter_id="f1", name="foo")
 
         self.connection.send.has_been_called_with(
             '<modify_filter filter_id="f1">'
-            '<name>foo</name>'
-            '</modify_filter>'
+            "<name>foo</name>"
+            "</modify_filter>"
         )
 
     def test_modify_filter_with_term(self):
-        self.gmp.modify_filter(filter_id='f1', term='foo=bar')
+        self.gmp.modify_filter(filter_id="f1", term="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<modify_filter filter_id="f1">'
-            '<term>foo=bar</term>'
-            '</modify_filter>'
+            "<term>foo=bar</term>"
+            "</modify_filter>"
         )

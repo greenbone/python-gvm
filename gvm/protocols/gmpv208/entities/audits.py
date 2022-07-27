@@ -39,7 +39,7 @@ class AuditsMixin:
         """
         if not audit_id:
             raise RequiredArgument(
-                function=self.clone_audit.__name__, argument='audit_id'
+                function=self.clone_audit.__name__, argument="audit_id"
             )
 
         cmd = XmlCommand("create_task")
@@ -86,27 +86,27 @@ class AuditsMixin:
 
         if not name:
             raise RequiredArgument(
-                function=self.create_audit.__name__, argument='name'
+                function=self.create_audit.__name__, argument="name"
             )
         if not policy_id:
             raise RequiredArgument(
-                function=self.create_audit.__name__, argument='policy_id'
+                function=self.create_audit.__name__, argument="policy_id"
             )
 
         if not target_id:
             raise RequiredArgument(
-                function=self.create_audit.__name__, argument='target_id'
+                function=self.create_audit.__name__, argument="target_id"
             )
 
         if not scanner_id:
             raise RequiredArgument(
-                function=self.create_audit.__name__, argument='scanner_id'
+                function=self.create_audit.__name__, argument="scanner_id"
             )
 
         # don't allow to create a container task with create_task
-        if target_id == '0':
+        if target_id == "0":
             raise InvalidArgument(
-                function=self.create_audit.__name__, argument='target_id'
+                function=self.create_audit.__name__, argument="target_id"
             )
 
         cmd = XmlCommand("create_task")
@@ -126,7 +126,7 @@ class AuditsMixin:
             if not isinstance(hosts_ordering, HostsOrdering):
                 raise InvalidArgumentType(
                     function=self.create_audit.__name__,
-                    argument='hosts_ordering',
+                    argument="hosts_ordering",
                     arg_type=HostsOrdering.__name__,
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
@@ -135,8 +135,8 @@ class AuditsMixin:
             if not is_list_like(alert_ids):
                 raise InvalidArgumentType(
                     function=self.modify_task.__name__,
-                    argument='alert_ids',
-                    arg_type='list',
+                    argument="alert_ids",
+                    arg_type="list",
                 )
 
             if not len(alert_ids) == 0:
@@ -161,8 +161,8 @@ class AuditsMixin:
             if not is_list_like(observers):
                 raise InvalidArgumentType(
                     function=self.create_audit.__name__,
-                    argument='observers',
-                    arg_type='list',
+                    argument="observers",
+                    arg_type="list",
                 )
 
             # gvmd splits by comma and space
@@ -174,7 +174,7 @@ class AuditsMixin:
             if not isinstance(preferences, Mapping):
                 raise InvalidArgumentType(
                     function=self.create_audit.__name__,
-                    argument='preferences',
+                    argument="preferences",
                     arg_type=Mapping.__name__,
                 )
 
@@ -197,7 +197,7 @@ class AuditsMixin:
         """
         if not audit_id:
             raise RequiredArgument(
-                function=self.delete_audit.__name__, argument='audit_id'
+                function=self.delete_audit.__name__, argument="audit_id"
             )
 
         cmd = XmlCommand("delete_task")
@@ -255,7 +255,7 @@ class AuditsMixin:
         """
         if not audit_id:
             raise RequiredArgument(
-                function=self.get_task.__name__, argument='audit_id'
+                function=self.get_task.__name__, argument="audit_id"
             )
 
         cmd = XmlCommand("get_tasks")
@@ -306,7 +306,7 @@ class AuditsMixin:
         """
         if not audit_id:
             raise RequiredArgument(
-                function=self.modify_task.__name__, argument='task_id argument'
+                function=self.modify_task.__name__, argument="task_id argument"
             )
 
         cmd = XmlCommand("modify_task")
@@ -331,7 +331,7 @@ class AuditsMixin:
             if not isinstance(hosts_ordering, HostsOrdering):
                 raise InvalidArgumentType(
                     function=self.modify_task.__name__,
-                    argument='hosts_ordering',
+                    argument="hosts_ordering",
                     arg_type=HostsOrdering.__name__,
                 )
             cmd.add_element("hosts_ordering", hosts_ordering.value)
@@ -357,8 +357,8 @@ class AuditsMixin:
             if not is_list_like(alert_ids):
                 raise InvalidArgumentType(
                     function=self.modify_task.__name__,
-                    argument='alert_ids',
-                    arg_type='list',
+                    argument="alert_ids",
+                    arg_type="list",
                 )
 
             if len(alert_ids) == 0:
@@ -371,8 +371,8 @@ class AuditsMixin:
             if not is_list_like(observers):
                 raise InvalidArgumentType(
                     function=self.modify_task.__name__,
-                    argument='observers',
-                    arg_type='list',
+                    argument="observers",
+                    arg_type="list",
                 )
 
             cmd.add_element("observers", to_comma_list(observers))
@@ -381,7 +381,7 @@ class AuditsMixin:
             if not isinstance(preferences, Mapping):
                 raise InvalidArgumentType(
                     function=self.modify_task.__name__,
-                    argument='preferences',
+                    argument="preferences",
                     arg_type=Mapping.__name__,
                 )
 
@@ -404,7 +404,7 @@ class AuditsMixin:
         """
         if not audit_id:
             raise RequiredArgument(
-                function=self.resume_audit.__name__, argument='audit_id'
+                function=self.resume_audit.__name__, argument="audit_id"
             )
 
         cmd = XmlCommand("resume_task")
@@ -423,7 +423,7 @@ class AuditsMixin:
         """
         if not audit_id:
             raise RequiredArgument(
-                function=self.start_audit.__name__, argument='audit_id'
+                function=self.start_audit.__name__, argument="audit_id"
             )
 
         cmd = XmlCommand("start_task")
@@ -442,7 +442,7 @@ class AuditsMixin:
         """
         if not audit_id:
             raise RequiredArgument(
-                function=self.stop_audit.__name__, argument='audit_id'
+                function=self.stop_audit.__name__, argument="audit_id"
             )
 
         cmd = XmlCommand("stop_task")

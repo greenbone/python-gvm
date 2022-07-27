@@ -21,7 +21,7 @@ from gvm.errors import GvmError
 
 class GmpDeleteOperatingSystemTestMixin:
     def test_delete_operating_system(self):
-        self.gmp.delete_operating_system(operating_system_id='a1')
+        self.gmp.delete_operating_system(operating_system_id="a1")
 
         self.connection.send.has_been_called_with(
             '<delete_asset asset_id="a1"/>'

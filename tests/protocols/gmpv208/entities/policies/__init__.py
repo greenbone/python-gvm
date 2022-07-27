@@ -19,18 +19,14 @@
 from .test_clone_policy import GmpClonePolicyTestMixin
 from .test_create_policy import GmpCreatePolicyTestMixin
 from .test_delete_policy import GmpDeletePolicyTestMixin
-from .test_get_policy import GmpGetPolicyTestMixin
 from .test_get_policies import GmpGetPoliciesTestMixin
+from .test_get_policy import GmpGetPolicyTestMixin
 from .test_import_policy import GmpImportPolicyTestMixin
-from .test_modify_policy_set_comment import (
-    GmpModifyPolicySetCommentTestMixin,
-)
+from .test_modify_policy_set_comment import GmpModifyPolicySetCommentTestMixin
 from .test_modify_policy_set_family_selection import (
     GmpModifyPolicySetFamilySelectionTestMixin,
 )
-from .test_modify_policy_set_name import (
-    GmpModifyPolicySetNameTestMixin,
-)
+from .test_modify_policy_set_name import GmpModifyPolicySetNameTestMixin
 from .test_modify_policy_set_nvt_preference import (
     GmpModifyPolicySetNvtPreferenceTestMixin,
 )

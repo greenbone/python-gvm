@@ -21,7 +21,7 @@ from gvm.errors import GvmError
 
 class GmpRestoreFromTrashcanTestMixin:
     def test_restore_from_trashcan(self):
-        self.gmp.restore_from_trashcan('a1')
+        self.gmp.restore_from_trashcan("a1")
 
         self.connection.send.has_been_called_with('<restore id="a1"/>')
 
@@ -30,4 +30,4 @@ class GmpRestoreFromTrashcanTestMixin:
             self.gmp.restore_from_trashcan(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.restore_from_trashcan('')
+            self.gmp.restore_from_trashcan("")

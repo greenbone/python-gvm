@@ -21,8 +21,8 @@ from .tags import (
     GmpCloneTagTestMixin,
     GmpCreateTagTestMixin,
     GmpDeleteTagTestMixin,
-    GmpGetTagTestMixin,
     GmpGetTagsTestMixin,
+    GmpGetTagTestMixin,
     GmpModifyTagTestMixin,
 )
 

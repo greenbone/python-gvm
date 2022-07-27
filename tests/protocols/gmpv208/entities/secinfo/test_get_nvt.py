@@ -21,13 +21,13 @@ from gvm.errors import RequiredArgument
 
 class GmpGetNvtTestMixin:
     def test_get_nvt(self):
-        self.gmp.get_nvt(nvt_id='i1')
+        self.gmp.get_nvt(nvt_id="i1")
 
         self.connection.send.has_been_called_with(
             '<get_info info_id="i1" type="NVT" details="1"/>'
         )
 
-        self.gmp.get_nvt('i1')
+        self.gmp.get_nvt("i1")
 
         self.connection.send.has_been_called_with(
             '<get_info info_id="i1" type="NVT" details="1"/>'
@@ -35,10 +35,10 @@ class GmpGetNvtTestMixin:
 
     def test_get_nvt_missing_nvt_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_nvt(nvt_id='')
+            self.gmp.get_nvt(nvt_id="")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_nvt('')
+            self.gmp.get_nvt("")
 
         with self.assertRaises(RequiredArgument):
             self.gmp.get_nvt(nvt_id=None)

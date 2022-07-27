@@ -21,14 +21,14 @@ from gvm.errors import GvmError
 
 class GmpDeleteNoteTestMixin:
     def test_delete(self):
-        self.gmp.delete_note('a1')
+        self.gmp.delete_note("a1")
 
         self.connection.send.has_been_called_with(
             '<delete_note note_id="a1" ultimate="0"/>'
         )
 
     def test_delete_ultimate(self):
-        self.gmp.delete_note('a1', ultimate=True)
+        self.gmp.delete_note("a1", ultimate=True)
 
         self.connection.send.has_been_called_with(
             '<delete_note note_id="a1" ultimate="1"/>'
@@ -39,4 +39,4 @@ class GmpDeleteNoteTestMixin:
             self.gmp.delete_note(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.delete_note('')
+            self.gmp.delete_note("")

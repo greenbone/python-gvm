@@ -16,14 +16,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv224 import Gmpv224TestCase
-from .users import GmpCreateUserTestMixin, GmpModifyUserTestMixin
 from ...gmpv208.entities.users import (
     GmpCloneUserTestMixin,
     GmpDeleteUserTestMixin,
     GmpGetUsersTestMixin,
     GmpGetUserTestMixin,
 )
+from ...gmpv224 import Gmpv224TestCase
+from .users import GmpCreateUserTestMixin, GmpModifyUserTestMixin
 
 
 class Gmpv224CloneUserTestCase(GmpCloneUserTestMixin, Gmpv224TestCase):

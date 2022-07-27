@@ -16,7 +16,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gvm.errors import RequiredArgument, InvalidArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 
 
 class GmpImportPolicyTestMixin:
@@ -24,19 +24,19 @@ class GmpImportPolicyTestMixin:
     POLICY_XML_STRING = (
         '<get_configs_response status="200" status_text="OK">'
         '<config id="c4aa21e4-23e6-4064-ae49-c0d425738a98">'
-        '<name>Foobar</name>'
-        '<comment>Foobar config</comment>'
-        '<creation_time>2018-11-09T10:48:03Z</creation_time>'
-        '<modification_time>2018-11-09T10:48:03Z</modification_time>'
-        '</config>'
-        '</get_configs_response>'
+        "<name>Foobar</name>"
+        "<comment>Foobar config</comment>"
+        "<creation_time>2018-11-09T10:48:03Z</creation_time>"
+        "<modification_time>2018-11-09T10:48:03Z</modification_time>"
+        "</config>"
+        "</get_configs_response>"
     )
 
     def test_import_policy(self):
         self.gmp.import_policy(self.POLICY_XML_STRING)
 
         self.connection.send.has_been_called_with(
-            '<create_config>' f'{self.POLICY_XML_STRING}' '</create_config>'
+            "<create_config>" f"{self.POLICY_XML_STRING}" "</create_config>"
         )
 
     def test_import_missing_policy_xml(self):
@@ -44,8 +44,8 @@ class GmpImportPolicyTestMixin:
             self.gmp.import_policy(None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.import_policy('')
+            self.gmp.import_policy("")
 
     def test_import_invalid_xml(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.import_policy('abcdef')
+            self.gmp.import_policy("abcdef")

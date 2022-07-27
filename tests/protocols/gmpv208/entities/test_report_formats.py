@@ -19,10 +19,10 @@
 from ...gmpv208 import Gmpv208TestCase
 from .report_formats import (
     GmpCloneReportFormatTestMixin,
-    GmpImportReportFormatTestMixin,
     GmpDeleteReportFormatTestMixin,
-    GmpGetReportFormatTestMixin,
     GmpGetReportFormatsTestMixin,
+    GmpGetReportFormatTestMixin,
+    GmpImportReportFormatTestMixin,
     GmpModifyReportFormatTestMixin,
     GmpVerifyReportFormatTestMixin,
 )

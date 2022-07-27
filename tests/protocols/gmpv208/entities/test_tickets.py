@@ -21,8 +21,8 @@ from .tickets import (
     GmpCloneTicketTestMixin,
     GmpCreateTicketTestMixin,
     GmpDeleteTicketTestMixin,
-    GmpGetTicketTestMixin,
     GmpGetTicketsTestMixin,
+    GmpGetTicketTestMixin,
     GmpModifyTicketTestMixin,
 )
 

@@ -21,11 +21,11 @@ from gvm.errors import RequiredArgument
 
 class GmpGetGroupTestMixin:
     def test_get_group(self):
-        self.gmp.get_group('f1')
+        self.gmp.get_group("f1")
 
         self.connection.send.has_been_called_with('<get_groups group_id="f1"/>')
 
-        self.gmp.get_group(group_id='f1')
+        self.gmp.get_group(group_id="f1")
 
         self.connection.send.has_been_called_with('<get_groups group_id="f1"/>')
 
@@ -34,4 +34,4 @@ class GmpGetGroupTestMixin:
             self.gmp.get_group(group_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_group('')
+            self.gmp.get_group("")

@@ -21,7 +21,7 @@ from gvm.errors import GvmError
 
 class GmpDeleteHostTestMixin:
     def test_delete_host(self):
-        self.gmp.delete_host(host_id='a1')
+        self.gmp.delete_host(host_id="a1")
 
         self.connection.send.has_been_called_with(
             '<delete_asset asset_id="a1"/>'

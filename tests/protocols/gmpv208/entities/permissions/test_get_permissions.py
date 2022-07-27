@@ -21,17 +21,17 @@ class GmpGetPermissionsTestMixin:
     def test_get_permissions(self):
         self.gmp.get_permissions()
 
-        self.connection.send.has_been_called_with('<get_permissions/>')
+        self.connection.send.has_been_called_with("<get_permissions/>")
 
     def test_get_permissions_with_filter_string(self):
-        self.gmp.get_permissions(filter_string='foo=bar')
+        self.gmp.get_permissions(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_permissions filter="foo=bar"/>'
         )
 
     def test_get_permissions_with_filter_id(self):
-        self.gmp.get_permissions(filter_id='f1')
+        self.gmp.get_permissions(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_permissions filt_id="f1"/>'

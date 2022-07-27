@@ -21,8 +21,8 @@ from .groups import (
     GmpCloneGroupTestMixin,
     GmpCreateGroupTestMixin,
     GmpDeleteGroupTestMixin,
-    GmpGetGroupTestMixin,
     GmpGetGroupsTestMixin,
+    GmpGetGroupTestMixin,
     GmpModifyGroupTestMixin,
 )
 

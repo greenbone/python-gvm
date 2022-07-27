@@ -17,9 +17,7 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from ...gmpv208 import Gmpv208TestCase
-from .aggregates import (
-    GmpGetAggregatesTestMixin,
-)
+from .aggregates import GmpGetAggregatesTestMixin
 
 
 class Gmpv208GetAggregatesTestCase(GmpGetAggregatesTestMixin, Gmpv208TestCase):

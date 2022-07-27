@@ -20,17 +20,17 @@
 from enum import Enum
 from typing import Any, List, Optional
 
-from gvm.errors import RequiredArgument, InvalidArgument
-from gvm.utils import add_filter, to_comma_list, to_bool
+from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.utils import add_filter, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 
 class UserAuthType(Enum):
     """Enum for Sources allowed for authentication for the user"""
 
-    FILE = 'file'
-    LDAP_CONNECT = 'ldap_connect'
-    RADIUS_CONNECT = 'radius_connect'
+    FILE = "file"
+    LDAP_CONNECT = "ldap_connect"
+    RADIUS_CONNECT = "radius_connect"
 
     @classmethod
     def from_string(
@@ -45,7 +45,7 @@ class UserAuthType(Enum):
             return cls[user_auth_type.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='user_auth_type',
+                argument="user_auth_type",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -62,7 +62,7 @@ class UsersMixin:
         """
         if not user_id:
             raise RequiredArgument(
-                function=self.clone_user.__name__, argument='user_id'
+                function=self.clone_user.__name__, argument="user_id"
             )
 
         cmd = XmlCommand("create_user")
@@ -98,7 +98,7 @@ class UsersMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_user.__name__, argument='name'
+                function=self.create_user.__name__, argument="name"
             )
 
         cmd = XmlCommand("create_user")
@@ -149,7 +149,7 @@ class UsersMixin:
         """
         if not user_id and not name:
             raise RequiredArgument(
-                function=self.delete_user.__name__, argument='user_id or name'
+                function=self.delete_user.__name__, argument="user_id or name"
             )
 
         cmd = XmlCommand("delete_user")
@@ -201,7 +201,7 @@ class UsersMixin:
 
         if not user_id:
             raise RequiredArgument(
-                function=self.get_user.__name__, argument='user_id'
+                function=self.get_user.__name__, argument="user_id"
             )
 
         cmd.set_attribute("user_id", user_id)
@@ -260,7 +260,7 @@ class UsersMixin:
         """
         if not user_id and not name:
             raise RequiredArgument(
-                function=self.modify_user.__name__, argument='user_id or name'
+                function=self.modify_user.__name__, argument="user_id or name"
             )
 
         cmd = XmlCommand("modify_user")

@@ -21,13 +21,13 @@ from gvm.errors import RequiredArgument
 
 class GmpGetScannerTestMixin:
     def test_get_scanner(self):
-        self.gmp.get_scanner('s1')
+        self.gmp.get_scanner("s1")
 
         self.connection.send.has_been_called_with(
             '<get_scanners scanner_id="s1" details="1"/>'
         )
 
-        self.gmp.get_scanner(scanner_id='s1')
+        self.gmp.get_scanner(scanner_id="s1")
 
         self.connection.send.has_been_called_with(
             '<get_scanners scanner_id="s1" details="1"/>'
@@ -38,4 +38,4 @@ class GmpGetScannerTestMixin:
             self.gmp.get_scanner(scanner_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_scanner('')
+            self.gmp.get_scanner("")

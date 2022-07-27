@@ -16,11 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv224 import Gmpv224TestCase
 from ...gmpv208.entities.results import (
     GmpGetResultsTestMixin,
     GmpGetResultTestMixin,
 )
+from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224GetResultTestCase(GmpGetResultTestMixin, Gmpv224TestCase):

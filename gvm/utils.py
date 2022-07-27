@@ -19,11 +19,11 @@
 # pylint: disable=arguments-differ, redefined-builtin
 
 import base64
+import logging
 import re
 import warnings
-import logging
-
 from typing import Any, List
+
 from lxml import etree
 
 from gvm.xml import create_parser

@@ -23,12 +23,12 @@ from tests import CallableMock
 
 class MockConnection:
     def __init__(self):
-        self.connect = CallableMock('connect')
-        self.disconnect = CallableMock('disconnect')
-        self.send = CallableMock('send')
-        self.read = CallableMock('read')
+        self.connect = CallableMock("connect")
+        self.disconnect = CallableMock("disconnect")
+        self.send = CallableMock("send")
+        self.read = CallableMock("read")
         self.read.return_value('<foo_response status="200"/>')
-        self.finish_send = CallableMock('finish_send')
+        self.finish_send = CallableMock("finish_send")
 
 
 class GmpTestCase(unittest.TestCase):

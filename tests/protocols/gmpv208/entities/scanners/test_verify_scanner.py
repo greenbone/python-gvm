@@ -21,7 +21,7 @@ from gvm.errors import GvmError
 
 class GmpVerifyScannerTestMixin:
     def test_verify(self):
-        self.gmp.verify_scanner('a1')
+        self.gmp.verify_scanner("a1")
 
         self.connection.send.has_been_called_with(
             '<verify_scanner scanner_id="a1"/>'
@@ -32,4 +32,4 @@ class GmpVerifyScannerTestMixin:
             self.gmp.verify_scanner(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.verify_scanner('')
+            self.gmp.verify_scanner("")

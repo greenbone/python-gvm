@@ -21,7 +21,7 @@ from gvm.errors import GvmError
 
 class GmpDeletePortRangeTestMixin:
     def test_delete(self):
-        self.gmp.delete_port_range('a1')
+        self.gmp.delete_port_range("a1")
 
         self.connection.send.has_been_called_with(
             '<delete_port_range port_range_id="a1"/>'
@@ -32,4 +32,4 @@ class GmpDeletePortRangeTestMixin:
             self.gmp.delete_port_range(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.delete_port_range('')
+            self.gmp.delete_port_range("")

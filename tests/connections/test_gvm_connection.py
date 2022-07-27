@@ -19,7 +19,7 @@
 import unittest
 from unittest.mock import patch
 
-from gvm.connections import GvmConnection, DEFAULT_TIMEOUT
+from gvm.connections import DEFAULT_TIMEOUT, GvmConnection
 from gvm.errors import GvmError
 
 
@@ -53,24 +53,24 @@ class GvmConnectionTestCase(unittest.TestCase):
         connection = GvmConnection()
         connection._start_xml()
         with self.assertRaises(
-            GvmError, msg='Cannot parse XML response. Response data read bla'
+            GvmError, msg="Cannot parse XML response. Response data read bla"
         ):
             connection._feed_xml("bla")
 
-    @patch('gvm.connections.GvmConnection._read')
+    @patch("gvm.connections.GvmConnection._read")
     def test_read_no_data(self, _read_mock):
         _read_mock.return_value = None
         connection = GvmConnection()
         with self.assertRaises(GvmError, msg="Remote closed the connection"):
             connection.read()
 
-    @patch('gvm.connections.GvmConnection._read')
+    @patch("gvm.connections.GvmConnection._read")
     def test_read_trigger_timeout(self, _read_mock):
         # mocking the response into two parts, so we run into the timeout
         # check in the loop
         _read_mock.side_effect = [b"<foo>xyz<bar></bar>", b"</foo>"]
         connection = GvmConnection(timeout=0)
         with self.assertRaises(
-            GvmError, msg='Timeout while reading the response'
+            GvmError, msg="Timeout while reading the response"
         ):
             connection.read()

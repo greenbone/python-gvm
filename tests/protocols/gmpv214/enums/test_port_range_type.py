@@ -25,22 +25,22 @@ from gvm.protocols.gmpv214 import PortRangeType
 class GetPortRangeTypeFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
-            PortRangeType.from_string('foo')
+            PortRangeType.from_string("foo")
 
     def test_none_or_empty(self):
         ct = PortRangeType.from_string(None)
         self.assertIsNone(ct)
-        ct = PortRangeType.from_string('')
+        ct = PortRangeType.from_string("")
         self.assertIsNone(ct)
 
     def test_tcp(self):
-        ct = PortRangeType.from_string('tcp')
+        ct = PortRangeType.from_string("tcp")
         self.assertEqual(ct, PortRangeType.TCP)
 
     def test_udp(self):
-        ct = PortRangeType.from_string('udp')
+        ct = PortRangeType.from_string("udp")
         self.assertEqual(ct, PortRangeType.UDP)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

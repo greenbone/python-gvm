@@ -21,8 +21,8 @@ from .filters import (
     GmpCloneFilterTestMixin,
     GmpCreateFilterTestMixin,
     GmpDeleteFilterTestMixin,
-    GmpGetFilterTestMixin,
     GmpGetFiltersTestMixin,
+    GmpGetFilterTestMixin,
     GmpModifyFilterTestMixin,
 )
 

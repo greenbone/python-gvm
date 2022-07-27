@@ -16,11 +16,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv214 import Gmpv214TestCase
 from ...gmpv208.entities.vulnerabilities import (
     GmpGetVulnerabilitiesTestMixin,
     GmpGetVulnerabilityTestMixin,
 )
+from ...gmpv214 import Gmpv214TestCase
 
 
 class Gmpv214GetVulnerabilityTestCase(

@@ -17,9 +17,10 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from typing import Any, List, Optional, Tuple
+
 from lxml.etree import XMLSyntaxError
 
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter, deprecation, is_list_like, to_base64, to_bool
 from gvm.xml import XmlCommand
 
@@ -36,7 +37,7 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.clone_scan_config.__name__, argument='config_id'
+                function=self.clone_scan_config.__name__, argument="config_id"
             )
 
         cmd = XmlCommand("create_config")
@@ -58,12 +59,12 @@ class ScanConfigsMixin:
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_scan_config.__name__, argument='name'
+                function=self.create_scan_config.__name__, argument="name"
             )
 
         if not config_id:
             raise RequiredArgument(
-                function=self.create_scan_config.__name__, argument='config_id'
+                function=self.create_scan_config.__name__, argument="config_id"
             )
 
         cmd = XmlCommand("create_config")
@@ -93,13 +94,13 @@ class ScanConfigsMixin:
         if not name:
             raise RequiredArgument(
                 function=self.create_scan_config_from_osp_scanner.__name__,
-                argument='name',
+                argument="name",
             )
 
         if not scanner_id:
             raise RequiredArgument(
                 function=self.create_scan_config_from_osp_scanner.__name__,
-                argument='scanner_id',
+                argument="scanner_id",
             )
 
         cmd = XmlCommand("create_config")
@@ -121,7 +122,7 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.delete_scan_config.__name__, argument='config_id'
+                function=self.delete_scan_config.__name__, argument="config_id"
             )
 
         cmd = XmlCommand("delete_config")
@@ -194,7 +195,7 @@ class ScanConfigsMixin:
         """
         if not config_id:
             raise RequiredArgument(
-                function=self.get_scan_config.__name__, argument='config_id'
+                function=self.get_scan_config.__name__, argument="config_id"
             )
 
         cmd = XmlCommand("get_configs")
@@ -260,7 +261,7 @@ class ScanConfigsMixin:
         if not name:
             raise RequiredArgument(
                 function=self.get_scan_config_preference.__name__,
-                argument='name',
+                argument="name",
             )
 
         cmd.set_attribute("preference", name)
@@ -285,7 +286,7 @@ class ScanConfigsMixin:
         """
         if not config:
             raise RequiredArgument(
-                function=self.import_scan_config.__name__, argument='config'
+                function=self.import_scan_config.__name__, argument="config"
             )
 
         cmd = XmlCommand("create_config")
@@ -294,7 +295,7 @@ class ScanConfigsMixin:
             cmd.append_xml_str(config)
         except XMLSyntaxError as e:
             raise InvalidArgument(
-                function=self.import_scan_config.__name__, argument='config'
+                function=self.import_scan_config.__name__, argument="config"
             ) from e
 
         return self._send_xml_command(cmd)
@@ -319,19 +320,19 @@ class ScanConfigsMixin:
         if not config_id:
             raise RequiredArgument(
                 function=self.modify_scan_config_set_nvt_preference.__name__,
-                argument='config_id',
+                argument="config_id",
             )
 
         if not nvt_oid:
             raise RequiredArgument(
                 function=self.modify_scan_config_set_nvt_preference.__name__,
-                argument='nvt_oid',
+                argument="nvt_oid",
             )
 
         if not name:
             raise RequiredArgument(
                 function=self.modify_scan_config_set_nvt_preference.__name__,
-                argument='name',
+                argument="name",
             )
 
         cmd = XmlCommand("modify_config")
@@ -357,13 +358,13 @@ class ScanConfigsMixin:
         if not config_id:
             raise RequiredArgument(
                 function=self.modify_scan_config_set_name.__name__,
-                argument='config_id',
+                argument="config_id",
             )
 
         if not name:
             raise RequiredArgument(
                 function=self.modify_scan_config_set_name.__name__,
-                argument='name',
+                argument="name",
             )
 
         cmd = XmlCommand("modify_config")
@@ -387,7 +388,7 @@ class ScanConfigsMixin:
         if not config_id:
             raise RequiredArgument(
                 function=self.modify_scan_config_set_comment.__name__,
-                argument='config_id argument',
+                argument="config_id argument",
             )
 
         cmd = XmlCommand("modify_config")
@@ -415,7 +416,7 @@ class ScanConfigsMixin:
                 function=(
                     self.modify_scan_config_set_scanner_preference.__name__
                 ),
-                argument='config_id',
+                argument="config_id",
             )
 
         if not name:
@@ -423,7 +424,7 @@ class ScanConfigsMixin:
                 function=(
                     self.modify_scan_config_set_scanner_preference.__name__
                 ),
-                argument='name argument',
+                argument="name argument",
             )
 
         cmd = XmlCommand("modify_config")
@@ -454,20 +455,20 @@ class ScanConfigsMixin:
         if not config_id:
             raise RequiredArgument(
                 function=self.modify_scan_config_set_nvt_selection.__name__,
-                argument='config_id',
+                argument="config_id",
             )
 
         if not family:
             raise RequiredArgument(
                 function=self.modify_scan_config_set_nvt_selection.__name__,
-                argument='family argument',
+                argument="family argument",
             )
 
         if not is_list_like(nvt_oids):
             raise InvalidArgumentType(
                 function=self.modify_scan_config_set_nvt_selection.__name__,
-                argument='nvt_oids',
-                arg_type='list',
+                argument="nvt_oids",
+                arg_type="list",
             )
 
         cmd = XmlCommand("modify_config")
@@ -503,14 +504,14 @@ class ScanConfigsMixin:
         if not config_id:
             raise RequiredArgument(
                 function=self.modify_scan_config_set_family_selection.__name__,
-                argument='config_id',
+                argument="config_id",
             )
 
         if not is_list_like(families):
             raise InvalidArgumentType(
                 function=self.modify_scan_config_set_family_selection.__name__,
-                argument='families',
-                arg_type='list',
+                argument="families",
+                arg_type="list",
             )
 
         cmd = XmlCommand("modify_config")
@@ -535,8 +536,8 @@ class ScanConfigsMixin:
                     function=(
                         self.modify_scan_config_set_family_selection.__name__
                     ),
-                    argument='families',
-                    arg_type='[tuple(str, bool, bool)]',
+                    argument="families",
+                    arg_type="[tuple(str, bool, bool)]",
                 )
 
             _xmlfamily.add_element("all", to_bool(family[2]))
@@ -568,7 +569,7 @@ class ScanConfigsMixin:
         if not config_id:
             raise RequiredArgument(
                 function=self.modify_scan_config.__name__,
-                argument='config_id argument',
+                argument="config_id argument",
             )
 
         if selection is None:

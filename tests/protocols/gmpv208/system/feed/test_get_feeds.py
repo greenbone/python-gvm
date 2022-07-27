@@ -21,4 +21,4 @@ class GmpGetFeedsTestMixin:
     def test_get_feeds(self):
         self.gmp.get_feeds()
 
-        self.connection.send.has_been_called_with('<get_feeds/>')
+        self.connection.send.has_been_called_with("<get_feeds/>")

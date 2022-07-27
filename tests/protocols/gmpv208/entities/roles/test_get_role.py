@@ -21,11 +21,11 @@ from gvm.errors import RequiredArgument
 
 class GmpGetRoleTestMixin:
     def test_get_role(self):
-        self.gmp.get_role('r1')
+        self.gmp.get_role("r1")
 
         self.connection.send.has_been_called_with('<get_roles role_id="r1"/>')
 
-        self.gmp.get_role(role_id='r1')
+        self.gmp.get_role(role_id="r1")
 
         self.connection.send.has_been_called_with('<get_roles role_id="r1"/>')
 
@@ -34,4 +34,4 @@ class GmpGetRoleTestMixin:
             self.gmp.get_role(role_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_role('')
+            self.gmp.get_role("")

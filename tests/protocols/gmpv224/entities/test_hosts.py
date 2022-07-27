@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv224 import Gmpv224TestCase
 from ...gmpv208.entities.hosts import (
     GmpCreateHostTestMixin,
     GmpDeleteHostTestMixin,
@@ -24,6 +23,7 @@ from ...gmpv208.entities.hosts import (
     GmpGetHostTestMixin,
     GmpModifyHostTestMixin,
 )
+from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CreateHostTestCase(GmpCreateHostTestMixin, Gmpv224TestCase):

@@ -29,7 +29,7 @@ class OSPGetScanTestCase(unittest.TestCase):
         self.osp = Osp(self.connection)
 
     def test_get_scans_with_params(self):
-        self.osp.get_scans(scan_id='123-456', details=False, pop_results=False)
+        self.osp.get_scans(scan_id="123-456", details=False, pop_results=False)
 
         self.connection.send.has_been_called_with(
             '<get_scans scan_id="123-456" details="0" pop_results="0"/>'
@@ -43,5 +43,5 @@ class OSPGetScanTestCase(unittest.TestCase):
         )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

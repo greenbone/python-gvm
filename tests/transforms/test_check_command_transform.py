@@ -29,16 +29,16 @@ class CheckCommandTransformTestCase(unittest.TestCase):
         transform = CheckCommandTransform()
 
         with self.assertRaises(GvmError):
-            transform('<foo/>')
+            transform("<foo/>")
 
     def test_no_success_300status_transform(self):
         transform = CheckCommandTransform()
 
-        root = etree.Element('foo_response')
-        root.set('status', '300')
-        root.set('status_text', 'Foo error')
+        root = etree.Element("foo_response")
+        root.set("status", "300")
+        root.set("status_text", "Foo error")
 
-        response = etree.tostring(root).decode('utf-8')
+        response = etree.tostring(root).decode("utf-8")
 
         with self.assertRaises(GvmError):
             transform(response)
@@ -46,11 +46,11 @@ class CheckCommandTransformTestCase(unittest.TestCase):
     def test_no_success_400status_transform(self):
         transform = CheckCommandTransform()
 
-        root = etree.Element('foo_response')
-        root.set('status', '400')
-        root.set('status_text', 'Foo error')
+        root = etree.Element("foo_response")
+        root.set("status", "400")
+        root.set("status_text", "Foo error")
 
-        response = etree.tostring(root).decode('utf-8')
+        response = etree.tostring(root).decode("utf-8")
 
         with self.assertRaises(GvmResponseError):
             transform(response)
@@ -58,11 +58,11 @@ class CheckCommandTransformTestCase(unittest.TestCase):
     def test_no_success_500status_transform(self):
         transform = CheckCommandTransform()
 
-        root = etree.Element('foo_response')
-        root.set('status', '500')
-        root.set('status_text', 'Foo error')
+        root = etree.Element("foo_response")
+        root.set("status", "500")
+        root.set("status_text", "Foo error")
 
-        response = etree.tostring(root).decode('utf-8')
+        response = etree.tostring(root).decode("utf-8")
 
         with self.assertRaises(GvmServerError):
             transform(response)
@@ -70,9 +70,9 @@ class CheckCommandTransformTestCase(unittest.TestCase):
     def test_success_response(self):
         transform = CheckCommandTransform()
 
-        root = etree.Element('foo_response')
-        root.set('status', '200')
+        root = etree.Element("foo_response")
+        root.set("status", "200")
 
-        response = etree.tostring(root).decode('utf-8')
+        response = etree.tostring(root).decode("utf-8")
 
         self.assertEqual(transform(response), '<foo_response status="200"/>')

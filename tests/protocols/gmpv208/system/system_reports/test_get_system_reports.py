@@ -23,17 +23,17 @@ class GmpGetSystemReportsTestMixin:
     def test_get_system_reports(self):
         self.gmp.get_system_reports()
 
-        self.connection.send.has_been_called_with('<get_system_reports/>')
+        self.connection.send.has_been_called_with("<get_system_reports/>")
 
     def test_get_system_reports_with_name(self):
-        self.gmp.get_system_reports(name='foo')
+        self.gmp.get_system_reports(name="foo")
 
         self.connection.send.has_been_called_with(
             '<get_system_reports name="foo"/>'
         )
 
     def test_get_system_reports_with_slave_id(self):
-        self.gmp.get_system_reports(slave_id='s1')
+        self.gmp.get_system_reports(slave_id="s1")
 
         self.connection.send.has_been_called_with(
             '<get_system_reports slave_id="s1"/>'
@@ -61,17 +61,17 @@ class GmpGetSystemReportsTestMixin:
 
     def test_get_system_reports_with_invalid_duration(self):
         with self.assertRaises(InvalidArgument):
-            self.gmp.get_system_reports(duration='')
+            self.gmp.get_system_reports(duration="")
 
     def test_get_system_reports_with_start_time(self):
-        self.gmp.get_system_reports(start_time='01-01-2019')
+        self.gmp.get_system_reports(start_time="01-01-2019")
 
         self.connection.send.has_been_called_with(
             '<get_system_reports start_time="01-01-2019"/>'
         )
 
     def test_get_system_reports_with_end_time(self):
-        self.gmp.get_system_reports(end_time='01-01-2019')
+        self.gmp.get_system_reports(end_time="01-01-2019")
 
         self.connection.send.has_been_called_with(
             '<get_system_reports end_time="01-01-2019"/>'

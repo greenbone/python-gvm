@@ -21,13 +21,13 @@ from gvm.errors import RequiredArgument
 
 class GmpGetResultTestMixin:
     def test_get_result(self):
-        self.gmp.get_result('r1')
+        self.gmp.get_result("r1")
 
         self.connection.send.has_been_called_with(
             '<get_results result_id="r1" details="1"/>'
         )
 
-        self.gmp.get_result(result_id='r1')
+        self.gmp.get_result(result_id="r1")
 
         self.connection.send.has_been_called_with(
             '<get_results result_id="r1" details="1"/>'
@@ -38,4 +38,4 @@ class GmpGetResultTestMixin:
             self.gmp.get_result(result_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_result('')
+            self.gmp.get_result("")

@@ -20,10 +20,10 @@
 
 from typing import Any, List, Optional
 
-from gvm.errors import RequiredArgument, InvalidArgumentType
+from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.protocols.gmpv208.entities.targets import AliveTest
 from gvm.protocols.gmpv208.entities.targets import (
     TargetsMixin as Gmp208TargetsMixin,
-    AliveTest,
 )
 from gvm.utils import to_bool, to_comma_list
 from gvm.xml import XmlCommand
@@ -77,7 +77,7 @@ class TargetsMixin(Gmp208TargetsMixin):
         """
         if not name:
             raise RequiredArgument(
-                function=self.create_target.__name__, argument='name'
+                function=self.create_target.__name__, argument="name"
             )
 
         cmd = XmlCommand("create_target")
@@ -92,7 +92,7 @@ class TargetsMixin(Gmp208TargetsMixin):
         else:
             raise RequiredArgument(
                 function=self.create_target.__name__,
-                argument='hosts or asset_hosts_filter',
+                argument="hosts or asset_hosts_filter",
             )
 
         if comment:
@@ -121,7 +121,7 @@ class TargetsMixin(Gmp208TargetsMixin):
             if not isinstance(alive_test, AliveTest):
                 raise InvalidArgumentType(
                     function=self.create_target.__name__,
-                    argument='alive_test',
+                    argument="alive_test",
                     arg_type=AliveTest.__name__,
                 )
 
@@ -193,7 +193,7 @@ class TargetsMixin(Gmp208TargetsMixin):
         """
         if not target_id:
             raise RequiredArgument(
-                function=self.modify_target.__name__, argument='target_id'
+                function=self.modify_target.__name__, argument="target_id"
             )
 
         cmd = XmlCommand("modify_target")
@@ -208,7 +208,7 @@ class TargetsMixin(Gmp208TargetsMixin):
         if hosts:
             cmd.add_element("hosts", to_comma_list(hosts))
             if exclude_hosts is None:
-                exclude_hosts = ['']
+                exclude_hosts = [""]
 
         if exclude_hosts:
             cmd.add_element("exclude_hosts", to_comma_list(exclude_hosts))
@@ -217,7 +217,7 @@ class TargetsMixin(Gmp208TargetsMixin):
             if not isinstance(alive_test, AliveTest):
                 raise InvalidArgumentType(
                     function=self.modify_target.__name__,
-                    argument='alive_test',
+                    argument="alive_test",
                     arg_type=AliveTest.__name__,
                 )
             cmd.add_element("alive_tests", alive_test.value)

@@ -21,13 +21,13 @@ from gvm.errors import RequiredArgument
 
 class GmpGetNoteTestMixin:
     def test_get_note(self):
-        self.gmp.get_note('n1')
+        self.gmp.get_note("n1")
 
         self.connection.send.has_been_called_with(
             '<get_notes note_id="n1" details="1"/>'
         )
 
-        self.gmp.get_note(note_id='n1')
+        self.gmp.get_note(note_id="n1")
 
         self.connection.send.has_been_called_with(
             '<get_notes note_id="n1" details="1"/>'
@@ -38,4 +38,4 @@ class GmpGetNoteTestMixin:
             self.gmp.get_note(note_id=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_note('')
+            self.gmp.get_note("")

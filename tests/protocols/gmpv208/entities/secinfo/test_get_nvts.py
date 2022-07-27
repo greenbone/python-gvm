@@ -24,21 +24,21 @@ class GmpGetNvtListTestMixin:
         self.connection.send.has_been_called_with('<get_info type="NVT"/>')
 
     def test_get_nvts_with_filter_string(self):
-        self.gmp.get_nvts(filter_string='foo=bar')
+        self.gmp.get_nvts(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_info type="NVT" filter="foo=bar"/>'
         )
 
     def test_get_nvts_with_filter_id(self):
-        self.gmp.get_nvts(filter_id='f1')
+        self.gmp.get_nvts(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_info type="NVT" filt_id="f1"/>'
         )
 
     def test_get_nvts_with_name(self):
-        self.gmp.get_nvts(name='foo')
+        self.gmp.get_nvts(name="foo")
 
         self.connection.send.has_been_called_with(
             '<get_info type="NVT" name="foo"/>'

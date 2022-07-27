@@ -21,14 +21,14 @@ from gvm.errors import GvmError
 
 class GmpDeleteTaskTestMixin:
     def test_delete(self):
-        self.gmp.delete_task('a1')
+        self.gmp.delete_task("a1")
 
         self.connection.send.has_been_called_with(
             '<delete_task task_id="a1" ultimate="0"/>'
         )
 
     def test_delete_ultimate(self):
-        self.gmp.delete_task('a1', ultimate=True)
+        self.gmp.delete_task("a1", ultimate=True)
 
         self.connection.send.has_been_called_with(
             '<delete_task task_id="a1" ultimate="1"/>'
@@ -39,4 +39,4 @@ class GmpDeleteTaskTestMixin:
             self.gmp.delete_task(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.delete_task('')
+            self.gmp.delete_task("")

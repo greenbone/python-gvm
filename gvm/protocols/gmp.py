@@ -20,18 +20,14 @@
 Module for communication with gvmd
 """
 from types import TracebackType
-from typing import Any, Optional, Callable, Union, Type
+from typing import Any, Callable, Optional, Type, Union
 
 from gvm.errors import GvmError
-
-from gvm.protocols.base import GvmProtocol, GvmConnection
-
+from gvm.protocols.base import GvmConnection, GvmProtocol
 from gvm.protocols.gmpv208 import Gmp as Gmpv208
 from gvm.protocols.gmpv214 import Gmp as Gmpv214
 from gvm.protocols.gmpv224 import Gmp as Gmpv224
-
 from gvm.transforms import EtreeCheckCommandTransform
-
 from gvm.xml import XmlCommand
 
 SUPPORTED_GMP_VERSIONS = Union[  # pylint: disable=invalid-name
@@ -86,11 +82,11 @@ class Gmp(GvmProtocol):
         resp = self._send_xml_command(XmlCommand("get_version"))
         self.disconnect()
 
-        version_el = resp.find('version')
+        version_el = resp.find("version")
         if version_el is None:
             raise GvmError(
-                'Invalid response from manager daemon while requesting the '
-                'version information.'
+                "Invalid response from manager daemon while requesting the "
+                "version information."
             )
 
         return version_el.text
@@ -99,7 +95,7 @@ class Gmp(GvmProtocol):
         """Determine supported GMP version of the remote daemon and return a
         corresponding Gmp class instance
         """
-        version_str = self.determine_remote_gmp_version().split('.', 1)
+        version_str = self.determine_remote_gmp_version().split(".", 1)
         major_version = int(version_str[0])
         minor_version = int(version_str[1])
         if major_version == 20:
@@ -110,8 +106,8 @@ class Gmp(GvmProtocol):
             gmp_class = Gmpv224
         else:
             raise GvmError(
-                'Remote manager daemon uses an unsupported version of GMP. '
-                f'The GMP version was {major_version}.{minor_version}'
+                "Remote manager daemon uses an unsupported version of GMP. "
+                f"The GMP version was {major_version}.{minor_version}"
             )
 
         return gmp_class(self._connection, transform=self._gmp_transform)

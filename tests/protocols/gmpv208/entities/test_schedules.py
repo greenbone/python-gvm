@@ -21,8 +21,8 @@ from .schedules import (
     GmpCloneScheduleTestMixin,
     GmpCreateScheduleTestMixin,
     GmpDeleteScheduleTestMixin,
-    GmpGetScheduleTestMixin,
     GmpGetSchedulesTestMixin,
+    GmpGetScheduleTestMixin,
     GmpModifyScheduleTestMixin,
 )
 

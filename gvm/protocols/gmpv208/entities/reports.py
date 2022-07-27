@@ -17,12 +17,13 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from typing import Any, Optional, Union
+
 from lxml.etree import XMLSyntaxError
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208.entities.report_formats import (
-    ReportFormatType,
-)  # if I use latest, I get circular import :/
+
+# if I use latest, I get circular import :/
+from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 
@@ -36,7 +37,7 @@ class ReportsMixin:
         """
         if not report_id:
             raise RequiredArgument(
-                function=self.delete_report.__name__, argument='report_id'
+                function=self.delete_report.__name__, argument="report_id"
             )
 
         cmd = XmlCommand("delete_report")
@@ -76,7 +77,7 @@ class ReportsMixin:
 
         if not report_id:
             raise RequiredArgument(
-                function=self.get_report.__name__, argument='report_id'
+                function=self.get_report.__name__, argument="report_id"
             )
 
         cmd.set_attribute("report_id", report_id)
@@ -162,7 +163,7 @@ class ReportsMixin:
         """
         if not report:
             raise RequiredArgument(
-                function=self.import_report.__name__, argument='report'
+                function=self.import_report.__name__, argument="report"
             )
 
         cmd = XmlCommand("create_report")
@@ -171,7 +172,7 @@ class ReportsMixin:
             cmd.add_element("task", attrs={"id": task_id})
         else:
             raise RequiredArgument(
-                function=self.import_report.__name__, argument='task_id'
+                function=self.import_report.__name__, argument="task_id"
             )
 
         if in_assets is not None:

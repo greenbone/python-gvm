@@ -21,17 +21,17 @@ class GmpGetCredentialsTestMixin:
     def test_get_credentials(self):
         self.gmp.get_credentials()
 
-        self.connection.send.has_been_called_with('<get_credentials/>')
+        self.connection.send.has_been_called_with("<get_credentials/>")
 
     def test_get_credentials_with_filter_string(self):
-        self.gmp.get_credentials(filter_string='foo=bar')
+        self.gmp.get_credentials(filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
             '<get_credentials filter="foo=bar"/>'
         )
 
     def test_get_credentials_with_filter_id(self):
-        self.gmp.get_credentials(filter_id='f1')
+        self.gmp.get_credentials(filter_id="f1")
 
         self.connection.send.has_been_called_with(
             '<get_credentials filt_id="f1"/>'

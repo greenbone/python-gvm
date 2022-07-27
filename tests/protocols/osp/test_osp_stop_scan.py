@@ -41,8 +41,8 @@ class OSPStopScanTestCase(unittest.TestCase):
             self.osp.stop_scan(None)
 
         with self.assertRaises(RequiredArgument):
-            self.osp.stop_scan('')
+            self.osp.stop_scan("")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

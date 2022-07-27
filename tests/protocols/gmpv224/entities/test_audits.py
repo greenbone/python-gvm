@@ -16,7 +16,6 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv224 import Gmpv224TestCase
 from ...gmpv208.entities.audits import (
     GmpCloneAuditTestMixin,
     GmpCreateAuditTestMixin,
@@ -28,6 +27,7 @@ from ...gmpv208.entities.audits import (
     GmpStartAuditTestMixin,
     GmpStopAuditTestMixin,
 )
+from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CloneAuditTestCase(GmpCloneAuditTestMixin, Gmpv224TestCase):

@@ -21,7 +21,7 @@ from gvm.errors import GvmError
 
 class GmpResumeAuditTestMixin:
     def test_resume_audit(self):
-        self.gmp.resume_audit('a1')
+        self.gmp.resume_audit("a1")
 
         self.connection.send.has_been_called_with('<resume_task task_id="a1"/>')
 
@@ -30,4 +30,4 @@ class GmpResumeAuditTestMixin:
             self.gmp.resume_audit(None)
 
         with self.assertRaises(GvmError):
-            self.gmp.resume_audit('')
+            self.gmp.resume_audit("")

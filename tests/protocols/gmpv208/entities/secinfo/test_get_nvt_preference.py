@@ -21,7 +21,7 @@ from gvm.errors import RequiredArgument
 
 class GmpGetNvtPreferenceTestMixin:
     def test_get_preference(self):
-        self.gmp.get_nvt_preference(name='foo')
+        self.gmp.get_nvt_preference(name="foo")
 
         self.connection.send.has_been_called_with(
             '<get_preferences preference="foo"/>'
@@ -32,13 +32,13 @@ class GmpGetNvtPreferenceTestMixin:
             self.gmp.get_nvt_preference(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_nvt_preference(name='')
+            self.gmp.get_nvt_preference(name="")
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_nvt_preference('')
+            self.gmp.get_nvt_preference("")
 
     def test_get_nvt_preference_with_nvt_oid(self):
-        self.gmp.get_nvt_preference(name='foo', nvt_oid='oid')
+        self.gmp.get_nvt_preference(name="foo", nvt_oid="oid")
 
         self.connection.send.has_been_called_with(
             '<get_preferences preference="foo" nvt_oid="oid"/>'

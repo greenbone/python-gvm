@@ -31,8 +31,8 @@ class OSPHelpTestCase(unittest.TestCase):
     def test_help(self):
         self.osp.help()
 
-        self.connection.send.has_been_called_with('<help/>')
+        self.connection.send.has_been_called_with("<help/>")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

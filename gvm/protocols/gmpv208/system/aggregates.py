@@ -19,10 +19,10 @@
 from enum import Enum
 from typing import Any, Optional
 
-from gvm.protocols.gmpv208.entities.entities import (
-    EntityType,
-)  # if I use latest, I get circular import :/
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+
+# if I use latest, I get circular import :/
+from gvm.protocols.gmpv208.entities.entities import EntityType
 from gvm.utils import add_filter
 from gvm.xml import XmlCommand
 
@@ -60,7 +60,7 @@ class AggregateStatistic(Enum):
             return cls[aggregate_statistic.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='aggregate_statistic',
+                argument="aggregate_statistic",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -89,7 +89,7 @@ class SortOrder(Enum):
             return cls[sort_order.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='sort_order', function=cls.from_string.__name__
+                argument="sort_order", function=cls.from_string.__name__
             ) from None
 
 
@@ -137,30 +137,30 @@ class AggregatesMixin:
         """
         if not resource_type:
             raise RequiredArgument(
-                function=self.get_aggregates.__name__, argument='resource_type'
+                function=self.get_aggregates.__name__, argument="resource_type"
             )
 
         if not isinstance(resource_type, EntityType):
             raise InvalidArgumentType(
                 function=self.get_aggregates.__name__,
-                argument='resource_type',
+                argument="resource_type",
                 arg_type=EntityType.__name__,
             )
 
-        cmd = XmlCommand('get_aggregates')
+        cmd = XmlCommand("get_aggregates")
 
         _actual_resource_type = resource_type
         if resource_type.value == EntityType.AUDIT.value:
             _actual_resource_type = EntityType.TASK
-            cmd.set_attribute('usage_type', 'audit')
+            cmd.set_attribute("usage_type", "audit")
         elif resource_type.value == EntityType.POLICY.value:
             _actual_resource_type = EntityType.SCAN_CONFIG
-            cmd.set_attribute('usage_type', 'policy')
+            cmd.set_attribute("usage_type", "policy")
         elif resource_type.value == EntityType.SCAN_CONFIG.value:
-            cmd.set_attribute('usage_type', 'scan')
+            cmd.set_attribute("usage_type", "scan")
         elif resource_type.value == EntityType.TASK.value:
-            cmd.set_attribute('usage_type', 'scan')
-        cmd.set_attribute('type', _actual_resource_type.value)
+            cmd.set_attribute("usage_type", "scan")
+        cmd.set_attribute("type", _actual_resource_type.value)
 
         add_filter(cmd, filter_string, filter_id)
 
@@ -168,87 +168,87 @@ class AggregatesMixin:
             if not isinstance(first_group, int):
                 raise InvalidArgumentType(
                     function=self.get_aggregates.__name__,
-                    argument='first_group',
+                    argument="first_group",
                     arg_type=int.__name__,
                 )
-            cmd.set_attribute('first_group', str(first_group))
+            cmd.set_attribute("first_group", str(first_group))
 
         if max_groups is not None:
             if not isinstance(max_groups, int):
                 raise InvalidArgumentType(
                     function=self.get_aggregates.__name__,
-                    argument='max_groups',
+                    argument="max_groups",
                     arg_type=int.__name__,
                 )
-            cmd.set_attribute('max_groups', str(max_groups))
+            cmd.set_attribute("max_groups", str(max_groups))
 
         if sort_criteria is not None:
             if not isinstance(sort_criteria, list):
                 raise InvalidArgumentType(
                     function=self.get_aggregates.__name__,
-                    argument='sort_criteria',
+                    argument="sort_criteria",
                     arg_type=list.__name__,
                 )
             for sort in sort_criteria:
                 if not isinstance(sort, dict):
                     raise InvalidArgumentType(
                         function=self.get_aggregates.__name__,
-                        argument='sort_criteria',
+                        argument="sort_criteria",
                     )
 
-                sort_elem = cmd.add_element('sort')
-                if sort.get('field'):
-                    sort_elem.set_attribute('field', sort.get('field'))
+                sort_elem = cmd.add_element("sort")
+                if sort.get("field"):
+                    sort_elem.set_attribute("field", sort.get("field"))
 
-                if sort.get('stat'):
-                    if isinstance(sort['stat'], AggregateStatistic):
-                        sort_elem.set_attribute('stat', sort['stat'].value)
+                if sort.get("stat"):
+                    if isinstance(sort["stat"], AggregateStatistic):
+                        sort_elem.set_attribute("stat", sort["stat"].value)
                     else:
-                        stat = AggregateStatistic.from_string(sort['stat'])
-                        sort_elem.set_attribute('stat', stat.value)
+                        stat = AggregateStatistic.from_string(sort["stat"])
+                        sort_elem.set_attribute("stat", stat.value)
 
-                if sort.get('order'):
-                    if isinstance(sort['order'], SortOrder):
-                        sort_elem.set_attribute('order', sort['order'].value)
+                if sort.get("order"):
+                    if isinstance(sort["order"], SortOrder):
+                        sort_elem.set_attribute("order", sort["order"].value)
                     else:
-                        so = SortOrder.from_string(sort['order'])
-                        sort_elem.set_attribute('order', so.value)
+                        so = SortOrder.from_string(sort["order"])
+                        sort_elem.set_attribute("order", so.value)
 
         if data_columns is not None:
             if not isinstance(data_columns, list):
                 raise InvalidArgumentType(
                     function=self.get_aggregates.__name__,
-                    argument='data_columns',
+                    argument="data_columns",
                     arg_type=list.__name__,
                 )
             for column in data_columns:
-                cmd.add_element('data_column', column)
+                cmd.add_element("data_column", column)
 
         if group_column is not None:
-            cmd.set_attribute('group_column', group_column)
+            cmd.set_attribute("group_column", group_column)
 
         if subgroup_column is not None:
             if not group_column:
                 raise RequiredArgument(
-                    f'{self.get_aggregates.__name__} requires a group_column'
-                    ' argument if subgroup_column is given',
+                    f"{self.get_aggregates.__name__} requires a group_column"
+                    " argument if subgroup_column is given",
                     function=self.get_aggregates.__name__,
-                    argument='subgroup_column',
+                    argument="subgroup_column",
                 )
-            cmd.set_attribute('subgroup_column', subgroup_column)
+            cmd.set_attribute("subgroup_column", subgroup_column)
 
         if text_columns is not None:
             if not isinstance(text_columns, list):
                 raise InvalidArgumentType(
                     function=self.get_aggregates.__name__,
-                    argument='text_columns',
+                    argument="text_columns",
                     arg_type=list.__name__,
                 )
             for column in text_columns:
-                cmd.add_element('text_column', column)
+                cmd.add_element("text_column", column)
 
         if mode is not None:
-            cmd.set_attribute('mode', mode)
+            cmd.set_attribute("mode", mode)
 
         # Add additional keyword args as attributes for backward compatibility.
         cmd.set_attributes(kwargs)

@@ -47,7 +47,7 @@ class InfoType(Enum):
             return cls[info_type.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='info_type', function=cls.from_string.__name__
+                argument="info_type", function=cls.from_string.__name__
             ) from None
 
 
@@ -142,7 +142,7 @@ class SecInfoMixin:
 
         if not nvt_oid:
             raise RequiredArgument(
-                function=self.get_scan_config_nvt.__name__, argument='nvt_oid'
+                function=self.get_scan_config_nvt.__name__, argument="nvt_oid"
             )
 
         cmd.set_attribute("nvt_oid", nvt_oid)
@@ -352,13 +352,13 @@ class SecInfoMixin:
         """
         if not info_type:
             raise RequiredArgument(
-                function=self.get_info_list.__name__, argument='info_type'
+                function=self.get_info_list.__name__, argument="info_type"
             )
 
         if not isinstance(info_type, InfoType):
             raise InvalidArgumentType(
                 function=self.get_info_list.__name__,
-                argument='info_type',
+                argument="info_type",
                 arg_type=InfoType.__name__,
             )
 
@@ -461,19 +461,19 @@ class SecInfoMixin:
         """
         if not info_type:
             raise RequiredArgument(
-                function=self.get_info.__name__, argument='info_type'
+                function=self.get_info.__name__, argument="info_type"
             )
 
         if not isinstance(info_type, InfoType):
             raise InvalidArgumentType(
                 function=self.get_info.__name__,
-                argument='info_type',
+                argument="info_type",
                 arg_type=InfoType.__name__,
             )
 
         if not info_id:
             raise RequiredArgument(
-                function=self.get_info.__name__, argument='info_id'
+                function=self.get_info.__name__, argument="info_id"
             )
 
         cmd = XmlCommand("get_info")
@@ -528,7 +528,7 @@ class SecInfoMixin:
 
         if not name:
             raise RequiredArgument(
-                function=self.get_nvt_preference.__name__, argument='name'
+                function=self.get_nvt_preference.__name__, argument="name"
             )
 
         cmd.set_attribute("preference", name)

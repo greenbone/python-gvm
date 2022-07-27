@@ -19,6 +19,7 @@
 
 from enum import Enum
 from typing import Optional
+
 from gvm.errors import InvalidArgument
 
 
@@ -73,22 +74,22 @@ class EntityType(Enum):
         if not entity_type:
             return None
 
-        if entity_type == 'vuln':
+        if entity_type == "vuln":
             return cls.VULNERABILITY
 
-        if entity_type == 'os':
+        if entity_type == "os":
             return cls.OPERATING_SYSTEM
 
-        if entity_type == 'config':
+        if entity_type == "config":
             return cls.SCAN_CONFIG
 
-        if entity_type == 'tls_certificate':
+        if entity_type == "tls_certificate":
             return cls.TLS_CERTIFICATE
 
         try:
             return cls[entity_type.upper()]
         except KeyError:
             raise InvalidArgument(
-                argument='entity_type',
+                argument="entity_type",
                 function=cls.from_string.__name__,
             ) from None

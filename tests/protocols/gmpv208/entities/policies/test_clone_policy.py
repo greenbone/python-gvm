@@ -21,15 +21,15 @@ from gvm.errors import RequiredArgument
 
 class GmpClonePolicyTestMixin:
     def test_clone(self):
-        self.gmp.clone_policy('a1')
+        self.gmp.clone_policy("a1")
 
         self.connection.send.has_been_called_with(
-            '<create_config><copy>a1</copy></create_config>'
+            "<create_config><copy>a1</copy></create_config>"
         )
 
     def test_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.clone_policy('')
+            self.gmp.clone_policy("")
 
         with self.assertRaises(RequiredArgument):
             self.gmp.clone_policy(None)

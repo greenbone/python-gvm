@@ -20,7 +20,7 @@ Module for transforming responses
 """
 from lxml import etree
 
-from .errors import GvmError, GvmServerError, GvmResponseError
+from .errors import GvmError, GvmResponseError, GvmServerError
 from .xml import create_parser
 
 

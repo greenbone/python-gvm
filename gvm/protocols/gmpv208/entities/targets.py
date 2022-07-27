@@ -20,7 +20,7 @@
 from enum import Enum
 from typing import Any, List, Optional
 
-from gvm.errors import RequiredArgument, InvalidArgument, InvalidArgumentType
+from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
@@ -28,19 +28,19 @@ from gvm.xml import XmlCommand
 class AliveTest(Enum):
     """Enum for choosing an alive test"""
 
-    SCAN_CONFIG_DEFAULT = 'Scan Config Default'
-    ICMP_PING = 'ICMP Ping'
-    TCP_ACK_SERVICE_PING = 'TCP-ACK Service Ping'
-    TCP_SYN_SERVICE_PING = 'TCP-SYN Service Ping'
-    ARP_PING = 'ARP Ping'
-    APR_PING = 'ARP Ping'  # Alias for ARP_PING
-    ICMP_AND_TCP_ACK_SERVICE_PING = 'ICMP & TCP-ACK Service Ping'
-    ICMP_AND_ARP_PING = 'ICMP & ARP Ping'
-    TCP_ACK_SERVICE_AND_ARP_PING = 'TCP-ACK Service & ARP Ping'
+    SCAN_CONFIG_DEFAULT = "Scan Config Default"
+    ICMP_PING = "ICMP Ping"
+    TCP_ACK_SERVICE_PING = "TCP-ACK Service Ping"
+    TCP_SYN_SERVICE_PING = "TCP-SYN Service Ping"
+    ARP_PING = "ARP Ping"
+    APR_PING = "ARP Ping"  # Alias for ARP_PING
+    ICMP_AND_TCP_ACK_SERVICE_PING = "ICMP & TCP-ACK Service Ping"
+    ICMP_AND_ARP_PING = "ICMP & ARP Ping"
+    TCP_ACK_SERVICE_AND_ARP_PING = "TCP-ACK Service & ARP Ping"
     ICMP_TCP_ACK_SERVICE_AND_ARP_PING = (  # pylint: disable=invalid-name
-        'ICMP, TCP-ACK Service & ARP Ping'
+        "ICMP, TCP-ACK Service & ARP Ping"
     )
-    CONSIDER_ALIVE = 'Consider Alive'
+    CONSIDER_ALIVE = "Consider Alive"
 
     @classmethod
     def from_string(
@@ -55,15 +55,15 @@ class AliveTest(Enum):
 
         try:
             return cls[
-                alive_test.replace(',', '')
-                .replace(' ', '_')
-                .replace('-', '_')
-                .replace('&', 'and')
+                alive_test.replace(",", "")
+                .replace(" ", "_")
+                .replace("-", "_")
+                .replace("&", "and")
                 .upper()
             ]
         except KeyError:
             raise InvalidArgument(
-                argument='alive_test',
+                argument="alive_test",
                 function=cls.from_string.__name__,
             ) from None
 
@@ -80,7 +80,7 @@ class TargetsMixin:
         """
         if not target_id:
             raise RequiredArgument(
-                function=self.clone_target.__name__, argument='target_id'
+                function=self.clone_target.__name__, argument="target_id"
             )
 
         cmd = XmlCommand("create_target")
@@ -135,7 +135,7 @@ class TargetsMixin:
 
         if not name:
             raise RequiredArgument(
-                function=self.create_target.__name__, argument='name'
+                function=self.create_target.__name__, argument="name"
             )
 
         if asset_hosts_filter:
@@ -147,7 +147,7 @@ class TargetsMixin:
         else:
             raise RequiredArgument(
                 function=self.create_target.__name__,
-                argument='hosts or asset_hosts_filter',
+                argument="hosts or asset_hosts_filter",
             )
 
         if comment:
@@ -176,7 +176,7 @@ class TargetsMixin:
             if not isinstance(alive_test, AliveTest):
                 raise InvalidArgumentType(
                     function=self.create_target.__name__,
-                    argument='alive_test',
+                    argument="alive_test",
                     arg_type=AliveTest.__name__,
                 )
 
@@ -194,7 +194,7 @@ class TargetsMixin:
         if not port_range and not port_list_id:
             raise RequiredArgument(
                 function=self.create_target.__name__,
-                argument='port_range or port_list_id',
+                argument="port_range or port_list_id",
             )
 
         if port_range:
@@ -216,7 +216,7 @@ class TargetsMixin:
         """
         if not target_id:
             raise RequiredArgument(
-                function=self.delete_target.__name__, argument='target_id'
+                function=self.delete_target.__name__, argument="target_id"
             )
 
         cmd = XmlCommand("delete_target")
@@ -241,7 +241,7 @@ class TargetsMixin:
 
         if not target_id:
             raise RequiredArgument(
-                function=self.get_target.__name__, argument='target_id'
+                function=self.get_target.__name__, argument="target_id"
             )
 
         cmd.set_attribute("target_id", target_id)
@@ -324,7 +324,7 @@ class TargetsMixin:
         """
         if not target_id:
             raise RequiredArgument(
-                function=self.modify_target.__name__, argument='target_id'
+                function=self.modify_target.__name__, argument="target_id"
             )
 
         cmd = XmlCommand("modify_target")
@@ -339,7 +339,7 @@ class TargetsMixin:
         if hosts:
             cmd.add_element("hosts", to_comma_list(hosts))
             if exclude_hosts is None:
-                exclude_hosts = ['']
+                exclude_hosts = [""]
 
         if exclude_hosts:
             cmd.add_element("exclude_hosts", to_comma_list(exclude_hosts))
@@ -348,7 +348,7 @@ class TargetsMixin:
             if not isinstance(alive_test, AliveTest):
                 raise InvalidArgumentType(
                     function=self.modify_target.__name__,
-                    argument='alive_test',
+                    argument="alive_test",
                     arg_type=AliveTest.__name__,
                 )
             cmd.add_element("alive_tests", alive_test.value)

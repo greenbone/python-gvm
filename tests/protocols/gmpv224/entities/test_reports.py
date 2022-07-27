@@ -16,13 +16,13 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv224 import Gmpv224TestCase
 from ...gmpv208.entities.reports import (
     GmpDeleteReportTestMixin,
     GmpGetReportsTestMixin,
     GmpGetReportTestMixin,
     GmpImportReportTestMixin,
 )
+from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224DeleteReportTestCase(GmpDeleteReportTestMixin, Gmpv224TestCase):
