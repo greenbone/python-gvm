@@ -25,7 +25,7 @@ from gvm.protocols.latest import Gmp, Osp
 
 class LatestProtocolsTestCase(unittest.TestCase):
     def test_gmp_version(self):
-        self.assertEqual(Gmp.get_protocol_version(), (21, 4))
+        self.assertEqual(Gmp.get_protocol_version(), (22, 4))
 
     def test_osp_version(self):
         self.assertEqual(Osp.get_protocol_version(), (1, 2))
