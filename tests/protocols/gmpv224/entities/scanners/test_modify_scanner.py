@@ -99,16 +99,6 @@ class GmpModifyScannerTestMixin:
 
     def test_modify_scanner_with_scanner_type(self):
         self.gmp.modify_scanner(
-            scanner_id="s1", scanner_type=ScannerType.OSP_SCANNER_TYPE
-        )
-
-        self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<type>1</type>"
-            "</modify_scanner>"
-        )
-
-        self.gmp.modify_scanner(
             scanner_id="s1", scanner_type=ScannerType.OPENVAS_SCANNER_TYPE
         )
 

@@ -16,9 +16,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from ...gmpv208.entities.scan_configs import (
+from ...gmpv224 import Gmpv224TestCase
+from ...gmpv224.entities.scan_configs import (
     GmpCloneScanConfigTestMixin,
-    GmpCreateScanConfigFromOSPScannerTestMixin,
     GmpCreateScanConfigTestMixin,
     GmpDeleteScanConfigTestMixin,
     GmpGetScanConfigsTestMixin,
@@ -31,9 +31,7 @@ from ...gmpv208.entities.scan_configs import (
     GmpModifyScanConfigSetNvtSelectionTestMixin,
     GmpModifyScanConfigSetScannerPreferenceTestMixin,
     GmpModifyScanConfigTestMixin,
-    GmpSyncScanConfigTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CloneScanConfigTestCase(
@@ -44,12 +42,6 @@ class Gmpv224CloneScanConfigTestCase(
 
 class Gmpv224CreateScanConfigTestCase(
     GmpCreateScanConfigTestMixin, Gmpv224TestCase
-):
-    pass
-
-
-class Gmpv224CreateScanConfigFromOSPScannerTestCase(
-    GmpCreateScanConfigFromOSPScannerTestMixin, Gmpv224TestCase
 ):
     pass
 
@@ -114,11 +106,5 @@ class Gmpv224ModifyScanConfigSetScannerPreferenceTestCase(
 
 class Gmpv224ModifyScanConfigTestCase(
     GmpModifyScanConfigTestMixin, Gmpv224TestCase
-):
-    pass
-
-
-class Gmpv224SyncScanConfigTestCase(
-    GmpSyncScanConfigTestMixin, Gmpv224TestCase
 ):
     pass
