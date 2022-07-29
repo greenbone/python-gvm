@@ -68,7 +68,6 @@ from gvm.protocols.gmpv208.entities.report_formats import (
 from gvm.protocols.gmpv208.entities.reports import ReportsMixin
 from gvm.protocols.gmpv208.entities.results import ResultsMixin
 from gvm.protocols.gmpv208.entities.roles import RolesMixin
-from gvm.protocols.gmpv208.entities.scan_configs import ScanConfigsMixin
 from gvm.protocols.gmpv208.entities.schedules import SchedulesMixin
 from gvm.protocols.gmpv208.entities.secinfo import InfoType, SecInfoMixin
 from gvm.protocols.gmpv208.entities.severity import SeverityLevel
@@ -93,8 +92,9 @@ from gvm.protocols.gmpv208.system.user_settings import UserSettingsMixin
 # NEW IN 214
 from gvm.protocols.gmpv214.entities.notes import NotesMixin
 from gvm.protocols.gmpv214.entities.overrides import OverridesMixin
-from gvm.protocols.gmpv214.entities.scanners import ScannersMixin, ScannerType
 from gvm.protocols.gmpv214.entities.targets import AliveTest, TargetsMixin
+from gvm.protocols.gmpv224.entities.scan_configs import ScanConfigsMixin
+from gvm.protocols.gmpv224.entities.scanners import ScannersMixin, ScannerType
 
 # NEW IN 224
 from gvm.protocols.gmpv224.entities.users import UsersMixin

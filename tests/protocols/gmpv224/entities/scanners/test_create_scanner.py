@@ -26,7 +26,7 @@ class GmpCreateScannerTestMixin:
             name="foo",
             host="localhost",
             port=1234,
-            scanner_type=ScannerType.OSP_SCANNER_TYPE,
+            scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
             credential_id="c1",
         )
 
@@ -35,7 +35,7 @@ class GmpCreateScannerTestMixin:
             "<name>foo</name>"
             "<host>localhost</host>"
             "<port>1234</port>"
-            "<type>1</type>"
+            "<type>2</type>"
             '<credential id="c1"/>'
             "</create_scanner>"
         )
@@ -46,7 +46,7 @@ class GmpCreateScannerTestMixin:
                 name=None,
                 host="localhost",
                 port=1234,
-                scanner_type=ScannerType.OSP_SCANNER_TYPE,
+                scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
                 credential_id="c1",
             )
 
@@ -55,7 +55,7 @@ class GmpCreateScannerTestMixin:
                 name="",
                 host="localhost",
                 port=1234,
-                scanner_type="1",
+                scanner_type="2",
                 credential_id="c1",
             )
 
@@ -65,7 +65,7 @@ class GmpCreateScannerTestMixin:
                 name="foo",
                 host=None,
                 port=1234,
-                scanner_type=ScannerType.OSP_SCANNER_TYPE,
+                scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
                 credential_id="c1",
             )
 
@@ -74,7 +74,7 @@ class GmpCreateScannerTestMixin:
                 name="foo",
                 host="",
                 port=1234,
-                scanner_type=ScannerType.OSP_SCANNER_TYPE,
+                scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
                 credential_id="c1",
             )
 
@@ -84,7 +84,7 @@ class GmpCreateScannerTestMixin:
                 name="foo",
                 host="localhost",
                 port=None,
-                scanner_type=ScannerType.OSP_SCANNER_TYPE,
+                scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
                 credential_id="c1",
             )
 
@@ -93,7 +93,7 @@ class GmpCreateScannerTestMixin:
                 name="foo",
                 host="localhost",
                 port="",
-                scanner_type=ScannerType.OSP_SCANNER_TYPE,
+                scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
                 credential_id="c1",
             )
 
@@ -122,7 +122,7 @@ class GmpCreateScannerTestMixin:
                 name="foo",
                 host="localhost",
                 port=1234,
-                scanner_type=ScannerType.OSP_SCANNER_TYPE,
+                scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
                 credential_id=None,
             )
 
@@ -131,7 +131,7 @@ class GmpCreateScannerTestMixin:
                 name="foo",
                 host="localhost",
                 port=1234,
-                scanner_type=ScannerType.OSP_SCANNER_TYPE,
+                scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
                 credential_id="",
             )
 
@@ -150,7 +150,7 @@ class GmpCreateScannerTestMixin:
                 name="foo",
                 host="localhost",
                 port=1234,
-                scanner_type=ScannerType.GMP_SCANNER_TYPE,  # pylint: disable=no-member
+                scanner_type=ScannerType.FOO,  # pylint: disable=no-member
                 credential_id="c1",
             )
 
@@ -169,7 +169,7 @@ class GmpCreateScannerTestMixin:
             host="localhost",
             port=1234,
             ca_pub="foo",
-            scanner_type=ScannerType.OSP_SCANNER_TYPE,
+            scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
             credential_id="c1",
         )
 
@@ -178,7 +178,7 @@ class GmpCreateScannerTestMixin:
             "<name>foo</name>"
             "<host>localhost</host>"
             "<port>1234</port>"
-            "<type>1</type>"
+            "<type>2</type>"
             "<ca_pub>foo</ca_pub>"
             '<credential id="c1"/>'
             "</create_scanner>"
@@ -189,7 +189,7 @@ class GmpCreateScannerTestMixin:
             name="foo",
             host="localhost",
             port=1234,
-            scanner_type=ScannerType.OSP_SCANNER_TYPE,
+            scanner_type=ScannerType.OPENVAS_SCANNER_TYPE,
             credential_id="c1",
             comment="bar",
         )
@@ -199,7 +199,7 @@ class GmpCreateScannerTestMixin:
             "<name>foo</name>"
             "<host>localhost</host>"
             "<port>1234</port>"
-            "<type>1</type>"
+            "<type>2</type>"
             '<credential id="c1"/>'
             "<comment>bar</comment>"
             "</create_scanner>"

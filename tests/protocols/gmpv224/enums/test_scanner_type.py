@@ -33,13 +33,6 @@ class GetScannerTypeFromStringTestCase(unittest.TestCase):
         ct = ScannerType.from_string("")
         self.assertIsNone(ct)
 
-    def test_osp_scanner(self):
-        ct = ScannerType.from_string("1")
-        self.assertEqual(ct, ScannerType.OSP_SCANNER_TYPE)
-
-        ct = ScannerType.from_string("osp")
-        self.assertEqual(ct, ScannerType.OSP_SCANNER_TYPE)
-
     def test_openvas_scanner(self):
         ct = ScannerType.from_string("2")
         self.assertEqual(ct, ScannerType.OPENVAS_SCANNER_TYPE)
