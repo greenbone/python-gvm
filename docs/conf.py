@@ -47,7 +47,6 @@ extensions = [
     "sphinx.ext.autodoc",
     "sphinx.ext.githubpages",
     "sphinx.ext.napoleon",
-    "sphinx_autodoc_typehints",
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -122,6 +121,11 @@ html_sidebars = {
 }
 
 html_show_sourcelink = False
+
+autodoc_typehints = "description"
+autodoc_typehints_description_target = "documented"
+
+autodoc_class_signature = "separated"
 
 
 # -- Options for HTMLHelp output ---------------------------------------------
