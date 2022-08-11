@@ -40,7 +40,7 @@ BUF_SIZE = 16 * 1024
 DEFAULT_READ_TIMEOUT = 60  # in seconds
 DEFAULT_TIMEOUT = 60  # in seconds
 DEFAULT_GVM_PORT = 9390
-DEFAULT_UNIX_SOCKET_PATH = "/var/run/gvmd.sock"
+DEFAULT_UNIX_SOCKET_PATH = "/run/gvmd/gvmd.sock"
 DEFAULT_SSH_PORT = 22
 DEFAULT_SSH_USERNAME = "gmp"
 DEFAULT_SSH_PASSWORD = ""
@@ -475,11 +475,11 @@ class TLSConnection(GvmConnection):
 
 class UnixSocketConnection(GvmConnection):
     """
-    UNIX-Socket class to connect, read, write from a GVM server daemon via
-    direct communicating UNIX-Socket
+    UNIX-Socket class to connect, read, write from a daemon via direct
+    communicating UNIX-Socket
 
     Arguments:
-        path: Path to the socket. Default is "/var/run/gvmd.sock".
+        path: Path to the socket. Default is "/run/gvmd/gvmd.sock".
         timeout: Timeout in seconds for the connection. Default is 60 seconds.
     """
 
