@@ -35,7 +35,7 @@ tomlkit = ">=0.5.11"
 
 [[package]]
 name = "autohooks-plugin-black"
-version = "22.7.0"
+version = "22.8.1"
 description = "An autohooks plugin for python code formatting via black"
 category = "dev"
 optional = false
@@ -715,8 +715,8 @@ autohooks = [
     {file = "autohooks-22.7.2.tar.gz", hash = "sha256:7dc86b0d85a74968f72c27d7b817978ae6f8100706f730c63321e7b59b1c75b9"},
 ]
 autohooks-plugin-black = [
-    {file = "autohooks-plugin-black-22.7.0.tar.gz", hash = "sha256:39193d8a85df4d0d80b920b1b8b5cf6d257ad502364d0c0bf5c7ff0717b14091"},
-    {file = "autohooks_plugin_black-22.7.0-py3-none-any.whl", hash = "sha256:a420e1e351346e4326aba5d68db2a8c953742ea859e07dd27df6d1957e4a879b"},
+    {file = "autohooks-plugin-black-22.8.1.tar.gz", hash = "sha256:cf48a1951b12f8eac9e697fb18edb05ab3519da8f29e7b31135bfc1cdb74b3f5"},
+    {file = "autohooks_plugin_black-22.8.1-py3-none-any.whl", hash = "sha256:f4b6b083be62fc13740705b1a1a897801c4f8222654f3f7d8c7e6635b7640444"},
 ]
 autohooks-plugin-isort = [
     {file = "autohooks_plugin_isort-22.3.0-py3-none-any.whl", hash = "sha256:4b85ee96a501d6cb29c005dca44dc4638d0b548a0302e8bbfa1bea0fad7d3f40"},
