@@ -28,5 +28,5 @@
 <!-- to check an item, place an "x" in the box like so: "- [x] Tests" -->
 
 - [ ] Tests
-- [ ] [CHANGELOG](https://github.com/greenbone/python-gvm/blob/main/CHANGELOG.md) Entry
+- [ ] Conventional commit message
 - [ ] Documentation
