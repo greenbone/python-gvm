@@ -27,11 +27,3 @@ can be found in this part of the documentation.
    :maxdepth: 2
 
    api/api
-
-
-Indices and Tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
