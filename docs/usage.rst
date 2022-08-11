@@ -54,12 +54,12 @@ The following shows the process of a simple request in more detail.
 2. Specify the path to the Unix domain socket in the file system:
 
 .. note:: If **gvmd** is provided by a package of the distribution, it should
-    be ``/var/run/gvmd.sock``. If **gvmd** was built from source and did not set
+    be ``/run/gvmd/gvmd.sock``. If **gvmd** was built from source and did not set
     a prefix, the default path can be used by setting ``path = None``.
 
 .. code-block:: python
 
-    path = '/var/run/gvmd.sock'
+    path = '/run/gvmd/gvmd.sock'
 
 3. Create a connection and a gmp object:
 
@@ -89,7 +89,7 @@ Full Example
     from gvm.protocols.gmp import Gmp
 
     # path to unix socket
-    path = '/var/run/gvmd.sock'
+    path = '/run/gvmd/gvmd.sock'
     connection = UnixSocketConnection(path=path)
 
     # using the with statement to automatically connect and disconnect to gvmd
@@ -126,7 +126,7 @@ Step by Step
 
 .. code-block:: python
 
-    path = '/var/run/gvmd.sock'
+    path = '/run/gvmd/gvmd.sock'
     connection = UnixSocketConnection(path=path)
 
 3. In this case, an `Etree Element`_ should be obtained from the response to be able to
@@ -192,7 +192,7 @@ Full Example
     from gvm.protocols.gmp import Gmp
     from gvm.transforms import EtreeCheckCommandTransform
 
-    path = '/var/run/gvmd.sock'
+    path = '/run/gvmd/gvmd.sock'
     connection = UnixSocketConnection(path=path)
     transform = EtreeCheckCommandTransform()
 
@@ -336,7 +336,7 @@ Example using GMP:
     from gvm.connections import UnixSocketConnection, DebugConnection
     from gvm.protocols.gmp import Gmp
 
-    path = '/var/run/gvmd.sock'
+    path = '/run/gvmd/gvmd.sock'
     socketconnection = UnixSocketConnection(path=path)
     connection = DebugConnection(socketconnection)
 
