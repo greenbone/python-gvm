@@ -3,11 +3,6 @@
 Installation of python-gvm
 ==========================
 
-.. contents::
-    :local:
-    :class: toc
-    :backlinks: none
-
 .. note:: All commands listed here use the general tool names. If some of these
   tools are provided by the distribution, the Python 3 version of the tool may
   have to be used, e.g. :program:`pip3`.
