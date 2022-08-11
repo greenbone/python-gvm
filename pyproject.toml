@@ -47,6 +47,7 @@ autohooks-plugin-black = ">=22.7.0"
 autohooks-plugin-isort = ">=22.3.0"
 black = ">=22.6.0"
 pontos = ">=22.7.2"
+furo = ">=2022.6.21"
 
 [tool.black]
 line-length = 80

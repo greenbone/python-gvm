@@ -2,4 +2,4 @@ lxml
 paramiko
 defusedxml
 sphinx
-sphinx-autodoc-typehints
+furo
