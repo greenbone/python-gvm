@@ -9,9 +9,9 @@ description = "Library to communicate with remote servers over GMP or OSP"
 license = "GPL-3.0-or-later"
 authors = ["Greenbone Networks GmbH <info@greenbone.net>"]
 readme = "README.md"
-homepage = "https://github.com/greenbone/python-gvm"
-repository = "https://github.com/greenbone/python-gvm"
-documentation = "https://python-gvm.readthedocs.io/"
+homepage = "https://github.com/greenbone/python-gvm/"
+repository = "https://github.com/greenbone/python-gvm/"
+documentation = "https://greenbone.github.io/python-gvm/"
 classifiers = [
   # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
   "Development Status :: 5 - Production/Stable",

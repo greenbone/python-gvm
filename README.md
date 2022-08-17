@@ -4,20 +4,20 @@
 
 [![GitHub releases](https://img.shields.io/github/release-pre/greenbone/python-gvm.svg)](https://github.com/greenbone/python-gvm/releases)
 [![PyPI release](https://img.shields.io/pypi/v/python-gvm.svg)](https://pypi.org/project/python-gvm/)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/greenbone/python-gvm/badges/quality-score.png?b=main)](https://scrutinizer-ci.com/g/greenbone/python-gvm/?branch=main)
 [![code test coverage](https://codecov.io/gh/greenbone/python-gvm/branch/main/graph/badge.svg)](https://codecov.io/gh/greenbone/python-gvm)
 [![Build and test](https://github.com/greenbone/python-gvm/actions/workflows/ci-python.yml/badge.svg)](https://github.com/greenbone/python-gvm/actions/workflows/ci-python.yml)
 
 The Greenbone Vulnerability Management Python API library (**python-gvm**) is a
-collection of APIs that help with remote controlling a Greenbone Security
-Manager (GSM) appliance and its underlying Greenbone Vulnerability Manager
-(GVM). The library essentially abstracts accessing the communication protocols
-Greenbone Management Protocol (GMP) and Open Scanner Protocol (OSP).
+collection of APIs that help with remote controlling a Greenbone Enterprise
+Appliance and Greenbone Community installations. The library essentially
+abstracts accessing the communication protocols Greenbone Management Protocol
+(GMP) and Open Scanner Protocol (OSP).
 
 ## Table of Contents <!-- omit in toc -->
 
 - [Documentation](#documentation)
 - [Installation](#installation)
+  - [Version](#version)
   - [Requirements](#requirements)
   - [Install using pip](#install-using-pip)
 - [Example](#example)
@@ -29,7 +29,7 @@ Greenbone Management Protocol (GMP) and Open Scanner Protocol (OSP).
 ## Documentation
 
 The documentation for python-gvm can be found at
-[https://python-gvm.readthedocs.io/](https://python-gvm.readthedocs.io/en/latest/).
+[https://greenbone.github.io/python-gvm/](https://greenbone.github.io/python-gvm/).
 Please always take a look at the documentation for further details. This
 **README** just gives you a short overview.
 
@@ -38,7 +38,7 @@ Please always take a look at the documentation for further details. This
 ### Version
 
 Please consider to always use the **newest** version of `gvm-tools` and `python-gvm`.
-We freqently update this projects to add features and keep them free from bugs.
+We frequently update this projects to add features and keep them free from bugs.
 This is why installing `python-gvm` using pip is recommended.
 
 **To use `python-gvm` with an old GMP version (7, 8, 9) you must use a release version**
@@ -109,11 +109,15 @@ For development you should use [poetry](https://python-poetry.org)
 to keep you python packages separated in different environments. First install
 poetry via pip
 
-    python3 -m pip install --user poetry
+```shell
+python3 -m pip install --user poetry
+```
 
 Afterwards run
 
-    poetry install
+```shell
+poetry install
+```
 
 in the checkout directory of python-gvm (the directory containing the
 `pyproject.toml` file) to install all dependencies including the packages only
@@ -128,6 +132,6 @@ are active.
 
 ## License
 
-Copyright (C) 2017-2021 [Greenbone Networks GmbH](https://www.greenbone.net/)
+Copyright (C) 2017-2022 [Greenbone Networks GmbH](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
