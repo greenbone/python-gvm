@@ -8,8 +8,8 @@
 [![Build and test](https://github.com/greenbone/python-gvm/actions/workflows/ci-python.yml/badge.svg)](https://github.com/greenbone/python-gvm/actions/workflows/ci-python.yml)
 
 The Greenbone Vulnerability Management Python API library (**python-gvm**) is a
-collection of APIs that help with remote controlling a Greenbone Enterprise
-Appliance and Greenbone Community installations. The library essentially
+collection of APIs that help with remote controlling Greenbone Community Edition
+installations and Greenbone Enterprise Appliances. The library essentially
 abstracts accessing the communication protocols Greenbone Management Protocol
 (GMP) and Open Scanner Protocol (OSP).
 
