@@ -291,7 +291,7 @@ class SSHConnection(GvmConnection):
         """Get the remote host key for ssh connection"""
         try:
             tmp_socket = socketlib.socket()
-            tmp_socket.connect((self.hostname, 22))
+            tmp_socket.connect((self.hostname, self.port))
         except OSError as e:
             raise GvmError(
                 "Couldn't establish a connection to fetch the"
