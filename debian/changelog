@@ -1,3 +1,9 @@
+python-gvm (22.8.0-gos2204~1) abomination; urgency=medium
+
+  * New upstream release.
+
+ -- Lukas Hannigbrinck <lukas.hannigbrinck@greenbone.net>  Mon, 29 Aug 2022 16:50:05 +0200
+
 python-gvm (22.6.1-gos2204~1) abomination; urgency=medium
 
   * New upstream release.
