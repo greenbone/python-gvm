@@ -107,6 +107,7 @@ class ReportsMixin:
         filter_id: Optional[str] = None,
         note_details: Optional[bool] = None,
         override_details: Optional[bool] = None,
+        ignore_pagination: Optional[bool] = None,
         details: Optional[bool] = None,
     ) -> Any:
         """Request a list of reports
@@ -117,6 +118,8 @@ class ReportsMixin:
             note_details: If notes are included, whether to include note details
             override_details: If overrides are included, whether to include
                 override details
+            ignore_pagination: Whether to ignore the filter terms "first" and
+                "rows".
             details: Whether to exclude results
 
         Returns:
@@ -139,7 +142,8 @@ class ReportsMixin:
         if details is not None:
             cmd.set_attribute("details", to_bool(details))
 
-        cmd.set_attribute("ignore_pagination", "1")
+        if ignore_pagination is not None:
+            cmd.set_attribute("ignore_pagination", to_bool(ignore_pagination))
 
         return self._send_xml_command(cmd)
 
