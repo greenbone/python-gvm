@@ -73,12 +73,17 @@ Enums
     :undoc-members:
     :noindex:
 
-.. autoclass:: ScannerType
+.. autoclass:: PortRangeType
     :members:
     :undoc-members:
     :noindex:
 
-.. autoclass:: PortRangeType
+.. autoclass:: ReportFormatType
+    :members:
+    :undoc-members:
+    :noindex:
+
+.. autoclass:: ScannerType
     :members:
     :undoc-members:
     :noindex:

@@ -60,13 +60,20 @@ Enums
     :members:
     :undoc-members:
 
-.. autoclass:: ScannerType
-    :members:
-    :undoc-members:
-
 .. autoclass:: PortRangeType
     :members:
     :undoc-members:
+    :noindex:
+
+.. autoclass:: ReportFormatType
+    :members:
+    :undoc-members:
+    :noindex:
+
+.. autoclass:: ScannerType
+    :members:
+    :undoc-members:
+    :noindex:
 
 .. autoclass:: SeverityLevel
     :members:
