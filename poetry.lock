@@ -637,7 +637,7 @@ jupyter = ["ipywidgets (>=7.5.1,<8.0.0)"]
 
 [[package]]
 name = "setuptools"
-version = "65.3.0"
+version = "65.4.0"
 description = "Easily download, build, install, upgrade, and uninstall Python packages"
 category = "dev"
 optional = false
@@ -1387,8 +1387,8 @@ rich = [
     {file = "rich-12.5.1.tar.gz", hash = "sha256:63a5c5ce3673d3d5fbbf23cd87e11ab84b6b451436f1b7f19ec54b6bc36ed7ca"},
 ]
 setuptools = [
-    {file = "setuptools-65.3.0-py3-none-any.whl", hash = "sha256:2e24e0bec025f035a2e72cdd1961119f557d78ad331bb00ff82efb2ab8da8e82"},
-    {file = "setuptools-65.3.0.tar.gz", hash = "sha256:7732871f4f7fa58fb6bdcaeadb0161b2bd046c85905dbaa066bdcbcc81953b57"},
+    {file = "setuptools-65.4.0-py3-none-any.whl", hash = "sha256:c2d2709550f15aab6c9110196ea312f468f41cd546bceb24127a1be6fdcaeeb1"},
+    {file = "setuptools-65.4.0.tar.gz", hash = "sha256:a8f6e213b4b0661f590ccf40de95d28a177cd747d098624ad3f69c40287297e9"},
 ]
 six = [
     {file = "six-1.16.0-py2.py3-none-any.whl", hash = "sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254"},
