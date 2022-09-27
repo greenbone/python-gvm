@@ -503,8 +503,10 @@ class UnixSocketConnection(GvmConnection):
             self._socket.connect(self.path)
         except FileNotFoundError:
             raise GvmError(f"Socket {self.path} does not exist") from None
-        except ConnectionError:
-            raise GvmError(f"Could not connect to socket {self.path}") from None
+        except ConnectionError as e:
+            raise GvmError(
+                f"Could not connect to socket {self.path}. Error was {e}"
+            ) from None
 
 
 class DebugConnection:
