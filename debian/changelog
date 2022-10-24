@@ -1,3 +1,9 @@
+python-gvm (22.9.1-gos2204~1) abomination; urgency=medium
+
+  * New upstream release.
+
+ -- Hendrik Deuper <hendrik.deuper@greenbone.net>  Mon, 24 Oct 2022 11:01:58 +0000
+
 python-gvm (22.8.0-gos2204~1) abomination; urgency=medium
 
   * New upstream release.
