@@ -39,7 +39,7 @@ defusedxml = ">=0.6,<0.8"
 
 
 [tool.poetry.dev-dependencies]
-coverage = "^7.0"
+coverage = "^7.1"
 pylint = "^2.13"
 sphinx = "^5.3.0"
 autohooks = ">=22.7.2"
