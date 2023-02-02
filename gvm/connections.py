@@ -246,7 +246,11 @@ class SSHConnection(GvmConnection):
                 if self.port == 22:
                     hostkeys.add(self.hostname, key.get_name(), key)
                 elif self.port != 22:
-                    hostkeys.add("[" + self.hostname + "]:" + str(self.port), key.get_name(), key)
+                    hostkeys.add(
+                        "[" + self.hostname + "]:" + str(self.port),
+                        key.get_name(),
+                        key,
+                    )
                 # ask user if the key should be added permanently
                 print(
                     f"Do you want to add {self.hostname} "
