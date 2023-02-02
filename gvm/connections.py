@@ -245,7 +245,7 @@ class SSHConnection(GvmConnection):
             if add == "yes":
                 if self.port == DEFAULT_SSH_PORT:
                     hostkeys.add(self.hostname, key.get_name(), key)
-                elif self.port != 22:
+                elif self.port != DEFAULT_SSH_PORT:
                     hostkeys.add(
                         "[" + self.hostname + "]:" + str(self.port),
                         key.get_name(),
