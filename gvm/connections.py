@@ -243,7 +243,14 @@ class SSHConnection(GvmConnection):
         add = input()
         while True:
             if add == "yes":
-                hostkeys.add(self.hostname, key.get_name(), key)
+                if self.port == DEFAULT_SSH_PORT:
+                    hostkeys.add(self.hostname, key.get_name(), key)
+                elif self.port != DEFAULT_SSH_PORT:
+                    hostkeys.add(
+                        "[" + self.hostname + "]:" + str(self.port),
+                        key.get_name(),
+                        key,
+                    )
                 # ask user if the key should be added permanently
                 print(
                     f"Do you want to add {self.hostname} "
@@ -331,12 +338,21 @@ class SSHConnection(GvmConnection):
                     f"the known_hosts file: {e}"
                 ) from None
         hostkeys = self._socket.get_host_keys()
-        if not hostkeys.lookup(self.hostname):
-            # Key not found, so connect to remote and fetch the key
-            # with the paramiko Transport protocol
-            key = self._get_remote_host_key()
+        # Switch based on SSH Port
+        if self.port == DEFAULT_SSH_PORT:
+            if not hostkeys.lookup(self.hostname):
+                # Key not found, so connect to remote and fetch the key
+                # with the paramiko Transport protocol
+                key = self._get_remote_host_key()
 
-            self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
+                self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
+        elif self.port != DEFAULT_SSH_PORT:
+            if not hostkeys.lookup("[" + self.hostname + "]:" + str(self.port)):
+                # Key not found, so connect to remote and fetch the key
+                # with the paramiko Transport protocol
+                key = self._get_remote_host_key()
+
+                self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
 
     def connect(self) -> None:
         """
