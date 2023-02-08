@@ -22,5 +22,4 @@ from .. import GmpTestCase
 
 
 class Gmpv208TestCase(GmpTestCase):
-
     gmp_class = Gmp

@@ -32,7 +32,6 @@ class MockConnection:
 
 
 class GmpTestCase(unittest.TestCase):
-
     gmp_class = None
 
     def setUp(self):

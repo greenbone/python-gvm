@@ -20,7 +20,6 @@ from gvm.errors import InvalidArgument, RequiredArgument
 
 
 class GmpImportReportFormatTestMixin:
-
     REPORT_FORMAT_XML_STRING = (
         '<get_report_formats_response status="200" status_text="OK">'
         '<report_format id="c4aa21e4-23e6-4064-ae49-c0d425738a98">'

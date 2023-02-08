@@ -266,7 +266,6 @@ class NotesMixin:
             cmd.add_element("task", attrs={"id": task_id})
 
         if threat is not None:
-
             if not isinstance(threat, SeverityLevel):
                 raise InvalidArgumentType(
                     function=self.modify_note.__name__,

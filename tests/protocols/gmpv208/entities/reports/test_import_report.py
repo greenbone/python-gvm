@@ -20,7 +20,6 @@ from gvm.errors import InvalidArgument, RequiredArgument
 
 
 class GmpImportReportTestMixin:
-
     TASK_ID = "00000000-0000-0000-0000-000000000001"
     REPORT_XML_STRING = (
         '<report id="67a62fb7-b238-4f0e-bc48-59bde8939cdc">'
