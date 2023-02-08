@@ -140,7 +140,6 @@ class SSHConnectionTestCase(unittest.TestCase):
 
     @patch("builtins.input")
     def test_connect_adding_and_save_hostkey(self, input_mock):
-
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -190,7 +189,6 @@ FsAQI=
 
     @patch("builtins.input")
     def test_connect_adding_and_dont_save_hostkey(self, input_mock):
-
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -241,7 +239,6 @@ FsAQI=
     @patch("builtins.input")
     @patch("sys.stdout", new_callable=StringIO)
     def test_connect_wrong_input(self, stdout_mock, input_mock):
-
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -291,7 +288,6 @@ FsAQI=
 
     @patch("builtins.input")
     def test_user_denies_auth(self, input_mock):
-
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW

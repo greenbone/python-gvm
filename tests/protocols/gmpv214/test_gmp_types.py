@@ -23,7 +23,6 @@ from . import Gmpv214TestCase
 
 class GmpWithStatementTestMixin:
     def test_types(self):
-
         with self.gmp:
             # Test that the values are equal
             self.assertEquals(

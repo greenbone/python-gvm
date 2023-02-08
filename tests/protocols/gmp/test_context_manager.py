@@ -27,7 +27,6 @@ from tests.protocols import GmpTestCase
 
 
 class GmpContextManagerTestCase(GmpTestCase):
-
     gmp_class = Gmp
 
     def test_select_gmpv7(self):
