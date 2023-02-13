@@ -33,7 +33,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.7.0"
-paramiko = "^2.7.1"
+paramiko = ">=2.7.1,<4.0.0"
 lxml = "^4.5.0"
 defusedxml = ">=0.6,<0.8"
 
