@@ -1,3 +1,11 @@
+python-gvm (23.2.0-gos2204~1) abomination; urgency=medium
+
+  * New upstream release. (Closes: PR-568)
+  * Update gbp.conf.
+  * Set source options to ignore .github folder.
+
+ -- Hendrik Deuper <hendrik.deuper@greenbone.net>  Mon, 27 Feb 2023 09:14:44 +0000
+
 python-gvm (22.9.1-gos2204~1) abomination; urgency=medium
 
   * New upstream release.
