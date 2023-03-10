@@ -24,8 +24,8 @@ import gvm
 # -- Project information -----------------------------------------------------
 
 project = "python-gvm"
-copyright = "2018 - 2022, Greenbone Networks GmbH"
-author = "Greenbone Networks GmbH"
+copyright = "2018 - 2022, Greenbone AG"
+author = "Greenbone AG"
 
 # The short X.Y version
 
@@ -169,7 +169,7 @@ latex_documents = [
         master_doc,
         project + ".tex",
         project + " Documentation",
-        "Greenbone Networks GmbH",
+        "Greenbone AG",
         "manual",
     )
 ]
