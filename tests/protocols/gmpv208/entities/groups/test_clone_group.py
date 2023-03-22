@@ -24,7 +24,7 @@ class GmpCloneGroupTestMixin:
         self.gmp.clone_group("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_group>" "<copy>a1</copy>" "</create_group>"
+            "<create_group><copy>a1</copy></create_group>"
         )
 
     def test_missing_id(self):

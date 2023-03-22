@@ -24,7 +24,7 @@ class GmpCloneOverrideTestMixin:
         self.gmp.clone_override("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_override>" "<copy>a1</copy>" "</create_override>"
+            "<create_override><copy>a1</copy></create_override>"
         )
 
     def test_missing_id(self):

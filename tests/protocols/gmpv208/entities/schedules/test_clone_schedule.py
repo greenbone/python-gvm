@@ -24,7 +24,7 @@ class GmpCloneScheduleTestMixin:
         self.gmp.clone_schedule("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_schedule>" "<copy>a1</copy>" "</create_schedule>"
+            "<create_schedule><copy>a1</copy></create_schedule>"
         )
 
     def test_missing_id(self):

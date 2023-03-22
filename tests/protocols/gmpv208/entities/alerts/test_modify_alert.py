@@ -60,7 +60,7 @@ class GmpModifyAlertTestMixin:
         self.gmp.modify_alert(alert_id="a1", filter_id="f1")
 
         self.connection.send.has_been_called_with(
-            '<modify_alert alert_id="a1">' '<filter id="f1"/>' "</modify_alert>"
+            '<modify_alert alert_id="a1"><filter id="f1"/></modify_alert>'
         )
 
     def test_modify_alert_invalid_condition(self):

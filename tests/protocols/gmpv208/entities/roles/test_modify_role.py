@@ -48,7 +48,7 @@ class GmpModifyRoleTestMixin:
         self.gmp.modify_role(role_id="r1", name="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_role role_id="r1">' "<name>foo</name>" "</modify_role>"
+            '<modify_role role_id="r1"><name>foo</name></modify_role>'
         )
 
     def test_modify_role_with_users(self):
@@ -59,7 +59,7 @@ class GmpModifyRoleTestMixin:
         self.gmp.modify_role(role_id="r1", users=["foo"])
 
         self.connection.send.has_been_called_with(
-            '<modify_role role_id="r1">' "<users>foo</users>" "</modify_role>"
+            '<modify_role role_id="r1"><users>foo</users></modify_role>'
         )
 
         self.gmp.modify_role(role_id="r1", users=["foo", "bar"])

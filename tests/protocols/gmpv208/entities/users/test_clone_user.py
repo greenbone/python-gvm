@@ -24,7 +24,7 @@ class GmpCloneUserTestMixin:
         self.gmp.clone_user("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_user>" "<copy>a1</copy>" "</create_user>"
+            "<create_user><copy>a1</copy></create_user>"
         )
 
     def test_missing_id(self):

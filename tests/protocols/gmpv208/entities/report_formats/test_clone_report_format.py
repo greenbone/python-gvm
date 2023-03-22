@@ -25,7 +25,7 @@ class GmpCloneReportFormatTestMixin:
         self.gmp.clone_report_format("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_report_format>" "<copy>a1</copy>" "</create_report_format>"
+            "<create_report_format><copy>a1</copy></create_report_format>"
         )
 
     def test_missing_id(self):
