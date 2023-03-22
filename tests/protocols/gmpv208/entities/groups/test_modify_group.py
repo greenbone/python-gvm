@@ -50,7 +50,7 @@ class GmpModifyGroupTestMixin:
         self.gmp.modify_group(group_id="f1", name="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1">' "<name>foo</name>" "</modify_group>"
+            '<modify_group group_id="f1"><name>foo</name></modify_group>'
         )
 
     def test_modify_group_with_users(self):

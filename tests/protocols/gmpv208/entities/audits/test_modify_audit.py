@@ -42,35 +42,35 @@ class GmpModifyAuditTestMixin:
         self.gmp.modify_audit(audit_id="t1", name="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_task task_id="t1">' "<name>foo</name>" "</modify_task>"
+            '<modify_task task_id="t1"><name>foo</name></modify_task>'
         )
 
     def test_modify_audit_with_policy_id(self):
         self.gmp.modify_audit(audit_id="t1", policy_id="c1")
 
         self.connection.send.has_been_called_with(
-            '<modify_task task_id="t1">' '<config id="c1"/>' "</modify_task>"
+            '<modify_task task_id="t1"><config id="c1"/></modify_task>'
         )
 
     def test_modify_audit_with_target_id(self):
         self.gmp.modify_audit(audit_id="t1", target_id="t1")
 
         self.connection.send.has_been_called_with(
-            '<modify_task task_id="t1">' '<target id="t1"/>' "</modify_task>"
+            '<modify_task task_id="t1"><target id="t1"/></modify_task>'
         )
 
     def test_modify_audit_with_scanner_id(self):
         self.gmp.modify_audit(audit_id="t1", scanner_id="s1")
 
         self.connection.send.has_been_called_with(
-            '<modify_task task_id="t1">' '<scanner id="s1"/>' "</modify_task>"
+            '<modify_task task_id="t1"><scanner id="s1"/></modify_task>'
         )
 
     def test_modify_audit_with_schedule_id(self):
         self.gmp.modify_audit(audit_id="t1", schedule_id="s1")
 
         self.connection.send.has_been_called_with(
-            '<modify_task task_id="t1">' '<schedule id="s1"/>' "</modify_task>"
+            '<modify_task task_id="t1"><schedule id="s1"/></modify_task>'
         )
 
     def test_modify_audit_with_comment(self):
@@ -104,7 +104,7 @@ class GmpModifyAuditTestMixin:
         self.gmp.modify_audit(audit_id="t1", alert_ids=[])
 
         self.connection.send.has_been_called_with(
-            '<modify_task task_id="t1">' '<alert id="0"/>' "</modify_task>"
+            '<modify_task task_id="t1"><alert id="0"/></modify_task>'
         )
 
     def test_modify_audit_with_alterable(self):
@@ -143,7 +143,7 @@ class GmpModifyAuditTestMixin:
         self.gmp.modify_audit(audit_id="t1", schedule_id="s1")
 
         self.connection.send.has_been_called_with(
-            '<modify_task task_id="t1">' '<schedule id="s1"/>' "</modify_task>"
+            '<modify_task task_id="t1"><schedule id="s1"/></modify_task>'
         )
 
     def test_modify_audit_with_schedule_periods(self):

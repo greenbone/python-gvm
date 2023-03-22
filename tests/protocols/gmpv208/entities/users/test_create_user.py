@@ -31,7 +31,7 @@ class GmpCreateUserTestMixin:
         self.gmp.create_user(name="foo")
 
         self.connection.send.has_been_called_with(
-            "<create_user>" "<name>foo</name>" "</create_user>"
+            "<create_user><name>foo</name></create_user>"
         )
 
     def test_create_user_with_password(self):

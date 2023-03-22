@@ -59,7 +59,7 @@ class GmpModifyUserTestMixin:
         self.gmp.modify_user(user_id="u1", role_ids=["r1"])
 
         self.connection.send.has_been_called_with(
-            '<modify_user user_id="u1">' '<role id="r1"/>' "</modify_user>"
+            '<modify_user user_id="u1"><role id="r1"/></modify_user>'
         )
 
         self.gmp.modify_user(user_id="u1", role_ids=["r1", "r2"])

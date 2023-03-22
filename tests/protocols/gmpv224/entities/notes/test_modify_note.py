@@ -27,7 +27,7 @@ class GmpModifyNoteTestMixin:
         self.gmp.modify_note(note_id="n1", text="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_note note_id="n1">' "<text>foo</text>" "</modify_note>"
+            '<modify_note note_id="n1"><text>foo</text></modify_note>'
         )
 
     def test_modify_note_missing_note_id(self):
@@ -161,7 +161,7 @@ class GmpModifyNoteTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_note note_id="n1">' "<text>foo</text>" "</modify_note>"
+            '<modify_note note_id="n1"><text>foo</text></modify_note>'
         )
 
     def test_modify_note_with_invalid_port(self):

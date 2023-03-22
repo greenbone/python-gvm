@@ -33,7 +33,7 @@ class GmpCreateUserTestMixin:
         self.gmp.create_user(name="foo")
 
         self.connection.send.has_been_called_with(
-            "<create_user>" "<name>foo</name>" "</create_user>"
+            "<create_user><name>foo</name></create_user>"
         )
 
     def test_create_user_with_password(self):
@@ -79,13 +79,13 @@ class GmpCreateUserTestMixin:
         self.gmp.create_user(name="foo", ifaces=["h1", "h2"], ifaces_allow=True)
 
         self.connection.send.has_been_called_with(
-            "<create_user>" "<name>foo</name>" "</create_user>"
+            "<create_user><name>foo</name></create_user>"
         )
 
         self.gmp.create_user(name="foo", ifaces=["h1", "h2"])
 
         self.connection.send.has_been_called_with(
-            "<create_user>" "<name>foo</name>" "</create_user>"
+            "<create_user><name>foo</name></create_user>"
         )
 
         self.gmp.create_user(
@@ -93,7 +93,7 @@ class GmpCreateUserTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_user>" "<name>foo</name>" "</create_user>"
+            "<create_user><name>foo</name></create_user>"
         )
 
         # pylint: disable=line-too-long

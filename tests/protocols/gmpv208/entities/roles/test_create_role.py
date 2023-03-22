@@ -24,7 +24,7 @@ class GmpCreateRoleTestMixin:
         self.gmp.create_role(name="foo")
 
         self.connection.send.has_been_called_with(
-            "<create_role>" "<name>foo</name>" "</create_role>"
+            "<create_role><name>foo</name></create_role>"
         )
 
     def test_missing_name(self):
@@ -48,7 +48,7 @@ class GmpCreateRoleTestMixin:
         self.gmp.create_role(name="foo", users=[])
 
         self.connection.send.has_been_called_with(
-            "<create_role>" "<name>foo</name>" "</create_role>"
+            "<create_role><name>foo</name></create_role>"
         )
 
         self.gmp.create_role(name="foo", users=["u1", "u2"])

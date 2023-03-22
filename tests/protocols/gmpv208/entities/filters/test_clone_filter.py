@@ -24,7 +24,7 @@ class GmpCloneFilterTestMixin:
         self.gmp.clone_filter("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_filter>" "<copy>a1</copy>" "</create_filter>"
+            "<create_filter><copy>a1</copy></create_filter>"
         )
 
     def test_missing_id(self):

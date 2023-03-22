@@ -24,7 +24,7 @@ class GmpCloneRoleTestMixin:
         self.gmp.clone_role("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_role>" "<copy>a1</copy>" "</create_role>"
+            "<create_role><copy>a1</copy></create_role>"
         )
 
     def test_missing_id(self):
