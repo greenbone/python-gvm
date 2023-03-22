@@ -24,6 +24,8 @@ jobs:
         with:
           packages: gvm tests
           version: ${{ matrix.python-version }}
+          poetry-version: "1.4.0"
+          cache: "true"
 
   test:
     name: Unit tests
@@ -42,6 +44,8 @@ jobs:
         uses: greenbone/actions/poetry@v2
         with:
           version: ${{ matrix.python-version }}
+          poetry-version: "1.4.0"
+          cache: "true"
       - name: Run unit tests
         run: poetry run python -m unittest
 
@@ -55,6 +59,8 @@ jobs:
         uses: greenbone/actions/coverage-python@v2
         with:
           version: "3.10"
+          poetry-version: "1.4.0"
+          cache: "true"
 
   build-docs:
     name: Build the documentation
@@ -64,7 +70,8 @@ jobs:
       - name: Install poetry and dependencies
         uses: greenbone/actions/poetry@v2
         with:
-          version: 3.9
+          poetry-version: "1.4.0"
+          cache: "true"
       - name: Build docs
         run: |
           cd docs

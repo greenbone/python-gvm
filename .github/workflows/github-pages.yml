@@ -31,7 +31,8 @@ jobs:
       - name: Install poetry and dependencies
         uses: greenbone/actions/poetry@v2
         with:
-          version: "3.9"
+          poetry-version: "1.4.0"
+          cache: "true"
       - name: Build Documentation
         run: |
           cd docs && poetry run make html
