@@ -19,7 +19,7 @@
 from typing import Any, Optional
 
 from gvm.errors import RequiredArgument
-from gvm.utils import add_filter
+from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 
 
@@ -50,12 +50,14 @@ class OperatingSystemsMixin:
         *,
         filter_string: Optional[str] = None,
         filter_id: Optional[str] = None,
+        details: Optional[bool] = None,
     ) -> Any:
         """Request a list of operating_systems
 
         Arguments:
             filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
+            details: Whether to include additional information (e.g. tags)
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -67,13 +69,19 @@ class OperatingSystemsMixin:
 
         add_filter(cmd, filter_string, filter_id)
 
+        if details is not None:
+            cmd.set_attribute("details", to_bool(details))
+
         return self._send_xml_command(cmd)
 
-    def get_operating_system(self, operating_system_id: str) -> Any:
+    def get_operating_system(
+        self, operating_system_id: str, *, details: Optional[bool] = None
+    ) -> Any:
         """Request a single operating_system
 
         Arguments:
             operating_system_id: UUID of an existing operating_system
+            details: Whether to include additional information (e.g. tags)
 
         Returns:
             The response. See :py:meth:`send_command` for details.
@@ -88,6 +96,9 @@ class OperatingSystemsMixin:
 
         cmd.set_attribute("asset_id", operating_system_id)
         cmd.set_attribute("type", "os")
+
+        if details is not None:
+            cmd.set_attribute("details", to_bool(details))
 
         return self._send_xml_command(cmd)
 
