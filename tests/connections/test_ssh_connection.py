@@ -140,8 +140,9 @@ class SSHConnectionTestCase(unittest.TestCase):
         ):
             ssh_connection.connect()
 
+    @patch("builtins.print")
     @patch("builtins.input")
-    def test_connect_adding_and_save_hostkey(self, input_mock):
+    def test_connect_adding_and_save_hostkey(self, input_mock, _print_mock):
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -189,8 +190,11 @@ FsAQI=
                 f"0.0.0.0 {key.get_name()} {key.get_base64()}\n",
             )
 
+    @patch("builtins.print")
     @patch("builtins.input")
-    def test_connect_adding_and_dont_save_hostkey(self, input_mock):
+    def test_connect_adding_and_dont_save_hostkey(
+        self, input_mock, _print_mock
+    ):
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
