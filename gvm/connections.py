@@ -299,6 +299,7 @@ class SSHConnection(GvmConnection):
         """Get the remote host key for ssh connection"""
         try:
             tmp_socket = socketlib.socket()
+            tmp_socket.settimeout(self._timeout)
             tmp_socket.connect((self.hostname, self.port))
         except OSError as e:
             raise GvmError(
