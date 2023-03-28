@@ -30,6 +30,7 @@ from pathlib import Path
 from typing import Optional, Union
 
 import paramiko
+import paramiko.ssh_exception
 from lxml import etree
 
 from gvm.errors import GvmError
@@ -380,6 +381,7 @@ class SSHConnection(GvmConnection):
             paramiko.BadHostKeyException,
             paramiko.AuthenticationException,
             paramiko.SSHException,
+            paramiko.ssh_exception.NoValidConnectionsError,
             ConnectionError,
         ) as e:
             raise GvmError(f"SSH Connection failed: {e}") from None
