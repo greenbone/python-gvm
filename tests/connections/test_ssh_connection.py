@@ -93,7 +93,9 @@ class SSHConnectionTestCase(unittest.TestCase):
 
     def test_connect_unknown_host(self):
         ssh_connection = SSHConnection(
-            hostname="0.0.0.1", known_hosts_file=self.known_hosts_file
+            hostname="0.0.0.1",
+            known_hosts_file=self.known_hosts_file,
+            timeout=1.0,
         )
         with self.assertRaises(
             GvmError,
@@ -125,7 +127,9 @@ class SSHConnectionTestCase(unittest.TestCase):
             os.remove(self.known_hosts_file)
 
         ssh_connection = SSHConnection(
-            hostname="0.0.0.1", known_hosts_file=self.known_hosts_file
+            hostname="0.0.0.1",
+            known_hosts_file=self.known_hosts_file,
+            timeout=1.0,
         )
         with self.assertRaises(
             GvmError,
