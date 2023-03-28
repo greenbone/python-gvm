@@ -73,8 +73,6 @@ class SSHConnectionTestCase(unittest.TestCase):
         )
 
     def test_connect_error(self):
-        print(self.known_hosts_file.read_text(encoding="utf-8"))
-
         ssh_connection = SSHConnection(known_hosts_file=self.known_hosts_file)
         with self.assertRaises(GvmError, msg="SSH Connection failed"):
             ssh_connection.connect()
