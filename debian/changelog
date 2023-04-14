@@ -1,3 +1,9 @@
+python-gvm (23.4.0-gos2204~1) abomination; urgency=medium
+
+  * New upstream release. (Closes: PR-596)
+
+ -- Lukas Hannigbrinck <lukas.hannigbrinck@greenbone.net>  Fri, 14 Apr 2023 15:05:59 +0200
+
 python-gvm (23.2.0-gos2204~1) abomination; urgency=medium
 
   * New upstream release. (Closes: PR-568)
