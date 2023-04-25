@@ -218,6 +218,15 @@ class SecInfoMixin:
         filter_id: Optional[str] = None,
         name: Optional[str] = None,
         details: Optional[bool] = None,
+        extended: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        preference_count: Optional[bool] = None,
+        timeout: Optional[bool] = None,
+        config_id: Optional[str] = None,
+        preferences_config_id: Optional[str] = None,
+        family: Optional[str] = None,
+        sort_order: Optional[str] = None,
+        sort_field: Optional[str] = None,
     ) -> Any:
         """Request a list of NVTs
 
@@ -227,10 +236,34 @@ class SecInfoMixin:
             name: Name or identifier of the requested information
             details: Whether to include information about references to this
                 information
+            extended: Whether to receive extended NVT information
+                (calls get_nvts, instead of get_info)
+            preferences: Whether to include NVT preferences
+            preference_count: Whether to include preference count
+            timeout: Whether to include the special timeout preference
+            config_id: UUID of scan config to which to limit the NVT listing
+            preferences_config_id: UUID of scan config to use for preference
+                values
+            family: Family to which to limit NVT listing
+            sort_order: Sort order
+            sort_field: Sort field
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+
+        if extended:
+            return self._get_nvt_details(
+                details=details,
+                preferences=preferences,
+                preference_count=preference_count,
+                timeout=timeout,
+                config_id=config_id,
+                preferences_config_id=preferences_config_id,
+                family=family,
+                sort_order=sort_order,
+                sort_field=sort_field,
+            )
 
         return self.get_info_list(
             info_type=InfoType.NVT,
@@ -239,6 +272,65 @@ class SecInfoMixin:
             name=name,
             details=details,
         )
+
+    def _get_nvt_details(
+        self,
+        *,
+        details: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        preference_count: Optional[bool] = None,
+        timeout: Optional[bool] = None,
+        config_id: Optional[str] = None,
+        preferences_config_id: Optional[str] = None,
+        family: Optional[str] = None,
+        sort_order: Optional[str] = None,
+        sort_field: Optional[str] = None,
+    ):
+        """Request a list of NVTs with extended details
+        Arguments:
+            details: Whether to include full details
+            preferences: Whether to include nvt preferences
+            preference_count: Whether to include preference count
+            timeout: Whether to include the special timeout preference
+            config_id: UUID of scan config to which to limit the NVT listing
+            preferences_config_id: UUID of scan config to use for preference
+                values
+            family: Family to which to limit NVT listing
+            sort_order: Sort order
+            sort_field: Sort field
+        Returns:
+            The response. See :py:meth:`send_command` for details.
+        """
+        cmd = XmlCommand("get_nvts")
+
+        if details is not None:
+            cmd.set_attribute("details", to_bool(details))
+
+        if preferences is not None:
+            cmd.set_attribute("preferences", to_bool(preferences))
+
+        if preference_count is not None:
+            cmd.set_attribute("preference_count", to_bool(preference_count))
+
+        if timeout is not None:
+            cmd.set_attribute("timeout", to_bool(timeout))
+
+        if config_id:
+            cmd.set_attribute("config_id", config_id)
+
+        if preferences_config_id:
+            cmd.set_attribute("preferences_config_id", preferences_config_id)
+
+        if family:
+            cmd.set_attribute("family", family)
+
+        if sort_order:
+            cmd.set_attribute("sort_order", sort_order)
+
+        if sort_field:
+            cmd.set_attribute("sort_field", sort_field)
+
+        return self._send_xml_command(cmd)
 
     def get_dfn_cert_advisories(
         self,
@@ -400,15 +492,33 @@ class SecInfoMixin:
 
         return self.get_info(cpe_id, InfoType.CPE)
 
-    def get_nvt(self, nvt_id: str) -> Any:
+    def get_nvt(self, nvt_id: str, *, extended: Optional[bool] = None) -> Any:
         """Request a single NVT
 
         Arguments:
             nvt_id: ID of an existing NVT
+            extended: Whether to receive extended NVT information
+                (calls get_nvts, instead of get_info)
 
         Returns:
             The response. See :py:meth:`send_command` for details.
         """
+
+        if extended:
+            cmd = XmlCommand("get_nvts")
+
+            if not nvt_id:
+                raise RequiredArgument(
+                    function=self.get_nvt.__name__, argument="nvt_oid"
+                )
+
+            cmd.set_attribute("nvt_oid", nvt_id)
+
+            # for single entity always request all details
+            cmd.set_attribute("details", "1")
+            cmd.set_attribute("preferences", "1")
+            cmd.set_attribute("preference_count", "1")
+            return self._send_xml_command(cmd)
 
         return self.get_info(nvt_id, InfoType.NVT)
 
