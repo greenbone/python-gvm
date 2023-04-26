@@ -97,7 +97,7 @@ class GvmConnection(XmlReader):
 
     def __init__(self, timeout: Optional[int] = DEFAULT_TIMEOUT):
         self._socket = None
-        self._timeout = timeout if timeout else DEFAULT_TIMEOUT
+        self._timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
 
     def _read(self) -> bytes:
         return self._socket.recv(BUF_SIZE)
@@ -191,7 +191,7 @@ class SSHConnection(GvmConnection):
         username: Optional[str] = DEFAULT_SSH_USERNAME,
         password: Optional[str] = DEFAULT_SSH_PASSWORD,
         known_hosts_file: Optional[str] = None,
-        ci: Optional[bool] = None,
+        auto_accept_host: Optional[bool] = None,
     ):
         super().__init__(timeout=timeout)
 
@@ -208,7 +208,7 @@ class SSHConnection(GvmConnection):
             if known_hosts_file is not None
             else Path.home() / DEFAULT_KNOWN_HOSTS_FILE
         )
-        self.ci = ci
+        self.auto_accept_host = auto_accept_host
 
     def _send_all(self, data) -> int:
         """Returns the sum of sent bytes if success"""
@@ -225,7 +225,7 @@ class SSHConnection(GvmConnection):
             data = data[sent:]
         return sent_sum
 
-    def _ci_auto_connect(
+    def _auto_accept_host(
         self, hostkeys: paramiko.HostKeys, key: paramiko.PKey
     ) -> None:
         if self.port == DEFAULT_SSH_PORT:
@@ -375,8 +375,8 @@ class SSHConnection(GvmConnection):
             # Key not found, so connect to remote and fetch the key
             # with the paramiko Transport protocol
             key = self._get_remote_host_key()
-            if self.ci:
-                self._ci_auto_connect(hostkeys=hostkeys, key=key)
+            if self.auto_accept_host:
+                self._auto_accept_host(hostkeys=hostkeys, key=key)
             else:
                 self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
 
