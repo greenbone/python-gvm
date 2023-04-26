@@ -97,7 +97,7 @@ class GvmConnection(XmlReader):
 
     def __init__(self, timeout: Optional[int] = DEFAULT_TIMEOUT):
         self._socket = None
-        self._timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
+        self._timeout = timeout if timeout else DEFAULT_TIMEOUT
 
     def _read(self) -> bytes:
         return self._socket.recv(BUF_SIZE)
@@ -150,11 +150,8 @@ class GvmConnection(XmlReader):
             if self._is_end_xml():
                 break
 
-            if self._timeout is not None:
-                now = time.time()
-
-                if now > break_timeout:
-                    raise GvmError("Timeout while reading the response")
+            if time.time() > break_timeout:
+                raise GvmError("Timeout while reading the response")
 
         return response
 
