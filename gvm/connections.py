@@ -150,11 +150,8 @@ class GvmConnection(XmlReader):
             if self._is_end_xml():
                 break
 
-            if self._timeout is not None:
-                now = time.time()
-
-                if now > break_timeout:
-                    raise GvmError("Timeout while reading the response")
+            if time.time() > break_timeout:
+                raise GvmError("Timeout while reading the response")
 
         return response
 
@@ -194,6 +191,7 @@ class SSHConnection(GvmConnection):
         username: Optional[str] = DEFAULT_SSH_USERNAME,
         password: Optional[str] = DEFAULT_SSH_PASSWORD,
         known_hosts_file: Optional[str] = None,
+        auto_accept_host: Optional[bool] = None,
     ):
         super().__init__(timeout=timeout)
 
@@ -210,6 +208,7 @@ class SSHConnection(GvmConnection):
             if known_hosts_file is not None
             else Path.home() / DEFAULT_KNOWN_HOSTS_FILE
         )
+        self.auto_accept_host = auto_accept_host
 
     def _send_all(self, data) -> int:
         """Returns the sum of sent bytes if success"""
@@ -225,6 +224,32 @@ class SSHConnection(GvmConnection):
 
             data = data[sent:]
         return sent_sum
+
+    def _auto_accept_host(
+        self, hostkeys: paramiko.HostKeys, key: paramiko.PKey
+    ) -> None:
+        if self.port == DEFAULT_SSH_PORT:
+            hostkeys.add(self.hostname, key.get_name(), key)
+        elif self.port != DEFAULT_SSH_PORT:
+            hostkeys.add(
+                "[" + self.hostname + "]:" + str(self.port),
+                key.get_name(),
+                key,
+            )
+        try:
+            hostkeys.save(filename=self.known_hosts_file)
+        except OSError as e:
+            raise GvmError(
+                "Something went wrong with writing "
+                f"the known_hosts file: {e}"
+            ) from None
+        key_type = key.get_name().replace("ssh-", "").upper()
+        logger.info(
+            "Warning: Permanently added '%s' (%s) to "
+            "the list of known hosts.",
+            self.hostname,
+            key_type,
+        )
 
     def _ssh_authentication_input_loop(
         self, hostkeys: paramiko.HostKeys, key: paramiko.PKey
@@ -342,18 +367,17 @@ class SSHConnection(GvmConnection):
         hostkeys = self._socket.get_host_keys()
         # Switch based on SSH Port
         if self.port == DEFAULT_SSH_PORT:
-            if not hostkeys.lookup(self.hostname):
-                # Key not found, so connect to remote and fetch the key
-                # with the paramiko Transport protocol
-                key = self._get_remote_host_key()
+            hostname = self.hostname
+        else:
+            hostname = f"[{self.hostname}]:{self.port}"
 
-                self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
-        elif self.port != DEFAULT_SSH_PORT:
-            if not hostkeys.lookup("[" + self.hostname + "]:" + str(self.port)):
-                # Key not found, so connect to remote and fetch the key
-                # with the paramiko Transport protocol
-                key = self._get_remote_host_key()
-
+        if not hostkeys.lookup(hostname):
+            # Key not found, so connect to remote and fetch the key
+            # with the paramiko Transport protocol
+            key = self._get_remote_host_key()
+            if self.auto_accept_host:
+                self._auto_accept_host(hostkeys=hostkeys, key=key)
+            else:
                 self._ssh_authentication_input_loop(hostkeys=hostkeys, key=key)
 
     def connect(self) -> None:
