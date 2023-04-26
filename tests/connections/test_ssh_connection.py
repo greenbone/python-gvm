@@ -77,12 +77,33 @@ class SSHConnectionTestCase(unittest.TestCase):
         with self.assertRaises(GvmError, msg="SSH Connection failed"):
             ssh_connection.connect()
 
+    def test_connect_error_ci(self):
+        ssh_connection = SSHConnection(
+            known_hosts_file=self.known_hosts_file, ci=True
+        )
+        with self.assertRaises(GvmError, msg="SSH Connection failed"):
+            ssh_connection.connect()
+
     def test_connect(self):
         with patch("paramiko.SSHClient") as SSHClientMock:
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ["a", "b", "c"]
             ssh_connection = SSHConnection(
                 known_hosts_file=self.known_hosts_file
+            )
+
+            ssh_connection.connect()
+            self.assertEqual(ssh_connection._stdin, "a")
+            self.assertEqual(ssh_connection._stdout, "b")
+            self.assertEqual(ssh_connection._stderr, "c")
+            ssh_connection.disconnect()
+
+    def test_connect_ci(self):
+        with patch("paramiko.SSHClient") as SSHClientMock:
+            client_mock = SSHClientMock.return_value
+            client_mock.exec_command.return_value = ["a", "b", "c"]
+            ssh_connection = SSHConnection(
+                known_hosts_file=self.known_hosts_file, ci=True
             )
 
             ssh_connection.connect()
