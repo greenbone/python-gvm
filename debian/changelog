@@ -1,3 +1,9 @@
+python-gvm (23.4.2-gos2204~1) abomination; urgency=medium
+
+  * New upstream release and adjusted gbp.conf (Closes: PR-615).
+
+ -- Carlos A. Parra F. <carlos.parra@greenbone.net>  Mon, 08 May 2023 18:04:19 +0200
+
 python-gvm (23.4.0-gos2204~1) abomination; urgency=medium
 
   * New upstream release. (Closes: PR-596)
