@@ -494,8 +494,13 @@ class TLSConnection(GvmConnection):
                 keyfile=self.keyfile,
                 password=self.password,
             )
+            context.minimum_version = ssl.TLSVersion.TLSv1_2
         else:
-            context = ssl.SSLContext(ssl.PROTOCOL_TLSv1_2)
+            context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+            context.minimum_version = ssl.TLSVersion.TLSv1_2
+            context.check_hostname = False
+            context.verify_mode = ssl.CERT_NONE
+
         sock = context.wrap_socket(transport_socket, server_side=False)
 
         sock.settimeout(self._timeout)
