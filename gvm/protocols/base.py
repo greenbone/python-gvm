@@ -135,6 +135,8 @@ class GvmProtocol:
         try:
             self._send(cmd)
             response = self._read()
+        except TimeoutError as e:
+            raise e
         except Exception as e:
             self.disconnect()
             raise e
