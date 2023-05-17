@@ -1,15 +1,14 @@
-name: Build and test
+name: Check and test
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   pull_request:
-    branches: [main]
 
 jobs:
   linting:
     name: Linting
-    runs-on: "ubuntu-latest"
     strategy:
       matrix:
         python-version:
@@ -18,19 +17,13 @@ jobs:
           - "3.9"
           - "3.10"
           - "3.11"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Check with black, pylint and pontos.version
-        uses: greenbone/actions/lint-python@v2
-        with:
-          packages: gvm tests
-          version: ${{ matrix.python-version }}
-          poetry-version: "1.4.0"
-          cache: "true"
+    uses: greenbone/workflows/.github/workflows/lint-python.yml@main
+    with:
+      lint-packages: gvm tests
+      python-version: ${{ matrix.python-version }}
 
   test:
-    name: Unit tests
-    runs-on: "ubuntu-latest"
+    name: Run tests
     strategy:
       matrix:
         python-version:
@@ -39,16 +32,9 @@ jobs:
           - "3.9"
           - "3.10"
           - "3.11"
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install poetry and dependencies
-        uses: greenbone/actions/poetry@v2
-        with:
-          version: ${{ matrix.python-version }}
-          poetry-version: "1.4.0"
-          cache: "true"
-      - name: Run unit tests
-        run: poetry run python -m unittest
+    uses: greenbone/workflows/.github/workflows/test-python.yml@main
+    with:
+      python-version: ${{ matrix.python-version }}
 
   codecov:
     name: Upload coverage to codecov.io
@@ -59,8 +45,7 @@ jobs:
       - name: Calculate and upload coverage to codecov.io
         uses: greenbone/actions/coverage-python@v2
         with:
-          version: "3.10"
-          poetry-version: "1.4.0"
+          python-version: "3.10"
           cache: "true"
 
   build-docs:
@@ -71,9 +56,12 @@ jobs:
       - name: Install poetry and dependencies
         uses: greenbone/actions/poetry@v2
         with:
-          poetry-version: "1.4.0"
           cache: "true"
       - name: Build docs
         run: |
           cd docs
           poetry run make html
+
+  versioning:
+    name: Check versioning
+    uses: greenbone/workflows/.github/workflows/check-version.yml@main
