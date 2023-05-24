@@ -1,3 +1,11 @@
+python-gvm (23.5.1-gos2204~1) abomination; urgency=medium
+
+  * Removed patched setup.py and added necessary dependencies
+    for build system update (Closes: GOS-1452).
+    - Added patch to test, to replace unnecessary pontos import.
+
+ -- Carlos A. Parra F. <carlos.parra@greenbone.net>  Wed, 24 May 2023 11:27:46 +0200
+
 python-gvm (23.4.2-gos2204~1) abomination; urgency=medium
 
   * New upstream release and adjusted gbp.conf (Closes: PR-615).
