@@ -22,6 +22,7 @@ from io import StringIO
 from unittest.mock import patch
 
 import defusedxml.lxml as secET
+from pontos.testing import temp_directory
 
 from gvm.errors import InvalidArgumentType
 from gvm.xml import pretty_print
@@ -39,11 +40,12 @@ class PrettyPrintTestCase(unittest.TestCase):
             "</test>\n"
         )
 
-        with open("test.file", "w", encoding="utf-8") as f:
-            pretty_print(elem, file=f)
+        with temp_directory() as temp_dir:
+            test_file = temp_dir / "test.file"
+            with test_file.open("w", encoding="utf-8") as f:
+                pretty_print(elem, file=f)
 
-        with open("test.file", "r", encoding="utf-8") as f:
-            xml_string = f.read()
+            xml_string = test_file.read_text(encoding="utf-8")
 
         self.assertEqual(xml_string, expected_xml_string)
 
