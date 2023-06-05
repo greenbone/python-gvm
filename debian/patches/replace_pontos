@@ -1,0 +1,24 @@
+--- a/tests/xml/test_pretty_print.py
++++ b/tests/xml/test_pretty_print.py
+@@ -22,7 +22,8 @@ from io import StringIO
+ from unittest.mock import patch
+ 
+ import defusedxml.lxml as secET
+-from pontos.testing import temp_directory
++from tempfile import TemporaryDirectory
++from pathlib import Path
+ 
+ from gvm.errors import InvalidArgumentType
+ from gvm.xml import pretty_print
+@@ -40,8 +41,9 @@ class PrettyPrintTestCase(unittest.TestC
+             "</test>\n"
+         )
+ 
+-        with temp_directory() as temp_dir:
+-            test_file = temp_dir / "test.file"
++        with TemporaryDirectory() as temp_dir:
++            temp_dir_path = Path(temp_dir)
++            test_file = temp_dir_path / "test.file"
+             with test_file.open("w", encoding="utf-8") as f:
+                 pretty_print(elem, file=f)
+ 

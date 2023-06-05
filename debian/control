@@ -15,7 +15,9 @@ Build-Depends:
   python3-lxml,
   python3-defusedxml,
   python3-paramiko,
-  dh-python
+  dh-python,
+  python3-poetry-core,
+  pybuild-plugin-pyproject (>= 5),
 Standards-Version: 4.5.1
 X-Python3-Version: >= 3.9
 
