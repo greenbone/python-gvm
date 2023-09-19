@@ -41,7 +41,7 @@ jobs:
     needs: test
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Calculate and upload coverage to codecov.io
         uses: greenbone/actions/coverage-python@v3
         with:
@@ -51,7 +51,7 @@ jobs:
     name: Build the documentation
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Install poetry and dependencies
         uses: greenbone/actions/poetry@v3
       - name: Build docs
