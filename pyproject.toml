@@ -18,11 +18,10 @@ classifiers = [
   "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
   "Environment :: Console",
   "Intended Audience :: Developers",
-  "Programming Language :: Python :: 3.7",
-  "Programming Language :: Python :: 3.8",
   "Programming Language :: Python :: 3.9",
   "Programming Language :: Python :: 3.10",
   "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
   "Operating System :: OS Independent",
   "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -32,7 +31,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.7.2"
+python = "^3.9"
 paramiko = ">=2.7.1,<4.0.0"
 lxml = "^4.5.0"
 defusedxml = ">=0.6,<0.8"
@@ -52,7 +51,7 @@ furo = ">=2022.6.21"
 
 [tool.black]
 line-length = 80
-target-version = ['py37', 'py38', 'py39', 'py310', 'py311']
+target-version = ['py39', 'py310', 'py311', 'py312']
 exclude = '''
 /(
     \.git
