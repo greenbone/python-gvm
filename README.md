@@ -46,7 +46,7 @@ This is why installing `python-gvm` using pip is recommended.
 
 ### Requirements
 
-Python 3.7 and later is supported.
+Python 3.9 and later is supported.
 
 ### Install using pip
 
@@ -132,6 +132,6 @@ are active.
 
 ## License
 
-Copyright (C) 2017-2022 [Greenbone AG](https://www.greenbone.net/)
+Copyright (C) 2017-2023 [Greenbone AG](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
