@@ -2,11 +2,11 @@ Format: https://www.debian.org/doc/packaging-manuals/copyright-format/1.0/
 Upstream-Name: gvm-tools
 
 Files: *
-Copyright: Copyright 2019-2022 Greenbone Networks GmbH
+Copyright: Copyright 2019-2022 Greenbone AG
 License: GPL-3+
 
 Files: debian/*
-Copyright: Copyright 2019-2022 Greenbone Networks GmbH
+Copyright: Copyright 2019-2022 Greenbone AG
 License: GPL-3+
 
 License: GPL-3+

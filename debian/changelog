@@ -1,3 +1,9 @@
+python-gvm (23.10.1-gos2204~1) abomination; urgency=medium
+
+  * New upstream release. (Closes: PR-753)
+
+ -- Hendrik Deuper <hendrik.deuper@greenbone.net>  Tue, 07 Nov 2023 15:53:31 +0000
+
 python-gvm (23.5.1-gos2204~1) abomination; urgency=medium
 
   * Removed patched setup.py and added necessary dependencies

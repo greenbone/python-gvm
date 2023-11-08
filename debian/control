@@ -1,7 +1,7 @@
 Source: python-gvm
 Section: python
 Priority: optional
-Maintainer: Greenbone Networks GmbH <info@greenbone.net>
+Maintainer: Greenbone AG <info@greenbone.net>
 Uploaders: Sascha Howey <sascha.howey@greenbone.net>,
  Raphael Grewe <raphael.grewe@greenbone.net>,
  Hendrik Deuper <hendrik.deuper@greenbone.net>,
