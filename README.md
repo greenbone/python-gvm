@@ -5,7 +5,7 @@
 [![GitHub releases](https://img.shields.io/github/release-pre/greenbone/python-gvm.svg)](https://github.com/greenbone/python-gvm/releases)
 [![PyPI release](https://img.shields.io/pypi/v/python-gvm.svg)](https://pypi.org/project/python-gvm/)
 [![code test coverage](https://codecov.io/gh/greenbone/python-gvm/branch/main/graph/badge.svg)](https://codecov.io/gh/greenbone/python-gvm)
-[![Build and test](https://github.com/greenbone/python-gvm/actions/workflows/ci-python.yml/badge.svg)](https://github.com/greenbone/python-gvm/actions/workflows/ci-python.yml)
+[![Build and test](https://github.com/greenbone/python-gvm/actions/workflows/ci.yml/badge.svg)](https://github.com/greenbone/python-gvm/actions/workflows/ci.yml)
 
 The Greenbone Vulnerability Management Python API library (**python-gvm**) is a
 collection of APIs that help with remote controlling Greenbone Community Edition
