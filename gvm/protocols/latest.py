@@ -34,7 +34,7 @@ Exports:
     https://docs.greenbone.net/API/GMP/gmp.html
 """
 
-from .gmpv224 import (
+from .gmpv225 import (
     AggregateStatistic,
     AlertCondition,
     AlertEvent,
@@ -52,6 +52,7 @@ from .gmpv224 import (
     PermissionSubjectType,
     PortRangeType,
     ReportFormatType,
+    ResourceType,
     ScannerType,
     SeverityLevel,
     SnmpAuthAlgorithm,
@@ -81,6 +82,7 @@ __all__ = [
     "PermissionSubjectType",
     "PortRangeType",
     "ReportFormatType",
+    "ResourceType",
     "ScannerType",
     "SeverityLevel",
     "SnmpAuthAlgorithm",
