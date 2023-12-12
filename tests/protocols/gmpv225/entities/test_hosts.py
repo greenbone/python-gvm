@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Copyright (C) 2018-2022 Greenbone AG
+# Copyright (C) 2023 Greenbone AG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -16,20 +16,31 @@
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-# pylint: disable=no-member
-
-import unittest
-
-from gvm.protocols.next import Gmp, Osp
-
-
-class LatestProtocolsTestCase(unittest.TestCase):
-    def test_gmp_version(self):
-        self.assertEqual(Gmp.get_protocol_version(), (22, 5))
-
-    def test_osp_version(self):
-        self.assertEqual(Osp.get_protocol_version(), (1, 2))
+from ...gmpv208.entities.hosts import (
+    GmpCreateHostTestMixin,
+    GmpDeleteHostTestMixin,
+    GmpGetHostsTestMixin,
+    GmpGetHostTestMixin,
+    GmpModifyHostTestMixin,
+)
+from ...gmpv225 import Gmpv225TestCase
 
 
-if __name__ == "__main__":
-    unittest.main()
+class Gmpv225CreateHostTestCase(GmpCreateHostTestMixin, Gmpv225TestCase):
+    pass
+
+
+class Gmpv225DeleteHostTestCase(GmpDeleteHostTestMixin, Gmpv225TestCase):
+    pass
+
+
+class Gmpv225GetHostTestCase(GmpGetHostTestMixin, Gmpv225TestCase):
+    pass
+
+
+class Gmpv225GetHostsTestCase(GmpGetHostsTestMixin, Gmpv225TestCase):
+    pass
+
+
+class Gmpv225ModifyHostTestCase(GmpModifyHostTestMixin, Gmpv225TestCase):
+    pass
