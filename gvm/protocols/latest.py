@@ -27,7 +27,7 @@ For details about the possible supported protocol versions please take a look at
 :py:mod:`gvm.protocols`.
 
 Exports:
-  - :py:class:`gvm.protocols.gmpv224.Gmp`
+  - :py:class:`gvm.protocols.gmpv225.Gmp`
   - :py:class:`gvm.protocols.ospv1.Osp`
 
 .. _Greenbone Management Protocol:
