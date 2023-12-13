@@ -85,11 +85,11 @@ class ResourceNamesMixin:
 
         Arguments:
             resource_type: Type must be either ALERT, CERT_BUND_ADV,
-            CONFIG, CPE, CREDENTIAL, CVE, DFN_CERT_ADV, FILTER,
-            GROUP, HOST, NOTE, NVT, OS, OVERRIDE, PERMISSION,
-            PORT_LIST, REPORT_FORMAT, REPORT, RESULT, ROLE,
-            SCANNER, SCHEDULE, TARGET, TASK, TLS_CERTIFICATE
-            or USER
+                CONFIG, CPE, CREDENTIAL, CVE, DFN_CERT_ADV, FILTER,
+                GROUP, HOST, NOTE, NVT, OS, OVERRIDE, PERMISSION,
+                PORT_LIST, REPORT_FORMAT, REPORT, RESULT, ROLE,
+                SCANNER, SCHEDULE, TARGET, TASK, TLS_CERTIFICATE
+                or USER
             filter_string: Filter term to use for the query
 
         Returns:
@@ -124,11 +124,11 @@ class ResourceNamesMixin:
         Arguments:
             resource_id: ID of an existing resource
             resource_type: Type must be either ALERT, CERT_BUND_ADV,
-            CONFIG, CPE, CREDENTIAL, CVE, DFN_CERT_ADV, FILTER,
-            GROUP, HOST, NOTE, NVT, OS, OVERRIDE, PERMISSION,
-            PORT_LIST, REPORT_FORMAT, REPORT, RESULT, ROLE,
-            SCANNER, SCHEDULE, TARGET, TASK, TLS_CERTIFICATE
-            or USER
+                CONFIG, CPE, CREDENTIAL, CVE, DFN_CERT_ADV, FILTER,
+                GROUP, HOST, NOTE, NVT, OS, OVERRIDE, PERMISSION,
+                PORT_LIST, REPORT_FORMAT, REPORT, RESULT, ROLE,
+                SCANNER, SCHEDULE, TARGET, TASK, TLS_CERTIFICATE
+                or USER
 
         Returns:
             The response. See :py:meth:`send_command` for details.
