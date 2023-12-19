@@ -66,9 +66,12 @@ def check_command_status(xml: str) -> bool:
     except KeyError:
         print(logger)
         logger.error("Not received an status code within the response.")
+        return False
     except etree.Error as e:
         logger.error("etree.XML(xml): %s", e)
         return False
+
+    return False
 
 
 def to_dotted_types_dict(types: List) -> TypesDict:
