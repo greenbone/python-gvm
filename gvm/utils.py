@@ -71,7 +71,6 @@ def check_command_status(xml: str) -> bool:
         logger.error("etree.XML(xml): %s", e)
         return False
 
-    return False
 
 
 def to_dotted_types_dict(types: List) -> TypesDict:
