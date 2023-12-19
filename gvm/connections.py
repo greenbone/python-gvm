@@ -313,9 +313,7 @@ class SSHConnection(GvmConnection):
                         save = input()
                 break
             elif add == "no":
-                sys.exit(
-                    "User denied key. Host key verification failed."
-                )
+                sys.exit("User denied key. Host key verification failed.")
             else:
                 print("Please type 'yes' or 'no': ", end="")
                 add = input()

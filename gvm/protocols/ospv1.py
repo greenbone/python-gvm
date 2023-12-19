@@ -63,9 +63,7 @@ def create_vt_selection_element(_xmlvtselection, vt_selection):
                     _xmlvt.add_element("vt_value", value, attrs={"id": key})
         elif vt_id == "vt_groups" and isinstance(vt_values, list):
             for group in vt_values:
-                _xmlvtselection.add_element(
-                    "vt_group", attrs={"filter": group}
-                )
+                _xmlvtselection.add_element("vt_group", attrs={"filter": group})
         else:
             raise InvalidArgument(
                 f"It was not possible to add {vt_id} to the VTs selection."

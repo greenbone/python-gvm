@@ -72,7 +72,6 @@ def check_command_status(xml: str) -> bool:
         return False
 
 
-
 def to_dotted_types_dict(types: List) -> TypesDict:
     """Create a dictionary accessible via dot notation"""
     dic = {}
