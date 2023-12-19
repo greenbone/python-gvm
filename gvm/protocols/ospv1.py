@@ -63,7 +63,7 @@ def create_vt_selection_element(_xmlvtselection, vt_selection):
                     _xmlvt.add_element("vt_value", value, attrs={"id": key})
         elif vt_id == "vt_groups" and isinstance(vt_values, list):
             for group in vt_values:
-                _xmlvt = _xmlvtselection.add_element(
+                _xmlvtselection.add_element(
                     "vt_group", attrs={"filter": group}
                 )
         else:
@@ -252,9 +252,8 @@ class Osp(GvmProtocol):
                 _xmltarget.add_element("hosts", hosts)
                 _xmltarget.add_element("ports", ports)
                 if credentials:
-                    _xmlcredentials = _xmltarget.add_element("credentials")
                     _xmlcredentials = create_credentials_element(
-                        _xmlcredentials, credentials
+                        _xmltarget.add_element("credentials"), credentials
                     )
         # Check target as attribute for legacy mode compatibility. Deprecated.
         elif target:
@@ -267,9 +266,8 @@ class Osp(GvmProtocol):
             )
 
         if vt_selection:
-            _xmlvtselection = cmd.add_element("vt_selection")
             _xmlvtselection = create_vt_selection_element(
-                _xmlvtselection, vt_selection
+                cmd.add_element("vt_selection"), vt_selection
             )
 
         return self._send_xml_command(cmd)

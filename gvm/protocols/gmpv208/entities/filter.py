@@ -131,7 +131,7 @@ class FiltersMixin:
             )
 
         cmd = XmlCommand("create_filter")
-        _xmlname = cmd.add_element("name", name)
+        cmd.add_element("name", name)
 
         if comment:
             cmd.add_element("comment", comment)

@@ -66,7 +66,7 @@ class TicketsMixin:
 
         cmd = XmlCommand("create_ticket")
 
-        _copy = cmd.add_element("copy", ticket_id)
+        cmd.add_element("copy", ticket_id)
 
         return self._send_xml_command(cmd)
 
@@ -114,7 +114,7 @@ class TicketsMixin:
         _user = _assigned.add_element("user")
         _user.set_attribute("id", assigned_to_user_id)
 
-        _note = cmd.add_element("open_note", note)
+        cmd.add_element("open_note", note)
 
         if comment:
             cmd.add_element("comment", comment)
