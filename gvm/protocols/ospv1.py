@@ -250,7 +250,7 @@ class Osp(GvmProtocol):
                 _xmltarget.add_element("hosts", hosts)
                 _xmltarget.add_element("ports", ports)
                 if credentials:
-                    _xmlcredentials = create_credentials_element(
+                    create_credentials_element(
                         _xmltarget.add_element("credentials"), credentials
                     )
         # Check target as attribute for legacy mode compatibility. Deprecated.
@@ -264,7 +264,7 @@ class Osp(GvmProtocol):
             )
 
         if vt_selection:
-            _xmlvtselection = create_vt_selection_element(
+            create_vt_selection_element(
                 cmd.add_element("vt_selection"), vt_selection
             )
 
