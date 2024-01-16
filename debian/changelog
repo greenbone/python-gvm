@@ -1,3 +1,9 @@
+python-gvm (24.1.0-gos2204~1) abomination; urgency=medium
+
+  * New upstream release (Closes: GOS-1710).
+
+ -- Carlos A. Parra F. <carlos.parra@greenbone.net>  Tue, 16 Jan 2024 09:54:20 +0100
+
 python-gvm (23.11.0-gos2204~1) abomination; urgency=medium
 
   * New upstream release. (Closes: GOS-1676, PR-753)
