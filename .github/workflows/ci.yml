@@ -20,6 +20,7 @@ jobs:
     with:
       lint-packages: gvm tests
       python-version: ${{ matrix.python-version }}
+      linter: ruff
 
   test:
     name: Run tests
