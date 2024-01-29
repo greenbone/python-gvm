@@ -6,8 +6,17 @@
 import unittest
 from unittest.mock import patch
 
-from gvm.connections import DEFAULT_TIMEOUT, GvmConnection
+from gvm.connections import DEFAULT_TIMEOUT, GvmConnection, XmlReader
 from gvm.errors import GvmError
+
+
+class XmlReaderTestCase(unittest.TestCase):
+    def test_is_end_xml_false(self):
+        reader = XmlReader()
+        reader.start_xml()
+
+        false = reader.is_end_xml()
+        self.assertFalse(false)
 
 
 class GvmConnectionTestCase(unittest.TestCase):
@@ -28,13 +37,6 @@ class GvmConnectionTestCase(unittest.TestCase):
         connection = GvmConnection()
         with self.assertRaises(NotImplementedError):
             connection.connect()
-
-    def test_is_end_xml_false(self):
-        connection = GvmConnection()
-        connection._start_xml()
-
-        false = connection._is_end_xml()
-        self.assertFalse(false)
 
     @patch("gvm.connections.GvmConnection._read")
     def test_read_no_data(self, _read_mock):
