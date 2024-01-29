@@ -16,15 +16,18 @@
 
 import os
 import sys
+from datetime import datetime
 
 sys.path.insert(0, os.path.abspath(".."))
 
-import gvm
+import gvm  # noqa: E402
 
 # -- Project information -----------------------------------------------------
 
+year = datetime.now().year
+
 project = "python-gvm"
-copyright = "2018 - 2022, Greenbone AG"
+copyright = f"2018 - {year}, Greenbone AG"
 author = "Greenbone AG"
 
 # The short X.Y version
