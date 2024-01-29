@@ -27,3 +27,17 @@ from .test_move_task import GmpMoveTaskTestMixin
 from .test_resume_task import GmpResumeTaskTestMixin
 from .test_start_task import GmpStartTaskTestMixin
 from .test_stop_task import GmpStopTaskTestMixin
+
+__all__ = (
+    "GmpCloneTaskTestMixin",
+    "GmpCreateContainerTaskTestMixin",
+    "GmpCreateTaskTestMixin",
+    "GmpDeleteTaskTestMixin",
+    "GmpGetTaskTestMixin",
+    "GmpGetTasksTestMixin",
+    "GmpModifyTaskTestMixin",
+    "GmpMoveTaskTestMixin",
+    "GmpResumeTaskTestMixin",
+    "GmpStartTaskTestMixin",
+    "GmpStopTaskTestMixin",
+)

@@ -18,3 +18,8 @@
 
 from .test_get_result import GmpGetResultTestMixin
 from .test_get_results import GmpGetResultsTestMixin
+
+__all__ = (
+    "GmpGetResultTestMixin",
+    "GmpGetResultsTestMixin",
+)

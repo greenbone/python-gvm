@@ -22,3 +22,12 @@ from .test_delete_target import GmpDeleteTargetTestMixin
 from .test_get_target import GmpGetTargetTestMixin
 from .test_get_targets import GmpGetTargetsTestMixin
 from .test_modify_target import GmpModifyTargetTestMixin
+
+__all__ = (
+    "GmpCloneTargetTestMixin",
+    "GmpCreateTargetTestMixin",
+    "GmpDeleteTargetTestMixin",
+    "GmpGetTargetTestMixin",
+    "GmpGetTargetsTestMixin",
+    "GmpModifyTargetTestMixin",
+)

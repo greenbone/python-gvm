@@ -17,3 +17,5 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from .test_get_system_reports import GmpGetSystemReportsTestMixin
+
+__all__ = ("GmpGetSystemReportsTestMixin",)

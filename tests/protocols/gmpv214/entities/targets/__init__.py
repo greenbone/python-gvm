@@ -18,3 +18,5 @@
 
 from .test_create_target import GmpCreateTargetTestMixin
 from .test_modify_target import GmpModifyTargetTestMixin
+
+__all__ = ("GmpCreateTargetTestMixin", "GmpModifyTargetTestMixin")

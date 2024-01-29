@@ -22,3 +22,12 @@ from .test_delete_ticket import GmpDeleteTicketTestMixin
 from .test_get_ticket import GmpGetTicketTestMixin
 from .test_get_tickets import GmpGetTicketsTestMixin
 from .test_modify_ticket import GmpModifyTicketTestMixin
+
+__all__ = (
+    "GmpCloneTicketTestMixin",
+    "GmpCreateTicketTestMixin",
+    "GmpDeleteTicketTestMixin",
+    "GmpGetTicketTestMixin",
+    "GmpGetTicketsTestMixin",
+    "GmpModifyTicketTestMixin",
+)

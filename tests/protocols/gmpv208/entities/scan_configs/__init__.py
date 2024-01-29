@@ -49,3 +49,23 @@ from .test_modify_scan_config_set_scanner_preference import (
     GmpModifyScanConfigSetScannerPreferenceTestMixin,
 )
 from .test_sync_scan_config import GmpSyncScanConfigTestMixin
+
+__all__ = (
+    "GmpCloneScanConfigTestMixin",
+    "GmpCreateScanConfigTestMixin",
+    "GmpCreateScanConfigFromOSPScannerTestMixin",
+    "GmpDeleteScanConfigTestMixin",
+    "GmpGetScanConfigTestMixin",
+    "GmpGetScanConfigPreferenceTestMixin",
+    "GmpGetScanConfigPreferencesTestMixin",
+    "GmpGetScanConfigsTestMixin",
+    "GmpImportScanConfigTestMixin",
+    "GmpModifyScanConfigTestMixin",
+    "GmpModifyScanConfigSetCommentTestMixin",
+    "GmpModifyScanConfigSetFamilySelectionTestMixin",
+    "GmpModifyScanConfigSetNameTestMixin",
+    "GmpModifyScanConfigSetNvtPreferenceTestMixin",
+    "GmpModifyScanConfigSetNvtSelectionTestMixin",
+    "GmpModifyScanConfigSetScannerPreferenceTestMixin",
+    "GmpSyncScanConfigTestMixin",
+)

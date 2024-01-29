@@ -45,3 +45,21 @@ from .test_modify_scan_config_set_nvt_selection import (
 from .test_modify_scan_config_set_scanner_preference import (
     GmpModifyScanConfigSetScannerPreferenceTestMixin,
 )
+
+__all__ = (
+    "GmpCloneScanConfigTestMixin",
+    "GmpCreateScanConfigTestMixin",
+    "GmpDeleteScanConfigTestMixin",
+    "GmpGetScanConfigTestMixin",
+    "GmpGetScanConfigPreferenceTestMixin",
+    "GmpGetScanConfigPreferencesTestMixin",
+    "GmpGetScanConfigsTestMixin",
+    "GmpImportScanConfigTestMixin",
+    "GmpModifyScanConfigTestMixin",
+    "GmpModifyScanConfigSetCommentTestMixin",
+    "GmpModifyScanConfigSetFamilySelectionTestMixin",
+    "GmpModifyScanConfigSetNameTestMixin",
+    "GmpModifyScanConfigSetNvtPreferenceTestMixin",
+    "GmpModifyScanConfigSetNvtSelectionTestMixin",
+    "GmpModifyScanConfigSetScannerPreferenceTestMixin",
+)

@@ -21,3 +21,11 @@ from .test_delete_host import GmpDeleteHostTestMixin
 from .test_get_host import GmpGetHostTestMixin
 from .test_get_hosts import GmpGetHostsTestMixin
 from .test_modify_host import GmpModifyHostTestMixin
+
+__all__ = (
+    "GmpCreateHostTestMixin",
+    "GmpDeleteHostTestMixin",
+    "GmpGetHostTestMixin",
+    "GmpGetHostsTestMixin",
+    "GmpModifyHostTestMixin",
+)

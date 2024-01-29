@@ -25,3 +25,15 @@ from .test_modify_audit import GmpModifyAuditTestMixin
 from .test_resume_audit import GmpResumeAuditTestMixin
 from .test_start_audit import GmpStartAuditTestMixin
 from .test_stop_audit import GmpStopAuditTestMixin
+
+__all__ = (
+    "GmpCloneAuditTestMixin",
+    "GmpCreateAuditTestMixin",
+    "GmpDeleteAuditTestMixin",
+    "GmpGetAuditTestMixin",
+    "GmpGetAuditsTestMixin",
+    "GmpModifyAuditTestMixin",
+    "GmpResumeAuditTestMixin",
+    "GmpStartAuditTestMixin",
+    "GmpStopAuditTestMixin",
+)

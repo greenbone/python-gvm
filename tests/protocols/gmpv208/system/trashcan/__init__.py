@@ -18,3 +18,5 @@
 
 from .test_empty_trashcan import GmpEmptyTrashcanTestMixin
 from .test_restore_from_trashcan import GmpRestoreFromTrashcanTestMixin
+
+__all__ = ("GmpEmptyTrashcanTestMixin", "GmpRestoreFromTrashcanTestMixin")

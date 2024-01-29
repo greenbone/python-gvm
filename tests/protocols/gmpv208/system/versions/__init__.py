@@ -18,3 +18,5 @@
 
 from .test_get_protocol_version import GmpGetProtocolVersionTestCase
 from .test_get_version import GmpGetVersionTestCase
+
+__all__ = ("GmpGetProtocolVersionTestCase", "GmpGetVersionTestCase")

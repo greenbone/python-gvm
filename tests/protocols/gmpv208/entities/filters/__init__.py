@@ -22,3 +22,12 @@ from .test_delete_filter import GmpDeleteFilterTestMixin
 from .test_get_filter import GmpGetFilterTestMixin
 from .test_get_filters import GmpGetFiltersTestMixin
 from .test_modify_filter import GmpModifyFilterTestMixin
+
+__all__ = (
+    "GmpCloneFilterTestMixin",
+    "GmpCreateFilterTestMixin",
+    "GmpDeleteFilterTestMixin",
+    "GmpGetFilterTestMixin",
+    "GmpGetFiltersTestMixin",
+    "GmpModifyFilterTestMixin",
+)
