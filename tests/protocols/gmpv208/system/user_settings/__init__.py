@@ -19,3 +19,9 @@
 from .test_get_user_setting import GmpGetUserSettingTestMixin
 from .test_get_user_settings import GmpGetUserSettingsTestMixin
 from .test_modify_user_setting import GmpModifyUserSettingTestMixin
+
+__all__ = (
+    "GmpGetUserSettingTestMixin",
+    "GmpGetUserSettingsTestMixin",
+    "GmpModifyUserSettingTestMixin",
+)

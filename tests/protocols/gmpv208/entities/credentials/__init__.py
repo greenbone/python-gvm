@@ -22,3 +22,12 @@ from .test_delete_credential import GmpDeleteCredentialTestMixin
 from .test_get_credential import GmpGetCredentialTestMixin
 from .test_get_credentials import GmpGetCredentialsTestMixin
 from .test_modify_credential import GmpModifyCredentialTestMixin
+
+__all__ = (
+    "GmpCloneCredentialTestMixin",
+    "GmpCreateCredentialTestMixin",
+    "GmpDeleteCredentialTestMixin",
+    "GmpGetCredentialTestMixin",
+    "GmpGetCredentialsTestMixin",
+    "GmpModifyCredentialTestMixin",
+)

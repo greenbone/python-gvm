@@ -18,3 +18,5 @@
 
 from .test_get_vulnerabilities import GmpGetVulnerabilitiesTestMixin
 from .test_get_vulnerability import GmpGetVulnerabilityTestMixin
+
+__all__ = ("GmpGetVulnerabilitiesTestMixin", "GmpGetVulnerabilityTestMixin")

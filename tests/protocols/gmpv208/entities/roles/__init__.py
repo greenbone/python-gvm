@@ -22,3 +22,12 @@ from .test_delete_role import GmpDeleteRoleTestMixin
 from .test_get_role import GmpGetRoleTestMixin
 from .test_get_roles import GmpGetRolesTestMixin
 from .test_modify_role import GmpModifyRoleTestMixin
+
+__all__ = (
+    "GmpCloneRoleTestMixin",
+    "GmpCreateRoleTestMixin",
+    "GmpDeleteRoleTestMixin",
+    "GmpGetRoleTestMixin",
+    "GmpGetRolesTestMixin",
+    "GmpModifyRoleTestMixin",
+)

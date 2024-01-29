@@ -23,3 +23,13 @@ from .test_get_scanner import GmpGetScannerTestMixin
 from .test_get_scanners import GmpGetScannersTestMixin
 from .test_modify_scanner import GmpModifyScannerTestMixin
 from .test_verify_scanner import GmpVerifyScannerTestMixin
+
+__all__ = (
+    "GmpCloneScannerTestMixin",
+    "GmpCreateScannerTestMixin",
+    "GmpDeleteScannerTestMixin",
+    "GmpGetScannerTestMixin",
+    "GmpGetScannersTestMixin",
+    "GmpModifyScannerTestMixin",
+    "GmpVerifyScannerTestMixin",
+)

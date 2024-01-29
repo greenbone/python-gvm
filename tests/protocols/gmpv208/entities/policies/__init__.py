@@ -36,3 +36,18 @@ from .test_modify_policy_set_nvt_selection import (
 from .test_modify_policy_set_scanner_preference import (
     GmpModifyPolicySetScannerPreferenceTestMixin,
 )
+
+__all__ = (
+    "GmpClonePolicyTestMixin",
+    "GmpCreatePolicyTestMixin",
+    "GmpDeletePolicyTestMixin",
+    "GmpGetPoliciesTestMixin",
+    "GmpGetPolicyTestMixin",
+    "GmpImportPolicyTestMixin",
+    "GmpModifyPolicySetCommentTestMixin",
+    "GmpModifyPolicySetFamilySelectionTestMixin",
+    "GmpModifyPolicySetNameTestMixin",
+    "GmpModifyPolicySetNvtPreferenceTestMixin",
+    "GmpModifyPolicySetNvtSelectionTestMixin",
+    "GmpModifyPolicySetScannerPreferenceTestMixin",
+)

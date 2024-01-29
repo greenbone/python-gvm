@@ -22,3 +22,12 @@ from .test_delete_group import GmpDeleteGroupTestMixin
 from .test_get_group import GmpGetGroupTestMixin
 from .test_get_groups import GmpGetGroupsTestMixin
 from .test_modify_group import GmpModifyGroupTestMixin
+
+__all__ = (
+    "GmpCloneGroupTestMixin",
+    "GmpCreateGroupTestMixin",
+    "GmpDeleteGroupTestMixin",
+    "GmpGetGroupTestMixin",
+    "GmpGetGroupsTestMixin",
+    "GmpModifyGroupTestMixin",
+)

@@ -22,3 +22,12 @@ from .test_delete_note import GmpDeleteNoteTestMixin
 from .test_get_note import GmpGetNoteTestMixin
 from .test_get_notes import GmpGetNotesTestMixin
 from .test_modify_note import GmpModifyNoteTestMixin
+
+__all__ = (
+    "GmpCloneNoteTestMixin",
+    "GmpCreateNoteTestMixin",
+    "GmpDeleteNoteTestMixin",
+    "GmpGetNoteTestMixin",
+    "GmpGetNotesTestMixin",
+    "GmpModifyNoteTestMixin",
+)

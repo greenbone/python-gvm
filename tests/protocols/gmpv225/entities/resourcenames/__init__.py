@@ -18,3 +18,5 @@
 
 from .test_get_resource_name import GmpGetResourceNameTestMixin
 from .test_get_resource_names_list import GmpGetResourceNamesListTestMixin
+
+__all__ = ("GmpGetResourceNameTestMixin", "GmpGetResourceNamesListTestMixin")

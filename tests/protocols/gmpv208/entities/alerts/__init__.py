@@ -24,3 +24,14 @@ from .test_get_alerts import GmpGetAlertsTestMixin
 from .test_modify_alert import GmpModifyAlertTestMixin
 from .test_test_alert import GmpTestAlertTestMixin
 from .test_trigger_alert import GmpTriggerAlertTestMixin
+
+__all__ = (
+    "GmpCloneAlertTestMixin",
+    "GmpCreateAlertTestMixin",
+    "GmpDeleteAlertTestMixin",
+    "GmpGetAlertTestMixin",
+    "GmpGetAlertsTestMixin",
+    "GmpModifyAlertTestMixin",
+    "GmpTestAlertTestMixin",
+    "GmpTriggerAlertTestMixin",
+)

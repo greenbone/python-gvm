@@ -24,3 +24,14 @@ from .test_delete_port_range import GmpDeletePortRangeTestMixin
 from .test_get_port_list import GmpGetPortListTestMixin
 from .test_get_port_lists import GmpGetPortListsTestMixin
 from .test_modify_port_list import GmpModifyPortListTestMixin
+
+__all__ = (
+    "GmpClonePortListTestMixin",
+    "GmpCreatePortListTestMixin",
+    "GmpCreatePortRangeTestMixin",
+    "GmpDeletePortListTestMixin",
+    "GmpDeletePortRangeTestMixin",
+    "GmpGetPortListTestMixin",
+    "GmpGetPortListsTestMixin",
+    "GmpModifyPortListTestMixin",
+)
