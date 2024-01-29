@@ -46,7 +46,7 @@ class XmlReader:
     Read a XML command until its closing element
     """
 
-    def _start_xml(self) -> None:
+    def start_xml(self) -> None:
         self._first_element = None
         # act on start and end element events and
         # allow huge text data (for report content)
@@ -54,7 +54,7 @@ class XmlReader:
             events=("start", "end"), huge_tree=True
         )
 
-    def _is_end_xml(self) -> bool:
+    def is_end_xml(self) -> bool:
         for action, obj in self._parser.read_events():
             if not self._first_element and action in "start":
                 self._first_element = obj.tag
@@ -67,7 +67,7 @@ class XmlReader:
                 return True
         return False
 
-    def _feed_xml(self, data: Data) -> None:
+    def feed_xml(self, data: Data) -> None:
         try:
             self._parser.feed(data)
         except etree.ParseError as e:
@@ -77,7 +77,7 @@ class XmlReader:
             ) from None
 
 
-class GvmConnection(XmlReader):
+class GvmConnection:
     """
     Base class for establishing a connection to a remote server daemon.
 
@@ -89,6 +89,7 @@ class GvmConnection(XmlReader):
     def __init__(self, timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT):
         self._socket = None
         self._timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
+        self._xml_reader = XmlReader()
 
     def _read(self) -> bytes:
         if self._socket is None:
@@ -123,7 +124,7 @@ class GvmConnection(XmlReader):
         """
         response = ""
 
-        self._start_xml()
+        self._xml_reader.start_xml()
 
         break_timeout = (
             time.time() + self._timeout if self._timeout is not None else None
@@ -136,11 +137,11 @@ class GvmConnection(XmlReader):
                 # Connection was closed by server
                 raise GvmError("Remote closed the connection")
 
-            self._feed_xml(data)
+            self._xml_reader.feed_xml(data)
 
             response += data.decode("utf-8", errors="ignore")
 
-            if self._is_end_xml():
+            if self._xml_reader.is_end_xml():
                 break
 
             if break_timeout and time.time() > break_timeout:
