@@ -70,5 +70,10 @@ extend-select = ["I", "PLE", "PLW"]
 mode = "poetry"
 pre-commit = ['autohooks.plugins.black', "autohooks.plugins.ruff"]
 
+[tool.coverage.run]
+branch = true
+omit = ["tests/*", "*/__init__.py"]
+source = ["gvm"]
+
 [tool.pontos.version]
 version-module-file = "gvm/__version__.py"
