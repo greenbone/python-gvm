@@ -13,3 +13,6 @@ htmlcov
 .venv
 .rej
 .DS_Store
+
+# ruff
+.ruff_cache/
