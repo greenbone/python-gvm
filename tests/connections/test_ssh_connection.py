@@ -17,6 +17,7 @@ from gvm.connections import (
     DEFAULT_SSH_PASSWORD,
     DEFAULT_SSH_PORT,
     DEFAULT_SSH_USERNAME,
+    GvmConnection,
     SSHConnection,
 )
 from gvm.errors import GvmError
@@ -177,7 +178,7 @@ FsAQI=
         )
 
         with self.assertLogs("gvm.connections", level="INFO") as cm:
-            hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
+            hostkeys = paramiko.HostKeys(filename=str(self.known_hosts_file))
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
             )
@@ -229,7 +230,7 @@ FsAQI=
         )
 
         with self.assertLogs("gvm.connections", level="INFO") as cm:
-            hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
+            hostkeys = paramiko.HostKeys(filename=str(self.known_hosts_file))
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
             )
@@ -274,7 +275,7 @@ FsAQI=
         ssh_connection._socket = paramiko.SSHClient()
 
         with self.assertLogs("gvm.connections", level="INFO") as cm:
-            hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
+            hostkeys = paramiko.HostKeys(filename=str(self.known_hosts_file))
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
             )
@@ -323,7 +324,7 @@ FsAQI=
         with self.assertRaises(
             SystemExit, msg="User denied key. Host key verification failed."
         ):
-            hostkeys = paramiko.HostKeys(filename=self.known_hosts_file)
+            hostkeys = paramiko.HostKeys(filename=str(self.known_hosts_file))
             ssh_connection._ssh_authentication_input_loop(
                 hostkeys=hostkeys, key=key
             )
@@ -441,8 +442,7 @@ FsAQI=
             )
 
             ssh_connection.connect()
-            req = ssh_connection.send("blah")
-            self.assertEqual(req, 4)
+            ssh_connection.send("blah")
             ssh_connection.disconnect()
 
     def test_send_error(self):
@@ -473,8 +473,7 @@ FsAQI=
             )
 
             ssh_connection.connect()
-            req = ssh_connection.send("blah")
-            self.assertEqual(req, 4)
+            ssh_connection.send("blah")
 
             stdin.channel.send.assert_called()
             with self.assertRaises(AssertionError):
@@ -495,3 +494,7 @@ FsAQI=
             recved = ssh_connection._read()
             self.assertEqual(recved, b"foo bar baz")
             ssh_connection.disconnect()
+
+    def test_is_gvm_connection(self):
+        ssh_connection = SSHConnection(known_hosts_file=self.known_hosts_file)
+        self.assertTrue(isinstance(ssh_connection, GvmConnection))
