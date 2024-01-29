@@ -13,9 +13,10 @@ import socket as socketlib
 import ssl
 import sys
 import time
+from abc import ABC, abstractmethod
 from os import PathLike
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, Protocol, Union, runtime_checkable
 
 import paramiko
 import paramiko.ssh_exception
@@ -39,6 +40,19 @@ DEFAULT_KNOWN_HOSTS_FILE = ".ssh/known_hosts"
 MAX_SSH_DATA_LENGTH = 4095
 
 Data = Union[str, bytes]
+
+
+@runtime_checkable
+class GvmConnection(Protocol):
+    def connect(self) -> None: ...
+
+    def disconnect(self) -> None: ...
+
+    def send(self, data: Data) -> None: ...
+
+    def read(self) -> str: ...
+
+    def finish_send(self): ...
 
 
 class XmlReader:
@@ -77,7 +91,7 @@ class XmlReader:
             ) from None
 
 
-class GvmConnection:
+class AbstractGvmConnection(ABC):
     """
     Base class for establishing a connection to a remote server daemon.
 
@@ -97,6 +111,7 @@ class GvmConnection:
 
         return self._socket.recv(BUF_SIZE)
 
+    @abstractmethod
     def connect(self) -> None:
         """Establish a connection to a remote server"""
         raise NotImplementedError
@@ -164,7 +179,7 @@ class GvmConnection:
             self._socket.shutdown(socketlib.SHUT_WR)
 
 
-class SSHConnection(GvmConnection):
+class SSHConnection(AbstractGvmConnection):
     """
     SSH Class to connect, read and write from GVM via SSH
 
@@ -174,7 +189,7 @@ class SSHConnection(GvmConnection):
             127.0.0.1.
         port: Port of the remote SSH server. Default is port 22.
         username: Username to use for SSH login. Default is "gmp".
-        password: Passwort to use for SSH login. Default is "".
+        password: Password to use for SSH login. Default is "".
     """
 
     def __init__(
@@ -188,8 +203,7 @@ class SSHConnection(GvmConnection):
         known_hosts_file: Optional[Union[str, PathLike]] = None,
         auto_accept_host: Optional[bool] = None,
     ) -> None:
-        super().__init__(timeout=timeout)
-
+        super().__init__(timeout)
         self.hostname = hostname if hostname is not None else DEFAULT_HOSTNAME
         self.port = int(port) if port is not None else DEFAULT_SSH_PORT
         self.username = (
@@ -414,11 +428,11 @@ class SSHConnection(GvmConnection):
     def _read(self) -> bytes:
         return self._stdout.channel.recv(BUF_SIZE)
 
-    def send(self, data: Union[bytes, str]) -> int:
+    def send(self, data: Data) -> None:
         if isinstance(data, str):
-            return self._send_all(data.encode())
-
-        return self._send_all(data)
+            self._send_all(data.encode())
+        else:
+            self._send_all(data)
 
     def finish_send(self) -> None:
         # shutdown socket for sending. only allow reading data afterwards
@@ -439,7 +453,7 @@ class SSHConnection(GvmConnection):
             del self._socket, self._stdin, self._stdout, self._stderr
 
 
-class TLSConnection(GvmConnection):
+class TLSConnection(AbstractGvmConnection):
     """
     TLS class to connect, read and write from a remote GVM daemon via TLS
     secured socket.
@@ -524,7 +538,7 @@ class TLSConnection(GvmConnection):
         return super().disconnect()
 
 
-class UnixSocketConnection(GvmConnection):
+class UnixSocketConnection(AbstractGvmConnection):
     """
     UNIX-Socket class to connect, read, write from a daemon via direct
     communicating UNIX-Socket

@@ -10,6 +10,7 @@ from gvm.connections import (
     DEFAULT_GVM_PORT,
     DEFAULT_HOSTNAME,
     DEFAULT_TIMEOUT,
+    GvmConnection,
     TLSConnection,
 )
 
@@ -62,3 +63,7 @@ class TLSConnectionTestCase(unittest.TestCase):
             context_mock.load_cert_chain.assert_called_once()
             context_mock.wrap_socket.assert_called_once()
             self.assertFalse(context_mock.check_hostname)
+
+    def test_is_gvm_connection(self):
+        connection = TLSConnection()
+        self.assertTrue(isinstance(connection, GvmConnection))

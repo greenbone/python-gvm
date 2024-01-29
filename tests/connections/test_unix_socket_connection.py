@@ -14,6 +14,7 @@ from unittest.mock import patch
 from gvm.connections import (
     DEFAULT_TIMEOUT,
     DEFAULT_UNIX_SOCKET_PATH,
+    GvmConnection,
     UnixSocketConnection,
 )
 from gvm.errors import GvmError
@@ -65,8 +66,7 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
         connection.connect()
-        req = connection.send(bytes("<gmp/>", "utf-8"))
-        self.assertIsNone(req)
+        connection.send(bytes("<gmp/>", "utf-8"))
         resp = connection.read()
         self.assertEqual(resp, '<gmp_response status="200" status_text="OK"/>')
         connection.disconnect()
@@ -76,8 +76,7 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
             path=self.socketname, timeout=DEFAULT_TIMEOUT
         )
         connection.connect()
-        req = connection.send("<gmp/>")
-        self.assertIsNone(req)
+        connection.send("<gmp/>")
         resp = connection.read()
         self.assertEqual(resp, '<gmp_response status="200" status_text="OK"/>')
         connection.disconnect()
@@ -120,6 +119,6 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         self.assertEqual(connection._timeout, DEFAULT_TIMEOUT)
         self.assertEqual(connection.path, DEFAULT_UNIX_SOCKET_PATH)
 
-
-if __name__ == "__main__":
-    unittest.main()
+    def test_is_gvm_connection(self):
+        connection = UnixSocketConnection()
+        self.assertTrue(isinstance(connection, GvmConnection))
