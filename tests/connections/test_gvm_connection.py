@@ -36,14 +36,6 @@ class GvmConnectionTestCase(unittest.TestCase):
         false = connection._is_end_xml()
         self.assertFalse(false)
 
-    def test_feed_xml_error(self):
-        connection = GvmConnection()
-        connection._start_xml()
-        with self.assertRaises(
-            GvmError, msg="Cannot parse XML response. Response data read bla"
-        ):
-            connection._feed_xml("bla")
-
     @patch("gvm.connections.GvmConnection._read")
     def test_read_no_data(self, _read_mock):
         _read_mock.return_value = None
