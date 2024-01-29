@@ -13,11 +13,13 @@ import socket as socketlib
 import ssl
 import sys
 import time
+from os import PathLike
 from pathlib import Path
 from typing import Optional, Union
 
 import paramiko
 import paramiko.ssh_exception
+import paramiko.transport
 from lxml import etree
 
 from gvm.errors import GvmError
@@ -36,13 +38,15 @@ DEFAULT_HOSTNAME = "127.0.0.1"
 DEFAULT_KNOWN_HOSTS_FILE = ".ssh/known_hosts"
 MAX_SSH_DATA_LENGTH = 4095
 
+Data = Union[str, bytes]
+
 
 class XmlReader:
     """
     Read a XML command until its closing element
     """
 
-    def _start_xml(self):
+    def _start_xml(self) -> None:
         self._first_element = None
         # act on start and end element events and
         # allow huge text data (for report content)
@@ -50,7 +54,7 @@ class XmlReader:
             events=("start", "end"), huge_tree=True
         )
 
-    def _is_end_xml(self):
+    def _is_end_xml(self) -> bool:
         for action, obj in self._parser.read_events():
             if not self._first_element and action in "start":
                 self._first_element = obj.tag
@@ -63,7 +67,7 @@ class XmlReader:
                 return True
         return False
 
-    def _feed_xml(self, data):
+    def _feed_xml(self, data: Data) -> None:
         try:
             self._parser.feed(data)
         except etree.ParseError as e:
@@ -82,18 +86,21 @@ class GvmConnection(XmlReader):
             wait indefinitely
     """
 
-    def __init__(self, timeout: Optional[int] = DEFAULT_TIMEOUT):
+    def __init__(self, timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT):
         self._socket = None
         self._timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
 
     def _read(self) -> bytes:
+        if self._socket is None:
+            raise GvmError("Socket is not connected")
+
         return self._socket.recv(BUF_SIZE)
 
-    def connect(self):
+    def connect(self) -> None:
         """Establish a connection to a remote server"""
         raise NotImplementedError
 
-    def send(self, data: Union[bytes, str]) -> None:
+    def send(self, data: Data) -> None:
         """Send data to the connected remote server
 
         Arguments:
@@ -104,9 +111,9 @@ class GvmConnection(XmlReader):
             raise GvmError("Socket is not connected")
 
         if isinstance(data, str):
-            return self._socket.sendall(data.encode())
+            self._socket.sendall(data.encode())
         else:
-            return self._socket.sendall(data)
+            self._socket.sendall(data)
 
     def read(self) -> str:
         """Read data from the remote server
@@ -118,10 +125,9 @@ class GvmConnection(XmlReader):
 
         self._start_xml()
 
-        if self._timeout is not None:
-            now = time.time()
-
-            break_timeout = now + self._timeout
+        break_timeout = (
+            time.time() + self._timeout if self._timeout is not None else None
+        )
 
         while True:
             data = self._read()
@@ -137,12 +143,12 @@ class GvmConnection(XmlReader):
             if self._is_end_xml():
                 break
 
-            if time.time() > break_timeout:
+            if break_timeout and time.time() > break_timeout:
                 raise GvmError("Timeout while reading the response")
 
         return response
 
-    def disconnect(self):
+    def disconnect(self) -> None:
         """Disconnect and close the connection to the remote server"""
         try:
             if self._socket is not None:
@@ -152,8 +158,9 @@ class GvmConnection(XmlReader):
 
     def finish_send(self):
         """Indicate to the remote server you are done with sending data"""
-        # shutdown socket for sending. only allow reading data afterwards
-        self._socket.shutdown(socketlib.SHUT_WR)
+        if self._socket is not None:
+            # shutdown socket for sending. only allow reading data afterwards
+            self._socket.shutdown(socketlib.SHUT_WR)
 
 
 class SSHConnection(GvmConnection):
@@ -172,14 +179,14 @@ class SSHConnection(GvmConnection):
     def __init__(
         self,
         *,
-        timeout: Optional[int] = DEFAULT_TIMEOUT,
+        timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT,
         hostname: Optional[str] = DEFAULT_HOSTNAME,
         port: Optional[int] = DEFAULT_SSH_PORT,
         username: Optional[str] = DEFAULT_SSH_USERNAME,
         password: Optional[str] = DEFAULT_SSH_PASSWORD,
-        known_hosts_file: Optional[str] = None,
+        known_hosts_file: Optional[Union[str, PathLike]] = None,
         auto_accept_host: Optional[bool] = None,
-    ):
+    ) -> None:
         super().__init__(timeout=timeout)
 
         self.hostname = hostname if hostname is not None else DEFAULT_HOSTNAME
@@ -197,7 +204,7 @@ class SSHConnection(GvmConnection):
         )
         self.auto_accept_host = auto_accept_host
 
-    def _send_all(self, data) -> int:
+    def _send_all(self, data: bytes) -> int:
         """Returns the sum of sent bytes if success"""
         sent_sum = 0
         while data:
@@ -224,13 +231,15 @@ class SSHConnection(GvmConnection):
                 key,
             )
         try:
-            hostkeys.save(filename=self.known_hosts_file)
+            hostkeys.save(filename=str(self.known_hosts_file))
         except OSError as e:
             raise GvmError(
                 "Something went wrong with writing "
                 f"the known_hosts file: {e}"
             ) from None
+
         key_type = key.get_name().replace("ssh-", "").upper()
+
         logger.info(
             "Warning: Permanently added '%s' (%s) to "
             "the list of known hosts.",
@@ -247,12 +256,14 @@ class SSHConnection(GvmConnection):
             hashlib.sha256(base64.b64decode(key.get_base64())).digest()
         ).decode("utf-8")[:-1]
         key_type = key.get_name().replace("ssh-", "").upper()
+
         print(
             f"The authenticity of host '{self.hostname}' can't "
             "be established."
         )
         print(f"{key_type} key fingerprint is {sha64_fingerprint}.")
         print("Are you sure you want to continue connecting (yes/no)? ", end="")
+
         add = input()
         while True:
             if add == "yes":
@@ -264,22 +275,25 @@ class SSHConnection(GvmConnection):
                         key.get_name(),
                         key,
                     )
+
                 # ask user if the key should be added permanently
                 print(
                     f"Do you want to add {self.hostname} "
                     "to known_hosts (yes/no)? ",
                     end="",
                 )
+
                 save = input()
                 while True:
                     if save == "yes":
                         try:
-                            hostkeys.save(filename=self.known_hosts_file)
+                            hostkeys.save(filename=str(self.known_hosts_file))
                         except OSError as e:
                             raise GvmError(
                                 "Something went wrong with writing "
                                 f"the known_hosts file: {e}"
                             ) from None
+
                         logger.info(
                             "Warning: Permanently added '%s' (%s) to "
                             "the list of known hosts.",
@@ -305,7 +319,7 @@ class SSHConnection(GvmConnection):
                 print("Please type 'yes' or 'no': ", end="")
                 add = input()
 
-    def _get_remote_host_key(self):
+    def _get_remote_host_key(self) -> paramiko.PKey:
         """Get the remote host key for ssh connection"""
         try:
             tmp_socket = socketlib.socket()
@@ -342,7 +356,7 @@ class SSHConnection(GvmConnection):
         # https://stackoverflow.com/q/32945533
         try:
             # load the keys into paramiko and check if remote is in the list
-            self._socket.load_host_keys(filename=self.known_hosts_file)
+            self._socket.load_host_keys(filename=str(self.known_hosts_file))
         except OSError as e:
             if e.errno != errno.ENOENT:
                 raise GvmError(
@@ -400,9 +414,12 @@ class SSHConnection(GvmConnection):
         return self._stdout.channel.recv(BUF_SIZE)
 
     def send(self, data: Union[bytes, str]) -> int:
+        if isinstance(data, str):
+            return self._send_all(data.encode())
+
         return self._send_all(data)
 
-    def finish_send(self):
+    def finish_send(self) -> None:
         # shutdown socket for sending. only allow reading data afterwards
         self._stdout.channel.shutdown(socketlib.SHUT_WR)
 
@@ -453,8 +470,8 @@ class TLSConnection(GvmConnection):
         hostname: Optional[str] = DEFAULT_HOSTNAME,
         port: Optional[int] = DEFAULT_GVM_PORT,
         password: Optional[str] = None,
-        timeout: Optional[int] = DEFAULT_TIMEOUT,
-    ):
+        timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT,
+    ) -> None:
         super().__init__(timeout=timeout)
 
         self.hostname = hostname if hostname is not None else DEFAULT_HOSTNAME
@@ -492,7 +509,7 @@ class TLSConnection(GvmConnection):
 
         return sock
 
-    def connect(self):
+    def connect(self) -> None:
         self._socket = self._new_socket()
         self._socket.connect((self.hostname, int(self.port)))
 
@@ -503,7 +520,7 @@ class TLSConnection(GvmConnection):
                 self._socket = self._socket.unwrap()
         except OSError as e:
             logger.debug("Connection closing error: %s", e)
-        return super(TLSConnection, self).disconnect()
+        return super().disconnect()
 
 
 class UnixSocketConnection(GvmConnection):
@@ -520,7 +537,7 @@ class UnixSocketConnection(GvmConnection):
         self,
         *,
         path: Optional[str] = DEFAULT_UNIX_SOCKET_PATH,
-        timeout: Optional[int] = DEFAULT_TIMEOUT,
+        timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT,
     ) -> None:
         super().__init__(timeout=timeout)
 
@@ -559,8 +576,8 @@ class DebugConnection:
 
         logging.basicConfig(level=logging.DEBUG)
 
-        socketconnection = UnixSocketConnection(path='/var/run/gvm.sock')
-        connection = DebugConnection(socketconnection)
+        socket_connection = UnixSocketConnection(path='/var/run/gvm.sock')
+        connection = DebugConnection(socket_connection)
         gmp = Gmp(connection=connection)
 
     Arguments:
@@ -581,24 +598,24 @@ class DebugConnection:
         self.last_read_data = data
         return data
 
-    def send(self, data):
+    def send(self, data: Data) -> None:
         self.last_send_data = data
 
         logger.debug("Sending %s characters. Data %s", len(data), data)
 
         return self._connection.send(data)
 
-    def connect(self):
+    def connect(self) -> None:
         logger.debug("Connecting")
 
         return self._connection.connect()
 
-    def disconnect(self):
+    def disconnect(self) -> None:
         logger.debug("Disconnecting")
 
         return self._connection.disconnect()
 
-    def finish_send(self):
+    def finish_send(self) -> None:
         logger.debug("Finish send")
 
         self._connection.finish_send()
