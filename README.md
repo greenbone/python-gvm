@@ -50,8 +50,6 @@ Python 3.9 and later is supported.
 
 ### Install using pip
 
-pip 19.0 or later is required.
-
 You can install the latest stable release of python-gvm from the Python Package
 Index using [pip](https://pip.pypa.io/):
 
@@ -89,9 +87,9 @@ with Gmp(connection, transform=transform) as gmp:
 ## Support
 
 For any question on the usage of python-gvm please use the
-[Greenbone Community Portal](https://community.greenbone.net/c/gmp). If you
+[Greenbone Community Forum](https://forum.greenbone.net/c/building-from-source-under-the-hood/gmp/11). If you
 found a problem with the software, please
-[create an issue](https://github.com/greenbone/gvm-tools/issues)
+[create an issue](https://github.com/greenbone/python-gvm/issues)
 on GitHub.
 
 ## Maintainer
