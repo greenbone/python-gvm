@@ -3,11 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.xml import XmlCommand
 
 
@@ -18,19 +17,6 @@ class FeedType(Enum):
     CERT = "CERT"
     SCAP = "SCAP"
     GVMD_DATA = "GVMD_DATA"
-
-    @classmethod
-    def from_string(cls, feed_type: Optional[str]) -> Optional["FeedType"]:
-        """Convert a feed type string into a FeedType instance"""
-        if not feed_type:
-            return None
-
-        try:
-            return cls[feed_type.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="feed_type", function=cls.from_string.__name__
-            ) from None
 
 
 class FeedMixin:

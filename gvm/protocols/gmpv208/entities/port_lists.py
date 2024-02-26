@@ -3,11 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 
@@ -17,29 +16,6 @@ class PortRangeType(Enum):
 
     TCP = "TCP"
     UDP = "UDP"
-
-    @classmethod
-    def from_string(
-        cls,
-        port_range_type: Optional[str],
-    ) -> Optional["PortRangeType"]:
-        """Convert a port range type string to an actual
-        PortRangeType instance
-
-        Arguments:
-            port_range_type: Port range type string to
-            convert to a PortRangeType
-        """
-        if not port_range_type:
-            return None
-
-        try:
-            return cls[port_range_type.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="port_range_type",
-                function=cls.from_string.__name__,
-            ) from None
 
 
 class PortListMixin:

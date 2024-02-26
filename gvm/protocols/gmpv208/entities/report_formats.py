@@ -3,11 +3,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from enum import Enum
 from typing import Any, Optional, Union
 
 from lxml.etree import XMLSyntaxError
 
+from gvm._enum import Enum
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
@@ -35,23 +35,6 @@ class ReportFormatType(Enum):
     VERINICE_ISM = "c15ad349-bd8d-457a-880a-c7056532ee15"
     VERINICE_ITG = "50c9950a-f326-11e4-800c-28d24461215b"
     XML = "a994b278-1f62-11e1-96ac-406186ea4fc5"
-
-    @classmethod
-    def from_string(
-        cls,
-        report_format: Optional[str],
-    ) -> Optional["ReportFormatType"]:
-        """Convert an report format name into a ReportFormatType instance"""
-        if not report_format:
-            return None
-
-        try:
-            return cls[report_format.replace(" ", "_").upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="report_format",
-                function=cls.from_string.__name__,
-            ) from KeyError
 
 
 class ReportFormatsMixin:

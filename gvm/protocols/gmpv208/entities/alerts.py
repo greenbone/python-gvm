@@ -3,9 +3,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from enum import Enum
 from typing import Any, Optional, Union
 
+from gvm._enum import Enum
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 
 # if I use latest, I get circular import :/
@@ -24,23 +24,6 @@ class AlertEvent(Enum):
     ASSIGNED_TICKET_CHANGED = "Assigned ticket changed"
     OWNED_TICKET_CHANGED = "Owned ticket changed"
 
-    @classmethod
-    def from_string(
-        cls,
-        alert_event: Optional[str],
-    ) -> Optional["AlertEvent"]:
-        """Convert an alert event string into a AlertEvent instance"""
-        if not alert_event:
-            return None
-
-        try:
-            return cls[alert_event.replace(" ", "_").upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="alert_event",
-                function=cls.from_string.__name__,
-            ) from None
-
 
 class AlertCondition(Enum):
     """Enum for alert condition types"""
@@ -51,22 +34,6 @@ class AlertCondition(Enum):
     SEVERITY_CHANGED = "Severity changed"
     FILTER_COUNT_CHANGED = "Filter count changed"
     FILTER_COUNT_AT_LEAST = "Filter count at least"
-
-    @classmethod
-    def from_string(
-        cls, alert_condition: Optional[str]
-    ) -> Optional["AlertCondition"]:
-        """Convert an alert condition string into a AlertCondition instance"""
-        if not alert_condition:
-            return None
-
-        try:
-            return cls[alert_condition.replace(" ", "_").upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="alert_condition",
-                function=cls.from_string.__name__,
-            ) from None
 
 
 class AlertMethod(Enum):
@@ -84,23 +51,6 @@ class AlertMethod(Enum):
     VERINICE_CONNECTOR = "verinice Connector"
     TIPPINGPOINT_SMS = "TippingPoint SMS"
     ALEMBA_VFIRE = "Alemba vFire"
-
-    @classmethod
-    def from_string(
-        cls,
-        alert_method: Optional[str],
-    ) -> Optional["AlertMethod"]:
-        """Convert an alert method string into a AlertCondition instance"""
-        if not alert_method:
-            return None
-
-        try:
-            return cls[alert_method.replace(" ", "_").upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="alert_method",
-                function=cls.from_string.__name__,
-            ) from None
 
 
 def _check_event(

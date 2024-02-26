@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-
 from gvm.protocols.gmpv208.system.version import (
     VersionMixin as Gmp208VersionMixin,
 )
