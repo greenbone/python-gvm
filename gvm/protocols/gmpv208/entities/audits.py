@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-
 from collections.abc import Mapping
 from numbers import Integral
 from typing import Any, List, Optional

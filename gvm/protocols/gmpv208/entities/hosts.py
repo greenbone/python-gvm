@@ -3,11 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import RequiredArgument
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 
@@ -18,26 +17,6 @@ class HostsOrdering(Enum):
     SEQUENTIAL = "sequential"
     RANDOM = "random"
     REVERSE = "reverse"
-
-    @classmethod
-    def from_string(
-        cls,
-        hosts_ordering: Optional[str],
-    ) -> Optional["HostsOrdering"]:
-        """Convert a hosts ordering string to an actual HostsOrdering instance
-
-        Arguments:
-            hosts_ordering: Host ordering string to convert to a HostsOrdering
-        """
-        if not hosts_ordering:
-            return None
-        try:
-            return cls[hosts_ordering.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="hosts_ordering",
-                function=cls.from_string.__name__,
-            ) from None
 
 
 class HostsMixin:

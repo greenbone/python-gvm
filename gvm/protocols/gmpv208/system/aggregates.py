@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import InvalidArgumentType, RequiredArgument
 
 # if I use latest, I get circular import :/
 from gvm.protocols.gmpv208.entities.entities import EntityType
@@ -27,57 +27,12 @@ class AggregateStatistic(Enum):
     TEXT = "text"  # Text column value
     VALUE = "value"  # Group or subgroup column value
 
-    @classmethod
-    def from_string(
-        cls,
-        aggregate_statistic: Optional[str],
-    ) -> Optional["AggregateStatistic"]:
-        """
-        Convert a aggregate statistic string to an actual AggregateStatistic
-        instance.
-
-        Arguments:
-            aggregate_statistic: Aggregate statistic string to convert to a
-                AggregateStatistic
-        """
-        if not aggregate_statistic:
-            return None
-
-        try:
-            return cls[aggregate_statistic.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="aggregate_statistic",
-                function=cls.from_string.__name__,
-            ) from None
-
 
 class SortOrder(Enum):
     """Enum for sort order"""
 
     ASCENDING = "ascending"
     DESCENDING = "descending"
-
-    @classmethod
-    def from_string(
-        cls,
-        sort_order: Optional[str],
-    ) -> Optional["SortOrder"]:
-        """
-        Convert a sort order string to an actual SortOrder instance.
-
-        Arguments:
-            sort_order: Sort order string to convert to a SortOrder
-        """
-        if not sort_order:
-            return None
-
-        try:
-            return cls[sort_order.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="sort_order", function=cls.from_string.__name__
-            ) from None
 
 
 class AggregatesMixin:

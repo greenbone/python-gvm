@@ -3,11 +3,9 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-
-from enum import Enum
 from typing import Optional
 
-from gvm.errors import InvalidArgument
+from gvm._enum import Enum
 
 
 class EntityType(Enum):
@@ -58,9 +56,6 @@ class EntityType(Enum):
         Arguments:
             entity_type: Entity type string to convert to a EntityType
         """
-        if not entity_type:
-            return None
-
         if entity_type == "vuln":
             return cls.VULNERABILITY
 
@@ -70,13 +65,4 @@ class EntityType(Enum):
         if entity_type == "config":
             return cls.SCAN_CONFIG
 
-        if entity_type == "tls_certificate":
-            return cls.TLS_CERTIFICATE
-
-        try:
-            return cls[entity_type.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="entity_type",
-                function=cls.from_string.__name__,
-            ) from None
+        return super().from_string(entity_type)

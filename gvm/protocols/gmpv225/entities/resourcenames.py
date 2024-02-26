@@ -3,11 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter
 from gvm.xml import XmlCommand
 
@@ -41,25 +40,6 @@ class ResourceType(Enum):
     TASK = "TASK"
     TLS_CERTIFICATE = "TLS_CERTIFICATE"
     USER = "USER"
-
-    @classmethod
-    def from_string(
-        cls,
-        resource_type: Optional[str],
-    ) -> Optional["ResourceType"]:
-        """Convert a resource type string to an actual ResourceType instance
-
-        Arguments:
-            resource_type: Resource type string to convert to a ResourceType
-        """
-        if not resource_type:
-            return None
-        try:
-            return cls[resource_type.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="resource_type", function=cls.from_string.__name__
-            ) from None
 
 
 class ResourceNamesMixin:

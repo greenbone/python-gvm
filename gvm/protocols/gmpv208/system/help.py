@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType
+from gvm._enum import Enum
+from gvm.errors import InvalidArgumentType
 from gvm.xml import XmlCommand
 
 
@@ -17,27 +17,6 @@ class HelpFormat(Enum):
     RNC = "rnc"
     TEXT = "text"
     XML = "xml"
-
-    @classmethod
-    def from_string(
-        cls,
-        sort_order: Optional[str],
-    ) -> Optional["HelpFormat"]:
-        """
-        Convert a sort order string to an actual SortOrder instance.
-
-        Arguments:
-            sort_order: Sort order string to convert to a SortOrder
-        """
-        if not sort_order:
-            return None
-
-        try:
-            return cls[sort_order.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="sort_order", function=cls.from_string.__name__
-            ) from None
 
 
 class HelpMixin:

@@ -3,11 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-
-from enum import Enum
 from typing import Any, List, Optional
 
-from gvm.errors import InvalidArgument, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import RequiredArgument
 from gvm.utils import add_filter, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
@@ -18,23 +17,6 @@ class UserAuthType(Enum):
     FILE = "file"
     LDAP_CONNECT = "ldap_connect"
     RADIUS_CONNECT = "radius_connect"
-
-    @classmethod
-    def from_string(
-        cls,
-        user_auth_type: Optional[str],
-    ) -> Optional["UserAuthType"]:
-        """Convert a user auth type string into a UserAuthType instance"""
-        if not user_auth_type:
-            return None
-
-        try:
-            return cls[user_auth_type.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="user_auth_type",
-                function=cls.from_string.__name__,
-            ) from None
 
 
 class UsersMixin:

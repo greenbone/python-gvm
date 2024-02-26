@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 
@@ -50,9 +50,6 @@ class FilterType(Enum):
         Arguments:
             filter_type (str): Filter type string to convert to a FilterType
         """
-        if not filter_type:
-            return None
-
         if filter_type == "vuln":
             return cls.VULNERABILITY
 
@@ -65,13 +62,7 @@ class FilterType(Enum):
         if filter_type == "secinfo":
             return cls.ALL_SECINFO
 
-        try:
-            return cls[filter_type.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="filter_type",
-                function=cls.from_string.__name__,
-            ) from None
+        return super().from_string(filter_type)
 
 
 class FiltersMixin:

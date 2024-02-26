@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 
@@ -17,23 +17,6 @@ class TicketStatus(Enum):
     OPEN = "Open"
     FIXED = "Fixed"
     CLOSED = "Closed"
-
-    @classmethod
-    def from_string(
-        cls,
-        ticket_status: Optional[str],
-    ) -> Optional["TicketStatus"]:
-        """Convert a ticket status string into a TicketStatus instance"""
-        if not ticket_status:
-            return None
-
-        try:
-            return cls[ticket_status.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="ticket_status",
-                function=cls.from_string.__name__,
-            ) from None
 
 
 class TicketsMixin:

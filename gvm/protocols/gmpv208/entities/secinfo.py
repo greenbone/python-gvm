@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
 
@@ -20,22 +20,6 @@ class InfoType(Enum):
     DFN_CERT_ADV = "DFN_CERT_ADV"
     OVALDEF = "OVALDEF"
     NVT = "NVT"
-
-    @classmethod
-    def from_string(cls, info_type: Optional[str]) -> Optional["InfoType"]:
-        """Convert a info type string to an actual InfoType instance
-
-        Arguments:
-            info_type: Info type string to convert to a InfoType
-        """
-        if not info_type:
-            return None
-        try:
-            return cls[info_type.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="info_type", function=cls.from_string.__name__
-            ) from None
 
 
 class SecInfoMixin:

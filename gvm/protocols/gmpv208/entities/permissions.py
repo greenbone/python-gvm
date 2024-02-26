@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from enum import Enum
 from typing import Any, Optional
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm._enum import Enum
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.protocols.gmpv208.entities.entities import EntityType
 from gvm.utils import add_filter, to_bool
 from gvm.xml import XmlCommand
@@ -18,29 +18,6 @@ class PermissionSubjectType(Enum):
     USER = "user"
     GROUP = "group"
     ROLE = "role"
-
-    @classmethod
-    def from_string(
-        cls,
-        subject_type: Optional[str],
-    ) -> Optional["PermissionSubjectType"]:
-        """Convert a permission subject type string to an actual
-        PermissionSubjectType instance
-
-        Arguments:
-            subject_type: Permission subject type string to convert to a
-                PermissionSubjectType
-        """
-        if not subject_type:
-            return None
-
-        try:
-            return cls[subject_type.upper()]
-        except KeyError:
-            raise InvalidArgument(
-                argument="subject_type",
-                function=cls.from_string.__name__,
-            ) from None
 
 
 class PermissionsMixin:
