@@ -1,3 +1,12 @@
+python-gvm (24.1.0-gos2404~2) shredder; urgency=medium
+
+  * Change: Increase Standards-Version to 4.6.2
+  * Remove: Non existing uploader
+  * Remove: X-Python-Version
+  * Change: Adjust gbp.conf
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Mon, 04 Mar 2024 12:49:16 +0100
+
 python-gvm (24.1.0-gos2204~1) abomination; urgency=medium
 
   * New upstream release (Closes: GOS-1710).
