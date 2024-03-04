@@ -2,8 +2,7 @@ Source: python-gvm
 Section: python
 Priority: optional
 Maintainer: Greenbone AG <info@greenbone.net>
-Uploaders: Sascha Howey <sascha.howey@greenbone.net>,
- Raphael Grewe <raphael.grewe@greenbone.net>,
+Uploaders: Raphael Grewe <raphael.grewe@greenbone.net>,
  Hendrik Deuper <hendrik.deuper@greenbone.net>,
  Carlos A. Parra F. <carlos.parra@greenbone.net>,
  Lukas Hannigbrinck <lukas.hannigbrinck@greenbone.net>,
@@ -18,8 +17,7 @@ Build-Depends:
   dh-python,
   python3-poetry-core,
   pybuild-plugin-pyproject (>= 5),
-Standards-Version: 4.5.1
-X-Python3-Version: >= 3.9
+Standards-Version: 4.6.2
 
 Package: python3-gvm
 Architecture: all
