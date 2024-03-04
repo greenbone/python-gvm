@@ -18,7 +18,6 @@ Build-Depends:
   python3-poetry-core,
   pybuild-plugin-pyproject (>= 5),
 Standards-Version: 4.6.2
-X-Python3-Version: >= 3.9
 
 Package: python3-gvm
 Architecture: all
