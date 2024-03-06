@@ -5,7 +5,7 @@
 
 import sys
 from io import IOBase
-from typing import List, Optional, TextIO, Union
+from typing import AnyStr, List, Optional, TextIO, Union
 
 import defusedxml.lxml as secET
 from defusedxml import DefusedXmlException
@@ -22,6 +22,12 @@ def create_parser():
     # huge_tree => disable security restrictions and support very deep trees and
     #              very long text content (for get_reports)
     return XMLParser(encoding="utf-8", huge_tree=True)
+
+
+def parse_xml(xml: AnyStr) -> Element:
+    parser = create_parser()
+    parser.feed(xml)
+    return parser.close()
 
 
 class XmlCommandElement:
