@@ -11,9 +11,7 @@ import re
 import warnings
 from typing import Any, List, Union
 
-from lxml import etree
-
-from gvm.xml import create_parser
+from gvm.xml import XmlError, parse_xml
 
 logger = logging.getLogger(__name__)
 
@@ -47,15 +45,15 @@ def check_command_status(xml: str) -> bool:
         return False
 
     try:
-        root = etree.XML(xml, parser=create_parser())
+        root = parse_xml(xml)
         status = root.attrib["status"]
         return status is not None and status[0] == "2"
     except KeyError:
         print(logger)
         logger.error("Not received an status code within the response.")
         return False
-    except etree.Error as e:
-        logger.error("etree.XML(xml): %s", e)
+    except XmlError as e:
+        logger.error("Error while parsing the command status: %s", e)
         return False
 
 
