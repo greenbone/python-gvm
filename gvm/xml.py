@@ -9,7 +9,9 @@ from typing import List, Optional, TextIO, Union
 
 import defusedxml.lxml as secET
 from defusedxml import DefusedXmlException
-from lxml.etree import Element, LxmlError, SubElement, XMLParser
+from lxml.etree import Element as create_element
+from lxml.etree import LxmlError, SubElement, XMLParser
+from lxml.etree import _Element as Element
 from lxml.etree import iselement as isxmlelement
 from lxml.etree import tostring as xmltostring
 
@@ -63,7 +65,7 @@ class XmlCommandElement:
 
 class XmlCommand(XmlCommandElement):
     def __init__(self, name):
-        super().__init__(Element(name))
+        super().__init__(create_element(name))
 
 
 def pretty_print(
