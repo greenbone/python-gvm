@@ -70,10 +70,16 @@ class XmlCommandElement:
         self._element.append(node)
 
     def to_string(self) -> str:
-        return xmltostring(self._element).decode("utf-8")
+        return self.to_bytes().decode("utf-8")
+
+    def to_bytes(self) -> bytes:
+        return xmltostring(self._element)
 
     def __str__(self) -> str:
         return self.to_string()
+
+    def __bytes__(self) -> bytes:
+        return self.to_bytes()
 
 
 class XmlCommand(XmlCommandElement):
