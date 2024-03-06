@@ -37,6 +37,6 @@ class Enum(PythonEnum):
             return cls[value.replace(" ", "_").upper()]
         except KeyError:
             raise InvalidArgument(
-                f"Invalid argument {value} for {cls.__name__}.from_string. "
+                f"Invalid argument {value}. "
                 f"Allowed values are {','.join(e.name for e in cls)}."
             ) from None
