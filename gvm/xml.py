@@ -17,6 +17,16 @@ from lxml.etree import tostring as xmltostring
 
 from gvm.errors import GvmError, InvalidArgumentType
 
+__all__ = (
+    "Element",
+    "create_parser",
+    "parse_xml",
+    "XmlCommandElement",
+    "XmlCommand",
+    "pretty_print",
+    "validate_xml_string",
+)
+
 
 class XmlError(GvmError):
     pass
