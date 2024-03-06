@@ -123,7 +123,6 @@ def check_command_status(xml: str) -> bool:
         status = root.attrib["status"]
         return status is not None and status[0] == "2"
     except KeyError:
-        print(logger)
         logger.error("Not received an status code within the response.")
         return False
     except XmlError as e:
