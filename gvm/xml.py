@@ -86,6 +86,19 @@ class XmlCommand(XmlCommandElement):
     def __init__(self, name: str) -> None:
         super().__init__(create_element(name))
 
+    def add_filter(
+        self,
+        filter_string: Optional[str],
+        filter_id: Optional[str],
+    ) -> "XmlCommand":
+        if filter_string:
+            self.set_attribute("filter", filter_string)
+
+        if filter_id:
+            self.set_attribute("filt_id", filter_id)
+
+        return self
+
 
 def pretty_print(
     xml: Union[str, List[Union[Element, str]], Element],
