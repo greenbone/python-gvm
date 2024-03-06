@@ -35,7 +35,7 @@ def parse_xml(xml: AnyStr) -> Element:
 
 
 class XmlCommandElement:
-    def __init__(self, element):
+    def __init__(self, element: Element):
         self._element = element
 
     def add_element(
@@ -44,15 +44,16 @@ class XmlCommandElement:
         text: Optional[str] = None,
         *,
         attrs: Optional[dict] = None,
-    ):
+    ) -> "XmlCommandElement":
         node = SubElement(self._element, name, attrib=attrs)
         node.text = text
         return XmlCommandElement(node)
 
-    def set_attribute(self, name: str, value: str):
+    def set_attribute(self, name: str, value: str) -> "XmlCommandElement":
         self._element.set(name, value)
+        return self
 
-    def set_attributes(self, attrs: dict):
+    def set_attributes(self, attrs: dict[str, str]) -> "XmlCommandElement":
         """Set several attributes at once.
 
         Arguments:
@@ -61,7 +62,9 @@ class XmlCommandElement:
         for key, value in attrs.items():
             self._element.set(key, value)
 
-    def append_xml_str(self, xml_text: str):
+        return self
+
+    def append_xml_str(self, xml_text: str) -> None:
         """Append a xml element in string format."""
         node = secET.fromstring(xml_text)
         self._element.append(node)
@@ -69,12 +72,12 @@ class XmlCommandElement:
     def to_string(self) -> str:
         return xmltostring(self._element).decode("utf-8")
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.to_string()
 
 
 class XmlCommand(XmlCommandElement):
-    def __init__(self, name):
+    def __init__(self, name: str) -> None:
         super().__init__(create_element(name))
 
 
