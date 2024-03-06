@@ -9,7 +9,7 @@ import base64
 import logging
 import re
 import warnings
-from typing import Any, List
+from typing import Any, List, Union
 
 from lxml import etree
 
@@ -67,7 +67,7 @@ def to_dotted_types_dict(types: List) -> TypesDict:
     return TypesDict(dic)
 
 
-def to_bool(value: bool) -> str:
+def to_bool(value: Union[bool, int, None]) -> str:
     return "1" if value else "0"
 
 
