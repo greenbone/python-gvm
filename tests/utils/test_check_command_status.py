@@ -16,6 +16,7 @@ class TestCheckCommandStatus(unittest.TestCase):
 
             false = check_command_status(xml=0)
             self.assertFalse(false)
+
         self.assertEqual(
             error_logger.output,
             [
@@ -31,11 +32,14 @@ class TestCheckCommandStatus(unittest.TestCase):
         )
         with self.assertLogs("gvm.utils", level="ERROR") as error_logger:
             self.assertFalse(check_command_status(xml=response))
+
         self.assertEqual(
             error_logger.output,
             [
-                "ERROR:gvm.utils:etree.XML(xml): error parsing attribute name, "
-                "line 1, column 36 (<string>, line 1)"
+                "ERROR:gvm.utils:Error while parsing the command status: Invalid XML "
+                '\'<authenticatio status="400" ><asaaa<fsdfsn_response status_text="Auth '
+                "failed\"/>'. Error was error parsing attribute name, line 1, column 36 "
+                "(<string>, line 1)"
             ],
         )
 
@@ -43,6 +47,7 @@ class TestCheckCommandStatus(unittest.TestCase):
         response = "<a><b/></a>"
         with self.assertLogs("gvm.utils", level="ERROR") as error_logger:
             self.assertFalse(check_command_status(xml=response))
+
         self.assertEqual(
             error_logger.output,
             [
