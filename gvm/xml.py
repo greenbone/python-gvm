@@ -10,6 +10,7 @@ from typing import AnyStr, List, Optional, TextIO, Union
 import defusedxml.lxml as secET
 from defusedxml import DefusedXmlException
 from lxml.etree import Element as create_element
+from lxml.etree import Error as EtreeError
 from lxml.etree import LxmlError, SubElement, XMLParser
 from lxml.etree import _Element as Element
 from lxml.etree import iselement as isxmlelement
@@ -40,8 +41,11 @@ def create_parser():
 
 def parse_xml(xml: AnyStr) -> Element:
     parser = create_parser()
-    parser.feed(xml)
-    return parser.close()
+    try:
+        parser.feed(xml)
+        return parser.close()
+    except EtreeError as e:
+        raise XmlError(f"Invalid XML {xml!r}. Error was {e}") from e
 
 
 class XmlCommandElement:
