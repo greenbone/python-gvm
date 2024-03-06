@@ -12,7 +12,7 @@ import warnings
 from functools import wraps
 from typing import Any, Callable, List, Optional, Type, Union
 
-from gvm.xml import XmlError, parse_xml
+from gvm.xml import XmlCommand, XmlError, parse_xml
 
 logger = logging.getLogger(__name__)
 
@@ -151,12 +151,11 @@ def to_comma_list(value: List) -> str:
     return ",".join(value)
 
 
-def add_filter(cmd, filter_string, filter_id):
-    if filter_string:
-        cmd.set_attribute("filter", filter_string)
-
-    if filter_id:
-        cmd.set_attribute("filt_id", filter_id)
+@deprecated(since="24.3.0", reason="Please use XmlCommand.add_filter instead.")
+def add_filter(
+    cmd: XmlCommand, filter_string: Optional[str], filter_id: Optional[str]
+) -> None:
+    cmd.add_filter(filter_string, filter_id)
 
 
 def is_list_like(value: Any) -> bool:
