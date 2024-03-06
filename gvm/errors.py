@@ -15,7 +15,7 @@ class GvmError(Exception):
     Base class for all exceptions originating in python-gvm.
     """
 
-    def __init__(self, message: str, *args):
+    def __init__(self, message: Optional[str], *args):
         super().__init__(message, *args)
         self.message = message
 
