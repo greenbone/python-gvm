@@ -18,6 +18,10 @@ from lxml.etree import tostring as xmltostring
 from gvm.errors import GvmError, InvalidArgumentType
 
 
+class XmlError(GvmError):
+    pass
+
+
 def create_parser():
     # huge_tree => disable security restrictions and support very deep trees and
     #              very long text content (for get_reports)
