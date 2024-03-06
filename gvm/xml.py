@@ -5,7 +5,7 @@
 
 import sys
 from io import IOBase
-from typing import List, Optional, Union
+from typing import List, Optional, TextIO, Union
 
 import defusedxml.lxml as secET
 from defusedxml import DefusedXmlException
@@ -68,7 +68,7 @@ class XmlCommand(XmlCommandElement):
 
 def pretty_print(
     xml: Union[str, List[Union[Element, str]], Element],
-    file: IOBase = sys.stdout,
+    file: Union[TextIO, IOBase] = sys.stdout,
 ):
     """Prints beautiful XML-Code
 
@@ -85,9 +85,9 @@ def pretty_print(
             A IOBase type. Can be a File, StringIO, ...
 
     """
-    if not isinstance(file, IOBase):
+    if not isinstance(file, (IOBase, TextIO)):
         raise TypeError(
-            f"Type needs to be from IOBase, not {type(file)}."
+            f"Type needs to be from IOBase or TextIO, not {type(file)}."
         ) from None
 
     if isinstance(xml, list):
