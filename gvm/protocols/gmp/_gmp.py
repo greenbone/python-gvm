@@ -1,29 +1,23 @@
 # SPDX-FileCopyrightText: 2019-2024 Greenbone AG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-#
 
-"""
-Module for communication with gvmd
-"""
 from types import TracebackType
-from typing import Any, Callable, Optional, Type, Union
+from typing import Callable, Optional, Type, Union
 
+from gvm.connections import GvmConnection
 from gvm.errors import GvmError
-from gvm.protocols.base import GvmConnection, GvmProtocol
-from gvm.protocols.gmpv208 import Gmp as Gmpv208
-from gvm.protocols.gmpv214 import Gmp as Gmpv214
-from gvm.protocols.gmpv224 import Gmp as Gmpv224
-from gvm.protocols.gmpv225 import Gmp as Gmpv225
-from gvm.transforms import EtreeCheckCommandTransform
-from gvm.xml import XmlCommand
 
-SUPPORTED_GMP_VERSIONS = Union[  # pylint: disable=invalid-name
-    Gmpv208, Gmpv214, Gmpv224, Gmpv225
-]
+from .._protocol import GvmProtocol, T, str_transform
+from ._gmp224 import GMPv224
+from ._gmp225 import GMPv225
+from .core import Response
+from .core.requests import Version
+
+SUPPORTED_GMP_VERSIONS = Union[GMPv224, GMPv225]
 
 
-class Gmp(GvmProtocol):
+class GMP(GvmProtocol[T]):
     """Dynamically select supported GMP protocol of the remote manager daemon.
 
     Must be used as a `Context Manager
@@ -59,19 +53,18 @@ class Gmp(GvmProtocol):
         self,
         connection: GvmConnection,
         *,
-        transform: Optional[Callable[[str], Any]] = None,
+        transform: Callable[[Response], T] = str_transform,  # type: ignore[assignment] # this should work with mypy 1.9.0 without an ignore
     ):
-        super().__init__(connection, transform=EtreeCheckCommandTransform())
-        self._gmp_transform = transform
+        super().__init__(connection, transform=transform)
 
     def determine_remote_gmp_version(self) -> str:
         """Determine the supported GMP version of the remote daemon"""
         self.connect()
-        resp = self._send_xml_command(XmlCommand("get_version"))
+        resp = self._send_command(Version.get_version())
         self.disconnect()
 
-        version_el = resp.find("version")
-        if version_el is None:
+        version_el = resp.xml().find("version")
+        if version_el is None or not version_el.text:
             raise GvmError(
                 "Invalid response from manager daemon while requesting the "
                 "version information."
@@ -86,21 +79,19 @@ class Gmp(GvmProtocol):
         version_str = self.determine_remote_gmp_version().split(".", 1)
         major_version = int(version_str[0])
         minor_version = int(version_str[1])
-        if major_version == 20:
-            gmp_class = Gmpv208
-        elif major_version == 21 and minor_version == 4:
-            gmp_class = Gmpv214
-        elif major_version == 22 and minor_version == 4:
-            gmp_class = Gmpv224
+        # if major_version == 22 and minor_version == 4:
+        # gmp_class = Gmpv224
+        if major_version == 22 and minor_version == 4:
+            gmp_class = GMPv224
         elif major_version == 22 and minor_version == 5:
-            gmp_class = Gmpv225
+            gmp_class = GMPv225
         else:
             raise GvmError(
                 "Remote manager daemon uses an unsupported version of GMP. "
                 f"The GMP version was {major_version}.{minor_version}"
             )
 
-        return gmp_class(self._connection, transform=self._gmp_transform)
+        return gmp_class(self._connection, transform=self._transform_callable)
 
     def __enter__(self):
         self._gmp = self.determine_supported_gmp()
@@ -114,6 +105,6 @@ class Gmp(GvmProtocol):
         exc_type: Optional[Type[BaseException]],
         exc_value: Optional[BaseException],
         traceback: Optional[TracebackType],
-    ) -> Any:
+    ) -> None:
         self._gmp.disconnect()
         self._gmp = None
