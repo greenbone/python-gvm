@@ -3,11 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-import os
 import unittest
 from io import StringIO
 from pathlib import Path
-from unittest.mock import Mock, patch
+from unittest.mock import MagicMock, Mock, patch
 
 import paramiko
 
@@ -23,19 +22,22 @@ from gvm.connections import (
 from gvm.errors import GvmError
 
 
+class AbortException(Exception):
+    """Just for testing purposes"""
+
+
 class SSHConnectionTestCase(unittest.TestCase):
     # pylint: disable=protected-access, invalid-name
     def setUp(self):
         self.known_hosts_file = Path("known_hosts")
-        with self.known_hosts_file.open("a", encoding="utf-8") as fp:
-            fp.write(
-                "127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi"
-                "fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n"
-            )
+        self.known_hosts_file.write_text(
+            "127.0.0.1 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBOZWi"
+            "fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n",
+            encoding="utf-8",
+        )
 
     def tearDown(self):
-        if self.known_hosts_file.exists():
-            self.known_hosts_file.unlink()
+        self.known_hosts_file.unlink(missing_ok=True)
 
     def test_init_no_args(self):
         ssh_connection = SSHConnection()
@@ -49,7 +51,9 @@ class SSHConnectionTestCase(unittest.TestCase):
 
         self.check_ssh_connection_for_default_values(ssh_connection)
 
-    def check_ssh_connection_for_default_values(self, ssh_connection):
+    def check_ssh_connection_for_default_values(
+        self, ssh_connection: SSHConnection
+    ):
         self.assertIsInstance(ssh_connection, SSHConnection)
         self.assertEqual(ssh_connection.hostname, DEFAULT_HOSTNAME)
         self.assertEqual(ssh_connection.port, DEFAULT_SSH_PORT)
@@ -87,7 +91,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection.disconnect()
 
     def test_connect_auto_accept_host(self):
-        with patch("paramiko.SSHClient") as SSHClientMock:
+        with patch("paramiko.SSHClient", autospec=True) as SSHClientMock:
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ["a", "b", "c"]
             ssh_connection = SSHConnection(
@@ -116,8 +120,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection.connect()
 
     def test_connect_denied_known_hosts_file(self):
-        if os.path.exists(self.known_hosts_file):
-            os.chmod(self.known_hosts_file, 0000)
+        self.known_hosts_file.chmod(0000)
 
         ssh_connection = SSHConnection(
             hostname="0.0.0.1", known_hosts_file=self.known_hosts_file
@@ -132,8 +135,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection.connect()
 
     def test_connect_no_known_hosts_file(self):
-        if os.path.exists(self.known_hosts_file):
-            os.remove(self.known_hosts_file)
+        self.known_hosts_file.unlink(missing_ok=True)
 
         ssh_connection = SSHConnection(
             hostname="0.0.0.1",
@@ -150,8 +152,8 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection.connect()
 
     @patch("builtins.print")
-    @patch("builtins.input")
-    def test_connect_adding_and_save_hostkey(self, input_mock, _print_mock):
+    def test_connect_adding_and_save_hostkey(self, _print_mock):
+        input_mock = MagicMock(spec=input)
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -167,9 +169,10 @@ FsAQI=
         hostname = "0.0.0.0"
         input_mock.side_effect = ["yes", "yes"]
         ssh_connection = SSHConnection(
-            hostname=hostname, known_hosts_file=self.known_hosts_file
+            hostname=hostname,
+            known_hosts_file=self.known_hosts_file,
+            input=input_mock,
         )
-        ssh_connection._socket = paramiko.SSHClient()
         keys = self.known_hosts_file.read_text(encoding="utf-8")
         self.assertEqual(
             keys,
@@ -187,7 +190,7 @@ FsAQI=
             self.assertEqual(
                 cm.output,
                 [
-                    "INFO:gvm.connections:Warning: "
+                    "INFO:gvm.connections.ssh:Warning: "
                     f"Permanently added '{hostname}' ({key_type}) to "
                     "the list of known hosts."
                 ],
@@ -200,10 +203,8 @@ FsAQI=
             )
 
     @patch("builtins.print")
-    @patch("builtins.input")
-    def test_connect_adding_and_dont_save_hostkey(
-        self, input_mock, _print_mock
-    ):
+    def test_connect_adding_and_dont_save_hostkey(self, _print_mock):
+        input_mock = MagicMock(spec=input)
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -218,10 +219,12 @@ FsAQI=
         key_type = key.get_name().replace("ssh-", "").upper()
         hostname = "0.0.0.0"
         input_mock.side_effect = ["yes", "no"]
+
         ssh_connection = SSHConnection(
-            hostname=hostname, known_hosts_file=self.known_hosts_file
+            hostname=hostname,
+            known_hosts_file=self.known_hosts_file,
+            input=input_mock,
         )
-        ssh_connection._socket = paramiko.SSHClient()
         keys = self.known_hosts_file.read_text(encoding="utf-8")
         self.assertEqual(
             keys,
@@ -239,7 +242,7 @@ FsAQI=
             self.assertEqual(
                 cm.output,
                 [
-                    "INFO:gvm.connections:Warning: "
+                    "INFO:gvm.connections.ssh:Warning: "
                     f"Host '{hostname}' ({key_type}) not added to "
                     "the list of known hosts."
                 ],
@@ -251,9 +254,9 @@ FsAQI=
                 "fs+DoMqIa5Nr0wiVrzQNpMbUwaLzuSTN6rNrYA\n",
             )
 
-    @patch("builtins.input")
-    @patch("sys.stdout", new_callable=StringIO)
-    def test_connect_wrong_input(self, stdout_mock, input_mock):
+    def test_connect_wrong_input(self):
+        input_mock = MagicMock(spec=input)
+        stdout_mock = StringIO()
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -270,10 +273,11 @@ FsAQI=
         inputs = ["asd", "yes", "yoo", "no"]
         input_mock.side_effect = inputs
         ssh_connection = SSHConnection(
-            hostname=hostname, known_hosts_file=self.known_hosts_file
+            hostname=hostname,
+            known_hosts_file=self.known_hosts_file,
+            input=input_mock,
+            file=stdout_mock,
         )
-        ssh_connection._socket = paramiko.SSHClient()
-
         with self.assertLogs("gvm.connections", level="INFO") as cm:
             hostkeys = paramiko.HostKeys(filename=str(self.known_hosts_file))
             ssh_connection._ssh_authentication_input_loop(
@@ -284,7 +288,7 @@ FsAQI=
             self.assertEqual(
                 cm.output,
                 [
-                    "INFO:gvm.connections:Warning: "
+                    "INFO:gvm.connections.ssh:Warning: "
                     f"Host '{hostname}' ({key_type}) not added to "
                     "the list of known hosts."
                 ],
@@ -301,8 +305,10 @@ FsAQI=
                 "Please type 'yes' or 'no': ",
             )
 
-    @patch("builtins.input")
-    def test_user_denies_auth(self, input_mock):
+    def test_user_denies_auth(self):
+        input_mock = MagicMock(spec=input)
+        stdout_mock = StringIO()
+        exit_mock = MagicMock(side_effect=AbortException("Exit called"))
         key_io = StringIO(
             """-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
@@ -317,17 +323,22 @@ FsAQI=
         hostname = "0.0.0.0"
         input_mock.return_value = "no"
         ssh_connection = SSHConnection(
-            hostname=hostname, known_hosts_file=self.known_hosts_file
+            hostname=hostname,
+            known_hosts_file=self.known_hosts_file,
+            input=input_mock,
+            exit=exit_mock,
+            file=stdout_mock,
         )
-        ssh_connection._socket = paramiko.SSHClient()
-
-        with self.assertRaises(
-            SystemExit, msg="User denied key. Host key verification failed."
-        ):
-            hostkeys = paramiko.HostKeys(filename=str(self.known_hosts_file))
+        hostkeys = paramiko.HostKeys(filename=str(self.known_hosts_file))
+        with self.assertRaisesRegex(AbortException, "^Exit called"):
             ssh_connection._ssh_authentication_input_loop(
-                hostkeys=hostkeys, key=key
+                hostkeys=hostkeys,
+                key=key,
             )
+
+        exit_mock.assert_called_once_with(
+            "User denied key. Host key verification failed."
+        )
 
     def test_disconnect(self):
         with patch("paramiko.SSHClient") as SSHClientMock:
@@ -350,23 +361,6 @@ FsAQI=
                 type(ssh_connection._stdout)
             with self.assertRaises(AttributeError):
                 type(ssh_connection._stderr)
-            with self.assertRaises(AttributeError):
-                type(ssh_connection._socket)
-
-            with self.assertRaises(AttributeError):
-                with self.assertLogs("gvm.connections", level="INFO") as cm:
-                    # disconnect twice should not work ...
-                    ssh_connection.disconnect()
-                    self.assertEqual(
-                        cm.output,
-                        [
-                            "Connection might already be"
-                            " closed. No socket found.",
-                        ],
-                    )
-
-            ssh_connection._socket = None
-            ssh_connection.disconnect()
 
     def test_disconnect_os_error(self):
         with patch("paramiko.SSHClient") as SSHClientMock:
