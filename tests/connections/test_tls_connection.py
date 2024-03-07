@@ -16,7 +16,6 @@ from gvm.connections import (
 
 
 class TLSConnectionTestCase(unittest.TestCase):
-    # pylint: disable=protected-access, invalid-name
     def test_init_no_args(self):
         connection = TLSConnection()
         self.check_default_values(connection)
