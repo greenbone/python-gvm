@@ -1474,6 +1474,20 @@ files = [
 ]
 
 [[package]]
+name = "types-paramiko"
+version = "3.4.0.20240423"
+description = "Typing stubs for paramiko"
+optional = false
+python-versions = ">=3.8"
+files = [
+    {file = "types-paramiko-3.4.0.20240423.tar.gz", hash = "sha256:aaa98dda232c47886563d66743d3a8b66c432790c596bc3bdd3f17f91be2a8c1"},
+    {file = "types_paramiko-3.4.0.20240423-py3-none-any.whl", hash = "sha256:c56e0d43399a1b909901b1e0375e0ff6ee62e16cd6e00695024abc2e9fe02035"},
+]
+
+[package.dependencies]
+cryptography = ">=37.0.0"
+
+[[package]]
 name = "typing-extensions"
 version = "4.12.2"
 description = "Backported and Experimental Type Hints for Python 3.8+"
@@ -1519,4 +1533,4 @@ test = ["big-O", "importlib-resources", "jaraco.functools", "jaraco.itertools", 
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "5bf96b13a130f0807d8fd9db95a2b03dfbc949795d854a0bc018f671ab5f9be7"
+content-hash = "ffa126830e3466753496764d9324a1f27921715e1caa524334f2bee99243a9be"
