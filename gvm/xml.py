@@ -13,8 +13,8 @@ from lxml.etree import Element as create_element
 from lxml.etree import Error as EtreeError
 from lxml.etree import LxmlError, SubElement, XMLParser
 from lxml.etree import _Element as Element
-from lxml.etree import iselement as isxmlelement
-from lxml.etree import tostring as xmltostring
+from lxml.etree import iselement as is_xml_element
+from lxml.etree import tostring as xml_to_string
 
 from gvm.errors import GvmError, InvalidArgumentType
 
@@ -87,7 +87,7 @@ class XmlCommandElement:
         return self.to_bytes().decode("utf-8")
 
     def to_bytes(self) -> bytes:
-        return xmltostring(self._element)
+        return xml_to_string(self._element)
 
     def __str__(self) -> str:
         return self.to_string()
@@ -140,24 +140,24 @@ def pretty_print(
 
     if isinstance(xml, list):
         for item in xml:
-            if isxmlelement(item):
+            if is_xml_element(item):
                 file.write(
-                    xmltostring(item, pretty_print=True).decode(
+                    xml_to_string(item, pretty_print=True).decode(
                         sys.getdefaultencoding() + "\n"
                     )
                 )
             else:
-                file.write(item + "\n")
-    elif isxmlelement(xml):
+                file.write(str(item) + "\n")
+    elif is_xml_element(xml):
         file.write(
-            xmltostring(xml, pretty_print=True).decode(
+            xml_to_string(xml, pretty_print=True).decode(
                 sys.getdefaultencoding() + "\n"
             )
         )
     elif isinstance(xml, str):
         tree = secET.fromstring(xml)
         file.write(
-            xmltostring(tree, pretty_print=True).decode(
+            xml_to_string(tree, pretty_print=True).decode(
                 sys.getdefaultencoding() + "\n"
             )
         )
