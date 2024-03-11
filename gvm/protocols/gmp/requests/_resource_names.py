@@ -42,8 +42,9 @@ class ResourceType(Enum):
 
 
 class ResourceNames:
-    @staticmethod
+    @classmethod
     def get_resource_names(
+        cls,
         resource_type: Union[ResourceType, str],
         *,
         filter_string: Optional[str] = None,
@@ -60,6 +61,12 @@ class ResourceNames:
             filter_string: Filter term to use for the query
         """
         cmd = XmlCommand("get_resource_names")
+
+        if not resource_type:
+            raise RequiredArgument(
+                function=cls.get_resource_names.__name__,
+                argument="resource_type",
+            )
 
         if not isinstance(resource_type, ResourceType):
             resource_type = ResourceType(resource_type)
