@@ -13,6 +13,10 @@ from .requests import (
 
 
 class GMPv225(GMPv224[T]):
+    @staticmethod
+    def get_protocol_version() -> tuple[int, int]:
+        return (22, 5)
+
     def get_resource_names(
         self,
         resource_type: ResourceType,

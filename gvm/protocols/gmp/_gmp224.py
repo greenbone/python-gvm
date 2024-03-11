@@ -16,6 +16,10 @@ from .requests import (
 class GMPv224(GvmProtocol[T]):
     _authenticated = False
 
+    @staticmethod
+    def get_protocol_version() -> tuple[int, int]:
+        return (22, 4)
+
     def is_authenticated(self) -> bool:
         """Checks if the user is authenticated
 
