@@ -7,5 +7,10 @@ from typing import Protocol, runtime_checkable
 
 @runtime_checkable
 class Request(Protocol):
+    """
+    A GMP Request Python Protocol
+
+    A Request implementation may be provided by several classes
+    """
+
     def __bytes__(self) -> bytes: ...
-    def __str__(self) -> str: ...
