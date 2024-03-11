@@ -7,12 +7,12 @@ from typing import Callable, Optional, Type, Union
 
 from gvm.connections import GvmConnection
 from gvm.errors import GvmError
+from gvm.protocols.core import Response
 
 from .._protocol import GvmProtocol, T, str_transform
 from ._gmp224 import GMPv224
 from ._gmp225 import GMPv225
-from .core import Response
-from .core.requests import Version
+from .requests import Version
 
 SUPPORTED_GMP_VERSIONS = Union[GMPv224, GMPv225]
 
@@ -53,7 +53,7 @@ class GMP(GvmProtocol[T]):
         self,
         connection: GvmConnection,
         *,
-        transform: Callable[[Response], T] = str_transform,  # type: ignore[assignment] # this should work with mypy 1.9.0 without an ignore
+        transform: Callable[[Response], T] = str_transform,  # type: ignore[assignment]
     ):
         super().__init__(connection, transform=transform)
 
@@ -91,7 +91,7 @@ class GMP(GvmProtocol[T]):
                 f"The GMP version was {major_version}.{minor_version}"
             )
 
-        return gmp_class(self._connection, transform=self._transform_callable)
+        return gmp_class(self._connection, transform=self._transform_callable)  # type: ignore[arg-type]
 
     def __enter__(self):
         self._gmp = self.determine_supported_gmp()

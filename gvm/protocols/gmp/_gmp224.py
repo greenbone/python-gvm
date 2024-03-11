@@ -5,7 +5,7 @@
 from typing import Optional, Union
 
 from .._protocol import GvmProtocol, T
-from .core.requests import (
+from .requests import (
     Authentication,
     PortList,
     PortRangeType,

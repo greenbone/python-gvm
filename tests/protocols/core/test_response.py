@@ -4,7 +4,7 @@
 
 import unittest
 
-from gvm.protocols.gmp.core import Response, StatusError
+from gvm.protocols.core import Response, StatusError
 from gvm.xml import Element, XmlError
 
 
