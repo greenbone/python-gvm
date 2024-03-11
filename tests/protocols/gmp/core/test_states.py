@@ -23,9 +23,6 @@ class RequestMock:
     def __bytes__(self) -> bytes:
         return self._data
 
-    def __str__(self) -> str:
-        return self._data.decode()
-
 
 class InitialStateTestCase(unittest.TestCase):
     def test_receive_data(self) -> None:
