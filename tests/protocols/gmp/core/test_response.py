@@ -15,9 +15,6 @@ class RequestMock:
     def __bytes__(self) -> bytes:
         return self._data
 
-    def __str__(self) -> str:
-        return self._data.decode()
-
 
 class ResponseTestCase(unittest.TestCase):
 
@@ -32,12 +29,6 @@ class ResponseTestCase(unittest.TestCase):
         response = Response(data=b"<response/>", request=request)
 
         self.assertEqual(bytes(response), b"<response/>")
-
-    def test_str(self) -> None:
-        request = RequestMock(b"<request/>")
-        response = Response(data=b"<response/>", request=request)
-
-        self.assertEqual(str(response), "<response/>")
 
     def test_request(self) -> None:
         request = RequestMock(b"<request/>")
