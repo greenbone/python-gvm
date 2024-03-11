@@ -5,13 +5,12 @@
 import unittest
 from unittest.mock import MagicMock
 
-from gvm.protocols.gmp.core import Response
-from gvm.protocols.gmp.core._connection import (
+from gvm.protocols.core import InvalidStateError, Response
+from gvm.protocols.core._connection import (
     AwaitingResponseState,
     Context,
     ErrorState,
     InitialState,
-    InvalidStateError,
     ReceivingDataState,
 )
 

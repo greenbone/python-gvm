@@ -6,9 +6,8 @@ from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
+from gvm.protocols.core import Request
 from gvm.xml import XmlCommand
-
-from .._request import Request
 
 
 class ResourceType(Enum):

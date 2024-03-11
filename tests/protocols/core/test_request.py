@@ -4,7 +4,7 @@
 
 import unittest
 
-from gvm.protocols.gmp.core import Request
+from gvm.protocols.core import Request
 
 
 class RequestMock:

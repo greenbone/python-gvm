@@ -9,7 +9,7 @@ from typing_extensions import Self, TypeVar
 
 from gvm.connections import GvmConnection
 
-from .gmp.core import Connection, Request, Response
+from .core import Connection, Request, Response
 
 T = TypeVar("T", default=str)
 
@@ -34,7 +34,7 @@ class GvmProtocol(Generic[T]):
         self,
         connection: GvmConnection,
         *,
-        transform: Callable[[Response], T] = str_transform,  # type: ignore[assignment] # this should work with mypy 1.9.0 without an ignore
+        transform: Callable[[Response], T] = str_transform,  # type: ignore[assignment]
     ):
         self._connection = connection
         self._protocol = Connection()

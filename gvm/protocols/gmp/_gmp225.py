@@ -6,7 +6,7 @@ from typing import Optional
 
 from .._protocol import T
 from ._gmp224 import GMPv224
-from .core.requests import (
+from .requests import (
     ResourceNames,
     ResourceType,
 )
