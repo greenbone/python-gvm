@@ -4,7 +4,7 @@
 
 import unittest
 
-from gvm.protocols.gmp.core._connection import XmlReader
+from gvm.protocols.core._connection import XmlReader
 
 
 class XmlReaderTestCase(unittest.TestCase):

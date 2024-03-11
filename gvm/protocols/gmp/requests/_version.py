@@ -2,9 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from gvm.protocols.core import Request
 from gvm.xml import XmlCommand
-
-from .._request import Request
 
 
 class Version:

@@ -5,7 +5,7 @@
 import unittest
 
 from gvm.errors import GvmError
-from gvm.protocols.gmp.core import Connection, InvalidStateError
+from gvm.protocols.core import Connection, InvalidStateError
 
 
 class RequestMock:
