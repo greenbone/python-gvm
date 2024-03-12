@@ -6,6 +6,7 @@ from ._aggregates import Aggregates, AggregateStatistic, SortOrder
 from ._auth import Authentication
 from ._entity_type import EntityType
 from ._feed import Feed, FeedType
+from ._help import Help, HelpFormat
 from ._port_list import PortList, PortRangeType
 from ._resource_names import ResourceNames, ResourceType
 from ._version import Version
@@ -17,6 +18,8 @@ __all__ = (
     "EntityType",
     "Feed",
     "FeedType",
+    "Help",
+    "HelpFormat",
     "PortList",
     "PortRangeType",
     "ResourceNames",
