@@ -52,7 +52,7 @@ class Authentication:
     ) -> Request:
         """Modifies an existing authentication.
 
-        Arguments:
+        Args:
             group_name: Name of the group to be modified.
             auth_conf_settings: The new auth config.
         """
