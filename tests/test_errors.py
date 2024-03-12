@@ -180,25 +180,25 @@ class InvalidArgumentTypeTestCase(unittest.TestCase):
         with self.assertRaisesRegex(
             InvalidArgumentType, "^The argument foo must be of type bar.$"
         ):
-            raise InvalidArgumentType("foo", "bar")
+            raise InvalidArgumentType("foo", arg_type="bar")
 
     def test_raise_with_function(self):
         with self.assertRaisesRegex(
             InvalidArgumentType,
             "^In baz the argument foo must be of type bar.$",
         ):
-            raise InvalidArgumentType("foo", "bar", function="baz")
+            raise InvalidArgumentType("foo", arg_type="bar", function="baz")
 
     def test_string_conversion(self):
         with self.assertRaises(InvalidArgumentType) as cm:
-            raise InvalidArgumentType("foo", "bar")
+            raise InvalidArgumentType("foo", arg_type="bar")
 
         ex = cm.exception
         self.assertEqual(str(ex), "The argument foo must be of type bar.")
         self.assertIsNone(ex.function)
 
         with self.assertRaises(InvalidArgumentType) as cm:
-            raise InvalidArgumentType("foo", "bar", function="baz")
+            raise InvalidArgumentType("foo", arg_type="bar", function="baz")
 
         ex = cm.exception
         self.assertEqual(
@@ -207,7 +207,7 @@ class InvalidArgumentTypeTestCase(unittest.TestCase):
 
     def test_is_gvm_error(self):
         with self.assertRaises(GvmError):
-            raise InvalidArgumentType("foo", "bar")
+            raise InvalidArgumentType("foo", arg_type="bar")
 
 
 if __name__ == "__main__":
