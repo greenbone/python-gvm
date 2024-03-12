@@ -132,9 +132,9 @@ class InvalidArgumentType(GvmError):
 
     def __init__(
         self,
-        argument: str = None,
-        arg_type: str = None,
+        argument: str,
         *,
+        arg_type: Optional[str] = None,
         function: Optional[str] = None,
     ):
         super().__init__(None)
@@ -144,11 +144,21 @@ class InvalidArgumentType(GvmError):
 
     def __str__(self):
         if self.function:
+            if self.arg_type:
+                return (
+                    f"In {self.function} the argument {self.argument} "
+                    f"must be of type {self.arg_type}."
+                )
             return (
-                f"In {self.function} the argument {self.argument} "
-                f"must be of type {self.arg_type}."
+                f"Invalid argument type for argument {self.argument} in "
+                f"{self.function}."
             )
-        return f"The argument {self.argument} must be of type {self.arg_type}."
+        if self.arg_type:
+            return (
+                f"The argument {self.argument} must be of type {self.arg_type}."
+            )
+
+        return f"Invalid argument type for argument {self.argument}."
 
 
 class RequiredArgument(GvmError):
