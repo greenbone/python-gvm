@@ -12,6 +12,8 @@ from .requests import (
     EntityType,
     Feed,
     FeedType,
+    Help,
+    HelpFormat,
     PortList,
     PortRangeType,
     SortOrder,
@@ -282,3 +284,20 @@ class GMPv224(GvmProtocol[T]):
             feed_type: Type of single feed to get: NVT, CERT or SCAP
         """
         return self._send_and_transform_command(Feed.get_feed(feed_type))
+
+    def help(
+        self,
+        *,
+        help_format: Optional[Union[HelpFormat, str]] = None,
+        brief: Optional[bool] = None,
+    ) -> T:
+        """Get the help text
+
+        Arguments:
+            help_format: Format of of the help:
+                "html", "rnc", "text" or "xml
+            brief: If True help is brief
+        """
+        return self._send_and_transform_command(
+            Help.help(help_format=help_format, brief=brief)
+        )
