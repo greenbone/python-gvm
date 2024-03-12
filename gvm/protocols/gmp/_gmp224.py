@@ -2,13 +2,17 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
+from typing import Iterable, Optional, Union
 
 from .._protocol import GvmProtocol, T
 from .requests import (
+    Aggregates,
+    AggregateStatistic,
     Authentication,
+    EntityType,
     PortList,
     PortRangeType,
+    SortOrder,
     Version,
 )
 
@@ -207,4 +211,60 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(
             PortList.modify_port_list(port_list_id, comment=comment, name=name)
+        )
+
+    def get_aggregates(
+        self,
+        resource_type: Union[EntityType, str],
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        sort_criteria: Optional[
+            Iterable[dict[str, Union[str, SortOrder, AggregateStatistic]]]
+        ] = None,
+        data_columns: Optional[Iterable[str]] = None,
+        group_column: Optional[str] = None,
+        subgroup_column: Optional[str] = None,
+        text_columns: Optional[Iterable[str]] = None,
+        first_group: Optional[int] = None,
+        max_groups: Optional[int] = None,
+        mode: Optional[int] = None,
+        **kwargs,
+    ) -> T:
+        """Request aggregated information on a resource / entity type
+
+        Additional arguments can be set via the kwargs parameter for backward
+        compatibility with older versions of python-gvm, but are not validated.
+
+        Args:
+            resource_type: The entity type to gather data from
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            sort_criteria: List of sort criteria (dicts that can contain
+                a field, stat and order)
+            data_columns: List of fields to aggregate data from
+            group_column: The field to group the entities by
+            subgroup_column: The field to further group the entities
+                inside groups by
+            text_columns: List of simple text columns which no statistics
+                are calculated for
+            first_group: The index of the first aggregate group to return
+            max_groups: The maximum number of aggregate groups to return,
+                -1 for all
+            mode: Special mode for aggregation
+        """
+        return self._send_and_transform_command(
+            Aggregates.get_aggregates(
+                resource_type,
+                filter_string=filter_string,
+                filter_id=filter_id,
+                sort_criteria=sort_criteria,
+                data_columns=data_columns,
+                group_column=group_column,
+                subgroup_column=subgroup_column,
+                text_columns=text_columns,
+                first_group=first_group,
+                max_groups=max_groups,
+                **kwargs,
+            )
         )
