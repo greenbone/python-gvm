@@ -23,7 +23,7 @@ class PortList:
     def clone_port_list(cls, port_list_id: str) -> Request:
         """Clone an existing port list
 
-        Arguments:
+        Args:
             port_list_id: UUID of an existing port list to clone from
         """
         if not port_list_id:
@@ -41,7 +41,7 @@ class PortList:
     ) -> Request:
         """Create a new port list
 
-        Arguments:
+        Args:
             name: Name of the new port list
             port_range: Port list ranges e.g. `"T: 1-1234"` for tcp port
                 1 - 1234
@@ -78,7 +78,7 @@ class PortList:
     ) -> Request:
         """Create new port range
 
-        Arguments:
+        Args:
             port_list_id: UUID of the port list to which to add the range
             start: The first port in the range
             end: The last port in the range
@@ -127,7 +127,7 @@ class PortList:
     ) -> Request:
         """Deletes an existing port list
 
-        Arguments:
+        Args:
             port_list_id: UUID of the port list to be deleted.
             ultimate: Whether to remove entirely, or to the trashcan.
         """
@@ -146,7 +146,7 @@ class PortList:
     def delete_port_range(cls, port_range_id: str) -> Request:
         """Deletes an existing port range
 
-        Arguments:
+        Args:
             port_range_id: UUID of the port range to be deleted.
         """
         if not port_range_id:
@@ -172,7 +172,7 @@ class PortList:
     ) -> Request:
         """Request a list of port lists
 
-        Arguments:
+        Args:
             filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             details: Whether to include full port list details
@@ -198,7 +198,7 @@ class PortList:
     def get_port_list(cls, port_list_id: str) -> Request:
         """Request a single port list
 
-        Arguments:
+        Args:
             port_list_id: UUID of an existing port list
         """
         cmd = XmlCommand("get_port_lists")
@@ -225,7 +225,7 @@ class PortList:
     ) -> Request:
         """Modifies an existing port list.
 
-        Arguments:
+        Args:
             port_list_id: UUID of port list to modify.
             name: Name of port list.
             comment: Comment on port list.
