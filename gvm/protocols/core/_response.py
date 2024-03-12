@@ -20,7 +20,7 @@ class StatusError(GvmError):
     May be raised when calling `response.raise_for_status()`
     """
 
-    def __init__(self, message: str | None, *args, response: "Response"):
+    def __init__(self, message: Optional[str], *args, response: "Response"):
         super().__init__(message, *args)
         self.response = response
         self.request = response.request
