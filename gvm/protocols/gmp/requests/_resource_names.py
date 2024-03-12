@@ -51,7 +51,7 @@ class ResourceNames:
     ) -> Request:
         """Request a list of resource names and IDs
 
-        Arguments:
+        Args:
             resource_type: Type must be either ALERT, CERT_BUND_ADV,
                 CONFIG, CPE, CREDENTIAL, CVE, DFN_CERT_ADV, FILTER,
                 GROUP, HOST, NOTE, NVT, OS, OVERRIDE, PERMISSION,
@@ -81,7 +81,7 @@ class ResourceNames:
     ) -> Request:
         """Request a single resource name
 
-        Arguments:
+        Args:
             resource_id: ID of an existing resource
             resource_type: Type must be either ALERT, CERT_BUND_ADV,
                 CONFIG, CPE, CREDENTIAL, CVE, DFN_CERT_ADV, FILTER,
@@ -89,9 +89,6 @@ class ResourceNames:
                 PORT_LIST, REPORT_FORMAT, REPORT, RESULT, ROLE,
                 SCANNER, SCHEDULE, TARGET, TASK, TLS_CERTIFICATE
                 or USER
-
-        Returns:
-            The response. See :py:meth:`send_command` for details.
         """
         if not resource_type:
             raise RequiredArgument(
