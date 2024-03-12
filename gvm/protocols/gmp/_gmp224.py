@@ -10,6 +10,8 @@ from .requests import (
     AggregateStatistic,
     Authentication,
     EntityType,
+    Feed,
+    FeedType,
     PortList,
     PortRangeType,
     SortOrder,
@@ -268,3 +270,15 @@ class GMPv224(GvmProtocol[T]):
                 **kwargs,
             )
         )
+
+    def get_feeds(self) -> T:
+        """Request the list of feeds"""
+        return self._send_and_transform_command(Feed.get_feeds())
+
+    def get_feed(self, feed_type: Union[FeedType, str]) -> T:
+        """Request a single feed
+
+        Arguments:
+            feed_type: Type of single feed to get: NVT, CERT or SCAP
+        """
+        return self._send_and_transform_command(Feed.get_feed(feed_type))
