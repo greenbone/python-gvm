@@ -4,7 +4,9 @@
 #
 
 import unittest
+from typing import Any, Type
 
+from gvm.protocols._protocol import GvmProtocol
 from tests import CallableMock
 
 
@@ -19,7 +21,7 @@ class MockConnection:
 
 
 class GmpTestCase(unittest.TestCase):
-    gmp_class = None
+    gmp_class: Type[GvmProtocol[Any]]
 
     def setUp(self):
         self.connection = MockConnection()
