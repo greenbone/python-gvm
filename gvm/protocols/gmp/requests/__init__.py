@@ -5,19 +5,22 @@
 from ._aggregates import Aggregates, AggregateStatistic, SortOrder
 from ._auth import Authentication
 from ._entity_type import EntityType
+from ._feed import Feed, FeedType
 from ._port_list import PortList, PortRangeType
 from ._resource_names import ResourceNames, ResourceType
 from ._version import Version
 
 __all__ = (
-    "AggregateStatistic",
     "Aggregates",
+    "AggregateStatistic",
     "Authentication",
+    "EntityType",
+    "Feed",
+    "FeedType",
     "PortList",
     "PortRangeType",
-    "Version",
     "ResourceNames",
     "ResourceType",
     "SortOrder",
-    "EntityType",
+    "Version",
 )
