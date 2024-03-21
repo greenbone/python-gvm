@@ -142,8 +142,8 @@ def to_bool(value: Union[bool, int, None]) -> str:
     return "1" if value else "0"
 
 
-def to_base64(value: str) -> bytes:
-    return base64.b64encode(value.encode("utf-8"))
+def to_base64(value: str) -> str:
+    return base64.b64encode(value.encode("utf-8")).decode(encoding="utf-8")
 
 
 def to_comma_list(value: List) -> str:
