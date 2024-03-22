@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from typing import Optional
+from typing import Optional, Union
+from uuid import UUID
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -27,7 +28,7 @@ class UserSettings:
         return cmd
 
     @classmethod
-    def get_user_setting(cls, setting_id: str) -> Request:
+    def get_user_setting(cls, setting_id: Union[str, UUID]) -> Request:
         """Request a single user setting
 
         Args:
@@ -40,14 +41,14 @@ class UserSettings:
                 function=cls.get_user_setting.__name__, argument="setting_id"
             )
 
-        cmd.set_attribute("setting_id", setting_id)
+        cmd.set_attribute("setting_id", str(setting_id))
         return cmd
 
     @classmethod
     def modify_user_setting(
         cls,
         *,
-        setting_id: Optional[str] = None,
+        setting_id: Optional[Union[str, UUID]] = None,
         name: Optional[str] = None,
         value: Optional[str] = None,
     ) -> Request:
@@ -74,7 +75,7 @@ class UserSettings:
         cmd = XmlCommand("modify_setting")
 
         if setting_id:
-            cmd.set_attribute("setting_id", setting_id)
+            cmd.set_attribute("setting_id", str(setting_id))
         else:
             cmd.add_element("name", name)
 

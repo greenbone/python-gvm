@@ -4,7 +4,8 @@
 #
 
 from numbers import Integral
-from typing import Optional
+from typing import Optional, Union
+from uuid import UUID
 
 from gvm.errors import InvalidArgument
 from gvm.protocols.core import Request
@@ -22,7 +23,7 @@ class SystemReports:
         start_time: Optional[str] = None,
         end_time: Optional[str] = None,
         brief: Optional[bool] = None,
-        slave_id: Optional[str] = None,
+        slave_id: Optional[Union[str, UUID]] = None,
     ) -> Request:
         """Request a list of system reports
 
@@ -61,6 +62,6 @@ class SystemReports:
             cmd.set_attribute("brief", to_bool(brief))
 
         if slave_id:
-            cmd.set_attribute("slave_id", slave_id)
+            cmd.set_attribute("slave_id", str(slave_id))
 
         return cmd
