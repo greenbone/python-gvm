@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from typing import Optional, Union
+from uuid import UUID
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -20,7 +21,7 @@ class PortRangeType(Enum):
 
 class PortList:
     @classmethod
-    def clone_port_list(cls, port_list_id: str) -> Request:
+    def clone_port_list(cls, port_list_id: Union[str, UUID]) -> Request:
         """Clone an existing port list
 
         Args:
@@ -32,7 +33,7 @@ class PortList:
             )
 
         cmd = XmlCommand("create_port_list")
-        cmd.add_element("copy", port_list_id)
+        cmd.add_element("copy", str(port_list_id))
         return cmd
 
     @classmethod
@@ -69,7 +70,7 @@ class PortList:
     @classmethod
     def create_port_range(
         cls,
-        port_list_id: str,
+        port_list_id: Union[str, UUID],
         start: int,
         end: int,
         port_range_type: Union[str, PortRangeType],
@@ -111,7 +112,7 @@ class PortList:
             port_range_type = PortRangeType(port_range_type)
 
         cmd = XmlCommand("create_port_range")
-        cmd.add_element("port_list", attrs={"id": port_list_id})
+        cmd.add_element("port_list", attrs={"id": str(port_list_id)})
         cmd.add_element("start", str(start))
         cmd.add_element("end", str(end))
         cmd.add_element("type", port_range_type.value)
@@ -123,7 +124,7 @@ class PortList:
 
     @classmethod
     def delete_port_list(
-        cls, port_list_id: str, *, ultimate: bool = False
+        cls, port_list_id: Union[str, UUID], *, ultimate: bool = False
     ) -> Request:
         """Deletes an existing port list
 
@@ -137,13 +138,13 @@ class PortList:
             )
 
         cmd = XmlCommand("delete_port_list")
-        cmd.set_attribute("port_list_id", port_list_id)
+        cmd.set_attribute("port_list_id", str(port_list_id))
         cmd.set_attribute("ultimate", to_bool(ultimate))
 
         return cmd
 
     @classmethod
-    def delete_port_range(cls, port_range_id: str) -> Request:
+    def delete_port_range(cls, port_range_id: Union[str, UUID]) -> Request:
         """Deletes an existing port range
 
         Args:
@@ -156,7 +157,7 @@ class PortList:
             )
 
         cmd = XmlCommand("delete_port_range")
-        cmd.set_attribute("port_range_id", port_range_id)
+        cmd.set_attribute("port_range_id", str(port_range_id))
 
         return cmd
 
@@ -165,7 +166,7 @@ class PortList:
         cls,
         *,
         filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
+        filter_id: Optional[Union[str, UUID]] = None,
         details: Optional[bool] = None,
         targets: Optional[bool] = None,
         trash: Optional[bool] = None,
@@ -195,7 +196,7 @@ class PortList:
         return cmd
 
     @classmethod
-    def get_port_list(cls, port_list_id: str) -> Request:
+    def get_port_list(cls, port_list_id: Union[str, UUID]) -> Request:
         """Request a single port list
 
         Args:
@@ -208,7 +209,7 @@ class PortList:
                 function=cls.get_port_list.__name__, argument="port_list_id"
             )
 
-        cmd.set_attribute("port_list_id", port_list_id)
+        cmd.set_attribute("port_list_id", str(port_list_id))
 
         # for single entity always request all details
 
@@ -218,7 +219,7 @@ class PortList:
     @classmethod
     def modify_port_list(
         cls,
-        port_list_id: str,
+        port_list_id: Union[str, UUID],
         *,
         comment: Optional[str] = None,
         name: Optional[str] = None,
@@ -235,7 +236,7 @@ class PortList:
                 function=cls.modify_port_list.__name__, argument="port_list_id"
             )
         cmd = XmlCommand("modify_port_list")
-        cmd.set_attribute("port_list_id", port_list_id)
+        cmd.set_attribute("port_list_id", str(port_list_id))
 
         if comment:
             cmd.add_element("comment", comment)
