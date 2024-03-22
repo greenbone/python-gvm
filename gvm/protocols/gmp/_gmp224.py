@@ -17,6 +17,9 @@ from .requests import (
     PortList,
     PortRangeType,
     SortOrder,
+    SystemReports,
+    TrashCan,
+    UserSettings,
     Version,
 )
 
@@ -280,7 +283,7 @@ class GMPv224(GvmProtocol[T]):
     def get_feed(self, feed_type: Union[FeedType, str]) -> T:
         """Request a single feed
 
-        Arguments:
+        Args:
             feed_type: Type of single feed to get: NVT, CERT or SCAP
         """
         return self._send_and_transform_command(Feed.get_feed(feed_type))
@@ -293,11 +296,104 @@ class GMPv224(GvmProtocol[T]):
     ) -> T:
         """Get the help text
 
-        Arguments:
+        Args:
             help_format: Format of of the help:
                 "html", "rnc", "text" or "xml
             brief: If True help is brief
         """
         return self._send_and_transform_command(
             Help.help(help_format=help_format, brief=brief)
+        )
+
+    def system_reports(
+        self,
+        *,
+        name: Optional[str] = None,
+        duration: Optional[int] = None,
+        start_time: Optional[str] = None,
+        end_time: Optional[str] = None,
+        brief: Optional[bool] = None,
+        slave_id: Optional[str] = None,
+    ) -> T:
+        """Request a list of system reports
+
+        Args:
+            name: A string describing the required system report
+            duration: The number of seconds into the past that the system report
+                should include
+            start_time: The start of the time interval the system report should
+                include in ISO time format
+            end_time: The end of the time interval the system report should
+                include in ISO time format
+            brief: Whether to include the actual system reports
+            slave_id: UUID of GMP scanner from which to get the system reports
+        """
+        return self._send_and_transform_command(
+            SystemReports.get_system_reports(
+                name=name,
+                duration=duration,
+                start_time=start_time,
+                end_time=end_time,
+                brief=brief,
+                slave_id=slave_id,
+            )
+        )
+
+    def empty_trash(self) -> T:
+        """Empty the trashcan
+
+        Remove all entities from the trashcan. **Attention:** this command can
+        not be reverted
+        """
+        return self._send_and_transform_command(TrashCan.empty_trashcan())
+
+    def restore_from_trash(self, entity_id: str) -> T:
+        """Restore an entity from the trashcan
+
+        Args:
+            entity_id: ID of the entity to be restored from the trashcan
+        """
+        return self._send_and_transform_command(
+            TrashCan.restore_from_trashcan(entity_id)
+        )
+
+    def get_user_settings(self, *, filter_string: Optional[str] = None) -> T:
+        """Request a list of user settings
+
+        Args:
+            filter_string: Filter term to use for the query
+        """
+        return self._send_and_transform_command(
+            UserSettings.get_user_settings(filter_string=filter_string)
+        )
+
+    def get_user_setting(self, setting_id: str) -> T:
+        """Request a single user setting
+
+        Args:
+            setting_id: UUID of an existing setting
+        """
+        return self._send_and_transform_command(
+            UserSettings.get_user_setting(setting_id)
+        )
+
+    def modify_user_setting(
+        self,
+        *,
+        setting_id: Optional[str] = None,
+        name: Optional[str] = None,
+        value: Optional[str] = None,
+    ) -> T:
+        """Modifies an existing user setting.
+
+        Args:
+            setting_id: UUID of the setting to be changed.
+            name: The name of the setting. Either setting_id or name must be
+                passed.
+            value: The value of the setting.
+        """
+        return self._send_and_transform_command(
+            UserSettings.modify_user_setting(
+                setting_id=setting_id, name=name, value=value
+            )
         )
