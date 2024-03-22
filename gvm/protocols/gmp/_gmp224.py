@@ -9,6 +9,7 @@ from .requests import (
     Aggregates,
     AggregateStatistic,
     Authentication,
+    EntityID,
     EntityType,
     Feed,
     FeedType,
@@ -92,7 +93,7 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(Version.get_version())
 
-    def clone_port_list(self, port_list_id: str) -> T:
+    def clone_port_list(self, port_list_id: EntityID) -> T:
         """Clone an existing port list
 
         Args:
@@ -119,7 +120,7 @@ class GMPv224(GvmProtocol[T]):
 
     def create_port_range(
         self,
-        port_list_id: str,
+        port_list_id: EntityID,
         start: int,
         end: int,
         port_range_type: Union[str, PortRangeType],
@@ -142,7 +143,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_port_list(
-        self, port_list_id: str, *, ultimate: bool = False
+        self, port_list_id: EntityID, *, ultimate: bool = False
     ) -> T:
         """Delete an existing port list
 
@@ -154,7 +155,7 @@ class GMPv224(GvmProtocol[T]):
             PortList.delete_port_list(port_list_id, ultimate=ultimate)
         )
 
-    def delete_port_range(self, port_range_id: str) -> T:
+    def delete_port_range(self, port_range_id: EntityID) -> T:
         """Delete an existing port range
 
         Args:
@@ -168,7 +169,7 @@ class GMPv224(GvmProtocol[T]):
         self,
         *,
         filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
         details: Optional[bool] = None,
         targets: Optional[bool] = None,
         trash: Optional[bool] = None,
@@ -192,7 +193,7 @@ class GMPv224(GvmProtocol[T]):
             )
         )
 
-    def get_port_list(self, port_list_id: str) -> T:
+    def get_port_list(self, port_list_id: EntityID) -> T:
         """Request a single port list
 
         Args:
@@ -204,7 +205,7 @@ class GMPv224(GvmProtocol[T]):
 
     def modify_port_list(
         self,
-        port_list_id: str,
+        port_list_id: EntityID,
         *,
         comment: Optional[str] = None,
         name: Optional[str] = None,
@@ -225,7 +226,7 @@ class GMPv224(GvmProtocol[T]):
         resource_type: Union[EntityType, str],
         *,
         filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
         sort_criteria: Optional[
             Iterable[dict[str, Union[str, SortOrder, AggregateStatistic]]]
         ] = None,
@@ -313,7 +314,7 @@ class GMPv224(GvmProtocol[T]):
         start_time: Optional[str] = None,
         end_time: Optional[str] = None,
         brief: Optional[bool] = None,
-        slave_id: Optional[str] = None,
+        slave_id: Optional[EntityID] = None,
     ) -> T:
         """Request a list of system reports
 
@@ -347,7 +348,7 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(TrashCan.empty_trashcan())
 
-    def restore_from_trash(self, entity_id: str) -> T:
+    def restore_from_trash(self, entity_id: EntityID) -> T:
         """Restore an entity from the trashcan
 
         Args:
@@ -367,7 +368,7 @@ class GMPv224(GvmProtocol[T]):
             UserSettings.get_user_settings(filter_string=filter_string)
         )
 
-    def get_user_setting(self, setting_id: str) -> T:
+    def get_user_setting(self, setting_id: EntityID) -> T:
         """Request a single user setting
 
         Args:
@@ -380,7 +381,7 @@ class GMPv224(GvmProtocol[T]):
     def modify_user_setting(
         self,
         *,
-        setting_id: Optional[str] = None,
+        setting_id: Optional[EntityID] = None,
         name: Optional[str] = None,
         value: Optional[str] = None,
     ) -> T:
