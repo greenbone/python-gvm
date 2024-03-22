@@ -10,6 +10,7 @@ from ._feed import Feed, FeedType
 from ._help import Help, HelpFormat
 from ._port_list import PortList, PortRangeType
 from ._resource_names import ResourceNames, ResourceType
+from ._scan_configs import ScanConfigs
 from ._system_reports import SystemReports
 from ._trashcan import TrashCan
 from ._user_settings import UserSettings
@@ -29,6 +30,7 @@ __all__ = (
     "PortRangeType",
     "ResourceNames",
     "ResourceType",
+    "ScanConfigs",
     "SortOrder",
     "SystemReports",
     "TrashCan",
