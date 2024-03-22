@@ -8,17 +8,16 @@ import unittest
 from io import StringIO
 from unittest.mock import patch
 
-import defusedxml.lxml as secET
 from pontos.testing import temp_directory
 
 from gvm.errors import InvalidArgumentType
-from gvm.xml import pretty_print
+from gvm.xml import parse_xml, pretty_print
 
 
 class PrettyPrintTestCase(unittest.TestCase):
     def test_pretty_print_to_file(self):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
-        elem = secET.fromstring(xml_str)
+        elem = parse_xml(xml_str)
         expected_xml_string = (
             "<test>\n"
             "  <this>\n"
@@ -38,7 +37,7 @@ class PrettyPrintTestCase(unittest.TestCase):
 
     def test_pretty_print_to_stringio(self):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
-        elem = secET.fromstring(xml_str)
+        elem = parse_xml(xml_str)
         expected_xml_string = (
             "<test>\n"
             "  <this>\n"
@@ -59,7 +58,7 @@ class PrettyPrintTestCase(unittest.TestCase):
     @patch("sys.stdout", new_callable=StringIO)
     def test_pretty_print_to_stdout(self, mock_stdout):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
-        elem = secET.fromstring(xml_str)
+        elem = parse_xml(xml_str)
         expected_xml_string = (
             "<test>\n"
             "  <this>\n"
@@ -110,7 +109,7 @@ class PrettyPrintTestCase(unittest.TestCase):
 
     def test_pretty_print_with_dict(self):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
-        elem = secET.fromstring(xml_str)
+        elem = parse_xml(xml_str)
         expected_xml_string = (
             "<test>\n"
             "  <this>\n"
@@ -134,7 +133,7 @@ class PrettyPrintTestCase(unittest.TestCase):
     def test_pretty_print_with_dict_str(self):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
         no_xml = "</test>"
-        elem = secET.fromstring(xml_str)
+        elem = parse_xml(xml_str)
         expected_xml_string = (
             "<test>\n"
             "  <this>\n"
@@ -160,7 +159,7 @@ class PrettyPrintTestCase(unittest.TestCase):
 
     def test_pretty_print_type_error(self):
         xml_str = '<test><this><with id="a">and text</with></this></test>'
-        elem = secET.fromstring(xml_str)
+        elem = parse_xml(xml_str)
 
         with self.assertRaises(TypeError):
             pretty_print(elem, file="string")
