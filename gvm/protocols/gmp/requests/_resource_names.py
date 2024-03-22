@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from typing import Optional, Union
+from uuid import UUID
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -77,7 +78,9 @@ class ResourceNames:
 
     @classmethod
     def get_resource_name(
-        cls, resource_id: str, resource_type: Union[ResourceType, str]
+        cls,
+        resource_id: Union[str, UUID],
+        resource_type: Union[ResourceType, str],
     ) -> Request:
         """Request a single resource name
 
@@ -105,6 +108,6 @@ class ResourceNames:
             )
 
         cmd = XmlCommand("get_resource_names")
-        cmd.set_attribute("resource_id", resource_id)
+        cmd.set_attribute("resource_id", str(resource_id))
         cmd.set_attribute("type", resource_type.value)
         return cmd
