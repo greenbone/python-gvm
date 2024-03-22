@@ -3,13 +3,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from typing import Optional, Union
-from uuid import UUID
+from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.utils import to_base64
 from gvm.xml import XmlCommand
+
+from ._entity_id import EntityID
 
 
 class UserSettings:
@@ -28,7 +29,7 @@ class UserSettings:
         return cmd
 
     @classmethod
-    def get_user_setting(cls, setting_id: Union[str, UUID]) -> Request:
+    def get_user_setting(cls, setting_id: EntityID) -> Request:
         """Request a single user setting
 
         Args:
@@ -48,7 +49,7 @@ class UserSettings:
     def modify_user_setting(
         cls,
         *,
-        setting_id: Optional[Union[str, UUID]] = None,
+        setting_id: Optional[EntityID] = None,
         name: Optional[str] = None,
         value: Optional[str] = None,
     ) -> Request:

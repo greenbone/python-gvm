@@ -3,13 +3,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from typing import Optional, Union
-from uuid import UUID
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.utils import to_bool
 from gvm.xml import XmlCommand
+
+from ._entity_id import EntityID
 
 
 class PortRangeType(Enum):
@@ -21,7 +22,7 @@ class PortRangeType(Enum):
 
 class PortList:
     @classmethod
-    def clone_port_list(cls, port_list_id: Union[str, UUID]) -> Request:
+    def clone_port_list(cls, port_list_id: EntityID) -> Request:
         """Clone an existing port list
 
         Args:
@@ -70,7 +71,7 @@ class PortList:
     @classmethod
     def create_port_range(
         cls,
-        port_list_id: Union[str, UUID],
+        port_list_id: EntityID,
         start: int,
         end: int,
         port_range_type: Union[str, PortRangeType],
@@ -124,7 +125,7 @@ class PortList:
 
     @classmethod
     def delete_port_list(
-        cls, port_list_id: Union[str, UUID], *, ultimate: bool = False
+        cls, port_list_id: EntityID, *, ultimate: bool = False
     ) -> Request:
         """Deletes an existing port list
 
@@ -144,7 +145,7 @@ class PortList:
         return cmd
 
     @classmethod
-    def delete_port_range(cls, port_range_id: Union[str, UUID]) -> Request:
+    def delete_port_range(cls, port_range_id: EntityID) -> Request:
         """Deletes an existing port range
 
         Args:
@@ -166,7 +167,7 @@ class PortList:
         cls,
         *,
         filter_string: Optional[str] = None,
-        filter_id: Optional[Union[str, UUID]] = None,
+        filter_id: Optional[EntityID] = None,
         details: Optional[bool] = None,
         targets: Optional[bool] = None,
         trash: Optional[bool] = None,
@@ -196,7 +197,7 @@ class PortList:
         return cmd
 
     @classmethod
-    def get_port_list(cls, port_list_id: Union[str, UUID]) -> Request:
+    def get_port_list(cls, port_list_id: EntityID) -> Request:
         """Request a single port list
 
         Args:
@@ -219,7 +220,7 @@ class PortList:
     @classmethod
     def modify_port_list(
         cls,
-        port_list_id: Union[str, UUID],
+        port_list_id: EntityID,
         *,
         comment: Optional[str] = None,
         name: Optional[str] = None,

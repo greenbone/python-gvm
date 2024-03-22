@@ -4,13 +4,14 @@
 #
 
 from numbers import Integral
-from typing import Optional, Union
-from uuid import UUID
+from typing import Optional
 
 from gvm.errors import InvalidArgument
 from gvm.protocols.core import Request
 from gvm.utils import to_bool
 from gvm.xml import XmlCommand
+
+from ._entity_id import EntityID
 
 
 class SystemReports:
@@ -23,7 +24,7 @@ class SystemReports:
         start_time: Optional[str] = None,
         end_time: Optional[str] = None,
         brief: Optional[bool] = None,
-        slave_id: Optional[Union[str, UUID]] = None,
+        slave_id: Optional[EntityID] = None,
     ) -> Request:
         """Request a list of system reports
 
