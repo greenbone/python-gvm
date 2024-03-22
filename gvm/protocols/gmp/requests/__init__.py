@@ -9,6 +9,9 @@ from ._feed import Feed, FeedType
 from ._help import Help, HelpFormat
 from ._port_list import PortList, PortRangeType
 from ._resource_names import ResourceNames, ResourceType
+from ._system_reports import SystemReports
+from ._trashcan import TrashCan
+from ._user_settings import UserSettings
 from ._version import Version
 
 __all__ = (
@@ -25,5 +28,8 @@ __all__ = (
     "ResourceNames",
     "ResourceType",
     "SortOrder",
+    "SystemReports",
+    "TrashCan",
+    "UserSettings",
     "Version",
 )
