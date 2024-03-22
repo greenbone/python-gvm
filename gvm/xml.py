@@ -5,7 +5,8 @@
 
 import sys
 from io import IOBase
-from typing import AnyStr, List, Optional, TextIO, Union
+from typing import AnyStr, Optional, TextIO, Union
+from uuid import UUID
 
 from lxml.etree import Element as create_element
 from lxml.etree import Error as EtreeError
@@ -102,19 +103,19 @@ class XmlCommand(XmlCommandElement):
     def add_filter(
         self,
         filter_string: Optional[str],
-        filter_id: Optional[str],
+        filter_id: Optional[Union[str, UUID]],
     ) -> "XmlCommand":
         if filter_string:
             self.set_attribute("filter", filter_string)
 
         if filter_id:
-            self.set_attribute("filt_id", filter_id)
+            self.set_attribute("filt_id", str(filter_id))
 
         return self
 
 
 def pretty_print(
-    xml: Union[str, List[Union[Element, str]], Element],
+    xml: Union[str, list[Union[Element, str]], Element],
     file: Union[TextIO, IOBase] = sys.stdout,
 ):
     """Prints beautiful XML-Code
