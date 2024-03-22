@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from typing import Iterable, Optional, Union
+from uuid import UUID
 
 from gvm._enum import Enum
 from gvm.errors import InvalidArgumentType, RequiredArgument
@@ -40,7 +41,7 @@ class Aggregates:
         resource_type: Union[EntityType, str],
         *,
         filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
+        filter_id: Optional[Union[str, UUID]] = None,
         sort_criteria: Optional[
             Iterable[dict[str, Union[str, SortOrder, AggregateStatistic]]]
         ] = None,
