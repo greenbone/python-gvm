@@ -2,12 +2,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Union
-from uuid import UUID
-
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.xml import XmlCommand
+
+from ._entity_id import EntityID
 
 
 class TrashCan:
@@ -21,7 +20,7 @@ class TrashCan:
         return XmlCommand("empty_trashcan")
 
     @classmethod
-    def restore_from_trashcan(cls, entity_id: Union[str, UUID]) -> Request:
+    def restore_from_trashcan(cls, entity_id: EntityID) -> Request:
         """Restore an entity from the trashcan
 
         Args:

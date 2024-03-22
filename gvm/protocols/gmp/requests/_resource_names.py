@@ -3,12 +3,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from typing import Optional, Union
-from uuid import UUID
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.xml import XmlCommand
+
+from ._entity_id import EntityID
 
 
 class ResourceType(Enum):
@@ -79,7 +80,7 @@ class ResourceNames:
     @classmethod
     def get_resource_name(
         cls,
-        resource_id: Union[str, UUID],
+        resource_id: EntityID,
         resource_type: Union[ResourceType, str],
     ) -> Request:
         """Request a single resource name
