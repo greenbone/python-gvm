@@ -17,6 +17,7 @@ from .requests import (
     HelpFormat,
     PortList,
     PortRangeType,
+    ScanConfigs,
     SortOrder,
     SystemReports,
     TrashCan,
@@ -396,5 +397,270 @@ class GMPv224(GvmProtocol[T]):
         return self._send_and_transform_command(
             UserSettings.modify_user_setting(
                 setting_id=setting_id, name=name, value=value
+            )
+        )
+
+    def clone_scan_config(self, config_id: EntityID) -> T:
+        """Clone a scan config from an existing one
+
+        Args:
+            config_id: UUID of the existing scan config
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.clone_scan_config(config_id)
+        )
+
+    def create_scan_config(
+        self,
+        config_id: EntityID,
+        name: str,
+        *,
+        comment: Optional[str] = None,
+    ) -> T:
+        """Create a new scan config
+
+        Args:
+            config_id: UUID of the existing scan config
+            name: Name of the new scan config
+            comment: A comment on the config
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.create_scan_config(config_id, name, comment=comment)
+        )
+
+    def delete_scan_config(
+        self, config_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Deletes an existing config
+
+        Args:
+            config_id: UUID of the config to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.delete_scan_config(config_id, ultimate=ultimate)
+        )
+
+    def get_scan_configs(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        families: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        tasks: Optional[bool] = None,
+    ) -> T:
+        """Request a list of scan configs
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan scan configs instead
+            details: Whether to get config families, preferences, nvt selectors
+                and tasks.
+            families: Whether to include the families if no details are
+                requested
+            preferences: Whether to include the preferences if no details are
+                requested
+            tasks: Whether to get tasks using this config
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.get_scan_configs(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                details=details,
+                families=families,
+                preferences=preferences,
+                tasks=tasks,
+            )
+        )
+
+    def get_scan_config(
+        self, config_id: EntityID, *, tasks: Optional[bool] = None
+    ) -> T:
+        """Request a single scan config
+
+        Args:
+            config_id: UUID of an existing scan config
+            tasks: Whether to get tasks using this config
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.get_scan_config(config_id, tasks=tasks)
+        )
+
+    def get_scan_config_preferences(
+        self,
+        *,
+        nvt_oid: Optional[str] = None,
+        config_id: Optional[EntityID] = None,
+    ) -> T:
+        """Request a list of scan_config preferences
+
+        When the command includes a config_id attribute, the preference element
+        includes the preference name, type and value, and the NVT to which the
+        preference applies.
+        If the command includes a config_id and an nvt_oid, the preferences for
+        the given nvt in the config will be shown.
+
+        Args:
+            nvt_oid: OID of nvt
+            config_id: UUID of scan config of which to show preference values
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.get_scan_config_preferences(
+                nvt_oid=nvt_oid, config_id=config_id
+            )
+        )
+
+    def get_scan_config_preference(
+        self,
+        name: str,
+        *,
+        nvt_oid: Optional[str] = None,
+        config_id: Optional[EntityID] = None,
+    ) -> T:
+        """Request a nvt preference
+
+        Args:
+            name: name of a particular preference
+            nvt_oid: OID of nvt
+            config_id: UUID of scan config of which to show preference values
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.get_scan_config_preference(
+                name, nvt_oid=nvt_oid, config_id=config_id
+            )
+        )
+
+    def import_scan_config(self, config: str) -> T:
+        """Import a scan config from XML
+
+        Args:
+            config: Scan Config XML as string to import. This XML must
+                contain a :code:`<get_configs_response>` root element.
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.import_scan_config(config)
+        )
+
+    def modify_scan_config_set_nvt_preference(
+        self,
+        config_id: EntityID,
+        name: str,
+        nvt_oid: str,
+        *,
+        value: Optional[str] = None,
+    ) -> T:
+        """Modifies the nvt preferences of an existing scan config.
+
+        Args:
+            config_id: UUID of scan config to modify.
+            name: Name for nvt preference to change.
+            nvt_oid: OID of the NVT associated with preference to modify
+            value: New value for the preference. None to delete the preference
+                and to use the default instead.
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.modify_scan_config_set_nvt_preference(
+                config_id, name, nvt_oid, value=value
+            )
+        )
+
+    def modify_scan_config_set_name(self, config_id: EntityID, name: str) -> T:
+        """Modifies the name of an existing scan config
+
+        Args:
+            config_id: UUID of scan config to modify.
+            name: New name for the config.
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.modify_scan_config_set_name(config_id, name)
+        )
+
+    def modify_scan_config_set_comment(
+        self, config_id: EntityID, *, comment: Optional[str] = None
+    ) -> T:
+        """Modifies the comment of an existing scan config
+
+        Args:
+            config_id: UUID of scan config to modify.
+            comment: Comment to set on a config. Default is an
+                empty comment and the previous comment will be
+                removed.
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.modify_scan_config_set_comment(
+                config_id, comment=comment
+            )
+        )
+
+    def modify_scan_config_set_scanner_preference(
+        self,
+        config_id: EntityID,
+        name: str,
+        *,
+        value: Optional[str] = None,
+    ) -> T:
+        """Modifies the scanner preferences of an existing scan config
+
+        Args:
+            config_id: UUID of scan config to modify.
+            name: Name of the scanner preference to change
+            value: New value for the preference. None to delete the preference
+                and to use the default instead.
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.modify_scan_config_set_scanner_preference(
+                config_id, name, value=value
+            )
+        )
+
+    def modify_scan_config_set_nvt_selection(
+        self,
+        config_id: EntityID,
+        family: str,
+        nvt_oids: Union[tuple[str], list[str]],
+    ) -> T:
+        """Modifies the selected nvts of an existing scan config
+
+        The manager updates the given family in the config to include only the
+        given NVTs.
+
+        Arguments:
+            config_id: UUID of scan config to modify.
+            family: Name of the NVT family to include NVTs from
+            nvt_oids: List of NVTs to select for the family.
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.modify_scan_config_set_nvt_selection(
+                config_id, family, nvt_oids
+            )
+        )
+
+    def modify_scan_config_set_family_selection(
+        self,
+        config_id: EntityID,
+        families: list[tuple[str, bool, bool]],
+        *,
+        auto_add_new_families: Optional[bool] = True,
+    ) -> T:
+        """
+        Selected the NVTs of a scan config at a family level.
+
+        Args:
+            config_id: UUID of scan config to modify.
+            families: A list of tuples (str, bool, bool):
+                str: the name of the NVT family selected,
+                bool: add new NVTs  to the family automatically,
+                bool: include all NVTs from the family
+            auto_add_new_families: Whether new families should be added to the
+                scan config automatically. Default: True.
+        """
+        return self._send_and_transform_command(
+            ScanConfigs.modify_scan_config_set_family_selection(
+                config_id, families, auto_add_new_families=auto_add_new_families
             )
         )
