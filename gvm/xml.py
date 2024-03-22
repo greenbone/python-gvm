@@ -8,9 +8,9 @@ from io import IOBase
 from typing import AnyStr, Optional, TextIO, Union
 from uuid import UUID
 
+from lxml.etree import DocInfo, SubElement, XMLParser
 from lxml.etree import Element as create_element
 from lxml.etree import Error as EtreeError
-from lxml.etree import LxmlError, SubElement, XMLParser
 from lxml.etree import _Element as Element
 from lxml.etree import iselement as is_xml_element
 from lxml.etree import tostring as xml_to_string
@@ -24,12 +24,38 @@ __all__ = (
     "XmlCommandElement",
     "XmlCommand",
     "pretty_print",
-    "validate_xml_string",
 )
 
 
 class XmlError(GvmError):
     pass
+
+
+def check_xml_document(
+    root_element: Element,
+    forbid_dtd: bool = False,
+    forbid_entities: bool = True,
+) -> None:
+    """
+    Check an element for DTD and entity declarations
+    """
+    doc_info: DocInfo = root_element.getroottree().docinfo
+    if doc_info.doctype:  # type: ignore
+        if forbid_dtd:
+            raise XmlError(
+                "XML document contains a forbidden DTD declaration "
+                f"{doc_info.system_url} {doc_info.public_id}"  # type: ignore
+            )
+
+    if forbid_entities:
+        for dtd in doc_info.internalDTD, doc_info.externalDTD:
+            if dtd is None:
+                continue
+            for entity in dtd.iterentities():  # type: ignore
+                raise XmlError(
+                    f"XML Document contains forbidden entity declaration "
+                    f"{entity.name} {entity.content}"
+                )
 
 
 def create_parser():
@@ -40,10 +66,17 @@ def create_parser():
 
 
 def parse_xml(xml: AnyStr) -> Element:
+    """
+    Parse an XML string and return the root element
+
+    Raises an XmlError if the XML is invalid.
+    """
     parser = create_parser()
     try:
         parser.feed(xml)
-        return parser.close()
+        element = parser.close()
+        check_xml_document(element)
+        return element
     except EtreeError as e:
         raise XmlError(f"Invalid XML {xml!r}. Error was {e}") from e
 
@@ -165,22 +198,3 @@ def pretty_print(
         raise InvalidArgumentType(
             function=pretty_print.__name__, argument="xml", arg_type=""
         )
-
-
-def validate_xml_string(xml_string: str):
-    """Checks if the passed string contains valid XML
-
-    Raises a XmlError if the XML is invalid. Otherwise the function just
-    returns.
-
-    Arguments:
-        xml_string: XML string to validate
-
-    Raises:
-        XmlError: The xml string did contain invalid XML
-
-    """
-    try:
-        parse_xml(xml_string)
-    except LxmlError as e:
-        raise XmlError(f"Invalid XML {xml_string!r}. Error was {e}") from e
