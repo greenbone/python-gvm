@@ -7,8 +7,6 @@ import sys
 from io import IOBase
 from typing import AnyStr, List, Optional, TextIO, Union
 
-import defusedxml.lxml as secET
-from defusedxml import DefusedXmlException
 from lxml.etree import Element as create_element
 from lxml.etree import Error as EtreeError
 from lxml.etree import LxmlError, SubElement, XMLParser
@@ -36,7 +34,8 @@ class XmlError(GvmError):
 def create_parser():
     # huge_tree => disable security restrictions and support very deep trees and
     #              very long text content (for get_reports)
-    return XMLParser(encoding="utf-8", huge_tree=True)
+    # resolve_entities=False => disable entity resolution for security reasons
+    return XMLParser(encoding="utf-8", huge_tree=True, resolve_entities=False)
 
 
 def parse_xml(xml: AnyStr) -> Element:
@@ -80,7 +79,7 @@ class XmlCommandElement:
 
     def append_xml_str(self, xml_text: str) -> None:
         """Append a xml element in string format."""
-        node = secET.fromstring(xml_text)
+        node = parse_xml(xml_text)
         self._element.append(node)
 
     def to_string(self) -> str:
@@ -155,7 +154,7 @@ def pretty_print(
             )
         )
     elif isinstance(xml, str):
-        tree = secET.fromstring(xml)
+        tree = parse_xml(xml)
         file.write(
             xml_to_string(tree, pretty_print=True).decode(
                 sys.getdefaultencoding() + "\n"
@@ -170,17 +169,17 @@ def pretty_print(
 def validate_xml_string(xml_string: str):
     """Checks if the passed string contains valid XML
 
-    Raises a GvmError if the XML is invalid. Otherwise the function just
+    Raises a XmlError if the XML is invalid. Otherwise the function just
     returns.
 
     Arguments:
         xml_string: XML string to validate
 
     Raises:
-        GvmError: The xml string did contain invalid XML
+        XmlError: The xml string did contain invalid XML
 
     """
     try:
-        secET.fromstring(xml_string)
-    except (DefusedXmlException, LxmlError) as e:
-        raise GvmError("Invalid XML", e) from e
+        parse_xml(xml_string)
+    except LxmlError as e:
+        raise XmlError(f"Invalid XML {xml_string!r}. Error was {e}") from e
