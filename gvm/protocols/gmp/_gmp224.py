@@ -16,6 +16,7 @@ from .requests import (
     Help,
     HelpFormat,
     Notes,
+    Overrides,
     PortList,
     PortRangeType,
     ScanConfigs,
@@ -1081,3 +1082,144 @@ class GMPv224(GvmProtocol[T]):
             note_id: UUID of an existing note
         """
         return self._send_and_transform_command(Notes.get_note(note_id))
+
+    def create_override(
+        self,
+        text: str,
+        nvt_oid: str,
+        *,
+        days_active: Optional[int] = None,
+        hosts: Optional[list[str]] = None,
+        port: Optional[str] = None,
+        result_id: Optional[EntityID] = None,
+        severity: Optional[Severity] = None,
+        new_severity: Optional[Severity] = None,
+        task_id: Optional[EntityID] = None,
+    ) -> T:
+        """Create a new override
+
+        Args:
+            text: Text of the new override
+            nvt_id: OID of the nvt to which override applies
+            days_active: Days override will be active. -1 on always, 0 off
+            hosts: A list of host addresses
+            port: Port to which the override applies, needs to be a string
+                  in the form {number}/{protocol}
+            result_id: UUID of a result to which override applies
+            severity: Severity to which override applies
+            new_severity: New severity for result
+            task_id: UUID of task to which override applies
+        """
+        return self._send_and_transform_command(
+            Overrides.create_override(
+                text,
+                nvt_oid,
+                days_active=days_active,
+                hosts=hosts,
+                port=port,
+                result_id=result_id,
+                severity=severity,
+                new_severity=new_severity,
+                task_id=task_id,
+            )
+        )
+
+    def modify_override(
+        self,
+        override_id: EntityID,
+        text: str,
+        *,
+        days_active: Optional[int] = None,
+        hosts: Optional[list[str]] = None,
+        port: Optional[str] = None,
+        result_id: Optional[EntityID] = None,
+        severity: Optional[Severity] = None,
+        new_severity: Optional[Severity] = None,
+        task_id: Optional[EntityID] = None,
+    ) -> T:
+        """Modify an existing override.
+
+        Args:
+            override_id: UUID of override to modify.
+            text: The text of the override.
+            days_active: Days override will be active. -1 on always,
+                0 off.
+            hosts: A list of host addresses
+            port: Port to which the override applies, needs to be a string
+                  in the form {number}/{protocol}
+            result_id: Result to which override applies.
+            severity: Severity to which override applies.
+            new_severity: New severity score for result.
+            task_id: Task to which override applies.
+        """
+        return self._send_and_transform_command(
+            Overrides.modify_override(
+                override_id,
+                text,
+                days_active=days_active,
+                hosts=hosts,
+                port=port,
+                result_id=result_id,
+                severity=severity,
+                new_severity=new_severity,
+                task_id=task_id,
+            )
+        )
+
+    def clone_override(self, override_id: EntityID) -> T:
+        """Clone an existing override
+
+        Args:
+            override_id: UUID of an existing override to clone from
+        """
+        return self._send_and_transform_command(
+            Overrides.clone_override(override_id)
+        )
+
+    def delete_override(
+        self, override_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Delete an existing override
+
+        Args:
+            override_id: UUID of an existing override to delete
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Overrides.delete_override(override_id, ultimate=ultimate)
+        )
+
+    def get_overrides(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        details: Optional[bool] = None,
+        result: Optional[bool] = None,
+    ) -> T:
+        """Request a list of overrides
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            details: Whether to include full details
+            result: Whether to include results using the override
+        """
+        return self._send_and_transform_command(
+            Overrides.get_overrides(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                details=details,
+                result=result,
+            )
+        )
+
+    def get_override(self, override_id: EntityID) -> T:
+        """Request a single override
+
+        Args:
+            override_id: UUID of an existing override
+        """
+        return self._send_and_transform_command(
+            Overrides.get_override(override_id)
+        )

@@ -9,6 +9,7 @@ from ._entity_type import EntityType
 from ._feed import Feed, FeedType
 from ._help import Help, HelpFormat
 from ._notes import Notes
+from ._overrides import Overrides
 from ._port_list import PortList, PortRangeType
 from ._resource_names import ResourceNames, ResourceType
 from ._scan_configs import ScanConfigs
@@ -31,6 +32,7 @@ __all__ = (
     "Help",
     "HelpFormat",
     "Notes",
+    "Overrides",
     "PortList",
     "PortRangeType",
     "ResourceNames",
