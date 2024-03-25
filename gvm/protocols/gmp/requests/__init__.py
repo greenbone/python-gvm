@@ -15,6 +15,7 @@ from ._scanners import Scanners, ScannerType
 from ._system_reports import SystemReports
 from ._trashcan import TrashCan
 from ._user_settings import UserSettings
+from ._users import UserAuthType, Users
 from ._version import Version
 
 __all__ = (
@@ -37,6 +38,8 @@ __all__ = (
     "SortOrder",
     "SystemReports",
     "TrashCan",
+    "UserAuthType",
     "UserSettings",
+    "Users",
     "Version",
 )
