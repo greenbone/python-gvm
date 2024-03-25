@@ -15,11 +15,13 @@ from .requests import (
     FeedType,
     Help,
     HelpFormat,
+    Notes,
     PortList,
     PortRangeType,
     ScanConfigs,
     Scanners,
     ScannerType,
+    Severity,
     SortOrder,
     SystemReports,
     TrashCan,
@@ -947,3 +949,135 @@ class GMPv224(GvmProtocol[T]):
             user_id: UUID of the user to be requested.
         """
         return self._send_and_transform_command(Users.get_user(user_id))
+
+    def create_note(
+        self,
+        text: str,
+        nvt_oid: str,
+        *,
+        days_active: Optional[int] = None,
+        hosts: Optional[list[str]] = None,
+        port: Optional[str] = None,
+        result_id: Optional[EntityID] = None,
+        severity: Optional[Severity] = None,
+        task_id: Optional[EntityID] = None,
+    ) -> T:
+        """Create a new note
+
+        Args:
+            text: Text of the new note
+            nvt_id: OID of the nvt to which note applies
+            days_active: Days note will be active. -1 on
+                always, 0 off
+            hosts: A list of host addresses
+            port: Port to which the override applies, needs to be a string
+                  in the form {number}/{protocol}
+            result_id: UUID of a result to which note applies
+            severity: Severity to which note applies
+            task_id: UUID of task to which note applies
+        """
+        return self._send_and_transform_command(
+            Notes.create_note(
+                text,
+                nvt_oid,
+                days_active=days_active,
+                hosts=hosts,
+                port=port,
+                result_id=result_id,
+                severity=severity,
+                task_id=task_id,
+            )
+        )
+
+    def modify_note(
+        self,
+        note_id: EntityID,
+        text: str,
+        *,
+        days_active: Optional[int] = None,
+        hosts: Optional[list[str]] = None,
+        port: Optional[str] = None,
+        result_id: Optional[EntityID] = None,
+        severity: Optional[Severity] = None,
+        task_id: Optional[EntityID] = None,
+    ) -> T:
+        """Modify a note
+
+        Args:
+            note_id: The UUID of the note to modify
+            text: Text of the note
+            days_active: Days note will be active. -1 on always, 0 off
+            hosts: A list of host addresses
+            port: Port to which the override applies, needs to be a string
+                  in the form {number}/{protocol}
+            result_id: UUID of a result to which note applies
+            severity: Severity to which note applies
+            task_id: UUID of task to which note applies
+        """
+        return self._send_and_transform_command(
+            Notes.modify_note(
+                note_id,
+                text,
+                days_active=days_active,
+                hosts=hosts,
+                port=port,
+                result_id=result_id,
+                severity=severity,
+                task_id=task_id,
+            )
+        )
+
+    def clone_note(self, note_id: EntityID) -> T:
+        """Clone an existing note
+
+        Args:
+            note_id: UUID of an existing note to clone from
+        """
+        return self._send_and_transform_command(Notes.clone_note(note_id))
+
+    def delete_note(
+        self, note_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Delete an existing note
+
+        Args:
+            note_id: UUID of the note to be deleted.
+            ultimate: Whether to remove entirely or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Notes.delete_note(note_id, ultimate=ultimate)
+        )
+
+    def get_notes(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        details: Optional[bool] = None,
+        result: Optional[bool] = None,
+    ) -> T:
+        """Request a list of notes
+
+        Args:
+            filter_string: Filter notes by a string
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            details: Add info about connected results and tasks
+            result: Return the details of possible connected results.
+        """
+        return self._send_and_transform_command(
+            Notes.get_notes(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                details=details,
+                result=result,
+            )
+        )
+
+    def get_note(self, note_id: EntityID) -> T:
+        """Request a single note
+
+        Arguments:
+            note_id: UUID of an existing note
+        """
+        return self._send_and_transform_command(Notes.get_note(note_id))

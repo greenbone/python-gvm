@@ -8,10 +8,12 @@ from ._entity_id import EntityID
 from ._entity_type import EntityType
 from ._feed import Feed, FeedType
 from ._help import Help, HelpFormat
+from ._notes import Notes
 from ._port_list import PortList, PortRangeType
 from ._resource_names import ResourceNames, ResourceType
 from ._scan_configs import ScanConfigs
 from ._scanners import Scanners, ScannerType
+from ._severity import Severity
 from ._system_reports import SystemReports
 from ._trashcan import TrashCan
 from ._user_settings import UserSettings
@@ -28,6 +30,7 @@ __all__ = (
     "FeedType",
     "Help",
     "HelpFormat",
+    "Notes",
     "PortList",
     "PortRangeType",
     "ResourceNames",
@@ -35,6 +38,7 @@ __all__ = (
     "ScanConfigs",
     "Scanners",
     "ScannerType",
+    "Severity",
     "SortOrder",
     "SystemReports",
     "TrashCan",
