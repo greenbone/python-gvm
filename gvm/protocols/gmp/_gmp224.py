@@ -23,6 +23,8 @@ from .requests import (
     SortOrder,
     SystemReports,
     TrashCan,
+    UserAuthType,
+    Users,
     UserSettings,
     Version,
 )
@@ -807,3 +809,141 @@ class GMPv224(GvmProtocol[T]):
         return self._send_and_transform_command(
             Scanners.delete_scanner(scanner_id, ultimate=ultimate)
         )
+
+    def create_user(
+        self,
+        name: str,
+        *,
+        password: Optional[str] = None,
+        hosts: Optional[list[str]] = None,
+        hosts_allow: Optional[bool] = False,
+        role_ids: Optional[list[EntityID]] = None,
+    ) -> T:
+        """Create a new user
+
+        Args:
+            name: Name of the user
+            password: Password of the user
+            hosts: A list of host addresses (IPs, DNS names)
+            hosts_allow: If True allow only access to passed hosts otherwise
+                deny access. Default is False for deny hosts.
+            role_ids: A list of role UUIDs for the user
+        """
+        return self._send_and_transform_command(
+            Users.create_user(
+                name,
+                password=password,
+                hosts=hosts,
+                hosts_allow=hosts_allow,
+                role_ids=role_ids,
+            )
+        )
+
+    def modify_user(
+        self,
+        user_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        password: Optional[str] = None,
+        auth_source: Optional[UserAuthType] = None,
+        role_ids: Optional[list[EntityID]] = None,
+        hosts: Optional[list[str]] = None,
+        hosts_allow: Optional[bool] = False,
+        group_ids: Optional[list[EntityID]] = None,
+    ) -> T:
+        """Modify an existing user.
+
+        Most of the fields need to be supplied
+        for changing a single field even if no change is wanted for those.
+        Else empty values are inserted for the missing fields instead.
+
+        Args:
+            user_id: UUID of the user to be modified.
+            name: The new name for the user.
+            comment: Comment on the user.
+            password: The password for the user.
+            auth_source: Source allowed for authentication for this user.
+            roles_id: List of roles UUIDs for the user.
+            hosts: User access rules: List of hosts.
+            hosts_allow: Defines how the hosts list is to be interpreted.
+                If False (default) the list is treated as a deny list.
+                All hosts are allowed by default except those provided by
+                the hosts parameter. If True the list is treated as a
+                allow list. All hosts are denied by default except those
+                provided by the hosts parameter.
+            group_ids: List of group UUIDs for the user.
+        """
+        return self._send_and_transform_command(
+            Users.modify_user(
+                user_id,
+                name=name,
+                comment=comment,
+                password=password,
+                auth_source=auth_source,
+                role_ids=role_ids,
+                hosts=hosts,
+                hosts_allow=hosts_allow,
+                group_ids=group_ids,
+            )
+        )
+
+    def clone_user(self, user_id: EntityID) -> T:
+        """Clone an existing user.
+
+        Args:
+            user_id: UUID of the user to be cloned.
+        """
+        return self._send_and_transform_command(Users.clone_user(user_id))
+
+    def delete_user(
+        self,
+        user_id: Optional[EntityID] = None,
+        *,
+        name: Optional[str] = None,
+        inheritor_id: Optional[EntityID] = None,
+        inheritor_name: Optional[str] = None,
+    ) -> T:
+        """Delete an existing user
+
+        Either user_id or name must be passed.
+
+        Args:
+            user_id: UUID of the task to be deleted.
+            name: The name of the user to be deleted.
+            inheritor_id: The UUID of the inheriting user or "self". Overrides
+                inheritor_name.
+            inheritor_name: The name of the inheriting user.
+        """
+        return self._send_and_transform_command(
+            Users.delete_user(
+                user_id=user_id,
+                name=name,
+                inheritor_id=inheritor_id,
+                inheritor_name=inheritor_name,
+            )
+        )
+
+    def get_users(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+    ) -> T:
+        """Request a list of users
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+        """
+        return self._send_and_transform_command(
+            Users.get_users(filter_string=filter_string, filter_id=filter_id)
+        )
+
+    def get_user(self, user_id: EntityID) -> T:
+        """Request a single user
+
+        Args:
+            user_id: UUID of the user to be requested.
+        """
+        return self._send_and_transform_command(Users.get_user(user_id))
