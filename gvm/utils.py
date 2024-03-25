@@ -165,6 +165,4 @@ def check_port(value: str) -> bool:
     pattern = re.compile(
         r"^(cpe:[^\s]+|(general|[1-9][0-9]{0,4})/[0-9A-Za-z]+)$"
     )
-    if pattern.fullmatch(value):
-        return True
-    return False
+    return bool(pattern.fullmatch(value))
