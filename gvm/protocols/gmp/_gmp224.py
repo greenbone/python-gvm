@@ -8,6 +8,10 @@ from .._protocol import GvmProtocol, T
 from .requests import (
     Aggregates,
     AggregateStatistic,
+    AlertCondition,
+    AlertEvent,
+    AlertMethod,
+    Alerts,
     AliveTest,
     Authentication,
     EntityID,
@@ -20,6 +24,7 @@ from .requests import (
     Overrides,
     PortList,
     PortRangeType,
+    ReportFormatType,
     ScanConfigs,
     Scanners,
     ScannerType,
@@ -1406,4 +1411,210 @@ class GMPv224(GvmProtocol[T]):
                 trash=trash,
                 tasks=tasks,
             )
+        )
+
+    def create_alert(
+        self,
+        name: str,
+        condition: AlertCondition,
+        event: AlertEvent,
+        method: AlertMethod,
+        *,
+        method_data: Optional[dict[str, str]] = None,
+        event_data: Optional[dict[str, str]] = None,
+        condition_data: Optional[dict[str, str]] = None,
+        filter_id: Optional[EntityID] = None,
+        comment: Optional[str] = None,
+    ) -> T:
+        """Create a new alert
+
+        Args:
+            name: Name of the new Alert
+            condition: The condition that must be satisfied for the alert
+                to occur; if the event is either 'Updated SecInfo arrived' or
+                'New SecInfo arrived', condition must be 'Always'. Otherwise,
+                condition can also be on of 'Severity at least', 'Filter count
+                changed' or 'Filter count at least'.
+            event: The event that must happen for the alert to occur, one
+                of 'Task run status changed', 'Updated SecInfo arrived' or 'New
+                SecInfo arrived'
+            method: The method by which the user is alerted, one of 'SCP',
+                'Send', 'SMB', 'SNMP', 'Syslog' or 'Email'; if the event is
+                neither 'Updated SecInfo arrived' nor 'New SecInfo arrived',
+                method can also be one of 'Start Task', 'HTTP Get', 'Sourcefire
+                Connector' or 'verinice Connector'.
+            condition_data: Data that defines the condition
+            event_data: Data that defines the event
+            method_data: Data that defines the method
+            filter_id: Filter to apply when executing alert
+            comment: Comment for the alert
+        """
+        return self._send_and_transform_command(
+            Alerts.create_alert(
+                name,
+                condition,
+                event,
+                method,
+                method_data=method_data,
+                event_data=event_data,
+                condition_data=condition_data,
+                filter_id=filter_id,
+                comment=comment,
+            )
+        )
+
+    def modify_alert(
+        self,
+        alert_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        event: Optional[Union[AlertEvent, str]] = None,
+        event_data: Optional[dict] = None,
+        condition: Optional[Union[AlertCondition, str]] = None,
+        condition_data: Optional[dict[str, str]] = None,
+        method: Optional[Union[AlertMethod, str]] = None,
+        method_data: Optional[dict[str, str]] = None,
+    ) -> T:
+        """Modify an existing alert.
+
+        Args:
+            alert_id: UUID of the alert to be modified.
+            name: Name of the Alert.
+            condition: The condition that must be satisfied for the alert to
+                occur. If the event is either 'Updated SecInfo
+                arrived' or 'New SecInfo arrived', condition must be 'Always'.
+                Otherwise, condition can also be on of 'Severity at least',
+                'Filter count changed' or 'Filter count at least'.
+            condition_data: Data that defines the condition
+            event: The event that must happen for the alert to occur, one of
+                'Task run status changed', 'Updated SecInfo arrived' or
+                'New SecInfo arrived'
+            event_data: Data that defines the event
+            method: The method by which the user is alerted, one of 'SCP',
+                'Send', 'SMB', 'SNMP', 'Syslog' or 'Email';
+                if the event is neither 'Updated SecInfo arrived' nor
+                'New SecInfo arrived', method can also be one of 'Start Task',
+                'HTTP Get', 'Sourcefire Connector' or 'verinice Connector'.
+            method_data: Data that defines the method
+            filter_id: Filter to apply when executing alert
+            comment: Comment for the alert
+        """
+        return self._send_and_transform_command(
+            Alerts.modify_alert(
+                alert_id,
+                name=name,
+                comment=comment,
+                filter_id=filter_id,
+                event=event,
+                event_data=event_data,
+                condition=condition,
+                condition_data=condition_data,
+                method=method,
+                method_data=method_data,
+            )
+        )
+
+    def clone_alert(self, alert_id: EntityID) -> T:
+        """Clone an existing alert
+
+        Args:
+            alert_id: UUID of the alert to clone from
+        """
+        return self._send_and_transform_command(Alerts.clone_alert(alert_id))
+
+    def delete_alert(
+        self, alert_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Delete an existing alert
+
+        Args:
+            alert_id: UUID of the alert to delete
+            ultimate: Whether to remove entirely or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Alerts.delete_alert(alert_id, ultimate=ultimate)
+        )
+
+    def test_alert(self, alert_id: EntityID) -> T:
+        """Run an alert
+
+        Invoke a test run of an alert
+
+        Args:
+            alert_id: UUID of the alert to be tested
+        """
+        return self._send_and_transform_command(Alerts.test_alert(alert_id))
+
+    def trigger_alert(
+        self,
+        alert_id: EntityID,
+        report_id: EntityID,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        report_format_id: Optional[Union[EntityID, ReportFormatType]] = None,
+        delta_report_id: Optional[EntityID] = None,
+    ) -> T:
+        """Run an alert by ignoring its event and conditions
+
+        The alert is triggered to run immediately with the provided filtered
+        report by ignoring the even and condition settings.
+
+        Args:
+            alert_id: UUID of the alert to be run
+            report_id: UUID of the report to be provided to the alert
+            filter: Filter term to use to filter results in the report
+            filter_id: UUID of filter to use to filter results in the report
+            report_format_id: UUID of report format to use                              or ReportFormatType (enum)
+            delta_report_id: UUID of an existing report to compare report to.
+        """
+        return self._send_and_transform_command(
+            Alerts.trigger_alert(
+                alert_id,
+                report_id,
+                filter_string=filter_string,
+                filter_id=filter_id,
+                report_format_id=report_format_id,
+                delta_report_id=delta_report_id,
+            )
+        )
+
+    def get_alerts(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+        tasks: Optional[bool] = None,
+    ) -> T:
+        """Request a list of alerts
+
+        Args:
+            filter: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: True to request the alerts in the trashcan
+            tasks: Whether to include the tasks using the alerts
+        """
+        return self._send_and_transform_command(
+            Alerts.get_alerts(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                tasks=tasks,
+            )
+        )
+
+    def get_alert(
+        self, alert_id: EntityID, *, tasks: Optional[bool] = None
+    ) -> T:
+        """Request a single alert
+
+        Arguments:
+            alert_id: UUID of an existing alert
+            tasks: Whether to include the tasks using the alert
+        """
+        return self._send_and_transform_command(
+            Alerts.get_alert(alert_id, tasks=tasks)
         )
