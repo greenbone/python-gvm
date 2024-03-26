@@ -8,6 +8,7 @@ from .._protocol import GvmProtocol, T
 from .requests import (
     Aggregates,
     AggregateStatistic,
+    AliveTest,
     Authentication,
     EntityID,
     EntityType,
@@ -25,6 +26,7 @@ from .requests import (
     Severity,
     SortOrder,
     SystemReports,
+    Targets,
     TrashCan,
     UserAuthType,
     Users,
@@ -1222,4 +1224,186 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(
             Overrides.get_override(override_id)
+        )
+
+    def create_target(
+        self,
+        name: str,
+        *,
+        asset_hosts_filter: Optional[str] = None,
+        hosts: Optional[list[str]] = None,
+        comment: Optional[str] = None,
+        exclude_hosts: Optional[list[str]] = None,
+        ssh_credential_id: Optional[EntityID] = None,
+        ssh_credential_port: Optional[Union[int, str]] = None,
+        smb_credential_id: Optional[EntityID] = None,
+        esxi_credential_id: Optional[EntityID] = None,
+        snmp_credential_id: Optional[EntityID] = None,
+        alive_test: Optional[Union[str, AliveTest]] = None,
+        allow_simultaneous_ips: Optional[bool] = None,
+        reverse_lookup_only: Optional[bool] = None,
+        reverse_lookup_unify: Optional[bool] = None,
+        port_range: Optional[str] = None,
+        port_list_id: Optional[EntityID] = None,
+    ) -> T:
+        """Create a new target
+
+        Args:
+            name: Name of the target
+            asset_hosts_filter: Filter to select target host from assets hosts
+            hosts: List of hosts addresses to scan
+            exclude_hosts: List of hosts addresses to exclude from scan
+            comment: Comment for the target
+            ssh_credential_id: UUID of a ssh credential to use on target
+            ssh_credential_port: The port to use for ssh credential
+            smb_credential_id: UUID of a smb credential to use on target
+            snmp_credential_id: UUID of a snmp credential to use on target
+            esxi_credential_id: UUID of a esxi credential to use on target
+            alive_test: Which alive test to use
+            allow_simultaneous_ips: Whether to scan multiple IPs of the
+                same host simultaneously
+            reverse_lookup_only: Whether to scan only hosts that have names
+            reverse_lookup_unify: Whether to scan only one IP when multiple IPs
+                have the same name.
+            port_range: Port range for the target
+            port_list_id: UUID of the port list to use on target
+        """
+        return self._send_and_transform_command(
+            Targets.create_target(
+                name,
+                asset_hosts_filter=asset_hosts_filter,
+                hosts=hosts,
+                comment=comment,
+                exclude_hosts=exclude_hosts,
+                ssh_credential_id=ssh_credential_id,
+                ssh_credential_port=ssh_credential_port,
+                smb_credential_id=smb_credential_id,
+                esxi_credential_id=esxi_credential_id,
+                snmp_credential_id=snmp_credential_id,
+                alive_test=alive_test,
+                allow_simultaneous_ips=allow_simultaneous_ips,
+                reverse_lookup_only=reverse_lookup_only,
+                reverse_lookup_unify=reverse_lookup_unify,
+                port_range=port_range,
+                port_list_id=port_list_id,
+            )
+        )
+
+    def modify_target(
+        self,
+        target_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        hosts: Optional[list[str]] = None,
+        exclude_hosts: Optional[list[str]] = None,
+        ssh_credential_id: Optional[EntityID] = None,
+        ssh_credential_port: Optional[Union[str, int]] = None,
+        smb_credential_id: Optional[EntityID] = None,
+        esxi_credential_id: Optional[EntityID] = None,
+        snmp_credential_id: Optional[EntityID] = None,
+        alive_test: Optional[Union[AliveTest, str]] = None,
+        allow_simultaneous_ips: Optional[bool] = None,
+        reverse_lookup_only: Optional[bool] = None,
+        reverse_lookup_unify: Optional[bool] = None,
+        port_list_id: Optional[EntityID] = None,
+    ) -> T:
+        """Modify an existing target.
+
+        Args:
+            target_id: UUID of target to modify.
+            comment: Comment on target.
+            name: Name of target.
+            hosts: List of target hosts.
+            exclude_hosts: A list of hosts to exclude.
+            ssh_credential_id: UUID of SSH credential to use on target.
+            ssh_credential_port: The port to use for ssh credential
+            smb_credential_id: UUID of SMB credential to use on target.
+            esxi_credential_id: UUID of ESXi credential to use on target.
+            snmp_credential_id: UUID of SNMP credential to use on target.
+            port_list_id: UUID of port list describing ports to scan.
+            alive_test: Which alive tests to use.
+            allow_simultaneous_ips: Whether to scan multiple IPs of the
+                same host simultaneously
+            reverse_lookup_only: Whether to scan only hosts that have names.
+            reverse_lookup_unify: Whether to scan only one IP when multiple IPs
+                have the same name.
+        """
+        return self._send_and_transform_command(
+            Targets.modify_target(
+                target_id,
+                name=name,
+                comment=comment,
+                hosts=hosts,
+                exclude_hosts=exclude_hosts,
+                ssh_credential_id=ssh_credential_id,
+                ssh_credential_port=ssh_credential_port,
+                smb_credential_id=smb_credential_id,
+                esxi_credential_id=esxi_credential_id,
+                snmp_credential_id=snmp_credential_id,
+                alive_test=alive_test,
+                allow_simultaneous_ips=allow_simultaneous_ips,
+                reverse_lookup_only=reverse_lookup_only,
+                reverse_lookup_unify=reverse_lookup_unify,
+                port_list_id=port_list_id,
+            )
+        )
+
+    def clone_target(self, target_id: EntityID) -> T:
+        """Clone an existing target.
+
+        Args:
+            target_id: UUID of an existing target to clone.
+        """
+        return self._send_and_transform_command(Targets.clone_target(target_id))
+
+    def delete_target(
+        self, target_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Delete an existing target.
+
+        Args:
+            target_id: UUID of an existing target to delete.
+            ultimate: Whether to remove entirely or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Targets.delete_target(target_id, ultimate=ultimate)
+        )
+
+    def get_target(
+        self, target_id: EntityID, *, tasks: Optional[bool] = None
+    ) -> T:
+        """Request a single target.
+
+        Args:
+            target_id: UUID of the target to request.
+            tasks: Whether to include list of tasks that use the target
+        """
+        return self._send_and_transform_command(
+            Targets.get_target(target_id, tasks=tasks)
+        )
+
+    def get_targets(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+        tasks: Optional[bool] = None,
+    ) -> T:
+        """Request a list of targets.
+
+        Args:
+            filter_string: Filter term to use for the query.
+            filter_id: UUID of an existing filter to use for the query.
+            trash: Whether to include targets in the trashcan.
+            tasks: Whether to include list of tasks that use the target.
+        """
+        return self._send_and_transform_command(
+            Targets.get_targets(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                tasks=tasks,
+            )
         )
