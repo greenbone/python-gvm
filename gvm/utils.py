@@ -10,7 +10,16 @@ import logging
 import re
 import warnings
 from functools import wraps
-from typing import Any, Callable, List, Optional, Type, Union
+from typing import (
+    Any,
+    Callable,
+    Iterable,
+    List,
+    Optional,
+    Protocol,
+    Type,
+    Union,
+)
 
 from gvm.xml import XmlCommand, XmlError, parse_xml
 
@@ -146,8 +155,12 @@ def to_base64(value: str) -> str:
     return base64.b64encode(value.encode("utf-8")).decode(encoding="utf-8")
 
 
-def to_comma_list(value: List) -> str:
-    return ",".join(value)
+class SupportsStr(Protocol):
+    def __str__(self) -> str: ...
+
+
+def to_comma_list(value: Iterable[SupportsStr]) -> str:
+    return ",".join([str(value) for value in value])
 
 
 @deprecated(since="24.3.0", reason="Please use XmlCommand.add_filter instead.")
