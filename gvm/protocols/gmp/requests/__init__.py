@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from ._aggregates import Aggregates, AggregateStatistic, SortOrder
+from ._alerts import AlertCondition, AlertEvent, AlertMethod, Alerts
 from ._auth import Authentication
 from ._entity_id import EntityID
 from ._entity_type import EntityType
@@ -11,6 +12,7 @@ from ._help import Help, HelpFormat
 from ._notes import Notes
 from ._overrides import Overrides
 from ._port_list import PortList, PortRangeType
+from ._report_formats import ReportFormatType
 from ._resource_names import ResourceNames, ResourceType
 from ._scan_configs import ScanConfigs
 from ._scanners import Scanners, ScannerType
@@ -25,6 +27,10 @@ from ._version import Version
 __all__ = (
     "Aggregates",
     "AggregateStatistic",
+    "Alerts",
+    "AlertCondition",
+    "AlertEvent",
+    "AlertMethod",
     "AliveTest",
     "Authentication",
     "EntityID",
@@ -37,6 +43,7 @@ __all__ = (
     "Overrides",
     "PortList",
     "PortRangeType",
+    "ReportFormatType",
     "ResourceNames",
     "ResourceType",
     "ScanConfigs",
