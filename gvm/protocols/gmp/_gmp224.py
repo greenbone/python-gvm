@@ -13,6 +13,7 @@ from .requests import (
     AlertMethod,
     Alerts,
     AliveTest,
+    Audits,
     Authentication,
     EntityID,
     EntityType,
@@ -20,6 +21,7 @@ from .requests import (
     FeedType,
     Help,
     HelpFormat,
+    HostsOrdering,
     Notes,
     Overrides,
     PortList,
@@ -1618,3 +1620,189 @@ class GMPv224(GvmProtocol[T]):
         return self._send_and_transform_command(
             Alerts.get_alert(alert_id, tasks=tasks)
         )
+
+    def create_audit(
+        self,
+        name: str,
+        policy_id: EntityID,
+        target_id: EntityID,
+        scanner_id: EntityID,
+        *,
+        alterable: Optional[bool] = None,
+        hosts_ordering: Optional[Union[HostsOrdering, str]] = None,
+        schedule_id: Optional[str] = None,
+        alert_ids: Optional[list[EntityID]] = None,
+        comment: Optional[str] = None,
+        schedule_periods: Optional[int] = None,
+        observers: Optional[list[EntityID]] = None,
+        preferences: Optional[dict[str, str]] = None,
+    ) -> T:
+        """Create a new audit
+
+        Args:
+            name: Name of the new audit
+            policy_id: UUID of policy to use by the audit
+            target_id: UUID of target to be scanned
+            scanner_id: UUID of scanner to use for scanning the target
+            comment: Comment for the audit
+            alterable: Whether the task should be alterable
+            alert_ids: List of UUIDs for alerts to be applied to the audit
+            hosts_ordering: The order hosts are scanned in
+            schedule_id: UUID of a schedule when the audit should be run.
+            schedule_periods: A limit to the number of times the audit will be
+                scheduled, or 0 for no limit
+            observers: List of names or ids of users which should be allowed to
+                observe this audit
+            preferences: Name/Value pairs of scanner preferences.
+        """
+        return self._send_and_transform_command(
+            Audits.create_audit(
+                name,
+                policy_id,
+                target_id,
+                scanner_id,
+                alterable=alterable,
+                hosts_ordering=hosts_ordering,
+                schedule_id=schedule_id,
+                alert_ids=alert_ids,
+                comment=comment,
+                schedule_periods=schedule_periods,
+                observers=observers,
+                preferences=preferences,
+            )
+        )
+
+    def modify_audit(
+        self,
+        audit_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        policy_id: Optional[EntityID] = None,
+        target_id: Optional[EntityID] = None,
+        scanner_id: Optional[EntityID] = None,
+        alterable: Optional[bool] = None,
+        hosts_ordering: Optional[Union[str, HostsOrdering]] = None,
+        schedule_id: Optional[EntityID] = None,
+        schedule_periods: Optional[int] = None,
+        comment: Optional[str] = None,
+        alert_ids: Optional[list[EntityID]] = None,
+        observers: Optional[list[EntityID]] = None,
+        preferences: Optional[dict[str, str]] = None,
+    ) -> T:
+        """Modifies an existing audit.
+
+        Args:
+            audit_id: UUID of audit to modify.
+            name: The name of the audit.
+            policy_id: UUID of policy to use by the audit
+            target_id: UUID of target to be scanned
+            scanner_id: UUID of scanner to use for scanning the target
+            comment: The comment on the audit.
+            alert_ids: List of UUIDs for alerts to be applied to the audit
+            hosts_ordering: The order hosts are scanned in
+            schedule_id: UUID of a schedule when the audit should be run.
+            schedule_periods: A limit to the number of times the audit will be
+                scheduled, or 0 for no limit.
+            observers: List of names or ids of users which should be allowed to
+                observe this audit
+            preferences: Name/Value pairs of scanner preferences.
+        """
+        return self._send_and_transform_command(
+            Audits.modify_audit(
+                audit_id,
+                name=name,
+                policy_id=policy_id,
+                target_id=target_id,
+                scanner_id=scanner_id,
+                alterable=alterable,
+                hosts_ordering=hosts_ordering,
+                schedule_id=schedule_id,
+                alert_ids=alert_ids,
+                comment=comment,
+                schedule_periods=schedule_periods,
+                observers=observers,
+                preferences=preferences,
+            )
+        )
+
+    def clone_audit(self, audit_id: EntityID) -> T:
+        """Clone an existing audit
+
+        Args:
+            audit_id: UUID of the audit to clone
+        """
+        return self._send_and_transform_command(Audits.clone_audit(audit_id))
+
+    def delete_audit(
+        self, audit_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Delete an existing audit
+
+        Args:
+            audit_id: UUID of the audit to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Audits.delete_audit(audit_id, ultimate=ultimate)
+        )
+
+    def get_audits(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+        schedules_only: Optional[bool] = None,
+    ) -> T:
+        """Request a list of audits
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan audits instead
+            details: Whether to include full audit details
+            schedules_only: Whether to only include id, name and schedule
+                details
+        """
+        return self._send_and_transform_command(
+            Audits.get_audits(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                details=details,
+                schedules_only=schedules_only,
+            )
+        )
+
+    def get_audit(self, audit_id: EntityID) -> T:
+        """Request a single audit
+
+        Args:
+            audit_id: UUID of an existing audit
+        """
+        return self._send_and_transform_command(Audits.get_audit(audit_id))
+
+    def resume_audit(self, audit_id: EntityID) -> T:
+        """Resume an existing stopped audit
+
+        Args:
+            audit_id: UUID of the audit to be resumed
+        """
+        return self._send_and_transform_command(Audits.resume_audit(audit_id))
+
+    def start_audit(self, audit_id: EntityID) -> T:
+        """Start an existing audit
+
+        Args:
+            audit_id: UUID of the audit to be started
+        """
+        return self._send_and_transform_command(Audits.start_audit(audit_id))
+
+    def stop_audit(self, audit_id: EntityID) -> T:
+        """Stop an existing running audit
+
+        Args:
+            audit_id: UUID of the audit to be stopped
+        """
+        return self._send_and_transform_command(Audits.stop_audit(audit_id))
