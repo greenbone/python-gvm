@@ -5,25 +5,84 @@
 
 import sys
 from io import IOBase
-from typing import List, Optional, Union
+from typing import AnyStr, Optional, TextIO, Union
+from uuid import UUID
 
-import defusedxml.lxml as secET
-from defusedxml import DefusedXmlException
-from lxml.etree import Element, LxmlError, SubElement, XMLParser
-from lxml.etree import iselement as isxmlelement
-from lxml.etree import tostring as xmltostring
+from lxml.etree import DocInfo, SubElement, XMLParser
+from lxml.etree import Element as create_element
+from lxml.etree import Error as EtreeError
+from lxml.etree import _Element as Element
+from lxml.etree import iselement as is_xml_element
+from lxml.etree import tostring as xml_to_string
 
 from gvm.errors import GvmError, InvalidArgumentType
+
+__all__ = (
+    "Element",
+    "create_parser",
+    "parse_xml",
+    "XmlCommandElement",
+    "XmlCommand",
+    "pretty_print",
+)
+
+
+class XmlError(GvmError):
+    pass
+
+
+def check_xml_document(
+    root_element: Element,
+    forbid_dtd: bool = False,
+    forbid_entities: bool = True,
+) -> None:
+    """
+    Check an element for DTD and entity declarations
+    """
+    doc_info: DocInfo = root_element.getroottree().docinfo
+    if doc_info.doctype:  # type: ignore
+        if forbid_dtd:
+            raise XmlError(
+                "XML document contains a forbidden DTD declaration "
+                f"{doc_info.system_url} {doc_info.public_id}"  # type: ignore
+            )
+
+    if forbid_entities:
+        for dtd in doc_info.internalDTD, doc_info.externalDTD:
+            if dtd is None:
+                continue
+            for entity in dtd.iterentities():  # type: ignore
+                raise XmlError(
+                    f"XML Document contains forbidden entity declaration "
+                    f"{entity.name} {entity.content}"
+                )
 
 
 def create_parser():
     # huge_tree => disable security restrictions and support very deep trees and
     #              very long text content (for get_reports)
-    return XMLParser(encoding="utf-8", huge_tree=True)
+    # resolve_entities=False => disable entity resolution for security reasons
+    return XMLParser(encoding="utf-8", huge_tree=True, resolve_entities=False)
+
+
+def parse_xml(xml: AnyStr) -> Element:
+    """
+    Parse an XML string and return the root element
+
+    Raises an XmlError if the XML is invalid.
+    """
+    parser = create_parser()
+    try:
+        parser.feed(xml)
+        element = parser.close()
+        check_xml_document(element)
+        return element
+    except EtreeError as e:
+        raise XmlError(f"Invalid XML {xml!r}. Error was {e}") from e
 
 
 class XmlCommandElement:
-    def __init__(self, element):
+    def __init__(self, element: Element):
         self._element = element
 
     def add_element(
@@ -32,15 +91,16 @@ class XmlCommandElement:
         text: Optional[str] = None,
         *,
         attrs: Optional[dict] = None,
-    ):
+    ) -> "XmlCommandElement":
         node = SubElement(self._element, name, attrib=attrs)
         node.text = text
         return XmlCommandElement(node)
 
-    def set_attribute(self, name: str, value: str):
+    def set_attribute(self, name: str, value: str) -> "XmlCommandElement":
         self._element.set(name, value)
+        return self
 
-    def set_attributes(self, attrs: dict):
+    def set_attributes(self, attrs: dict[str, str]) -> "XmlCommandElement":
         """Set several attributes at once.
 
         Arguments:
@@ -49,26 +109,47 @@ class XmlCommandElement:
         for key, value in attrs.items():
             self._element.set(key, value)
 
-    def append_xml_str(self, xml_text: str):
+        return self
+
+    def append_xml_str(self, xml_text: str) -> None:
         """Append a xml element in string format."""
-        node = secET.fromstring(xml_text)
+        node = parse_xml(xml_text)
         self._element.append(node)
 
     def to_string(self) -> str:
-        return xmltostring(self._element).decode("utf-8")
+        return self.to_bytes().decode("utf-8")
 
-    def __str__(self):
+    def to_bytes(self) -> bytes:
+        return xml_to_string(self._element)
+
+    def __str__(self) -> str:
         return self.to_string()
+
+    def __bytes__(self) -> bytes:
+        return self.to_bytes()
 
 
 class XmlCommand(XmlCommandElement):
-    def __init__(self, name):
-        super().__init__(Element(name))
+    def __init__(self, name: str) -> None:
+        super().__init__(create_element(name))
+
+    def add_filter(
+        self,
+        filter_string: Optional[str],
+        filter_id: Optional[Union[str, UUID]],
+    ) -> "XmlCommand":
+        if filter_string:
+            self.set_attribute("filter", filter_string)
+
+        if filter_id:
+            self.set_attribute("filt_id", str(filter_id))
+
+        return self
 
 
 def pretty_print(
-    xml: Union[str, List[Union[Element, str]], Element],
-    file: IOBase = sys.stdout,
+    xml: Union[str, list[Union[Element, str]], Element],
+    file: Union[TextIO, IOBase] = sys.stdout,
 ):
     """Prints beautiful XML-Code
 
@@ -85,31 +166,31 @@ def pretty_print(
             A IOBase type. Can be a File, StringIO, ...
 
     """
-    if not isinstance(file, IOBase):
+    if not isinstance(file, (IOBase, TextIO)):
         raise TypeError(
-            f"Type needs to be from IOBase, not {type(file)}."
+            f"Type needs to be from IOBase or TextIO, not {type(file)}."
         ) from None
 
     if isinstance(xml, list):
         for item in xml:
-            if isxmlelement(item):
+            if is_xml_element(item):
                 file.write(
-                    xmltostring(item, pretty_print=True).decode(
+                    xml_to_string(item, pretty_print=True).decode(
                         sys.getdefaultencoding() + "\n"
                     )
                 )
             else:
-                file.write(item + "\n")
-    elif isxmlelement(xml):
+                file.write(str(item) + "\n")
+    elif is_xml_element(xml):
         file.write(
-            xmltostring(xml, pretty_print=True).decode(
+            xml_to_string(xml, pretty_print=True).decode(
                 sys.getdefaultencoding() + "\n"
             )
         )
     elif isinstance(xml, str):
-        tree = secET.fromstring(xml)
+        tree = parse_xml(xml)
         file.write(
-            xmltostring(tree, pretty_print=True).decode(
+            xml_to_string(tree, pretty_print=True).decode(
                 sys.getdefaultencoding() + "\n"
             )
         )
@@ -117,22 +198,3 @@ def pretty_print(
         raise InvalidArgumentType(
             function=pretty_print.__name__, argument="xml", arg_type=""
         )
-
-
-def validate_xml_string(xml_string: str):
-    """Checks if the passed string contains valid XML
-
-    Raises a GvmError if the XML is invalid. Otherwise the function just
-    returns.
-
-    Arguments:
-        xml_string: XML string to validate
-
-    Raises:
-        GvmError: The xml string did contain invalid XML
-
-    """
-    try:
-        secET.fromstring(xml_string)
-    except (DefusedXmlException, LxmlError) as e:
-        raise GvmError("Invalid XML", e) from e

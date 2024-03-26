@@ -31,7 +31,6 @@ packages = [{ include = "gvm" }, { include = "tests", format = "sdist" }]
 python = "^3.9"
 paramiko = ">=2.7.1"
 lxml = ">=4.5.0"
-defusedxml = ">=0.6"
 typing-extensions = ">=4.9.0"
 
 [tool.poetry.group.dev.dependencies]
@@ -42,6 +41,8 @@ autohooks-plugin-black = ">=22.7.0"
 black = ">=22.6.0"
 pontos = ">=22.7.2"
 furo = ">=2022.6.21"
+lxml-stubs = "^0.5.1"
+types-paramiko = "^3.4.0.20240205"
 
 [tool.black]
 line-length = 80

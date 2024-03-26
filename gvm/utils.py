@@ -9,11 +9,19 @@ import base64
 import logging
 import re
 import warnings
-from typing import Any, List
+from functools import wraps
+from typing import (
+    Any,
+    Callable,
+    Iterable,
+    List,
+    Optional,
+    Protocol,
+    Type,
+    Union,
+)
 
-from lxml import etree
-
-from gvm.xml import create_parser
+from gvm.xml import XmlCommand, XmlError, parse_xml
 
 logger = logging.getLogger(__name__)
 
@@ -28,6 +36,79 @@ class TypesDict(dict):
 
 def deprecation(message: str):
     warnings.warn(message, DeprecationWarning, stacklevel=2)
+
+
+def deprecated(
+    _func_or_cls: Union[str, Callable, Type, None] = None,
+    *,
+    since: Optional[str] = None,
+    reason: Optional[str] = None,
+):
+    """
+    A decorator to mark functions, classes and methods as deprecated
+
+    Args:
+        since: An optional version since the referenced item is deprecated.
+        reason: An optional reason why the references item is deprecated.
+
+    Examples:
+        .. code-block:: python
+
+            from pontos.helper import deprecated
+
+            @deprecated
+            def my_function(*args, **kwargs):
+                ...
+
+            @deprecated("The function is obsolete. Please use my_func instead.")
+            def my_function(*args, **kwargs):
+                ...
+
+            @deprecated(
+                since="1.2.3",
+                reason="The function is obsolete. Please use my_func instead."
+            )
+            def my_function(*args, **kwargs):
+                ...
+
+            @deprecated(reason="The class will be removed in version 3.4.5")
+            class Foo:
+                ...
+
+            class Foo:
+                @deprecated(since="2.3.4")
+                def bar(self, *args, **kwargs):
+                    ...
+    """
+    if isinstance(_func_or_cls, str):
+        reason = _func_or_cls
+        _func_or_cls = None
+
+    def decorator_repeat(func_or_cls):
+        module = func_or_cls.__module__
+        name = func_or_cls.__name__
+
+        if module == "__main__":
+            msg = f"{name} is deprecated."
+        else:
+            msg = f"{module}.{name} is deprecated."
+
+        if since:
+            msg += f" It is deprecated since version {since}."
+        if reason:
+            msg += f" {reason}"
+
+        @wraps(func_or_cls)
+        def wrapper(*args, **kwargs):
+            warnings.warn(msg, category=DeprecationWarning, stacklevel=3)
+            return func_or_cls(*args, **kwargs)
+
+        return wrapper
+
+    if _func_or_cls is None:
+        return decorator_repeat
+    else:
+        return decorator_repeat(_func_or_cls)
 
 
 def check_command_status(xml: str) -> bool:
@@ -47,15 +128,14 @@ def check_command_status(xml: str) -> bool:
         return False
 
     try:
-        root = etree.XML(xml, parser=create_parser())
+        root = parse_xml(xml)
         status = root.attrib["status"]
         return status is not None and status[0] == "2"
     except KeyError:
-        print(logger)
         logger.error("Not received an status code within the response.")
         return False
-    except etree.Error as e:
-        logger.error("etree.XML(xml): %s", e)
+    except XmlError as e:
+        logger.error("Error while parsing the command status: %s", e)
         return False
 
 
@@ -67,24 +147,27 @@ def to_dotted_types_dict(types: List) -> TypesDict:
     return TypesDict(dic)
 
 
-def to_bool(value: bool) -> str:
+def to_bool(value: Union[bool, int, None]) -> str:
     return "1" if value else "0"
 
 
-def to_base64(value: str) -> bytes:
-    return base64.b64encode(value.encode("utf-8"))
+def to_base64(value: str) -> str:
+    return base64.b64encode(value.encode("utf-8")).decode(encoding="utf-8")
 
 
-def to_comma_list(value: List) -> str:
-    return ",".join(value)
+class SupportsStr(Protocol):
+    def __str__(self) -> str: ...
 
 
-def add_filter(cmd, filter_string, filter_id):
-    if filter_string:
-        cmd.set_attribute("filter", filter_string)
+def to_comma_list(value: Iterable[SupportsStr]) -> str:
+    return ",".join([str(value) for value in value])
 
-    if filter_id:
-        cmd.set_attribute("filt_id", filter_id)
+
+@deprecated(since="24.3.0", reason="Please use XmlCommand.add_filter instead.")
+def add_filter(
+    cmd: XmlCommand, filter_string: Optional[str], filter_id: Optional[str]
+) -> None:
+    cmd.add_filter(filter_string, filter_id)
 
 
 def is_list_like(value: Any) -> bool:
@@ -95,6 +178,4 @@ def check_port(value: str) -> bool:
     pattern = re.compile(
         r"^(cpe:[^\s]+|(general|[1-9][0-9]{0,4})/[0-9A-Za-z]+)$"
     )
-    if pattern.fullmatch(value):
-        return True
-    return False
+    return bool(pattern.fullmatch(value))

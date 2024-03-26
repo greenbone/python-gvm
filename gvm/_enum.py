@@ -4,7 +4,7 @@
 #
 
 from enum import Enum as PythonEnum
-from typing import Optional
+from typing import Any, Optional
 
 from typing_extensions import Self
 
@@ -15,6 +15,10 @@ class Enum(PythonEnum):
     """
     Base class for Enums in python-gvm
     """
+
+    @classmethod
+    def _missing_(cls, value: Any) -> Optional[Self]:
+        return cls.from_string(str(value) if value else None)
 
     @classmethod
     def from_string(
@@ -33,6 +37,6 @@ class Enum(PythonEnum):
             return cls[value.replace(" ", "_").upper()]
         except KeyError:
             raise InvalidArgument(
-                f"Invalid argument {value} for {cls.__name__}.from_string. "
+                f"Invalid argument {value}. "
                 f"Allowed values are {','.join(e.name for e in cls)}."
             ) from None

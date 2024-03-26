@@ -6,17 +6,17 @@
 import unittest
 
 from gvm.errors import GvmError
-from gvm.xml import validate_xml_string
+from gvm.xml import parse_xml
 
 
-class ValidXmlStringTestCase(unittest.TestCase):
+class ParseXmlTestCase(unittest.TestCase):
     def test_missing_closing_tag(self):
         with self.assertRaises(GvmError):
-            validate_xml_string("<foo>")
+            parse_xml("<foo>")
 
     def test_invalid_tag(self):
         with self.assertRaises(GvmError):
-            validate_xml_string("<foo&bar/>")
+            parse_xml("<foo&bar/>")
 
     def test_xml_bomb(self):
         xml = (
@@ -29,4 +29,4 @@ class ValidXmlStringTestCase(unittest.TestCase):
             "<bomb>&c;</bomb>"
         )
         with self.assertRaises(GvmError):
-            validate_xml_string(xml)
+            parse_xml(xml)
