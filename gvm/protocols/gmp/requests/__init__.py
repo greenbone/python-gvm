@@ -4,11 +4,13 @@
 
 from ._aggregates import Aggregates, AggregateStatistic, SortOrder
 from ._alerts import AlertCondition, AlertEvent, AlertMethod, Alerts
+from ._audits import Audits
 from ._auth import Authentication
 from ._entity_id import EntityID
 from ._entity_type import EntityType
 from ._feed import Feed, FeedType
 from ._help import Help, HelpFormat
+from ._hosts import HostsOrdering
 from ._notes import Notes
 from ._overrides import Overrides
 from ._port_list import PortList, PortRangeType
@@ -32,6 +34,7 @@ __all__ = (
     "AlertEvent",
     "AlertMethod",
     "AliveTest",
+    "Audits",
     "Authentication",
     "EntityID",
     "EntityType",
@@ -39,6 +42,7 @@ __all__ = (
     "FeedType",
     "Help",
     "HelpFormat",
+    "HostsOrdering",
     "Notes",
     "Overrides",
     "PortList",
