@@ -45,6 +45,7 @@ jobs:
         uses: greenbone/actions/coverage-python@v3
         with:
           python-version: "3.10"
+          token: ${{ secrets.CODECOV_TOKEN }}
 
   build-docs:
     name: Build the documentation
