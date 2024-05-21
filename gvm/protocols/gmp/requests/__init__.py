@@ -17,6 +17,7 @@ from ._entity_id import EntityID
 from ._entity_type import EntityType
 from ._feed import Feed, FeedType
 from ._filters import Filters, FilterType
+from ._groups import Groups
 from ._help import Help, HelpFormat
 from ._hosts import HostsOrdering
 from ._notes import Notes
@@ -53,6 +54,7 @@ __all__ = (
     "FeedType",
     "Filters",
     "FilterType",
+    "Groups",
     "Help",
     "HelpFormat",
     "HostsOrdering",

@@ -24,6 +24,7 @@ from .requests import (
     FeedType,
     Filters,
     FilterType,
+    Groups,
     Help,
     HelpFormat,
     HostsOrdering,
@@ -2199,5 +2200,99 @@ class GMPv224(GvmProtocol[T]):
                 name=name,
                 term=term,
                 filter_type=filter_type,
+            )
+        )
+
+    def clone_group(self, group_id: EntityID) -> T:
+        """Clone an existing group
+
+        Args:
+            group_id: UUID of an existing group to clone from
+        """
+        return self._send_and_transform_command(Groups.clone_group(group_id))
+
+    def create_group(
+        self,
+        name: str,
+        *,
+        comment: Optional[str] = None,
+        special: Optional[bool] = False,
+        users: Optional[list[str]] = None,
+    ) -> T:
+        """Create a new group
+
+        Args:
+            name: Name of the new group
+            comment: Comment for the group
+            special: Create permission giving members full access to each
+                other's entities
+            users: List of user names to be in the group
+        """
+        return self._send_and_transform_command(
+            Groups.create_group(
+                name, comment=comment, special=special, users=users
+            )
+        )
+
+    def delete_group(
+        self, group_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Deletes an existing group
+
+        Args:
+            group_id: UUID of the group to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Groups.delete_group(group_id, ultimate=ultimate)
+        )
+
+    def get_groups(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+    ) -> T:
+        """Request a list of groups
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan groups instead
+        """
+        return self._send_and_transform_command(
+            Groups.get_groups(
+                filter_string=filter_string, filter_id=filter_id, trash=trash
+            )
+        )
+
+    def get_group(self, group_id: EntityID) -> T:
+        """Request a single group
+
+        Args:
+            group_id: UUID of an existing group
+        """
+        return self._send_and_transform_command(Groups.get_group(group_id))
+
+    def modify_group(
+        self,
+        group_id: EntityID,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        users: Optional[list[str]] = None,
+    ) -> T:
+        """Modifies an existing group.
+
+        Args:
+            group_id: UUID of group to modify.
+            comment: Comment on group.
+            name: Name of group.
+            users: List of user names to be in the group
+        """
+        return self._send_and_transform_command(
+            Groups.modify_group(
+                group_id, comment=comment, name=name, users=users
             )
         )
