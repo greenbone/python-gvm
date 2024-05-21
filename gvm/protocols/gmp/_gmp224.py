@@ -22,6 +22,8 @@ from .requests import (
     EntityType,
     Feed,
     FeedType,
+    Filters,
+    FilterType,
     Help,
     HelpFormat,
     HostsOrdering,
@@ -1854,7 +1856,7 @@ class GMPv224(GvmProtocol[T]):
             - OpenPGP Key
             - Password only
 
-        Arguments:
+        Args:
             name: Name of the new credential
             credential_type: The credential type.
             comment: Comment for the credential
@@ -1992,7 +1994,7 @@ class GMPv224(GvmProtocol[T]):
     ) -> T:
         """Request a list of credentials
 
-        Arguments:
+        Args:
             filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             scanners: Whether to include a list of scanners using the
@@ -2020,7 +2022,7 @@ class GMPv224(GvmProtocol[T]):
     ) -> T:
         """Request a single credential
 
-        Arguments:
+        Args:
             credential_id: UUID of an existing credential
             scanners: Whether to include a list of scanners using the
                 credentials
@@ -2056,7 +2058,7 @@ class GMPv224(GvmProtocol[T]):
     ) -> T:
         """Modifies an existing credential.
 
-        Arguments:
+        Args:
             credential_id: UUID of the credential
             name: Name of the credential
             comment: Comment for the credential
@@ -2088,5 +2090,114 @@ class GMPv224(GvmProtocol[T]):
                 privacy_algorithm=privacy_algorithm,
                 privacy_password=privacy_password,
                 public_key=public_key,
+            )
+        )
+
+    def clone_filter(self, filter_id: EntityID) -> T:
+        """Clone a filter
+
+        Args:
+            filter_id: ID of the filter to clone
+        """
+        return self._send_and_transform_command(Filters.clone_filter(filter_id))
+
+    def create_filter(
+        self,
+        name: str,
+        *,
+        filter_type: Optional[FilterType] = None,
+        comment: Optional[str] = None,
+        term: Optional[str] = None,
+    ) -> T:
+        """Create a new filter
+
+        Args:
+            name: Name of the new filter
+            filter_type: Filter for entity type
+            comment: Comment for the filter
+            term: Filter term e.g. 'name=foo'
+        """
+        return self._send_and_transform_command(
+            Filters.create_filter(
+                name, filter_type=filter_type, comment=comment, term=term
+            )
+        )
+
+    def delete_filter(
+        self, filter_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Deletes an existing filter
+
+        Args:
+            filter_id: UUID of the filter to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Filters.delete_filter(filter_id, ultimate=ultimate)
+        )
+
+    def get_filters(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+        alerts: Optional[bool] = None,
+    ) -> T:
+        """Request a list of filters
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan filters instead
+            alerts: Whether to include list of alerts that use the filter.
+        """
+        return self._send_and_transform_command(
+            Filters.get_filters(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                alerts=alerts,
+            )
+        )
+
+    def get_filter(
+        self, filter_id: EntityID, *, alerts: Optional[bool] = None
+    ) -> T:
+        """Request a single filter
+
+        Args:
+            filter_id: UUID of an existing filter
+            alerts: Whether to include list of alerts that use the filter.
+        """
+        return self._send_and_transform_command(
+            Filters.get_filter(filter_id, alerts=alerts)
+        )
+
+    def modify_filter(
+        self,
+        filter_id: EntityID,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        term: Optional[str] = None,
+        filter_type: Optional[FilterType] = None,
+    ) -> T:
+        """Modifies an existing filter.
+
+        Args:
+            filter_id: UUID of the filter to be modified
+            comment: Comment on filter.
+            name: Name of filter.
+            term: Filter term.
+            filter_type: Resource type filter applies to.
+        """
+        return self._send_and_transform_command(
+            Filters.modify_filter(
+                filter_id,
+                comment=comment,
+                name=name,
+                term=term,
+                filter_type=filter_type,
             )
         )
