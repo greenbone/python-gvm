@@ -15,6 +15,9 @@ from .requests import (
     AliveTest,
     Audits,
     Authentication,
+    CredentialFormat,
+    Credentials,
+    CredentialType,
     EntityID,
     EntityType,
     Feed,
@@ -31,6 +34,8 @@ from .requests import (
     Scanners,
     ScannerType,
     Severity,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
     SortOrder,
     SystemReports,
     Targets,
@@ -1806,3 +1811,282 @@ class GMPv224(GvmProtocol[T]):
             audit_id: UUID of the audit to be stopped
         """
         return self._send_and_transform_command(Audits.stop_audit(audit_id))
+
+    def clone_credential(self, credential_id: EntityID) -> T:
+        """Clone an existing credential
+
+        Args:
+            credential_id: UUID of the credential to clone
+        """
+        return self._send_and_transform_command(
+            Credentials.clone_credential(credential_id)
+        )
+
+    def create_credential(
+        self,
+        name: str,
+        credential_type: Union[CredentialType, str],
+        *,
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        certificate: Optional[str] = None,
+        key_phrase: Optional[str] = None,
+        private_key: Optional[str] = None,
+        login: Optional[str] = None,
+        password: Optional[str] = None,
+        auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
+        community: Optional[str] = None,
+        privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
+        privacy_password: Optional[str] = None,
+        public_key: Optional[str] = None,
+    ) -> T:
+        """Create a new credential
+
+        Create a new credential e.g. to be used in the method of an alert.
+
+        Currently the following credential types are supported:
+
+            - Username + Password
+            - Username + SSH-Key
+            - Client Certificates
+            - SNMPv1 or SNMPv2c protocol
+            - S/MIME Certificate
+            - OpenPGP Key
+            - Password only
+
+        Arguments:
+            name: Name of the new credential
+            credential_type: The credential type.
+            comment: Comment for the credential
+            allow_insecure: Whether to allow insecure use of the credential
+            certificate: Certificate for the credential.
+                Required for client-certificate and smime credential types.
+            key_phrase: Key passphrase for the private key.
+                Used for the username+ssh-key credential type.
+            private_key: Private key to use for login. Required
+                for usk credential type. Also used for the cc credential type.
+                The supported key types (dsa, rsa, ecdsa, ...) and formats (PEM,
+                PKC#12, OpenSSL, ...) depend on your installed GnuTLS version.
+            login: Username for the credential. Required for username+password,
+                username+ssh-key and snmp credential type.
+            password: Password for the credential. Used for username+password
+                and snmp credential types.
+            community: The SNMP community
+            auth_algorithm: The SNMP authentication algorithm. Required for snmp
+                credential type.
+            privacy_algorithm: The SNMP privacy algorithm
+            privacy_password: The SNMP privacy password
+            public_key: PGP public key in *armor* plain text format. Required
+                for pgp credential type.
+
+        Examples:
+            Creating a Username + Password credential
+
+            .. code-block:: python
+
+                gmp.create_credential(
+                    name='UP Credential',
+                    credential_type=CredentialType.USERNAME_PASSWORD,
+                    login='foo',
+                    password='bar',
+                )
+
+            Creating a Username + SSH Key credential
+
+            .. code-block:: python
+
+                with open('path/to/private-ssh-key') as f:
+                    key = f.read()
+
+                gmp.create_credential(
+                    name='USK Credential',
+                    credential_type=CredentialType.USERNAME_SSH_KEY,
+                    login='foo',
+                    key_phrase='foobar',
+                    private_key=key,
+                )
+
+            Creating a PGP credential
+
+            .. note::
+
+                A compatible public pgp key file can be exported with GnuPG via
+                ::
+
+                    $ gpg --armor --export alice@cyb.org > alice.asc
+
+            .. code-block:: python
+
+                with open('path/to/pgp.key.asc') as f:
+                    key = f.read()
+
+                gmp.create_credential(
+                    name='PGP Credential',
+                    credential_type=CredentialType.PGP_ENCRYPTION_KEY,
+                    public_key=key,
+                )
+
+            Creating a S/MIME credential
+
+            .. code-block:: python
+
+                with open('path/to/smime-cert') as f:
+                    cert = f.read()
+
+                gmp.create_credential(
+                    name='SMIME Credential',
+                    credential_type=CredentialType.SMIME_CERTIFICATE,
+                    certificate=cert,
+                )
+
+            Creating a Password-Only credential
+
+            .. code-block:: python
+
+                gmp.create_credential(
+                    name='Password-Only Credential',
+                    credential_type=CredentialType.PASSWORD_ONLY,
+                    password='foo',
+                )
+        """
+        return self._send_and_transform_command(
+            Credentials.create_credential(
+                name,
+                credential_type,
+                comment=comment,
+                allow_insecure=allow_insecure,
+                certificate=certificate,
+                key_phrase=key_phrase,
+                private_key=private_key,
+                login=login,
+                password=password,
+                auth_algorithm=auth_algorithm,
+                community=community,
+                privacy_algorithm=privacy_algorithm,
+                privacy_password=privacy_password,
+                public_key=public_key,
+            )
+        )
+
+    def delete_credential(
+        self, credential_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Delete an existing credential
+
+        Args:
+            credential_id: UUID of the credential to delete
+            ultimate: Whether to remove entirely or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Credentials.delete_credential(credential_id, ultimate=ultimate)
+        )
+
+    def get_credentials(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        scanners: Optional[bool] = None,
+        trash: Optional[bool] = None,
+        targets: Optional[bool] = None,
+    ) -> T:
+        """Request a list of credentials
+
+        Arguments:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            scanners: Whether to include a list of scanners using the
+                credentials
+            trash: Whether to get the trashcan credentials instead
+            targets: Whether to include a list of targets using the credentials
+        """
+        return self._send_and_transform_command(
+            Credentials.get_credentials(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                scanners=scanners,
+                trash=trash,
+                targets=targets,
+            )
+        )
+
+    def get_credential(
+        self,
+        credential_id: str,
+        *,
+        scanners: Optional[bool] = None,
+        targets: Optional[bool] = None,
+        credential_format: Optional[Union[CredentialFormat, str]] = None,
+    ) -> T:
+        """Request a single credential
+
+        Arguments:
+            credential_id: UUID of an existing credential
+            scanners: Whether to include a list of scanners using the
+                credentials
+            targets: Whether to include a list of targets using the credentials
+            credential_format: One of "key", "rpm", "deb", "exe" or "pem"
+        """
+        return self._send_and_transform_command(
+            Credentials.get_credential(
+                credential_id,
+                scanners=scanners,
+                targets=targets,
+                credential_format=credential_format,
+            )
+        )
+
+    def modify_credential(
+        self,
+        credential_id: str,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        certificate: Optional[str] = None,
+        key_phrase: Optional[str] = None,
+        private_key: Optional[str] = None,
+        login: Optional[str] = None,
+        password: Optional[str] = None,
+        auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
+        community: Optional[str] = None,
+        privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
+        privacy_password: Optional[str] = None,
+        public_key: Optional[str] = None,
+    ) -> T:
+        """Modifies an existing credential.
+
+        Arguments:
+            credential_id: UUID of the credential
+            name: Name of the credential
+            comment: Comment for the credential
+            allow_insecure: Whether to allow insecure use of the credential
+            certificate: Certificate for the credential
+            key_phrase: Key passphrase for the private key
+            private_key: Private key to use for login
+            login: Username for the credential
+            password: Password for the credential
+            auth_algorithm: The authentication algorithm for SNMP
+            community: The SNMP community
+            privacy_algorithm: The privacy algorithm for SNMP
+            privacy_password: The SNMP privacy password
+            public_key: PGP public key in *armor* plain text format
+        """
+        return self._send_and_transform_command(
+            Credentials.modify_credential(
+                credential_id,
+                name=name,
+                comment=comment,
+                allow_insecure=allow_insecure,
+                certificate=certificate,
+                key_phrase=key_phrase,
+                private_key=private_key,
+                login=login,
+                password=password,
+                auth_algorithm=auth_algorithm,
+                community=community,
+                privacy_algorithm=privacy_algorithm,
+                privacy_password=privacy_password,
+                public_key=public_key,
+            )
+        )

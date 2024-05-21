@@ -6,6 +6,13 @@ from ._aggregates import Aggregates, AggregateStatistic, SortOrder
 from ._alerts import AlertCondition, AlertEvent, AlertMethod, Alerts
 from ._audits import Audits
 from ._auth import Authentication
+from ._credentials import (
+    CredentialFormat,
+    Credentials,
+    CredentialType,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+)
 from ._entity_id import EntityID
 from ._entity_type import EntityType
 from ._feed import Feed, FeedType
@@ -36,6 +43,9 @@ __all__ = (
     "AliveTest",
     "Audits",
     "Authentication",
+    "Credentials",
+    "CredentialFormat",
+    "CredentialType",
     "EntityID",
     "EntityType",
     "Feed",
@@ -55,6 +65,8 @@ __all__ = (
     "ScannerType",
     "Severity",
     "SortOrder",
+    "SnmpAuthAlgorithm",
+    "SnmpPrivacyAlgorithm",
     "SystemReports",
     "Targets",
     "TrashCan",
