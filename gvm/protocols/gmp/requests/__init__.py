@@ -21,6 +21,7 @@ from ._groups import Groups
 from ._help import Help, HelpFormat
 from ._hosts import Hosts, HostsOrdering
 from ._notes import Notes
+from ._operating_systems import OperatingSystems
 from ._overrides import Overrides
 from ._port_list import PortList, PortRangeType
 from ._report_formats import ReportFormatType
@@ -60,6 +61,7 @@ __all__ = (
     "Hosts",
     "HostsOrdering",
     "Notes",
+    "OperatingSystems",
     "Overrides",
     "PortList",
     "PortRangeType",
