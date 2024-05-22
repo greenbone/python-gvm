@@ -27,6 +27,7 @@ from .requests import (
     Groups,
     Help,
     HelpFormat,
+    Hosts,
     HostsOrdering,
     Notes,
     Overrides,
@@ -2295,4 +2296,72 @@ class GMPv224(GvmProtocol[T]):
             Groups.modify_group(
                 group_id, comment=comment, name=name, users=users
             )
+        )
+
+    def create_host(self, name: str, *, comment: Optional[str] = None) -> T:
+        """Create a new host host
+
+        Args:
+            name: Name for the new host host
+            comment: Comment for the new host host
+        """
+        return self._send_and_transform_command(
+            Hosts.create_host(name, comment=comment)
+        )
+
+    def delete_host(self, host_id: EntityID) -> T:
+        """Deletes an existing host
+
+        Args:
+            host_id: UUID of the single host to delete.
+        """
+        return self._send_and_transform_command(Hosts.delete_host(host_id))
+
+    def get_hosts(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of hosts
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            details: Whether to include additional information (e.g. tags)
+        """
+        return self._send_and_transform_command(
+            Hosts.get_hosts(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                details=details,
+            )
+        )
+
+    def get_host(
+        self, host_id: EntityID, *, details: Optional[bool] = None
+    ) -> T:
+        """Request a single host
+
+        Arguments:
+            host_id: UUID of an existing host
+            details: Whether to include additional information (e.g. tags)
+        """
+        return self._send_and_transform_command(
+            Hosts.get_host(host_id, details=details)
+        )
+
+    def modify_host(
+        self, host_id: EntityID, *, comment: Optional[str] = None
+    ) -> T:
+        """Modifies an existing host.
+
+        Args:
+            host_id: UUID of the host to be modified.
+            comment: Comment for the host. Not passing a comment
+                arguments clears the comment for this host.
+        """
+        return self._send_and_transform_command(
+            Hosts.modify_host(host_id, comment=comment)
         )
