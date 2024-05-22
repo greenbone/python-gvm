@@ -24,6 +24,7 @@ from ._notes import Notes
 from ._operating_systems import OperatingSystems
 from ._overrides import Overrides
 from ._permissions import Permissions, PermissionSubjectType
+from ._policies import Policies
 from ._port_list import PortList, PortRangeType
 from ._report_formats import ReportFormatType
 from ._resource_names import ResourceNames, ResourceType
@@ -66,6 +67,7 @@ __all__ = (
     "Overrides",
     "Permissions",
     "PermissionSubjectType",
+    "Policies",
     "PortList",
     "PortRangeType",
     "ReportFormatType",

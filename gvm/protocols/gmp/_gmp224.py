@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Iterable, Optional, Union
+from typing import Iterable, Optional, Sequence, Union
 
 from .._protocol import GvmProtocol, T
 from .requests import (
@@ -34,6 +34,7 @@ from .requests import (
     Overrides,
     Permissions,
     PermissionSubjectType,
+    Policies,
     PortList,
     PortRangeType,
     ReportFormatType,
@@ -2552,5 +2553,217 @@ class GMPv224(GvmProtocol[T]):
                 resource_type=resource_type,
                 subject_id=subject_id,
                 subject_type=subject_type,
+            )
+        )
+
+    def clone_policy(self, policy_id: EntityID) -> T:
+        """Clone a policy from an existing one
+
+        Args:
+            policy_id: UUID of the existing policy
+        """
+        return self._send_and_transform_command(
+            Policies.clone_policy(policy_id)
+        )
+
+    def create_policy(
+        self,
+        name: str,
+        *,
+        policy_id: Optional[EntityID] = None,
+        comment: Optional[str] = None,
+    ) -> T:
+        """Create a new policy
+
+        Args:
+            name: Name of the new policy
+            policy_id: UUID of an existing policy as base. By default the empty
+                policy is used.
+            comment: A comment on the policy
+        """
+        return self._send_and_transform_command(
+            Policies.create_policy(name, policy_id=policy_id, comment=comment)
+        )
+
+    def delete_policy(
+        self, policy_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Deletes an existing policy
+
+        Args:
+            policy_id: UUID of the policy to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Policies.delete_policy(policy_id, ultimate=ultimate)
+        )
+
+    def get_policies(
+        self,
+        *,
+        audits: Optional[bool] = None,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        details: Optional[bool] = None,
+        families: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        trash: Optional[bool] = None,
+    ) -> T:
+        """Request a list of policies
+
+        Args:
+            audits: Whether to get audits using the policy
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            details: Whether to get  families, preferences, nvt selectors
+                and tasks.
+            families: Whether to include the families if no details are
+                requested
+            preferences: Whether to include the preferences if no details are
+                requested
+            trash: Whether to get the trashcan audits instead
+        """
+        return self._send_and_transform_command(
+            Policies.get_policies(
+                audits=audits,
+                filter_string=filter_string,
+                filter_id=filter_id,
+                details=details,
+                families=families,
+                preferences=preferences,
+                trash=trash,
+            )
+        )
+
+    def get_policy(
+        self, policy_id: EntityID, *, audits: Optional[bool] = None
+    ) -> T:
+        """Request a single policy
+
+        Args:
+            policy_id: UUID of an existing policy
+            audits: Whether to get audits using this policy
+        """
+        return self._send_and_transform_command(
+            Policies.get_policy(policy_id, audits=audits)
+        )
+
+    def import_policy(self, policy: str) -> T:
+        """Import a policy from XML
+
+        Args:
+            policy: Policy XML as string to import. This XML must
+                contain a :code:`<get_configs_response>` root element.
+        """
+        return self._send_and_transform_command(Policies.import_policy(policy))
+
+    def modify_policy_set_nvt_preference(
+        self,
+        policy_id: EntityID,
+        name: str,
+        nvt_oid: str,
+        *,
+        value: Optional[str] = None,
+    ) -> T:
+        """Modifies the nvt preferences of an existing policy.
+
+        Args:
+            policy_id: UUID of policy to modify.
+            name: Name for preference to change.
+            nvt_oid: OID of the NVT associated with preference to modify
+            value: New value for the preference. None to delete the preference
+                and to use the default instead.
+        """
+        return self._send_and_transform_command(
+            Policies.modify_policy_set_nvt_preference(
+                policy_id, name, nvt_oid, value=value
+            )
+        )
+
+    def modify_policy_set_name(self, policy_id: EntityID, name: str) -> T:
+        """Modifies the name of an existing policy
+
+        Args:
+            policy_id: UUID of policy to modify.
+            name: New name for the policy.
+        """
+        return self._send_and_transform_command(
+            Policies.modify_policy_set_name(policy_id, name)
+        )
+
+    def modify_policy_set_comment(
+        self, policy_id: EntityID, comment: Optional[str] = None
+    ) -> T:
+        """Modifies the comment of an existing policy
+
+        Args:
+            policy_id: UUID of policy to modify.
+            comment: Comment to set on a policy. Default is an
+                empty comment and the previous comment will be
+                removed.
+        """
+        return self._send_and_transform_command(
+            Policies.modify_policy_set_comment(policy_id, comment=comment)
+        )
+
+    def modify_policy_set_scanner_preference(
+        self, policy_id: EntityID, name: str, *, value: Optional[str] = None
+    ) -> T:
+        """Modifies the scanner preferences of an existing policy
+
+        Args:
+            policy_id: UUID of policy to modify.
+            name: Name of the scanner preference to change
+            value: New value for the preference. None to delete the preference
+                and to use the default instead.
+        """
+        return self._send_and_transform_command(
+            Policies.modify_policy_set_scanner_preference(
+                policy_id, name, value=value
+            )
+        )
+
+    def modify_policy_set_nvt_selection(
+        self, policy_id: EntityID, family: str, nvt_oids: Sequence[str]
+    ) -> T:
+        """Modifies the selected nvts of an existing policy
+
+        The manager updates the given family in the policy to include only the
+        given NVTs.
+
+        Args:
+            policy_id: UUID of policy to modify.
+            family: Name of the NVT family to include NVTs from
+            nvt_oids: List of NVTs to select for the family.
+        """
+        return self._send_and_transform_command(
+            Policies.modify_policy_set_nvt_selection(
+                policy_id, family, nvt_oids
+            )
+        )
+
+    def modify_policy_set_family_selection(
+        self,
+        policy_id: EntityID,
+        families: Sequence[tuple[str, bool, bool]],
+        *,
+        auto_add_new_families: Optional[bool] = True,
+    ) -> T:
+        """
+        Selected the NVTs of a policy at a family level.
+
+        Args:
+            policy_id: UUID of policy to modify.
+            families: A list of tuples with the first entry being the name
+                of the NVT family selected, second entry a boolean indicating
+                whether new NVTs should be added to the family automatically,
+                and third entry a boolean indicating whether all nvts from
+                the family should be included.
+            auto_add_new_families: Whether new families should be added to the
+                policy automatically. Default: True.
+        """
+        return self._send_and_transform_command(
+            Policies.modify_policy_set_family_selection(
+                policy_id, families, auto_add_new_families=auto_add_new_families
             )
         )
