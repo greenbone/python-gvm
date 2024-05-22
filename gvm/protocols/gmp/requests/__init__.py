@@ -29,6 +29,7 @@ from ._port_lists import PortLists, PortRangeType
 from ._report_formats import ReportFormatType
 from ._reports import Reports
 from ._resource_names import ResourceNames, ResourceType
+from ._results import Results
 from ._scan_configs import ScanConfigs
 from ._scanners import Scanners, ScannerType
 from ._severity import Severity
@@ -75,6 +76,7 @@ __all__ = (
     "Reports",
     "ResourceNames",
     "ResourceType",
+    "Results",
     "ScanConfigs",
     "Scanners",
     "ScannerType",
