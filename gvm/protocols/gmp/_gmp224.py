@@ -39,6 +39,7 @@ from .requests import (
     PortRangeType,
     ReportFormatType,
     Reports,
+    Results,
     ScanConfigs,
     Scanners,
     ScannerType,
@@ -2866,4 +2867,44 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(
             Reports.import_report(report, task_id, in_assets=in_assets)
+        )
+
+    def get_result(self, result_id: EntityID) -> T:
+        """Request a single result
+
+        Args:
+            result_id: UUID of an existing result
+        """
+        return self._send_and_transform_command(Results.get_result(result_id))
+
+    def get_results(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        task_id: Optional[str] = None,
+        note_details: Optional[bool] = None,
+        override_details: Optional[bool] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of results
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            task_id: UUID of task for note and override handling
+            note_details: If notes are included, whether to include note details
+            override_details: If overrides are included, whether to include
+                override details
+            details: Whether to include additional details of the results
+        """
+        return self._send_and_transform_command(
+            Results.get_results(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                task_id=task_id,
+                note_details=note_details,
+                override_details=override_details,
+                details=details,
+            )
         )
