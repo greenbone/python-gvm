@@ -19,7 +19,7 @@ from ._feed import Feed, FeedType
 from ._filters import Filters, FilterType
 from ._groups import Groups
 from ._help import Help, HelpFormat
-from ._hosts import HostsOrdering
+from ._hosts import Hosts, HostsOrdering
 from ._notes import Notes
 from ._overrides import Overrides
 from ._port_list import PortList, PortRangeType
@@ -57,6 +57,7 @@ __all__ = (
     "Groups",
     "Help",
     "HelpFormat",
+    "Hosts",
     "HostsOrdering",
     "Notes",
     "Overrides",
