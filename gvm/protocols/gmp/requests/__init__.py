@@ -27,6 +27,7 @@ from ._permissions import Permissions, PermissionSubjectType
 from ._policies import Policies
 from ._port_lists import PortLists, PortRangeType
 from ._report_formats import ReportFormatType
+from ._reports import Reports
 from ._resource_names import ResourceNames, ResourceType
 from ._scan_configs import ScanConfigs
 from ._scanners import Scanners, ScannerType
@@ -71,6 +72,7 @@ __all__ = (
     "PortLists",
     "PortRangeType",
     "ReportFormatType",
+    "Reports",
     "ResourceNames",
     "ResourceType",
     "ScanConfigs",

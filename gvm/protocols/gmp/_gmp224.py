@@ -38,6 +38,7 @@ from .requests import (
     PortLists,
     PortRangeType,
     ReportFormatType,
+    Reports,
     ScanConfigs,
     Scanners,
     ScannerType,
@@ -2766,4 +2767,103 @@ class GMPv224(GvmProtocol[T]):
             Policies.modify_policy_set_family_selection(
                 policy_id, families, auto_add_new_families=auto_add_new_families
             )
+        )
+
+    def delete_report(self, report_id: EntityID) -> T:
+        """Deletes an existing report
+
+        Args:
+            report_id: UUID of the report to be deleted.
+        """
+        return self._send_and_transform_command(
+            Reports.delete_report(report_id)
+        )
+
+    def get_report(
+        self,
+        report_id: EntityID,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        delta_report_id: Optional[EntityID] = None,
+        report_format_id: Optional[Union[str, ReportFormatType]] = None,
+        ignore_pagination: Optional[bool] = None,
+        details: Optional[bool] = True,
+    ) -> T:
+        """Request a single report
+
+        Args:
+            report_id: UUID of an existing report
+            filter_string: Filter term to use to filter results in the report
+            filter_id: UUID of filter to use to filter results in the report
+            delta_report_id: UUID of an existing report to compare report to.
+            report_format_id: UUID of report format to use
+                              or ReportFormatType (enum)
+            ignore_pagination: Whether to ignore the filter terms "first" and
+                "rows".
+            details: Request additional report information details
+                     defaults to True
+        """
+        return self._send_and_transform_command(
+            Reports.get_report(
+                report_id,
+                filter_string=filter_string,
+                filter_id=filter_id,
+                delta_report_id=delta_report_id,
+                report_format_id=report_format_id,
+                ignore_pagination=ignore_pagination,
+                details=details,
+            )
+        )
+
+    def get_reports(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        note_details: Optional[bool] = None,
+        override_details: Optional[bool] = None,
+        ignore_pagination: Optional[bool] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of reports
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            note_details: If notes are included, whether to include note details
+            override_details: If overrides are included, whether to include
+                override details
+            ignore_pagination: Whether to ignore the filter terms "first" and
+                "rows".
+            details: Whether to exclude results
+        """
+        return self._send_and_transform_command(
+            Reports.get_reports(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                note_details=note_details,
+                override_details=override_details,
+                ignore_pagination=ignore_pagination,
+                details=details,
+            )
+        )
+
+    def import_report(
+        self,
+        report: str,
+        task_id: EntityID,
+        *,
+        in_assets: Optional[bool] = None,
+    ) -> T:
+        """Import a Report from XML
+
+        Args:
+            report: Report XML as string to import. This XML must contain
+                a :code:`<report>` root element.
+            task_id: UUID of task to import report to
+            in_asset: Whether to create or update assets using the report
+        """
+        return self._send_and_transform_command(
+            Reports.import_report(report, task_id, in_assets=in_assets)
         )
