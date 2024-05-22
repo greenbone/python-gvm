@@ -32,6 +32,8 @@ from .requests import (
     Notes,
     OperatingSystems,
     Overrides,
+    Permissions,
+    PermissionSubjectType,
     PortList,
     PortRangeType,
     ReportFormatType,
@@ -2430,5 +2432,125 @@ class GMPv224(GvmProtocol[T]):
         return self._send_and_transform_command(
             OperatingSystems.modify_operating_system(
                 operating_system_id, comment=comment
+            )
+        )
+
+    def clone_permission(self, permission_id: EntityID) -> T:
+        """Clone an existing permission
+
+        Args:
+            permission_id: UUID of an existing permission to clone from
+        """
+        return self._send_and_transform_command(
+            Permissions.clone_permission(permission_id)
+        )
+
+    def create_permission(
+        self,
+        name: str,
+        subject_id: EntityID,
+        subject_type: Union[PermissionSubjectType, str],
+        *,
+        resource_id: Optional[str] = None,
+        resource_type: Optional[Union[EntityType, str]] = None,
+        comment: Optional[str] = None,
+    ) -> T:
+        """Create a new permission
+
+        Args:
+            name: Name of the new permission
+            subject_id: UUID of subject to whom the permission is granted
+            subject_type: Type of the subject user, group or role
+            comment: Comment for the permission
+            resource_id: UUID of entity to which the permission applies
+            resource_type: Type of the resource. For Super permissions user,
+                group or role
+        """
+        return self._send_and_transform_command(
+            Permissions.create_permission(
+                name,
+                subject_id,
+                subject_type,
+                resource_id=resource_id,
+                resource_type=resource_type,
+                comment=comment,
+            )
+        )
+
+    def delete_permission(
+        self, permission_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Deletes an existing permission
+
+        Args:
+            permission_id: UUID of the permission to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Permissions.delete_permission(permission_id, ultimate=ultimate)
+        )
+
+    def get_permissions(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        trash: Optional[bool] = None,
+    ) -> T:
+        """Request a list of permissions
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get permissions in the trashcan instead
+        """
+        return self._send_and_transform_command(
+            Permissions.get_permissions(
+                filter_string=filter_string, filter_id=filter_id, trash=trash
+            )
+        )
+
+    def get_permission(self, permission_id: EntityID) -> T:
+        """Request a single permission
+
+        Args:
+            permission_id: UUID of an existing permission
+        """
+        return self._send_and_transform_command(
+            Permissions.get_permission(permission_id)
+        )
+
+    def modify_permission(
+        self,
+        permission_id: EntityID,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        resource_id: Optional[EntityID] = None,
+        resource_type: Optional[Union[EntityType, str]] = None,
+        subject_id: Optional[EntityID] = None,
+        subject_type: Optional[Union[PermissionSubjectType, str]] = None,
+    ) -> T:
+        """Modifies an existing permission.
+
+        Args:
+            permission_id: UUID of permission to be modified.
+            comment: The comment on the permission.
+            name: Permission name, currently the name of a command.
+            subject_id: UUID of subject to whom the permission is granted
+            subject_type: Type of the subject user, group or role
+            resource_id: UUID of entity to which the permission applies
+            resource_type: Type of the resource. For Super permissions user,
+                group or role
+        """
+        return self._send_and_transform_command(
+            Permissions.modify_permission(
+                permission_id,
+                comment=comment,
+                name=name,
+                resource_id=resource_id,
+                resource_type=resource_type,
+                subject_id=subject_id,
+                subject_type=subject_type,
             )
         )
