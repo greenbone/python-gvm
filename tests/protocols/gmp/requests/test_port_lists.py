@@ -5,12 +5,12 @@
 import unittest
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmp.requests import PortList, PortRangeType
+from gvm.protocols.gmp.requests import PortLists, PortRangeType
 
 
 class PortListsTestCase(unittest.TestCase):
     def test_clone(self) -> None:
-        request = PortList.clone_port_list("a1")
+        request = PortLists.clone_port_list("a1")
 
         self.assertEqual(
             bytes(request),
@@ -19,27 +19,27 @@ class PortListsTestCase(unittest.TestCase):
 
     def test_clone_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            PortList.clone_port_list("")
+            PortLists.clone_port_list("")
 
         with self.assertRaises(RequiredArgument):
-            PortList.clone_port_list(None)
+            PortLists.clone_port_list(None)
 
     def test_create_port_list_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_list(name=None, port_range="T:1-1234")
+            PortLists.create_port_list(name=None, port_range="T:1-1234")
 
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_list(name="", port_range="T:1-1234")
+            PortLists.create_port_list(name="", port_range="T:1-1234")
 
     def test_create_port_list_missing_port_range(self):
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_list(name="foo", port_range=None)
+            PortLists.create_port_list(name="foo", port_range=None)
 
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_list(name="foo", port_range="")
+            PortLists.create_port_list(name="foo", port_range="")
 
     def test_create_port_list(self):
-        request = PortList.create_port_list(name="foo", port_range="T:1-1234")
+        request = PortLists.create_port_list(name="foo", port_range="T:1-1234")
 
         self.assertEqual(
             bytes(request),
@@ -50,7 +50,7 @@ class PortListsTestCase(unittest.TestCase):
         )
 
     def test_create_port_list_with_comment(self):
-        request = PortList.create_port_list(
+        request = PortLists.create_port_list(
             name="foo", port_range="T:1-1234", comment="lorem"
         )
 
@@ -65,7 +65,7 @@ class PortListsTestCase(unittest.TestCase):
 
     def test_create_port_range_missing_port_list_id(self):
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id=None,
                 start=1,
                 end=1234,
@@ -73,7 +73,7 @@ class PortListsTestCase(unittest.TestCase):
             )
 
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id="",
                 start=1,
                 end=1234,
@@ -82,7 +82,7 @@ class PortListsTestCase(unittest.TestCase):
 
     def test_create_port_range_missing_start(self):
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id="pl1",
                 start=None,
                 end=1234,
@@ -90,7 +90,7 @@ class PortListsTestCase(unittest.TestCase):
             )
 
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id="pl1",
                 start="",
                 end=1234,
@@ -99,7 +99,7 @@ class PortListsTestCase(unittest.TestCase):
 
     def test_create_port_range_missing_end(self):
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id="pl1",
                 start=1,
                 end=None,
@@ -107,7 +107,7 @@ class PortListsTestCase(unittest.TestCase):
             )
 
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id="pl1",
                 start=1,
                 end="",
@@ -116,23 +116,23 @@ class PortListsTestCase(unittest.TestCase):
 
     def test_create_port_range_missing_port_range_type(self):
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id="pl1", start=1, end=1234, port_range_type=None
             )
 
         with self.assertRaises(RequiredArgument):
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id="pl1", start=1, end=1234, port_range_type=""
             )
 
     def test_create_port_range_invalid_port_range_type(self):
         with self.assertRaises(InvalidArgument):
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id="pl1", start=1, end=1234, port_range_type="blubb"
             )
 
     def test_create_port_range(self):
-        request = PortList.create_port_range(
+        request = PortLists.create_port_range(
             port_list_id="pl1",
             start=1,
             end=1234,
@@ -149,7 +149,7 @@ class PortListsTestCase(unittest.TestCase):
             b"</create_port_range>",
         )
 
-        request = PortList.create_port_range(
+        request = PortLists.create_port_range(
             port_list_id="pl1",
             start=1,
             end=1234,
@@ -166,7 +166,7 @@ class PortListsTestCase(unittest.TestCase):
             b"</create_port_range>",
         )
 
-        request = PortList.create_port_range(
+        request = PortLists.create_port_range(
             port_list_id="pl1",
             start="1",
             end="1234",
@@ -184,7 +184,7 @@ class PortListsTestCase(unittest.TestCase):
         )
 
     def test_create_port_range_with_comment(self):
-        request = PortList.create_port_range(
+        request = PortLists.create_port_range(
             port_list_id="pl1",
             start=1,
             end=1234,
@@ -204,7 +204,7 @@ class PortListsTestCase(unittest.TestCase):
         )
 
     def test_delete(self):
-        request = PortList.delete_port_list("a1")
+        request = PortLists.delete_port_list("a1")
 
         self.assertEqual(
             bytes(request),
@@ -212,7 +212,7 @@ class PortListsTestCase(unittest.TestCase):
         )
 
     def test_delete_ultimate(self):
-        request = PortList.delete_port_list("a1", ultimate=True)
+        request = PortLists.delete_port_list("a1", ultimate=True)
 
         self.assertEqual(
             bytes(request),
@@ -221,13 +221,13 @@ class PortListsTestCase(unittest.TestCase):
 
     def test_delete_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            PortList.delete_port_list(None)
+            PortLists.delete_port_list(None)
 
         with self.assertRaises(RequiredArgument):
-            PortList.delete_port_list("")
+            PortLists.delete_port_list("")
 
     def test_delete_port_range(self):
-        request = PortList.delete_port_range("a1")
+        request = PortLists.delete_port_range("a1")
 
         self.assertEqual(
             bytes(request), b'<delete_port_range port_range_id="a1"/>'
@@ -235,55 +235,55 @@ class PortListsTestCase(unittest.TestCase):
 
     def test_delete_port_range_missing_id(self):
         with self.assertRaises(RequiredArgument):
-            PortList.delete_port_range(None)
+            PortLists.delete_port_range(None)
 
         with self.assertRaises(RequiredArgument):
-            PortList.delete_port_range("")
+            PortLists.delete_port_range("")
 
     def test_get_port_lists(self):
-        request = PortList.get_port_lists()
+        request = PortLists.get_port_lists()
 
         self.assertEqual(bytes(request), b"<get_port_lists/>")
 
     def test_get_port_lists_with_filter_string(self):
-        request = PortList.get_port_lists(filter_string="foo=bar")
+        request = PortLists.get_port_lists(filter_string="foo=bar")
 
         self.assertEqual(bytes(request), b'<get_port_lists filter="foo=bar"/>')
 
     def test_get_port_lists_with_filter_id(self):
-        request = PortList.get_port_lists(filter_id="f1")
+        request = PortLists.get_port_lists(filter_id="f1")
 
         self.assertEqual(bytes(request), b'<get_port_lists filt_id="f1"/>')
 
     def test_get_port_lists_with_trash(self):
-        request = PortList.get_port_lists(trash=True)
+        request = PortLists.get_port_lists(trash=True)
 
         self.assertEqual(bytes(request), b'<get_port_lists trash="1"/>')
 
-        request = PortList.get_port_lists(trash=False)
+        request = PortLists.get_port_lists(trash=False)
 
         self.assertEqual(bytes(request), b'<get_port_lists trash="0"/>')
 
     def test_get_port_lists_with_details(self):
-        request = PortList.get_port_lists(details=True)
+        request = PortLists.get_port_lists(details=True)
 
         self.assertEqual(bytes(request), b'<get_port_lists details="1"/>')
 
-        request = PortList.get_port_lists(details=False)
+        request = PortLists.get_port_lists(details=False)
 
         self.assertEqual(bytes(request), b'<get_port_lists details="0"/>')
 
     def test_get_port_lists_with_targets(self):
-        request = PortList.get_port_lists(targets=True)
+        request = PortLists.get_port_lists(targets=True)
 
         self.assertEqual(bytes(request), b'<get_port_lists targets="1"/>')
 
-        request = PortList.get_port_lists(targets=False)
+        request = PortLists.get_port_lists(targets=False)
 
         self.assertEqual(bytes(request), b'<get_port_lists targets="0"/>')
 
     def test_get_port_list(self):
-        request = PortList.get_port_list(port_list_id="port_list_id")
+        request = PortLists.get_port_list(port_list_id="port_list_id")
 
         self.assertEqual(
             bytes(request),
@@ -292,16 +292,16 @@ class PortListsTestCase(unittest.TestCase):
 
     def test_get_port_list_missing_port_list_id(self):
         with self.assertRaises(RequiredArgument):
-            PortList.get_port_list(port_list_id=None)
+            PortLists.get_port_list(port_list_id=None)
 
         with self.assertRaises(RequiredArgument):
-            PortList.get_port_list(port_list_id="")
+            PortLists.get_port_list(port_list_id="")
 
         with self.assertRaises(RequiredArgument):
-            PortList.get_port_list("")
+            PortLists.get_port_list("")
 
     def test_modify_port_list(self):
-        request = PortList.modify_port_list(port_list_id="p1")
+        request = PortLists.modify_port_list(port_list_id="p1")
 
         self.assertEqual(
             bytes(request), b'<modify_port_list port_list_id="p1"/>'
@@ -309,16 +309,16 @@ class PortListsTestCase(unittest.TestCase):
 
     def test_modify_port_list_missing_port_list_id(self):
         with self.assertRaises(RequiredArgument):
-            PortList.modify_port_list(port_list_id=None)
+            PortLists.modify_port_list(port_list_id=None)
 
         with self.assertRaises(RequiredArgument):
-            PortList.modify_port_list(port_list_id="")
+            PortLists.modify_port_list(port_list_id="")
 
         with self.assertRaises(RequiredArgument):
-            PortList.modify_port_list("")
+            PortLists.modify_port_list("")
 
     def test_modify_port_list_with_comment(self):
-        request = PortList.modify_port_list(port_list_id="p1", comment="foo")
+        request = PortLists.modify_port_list(port_list_id="p1", comment="foo")
 
         self.assertEqual(
             bytes(request),
@@ -328,7 +328,7 @@ class PortListsTestCase(unittest.TestCase):
         )
 
     def test_modify_port_list_with_name(self):
-        request = PortList.modify_port_list(port_list_id="p1", name="foo")
+        request = PortLists.modify_port_list(port_list_id="p1", name="foo")
 
         self.assertEqual(
             bytes(request),

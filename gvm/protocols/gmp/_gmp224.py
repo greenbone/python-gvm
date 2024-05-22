@@ -35,7 +35,7 @@ from .requests import (
     Permissions,
     PermissionSubjectType,
     Policies,
-    PortList,
+    PortLists,
     PortRangeType,
     ReportFormatType,
     ScanConfigs,
@@ -130,7 +130,7 @@ class GMPv224(GvmProtocol[T]):
             port_list_id: UUID of an existing port list to clone from
         """
         return self._send_and_transform_command(
-            PortList.clone_port_list(port_list_id)
+            PortLists.clone_port_list(port_list_id)
         )
 
     def create_port_list(
@@ -145,7 +145,7 @@ class GMPv224(GvmProtocol[T]):
             comment: Comment for the port list
         """
         return self._send_and_transform_command(
-            PortList.create_port_list(name, port_range, comment=comment)
+            PortLists.create_port_list(name, port_range, comment=comment)
         )
 
     def create_port_range(
@@ -167,7 +167,7 @@ class GMPv224(GvmProtocol[T]):
             comment: Comment for the port range
         """
         return self._send_and_transform_command(
-            PortList.create_port_range(
+            PortLists.create_port_range(
                 port_list_id, start, end, port_range_type, comment=comment
             )
         )
@@ -182,7 +182,7 @@ class GMPv224(GvmProtocol[T]):
             ultimate: Whether to remove entirely, or to the trashcan.
         """
         return self._send_and_transform_command(
-            PortList.delete_port_list(port_list_id, ultimate=ultimate)
+            PortLists.delete_port_list(port_list_id, ultimate=ultimate)
         )
 
     def delete_port_range(self, port_range_id: EntityID) -> T:
@@ -192,7 +192,7 @@ class GMPv224(GvmProtocol[T]):
             port_range_id: UUID of the port range to be deleted.
         """
         return self._send_and_transform_command(
-            PortList.delete_port_range(port_range_id)
+            PortLists.delete_port_range(port_range_id)
         )
 
     def get_port_lists(
@@ -214,7 +214,7 @@ class GMPv224(GvmProtocol[T]):
             trash: Whether to get port lists in the trashcan instead
         """
         return self._send_and_transform_command(
-            PortList.get_port_lists(
+            PortLists.get_port_lists(
                 filter_string=filter_string,
                 filter_id=filter_id,
                 details=details,
@@ -230,7 +230,7 @@ class GMPv224(GvmProtocol[T]):
             port_list_id: UUID of an existing port list
         """
         return self._send_and_transform_command(
-            PortList.get_port_list(port_list_id)
+            PortLists.get_port_list(port_list_id)
         )
 
     def modify_port_list(
@@ -248,7 +248,7 @@ class GMPv224(GvmProtocol[T]):
             comment: Comment on port list.
         """
         return self._send_and_transform_command(
-            PortList.modify_port_list(port_list_id, comment=comment, name=name)
+            PortLists.modify_port_list(port_list_id, comment=comment, name=name)
         )
 
     def get_aggregates(

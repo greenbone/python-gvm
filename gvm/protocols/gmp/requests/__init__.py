@@ -25,7 +25,7 @@ from ._operating_systems import OperatingSystems
 from ._overrides import Overrides
 from ._permissions import Permissions, PermissionSubjectType
 from ._policies import Policies
-from ._port_list import PortList, PortRangeType
+from ._port_lists import PortLists, PortRangeType
 from ._report_formats import ReportFormatType
 from ._resource_names import ResourceNames, ResourceType
 from ._scan_configs import ScanConfigs
@@ -68,7 +68,7 @@ __all__ = (
     "Permissions",
     "PermissionSubjectType",
     "Policies",
-    "PortList",
+    "PortLists",
     "PortRangeType",
     "ReportFormatType",
     "ResourceNames",

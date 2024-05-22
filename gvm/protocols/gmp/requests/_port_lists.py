@@ -20,7 +20,7 @@ class PortRangeType(Enum):
     UDP = "UDP"
 
 
-class PortList:
+class PortLists:
     @classmethod
     def clone_port_list(cls, port_list_id: EntityID) -> Request:
         """Clone an existing port list
