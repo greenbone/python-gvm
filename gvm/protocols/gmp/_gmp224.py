@@ -44,6 +44,7 @@ from .requests import (
     ScanConfigs,
     Scanners,
     ScannerType,
+    Schedules,
     Severity,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
@@ -2995,4 +2996,157 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(
             Roles.modify_role(role_id, comment=comment, name=name, users=users)
+        )
+
+    def clone_schedule(self, schedule_id: EntityID) -> T:
+        """Clone an existing schedule
+
+        Args:
+            schedule_id: UUID of an existing schedule to clone from
+        """
+        return self._send_and_transform_command(
+            Schedules.clone_schedule(schedule_id)
+        )
+
+    def create_schedule(
+        self,
+        name: str,
+        icalendar: str,
+        timezone: str,
+        *,
+        comment: Optional[str] = None,
+    ) -> T:
+        """Create a new schedule based in `iCalendar`_ data.
+
+        Example:
+            Requires https://pypi.org/project/icalendar/
+
+            .. code-block:: python
+
+                import pytz
+
+                from datetime import datetime
+
+                from icalendar import Calendar, Event
+
+                cal = Calendar()
+
+                cal.add('prodid', '-//Foo Bar//')
+                cal.add('version', '2.0')
+
+                event = Event()
+                event.add('dtstamp', datetime.now(tz=pytz.UTC))
+                event.add('dtstart', datetime(2020, 1, 1, tzinfo=pytz.utc))
+
+                cal.add_component(event)
+
+                gmp.create_schedule(
+                    name="My Schedule",
+                    icalendar=cal.to_ical(),
+                    timezone='UTC'
+                )
+
+        Args:
+            name: Name of the new schedule
+            icalendar: `iCalendar`_ (RFC 5545) based data.
+            timezone: Timezone to use for the icalendar events e.g
+                Europe/Berlin. If the datetime values in the icalendar data are
+                missing timezone information this timezone gets applied.
+                Otherwise the datetime values from the icalendar data are
+                displayed in this timezone
+            comment: Comment on schedule.
+
+        .. _iCalendar:
+            https://tools.ietf.org/html/rfc5545
+        """
+        return self._send_and_transform_command(
+            Schedules.create_schedule(
+                name, icalendar, timezone, comment=comment
+            )
+        )
+
+    def delete_schedule(
+        self, schedule_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Deletes an existing schedule
+
+        Args:
+            schedule_id: UUID of the schedule to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Schedules.delete_schedule(schedule_id, ultimate=ultimate)
+        )
+
+    def get_schedules(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+        tasks: Optional[bool] = None,
+    ) -> T:
+        """Request a list of schedules
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan schedules instead
+            tasks: Whether to include tasks using the schedules
+        """
+        return self._send_and_transform_command(
+            Schedules.get_schedules(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                tasks=tasks,
+            )
+        )
+
+    def get_schedule(
+        self, schedule_id: EntityID, *, tasks: Optional[bool] = None
+    ) -> T:
+        """Request a single schedule
+
+        Args:
+            schedule_id: UUID of an existing schedule
+            tasks: Whether to include tasks using the schedules
+        """
+        return self._send_and_transform_command(
+            Schedules.get_schedule(schedule_id, tasks=tasks)
+        )
+
+    def modify_schedule(
+        self,
+        schedule_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        icalendar: Optional[str] = None,
+        timezone: Optional[str] = None,
+        comment: Optional[str] = None,
+    ) -> T:
+        """Modifies an existing schedule
+
+        Args:
+            schedule_id: UUID of the schedule to be modified
+            name: Name of the schedule
+            icalendar: `iCalendar`_ (RFC 5545) based data.
+            timezone: Timezone to use for the icalendar events e.g
+                Europe/Berlin. If the datetime values in the icalendar data are
+                missing timezone information this timezone gets applied.
+                Otherwise the datetime values from the icalendar data are
+                displayed in this timezone
+            comment: Comment on schedule.
+
+        .. _iCalendar:
+            https://tools.ietf.org/html/rfc5545
+        """
+        return self._send_and_transform_command(
+            Schedules.modify_schedule(
+                schedule_id,
+                name=name,
+                icalendar=icalendar,
+                timezone=timezone,
+                comment=comment,
+            )
         )

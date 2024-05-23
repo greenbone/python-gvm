@@ -33,6 +33,7 @@ from ._results import Results
 from ._roles import Roles
 from ._scan_configs import ScanConfigs
 from ._scanners import Scanners, ScannerType
+from ._schedules import Schedules
 from ._severity import Severity
 from ._system_reports import SystemReports
 from ._targets import AliveTest, Targets
@@ -82,6 +83,7 @@ __all__ = (
     "ScanConfigs",
     "Scanners",
     "ScannerType",
+    "Schedules",
     "Severity",
     "SortOrder",
     "SnmpAuthAlgorithm",
