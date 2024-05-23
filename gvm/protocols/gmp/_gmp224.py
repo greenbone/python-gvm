@@ -15,6 +15,7 @@ from .requests import (
     AliveTest,
     Audits,
     Authentication,
+    CertBundAdvisories,
     Cpes,
     CredentialFormat,
     Credentials,
@@ -3463,4 +3464,40 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(
             DfnCertAdvisories.get_dfn_cert_advisory(cert_id)
+        )
+
+    def get_cert_bund_advisories(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        name: Optional[str] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of CERT-BUND Advisories
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            name: Name or identifier of the requested information
+            details: Whether to include information about references to this
+                information
+        """
+        return self._send_and_transform_command(
+            CertBundAdvisories.get_cert_bund_advisories(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                name=name,
+                details=details,
+            )
+        )
+
+    def get_cert_bund_advisory(self, cert_id: EntityID) -> T:
+        """Request a single CERT-BUND Advisory
+
+        Args:
+            cert_id: ID of an existing CERT-BUND Advisory
+        """
+        return self._send_and_transform_command(
+            CertBundAdvisories.get_cert_bund_advisory(cert_id)
         )
