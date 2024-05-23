@@ -42,6 +42,7 @@ from ._schedules import Schedules
 from ._secinfo import InfoType, SecInfo
 from ._severity import Severity
 from ._system_reports import SystemReports
+from ._tags import Tags
 from ._targets import AliveTest, Targets
 from ._trashcan import TrashCan
 from ._user_settings import UserSettings
@@ -102,6 +103,7 @@ __all__ = (
     "SnmpAuthAlgorithm",
     "SnmpPrivacyAlgorithm",
     "SystemReports",
+    "Tags",
     "Targets",
     "TrashCan",
     "UserAuthType",
