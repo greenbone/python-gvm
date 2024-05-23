@@ -57,6 +57,7 @@ from .requests import (
     SnmpPrivacyAlgorithm,
     SortOrder,
     SystemReports,
+    Tags,
     Targets,
     TrashCan,
     UserAuthType,
@@ -3500,4 +3501,139 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(
             CertBundAdvisories.get_cert_bund_advisory(cert_id)
+        )
+
+    def clone_tag(self, tag_id: EntityID) -> T:
+        """Clone an existing tag
+
+        Args:
+            tag_id: UUID of an existing tag to clone from
+        """
+        return self._send_and_transform_command(Tags.clone_tag(tag_id))
+
+    def create_tag(
+        self,
+        name: str,
+        resource_type: EntityType,
+        *,
+        resource_filter: Optional[str] = None,
+        resource_ids: Optional[list[EntityID]] = None,
+        value: Optional[str] = None,
+        comment: Optional[str] = None,
+        active: Optional[bool] = None,
+    ) -> T:
+        """Create a tag
+
+        Args:
+            name: Name of the tag. A full tag name consisting of namespace and
+                predicate e.g. `foo:bar`.
+            resource_type: Entity type the tag is to be attached to.
+            resource_filter: Filter term to select resources the tag is to be
+                attached to. Only one of resource_filter or resource_ids can be
+                provided.
+            resource_ids: IDs of the resources the tag is to be attached to.
+                Only one of resource_filter or resource_ids can be provided.
+            value: Value associated with the tag.
+            comment: Comment for the tag.
+            active: Whether the tag should be active.
+        """
+        return self._send_and_transform_command(
+            Tags.create_tag(
+                name,
+                resource_type,
+                resource_filter=resource_filter,
+                resource_ids=resource_ids,
+                value=value,
+                comment=comment,
+                active=active,
+            )
+        )
+
+    def delete_tag(
+        self, tag_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Deletes an existing tag
+
+        Args:
+            tag_id: UUID of the tag to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Tags.delete_tag(tag_id, ultimate=ultimate)
+        )
+
+    def get_tags(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+        names_only: Optional[bool] = None,
+    ) -> T:
+        """Request a list of tags
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get tags from the trashcan instead
+            names_only: Whether to get only distinct tag names
+        """
+        return self._send_and_transform_command(
+            Tags.get_tags(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                names_only=names_only,
+            )
+        )
+
+    def get_tag(self, tag_id: EntityID) -> T:
+        """Request a single tag
+
+        Args:
+            tag_id: UUID of an existing tag
+        """
+        return self._send_and_transform_command(Tags.get_tag(tag_id))
+
+    def modify_tag(
+        self,
+        tag_id: EntityID,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        value: Optional[str] = None,
+        active: Optional[bool] = None,
+        resource_action: Optional[str] = None,
+        resource_type: Optional[EntityType] = None,
+        resource_filter: Optional[str] = None,
+        resource_ids: Optional[list[EntityID]] = None,
+    ) -> T:
+        """Modifies an existing tag.
+
+        Args:
+            tag_id: UUID of the tag.
+            comment: Comment to add to the tag.
+            name: Name of the tag.
+            value: Value of the tag.
+            active: Whether the tag is active.
+            resource_action: Whether to add or remove resources instead of
+                overwriting. One of '', 'add', 'set' or 'remove'.
+            resource_type: Type of the resources to which to attach the tag.
+                Required if resource_filter is set.
+            resource_filter: Filter term to select resources the tag is to be
+                attached to.
+            resource_ids: IDs of the resources to which to attach the tag.
+        """
+        return self._send_and_transform_command(
+            Tags.modify_tag(
+                tag_id,
+                comment=comment,
+                name=name,
+                value=value,
+                active=active,
+                resource_action=resource_action,
+                resource_type=resource_type,
+                resource_filter=resource_filter,
+                resource_ids=resource_ids,
+            )
         )
