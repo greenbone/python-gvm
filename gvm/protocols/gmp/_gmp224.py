@@ -40,6 +40,7 @@ from .requests import (
     ReportFormatType,
     Reports,
     Results,
+    Roles,
     ScanConfigs,
     Scanners,
     ScannerType,
@@ -2907,4 +2908,91 @@ class GMPv224(GvmProtocol[T]):
                 override_details=override_details,
                 details=details,
             )
+        )
+
+    def clone_role(self, role_id: EntityID) -> T:
+        """Clone an existing role
+
+        Args:
+            role_id: UUID of an existing role to clone from
+        """
+        return self._send_and_transform_command(Roles.clone_role(role_id))
+
+    def create_role(
+        self,
+        name: str,
+        *,
+        comment: Optional[str] = None,
+        users: Optional[list[str]] = None,
+    ) -> T:
+        """Create a new role
+
+        Args:
+            name: Name of the role
+            comment: Comment for the role
+            users: List of user names to add to the role
+        """
+        return self._send_and_transform_command(
+            Roles.create_role(name, comment=comment, users=users)
+        )
+
+    def delete_role(
+        self, role_id: str, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Deletes an existing role
+
+        Args:
+            role_id: UUID of the role to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Roles.delete_role(role_id, ultimate=ultimate)
+        )
+
+    def get_roles(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+    ) -> T:
+        """Request a list of roles
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan roles instead
+        """
+        return self._send_and_transform_command(
+            Roles.get_roles(
+                filter_string=filter_string, filter_id=filter_id, trash=trash
+            )
+        )
+
+    def get_role(self, role_id: EntityID) -> T:
+        """Request a single role
+
+        Args:
+            role_id: UUID of an existing role
+        """
+        return self._send_and_transform_command(Roles.get_role(role_id))
+
+    def modify_role(
+        self,
+        role_id: EntityID,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        users: Optional[list[str]] = None,
+    ) -> T:
+        """Modifies an existing role.
+
+        Args:
+            role_id: UUID of role to modify.
+            comment: Name of role.
+            name: Comment on role.
+            users: List of user names.
+        """
+        return self._send_and_transform_command(
+            Roles.modify_role(role_id, comment=comment, name=name, users=users)
         )
