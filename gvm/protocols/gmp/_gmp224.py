@@ -18,6 +18,7 @@ from .requests import (
     CredentialFormat,
     Credentials,
     CredentialType,
+    Cves,
     EntityID,
     EntityType,
     Feed,
@@ -3357,3 +3358,37 @@ class GMPv224(GvmProtocol[T]):
                 details=details,
             )
         )
+
+    def get_cves(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        name: Optional[str] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of CVEs
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            name: Name or identifier of the requested information
+            details: Whether to include information about references to this
+                information
+        """
+        return self._send_and_transform_command(
+            Cves.get_cves(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                name=name,
+                details=details,
+            )
+        )
+
+    def get_cve(self, cve_id: str) -> T:
+        """Request a single CVE
+
+        Args:
+            cve_id: ID of an existing CVE
+        """
+        return self._send_and_transform_command(Cves.get_cve(cve_id))

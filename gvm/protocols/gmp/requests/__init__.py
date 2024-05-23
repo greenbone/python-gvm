@@ -13,6 +13,7 @@ from ._credentials import (
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
 )
+from ._cves import Cves
 from ._entity_id import EntityID
 from ._entity_type import EntityType
 from ._feed import Feed, FeedType
@@ -57,6 +58,7 @@ __all__ = (
     "Credentials",
     "CredentialFormat",
     "CredentialType",
+    "Cves",
     "EntityID",
     "EntityType",
     "Feed",
