@@ -29,6 +29,7 @@ from .requests import (
     HelpFormat,
     Hosts,
     HostsOrdering,
+    InfoType,
     Notes,
     Nvts,
     OperatingSystems,
@@ -46,6 +47,7 @@ from .requests import (
     Scanners,
     ScannerType,
     Schedules,
+    SecInfo,
     Severity,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
@@ -3312,4 +3314,46 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(
             Nvts.get_nvt_preference(name, nvt_oid=nvt_oid)
+        )
+
+    def get_info(self, info_id: EntityID, info_type: InfoType) -> T:
+        """Request a single secinfo
+
+        Arguments:
+            info_id: ID of an existing secinfo
+            info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
+                DFN_CERT_ADV, OVALDEF, NVT
+        """
+        return self._send_and_transform_command(
+            SecInfo.get_info(info_id, info_type)
+        )
+
+    def get_info_list(
+        self,
+        info_type: InfoType,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        name: Optional[str] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of security information
+
+        Args:
+            info_type: Type must be either CERT_BUND_ADV, CPE, CVE,
+                DFN_CERT_ADV, OVALDEF or NVT
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            name: Name or identifier of the requested information
+            details: Whether to include information about references to this
+                information
+        """
+        return self._send_and_transform_command(
+            SecInfo.get_info_list(
+                info_type,
+                filter_string=filter_string,
+                filter_id=filter_id,
+                name=name,
+                details=details,
+            )
         )
