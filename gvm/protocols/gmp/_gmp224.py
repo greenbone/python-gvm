@@ -30,6 +30,7 @@ from .requests import (
     Hosts,
     HostsOrdering,
     Notes,
+    Nvts,
     OperatingSystems,
     Overrides,
     Permissions,
@@ -3149,4 +3150,166 @@ class GMPv224(GvmProtocol[T]):
                 timezone=timezone,
                 comment=comment,
             )
+        )
+
+    def get_nvt_families(self, *, sort_order: Optional[str] = None) -> T:
+        """Request a list of nvt families
+
+        Args:
+            sort_order: Sort order
+        """
+        return self._send_and_transform_command(
+            Nvts.get_nvt_families(sort_order=sort_order)
+        )
+
+    def get_scan_config_nvts(
+        self,
+        *,
+        details: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        preference_count: Optional[bool] = None,
+        timeout: Optional[bool] = None,
+        config_id: Optional[EntityID] = None,
+        preferences_config_id: Optional[EntityID] = None,
+        family: Optional[str] = None,
+        sort_order: Optional[str] = None,
+        sort_field: Optional[str] = None,
+    ) -> T:
+        """Request a list of nvts
+
+        Args:
+            details: Whether to include full details
+            preferences: Whether to include nvt preferences
+            preference_count: Whether to include preference count
+            timeout: Whether to include the special timeout preference
+            config_id: UUID of scan config to which to limit the NVT listing
+            preferences_config_id: UUID of scan config to use for preference
+                values
+            family: Family to which to limit NVT listing
+            sort_order: Sort order
+            sort_field: Sort field
+        """
+        return self._send_and_transform_command(
+            Nvts.get_scan_config_nvts(
+                details=details,
+                preferences=preferences,
+                preference_count=preference_count,
+                timeout=timeout,
+                config_id=config_id,
+                preferences_config_id=preferences_config_id,
+                family=family,
+                sort_order=sort_order,
+                sort_field=sort_field,
+            )
+        )
+
+    def get_scan_config_nvt(self, nvt_oid: str) -> T:
+        """Request a single nvt
+
+        Args:
+            nvt_oid: OID of an existing nvt
+        """
+        return self._send_and_transform_command(
+            Nvts.get_scan_config_nvt(nvt_oid)
+        )
+
+    def get_nvts(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[str] = None,
+        name: Optional[str] = None,
+        details: Optional[bool] = None,
+        extended: Optional[bool] = None,
+        preferences: Optional[bool] = None,
+        preference_count: Optional[bool] = None,
+        timeout: Optional[bool] = None,
+        config_id: Optional[str] = None,
+        preferences_config_id: Optional[str] = None,
+        family: Optional[str] = None,
+        sort_order: Optional[str] = None,
+        sort_field: Optional[str] = None,
+    ) -> T:
+        """Request a list of NVTs
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            name: Name or identifier of the requested information
+            details: Whether to include information about references to this
+                information
+            extended: Whether to receive extended NVT information
+                (calls get_nvts, instead of get_info)
+            preferences: Whether to include NVT preferences (only for extended)
+            preference_count: Whether to include preference count (only for extended)
+            timeout: Whether to include the special timeout preference (only for extended)
+            config_id: UUID of scan config to which to limit the NVT listing (only for extended)
+            preferences_config_id: UUID of scan config to use for preference
+                values (only for extended)
+            family: Family to which to limit NVT listing (only for extended)
+            sort_order: Sort order (only for extended)
+            sort_field: Sort field (only for extended)
+        """
+        return self._send_and_transform_command(
+            Nvts.get_nvts(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                name=name,
+                details=details,
+                extended=extended,
+                preferences=preferences,
+                preference_count=preference_count,
+                timeout=timeout,
+                config_id=config_id,
+                preferences_config_id=preferences_config_id,
+                family=family,
+                sort_order=sort_order,
+                sort_field=sort_field,
+            )
+        )
+
+    def get_nvt(self, nvt_id: str, *, extended: Optional[bool] = None) -> T:
+        """Request a single NVT
+
+        Args:
+            nvt_id: ID of an existing NVT
+            extended: Whether to receive extended NVT information
+                (calls get_nvts, instead of get_info)
+        """
+        return self._send_and_transform_command(
+            Nvts.get_nvt(nvt_id, extended=extended)
+        )
+
+    def get_nvt_preferences(
+        self,
+        *,
+        nvt_oid: Optional[str] = None,
+    ) -> T:
+        """Request a list of preferences
+
+        The preference element includes just the
+        name and value, with the NVT and type built into the name.
+
+        Args:
+            nvt_oid: OID of nvt
+        """
+        return self._send_and_transform_command(
+            Nvts.get_nvt_preferences(nvt_oid=nvt_oid)
+        )
+
+    def get_nvt_preference(
+        self,
+        name: str,
+        *,
+        nvt_oid: Optional[str] = None,
+    ) -> T:
+        """Request a nvt preference
+
+        Args:
+            name: name of a particular preference
+            nvt_oid: OID of nvt
+            config_id: UUID of scan config of which to show preference values
+        """
+        return self._send_and_transform_command(
+            Nvts.get_nvt_preference(name, nvt_oid=nvt_oid)
         )

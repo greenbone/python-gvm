@@ -21,6 +21,7 @@ from ._groups import Groups
 from ._help import Help, HelpFormat
 from ._hosts import Hosts, HostsOrdering
 from ._notes import Notes
+from ._nvts import Nvts
 from ._operating_systems import OperatingSystems
 from ._overrides import Overrides
 from ._permissions import Permissions, PermissionSubjectType
@@ -67,6 +68,7 @@ __all__ = (
     "Hosts",
     "HostsOrdering",
     "Notes",
+    "Nvts",
     "OperatingSystems",
     "Overrides",
     "Permissions",
