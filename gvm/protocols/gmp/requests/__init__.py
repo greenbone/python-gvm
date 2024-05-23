@@ -35,6 +35,7 @@ from ._roles import Roles
 from ._scan_configs import ScanConfigs
 from ._scanners import Scanners, ScannerType
 from ._schedules import Schedules
+from ._secinfo import InfoType, SecInfo
 from ._severity import Severity
 from ._system_reports import SystemReports
 from ._targets import AliveTest, Targets
@@ -67,6 +68,7 @@ __all__ = (
     "HelpFormat",
     "Hosts",
     "HostsOrdering",
+    "InfoType",
     "Notes",
     "Nvts",
     "OperatingSystems",
@@ -86,6 +88,7 @@ __all__ = (
     "Scanners",
     "ScannerType",
     "Schedules",
+    "SecInfo",
     "Severity",
     "SortOrder",
     "SnmpAuthAlgorithm",
