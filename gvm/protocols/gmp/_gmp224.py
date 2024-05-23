@@ -20,6 +20,7 @@ from .requests import (
     Credentials,
     CredentialType,
     Cves,
+    DfnCertAdvisories,
     EntityID,
     EntityType,
     Feed,
@@ -3427,3 +3428,39 @@ class GMPv224(GvmProtocol[T]):
             cpe_id: ID of an existing CPE
         """
         return self._send_and_transform_command(Cpes.get_cpe(cpe_id))
+
+    def get_dfn_cert_advisories(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        name: Optional[str] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of DFN-CERT Advisories
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            name: Name or identifier of the requested information
+            details: Whether to include information about references to this
+                information
+        """
+        return self._send_and_transform_command(
+            DfnCertAdvisories.get_dfn_cert_advisories(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                name=name,
+                details=details,
+            )
+        )
+
+    def get_dfn_cert_advisory(self, cert_id: EntityID) -> T:
+        """Request a single DFN-CERT Advisory
+
+        Args:
+            cert_id: ID of an existing DFN-CERT Advisory
+        """
+        return self._send_and_transform_command(
+            DfnCertAdvisories.get_dfn_cert_advisory(cert_id)
+        )
