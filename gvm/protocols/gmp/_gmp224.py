@@ -15,6 +15,7 @@ from .requests import (
     AliveTest,
     Audits,
     Authentication,
+    Cpes,
     CredentialFormat,
     Credentials,
     CredentialType,
@@ -3392,3 +3393,37 @@ class GMPv224(GvmProtocol[T]):
             cve_id: ID of an existing CVE
         """
         return self._send_and_transform_command(Cves.get_cve(cve_id))
+
+    def get_cpes(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        name: Optional[str] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of CPEs
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            name: Name or identifier of the requested information
+            details: Whether to include information about references to this
+                information
+        """
+        return self._send_and_transform_command(
+            Cpes.get_cpes(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                name=name,
+                details=details,
+            )
+        )
+
+    def get_cpe(self, cpe_id: str) -> T:
+        """Request a single CPE
+
+        Args:
+            cpe_id: ID of an existing CPE
+        """
+        return self._send_and_transform_command(Cpes.get_cpe(cpe_id))
