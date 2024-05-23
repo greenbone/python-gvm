@@ -6,6 +6,7 @@ from ._aggregates import Aggregates, AggregateStatistic, SortOrder
 from ._alerts import AlertCondition, AlertEvent, AlertMethod, Alerts
 from ._audits import Audits
 from ._auth import Authentication
+from ._cpes import Cpes
 from ._credentials import (
     CredentialFormat,
     Credentials,
@@ -55,6 +56,7 @@ __all__ = (
     "AliveTest",
     "Audits",
     "Authentication",
+    "Cpes",
     "Credentials",
     "CredentialFormat",
     "CredentialType",
