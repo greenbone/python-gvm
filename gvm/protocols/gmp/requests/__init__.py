@@ -30,6 +30,7 @@ from ._report_formats import ReportFormatType
 from ._reports import Reports
 from ._resource_names import ResourceNames, ResourceType
 from ._results import Results
+from ._roles import Roles
 from ._scan_configs import ScanConfigs
 from ._scanners import Scanners, ScannerType
 from ._severity import Severity
@@ -77,6 +78,7 @@ __all__ = (
     "ResourceNames",
     "ResourceType",
     "Results",
+    "Roles",
     "ScanConfigs",
     "Scanners",
     "ScannerType",
