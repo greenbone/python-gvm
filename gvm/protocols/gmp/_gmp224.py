@@ -64,6 +64,7 @@ from .requests import (
     Tasks,
     Tickets,
     TicketStatus,
+    TLSCertificates,
     TrashCan,
     UserAuthType,
     Users,
@@ -3958,5 +3959,107 @@ class GMPv224(GvmProtocol[T]):
                 note=note,
                 assigned_to_user_id=assigned_to_user_id,
                 comment=comment,
+            )
+        )
+
+    def clone_tls_certificate(self, tls_certificate_id: EntityID) -> T:
+        """Modifies an existing TLS certificate.
+
+        Args:
+            tls_certificate_id: The UUID of an existing TLS certificate
+        """
+        return self._send_and_transform_command(
+            TLSCertificates.clone_tls_certificate(tls_certificate_id)
+        )
+
+    def create_tls_certificate(
+        self,
+        name: str,
+        certificate: str,
+        *,
+        comment: Optional[str] = None,
+        trust: Optional[bool] = None,
+    ) -> T:
+        """Create a new TLS certificate
+
+        Args:
+            name: Name of the TLS certificate, defaulting to the MD5
+                fingerprint.
+            certificate: The Base64 encoded certificate data (x.509 DER or PEM).
+            comment: Comment for the TLS certificate.
+            trust: Whether the certificate is trusted.
+        """
+        return self._send_and_transform_command(
+            TLSCertificates.create_tls_certificate(
+                name, certificate, comment=comment, trust=trust
+            )
+        )
+
+    def delete_tls_certificate(self, tls_certificate_id: EntityID) -> T:
+        """Deletes an existing tls certificate
+
+        Args:
+            tls_certificate_id: UUID of the tls certificate to be deleted.
+        """
+        return self._send_and_transform_command(
+            TLSCertificates.delete_tls_certificate(tls_certificate_id)
+        )
+
+    def get_tls_certificates(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        include_certificate_data: Optional[bool] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of TLS certificates
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            include_certificate_data: Whether to include the certificate data in
+                the response
+            details: Whether to include additional details of the
+                tls certificates
+        """
+        return self._send_and_transform_command(
+            TLSCertificates.get_tls_certificates(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                include_certificate_data=include_certificate_data,
+                details=details,
+            )
+        )
+
+    def get_tls_certificate(self, tls_certificate_id: EntityID) -> T:
+        """Request a single TLS certificate
+
+        Args:
+            tls_certificate_id: UUID of an existing TLS certificate
+        """
+        return self._send_and_transform_command(
+            TLSCertificates.get_tls_certificate(tls_certificate_id)
+        )
+
+    def modify_tls_certificate(
+        self,
+        tls_certificate_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        trust: Optional[bool] = None,
+    ) -> T:
+        """Modifies an existing TLS certificate.
+
+        Args:
+            tls_certificate_id: UUID of the TLS certificate to be modified.
+            name: Name of the TLS certificate, defaulting to the MD5 fingerprint
+            comment: Comment for the TLS certificate.
+            trust: Whether the certificate is trusted.
+        """
+        return self._send_and_transform_command(
+            TLSCertificates.modify_tls_certificate(
+                tls_certificate_id, name=name, comment=comment, trust=trust
             )
         )

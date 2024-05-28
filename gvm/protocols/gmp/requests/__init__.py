@@ -46,6 +46,7 @@ from ._tags import Tags
 from ._targets import AliveTest, Targets
 from ._tasks import Tasks
 from ._tickets import Tickets, TicketStatus
+from ._tls_certificates import TLSCertificates
 from ._trashcan import TrashCan
 from ._user_settings import UserSettings
 from ._users import UserAuthType, Users
@@ -110,6 +111,7 @@ __all__ = (
     "Tasks",
     "Tickets",
     "TicketStatus",
+    "TLSCertificates",
     "TrashCan",
     "UserAuthType",
     "UserSettings",
