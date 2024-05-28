@@ -45,6 +45,7 @@ from ._system_reports import SystemReports
 from ._tags import Tags
 from ._targets import AliveTest, Targets
 from ._tasks import Tasks
+from ._tickets import Tickets, TicketStatus
 from ._trashcan import TrashCan
 from ._user_settings import UserSettings
 from ._users import UserAuthType, Users
@@ -107,6 +108,8 @@ __all__ = (
     "Tags",
     "Targets",
     "Tasks",
+    "Tickets",
+    "TicketStatus",
     "TrashCan",
     "UserAuthType",
     "UserSettings",
