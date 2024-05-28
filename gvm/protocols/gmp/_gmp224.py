@@ -62,6 +62,8 @@ from .requests import (
     Tags,
     Targets,
     Tasks,
+    Tickets,
+    TicketStatus,
     TrashCan,
     UserAuthType,
     Users,
@@ -3855,3 +3857,106 @@ class GMPv224(GvmProtocol[T]):
             task_id: UUID of the task to be stopped
         """
         return self._send_and_transform_command(Tasks.stop_task(task_id))
+
+    def clone_ticket(self, ticket_id: EntityID) -> T:
+        """Clone an existing ticket
+
+        Args:
+            ticket_id: UUID of an existing ticket to clone from
+        """
+        return self._send_and_transform_command(Tickets.clone_ticket(ticket_id))
+
+    def create_ticket(
+        self,
+        *,
+        result_id: EntityID,
+        assigned_to_user_id: EntityID,
+        note: str,
+        comment: Optional[str] = None,
+    ) -> T:
+        """Create a new ticket
+
+        Args:
+            result_id: UUID of the result the ticket applies to
+            assigned_to_user_id: UUID of a user the ticket should be assigned to
+            note: A note about opening the ticket
+            comment: Comment for the ticket
+        """
+        return self._send_and_transform_command(
+            Tickets.create_ticket(
+                result_id=result_id,
+                assigned_to_user_id=assigned_to_user_id,
+                note=note,
+                comment=comment,
+            )
+        )
+
+    def delete_ticket(
+        self, ticket_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Deletes an existing ticket
+
+        Args:
+            ticket_id: UUID of the ticket to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            Tickets.delete_ticket(ticket_id, ultimate=ultimate)
+        )
+
+    def get_tickets(
+        self,
+        *,
+        trash: Optional[bool] = None,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+    ) -> T:
+        """Request a list of tickets
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: True to request the tickets in the trashcan
+        """
+        return self._send_and_transform_command(
+            Tickets.get_tickets(
+                filter_string=filter_string, filter_id=filter_id, trash=trash
+            )
+        )
+
+    def get_ticket(self, ticket_id: EntityID) -> T:
+        """Request a single ticket
+
+        Args:
+            ticket_id: UUID of an existing ticket
+        """
+        return self._send_and_transform_command(Tickets.get_ticket(ticket_id))
+
+    def modify_ticket(
+        self,
+        ticket_id: EntityID,
+        *,
+        status: Optional[Union[TicketStatus, str]] = None,
+        note: Optional[str] = None,
+        assigned_to_user_id: Optional[EntityID] = None,
+        comment: Optional[str] = None,
+    ) -> T:
+        """Modify a single ticket
+
+        Args:
+            ticket_id: UUID of an existing ticket
+            status: New status for the ticket
+            note: Note for the status change. Required if status is set.
+            assigned_to_user_id: UUID of the user the ticket should be assigned
+                to
+            comment: Comment for the ticket
+        """
+        return self._send_and_transform_command(
+            Tickets.modify_ticket(
+                ticket_id,
+                status=status,
+                note=note,
+                assigned_to_user_id=assigned_to_user_id,
+                comment=comment,
+            )
+        )
