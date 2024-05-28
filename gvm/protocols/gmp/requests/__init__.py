@@ -44,6 +44,7 @@ from ._severity import Severity
 from ._system_reports import SystemReports
 from ._tags import Tags
 from ._targets import AliveTest, Targets
+from ._tasks import Tasks
 from ._trashcan import TrashCan
 from ._user_settings import UserSettings
 from ._users import UserAuthType, Users
@@ -105,6 +106,7 @@ __all__ = (
     "SystemReports",
     "Tags",
     "Targets",
+    "Tasks",
     "TrashCan",
     "UserAuthType",
     "UserSettings",
