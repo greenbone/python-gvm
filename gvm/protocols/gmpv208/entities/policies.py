@@ -5,11 +5,9 @@
 
 from typing import Any, List, Optional, Tuple
 
-from lxml.etree import XMLSyntaxError
-
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter, is_list_like, to_base64, to_bool
-from gvm.xml import XmlCommand
+from gvm.xml import XmlCommand, XmlError
 
 _EMPTY_POLICY_ID = "085569ce-73ed-11df-83c3-002264764cea"
 
@@ -181,7 +179,7 @@ class PoliciesMixin:
 
         try:
             cmd.append_xml_str(policy)
-        except XMLSyntaxError as e:
+        except XmlError as e:
             raise InvalidArgument(
                 function=self.import_policy.__name__, argument="policy"
             ) from e

@@ -5,11 +5,9 @@
 
 from typing import Any, List, Optional, Tuple
 
-from lxml.etree import XMLSyntaxError
-
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.utils import add_filter, deprecation, is_list_like, to_base64, to_bool
-from gvm.xml import XmlCommand
+from gvm.xml import XmlCommand, XmlError
 
 
 class ScanConfigsMixin:
@@ -280,7 +278,7 @@ class ScanConfigsMixin:
 
         try:
             cmd.append_xml_str(config)
-        except XMLSyntaxError as e:
+        except XmlError as e:
             raise InvalidArgument(
                 function=self.import_scan_config.__name__, argument="config"
             ) from e

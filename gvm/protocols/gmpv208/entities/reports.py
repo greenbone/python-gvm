@@ -5,14 +5,12 @@
 
 from typing import Any, Optional, Union
 
-from lxml.etree import XMLSyntaxError
-
 from gvm.errors import InvalidArgument, RequiredArgument
 
 # if I use latest, I get circular import :/
 from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
 from gvm.utils import add_filter, to_bool
-from gvm.xml import XmlCommand
+from gvm.xml import XmlCommand, XmlError
 
 
 class ReportsMixin:
@@ -171,7 +169,7 @@ class ReportsMixin:
 
         try:
             cmd.append_xml_str(report)
-        except XMLSyntaxError as e:
+        except XmlError as e:
             raise InvalidArgument(
                 f"Invalid xml passed as report to import_report {e}"
             ) from None
