@@ -5,12 +5,10 @@
 
 from typing import Any, Optional, Union
 
-from lxml.etree import XMLSyntaxError
-
 from gvm._enum import Enum
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import add_filter, to_bool
-from gvm.xml import XmlCommand
+from gvm.xml import XmlCommand, XmlError
 
 
 class ReportFormatType(Enum):
@@ -182,7 +180,7 @@ class ReportFormatsMixin:
 
         try:
             cmd.append_xml_str(report_format)
-        except XMLSyntaxError as e:
+        except XmlError as e:
             raise InvalidArgument(
                 function=self.import_report_format.__name__,
                 argument="report_format",
