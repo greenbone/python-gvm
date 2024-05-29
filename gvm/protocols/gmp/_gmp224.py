@@ -70,6 +70,7 @@ from .requests import (
     Users,
     UserSettings,
     Version,
+    Vulnerabilities,
 )
 
 
@@ -4062,4 +4063,32 @@ class GMPv224(GvmProtocol[T]):
             TLSCertificates.modify_tls_certificate(
                 tls_certificate_id, name=name, comment=comment, trust=trust
             )
+        )
+
+    def get_vulnerabilities(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+    ) -> T:
+        """Request a list of vulnerabilities
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+        """
+        return self._send_and_transform_command(
+            Vulnerabilities.get_vulnerabilities(
+                filter_string=filter_string, filter_id=filter_id
+            )
+        )
+
+    def get_vulnerability(self, vulnerability_id: EntityID) -> T:
+        """Request a single vulnerability
+
+        Args:
+            vulnerability_id: ID of an existing vulnerability
+        """
+        return self._send_and_transform_command(
+            Vulnerabilities.get_vulnerability(vulnerability_id)
         )

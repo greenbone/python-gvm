@@ -51,6 +51,7 @@ from ._trashcan import TrashCan
 from ._user_settings import UserSettings
 from ._users import UserAuthType, Users
 from ._version import Version
+from ._vulnerabilities import Vulnerabilities
 
 __all__ = (
     "Aggregates",
@@ -117,4 +118,5 @@ __all__ = (
     "UserSettings",
     "Users",
     "Version",
+    "Vulnerabilities",
 )
