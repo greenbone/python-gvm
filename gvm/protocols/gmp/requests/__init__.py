@@ -31,7 +31,7 @@ from ._overrides import Overrides
 from ._permissions import Permissions, PermissionSubjectType
 from ._policies import Policies
 from ._port_lists import PortLists, PortRangeType
-from ._report_formats import ReportFormatType
+from ._report_formats import ReportFormats, ReportFormatType
 from ._reports import Reports
 from ._resource_names import ResourceNames, ResourceType
 from ._results import Results
@@ -92,6 +92,7 @@ __all__ = (
     "PortLists",
     "PortRangeType",
     "ReportFormatType",
+    "ReportFormats",
     "Reports",
     "ResourceNames",
     "ResourceType",
