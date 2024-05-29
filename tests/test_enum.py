@@ -40,6 +40,18 @@ class EnumTestCase(unittest.TestCase):
         ):
             SomeEnum("BAZ")
 
+        with self.assertRaisesRegex(
+            ValueError,
+            "^'' is not a valid SomeEnum$",
+        ):
+            SomeEnum("")
+
+        with self.assertRaisesRegex(
+            ValueError,
+            "^None is not a valid SomeEnum$",
+        ):
+            SomeEnum(None)
+
     def test_from_string(self) -> None:
         enum = SomeEnum.from_string("FOO")
         self.assertEqual(enum, SomeEnum.FOO)
