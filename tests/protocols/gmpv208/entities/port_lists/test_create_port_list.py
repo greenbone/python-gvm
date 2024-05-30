@@ -25,10 +25,10 @@ class GmpCreatePortListTestMixin:
         self.gmp.create_port_list(name="foo", port_range="T:1-1234")
 
         self.connection.send.has_been_called_with(
-            "<create_port_list>"
-            "<name>foo</name>"
-            "<port_range>T:1-1234</port_range>"
-            "</create_port_list>"
+            b"<create_port_list>"
+            b"<name>foo</name>"
+            b"<port_range>T:1-1234</port_range>"
+            b"</create_port_list>"
         )
 
     def test_create_port_list_with_comment(self):
@@ -37,9 +37,9 @@ class GmpCreatePortListTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_port_list>"
-            "<name>foo</name>"
-            "<port_range>T:1-1234</port_range>"
-            "<comment>lorem</comment>"
-            "</create_port_list>"
+            b"<create_port_list>"
+            b"<name>foo</name>"
+            b"<port_range>T:1-1234</port_range>"
+            b"<comment>lorem</comment>"
+            b"</create_port_list>"
         )

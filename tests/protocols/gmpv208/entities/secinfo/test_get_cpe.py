@@ -11,13 +11,13 @@ class GmpGetCpeTestMixin:
         self.gmp.get_cpe(cpe_id="i1")
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="CPE" details="1"/>'
+            b'<get_info info_id="i1" type="CPE" details="1"/>'
         )
 
         self.gmp.get_cpe("i1")
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="CPE" details="1"/>'
+            b'<get_info info_id="i1" type="CPE" details="1"/>'
         )
 
     def test_get_cpe_missing_cpe_id(self):

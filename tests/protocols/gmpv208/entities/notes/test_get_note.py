@@ -11,13 +11,13 @@ class GmpGetNoteTestMixin:
         self.gmp.get_note("n1")
 
         self.connection.send.has_been_called_with(
-            '<get_notes note_id="n1" details="1"/>'
+            b'<get_notes note_id="n1" details="1"/>'
         )
 
         self.gmp.get_note(note_id="n1")
 
         self.connection.send.has_been_called_with(
-            '<get_notes note_id="n1" details="1"/>'
+            b'<get_notes note_id="n1" details="1"/>'
         )
 
     def test_get_note_missing_note_id(self):

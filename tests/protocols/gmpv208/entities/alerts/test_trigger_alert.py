@@ -26,7 +26,7 @@ class GmpTriggerAlertTestMixin:
         self.gmp.trigger_alert(alert_id="a1", report_id="r1")
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" alert_id="a1"/>'
+            b'<get_reports report_id="r1" alert_id="a1"/>'
         )
 
     def test_trigger_alert_with_filter_string(self):
@@ -35,14 +35,14 @@ class GmpTriggerAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" alert_id="a1" filter="name=foo"/>'
+            b'<get_reports report_id="r1" alert_id="a1" filter="name=foo"/>'
         )
 
     def test_trigger_alert_with_filter_id(self):
         self.gmp.trigger_alert(alert_id="a1", report_id="r1", filter_id="f1")
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" alert_id="a1" filt_id="f1"/>'
+            b'<get_reports report_id="r1" alert_id="a1" filt_id="f1"/>'
         )
 
     def test_trigger_alert_with_report_format_id(self):
@@ -51,7 +51,7 @@ class GmpTriggerAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" alert_id="a1" format_id="bar"/>'
+            b'<get_reports report_id="r1" alert_id="a1" format_id="bar"/>'
         )
 
     def test_trigger_alert_with_report_format_type(self):
@@ -59,11 +59,9 @@ class GmpTriggerAlertTestMixin:
             alert_id="a1", report_id="r1", report_format_id=ReportFormatType.SVG
         )
 
-        report_format_id = ReportFormatType.from_string("svg").value
-
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" alert_id="a1" '
-            f'format_id="{report_format_id}"/>'
+            b'<get_reports report_id="r1" alert_id="a1" '
+            b'format_id="9e5e5deb-879e-4ecc-8be6-a71cd0875cdd"/>'
         )
 
     def test_trigger_alert_with_delta_report_id(self):
@@ -72,5 +70,5 @@ class GmpTriggerAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_reports report_id="r1" alert_id="a1" delta_report_id="r2"/>'
+            b'<get_reports report_id="r1" alert_id="a1" delta_report_id="r2"/>'
         )

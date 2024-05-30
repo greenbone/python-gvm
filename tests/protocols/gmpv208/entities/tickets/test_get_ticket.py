@@ -11,13 +11,13 @@ class GmpGetTicketTestMixin:
         self.gmp.get_ticket("t1")
 
         self.connection.send.has_been_called_with(
-            '<get_tickets ticket_id="t1"/>'
+            b'<get_tickets ticket_id="t1"/>'
         )
 
         self.gmp.get_ticket(ticket_id="t1")
 
         self.connection.send.has_been_called_with(
-            '<get_tickets ticket_id="t1"/>'
+            b'<get_tickets ticket_id="t1"/>'
         )
 
     def test_get_ticket_missing_user_id(self):

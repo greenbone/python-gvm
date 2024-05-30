@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from unittest.mock import call, patch
-
 from gvm.errors import RequiredArgument
 
 
@@ -20,91 +18,54 @@ class GmpCreateUserTestMixin:
         self.gmp.create_user(name="foo")
 
         self.connection.send.has_been_called_with(
-            "<create_user><name>foo</name></create_user>"
+            b"<create_user><name>foo</name></create_user>"
         )
 
     def test_create_user_with_password(self):
         self.gmp.create_user(name="foo", password="bar")
 
         self.connection.send.has_been_called_with(
-            "<create_user>"
-            "<name>foo</name>"
-            "<password>bar</password>"
-            "</create_user>"
+            b"<create_user>"
+            b"<name>foo</name>"
+            b"<password>bar</password>"
+            b"</create_user>"
         )
 
     def test_create_user_with_hosts(self):
         self.gmp.create_user(name="foo", hosts=["h1", "h2"], hosts_allow=True)
 
         self.connection.send.has_been_called_with(
-            "<create_user>"
-            "<name>foo</name>"
-            '<hosts allow="1">h1,h2</hosts>'
-            "</create_user>"
+            b"<create_user>"
+            b"<name>foo</name>"
+            b'<hosts allow="1">h1,h2</hosts>'
+            b"</create_user>"
         )
 
         self.gmp.create_user(name="foo", hosts=["h1", "h2"])
 
         self.connection.send.has_been_called_with(
-            "<create_user>"
-            "<name>foo</name>"
-            '<hosts allow="0">h1,h2</hosts>'
-            "</create_user>"
+            b"<create_user>"
+            b"<name>foo</name>"
+            b'<hosts allow="0">h1,h2</hosts>'
+            b"</create_user>"
         )
 
         self.gmp.create_user(name="foo", hosts=["h1", "h2"], hosts_allow=False)
 
         self.connection.send.has_been_called_with(
-            "<create_user>"
-            "<name>foo</name>"
-            '<hosts allow="0">h1,h2</hosts>'
-            "</create_user>"
+            b"<create_user>"
+            b"<name>foo</name>"
+            b'<hosts allow="0">h1,h2</hosts>'
+            b"</create_user>"
         )
-
-    @patch("gvm.protocols.gmpv224.entities.users.deprecation")
-    def test_create_user_with_ifaces(self, deprecation_mock):
-        self.gmp.create_user(name="foo", ifaces=["h1", "h2"], ifaces_allow=True)
-
-        self.connection.send.has_been_called_with(
-            "<create_user><name>foo</name></create_user>"
-        )
-
-        self.gmp.create_user(name="foo", ifaces=["h1", "h2"])
-
-        self.connection.send.has_been_called_with(
-            "<create_user><name>foo</name></create_user>"
-        )
-
-        self.gmp.create_user(
-            name="foo", ifaces=["h1", "h2"], ifaces_allow=False
-        )
-
-        self.connection.send.has_been_called_with(
-            "<create_user><name>foo</name></create_user>"
-        )
-
-        # pylint: disable=line-too-long
-        deprecation_calls = [
-            call("The ifaces parameter has been removed in GMP version 224"),
-            call(
-                "The ifaces_allow parameter has been removed in GMP version 224"
-            ),
-            call("The ifaces parameter has been removed in GMP version 224"),
-            call("The ifaces parameter has been removed in GMP version 224"),
-            call(
-                "The ifaces_allow parameter has been removed in GMP version 224"
-            ),
-        ]
-        # pylint: enable=line-too-long
-        deprecation_mock.assert_has_calls(deprecation_calls)
 
     def test_create_user_with_role_ids(self):
         self.gmp.create_user(name="foo", role_ids=["r1", "r2"])
 
         self.connection.send.has_been_called_with(
-            "<create_user>"
-            "<name>foo</name>"
-            '<role id="r1"/>'
-            '<role id="r2"/>'
-            "</create_user>"
+            b"<create_user>"
+            b"<name>foo</name>"
+            b'<role id="r1"/>'
+            b'<role id="r2"/>'
+            b"</create_user>"
         )

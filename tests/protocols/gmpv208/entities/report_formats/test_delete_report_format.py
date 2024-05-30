@@ -12,14 +12,14 @@ class GmpDeleteReportFormatTestMixin:
         self.gmp.delete_report_format("a1")
 
         self.connection.send.has_been_called_with(
-            '<delete_report_format report_format_id="a1" ultimate="0"/>'
+            b'<delete_report_format report_format_id="a1" ultimate="0"/>'
         )
 
     def test_delete_ultimate(self):
         self.gmp.delete_report_format("a1", ultimate=True)
 
         self.connection.send.has_been_called_with(
-            '<delete_report_format report_format_id="a1" ultimate="1"/>'
+            b'<delete_report_format report_format_id="a1" ultimate="1"/>'
         )
 
     def test_missing_id(self):
@@ -35,5 +35,7 @@ class GmpDeleteReportFormatTestMixin:
         report_format_id = ReportFormatType.from_string("svg").value
         self.connection.send.has_been_called_with(
             "<delete_report_format "
-            f'report_format_id="{report_format_id}" ultimate="0"/>'
+            f'report_format_id="{report_format_id}" ultimate="0"/>'.encode(
+                "utf-8"
+            )
         )

@@ -10,7 +10,9 @@ class GmpResumeAuditTestMixin:
     def test_resume_audit(self):
         self.gmp.resume_audit("a1")
 
-        self.connection.send.has_been_called_with('<resume_task task_id="a1"/>')
+        self.connection.send.has_been_called_with(
+            b'<resume_task task_id="a1"/>'
+        )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

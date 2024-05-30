@@ -11,4 +11,4 @@ class GmpGetVersionTestCase:
         self.connection.connect.has_been_called()
         self.connection.read.has_been_called()
         self.connection.send.has_been_called()
-        self.connection.send.has_been_called_with("<get_version/>")
+        self.connection.send.has_been_called_with(b"<get_version/>")

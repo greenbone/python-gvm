@@ -11,13 +11,13 @@ class GmpGetTargetTestMixin:
         self.gmp.get_target("t1")
 
         self.connection.send.has_been_called_with(
-            '<get_targets target_id="t1"/>'
+            b'<get_targets target_id="t1"/>'
         )
 
         self.gmp.get_target(target_id="t1")
 
         self.connection.send.has_been_called_with(
-            '<get_targets target_id="t1"/>'
+            b'<get_targets target_id="t1"/>'
         )
 
     def test_get_target_missing_target_id(self):
@@ -31,11 +31,11 @@ class GmpGetTargetTestMixin:
         self.gmp.get_target(target_id="t1", tasks=True)
 
         self.connection.send.has_been_called_with(
-            '<get_targets target_id="t1" tasks="1"/>'
+            b'<get_targets target_id="t1" tasks="1"/>'
         )
 
         self.gmp.get_target(target_id="t1", tasks=False)
 
         self.connection.send.has_been_called_with(
-            '<get_targets target_id="t1" tasks="0"/>'
+            b'<get_targets target_id="t1" tasks="0"/>'
         )

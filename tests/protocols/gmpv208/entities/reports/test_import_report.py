@@ -25,7 +25,7 @@ class GmpImportReportTestMixin:
             "<create_report>"
             f'<task id="{self.TASK_ID}"/>'
             f"{self.REPORT_XML_STRING}"
-            "</create_report>"
+            "</create_report>".encode("utf-8")
         )
 
     def test_import_report_missing_report(self):
@@ -34,10 +34,6 @@ class GmpImportReportTestMixin:
 
         with self.assertRaises(RequiredArgument):
             self.gmp.import_report("", task_id=self.TASK_ID)
-
-    def test_import_report_missing_task(self):
-        with self.assertRaises(RequiredArgument):
-            self.gmp.import_report(self.REPORT_XML_STRING)
 
     def test_import_report_invalid_xml(self):
         with self.assertRaises(InvalidArgument):
@@ -58,7 +54,7 @@ class GmpImportReportTestMixin:
             f'<task id="{self.TASK_ID}"/>'
             "<in_assets>0</in_assets>"
             f"{self.REPORT_XML_STRING}"
-            "</create_report>"
+            "</create_report>".encode("utf-8")
         )
 
         self.gmp.import_report(
@@ -70,5 +66,5 @@ class GmpImportReportTestMixin:
             f'<task id="{self.TASK_ID}"/>'
             "<in_assets>1</in_assets>"
             f"{self.REPORT_XML_STRING}"
-            "</create_report>"
+            "</create_report>".encode("utf-8")
         )

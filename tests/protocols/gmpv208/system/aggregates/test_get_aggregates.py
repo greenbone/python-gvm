@@ -16,77 +16,79 @@ class GmpGetAggregatesTestMixin:
         self.gmp.get_aggregates(EntityType.ALERT)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="alert"/>'
+            b'<get_aggregates type="alert"/>'
         )
 
         self.gmp.get_aggregates(resource_type=EntityType.CERT_BUND_ADV)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="cert_bund_adv"/>'
+            b'<get_aggregates type="cert_bund_adv"/>'
         )
 
         self.gmp.get_aggregates(EntityType.CPE)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="cpe"/>'
+            b'<get_aggregates type="cpe"/>'
         )
 
         self.gmp.get_aggregates(EntityType.CVE)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="cve"/>'
+            b'<get_aggregates type="cve"/>'
         )
 
         self.gmp.get_aggregates(EntityType.DFN_CERT_ADV)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="dfn_cert_adv"/>'
+            b'<get_aggregates type="dfn_cert_adv"/>'
         )
 
         self.gmp.get_aggregates(EntityType.HOST)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="host"/>'
+            b'<get_aggregates type="host"/>'
         )
 
         self.gmp.get_aggregates(EntityType.NOTE)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="note"/>'
+            b'<get_aggregates type="note"/>'
         )
 
         self.gmp.get_aggregates(EntityType.NVT)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="nvt"/>'
+            b'<get_aggregates type="nvt"/>'
         )
 
         self.gmp.get_aggregates(EntityType.OPERATING_SYSTEM)
 
-        self.connection.send.has_been_called_with('<get_aggregates type="os"/>')
+        self.connection.send.has_been_called_with(
+            b'<get_aggregates type="os"/>'
+        )
 
         self.gmp.get_aggregates(EntityType.OVALDEF)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="ovaldef"/>'
+            b'<get_aggregates type="ovaldef"/>'
         )
 
         self.gmp.get_aggregates(EntityType.OVERRIDE)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="override"/>'
+            b'<get_aggregates type="override"/>'
         )
 
         self.gmp.get_aggregates(EntityType.REPORT)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="report"/>'
+            b'<get_aggregates type="report"/>'
         )
 
         self.gmp.get_aggregates(EntityType.RESULT)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="result"/>'
+            b'<get_aggregates type="result"/>'
         )
 
     def test_get_aggregates_resource_types_with_usage_type(self):
@@ -97,25 +99,25 @@ class GmpGetAggregatesTestMixin:
         self.gmp.get_aggregates(EntityType.AUDIT)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates usage_type="audit" type="task"/>'
+            b'<get_aggregates usage_type="audit" type="task"/>'
         )
 
         self.gmp.get_aggregates(EntityType.POLICY)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates usage_type="policy" type="config"/>'
+            b'<get_aggregates usage_type="policy" type="config"/>'
         )
 
         self.gmp.get_aggregates(EntityType.SCAN_CONFIG)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates usage_type="scan" type="config"/>'
+            b'<get_aggregates usage_type="scan" type="config"/>'
         )
 
         self.gmp.get_aggregates(EntityType.TASK)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates usage_type="scan" type="task"/>'
+            b'<get_aggregates usage_type="scan" type="task"/>'
         )
 
     def test_get_aggregates_missing_resource_type(self):
@@ -135,7 +137,7 @@ class GmpGetAggregatesTestMixin:
         """
         Test get_aggregates calls with invalid resource_type
         """
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.get_aggregates(resource_type="foo")
 
     def test_get_aggregates_sort_criteria(self):
@@ -154,12 +156,12 @@ class GmpGetAggregatesTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="nvt" group_column="family">'
-            '<sort field="severity" stat="mean" order="descending"/>'
-            '<sort stat="count" order="descending"/>'
-            '<sort field="family" order="ascending"/>'
-            "<data_column>severity</data_column>"
-            "</get_aggregates>"
+            b'<get_aggregates type="nvt" group_column="family">'
+            b'<sort field="severity" stat="mean" order="descending"/>'
+            b'<sort stat="count" order="descending"/>'
+            b'<sort field="family" order="ascending"/>'
+            b"<data_column>severity</data_column>"
+            b"</get_aggregates>"
         )
 
     def test_get_aggregates_sort_criteria_enum(self):
@@ -180,10 +182,10 @@ class GmpGetAggregatesTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="nvt" group_column="family">'
-            '<sort field="severity" stat="mean" order="descending"/>'
-            "<data_column>severity</data_column>"
-            "</get_aggregates>"
+            b'<get_aggregates type="nvt" group_column="family">'
+            b'<sort field="severity" stat="mean" order="descending"/>'
+            b"<data_column>severity</data_column>"
+            b"</get_aggregates>"
         )
 
     def test_get_aggregates_invalid_sort_criteria(self):
@@ -219,7 +221,7 @@ class GmpGetAggregatesTestMixin:
         self.gmp.get_aggregates(EntityType.CPE, first_group=20, max_groups=25)
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="cpe" first_group="20" max_groups="25"/>'
+            b'<get_aggregates type="cpe" first_group="20" max_groups="25"/>'
         )
 
     def test_get_aggregates_invalid_group_limits(self):
@@ -245,20 +247,21 @@ class GmpGetAggregatesTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="cpe">'
-            "<data_column>severity</data_column>"
-            "<data_column>cves</data_column>"
-            "</get_aggregates>"
+            b'<get_aggregates type="cpe">'
+            b"<data_column>severity</data_column>"
+            b"<data_column>cves</data_column>"
+            b"</get_aggregates>"
         )
 
-    def test_get_aggregates_invalid_data_columns(self):
-        """
-        Test get_aggregates calls with invalid data_columns
-        """
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.get_aggregates(
-                resource_type=EntityType.ALERT, data_columns="INVALID"
-            )
+        self.gmp.get_aggregates(
+            resource_type=EntityType.ALERT, data_columns="severity"
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<get_aggregates type="alert">'
+            b"<data_column>severity</data_column>"
+            b"</get_aggregates>"
+        )
 
     def test_get_aggregates_group_column(self):
         """
@@ -267,7 +270,7 @@ class GmpGetAggregatesTestMixin:
         self.gmp.get_aggregates(EntityType.NVT, group_column="family")
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="nvt" group_column="family"/>'
+            b'<get_aggregates type="nvt" group_column="family"/>'
         )
 
     def test_get_aggregates_subgroup_column(self):
@@ -281,8 +284,8 @@ class GmpGetAggregatesTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="nvt" group_column="family"'
-            ' subgroup_column="solution_type"/>'
+            b'<get_aggregates type="nvt" group_column="family"'
+            b' subgroup_column="solution_type"/>'
         )
 
     def test_get_aggregates_missing_group_column(self):
@@ -313,21 +316,25 @@ class GmpGetAggregatesTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates usage_type="scan" type="config"'
-            ' group_column="uuid">'
-            "<text_column>name</text_column>"
-            "<text_column>comment</text_column>"
-            "</get_aggregates>"
+            b'<get_aggregates usage_type="scan" type="config"'
+            b' group_column="uuid">'
+            b"<text_column>name</text_column>"
+            b"<text_column>comment</text_column>"
+            b"</get_aggregates>"
         )
 
-    def test_get_aggregates_invalid_text_columns(self):
-        """
-        Test get_aggregates calls with invalid text_columns
-        """
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.get_aggregates(
-                resource_type=EntityType.ALERT, text_columns="INVALID"
-            )
+        self.gmp.get_aggregates(
+            EntityType.SCAN_CONFIG,
+            group_column="uuid",
+            text_columns="name",
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<get_aggregates usage_type="scan" type="config"'
+            b' group_column="uuid">'
+            b"<text_column>name</text_column>"
+            b"</get_aggregates>"
+        )
 
     def test_get_aggregates_mode(self):
         """
@@ -338,6 +345,6 @@ class GmpGetAggregatesTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_aggregates type="nvt" group_column="name"'
-            ' mode="word_counts"/>'
+            b'<get_aggregates type="nvt" group_column="name"'
+            b' mode="word_counts"/>'
         )

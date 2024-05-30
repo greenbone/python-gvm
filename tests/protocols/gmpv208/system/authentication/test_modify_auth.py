@@ -15,18 +15,18 @@ class GmpModifyAuthTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<modify_auth>"
-            '<group name="foo">'
-            "<auth_conf_setting>"
-            "<key>foo</key>"
-            "<value>bar</value>"
-            "</auth_conf_setting>"
-            "<auth_conf_setting>"
-            "<key>lorem</key>"
-            "<value>ipsum</value>"
-            "</auth_conf_setting>"
-            "</group>"
-            "</modify_auth>"
+            b"<modify_auth>"
+            b'<group name="foo">'
+            b"<auth_conf_setting>"
+            b"<key>foo</key>"
+            b"<value>bar</value>"
+            b"</auth_conf_setting>"
+            b"<auth_conf_setting>"
+            b"<key>lorem</key>"
+            b"<value>ipsum</value>"
+            b"</auth_conf_setting>"
+            b"</group>"
+            b"</modify_auth>"
         )
 
     def test_modify_auth_missing_group_name(self):

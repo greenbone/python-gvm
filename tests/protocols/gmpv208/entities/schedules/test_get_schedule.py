@@ -11,13 +11,13 @@ class GmpGetScheduleTestMixin:
         self.gmp.get_schedule("s1")
 
         self.connection.send.has_been_called_with(
-            '<get_schedules schedule_id="s1"/>'
+            b'<get_schedules schedule_id="s1"/>'
         )
 
         self.gmp.get_schedule(schedule_id="s1")
 
         self.connection.send.has_been_called_with(
-            '<get_schedules schedule_id="s1"/>'
+            b'<get_schedules schedule_id="s1"/>'
         )
 
     def test_get_schedule_missing_schedule_id(self):
@@ -31,11 +31,11 @@ class GmpGetScheduleTestMixin:
         self.gmp.get_schedule(schedule_id="s1", tasks=True)
 
         self.connection.send.has_been_called_with(
-            '<get_schedules schedule_id="s1" tasks="1"/>'
+            b'<get_schedules schedule_id="s1" tasks="1"/>'
         )
 
         self.gmp.get_schedule(schedule_id="s1", tasks=False)
 
         self.connection.send.has_been_called_with(
-            '<get_schedules schedule_id="s1" tasks="0"/>'
+            b'<get_schedules schedule_id="s1" tasks="0"/>'
         )

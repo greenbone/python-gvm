@@ -11,11 +11,11 @@ class GmpCreateScanConfigFromOSPScannerTestMixin:
         self.gmp.create_scan_config_from_osp_scanner("a1", "foo")
 
         self.connection.send.has_been_called_with(
-            "<create_config>"
-            "<scanner>a1</scanner>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            "</create_config>"
+            b"<create_config>"
+            b"<scanner>a1</scanner>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b"</create_config>"
         )
 
     def test_create_scan_config_from_osp_scanner_with_comment(self):
@@ -24,12 +24,12 @@ class GmpCreateScanConfigFromOSPScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_config>"
-            "<comment>comment</comment>"
-            "<scanner>a1</scanner>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            "</create_config>"
+            b"<create_config>"
+            b"<comment>comment</comment>"
+            b"<scanner>a1</scanner>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b"</create_config>"
         )
 
     def test_create_scan_config_from_osp_scanner_missing_scanner_id(self):

@@ -10,7 +10,7 @@ class GmpRestoreFromTrashcanTestMixin:
     def test_restore_from_trashcan(self):
         self.gmp.restore_from_trashcan("a1")
 
-        self.connection.send.has_been_called_with('<restore id="a1"/>')
+        self.connection.send.has_been_called_with(b'<restore id="a1"/>')
 
     def test_restore_from_trashcan_missing_id(self):
         with self.assertRaises(GvmError):

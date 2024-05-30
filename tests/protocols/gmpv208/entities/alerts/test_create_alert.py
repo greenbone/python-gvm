@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import AlertCondition, AlertEvent, AlertMethod
 
 
@@ -59,7 +59,7 @@ class GmpCreateAlertTestMixin:
             )
 
     def test_invalid_condition(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_alert(
                 name="foo",
                 condition="bar",
@@ -68,7 +68,7 @@ class GmpCreateAlertTestMixin:
             )
 
     def test_invalid_event(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_alert(
                 name="foo",
                 condition=AlertCondition.ALWAYS,
@@ -77,7 +77,7 @@ class GmpCreateAlertTestMixin:
             )
 
     def test_invalid_method(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_alert(
                 name="foo",
                 condition=AlertCondition.ALWAYS,
@@ -309,12 +309,12 @@ class GmpCreateAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_alert>"
-            "<name>foo</name>"
-            "<condition>Always</condition>"
-            "<event>Task run status changed</event>"
-            "<method>Email</method>"
-            "</create_alert>"
+            b"<create_alert>"
+            b"<name>foo</name>"
+            b"<condition>Always</condition>"
+            b"<event>Task run status changed</event>"
+            b"<method>Email</method>"
+            b"</create_alert>"
         )
 
     def test_create_alert_with_filter_id(self):
@@ -327,13 +327,13 @@ class GmpCreateAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_alert>"
-            "<name>foo</name>"
-            "<condition>Always</condition>"
-            "<event>Task run status changed</event>"
-            "<method>Email</method>"
-            '<filter id="f1"/>'
-            "</create_alert>"
+            b"<create_alert>"
+            b"<name>foo</name>"
+            b"<condition>Always</condition>"
+            b"<event>Task run status changed</event>"
+            b"<method>Email</method>"
+            b'<filter id="f1"/>'
+            b"</create_alert>"
         )
 
     def test_create_alert_with_comment(self):
@@ -346,13 +346,13 @@ class GmpCreateAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_alert>"
-            "<name>foo</name>"
-            "<condition>Always</condition>"
-            "<event>Task run status changed</event>"
-            "<method>Email</method>"
-            "<comment>hello</comment>"
-            "</create_alert>"
+            b"<create_alert>"
+            b"<name>foo</name>"
+            b"<condition>Always</condition>"
+            b"<event>Task run status changed</event>"
+            b"<method>Email</method>"
+            b"<comment>hello</comment>"
+            b"</create_alert>"
         )
 
     def test_create_alert_with_condition_data(self):
@@ -365,12 +365,12 @@ class GmpCreateAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_alert>"
-            "<name>foo</name>"
-            "<condition>Always<data>bar<name>foo</name></data></condition>"
-            "<event>Task run status changed</event>"
-            "<method>Email</method>"
-            "</create_alert>"
+            b"<create_alert>"
+            b"<name>foo</name>"
+            b"<condition>Always<data>bar<name>foo</name></data></condition>"
+            b"<event>Task run status changed</event>"
+            b"<method>Email</method>"
+            b"</create_alert>"
         )
 
     def test_create_alert_with_event_data(self):
@@ -383,14 +383,14 @@ class GmpCreateAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_alert>"
-            "<name>foo</name>"
-            "<condition>Always</condition>"
-            "<event>Task run status changed"
-            "<data>bar<name>foo</name></data>"
-            "</event>"
-            "<method>Email</method>"
-            "</create_alert>"
+            b"<create_alert>"
+            b"<name>foo</name>"
+            b"<condition>Always</condition>"
+            b"<event>Task run status changed"
+            b"<data>bar<name>foo</name></data>"
+            b"</event>"
+            b"<method>Email</method>"
+            b"</create_alert>"
         )
 
     def test_create_alert_with_method_data(self):
@@ -403,10 +403,10 @@ class GmpCreateAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_alert>"
-            "<name>foo</name>"
-            "<condition>Always</condition>"
-            "<event>Task run status changed</event>"
-            "<method>Email<data>bar<name>foo</name></data></method>"
-            "</create_alert>"
+            b"<create_alert>"
+            b"<name>foo</name>"
+            b"<condition>Always</condition>"
+            b"<event>Task run status changed</event>"
+            b"<method>Email<data>bar<name>foo</name></data></method>"
+            b"</create_alert>"
         )

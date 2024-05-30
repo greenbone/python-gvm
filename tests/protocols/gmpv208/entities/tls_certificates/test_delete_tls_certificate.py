@@ -11,7 +11,7 @@ class GmpDeleteTLSCertificateTestMixin:
         self.gmp.delete_tls_certificate("a1")
 
         self.connection.send.has_been_called_with(
-            '<delete_tls_certificate tls_certificate_id="a1"/>'
+            b'<delete_tls_certificate tls_certificate_id="a1"/>'
         )
 
     def test_delete_ultimate(self):

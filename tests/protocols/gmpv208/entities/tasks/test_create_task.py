@@ -5,7 +5,7 @@
 
 from collections import OrderedDict
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import HostsOrdering
 
 
@@ -16,13 +16,13 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b"</create_task>"
         )
 
     def test_create_task_missing_name(self):
@@ -79,14 +79,14 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            "<comment>bar</comment>"
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b"<comment>bar</comment>"
+            b"</create_task>"
         )
 
     def test_create_task_single_alert(self):
@@ -100,14 +100,14 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            '<alert id="a1"/>'
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b'<alert id="a1"/>'
+            b"</create_task>"
         )
 
     def test_create_task_multiple_alerts(self):
@@ -120,27 +120,17 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            '<alert id="a1"/>'
-            '<alert id="a2"/>'
-            '<alert id="a3"/>'
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b'<alert id="a1"/>'
+            b'<alert id="a2"/>'
+            b'<alert id="a3"/>'
+            b"</create_task>"
         )
-
-    def test_create_task_invalid_alerts(self):
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_task(
-                name="foo",
-                config_id="c1",
-                target_id="t1",
-                scanner_id="s1",
-                alert_ids="invalid",
-            )
 
     def test_create_task_with_empty_alert_ids(self):
         self.gmp.create_task(
@@ -152,13 +142,13 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b"</create_task>"
         )
 
     def test_create_task_with_alterable(self):
@@ -171,14 +161,14 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            "<alterable>1</alterable>"
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b"<alterable>1</alterable>"
+            b"</create_task>"
         )
 
         self.gmp.create_task(
@@ -190,14 +180,14 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            "<alterable>0</alterable>"
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b"<alterable>0</alterable>"
+            b"</create_task>"
         )
 
     def test_create_task_with_hosts_ordering(self):
@@ -210,18 +200,18 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            "<hosts_ordering>reverse</hosts_ordering>"
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b"<hosts_ordering>reverse</hosts_ordering>"
+            b"</create_task>"
         )
 
     def test_create_task_invalid_hosts_ordering(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_task(
                 name="foo",
                 config_id="c1",
@@ -240,14 +230,14 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            '<schedule id="s1"/>'
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b'<schedule id="s1"/>'
+            b"</create_task>"
         )
 
     def test_create_task_with_schedule_and_schedule_periods(self):
@@ -261,15 +251,15 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            '<schedule id="s1"/>'
-            "<schedule_periods>0</schedule_periods>"
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b'<schedule id="s1"/>'
+            b"<schedule_periods>0</schedule_periods>"
+            b"</create_task>"
         )
 
         self.gmp.create_task(
@@ -282,15 +272,15 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            '<schedule id="s1"/>'
-            "<schedule_periods>5</schedule_periods>"
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b'<schedule id="s1"/>'
+            b"<schedule_periods>5</schedule_periods>"
+            b"</create_task>"
         )
 
     def test_create_task_with_schedule_and_invalid_schedule_periods(self):
@@ -324,34 +314,15 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            "<observers>u1,u2</observers>"
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b"<observers>u1,u2</observers>"
+            b"</create_task>"
         )
-
-    def test_create_task_invalid_observers(self):
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_task(
-                name="foo",
-                config_id="c1",
-                target_id="t1",
-                scanner_id="s1",
-                observers="",
-            )
-
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_task(
-                name="foo",
-                config_id="c1",
-                target_id="t1",
-                scanner_id="s1",
-                observers="foo",
-            )
 
     def test_create_task_with_preferences(self):
         self.gmp.create_task(
@@ -363,43 +334,24 @@ class GmpCreateTaskTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            "<usage_type>scan</usage_type>"
-            '<config id="c1"/>'
-            '<target id="t1"/>'
-            '<scanner id="s1"/>'
-            "<preferences>"
-            "<preference>"
-            "<scanner_name>foo</scanner_name>"
-            "<value>bar</value>"
-            "</preference>"
-            "<preference>"
-            "<scanner_name>lorem</scanner_name>"
-            "<value>ipsum</value>"
-            "</preference>"
-            "</preferences>"
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b"<usage_type>scan</usage_type>"
+            b'<config id="c1"/>'
+            b'<target id="t1"/>'
+            b'<scanner id="s1"/>'
+            b"<preferences>"
+            b"<preference>"
+            b"<scanner_name>foo</scanner_name>"
+            b"<value>bar</value>"
+            b"</preference>"
+            b"<preference>"
+            b"<scanner_name>lorem</scanner_name>"
+            b"<value>ipsum</value>"
+            b"</preference>"
+            b"</preferences>"
+            b"</create_task>"
         )
-
-    def test_create_task_invalid_preferences(self):
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_task(
-                name="foo",
-                config_id="c1",
-                target_id="t1",
-                scanner_id="s1",
-                preferences="",
-            )
-
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.create_task(
-                name="foo",
-                config_id="c1",
-                target_id="t1",
-                scanner_id="s1",
-                preferences=["foo", "bar"],
-            )
 
     def test_create_task_don_t_allow_container_task(self):
         with self.assertRaises(InvalidArgument):

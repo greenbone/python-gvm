@@ -38,9 +38,9 @@ class GmpModifyScanConfigTestMixin:
             self.assertTrue(issubclass(w[0].category, DeprecationWarning))
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<comment>foo</comment>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<comment>foo</comment>"
+            b"</modify_config>"
         )
 
     def test_modify_scan_config_set_nvt_pref(self):
@@ -56,12 +56,12 @@ class GmpModifyScanConfigTestMixin:
             self.assertTrue(issubclass(w[0].category, DeprecationWarning))
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<preference>"
-            '<nvt oid="o1"/>'
-            "<name>foo</name>"
-            "</preference>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<preference>"
+            b'<nvt oid="o1"/>'
+            b"<name>foo</name>"
+            b"</preference>"
+            b"</modify_config>"
         )
 
     def test_modify_scan_config_set_scanner_pref(self):
@@ -77,12 +77,12 @@ class GmpModifyScanConfigTestMixin:
             self.assertTrue(issubclass(w[0].category, DeprecationWarning))
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<preference>"
-            "<name>foo</name>"
-            "<value>YmFy</value>"
-            "</preference>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<preference>"
+            b"<name>foo</name>"
+            b"<value>YmFy</value>"
+            b"</preference>"
+            b"</modify_config>"
         )
 
     def test_modify_scan_config_set_nvt_selection(self):
@@ -101,12 +101,12 @@ class GmpModifyScanConfigTestMixin:
             self.assertTrue(issubclass(w[0].category, DeprecationWarning))
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<nvt_selection>"
-            "<family>foo</family>"
-            '<nvt oid="o1"/>'
-            "</nvt_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<nvt_selection>"
+            b"<family>foo</family>"
+            b'<nvt oid="o1"/>'
+            b"</nvt_selection>"
+            b"</modify_config>"
         )
 
     def test_modify_scan_config_set_family_selection(self):
@@ -124,14 +124,14 @@ class GmpModifyScanConfigTestMixin:
             self.assertTrue(issubclass(w[0].category, DeprecationWarning))
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>1</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>1</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>1</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>1</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )

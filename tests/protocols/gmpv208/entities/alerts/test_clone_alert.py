@@ -11,7 +11,7 @@ class GmpCloneAlertTestMixin:
         self.gmp.clone_alert("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_alert><copy>a1</copy></create_alert>"
+            b"<create_alert><copy>a1</copy></create_alert>"
         )
 
     def test_missing_id(self):

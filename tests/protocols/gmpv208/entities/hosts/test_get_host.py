@@ -11,26 +11,26 @@ class GmpGetHostTestMixin:
         self.gmp.get_host("a1")
 
         self.connection.send.has_been_called_with(
-            '<get_assets asset_id="a1" type="host"/>'
+            b'<get_assets asset_id="a1" type="host"/>'
         )
 
         self.gmp.get_host(host_id="a1")
 
         self.connection.send.has_been_called_with(
-            '<get_assets asset_id="a1" type="host"/>'
+            b'<get_assets asset_id="a1" type="host"/>'
         )
 
     def test_get_host_details(self):
         self.gmp.get_host("a1", details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_assets asset_id="a1" type="host" details="1"/>'
+            b'<get_assets asset_id="a1" type="host" details="1"/>'
         )
 
         self.gmp.get_host("a1", details=False)
 
         self.connection.send.has_been_called_with(
-            '<get_assets asset_id="a1" type="host" details="0"/>'
+            b'<get_assets asset_id="a1" type="host" details="0"/>'
         )
 
     def test_get_host_missing_host_id(self):

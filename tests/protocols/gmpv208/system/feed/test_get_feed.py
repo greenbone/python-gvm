@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import FeedType
 
 
@@ -15,20 +15,20 @@ class GmpGetFeedTestMixin:
         """
         self.gmp.get_feed(FeedType.NVT)
 
-        self.connection.send.has_been_called_with('<get_feeds type="NVT"/>')
+        self.connection.send.has_been_called_with(b'<get_feeds type="NVT"/>')
 
         self.gmp.get_feed(FeedType.CERT)
 
-        self.connection.send.has_been_called_with('<get_feeds type="CERT"/>')
+        self.connection.send.has_been_called_with(b'<get_feeds type="CERT"/>')
 
         self.gmp.get_feed(FeedType.SCAP)
 
-        self.connection.send.has_been_called_with('<get_feeds type="SCAP"/>')
+        self.connection.send.has_been_called_with(b'<get_feeds type="SCAP"/>')
 
         self.gmp.get_feed(FeedType.GVMD_DATA)
 
         self.connection.send.has_been_called_with(
-            '<get_feeds type="GVMD_DATA"/>'
+            b'<get_feeds type="GVMD_DATA"/>'
         )
 
     def test_get_feed_missing_type(self):
@@ -48,5 +48,5 @@ class GmpGetFeedTestMixin:
         """
         Test get_feed calls with invalid resource_type
         """
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.get_feed("foo")

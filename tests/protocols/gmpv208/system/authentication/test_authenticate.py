@@ -27,19 +27,19 @@ class GmpAuthenticateTestMixin:
         self.gmp.authenticate("foo", "bar")
 
         self.connection.send.has_been_called_with(
-            "<authenticate>"
-            "<credentials>"
-            "<username>foo</username>"
-            "<password>bar</password>"
-            "</credentials>"
-            "</authenticate>"
+            b"<authenticate>"
+            b"<credentials>"
+            b"<username>foo</username>"
+            b"<password>bar</password>"
+            b"</credentials>"
+            b"</authenticate>"
         )
 
         self.assertTrue(self.gmp.is_authenticated())
 
     def test_authentication_failure(self):
         self.connection.read.return_value(
-            '<authentication_response status="400" status_text="Auth failed"/>'
+            b'<authentication_response status="400" status_text="Auth failed"/>'
         )
 
         self.assertFalse(self.gmp.is_authenticated())
@@ -47,12 +47,12 @@ class GmpAuthenticateTestMixin:
         self.gmp.authenticate("foo", "bar")
 
         self.connection.send.has_been_called_with(
-            "<authenticate>"
-            "<credentials>"
-            "<username>foo</username>"
-            "<password>bar</password>"
-            "</credentials>"
-            "</authenticate>"
+            b"<authenticate>"
+            b"<credentials>"
+            b"<username>foo</username>"
+            b"<password>bar</password>"
+            b"</credentials>"
+            b"</authenticate>"
         )
 
         self.assertFalse(self.gmp.is_authenticated())

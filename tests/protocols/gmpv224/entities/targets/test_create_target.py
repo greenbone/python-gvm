@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv224 import AliveTest
 
 
@@ -22,10 +22,10 @@ class GmpCreateTargetTestMixin:
         self.gmp.create_target("foo", asset_hosts_filter="name=foo")
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            '<asset_hosts filter="name=foo"/>'
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b'<asset_hosts filter="name=foo"/>'
+            b"</create_target>"
         )
 
     def test_create_target_missing_hosts(self):
@@ -36,11 +36,11 @@ class GmpCreateTargetTestMixin:
         self.gmp.create_target("foo", hosts=["foo"], comment="bar")
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            "<comment>bar</comment>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<comment>bar</comment>"
+            b"</create_target>"
         )
 
     def test_create_target_with_exclude_hosts(self):
@@ -49,22 +49,22 @@ class GmpCreateTargetTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo,bar</hosts>"
-            "<exclude_hosts>bar,ipsum</exclude_hosts>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo,bar</hosts>"
+            b"<exclude_hosts>bar,ipsum</exclude_hosts>"
+            b"</create_target>"
         )
 
     def test_create_target_with_ssh_credential(self):
         self.gmp.create_target("foo", hosts=["foo"], ssh_credential_id="c1")
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            '<ssh_credential id="c1"/>'
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b'<ssh_credential id="c1"/>'
+            b"</create_target>"
         )
 
     def test_create_target_with_ssh_credential_port(self):
@@ -76,46 +76,46 @@ class GmpCreateTargetTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            '<ssh_credential id="c1">'
-            "<port>123</port>"
-            "</ssh_credential>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b'<ssh_credential id="c1">'
+            b"<port>123</port>"
+            b"</ssh_credential>"
+            b"</create_target>"
         )
 
     def test_create_target_with_smb_credential_id(self):
         self.gmp.create_target("foo", hosts=["foo"], smb_credential_id="c1")
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            '<smb_credential id="c1"/>'
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b'<smb_credential id="c1"/>'
+            b"</create_target>"
         )
 
     def test_create_target_with_esxi_credential_id(self):
         self.gmp.create_target("foo", hosts=["foo"], esxi_credential_id="c1")
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            '<esxi_credential id="c1"/>'
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b'<esxi_credential id="c1"/>'
+            b"</create_target>"
         )
 
     def test_create_target_with_snmp_credential_id(self):
         self.gmp.create_target("foo", hosts=["foo"], snmp_credential_id="c1")
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            '<snmp_credential id="c1"/>'
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b'<snmp_credential id="c1"/>'
+            b"</create_target>"
         )
 
     def test_create_target_with_alive_tests(self):
@@ -124,15 +124,15 @@ class GmpCreateTargetTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            "<alive_tests>ICMP Ping</alive_tests>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<alive_tests>ICMP Ping</alive_tests>"
+            b"</create_target>"
         )
 
     def test_create_target_invalid_alive_tests(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_target("foo", hosts=["foo"], alive_test="foo")
 
     def test_create_target_with_allow_simultaneous_ips(self):
@@ -141,11 +141,11 @@ class GmpCreateTargetTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            "<allow_simultaneous_ips>1</allow_simultaneous_ips>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<allow_simultaneous_ips>1</allow_simultaneous_ips>"
+            b"</create_target>"
         )
 
         self.gmp.create_target(
@@ -153,73 +153,73 @@ class GmpCreateTargetTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            "<allow_simultaneous_ips>0</allow_simultaneous_ips>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<allow_simultaneous_ips>0</allow_simultaneous_ips>"
+            b"</create_target>"
         )
 
     def test_create_target_with_reverse_lookup_only(self):
         self.gmp.create_target("foo", hosts=["foo"], reverse_lookup_only=True)
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            "<reverse_lookup_only>1</reverse_lookup_only>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<reverse_lookup_only>1</reverse_lookup_only>"
+            b"</create_target>"
         )
 
         self.gmp.create_target("foo", hosts=["foo"], reverse_lookup_only=False)
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            "<reverse_lookup_only>0</reverse_lookup_only>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<reverse_lookup_only>0</reverse_lookup_only>"
+            b"</create_target>"
         )
 
     def test_create_target_with_reverse_lookup_unify(self):
         self.gmp.create_target("foo", hosts=["foo"], reverse_lookup_unify=True)
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            "<reverse_lookup_unify>1</reverse_lookup_unify>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<reverse_lookup_unify>1</reverse_lookup_unify>"
+            b"</create_target>"
         )
 
         self.gmp.create_target("foo", hosts=["foo"], reverse_lookup_unify=False)
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            "<reverse_lookup_unify>0</reverse_lookup_unify>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<reverse_lookup_unify>0</reverse_lookup_unify>"
+            b"</create_target>"
         )
 
     def test_create_target_with_port_range(self):
         self.gmp.create_target("foo", hosts=["foo"], port_range="bar")
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            "<port_range>bar</port_range>"
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<port_range>bar</port_range>"
+            b"</create_target>"
         )
 
     def test_create_target_with_port_list_id(self):
         self.gmp.create_target("foo", hosts=["foo"], port_list_id="pl1")
 
         self.connection.send.has_been_called_with(
-            "<create_target>"
-            "<name>foo</name>"
-            "<hosts>foo</hosts>"
-            '<port_list id="pl1"/>'
-            "</create_target>"
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b'<port_list id="pl1"/>'
+            b"</create_target>"
         )

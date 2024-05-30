@@ -11,7 +11,7 @@ class GmpModifyGroupTestMixin:
         self.gmp.modify_group(group_id="f1")
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1"/>'
+            b'<modify_group group_id="f1"/>'
         )
 
     def test_modify_group_missing_group_id(self):
@@ -28,31 +28,31 @@ class GmpModifyGroupTestMixin:
         self.gmp.modify_group(group_id="f1", comment="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1">'
-            "<comment>foo</comment>"
-            "</modify_group>"
+            b'<modify_group group_id="f1">'
+            b"<comment>foo</comment>"
+            b"</modify_group>"
         )
 
     def test_modify_group_with_name(self):
         self.gmp.modify_group(group_id="f1", name="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1"><name>foo</name></modify_group>'
+            b'<modify_group group_id="f1"><name>foo</name></modify_group>'
         )
 
     def test_modify_group_with_users(self):
         self.gmp.modify_group(group_id="f1", users=["foo"])
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1">'
-            "<users>foo</users>"
-            "</modify_group>"
+            b'<modify_group group_id="f1">'
+            b"<users>foo</users>"
+            b"</modify_group>"
         )
 
         self.gmp.modify_group(group_id="f1", users=["foo", "bar"])
 
         self.connection.send.has_been_called_with(
-            '<modify_group group_id="f1">'
-            "<users>foo,bar</users>"
-            "</modify_group>"
+            b'<modify_group group_id="f1">'
+            b"<users>foo,bar</users>"
+            b"</modify_group>"
         )

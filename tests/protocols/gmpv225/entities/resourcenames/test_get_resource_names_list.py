@@ -3,192 +3,190 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv225 import ResourceType
 
 
 class GmpGetResourceNamesListTestMixin:
-    def test_get_resource_names_list(self):
-        self.gmp.get_resource_names_list(ResourceType.ALERT)
+    def test_get_resource_names(self):
+        self.gmp.get_resource_names(ResourceType.ALERT)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="ALERT"/>'
+            b'<get_resource_names type="ALERT"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.CERT_BUND_ADV)
+        self.gmp.get_resource_names(ResourceType.CERT_BUND_ADV)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="CERT_BUND_ADV"/>'
+            b'<get_resource_names type="CERT_BUND_ADV"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.CONFIG)
+        self.gmp.get_resource_names(ResourceType.CONFIG)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="CONFIG"/>'
+            b'<get_resource_names type="CONFIG"/>'
         )
 
-        self.gmp.get_resource_names_list(resource_type=ResourceType.CPE)
+        self.gmp.get_resource_names(resource_type=ResourceType.CPE)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="CPE"/>'
+            b'<get_resource_names type="CPE"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.CREDENTIAL)
+        self.gmp.get_resource_names(ResourceType.CREDENTIAL)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="CREDENTIAL"/>'
+            b'<get_resource_names type="CREDENTIAL"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.CVE)
+        self.gmp.get_resource_names(ResourceType.CVE)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="CVE"/>'
+            b'<get_resource_names type="CVE"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.DFN_CERT_ADV)
+        self.gmp.get_resource_names(ResourceType.DFN_CERT_ADV)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="DFN_CERT_ADV"/>'
+            b'<get_resource_names type="DFN_CERT_ADV"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.FILTER)
+        self.gmp.get_resource_names(ResourceType.FILTER)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="FILTER"/>'
+            b'<get_resource_names type="FILTER"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.GROUP)
+        self.gmp.get_resource_names(ResourceType.GROUP)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="GROUP"/>'
+            b'<get_resource_names type="GROUP"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.HOST)
+        self.gmp.get_resource_names(ResourceType.HOST)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="HOST"/>'
+            b'<get_resource_names type="HOST"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.NOTE)
+        self.gmp.get_resource_names(ResourceType.NOTE)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="NOTE"/>'
+            b'<get_resource_names type="NOTE"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.NVT)
+        self.gmp.get_resource_names(ResourceType.NVT)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="NVT"/>'
+            b'<get_resource_names type="NVT"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.OS)
+        self.gmp.get_resource_names(ResourceType.OS)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="OS"/>'
+            b'<get_resource_names type="OS"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.OVERRIDE)
+        self.gmp.get_resource_names(ResourceType.OVERRIDE)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="OVERRIDE"/>'
+            b'<get_resource_names type="OVERRIDE"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.PERMISSION)
+        self.gmp.get_resource_names(ResourceType.PERMISSION)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="PERMISSION"/>'
+            b'<get_resource_names type="PERMISSION"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.PORT_LIST)
+        self.gmp.get_resource_names(ResourceType.PORT_LIST)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="PORT_LIST"/>'
+            b'<get_resource_names type="PORT_LIST"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.REPORT_FORMAT)
+        self.gmp.get_resource_names(ResourceType.REPORT_FORMAT)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="REPORT_FORMAT"/>'
+            b'<get_resource_names type="REPORT_FORMAT"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.REPORT)
+        self.gmp.get_resource_names(ResourceType.REPORT)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="REPORT"/>'
+            b'<get_resource_names type="REPORT"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.RESULT)
+        self.gmp.get_resource_names(ResourceType.RESULT)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="RESULT"/>'
+            b'<get_resource_names type="RESULT"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.ROLE)
+        self.gmp.get_resource_names(ResourceType.ROLE)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="ROLE"/>'
+            b'<get_resource_names type="ROLE"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.SCANNER)
+        self.gmp.get_resource_names(ResourceType.SCANNER)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="SCANNER"/>'
+            b'<get_resource_names type="SCANNER"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.SCHEDULE)
+        self.gmp.get_resource_names(ResourceType.SCHEDULE)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="SCHEDULE"/>'
+            b'<get_resource_names type="SCHEDULE"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.TARGET)
+        self.gmp.get_resource_names(ResourceType.TARGET)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="TARGET"/>'
+            b'<get_resource_names type="TARGET"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.TASK)
+        self.gmp.get_resource_names(ResourceType.TASK)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="TASK"/>'
+            b'<get_resource_names type="TASK"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.TLS_CERTIFICATE)
+        self.gmp.get_resource_names(ResourceType.TLS_CERTIFICATE)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="TLS_CERTIFICATE"/>'
+            b'<get_resource_names type="TLS_CERTIFICATE"/>'
         )
 
-        self.gmp.get_resource_names_list(ResourceType.USER)
+        self.gmp.get_resource_names(ResourceType.USER)
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="USER"/>'
+            b'<get_resource_names type="USER"/>'
         )
 
         with self.assertRaises(AttributeError):
-            self.gmp.get_resource_names_list(
+            self.gmp.get_resource_names(
                 ResourceType.ALLRESOURCES  # pylint: disable=no-member
             )
 
-    def test_get_resource_names_list_missing_resource_type(self):
+    def test_get_resource_names_missing_resource_type(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_resource_names_list(resource_type=None)
-
-        with self.assertRaises(RequiredArgument):
-            self.gmp.get_resource_names_list(resource_type="")
+            self.gmp.get_resource_names(resource_type=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.get_resource_names_list("")
+            self.gmp.get_resource_names(resource_type="")
 
-    def test_get_resource_names_list_invalid_resource_type(self):
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.get_resource_names_list(resource_type="foo")
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_resource_names("")
 
-    def test_get_resource_names_list_with_filter_string(self):
-        self.gmp.get_resource_names_list(
-            ResourceType.CPE, filter_string="foo=bar"
-        )
+    def test_get_resource_names_invalid_resource_type(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.get_resource_names(resource_type="foo")
+
+    def test_get_resource_names_with_filter_string(self):
+        self.gmp.get_resource_names(ResourceType.CPE, filter_string="foo=bar")
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names type="CPE" filter="foo=bar"/>'
+            b'<get_resource_names type="CPE" filter="foo=bar"/>'
         )

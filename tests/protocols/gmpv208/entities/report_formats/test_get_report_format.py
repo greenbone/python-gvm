@@ -12,13 +12,13 @@ class GmpGetReportFormatTestMixin:
         self.gmp.get_report_format("rf1")
 
         self.connection.send.has_been_called_with(
-            '<get_report_formats report_format_id="rf1" details="1"/>'
+            b'<get_report_formats report_format_id="rf1" details="1"/>'
         )
 
         self.gmp.get_report_format(report_format_id="rf1")
 
         self.connection.send.has_been_called_with(
-            '<get_report_formats report_format_id="rf1" details="1"/>'
+            b'<get_report_formats report_format_id="rf1" details="1"/>'
         )
 
     def test_get_report_format_missing_report_format_id(self):
@@ -33,12 +33,16 @@ class GmpGetReportFormatTestMixin:
         report_format_id = ReportFormatType.from_string("pdf").value
         self.connection.send.has_been_called_with(
             "<get_report_formats "
-            f'report_format_id="{report_format_id}" details="1"/>'
+            f'report_format_id="{report_format_id}" details="1"/>'.encode(
+                "utf-8"
+            )
         )
 
         self.gmp.get_report_format(report_format_id=ReportFormatType.PDF)
 
         self.connection.send.has_been_called_with(
             "<get_report_formats "
-            f'report_format_id="{report_format_id}" details="1"/>'
+            f'report_format_id="{report_format_id}" details="1"/>'.encode(
+                "utf-8"
+            )
         )

@@ -11,9 +11,9 @@ class GmpCloneTLSCertificateTestMixin:
         self.gmp.clone_tls_certificate("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_tls_certificate>"
-            "<copy>a1</copy>"
-            "</create_tls_certificate>"
+            b"<create_tls_certificate>"
+            b"<copy>a1</copy>"
+            b"</create_tls_certificate>"
         )
 
     def test_missing_id(self):

@@ -8,11 +8,11 @@ class GmpGetNvtFamiliesTestMixin:
     def test_get_nvt_families(self):
         self.gmp.get_nvt_families()
 
-        self.connection.send.has_been_called_with("<get_nvt_families/>")
+        self.connection.send.has_been_called_with(b"<get_nvt_families/>")
 
     def test_get_nvt_families_with_sort_order(self):
         self.gmp.get_nvt_families(sort_order="foo")
 
         self.connection.send.has_been_called_with(
-            '<get_nvt_families sort_order="foo"/>'
+            b'<get_nvt_families sort_order="foo"/>'
         )

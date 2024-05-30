@@ -22,7 +22,9 @@ class GmpImportScanConfigTestMixin:
         self.gmp.import_scan_config(self.CONFIG_XML_STRING)
 
         self.connection.send.has_been_called_with(
-            "<create_config>" f"{self.CONFIG_XML_STRING}" "</create_config>"
+            f"<create_config>{self.CONFIG_XML_STRING}</create_config>".encode(
+                "utf-8"
+            )
         )
 
     def test_import_missing_scan_config_xml(self):

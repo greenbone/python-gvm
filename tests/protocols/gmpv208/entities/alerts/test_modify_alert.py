@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import AlertCondition, AlertEvent, AlertMethod
 
 
@@ -12,7 +12,7 @@ class GmpModifyAlertTestMixin:
         self.gmp.modify_alert(alert_id="a1")
 
         self.connection.send.has_been_called_with(
-            '<modify_alert alert_id="a1"/>'
+            b'<modify_alert alert_id="a1"/>'
         )
 
     def test_modify_alert_without_alert_id(self):
@@ -29,29 +29,29 @@ class GmpModifyAlertTestMixin:
         self.gmp.modify_alert(alert_id="a1", comment="lorem")
 
         self.connection.send.has_been_called_with(
-            '<modify_alert alert_id="a1">'
-            "<comment>lorem</comment>"
-            "</modify_alert>"
+            b'<modify_alert alert_id="a1">'
+            b"<comment>lorem</comment>"
+            b"</modify_alert>"
         )
 
     def test_modify_alert_with_name(self):
         self.gmp.modify_alert(alert_id="a1", name="lorem")
 
         self.connection.send.has_been_called_with(
-            '<modify_alert alert_id="a1">'
-            "<name>lorem</name>"
-            "</modify_alert>"
+            b'<modify_alert alert_id="a1">'
+            b"<name>lorem</name>"
+            b"</modify_alert>"
         )
 
     def test_modify_alert_with_filter_id(self):
         self.gmp.modify_alert(alert_id="a1", filter_id="f1")
 
         self.connection.send.has_been_called_with(
-            '<modify_alert alert_id="a1"><filter id="f1"/></modify_alert>'
+            b'<modify_alert alert_id="a1"><filter id="f1"/></modify_alert>'
         )
 
     def test_modify_alert_invalid_condition(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_alert(
                 alert_id="a1",
                 condition="bar",
@@ -60,7 +60,7 @@ class GmpModifyAlertTestMixin:
             )
 
     def test_modify_alert_invalid_event(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_alert(
                 alert_id="a1",
                 condition=AlertCondition.ALWAYS,
@@ -69,7 +69,7 @@ class GmpModifyAlertTestMixin:
             )
 
     def test_modify_alert_invalid_method(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_alert(
                 alert_id="a1",
                 condition=AlertCondition.ALWAYS,
@@ -122,7 +122,7 @@ class GmpModifyAlertTestMixin:
             )
 
     def test_modify_alert_invalid_condition_for_secinfo(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_alert(
                 alert_id="a1",
                 condition="Severity at least",
@@ -131,7 +131,7 @@ class GmpModifyAlertTestMixin:
             )
 
     def test_modify_alert_invalid_method_for_secinfo(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_alert(
                 alert_id="a1",
                 condition="Always",
@@ -149,13 +149,13 @@ class GmpModifyAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_alert alert_id="a1">'
-            "<condition>Always</condition>"
-            "<method>Email</method>"
-            "<event>Task run status changed"
-            "<data>bar<name>foo</name></data>"
-            "</event>"
-            "</modify_alert>"
+            b'<modify_alert alert_id="a1">'
+            b"<condition>Always</condition>"
+            b"<method>Email</method>"
+            b"<event>Task run status changed"
+            b"<data>bar<name>foo</name></data>"
+            b"</event>"
+            b"</modify_alert>"
         )
 
     def test_modify_alert_with_condition_data(self):
@@ -168,11 +168,11 @@ class GmpModifyAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_alert alert_id="a1">'
-            "<condition>Always<data>bar<name>foo</name></data></condition>"
-            "<method>Email</method>"
-            "<event>Task run status changed</event>"
-            "</modify_alert>"
+            b'<modify_alert alert_id="a1">'
+            b"<condition>Always<data>bar<name>foo</name></data></condition>"
+            b"<method>Email</method>"
+            b"<event>Task run status changed</event>"
+            b"</modify_alert>"
         )
 
     def test_modify_alert_with_method_data(self):
@@ -185,11 +185,11 @@ class GmpModifyAlertTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_alert alert_id="a1">'
-            "<condition>Always</condition>"
-            "<method>Email<data>bar<name>foo</name></data></method>"
-            "<event>Task run status changed</event>"
-            "</modify_alert>"
+            b'<modify_alert alert_id="a1">'
+            b"<condition>Always</condition>"
+            b"<method>Email<data>bar<name>foo</name></data></method>"
+            b"<event>Task run status changed</event>"
+            b"</modify_alert>"
         )
 
     def test_modify_missing_method_for_ticket_received(self):

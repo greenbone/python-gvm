@@ -11,13 +11,13 @@ class GmpCloneTicketTestMixin:
         self.gmp.clone_ticket("t1")
 
         self.connection.send.has_been_called_with(
-            "<create_ticket><copy>t1</copy></create_ticket>"
+            b"<create_ticket><copy>t1</copy></create_ticket>"
         )
 
         self.gmp.clone_ticket(ticket_id="t1")
 
         self.connection.send.has_been_called_with(
-            "<create_ticket><copy>t1</copy></create_ticket>"
+            b"<create_ticket><copy>t1</copy></create_ticket>"
         )
 
     def test_missing_id(self):

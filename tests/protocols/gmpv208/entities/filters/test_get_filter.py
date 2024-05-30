@@ -11,13 +11,13 @@ class GmpGetFilterTestMixin:
         self.gmp.get_filter("f1")
 
         self.connection.send.has_been_called_with(
-            '<get_filters filter_id="f1"/>'
+            b'<get_filters filter_id="f1"/>'
         )
 
         self.gmp.get_filter(filter_id="f1")
 
         self.connection.send.has_been_called_with(
-            '<get_filters filter_id="f1"/>'
+            b'<get_filters filter_id="f1"/>'
         )
 
     def test_get_filter_missing_filter_id(self):
@@ -31,11 +31,11 @@ class GmpGetFilterTestMixin:
         self.gmp.get_filter(filter_id="f1", alerts=True)
 
         self.connection.send.has_been_called_with(
-            '<get_filters filter_id="f1" alerts="1"/>'
+            b'<get_filters filter_id="f1" alerts="1"/>'
         )
 
         self.gmp.get_filter(filter_id="f1", alerts=False)
 
         self.connection.send.has_been_called_with(
-            '<get_filters filter_id="f1" alerts="0"/>'
+            b'<get_filters filter_id="f1" alerts="0"/>'
         )

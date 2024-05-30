@@ -11,14 +11,14 @@ class GmpDeleteFilterTestMixin:
         self.gmp.delete_filter("a1")
 
         self.connection.send.has_been_called_with(
-            '<delete_filter filter_id="a1" ultimate="0"/>'
+            b'<delete_filter filter_id="a1" ultimate="0"/>'
         )
 
     def test_delete_ultimate(self):
         self.gmp.delete_filter("a1", ultimate=True)
 
         self.connection.send.has_been_called_with(
-            '<delete_filter filter_id="a1" ultimate="1"/>'
+            b'<delete_filter filter_id="a1" ultimate="1"/>'
         )
 
     def test_missing_filter_id(self):

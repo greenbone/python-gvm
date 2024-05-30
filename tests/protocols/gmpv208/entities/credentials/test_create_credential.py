@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import (
     CredentialType,
     SnmpAuthAlgorithm,
@@ -37,13 +37,13 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>up</type>"
-            "<comment>bar</comment>"
-            "<login>Max</login>"
-            "<password>123</password>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>up</type>"
+            b"<comment>bar</comment>"
+            b"<login>Max</login>"
+            b"<password>123</password>"
+            b"</create_credential>"
         )
 
     def test_create_up_credential_with_allow_insecure(self):
@@ -57,14 +57,14 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>up</type>"
-            "<comment>bar</comment>"
-            "<allow_insecure>1</allow_insecure>"
-            "<login>Max</login>"
-            "<password>123</password>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>up</type>"
+            b"<comment>bar</comment>"
+            b"<allow_insecure>1</allow_insecure>"
+            b"<login>Max</login>"
+            b"<password>123</password>"
+            b"</create_credential>"
         )
 
         self.gmp.create_credential(
@@ -77,14 +77,14 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>up</type>"
-            "<comment>bar</comment>"
-            "<allow_insecure>0</allow_insecure>"
-            "<login>Max</login>"
-            "<password>123</password>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>up</type>"
+            b"<comment>bar</comment>"
+            b"<allow_insecure>0</allow_insecure>"
+            b"<login>Max</login>"
+            b"<password>123</password>"
+            b"</create_credential>"
         )
 
     def test_create_cc_credential_missing_certificate(self):
@@ -101,11 +101,11 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>cc</type>"
-            "<certificate>abcdef</certificate>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>cc</type>"
+            b"<certificate>abcdef</certificate>"
+            b"</create_credential>"
         )
 
     def test_create_cc_credential_with_private_key(self):
@@ -117,14 +117,14 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>cc</type>"
-            "<certificate>abcdef</certificate>"
-            "<key>"
-            "<private>123456</private>"
-            "</key>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>cc</type>"
+            b"<certificate>abcdef</certificate>"
+            b"<key>"
+            b"<private>123456</private>"
+            b"</key>"
+            b"</create_credential>"
         )
 
     def test_create_usk_credential_missing_private_key(self):
@@ -152,14 +152,14 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>usk</type>"
-            "<login>foo</login>"
-            "<key>"
-            "<private>123456</private>"
-            "</key>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>usk</type>"
+            b"<login>foo</login>"
+            b"<key>"
+            b"<private>123456</private>"
+            b"</key>"
+            b"</create_credential>"
         )
 
     def test_create_usk_credential_with_key_phrase(self):
@@ -172,24 +172,24 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>usk</type>"
-            "<login>foo</login>"
-            "<key>"
-            "<private>123456</private>"
-            "<phrase>abcdef</phrase>"
-            "</key>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>usk</type>"
+            b"<login>foo</login>"
+            b"<key>"
+            b"<private>123456</private>"
+            b"<phrase>abcdef</phrase>"
+            b"</key>"
+            b"</create_credential>"
         )
 
     def test_create_snmp_credential_invalid_auth_algorithm(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(
                 name="foo", credential_type=CredentialType.SNMP, login="foo"
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(
                 name="foo",
                 credential_type=CredentialType.SNMP,
@@ -197,7 +197,7 @@ class GmpCreateCredentialTestMixin:
                 auth_algorithm="",
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(
                 name="foo",
                 credential_type=CredentialType.SNMP,
@@ -214,12 +214,12 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>snmp</type>"
-            "<login>foo</login>"
-            "<auth_algorithm>md5</auth_algorithm>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>snmp</type>"
+            b"<login>foo</login>"
+            b"<auth_algorithm>md5</auth_algorithm>"
+            b"</create_credential>"
         )
 
     def test_create_snmp_credential_auth_algorithm_sha1(self):
@@ -231,12 +231,12 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>snmp</type>"
-            "<login>foo</login>"
-            "<auth_algorithm>sha1</auth_algorithm>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>snmp</type>"
+            b"<login>foo</login>"
+            b"<auth_algorithm>sha1</auth_algorithm>"
+            b"</create_credential>"
         )
 
     def test_create_snmp_credential_with_community(self):
@@ -249,17 +249,17 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>snmp</type>"
-            "<login>foo</login>"
-            "<auth_algorithm>sha1</auth_algorithm>"
-            "<community>ipsum</community>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>snmp</type>"
+            b"<login>foo</login>"
+            b"<auth_algorithm>sha1</auth_algorithm>"
+            b"<community>ipsum</community>"
+            b"</create_credential>"
         )
 
     def test_create_snmp_credential_invalid_privacy_algorithm(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(ValueError):
             self.gmp.create_credential(
                 name="foo",
                 credential_type=CredentialType.SNMP,
@@ -268,7 +268,7 @@ class GmpCreateCredentialTestMixin:
                 privacy_algorithm="",
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(
                 name="foo",
                 credential_type=CredentialType.SNMP,
@@ -287,15 +287,15 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>snmp</type>"
-            "<login>foo</login>"
-            "<auth_algorithm>sha1</auth_algorithm>"
-            "<privacy>"
-            "<algorithm>aes</algorithm>"
-            "</privacy>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>snmp</type>"
+            b"<login>foo</login>"
+            b"<auth_algorithm>sha1</auth_algorithm>"
+            b"<privacy>"
+            b"<algorithm>aes</algorithm>"
+            b"</privacy>"
+            b"</create_credential>"
         )
 
     def test_create_snmp_credential_with_privacy_algorithm_des(self):
@@ -308,15 +308,15 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>snmp</type>"
-            "<login>foo</login>"
-            "<auth_algorithm>sha1</auth_algorithm>"
-            "<privacy>"
-            "<algorithm>des</algorithm>"
-            "</privacy>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>snmp</type>"
+            b"<login>foo</login>"
+            b"<auth_algorithm>sha1</auth_algorithm>"
+            b"<privacy>"
+            b"<algorithm>des</algorithm>"
+            b"</privacy>"
+            b"</create_credential>"
         )
 
     def test_create_snmp_credential_with_privacy_password(self):
@@ -329,15 +329,15 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>snmp</type>"
-            "<login>foo</login>"
-            "<auth_algorithm>sha1</auth_algorithm>"
-            "<privacy>"
-            "<password>123</password>"
-            "</privacy>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>snmp</type>"
+            b"<login>foo</login>"
+            b"<auth_algorithm>sha1</auth_algorithm>"
+            b"<privacy>"
+            b"<password>123</password>"
+            b"</privacy>"
+            b"</create_credential>"
         )
 
     def test_create_smime_credential(self):
@@ -348,11 +348,11 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>smime</type>"
-            "<certificate>ipsum</certificate>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>smime</type>"
+            b"<certificate>ipsum</certificate>"
+            b"</create_credential>"
         )
 
     def test_create_smime_credential_missing_certificate(self):
@@ -369,13 +369,13 @@ class GmpCreateCredentialTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>pgp</type>"
-            "<key>"
-            "<public>ipsum</public>"
-            "</key>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>pgp</type>"
+            b"<key>"
+            b"<public>ipsum</public>"
+            b"</key>"
+            b"</create_credential>"
         )
 
     def test_create_pgp_credential_missing_public_key(self):
@@ -385,13 +385,13 @@ class GmpCreateCredentialTestMixin:
             )
 
     def test_create_credential_invalid_credential_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(name="foo", credential_type=None)
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(name="foo", credential_type="")
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_credential(name="foo", credential_type="bar")
 
     def test_create_pw_credential_missing_password(self):
@@ -407,9 +407,9 @@ class GmpCreateCredentialTestMixin:
             password="foo",
         )
         self.connection.send.has_been_called_with(
-            "<create_credential>"
-            "<name>foo</name>"
-            "<type>pw</type>"
-            "<password>foo</password>"
-            "</create_credential>"
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>pw</type>"
+            b"<password>foo</password>"
+            b"</create_credential>"
         )

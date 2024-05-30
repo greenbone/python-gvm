@@ -11,7 +11,7 @@ class GmpVerifyScannerTestMixin:
         self.gmp.verify_scanner("a1")
 
         self.connection.send.has_been_called_with(
-            '<verify_scanner scanner_id="a1"/>'
+            b'<verify_scanner scanner_id="a1"/>'
         )
 
     def test_missing_id(self):

@@ -11,7 +11,7 @@ class GmpDeletePortRangeTestMixin:
         self.gmp.delete_port_range("a1")
 
         self.connection.send.has_been_called_with(
-            '<delete_port_range port_range_id="a1"/>'
+            b'<delete_port_range port_range_id="a1"/>'
         )
 
     def test_missing_id(self):

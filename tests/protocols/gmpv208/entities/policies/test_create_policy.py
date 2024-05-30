@@ -11,23 +11,23 @@ class GmpCreatePolicyTestMixin:
         self.gmp.create_policy("foo")
 
         self.connection.send.has_been_called_with(
-            "<create_config>"
-            "<copy>085569ce-73ed-11df-83c3-002264764cea</copy>"
-            "<name>foo</name>"
-            "<usage_type>policy</usage_type>"
-            "</create_config>"
+            b"<create_config>"
+            b"<copy>085569ce-73ed-11df-83c3-002264764cea</copy>"
+            b"<name>foo</name>"
+            b"<usage_type>policy</usage_type>"
+            b"</create_config>"
         )
 
     def test_create_with_policy_id_and_comment(self):
         self.gmp.create_policy("foo", policy_id="p1", comment="foo")
 
         self.connection.send.has_been_called_with(
-            "<create_config>"
-            "<comment>foo</comment>"
-            "<copy>p1</copy>"
-            "<name>foo</name>"
-            "<usage_type>policy</usage_type>"
-            "</create_config>"
+            b"<create_config>"
+            b"<comment>foo</comment>"
+            b"<copy>p1</copy>"
+            b"<name>foo</name>"
+            b"<usage_type>policy</usage_type>"
+            b"</create_config>"
         )
 
     def test_missing_name(self):

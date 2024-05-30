@@ -11,7 +11,7 @@ class GmpDeleteOperatingSystemTestMixin:
         self.gmp.delete_operating_system(operating_system_id="a1")
 
         self.connection.send.has_been_called_with(
-            '<delete_asset asset_id="a1"/>'
+            b'<delete_asset asset_id="a1"/>'
         )
 
     def test_missing_arguments(self):

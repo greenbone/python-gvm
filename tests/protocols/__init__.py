@@ -16,7 +16,7 @@ class MockConnection:
         self.disconnect = CallableMock("disconnect")
         self.send = CallableMock("send")
         self.read = CallableMock("read")
-        self.read.return_value('<foo_response status="200"/>')
+        self.read.return_value(b'<foo_response status="200"/>')
         self.finish_send = CallableMock("finish_send")
 
 

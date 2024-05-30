@@ -11,7 +11,7 @@ class GmpClonePolicyTestMixin:
         self.gmp.clone_policy("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_config><copy>a1</copy></create_config>"
+            b"<create_config><copy>a1</copy></create_config>"
         )
 
     def test_missing_id(self):
