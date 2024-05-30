@@ -44,7 +44,9 @@ class GvmServerError(GvmError):
             and function
     """
 
-    def __init__(self, status: str = None, message: str = None):
+    def __init__(
+        self, status: Optional[str] = None, message: Optional[str] = None
+    ):
         super().__init__(message, status)
         self.status = status
 
@@ -69,7 +71,9 @@ class GvmResponseError(GvmClientError):
             and function
     """
 
-    def __init__(self, status: str = None, message: str = None):
+    def __init__(
+        self, status: Optional[str] = None, message: Optional[str] = None
+    ):
         super().__init__(message, status)
         self.status = status
 
