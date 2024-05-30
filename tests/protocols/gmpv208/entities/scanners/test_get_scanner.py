@@ -11,13 +11,13 @@ class GmpGetScannerTestMixin:
         self.gmp.get_scanner("s1")
 
         self.connection.send.has_been_called_with(
-            '<get_scanners scanner_id="s1" details="1"/>'
+            b'<get_scanners scanner_id="s1" details="1"/>'
         )
 
         self.gmp.get_scanner(scanner_id="s1")
 
         self.connection.send.has_been_called_with(
-            '<get_scanners scanner_id="s1" details="1"/>'
+            b'<get_scanners scanner_id="s1" details="1"/>'
         )
 
     def test_get_scanner_missing_scanner_id(self):

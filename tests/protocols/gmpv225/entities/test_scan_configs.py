@@ -16,7 +16,6 @@ from ...gmpv224.entities.scan_configs import (
     GmpModifyScanConfigSetNvtPreferenceTestMixin,
     GmpModifyScanConfigSetNvtSelectionTestMixin,
     GmpModifyScanConfigSetScannerPreferenceTestMixin,
-    GmpModifyScanConfigTestMixin,
 )
 from ...gmpv225 import Gmpv225TestCase
 
@@ -87,11 +86,5 @@ class Gmpv225ModifyScanConfigSetNvtPreferenceTestCase(
 
 class Gmpv225ModifyScanConfigSetScannerPreferenceTestCase(
     GmpModifyScanConfigSetScannerPreferenceTestMixin, Gmpv225TestCase
-):
-    pass
-
-
-class Gmpv225ModifyScanConfigTestCase(
-    GmpModifyScanConfigTestMixin, Gmpv225TestCase
 ):
     pass

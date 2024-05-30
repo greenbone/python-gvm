@@ -11,13 +11,13 @@ class GmpGetPermissionTestMixin:
         self.gmp.get_permission("p1")
 
         self.connection.send.has_been_called_with(
-            '<get_permissions permission_id="p1"/>'
+            b'<get_permissions permission_id="p1"/>'
         )
 
         self.gmp.get_permission(permission_id="p1")
 
         self.connection.send.has_been_called_with(
-            '<get_permissions permission_id="p1"/>'
+            b'<get_permissions permission_id="p1"/>'
         )
 
     def test_get_permission_missing_permission_id(self):

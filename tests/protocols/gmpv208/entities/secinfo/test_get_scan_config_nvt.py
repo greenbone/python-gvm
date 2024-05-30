@@ -11,10 +11,8 @@ class GmpGetScanConfigNvtTestMixin:
         self.gmp.get_scan_config_nvt(nvt_oid="nvt_oid")
 
         self.connection.send.has_been_called_with(
-            (
-                '<get_nvts nvt_oid="nvt_oid" details="1" '
-                'preferences="1" preference_count="1"/>'
-            )
+            b'<get_nvts nvt_oid="nvt_oid" details="1" '
+            b'preferences="1" preference_count="1"/>'
         )
 
     def test_get_scan_config_nvt_missing_nvt_oid(self):

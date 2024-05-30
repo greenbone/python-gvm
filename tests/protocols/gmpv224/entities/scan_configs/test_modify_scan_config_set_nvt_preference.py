@@ -13,23 +13,23 @@ class GmpModifyScanConfigSetNvtPreferenceTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<preference>"
-            '<nvt oid="o1"/>'
-            "<name>foo</name>"
-            "</preference>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<preference>"
+            b'<nvt oid="o1"/>'
+            b"<name>foo</name>"
+            b"</preference>"
+            b"</modify_config>"
         )
 
         self.gmp.modify_scan_config_set_nvt_preference("c1", "foo", "o1")
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<preference>"
-            '<nvt oid="o1"/>'
-            "<name>foo</name>"
-            "</preference>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<preference>"
+            b'<nvt oid="o1"/>'
+            b"<name>foo</name>"
+            b"</preference>"
+            b"</modify_config>"
         )
 
     def test_modify_scan_config_set_nvt_pref_with_value(self):
@@ -38,13 +38,13 @@ class GmpModifyScanConfigSetNvtPreferenceTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<preference>"
-            '<nvt oid="o1"/>'
-            "<name>foo</name>"
-            "<value>YmFy</value>"
-            "</preference>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<preference>"
+            b'<nvt oid="o1"/>'
+            b"<name>foo</name>"
+            b"<value>YmFy</value>"
+            b"</preference>"
+            b"</modify_config>"
         )
 
     def test_modify_scan_config_set_nvt_pref_missing_nvt_oid(self):

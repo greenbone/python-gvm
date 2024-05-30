@@ -11,7 +11,7 @@ class GmpCreateGroupTestMixin:
         self.gmp.create_group(name="foo")
 
         self.connection.send.has_been_called_with(
-            "<create_group><name>foo</name></create_group>"
+            b"<create_group><name>foo</name></create_group>"
         )
 
     def test_missing_name(self):
@@ -25,36 +25,36 @@ class GmpCreateGroupTestMixin:
         self.gmp.create_group(name="foo", comment="bar")
 
         self.connection.send.has_been_called_with(
-            "<create_group>"
-            "<name>foo</name>"
-            "<comment>bar</comment>"
-            "</create_group>"
+            b"<create_group>"
+            b"<name>foo</name>"
+            b"<comment>bar</comment>"
+            b"</create_group>"
         )
 
     def test_create_special_group(self):
         self.gmp.create_group(name="foo", special=True)
 
         self.connection.send.has_been_called_with(
-            "<create_group>"
-            "<name>foo</name>"
-            "<specials>"
-            "<full/>"
-            "</specials>"
-            "</create_group>"
+            b"<create_group>"
+            b"<name>foo</name>"
+            b"<specials>"
+            b"<full/>"
+            b"</specials>"
+            b"</create_group>"
         )
 
     def test_create_group_with_users(self):
         self.gmp.create_group(name="foo", users=[])
 
         self.connection.send.has_been_called_with(
-            "<create_group><name>foo</name></create_group>"
+            b"<create_group><name>foo</name></create_group>"
         )
 
         self.gmp.create_group(name="foo", users=["u1", "u2"])
 
         self.connection.send.has_been_called_with(
-            "<create_group>"
-            "<name>foo</name>"
-            "<users>u1,u2</users>"
-            "</create_group>"
+            b"<create_group>"
+            b"<name>foo</name>"
+            b"<users>u1,u2</users>"
+            b"</create_group>"
         )

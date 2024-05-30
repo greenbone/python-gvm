@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv225 import ResourceType
 
 
@@ -14,7 +14,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="ALERT"/>'
+            b'<get_resource_names resource_id="i1" type="ALERT"/>'
         )
 
         self.gmp.get_resource_name(
@@ -22,7 +22,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="CERT_BUND_ADV"/>'
+            b'<get_resource_names resource_id="i1" type="CERT_BUND_ADV"/>'
         )
 
         self.gmp.get_resource_name(
@@ -30,7 +30,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="CONFIG"/>'
+            b'<get_resource_names resource_id="i1" type="CONFIG"/>'
         )
 
         self.gmp.get_resource_name(
@@ -38,7 +38,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="CPE"/>'
+            b'<get_resource_names resource_id="i1" type="CPE"/>'
         )
 
         self.gmp.get_resource_name(
@@ -46,7 +46,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="CREDENTIAL"/>'
+            b'<get_resource_names resource_id="i1" type="CREDENTIAL"/>'
         )
 
         self.gmp.get_resource_name(
@@ -54,7 +54,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="CVE"/>'
+            b'<get_resource_names resource_id="i1" type="CVE"/>'
         )
 
         self.gmp.get_resource_name(
@@ -62,7 +62,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="DFN_CERT_ADV"/>'
+            b'<get_resource_names resource_id="i1" type="DFN_CERT_ADV"/>'
         )
 
         self.gmp.get_resource_name(
@@ -70,7 +70,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="FILTER"/>'
+            b'<get_resource_names resource_id="i1" type="FILTER"/>'
         )
 
         self.gmp.get_resource_name(
@@ -78,7 +78,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="GROUP"/>'
+            b'<get_resource_names resource_id="i1" type="GROUP"/>'
         )
 
         self.gmp.get_resource_name(
@@ -86,7 +86,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="HOST"/>'
+            b'<get_resource_names resource_id="i1" type="HOST"/>'
         )
 
         self.gmp.get_resource_name(
@@ -94,7 +94,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="NOTE"/>'
+            b'<get_resource_names resource_id="i1" type="NOTE"/>'
         )
 
         self.gmp.get_resource_name(
@@ -102,7 +102,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="NVT"/>'
+            b'<get_resource_names resource_id="i1" type="NVT"/>'
         )
 
         self.gmp.get_resource_name(
@@ -110,7 +110,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="OS"/>'
+            b'<get_resource_names resource_id="i1" type="OS"/>'
         )
 
         self.gmp.get_resource_name(
@@ -118,7 +118,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="PERMISSION"/>'
+            b'<get_resource_names resource_id="i1" type="PERMISSION"/>'
         )
 
         self.gmp.get_resource_name(
@@ -126,7 +126,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="PORT_LIST"/>'
+            b'<get_resource_names resource_id="i1" type="PORT_LIST"/>'
         )
 
         self.gmp.get_resource_name(
@@ -134,7 +134,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="REPORT_FORMAT"/>'
+            b'<get_resource_names resource_id="i1" type="REPORT_FORMAT"/>'
         )
 
         self.gmp.get_resource_name(
@@ -142,7 +142,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="REPORT"/>'
+            b'<get_resource_names resource_id="i1" type="REPORT"/>'
         )
 
         self.gmp.get_resource_name(
@@ -150,7 +150,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="RESULT"/>'
+            b'<get_resource_names resource_id="i1" type="RESULT"/>'
         )
 
         self.gmp.get_resource_name(
@@ -158,7 +158,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="ROLE"/>'
+            b'<get_resource_names resource_id="i1" type="ROLE"/>'
         )
 
         self.gmp.get_resource_name(
@@ -166,7 +166,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="SCANNER"/>'
+            b'<get_resource_names resource_id="i1" type="SCANNER"/>'
         )
 
         self.gmp.get_resource_name(
@@ -174,7 +174,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="SCHEDULE"/>'
+            b'<get_resource_names resource_id="i1" type="SCHEDULE"/>'
         )
 
         self.gmp.get_resource_name(
@@ -182,7 +182,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="TARGET"/>'
+            b'<get_resource_names resource_id="i1" type="TARGET"/>'
         )
 
         self.gmp.get_resource_name(
@@ -190,7 +190,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="TASK"/>'
+            b'<get_resource_names resource_id="i1" type="TASK"/>'
         )
 
         self.gmp.get_resource_name(
@@ -198,7 +198,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="TLS_CERTIFICATE"/>'
+            b'<get_resource_names resource_id="i1" type="TLS_CERTIFICATE"/>'
         )
 
         self.gmp.get_resource_name(
@@ -206,7 +206,7 @@ class GmpGetResourceNameTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<get_resource_names resource_id="i1" type="USER"/>'
+            b'<get_resource_names resource_id="i1" type="USER"/>'
         )
 
     def test_get_resource_name_missing_resource_type(self):
@@ -220,7 +220,7 @@ class GmpGetResourceNameTestMixin:
             self.gmp.get_resource_name("i1", "")
 
     def test_get_resource_name_invalid_resource_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.get_resource_name(resource_id="i1", resource_type="foo")
 
     def test_get_resource_name_missing_resource_id(self):

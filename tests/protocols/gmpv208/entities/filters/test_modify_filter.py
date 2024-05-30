@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import FilterType
 
 
@@ -12,20 +12,20 @@ class GmpModifyFilterTestMixin:
         self.gmp.modify_filter(filter_id="f1")
 
         self.connection.send.has_been_called_with(
-            '<modify_filter filter_id="f1"/>'
+            b'<modify_filter filter_id="f1"/>'
         )
 
     def test_modify_filter_with_filter_type(self):
         self.gmp.modify_filter(filter_id="f1", filter_type=FilterType.TASK)
 
         self.connection.send.has_been_called_with(
-            '<modify_filter filter_id="f1">'
-            "<type>task</type>"
-            "</modify_filter>"
+            b'<modify_filter filter_id="f1">'
+            b"<type>task</type>"
+            b"</modify_filter>"
         )
 
     def test_modify_filter_invalid_filter_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_filter(filter_id="f1", filter_type="foo")
 
     def test_modify_filter_missing_filter_id(self):
@@ -42,25 +42,25 @@ class GmpModifyFilterTestMixin:
         self.gmp.modify_filter(filter_id="f1", comment="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_filter filter_id="f1">'
-            "<comment>foo</comment>"
-            "</modify_filter>"
+            b'<modify_filter filter_id="f1">'
+            b"<comment>foo</comment>"
+            b"</modify_filter>"
         )
 
     def test_modify_filter_with_name(self):
         self.gmp.modify_filter(filter_id="f1", name="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_filter filter_id="f1">'
-            "<name>foo</name>"
-            "</modify_filter>"
+            b'<modify_filter filter_id="f1">'
+            b"<name>foo</name>"
+            b"</modify_filter>"
         )
 
     def test_modify_filter_with_term(self):
         self.gmp.modify_filter(filter_id="f1", term="foo=bar")
 
         self.connection.send.has_been_called_with(
-            '<modify_filter filter_id="f1">'
-            "<term>foo=bar</term>"
-            "</modify_filter>"
+            b'<modify_filter filter_id="f1">'
+            b"<term>foo=bar</term>"
+            b"</modify_filter>"
         )

@@ -11,7 +11,7 @@ class GmpCloneScannerTestMixin:
         self.gmp.clone_scanner("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_scanner><copy>a1</copy></create_scanner>"
+            b"<create_scanner><copy>a1</copy></create_scanner>"
         )
 
     def test_missing_id(self):

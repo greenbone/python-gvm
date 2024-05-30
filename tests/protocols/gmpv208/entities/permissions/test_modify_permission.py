@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import EntityType, PermissionSubjectType
 
 
@@ -12,7 +12,7 @@ class GmpModifyPermissionTestMixin:
         self.gmp.modify_permission(permission_id="p1")
 
         self.connection.send.has_been_called_with(
-            '<modify_permission permission_id="p1"/>'
+            b'<modify_permission permission_id="p1"/>'
         )
 
     def test_modify_permission_missing_permission_id(self):
@@ -29,9 +29,9 @@ class GmpModifyPermissionTestMixin:
         self.gmp.modify_permission(permission_id="p1", comment="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_permission permission_id="p1">'
-            "<comment>foo</comment>"
-            "</modify_permission>"
+            b'<modify_permission permission_id="p1">'
+            b"<comment>foo</comment>"
+            b"</modify_permission>"
         )
 
     def test_modify_permission_with_resource_id_and_type(self):
@@ -40,11 +40,11 @@ class GmpModifyPermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_permission permission_id="p1">'
-            '<resource id="r1">'
-            "<type>task</type>"
-            "</resource>"
-            "</modify_permission>"
+            b'<modify_permission permission_id="p1">'
+            b'<resource id="r1">'
+            b"<type>task</type>"
+            b"</resource>"
+            b"</modify_permission>"
         )
 
     def test_modify_permission_with_resource_id_and_type_audit(self):
@@ -53,11 +53,11 @@ class GmpModifyPermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_permission permission_id="p1">'
-            '<resource id="r1">'
-            "<type>task</type>"
-            "</resource>"
-            "</modify_permission>"
+            b'<modify_permission permission_id="p1">'
+            b'<resource id="r1">'
+            b"<type>task</type>"
+            b"</resource>"
+            b"</modify_permission>"
         )
 
     def test_modify_permission_with_resource_id_and_type_policy(self):
@@ -68,11 +68,11 @@ class GmpModifyPermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_permission permission_id="p1">'
-            '<resource id="r1">'
-            "<type>config</type>"
-            "</resource>"
-            "</modify_permission>"
+            b'<modify_permission permission_id="p1">'
+            b'<resource id="r1">'
+            b"<type>config</type>"
+            b"</resource>"
+            b"</modify_permission>"
         )
 
     def test_modify_permission_with_missing_resource_id(self):
@@ -110,7 +110,7 @@ class GmpModifyPermissionTestMixin:
             )
 
     def test_modify_permission_with_invalid_resource_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_permission(
                 permission_id="p1", resource_id="r1", resource_type="blah"
             )
@@ -123,11 +123,11 @@ class GmpModifyPermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_permission permission_id="p1">'
-            '<subject id="s1">'
-            "<type>role</type>"
-            "</subject>"
-            "</modify_permission>"
+            b'<modify_permission permission_id="p1">'
+            b'<subject id="s1">'
+            b"<type>role</type>"
+            b"</subject>"
+            b"</modify_permission>"
         )
 
         self.gmp.modify_permission(
@@ -137,11 +137,11 @@ class GmpModifyPermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_permission permission_id="p1">'
-            '<subject id="s1">'
-            "<type>user</type>"
-            "</subject>"
-            "</modify_permission>"
+            b'<modify_permission permission_id="p1">'
+            b'<subject id="s1">'
+            b"<type>user</type>"
+            b"</subject>"
+            b"</modify_permission>"
         )
 
         self.gmp.modify_permission(
@@ -151,11 +151,11 @@ class GmpModifyPermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_permission permission_id="p1">'
-            '<subject id="s1">'
-            "<type>group</type>"
-            "</subject>"
-            "</modify_permission>"
+            b'<modify_permission permission_id="p1">'
+            b'<subject id="s1">'
+            b"<type>group</type>"
+            b"</subject>"
+            b"</modify_permission>"
         )
 
     def test_modify_permission_missing_subject_id(self):
@@ -179,17 +179,17 @@ class GmpModifyPermissionTestMixin:
             )
 
     def test_modify_permission_invalid_subject_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_permission(
                 permission_id="p1", subject_id="s1", subject_type="foo"
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
                 permission_id="p1", subject_id="s1", subject_type=""
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(RequiredArgument):
             self.gmp.modify_permission(
                 permission_id="p1", subject_id="s1", subject_type=None
             )
@@ -198,7 +198,7 @@ class GmpModifyPermissionTestMixin:
         self.gmp.modify_permission(permission_id="p1", name="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_permission permission_id="p1">'
-            "<name>foo</name>"
-            "</modify_permission>"
+            b'<modify_permission permission_id="p1">'
+            b"<name>foo</name>"
+            b"</modify_permission>"
         )

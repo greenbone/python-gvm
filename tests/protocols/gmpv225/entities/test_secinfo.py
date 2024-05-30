@@ -17,8 +17,6 @@ from ...gmpv208.entities.secinfo import (
     GmpGetNvtFamiliesTestMixin,
     GmpGetNvtListTestMixin,
     GmpGetNvtTestMixin,
-    GmpGetOvalDefListTestMixin,
-    GmpGetOvalDefTestMixin,
     GmpGetScanConfigNvtsTestMixin,
     GmpGetScanConfigNvtTestMixin,
 )
@@ -38,10 +36,6 @@ class Gmpv225GetCveTestCase(GmpGetCveTestMixin, Gmpv225TestCase):
 
 
 class Gmpv225GetDfnCertCase(GmpGetDfnCertTestMixin, Gmpv225TestCase):
-    pass
-
-
-class Gmpv225GetOvalDefCase(GmpGetOvalDefTestMixin, Gmpv225TestCase):
     pass
 
 
@@ -94,10 +88,4 @@ class Gmpv225GetDfnCertListCase(GmpGetDfnCertListTestMixin, Gmpv225TestCase):
 
 
 class Gmpv225GetNvtListTestCase(GmpGetNvtListTestMixin, Gmpv225TestCase):
-    pass
-
-
-class Gmpv225GetOvalDefListTestCase(
-    GmpGetOvalDefListTestMixin, Gmpv225TestCase
-):
     pass

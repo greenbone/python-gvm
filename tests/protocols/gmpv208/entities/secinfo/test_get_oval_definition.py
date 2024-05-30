@@ -11,13 +11,13 @@ class GmpGetOvalDefTestMixin:
         self.gmp.get_oval_definition(oval_id="i1")
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="OVALDEF" details="1"/>'
+            b'<get_info info_id="i1" type="OVALDEF" details="1"/>'
         )
 
         self.gmp.get_oval_definition("i1")
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="OVALDEF" details="1"/>'
+            b'<get_info info_id="i1" type="OVALDEF" details="1"/>'
         )
 
     def test_get_oval_definition_missing_oval_id(self):

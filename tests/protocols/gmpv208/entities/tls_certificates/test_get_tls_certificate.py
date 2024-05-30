@@ -11,8 +11,8 @@ class GmpGetTLSCertificateTestMixin:
         self.gmp.get_tls_certificate("t1")
 
         self.connection.send.has_been_called_with(
-            '<get_tls_certificates tls_certificate_id="t1" '
-            'include_certificate_data="1" details="1"/>'
+            b'<get_tls_certificates tls_certificate_id="t1" '
+            b'include_certificate_data="1" details="1"/>'
         )
 
     def test_fail_without_tls_certificate_id(self):

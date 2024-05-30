@@ -11,7 +11,7 @@ class GmpCloneAuditTestMixin:
         self.gmp.clone_audit("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_task><copy>a1</copy></create_task>"
+            b"<create_task><copy>a1</copy></create_task>"
         )
 
     def test_missing_id(self):

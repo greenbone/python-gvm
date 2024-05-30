@@ -10,7 +10,7 @@ class GmpStopTaskTestMixin:
     def test_stop_task(self):
         self.gmp.stop_task("a1")
 
-        self.connection.send.has_been_called_with('<stop_task task_id="a1"/>')
+        self.connection.send.has_been_called_with(b'<stop_task task_id="a1"/>')
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

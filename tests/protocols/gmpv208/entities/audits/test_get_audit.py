@@ -11,7 +11,7 @@ class GmpGetAuditTestMixin:
         self.gmp.get_audit("a1")
 
         self.connection.send.has_been_called_with(
-            '<get_tasks task_id="a1" usage_type="audit" details="1"/>'
+            b'<get_tasks task_id="a1" usage_type="audit" details="1"/>'
         )
 
     def test_fail_without_audit_id(self):

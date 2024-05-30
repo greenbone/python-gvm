@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import EntityType
 
 
@@ -28,12 +28,12 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            "<resources>"
-            "<type>task</type>"
-            "</resources>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b"<resources>"
+            b"<type>task</type>"
+            b"</resources>"
+            b"</create_tag>"
         )
 
         self.gmp.create_tag(
@@ -44,23 +44,23 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            "<resources>"
-            "<type>task</type>"
-            "</resources>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b"<resources>"
+            b"<type>task</type>"
+            b"</resources>"
+            b"</create_tag>"
         )
 
         self.gmp.create_tag(name="foo", resource_type=EntityType.TASK)
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            "<resources>"
-            "<type>task</type>"
-            "</resources>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b"<resources>"
+            b"<type>task</type>"
+            b"</resources>"
+            b"</create_tag>"
         )
 
     def test_create_tag_both_resource_filter_and_ids(self):
@@ -73,7 +73,7 @@ class GmpCreateTagTestMixin:
             )
 
     def test_create_tag_invalid_resource_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_tag(
                 name="foo",
                 resource_type="Foo",
@@ -111,12 +111,12 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            '<resources filter="name=foo">'
-            "<type>task</type>"
-            "</resources>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b'<resources filter="name=foo">'
+            b"<type>task</type>"
+            b"</resources>"
+            b"</create_tag>"
         )
 
     def test_create_tag_with_resource_filter_audit(self):
@@ -127,12 +127,12 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            '<resources filter="name=foo">'
-            "<type>task</type>"
-            "</resources>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b'<resources filter="name=foo">'
+            b"<type>task</type>"
+            b"</resources>"
+            b"</create_tag>"
         )
 
     def test_create_tag_with_resource_filter_policy(self):
@@ -143,12 +143,12 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            '<resources filter="name=foo">'
-            "<type>config</type>"
-            "</resources>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b'<resources filter="name=foo">'
+            b"<type>config</type>"
+            b"</resources>"
+            b"</create_tag>"
         )
 
     def test_create_tag_with_resource_ids(self):
@@ -157,13 +157,13 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            "<resources>"
-            '<resource id="foo"/>'
-            "<type>task</type>"
-            "</resources>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b"<resources>"
+            b'<resource id="foo"/>'
+            b"<type>task</type>"
+            b"</resources>"
+            b"</create_tag>"
         )
 
         self.gmp.create_tag(
@@ -173,14 +173,14 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            "<resources>"
-            '<resource id="foo"/>'
-            '<resource id="bar"/>'
-            "<type>task</type>"
-            "</resources>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b"<resources>"
+            b'<resource id="foo"/>'
+            b'<resource id="bar"/>'
+            b"<type>task</type>"
+            b"</resources>"
+            b"</create_tag>"
         )
 
     def test_create_tag_with_comment(self):
@@ -192,14 +192,14 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            "<resources>"
-            '<resource id="foo"/>'
-            "<type>task</type>"
-            "</resources>"
-            "<comment>bar</comment>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b"<resources>"
+            b'<resource id="foo"/>'
+            b"<type>task</type>"
+            b"</resources>"
+            b"<comment>bar</comment>"
+            b"</create_tag>"
         )
 
     def test_create_tag_with_value(self):
@@ -211,14 +211,14 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            "<resources>"
-            '<resource id="foo"/>'
-            "<type>task</type>"
-            "</resources>"
-            "<value>bar</value>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b"<resources>"
+            b'<resource id="foo"/>'
+            b"<type>task</type>"
+            b"</resources>"
+            b"<value>bar</value>"
+            b"</create_tag>"
         )
 
     def test_create_tag_with_active(self):
@@ -230,14 +230,14 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            "<resources>"
-            '<resource id="foo"/>'
-            "<type>task</type>"
-            "</resources>"
-            "<active>1</active>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b"<resources>"
+            b'<resource id="foo"/>'
+            b"<type>task</type>"
+            b"</resources>"
+            b"<active>1</active>"
+            b"</create_tag>"
         )
 
         self.gmp.create_tag(
@@ -248,12 +248,12 @@ class GmpCreateTagTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_tag>"
-            "<name>foo</name>"
-            "<resources>"
-            '<resource id="foo"/>'
-            "<type>task</type>"
-            "</resources>"
-            "<active>0</active>"
-            "</create_tag>"
+            b"<create_tag>"
+            b"<name>foo</name>"
+            b"<resources>"
+            b'<resource id="foo"/>'
+            b"<type>task</type>"
+            b"</resources>"
+            b"<active>0</active>"
+            b"</create_tag>"
         )

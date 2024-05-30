@@ -11,7 +11,7 @@ class GmpDeleteReportTestMixin:
         self.gmp.delete_report("a1")
 
         self.connection.send.has_been_called_with(
-            '<delete_report report_id="a1"/>'
+            b'<delete_report report_id="a1"/>'
         )
 
     def test_missing_id(self):

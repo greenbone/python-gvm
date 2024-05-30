@@ -11,9 +11,9 @@ class GmpModifyPolicySetNameTestMixin:
         self.gmp.modify_policy_set_name("c1", "foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<name>foo</name>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<name>foo</name>"
+            b"</modify_config>"
         )
 
     def test_modify_policy_set_name_missing_config_id(self):

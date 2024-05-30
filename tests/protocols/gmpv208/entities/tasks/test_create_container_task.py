@@ -11,10 +11,10 @@ class GmpCreateContainerTaskTestMixin:
         self.gmp.create_container_task(name="foo")
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            '<target id="0"/>'
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b'<target id="0"/>'
+            b"</create_task>"
         )
 
     def test_create_task_missing_name(self):
@@ -28,9 +28,9 @@ class GmpCreateContainerTaskTestMixin:
         self.gmp.create_container_task(name="foo", comment="bar")
 
         self.connection.send.has_been_called_with(
-            "<create_task>"
-            "<name>foo</name>"
-            '<target id="0"/>'
-            "<comment>bar</comment>"
-            "</create_task>"
+            b"<create_task>"
+            b"<name>foo</name>"
+            b'<target id="0"/>'
+            b"<comment>bar</comment>"
+            b"</create_task>"
         )

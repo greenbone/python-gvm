@@ -11,13 +11,13 @@ class GmpGetDfnCertTestMixin:
         self.gmp.get_dfn_cert_advisory(cert_id="i1")
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="DFN_CERT_ADV" details="1"/>'
+            b'<get_info info_id="i1" type="DFN_CERT_ADV" details="1"/>'
         )
 
         self.gmp.get_dfn_cert_advisory("i1")
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="DFN_CERT_ADV" details="1"/>'
+            b'<get_info info_id="i1" type="DFN_CERT_ADV" details="1"/>'
         )
 
     def test_get_cert_bund_advisory_missing_cert_id(self):

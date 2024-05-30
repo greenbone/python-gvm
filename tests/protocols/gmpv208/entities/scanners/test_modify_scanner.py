@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import ScannerType
 
 
@@ -12,7 +12,7 @@ class GmpModifyScannerTestMixin:
         self.gmp.modify_scanner(scanner_id="s1")
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1"/>'
+            b'<modify_scanner scanner_id="s1"/>'
         )
 
     def test_modify_scanner_missing_scanner_id(self):
@@ -26,62 +26,62 @@ class GmpModifyScannerTestMixin:
         self.gmp.modify_scanner(scanner_id="s1", comment="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<comment>foo</comment>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<comment>foo</comment>"
+            b"</modify_scanner>"
         )
 
     def test_modify_scanner_with_host(self):
         self.gmp.modify_scanner(scanner_id="s1", host="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<host>foo</host>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<host>foo</host>"
+            b"</modify_scanner>"
         )
 
     def test_modify_scanner_with_port(self):
         self.gmp.modify_scanner(scanner_id="s1", port=1234)
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<port>1234</port>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<port>1234</port>"
+            b"</modify_scanner>"
         )
 
         self.gmp.modify_scanner(scanner_id="s1", port="1234")
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<port>1234</port>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<port>1234</port>"
+            b"</modify_scanner>"
         )
 
     def test_modify_scanner_with_name(self):
         self.gmp.modify_scanner(scanner_id="s1", name="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<name>foo</name>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<name>foo</name>"
+            b"</modify_scanner>"
         )
 
     def test_modify_scanner_with_ca_pub(self):
         self.gmp.modify_scanner(scanner_id="s1", ca_pub="foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<ca_pub>foo</ca_pub>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<ca_pub>foo</ca_pub>"
+            b"</modify_scanner>"
         )
 
     def test_modify_scanner_with_credential_id(self):
         self.gmp.modify_scanner(scanner_id="s1", credential_id="c1")
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            '<credential id="c1"/>'
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b'<credential id="c1"/>'
+            b"</modify_scanner>"
         )
 
     def test_modify_scanner_with_scanner_type(self):
@@ -90,9 +90,9 @@ class GmpModifyScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<type>1</type>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<type>1</type>"
+            b"</modify_scanner>"
         )
 
         self.gmp.modify_scanner(
@@ -100,9 +100,9 @@ class GmpModifyScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<type>2</type>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<type>2</type>"
+            b"</modify_scanner>"
         )
 
         self.gmp.modify_scanner(
@@ -110,9 +110,9 @@ class GmpModifyScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<type>3</type>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<type>3</type>"
+            b"</modify_scanner>"
         )
 
         self.gmp.modify_scanner(
@@ -120,17 +120,17 @@ class GmpModifyScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_scanner scanner_id="s1">'
-            "<type>4</type>"
-            "</modify_scanner>"
+            b'<modify_scanner scanner_id="s1">'
+            b"<type>4</type>"
+            b"</modify_scanner>"
         )
 
     def test_modify_scanner_invalid_scanner_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_scanner(scanner_id="s1", scanner_type="")
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_scanner(scanner_id="s1", scanner_type="-1")
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_scanner(scanner_id="s1", scanner_type=1)

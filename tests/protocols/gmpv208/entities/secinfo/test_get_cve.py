@@ -11,13 +11,13 @@ class GmpGetCveTestMixin:
         self.gmp.get_cve(cve_id="i1")
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="CVE" details="1"/>'
+            b'<get_info info_id="i1" type="CVE" details="1"/>'
         )
 
         self.gmp.get_cve("i1")
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="CVE" details="1"/>'
+            b'<get_info info_id="i1" type="CVE" details="1"/>'
         )
 
     def test_get_cve_missing_cve_id(self):

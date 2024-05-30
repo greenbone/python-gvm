@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import EntityType, PermissionSubjectType
 
 
@@ -14,12 +14,12 @@ class GmpCreatePermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_permission>"
-            "<name>foo</name>"
-            '<subject id="u1">'
-            "<type>user</type>"
-            "</subject>"
-            "</create_permission>"
+            b"<create_permission>"
+            b"<name>foo</name>"
+            b'<subject id="u1">'
+            b"<type>user</type>"
+            b"</subject>"
+            b"</create_permission>"
         )
 
     def test_create_permission_missing_name(self):
@@ -49,17 +49,17 @@ class GmpCreatePermissionTestMixin:
             )
 
     def test_create_permission_invalid_subject_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(ValueError):
             self.gmp.create_permission(
                 "create_task", subject_id="u1", subject_type=""
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(ValueError):
             self.gmp.create_permission(
                 "create_task", subject_id="u1", subject_type=None
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_permission(
                 "create_task", subject_id="u1", subject_type="foo"
             )
@@ -73,13 +73,13 @@ class GmpCreatePermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_permission>"
-            "<name>create_task</name>"
-            '<subject id="u1">'
-            "<type>user</type>"
-            "</subject>"
-            "<comment>foo</comment>"
-            "</create_permission>"
+            b"<create_permission>"
+            b"<name>create_task</name>"
+            b'<subject id="u1">'
+            b"<type>user</type>"
+            b"</subject>"
+            b"<comment>foo</comment>"
+            b"</create_permission>"
         )
 
     def test_create_permission_missing_resource_id(self):
@@ -101,7 +101,7 @@ class GmpCreatePermissionTestMixin:
             )
 
     def test_create_permission_invalid_resource_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_permission(
                 "create_task",
                 subject_id="u1",
@@ -120,15 +120,15 @@ class GmpCreatePermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_permission>"
-            "<name>create_task</name>"
-            '<subject id="u1">'
-            "<type>user</type>"
-            "</subject>"
-            '<resource id="t1">'
-            "<type>task</type>"
-            "</resource>"
-            "</create_permission>"
+            b"<create_permission>"
+            b"<name>create_task</name>"
+            b'<subject id="u1">'
+            b"<type>user</type>"
+            b"</subject>"
+            b'<resource id="t1">'
+            b"<type>task</type>"
+            b"</resource>"
+            b"</create_permission>"
         )
 
     def test_create_permission_with_resource_type_audit(self):
@@ -141,15 +141,15 @@ class GmpCreatePermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_permission>"
-            "<name>create_task</name>"
-            '<subject id="u1">'
-            "<type>user</type>"
-            "</subject>"
-            '<resource id="t1">'
-            "<type>task</type>"
-            "</resource>"
-            "</create_permission>"
+            b"<create_permission>"
+            b"<name>create_task</name>"
+            b'<subject id="u1">'
+            b"<type>user</type>"
+            b"</subject>"
+            b'<resource id="t1">'
+            b"<type>task</type>"
+            b"</resource>"
+            b"</create_permission>"
         )
 
     def test_create_permission_with_resource_type_policy(self):
@@ -162,13 +162,13 @@ class GmpCreatePermissionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_permission>"
-            "<name>create_task</name>"
-            '<subject id="u1">'
-            "<type>user</type>"
-            "</subject>"
-            '<resource id="t1">'
-            "<type>config</type>"
-            "</resource>"
-            "</create_permission>"
+            b"<create_permission>"
+            b"<name>create_task</name>"
+            b'<subject id="u1">'
+            b"<type>user</type>"
+            b"</subject>"
+            b'<resource id="t1">'
+            b"<type>config</type>"
+            b"</resource>"
+            b"</create_permission>"
         )

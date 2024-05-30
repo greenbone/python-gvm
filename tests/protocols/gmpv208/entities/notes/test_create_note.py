@@ -5,7 +5,7 @@
 
 from decimal import Decimal
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import SeverityLevel
 
 
@@ -14,10 +14,10 @@ class GmpCreateNoteTestMixin:
         self.gmp.create_note("foo", nvt_oid="oid1")
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"</create_note>"
         )
 
     def test_create_note_missing_text(self):
@@ -38,133 +38,133 @@ class GmpCreateNoteTestMixin:
         self.gmp.create_note("foo", nvt_oid="oid1", hosts=[])
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"</create_note>"
         )
 
         self.gmp.create_note("foo", nvt_oid="oid1", hosts=["h1", "h2"])
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "<hosts>h1,h2</hosts>"
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"<hosts>h1,h2</hosts>"
+            b"</create_note>"
         )
 
     def test_create_note_with_port(self):
         self.gmp.create_note("foo", nvt_oid="oid1", port="666/tcp")
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "<port>666/tcp</port>"
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"<port>666/tcp</port>"
+            b"</create_note>"
         )
 
     def test_create_note_with_result_id(self):
         self.gmp.create_note("foo", nvt_oid="oid1", result_id="r1")
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            '<result id="r1"/>'
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b'<result id="r1"/>'
+            b"</create_note>"
         )
 
     def test_create_note_with_task_id(self):
         self.gmp.create_note("foo", nvt_oid="oid1", task_id="t1")
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            '<task id="t1"/>'
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b'<task id="t1"/>'
+            b"</create_note>"
         )
 
     def test_create_note_with_severity(self):
         self.gmp.create_note("foo", nvt_oid="oid1", severity="5.5")
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "<severity>5.5</severity>"
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"<severity>5.5</severity>"
+            b"</create_note>"
         )
 
         self.gmp.create_note("foo", nvt_oid="oid1", severity=5.5)
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "<severity>5.5</severity>"
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"<severity>5.5</severity>"
+            b"</create_note>"
         )
 
         self.gmp.create_note("foo", nvt_oid="oid1", severity=Decimal(5.5))
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "<severity>5.5</severity>"
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"<severity>5.5</severity>"
+            b"</create_note>"
         )
 
     def test_create_note_with_threat(self):
         self.gmp.create_note("foo", nvt_oid="oid1", threat=SeverityLevel.HIGH)
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "<threat>High</threat>"
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"<threat>High</threat>"
+            b"</create_note>"
         )
 
     def test_create_note_invalid_threat(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_note("foo", nvt_oid="oid1", threat="")
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_note("foo", nvt_oid="oid1", threat="foo")
 
     def test_create_note_with_days_active(self):
         self.gmp.create_note("foo", nvt_oid="oid1", days_active=0)
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "<active>0</active>"
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"<active>0</active>"
+            b"</create_note>"
         )
 
         self.gmp.create_note("foo", nvt_oid="oid1", days_active=-1)
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "<active>-1</active>"
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"<active>-1</active>"
+            b"</create_note>"
         )
 
         self.gmp.create_note("foo", nvt_oid="oid1", days_active=3600)
 
         self.connection.send.has_been_called_with(
-            "<create_note>"
-            "<text>foo</text>"
-            '<nvt oid="oid1"/>'
-            "<active>3600</active>"
-            "</create_note>"
+            b"<create_note>"
+            b"<text>foo</text>"
+            b'<nvt oid="oid1"/>'
+            b"<active>3600</active>"
+            b"</create_note>"
         )
 
     def test_create_note_with_invalid_port(self):

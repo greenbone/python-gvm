@@ -18,23 +18,23 @@ class GmpCreateHostTestMixin:
         self.gmp.create_host(name="ipsum")
 
         self.connection.send.has_been_called_with(
-            "<create_asset>"
-            "<asset>"
-            "<type>host</type>"
-            "<name>ipsum</name>"
-            "</asset>"
-            "</create_asset>"
+            b"<create_asset>"
+            b"<asset>"
+            b"<type>host</type>"
+            b"<name>ipsum</name>"
+            b"</asset>"
+            b"</create_asset>"
         )
 
     def test_create_asset_with_comment(self):
         self.gmp.create_host(name="ipsum", comment="lorem")
 
         self.connection.send.has_been_called_with(
-            "<create_asset>"
-            "<asset>"
-            "<type>host</type>"
-            "<name>ipsum</name>"
-            "<comment>lorem</comment>"
-            "</asset>"
-            "</create_asset>"
+            b"<create_asset>"
+            b"<asset>"
+            b"<type>host</type>"
+            b"<name>ipsum</name>"
+            b"<comment>lorem</comment>"
+            b"</asset>"
+            b"</create_asset>"
         )

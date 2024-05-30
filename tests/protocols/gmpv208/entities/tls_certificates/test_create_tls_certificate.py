@@ -11,21 +11,22 @@ class GmpCreateTLSCertificateTestMixin:
         self.gmp.create_tls_certificate("foo", "c1", comment="bar", trust=True)
 
         self.connection.send.has_been_called_with(
-            "<create_tls_certificate>"
-            "<comment>bar</comment>"
-            "<name>foo</name>"
-            "<certificate>c1</certificate>"
-            "<trust>1</trust>"
-            "</create_tls_certificate>"
+            b"<create_tls_certificate>"
+            b"<name>foo</name>"
+            b"<certificate>c1</certificate>"
+            b"<comment>bar</comment>"
+            b"<trust>1</trust>"
+            b"</create_tls_certificate>"
         )
 
         self.gmp.create_tls_certificate("foo", "c1", trust=False)
 
         self.connection.send.has_been_called_with(
-            "<create_tls_certificate>"
-            "<name>foo</name>"
-            "<certificate>c1</certificate>"
-            "</create_tls_certificate>"
+            b"<create_tls_certificate>"
+            b"<name>foo</name>"
+            b"<certificate>c1</certificate>"
+            b"<trust>0</trust>"
+            b"</create_tls_certificate>"
         )
 
     def test_missing_certificate(self):

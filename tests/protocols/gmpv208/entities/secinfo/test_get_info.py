@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import InfoType
 
 
@@ -12,37 +12,37 @@ class GmpGetInfoTestMixin:
         self.gmp.get_info(info_type=InfoType.CERT_BUND_ADV, info_id="i1")
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="CERT_BUND_ADV" details="1"/>'
+            b'<get_info info_id="i1" type="CERT_BUND_ADV" details="1"/>'
         )
 
         self.gmp.get_info("i1", InfoType.CPE)
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="CPE" details="1"/>'
+            b'<get_info info_id="i1" type="CPE" details="1"/>'
         )
 
         self.gmp.get_info("i1", InfoType.CVE)
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="CVE" details="1"/>'
+            b'<get_info info_id="i1" type="CVE" details="1"/>'
         )
 
         self.gmp.get_info("i1", InfoType.DFN_CERT_ADV)
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="DFN_CERT_ADV" details="1"/>'
+            b'<get_info info_id="i1" type="DFN_CERT_ADV" details="1"/>'
         )
 
         self.gmp.get_info("i1", InfoType.OVALDEF)
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="OVALDEF" details="1"/>'
+            b'<get_info info_id="i1" type="OVALDEF" details="1"/>'
         )
 
         self.gmp.get_info("i1", InfoType.NVT)
 
         self.connection.send.has_been_called_with(
-            '<get_info info_id="i1" type="NVT" details="1"/>'
+            b'<get_info info_id="i1" type="NVT" details="1"/>'
         )
 
         with self.assertRaises(AttributeError):
@@ -61,7 +61,7 @@ class GmpGetInfoTestMixin:
             self.gmp.get_info("i1", "")
 
     def test_get_info_invalid_info_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.get_info(info_id="i1", info_type="foo")
 
     def test_get_info_missing_info_id(self):

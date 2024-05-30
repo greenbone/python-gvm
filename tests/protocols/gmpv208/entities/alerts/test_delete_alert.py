@@ -11,14 +11,14 @@ class GmpDeleteAlertTestMixin:
         self.gmp.delete_alert("a1")
 
         self.connection.send.has_been_called_with(
-            '<delete_alert alert_id="a1" ultimate="0"/>'
+            b'<delete_alert alert_id="a1" ultimate="0"/>'
         )
 
     def test_delete_ultimate(self):
         self.gmp.delete_alert("a1", ultimate=True)
 
         self.connection.send.has_been_called_with(
-            '<delete_alert alert_id="a1" ultimate="1"/>'
+            b'<delete_alert alert_id="a1" ultimate="1"/>'
         )
 
     def test_missing_alert_id(self):

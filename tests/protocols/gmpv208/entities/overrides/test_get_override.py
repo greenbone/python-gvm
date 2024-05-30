@@ -11,13 +11,13 @@ class GmpGetOverrideTestMixin:
         self.gmp.get_override("o1")
 
         self.connection.send.has_been_called_with(
-            '<get_overrides override_id="o1" details="1"/>'
+            b'<get_overrides override_id="o1" details="1"/>'
         )
 
         self.gmp.get_override(override_id="o1")
 
         self.connection.send.has_been_called_with(
-            '<get_overrides override_id="o1" details="1"/>'
+            b'<get_overrides override_id="o1" details="1"/>'
         )
 
     def test_get_override_missing_override_id(self):

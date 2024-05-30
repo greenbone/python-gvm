@@ -11,7 +11,7 @@ class GmpGetPortListTestMixin:
         self.gmp.get_port_list(port_list_id="port_list_id")
 
         self.connection.send.has_been_called_with(
-            '<get_port_lists port_list_id="port_list_id" details="1"/>'
+            b'<get_port_lists port_list_id="port_list_id" details="1"/>'
         )
 
     def test_get_port_list_missing_port_list_id(self):

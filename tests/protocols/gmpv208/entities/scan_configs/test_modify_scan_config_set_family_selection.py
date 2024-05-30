@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 
 
 class GmpModifyScanConfigSetFamilySelectionTestMixin:
@@ -13,16 +13,16 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>1</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>1</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>1</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>1</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )
 
         self.gmp.modify_scan_config_set_family_selection(
@@ -30,21 +30,21 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>1</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>1</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "<family>"
-            "<name>bar</name>"
-            "<all>1</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>1</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>1</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"<family>"
+            b"<name>bar</name>"
+            b"<all>1</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )
 
         self.gmp.modify_scan_config_set_family_selection(
@@ -52,21 +52,21 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>1</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>1</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "<family>"
-            "<name>bar</name>"
-            "<all>1</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>1</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>1</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"<family>"
+            b"<name>bar</name>"
+            b"<all>1</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )
 
         self.gmp.modify_scan_config_set_family_selection(
@@ -75,21 +75,21 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>1</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>0</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "<family>"
-            "<name>bar</name>"
-            "<all>1</all>"
-            "<growing>0</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>1</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>0</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"<family>"
+            b"<name>bar</name>"
+            b"<all>1</all>"
+            b"<growing>0</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )
 
     def test_modify_scan_config_set_family_selection_missing_config_id(self):
@@ -109,17 +109,17 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
             )
 
     def test_modify_scan_config_set_family_selection_invalid_families(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_scan_config_set_family_selection(
                 config_id="c1", families=None
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_scan_config_set_family_selection(
                 config_id="c1", families=""
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_scan_config_set_family_selection("c1", "")
 
     def test_modify_scan_config_set_family_selection_with_auto_add_new_families(
@@ -132,16 +132,16 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>1</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>1</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>1</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>1</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )
 
         self.gmp.modify_scan_config_set_family_selection(
@@ -151,16 +151,16 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>0</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>1</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>0</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>1</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )
 
     def test_modify_scan_config_set_family_selection_with_auto_add_new_nvts(
@@ -171,16 +171,16 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>1</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>1</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>1</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>1</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )
 
         self.gmp.modify_scan_config_set_family_selection(
@@ -188,16 +188,16 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>1</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>1</all>"
-            "<growing>0</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>1</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>1</all>"
+            b"<growing>0</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )
 
         self.gmp.modify_scan_config_set_family_selection(
@@ -206,34 +206,34 @@ class GmpModifyScanConfigSetFamilySelectionTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<family_selection>"
-            "<growing>1</growing>"
-            "<family>"
-            "<name>foo</name>"
-            "<all>1</all>"
-            "<growing>0</growing>"
-            "</family>"
-            "<family>"
-            "<name>bar</name>"
-            "<all>0</all>"
-            "<growing>1</growing>"
-            "</family>"
-            "</family_selection>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<family_selection>"
+            b"<growing>1</growing>"
+            b"<family>"
+            b"<name>foo</name>"
+            b"<all>1</all>"
+            b"<growing>0</growing>"
+            b"</family>"
+            b"<family>"
+            b"<name>bar</name>"
+            b"<all>0</all>"
+            b"<growing>1</growing>"
+            b"</family>"
+            b"</family_selection>"
+            b"</modify_config>"
         )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_scan_config_set_family_selection(
                 config_id="c1", families=[("foo", "False", "True")]
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_scan_config_set_family_selection(
                 config_id="c1", families=[("foo", True, None)]
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.modify_scan_config_set_family_selection(
                 config_id="c1", families=[("foo", "True", False)]
             )

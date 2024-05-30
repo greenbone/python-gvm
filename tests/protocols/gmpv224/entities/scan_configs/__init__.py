@@ -13,7 +13,6 @@ from .test_get_scan_config_preferences import (
 )
 from .test_get_scan_configs import GmpGetScanConfigsTestMixin
 from .test_import_scan_config import GmpImportScanConfigTestMixin
-from .test_modify_scan_config import GmpModifyScanConfigTestMixin
 from .test_modify_scan_config_set_comment import (
     GmpModifyScanConfigSetCommentTestMixin,
 )
@@ -42,7 +41,6 @@ __all__ = (
     "GmpGetScanConfigPreferencesTestMixin",
     "GmpGetScanConfigsTestMixin",
     "GmpImportScanConfigTestMixin",
-    "GmpModifyScanConfigTestMixin",
     "GmpModifyScanConfigSetCommentTestMixin",
     "GmpModifyScanConfigSetFamilySelectionTestMixin",
     "GmpModifyScanConfigSetNameTestMixin",

@@ -11,7 +11,7 @@ class GmpDeleteHostTestMixin:
         self.gmp.delete_host(host_id="a1")
 
         self.connection.send.has_been_called_with(
-            '<delete_asset asset_id="a1"/>'
+            b'<delete_asset asset_id="a1"/>'
         )
 
     def test_missing_arguments(self):

@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv224 import ScannerType
 
 
@@ -18,13 +18,13 @@ class GmpCreateScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_scanner>"
-            "<name>foo</name>"
-            "<host>localhost</host>"
-            "<port>1234</port>"
-            "<type>2</type>"
-            '<credential id="c1"/>'
-            "</create_scanner>"
+            b"<create_scanner>"
+            b"<name>foo</name>"
+            b"<host>localhost</host>"
+            b"<port>1234</port>"
+            b"<type>2</type>"
+            b'<credential id="c1"/>'
+            b"</create_scanner>"
         )
 
     def test_create_scanner_missing_name(self):
@@ -123,7 +123,7 @@ class GmpCreateScannerTestMixin:
             )
 
     def test_create_scanner_invalid_scanner_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_scanner(
                 name="foo",
                 host="localhost",
@@ -141,7 +141,7 @@ class GmpCreateScannerTestMixin:
                 credential_id="c1",
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_scanner(
                 name="foo",
                 host="localhost",
@@ -161,14 +161,14 @@ class GmpCreateScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_scanner>"
-            "<name>foo</name>"
-            "<host>localhost</host>"
-            "<port>1234</port>"
-            "<type>2</type>"
-            "<ca_pub>foo</ca_pub>"
-            '<credential id="c1"/>'
-            "</create_scanner>"
+            b"<create_scanner>"
+            b"<name>foo</name>"
+            b"<host>localhost</host>"
+            b"<port>1234</port>"
+            b"<type>2</type>"
+            b'<credential id="c1"/>'
+            b"<ca_pub>foo</ca_pub>"
+            b"</create_scanner>"
         )
 
     def test_create_scanner_with_comment(self):
@@ -182,12 +182,12 @@ class GmpCreateScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_scanner>"
-            "<name>foo</name>"
-            "<host>localhost</host>"
-            "<port>1234</port>"
-            "<type>2</type>"
-            '<credential id="c1"/>'
-            "<comment>bar</comment>"
-            "</create_scanner>"
+            b"<create_scanner>"
+            b"<name>foo</name>"
+            b"<host>localhost</host>"
+            b"<port>1234</port>"
+            b"<type>2</type>"
+            b'<credential id="c1"/>'
+            b"<comment>bar</comment>"
+            b"</create_scanner>"
         )

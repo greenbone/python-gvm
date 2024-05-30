@@ -10,7 +10,9 @@ class GmpTestAlertTestMixin:
     def test_test_alert(self):
         self.gmp.test_alert("a1")
 
-        self.connection.send.has_been_called_with('<test_alert alert_id="a1"/>')
+        self.connection.send.has_been_called_with(
+            b'<test_alert alert_id="a1"/>'
+        )
 
     def test_missing_id(self):
         with self.assertRaises(GvmError):

@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv214 import ScannerType
 
 
@@ -123,7 +123,7 @@ class GmpCreateScannerTestMixin:
             )
 
     def test_create_scanner_invalid_scanner_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_scanner(
                 name="foo",
                 host="localhost",
@@ -141,7 +141,7 @@ class GmpCreateScannerTestMixin:
                 credential_id="c1",
             )
 
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_scanner(
                 name="foo",
                 host="localhost",

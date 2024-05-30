@@ -11,13 +11,13 @@ class GmpGetResultTestMixin:
         self.gmp.get_result("r1")
 
         self.connection.send.has_been_called_with(
-            '<get_results result_id="r1" details="1"/>'
+            b'<get_results result_id="r1" details="1"/>'
         )
 
         self.gmp.get_result(result_id="r1")
 
         self.connection.send.has_been_called_with(
-            '<get_results result_id="r1" details="1"/>'
+            b'<get_results result_id="r1" details="1"/>'
         )
 
     def test_get_result_missing_result_id(self):

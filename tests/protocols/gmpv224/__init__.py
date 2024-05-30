@@ -4,10 +4,10 @@
 #
 
 
-from gvm.protocols.gmpv224 import Gmp
+from gvm.protocols.gmp import GMPv224
 
 from .. import GmpTestCase
 
 
 class Gmpv224TestCase(GmpTestCase):
-    gmp_class = Gmp
+    gmp_class = GMPv224

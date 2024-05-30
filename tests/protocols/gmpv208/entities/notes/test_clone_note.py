@@ -11,7 +11,7 @@ class GmpCloneNoteTestMixin:
         self.gmp.clone_note("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_note><copy>a1</copy></create_note>"
+            b"<create_note><copy>a1</copy></create_note>"
         )
 
     def test_missing_id(self):

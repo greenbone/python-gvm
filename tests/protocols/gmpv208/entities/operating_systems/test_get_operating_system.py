@@ -11,24 +11,24 @@ class GmpGetOperatingSystemTestMixin:
         self.gmp.get_operating_system("a1")
 
         self.connection.send.has_been_called_with(
-            '<get_assets asset_id="a1" type="os"/>'
+            b'<get_assets asset_id="a1" type="os"/>'
         )
         self.gmp.get_operating_system(operating_system_id="a1")
 
         self.connection.send.has_been_called_with(
-            '<get_assets asset_id="a1" type="os"/>'
+            b'<get_assets asset_id="a1" type="os"/>'
         )
 
     def test_get_operating_system_details(self):
         self.gmp.get_operating_system("a1", details=True)
 
         self.connection.send.has_been_called_with(
-            '<get_assets asset_id="a1" type="os" details="1"/>'
+            b'<get_assets asset_id="a1" type="os" details="1"/>'
         )
         self.gmp.get_operating_system("a1", details=False)
 
         self.connection.send.has_been_called_with(
-            '<get_assets asset_id="a1" type="os" details="0"/>'
+            b'<get_assets asset_id="a1" type="os" details="0"/>'
         )
 
     def test_get_asset_missing_operating_system_id(self):

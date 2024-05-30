@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208.entities.port_lists import PortRangeType
 
 
@@ -71,7 +71,7 @@ class GmpCreatePortRangeTestMixin:
             )
 
     def test_create_port_range_invalid_port_range_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_port_range(
                 port_list_id="pl1", start=1, end=1234, port_range_type="blubb"
             )
@@ -85,12 +85,12 @@ class GmpCreatePortRangeTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_port_range>"
-            '<port_list id="pl1"/>'
-            "<start>1</start>"
-            "<end>1234</end>"
-            "<type>TCP</type>"
-            "</create_port_range>"
+            b"<create_port_range>"
+            b'<port_list id="pl1"/>'
+            b"<start>1</start>"
+            b"<end>1234</end>"
+            b"<type>TCP</type>"
+            b"</create_port_range>"
         )
 
         self.gmp.create_port_range(
@@ -101,12 +101,12 @@ class GmpCreatePortRangeTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_port_range>"
-            '<port_list id="pl1"/>'
-            "<start>1</start>"
-            "<end>1234</end>"
-            "<type>UDP</type>"
-            "</create_port_range>"
+            b"<create_port_range>"
+            b'<port_list id="pl1"/>'
+            b"<start>1</start>"
+            b"<end>1234</end>"
+            b"<type>UDP</type>"
+            b"</create_port_range>"
         )
 
         self.gmp.create_port_range(
@@ -117,12 +117,12 @@ class GmpCreatePortRangeTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_port_range>"
-            '<port_list id="pl1"/>'
-            "<start>1</start>"
-            "<end>1234</end>"
-            "<type>TCP</type>"
-            "</create_port_range>"
+            b"<create_port_range>"
+            b'<port_list id="pl1"/>'
+            b"<start>1</start>"
+            b"<end>1234</end>"
+            b"<type>TCP</type>"
+            b"</create_port_range>"
         )
 
     def test_create_port_range_with_comment(self):
@@ -135,11 +135,11 @@ class GmpCreatePortRangeTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_port_range>"
-            '<port_list id="pl1"/>'
-            "<start>1</start>"
-            "<end>1234</end>"
-            "<type>TCP</type>"
-            "<comment>lorem</comment>"
-            "</create_port_range>"
+            b"<create_port_range>"
+            b'<port_list id="pl1"/>'
+            b"<start>1</start>"
+            b"<end>1234</end>"
+            b"<type>TCP</type>"
+            b"<comment>lorem</comment>"
+            b"</create_port_range>"
         )

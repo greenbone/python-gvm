@@ -15,7 +15,7 @@ class GmpCloneTargetTestMixin:
         self.connection.send.has_been_called_with(
             "<create_target>"
             f"<copy>{self.TARGET_ID}</copy>"
-            "</create_target>"
+            "</create_target>".encode("utf-8")
         )
 
     def test_missing_id(self):

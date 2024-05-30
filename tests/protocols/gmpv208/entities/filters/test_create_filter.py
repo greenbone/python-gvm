@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.errors import InvalidArgumentType, RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.gmpv208 import FilterType
 
 
@@ -21,11 +21,11 @@ class GmpCreateFilterTestMixin:
                 "<name>f1</name>"
                 "<term>sort-reverse=threat first=1 rows=1000</term>"
                 f"<type>{filter_type.value}</type>"
-                "</create_filter>"
+                "</create_filter>".encode("utf-8")
             )
 
     def test_create_filter_invalid_filter_type(self):
-        with self.assertRaises(InvalidArgumentType):
+        with self.assertRaises(InvalidArgument):
             self.gmp.create_filter(
                 name="f1",
                 term="sort-reverse=threat result_hosts_only=1 "
@@ -42,12 +42,12 @@ class GmpCreateFilterTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_filter>"
-            "<name>f1</name>"
-            "<comment>foo</comment>"
-            "<term>sort-reverse=threat result_hosts_only=1 notes=1 "
-            "overrides=1 levels=hml first=1 rows=1000</term>"
-            "</create_filter>"
+            b"<create_filter>"
+            b"<name>f1</name>"
+            b"<comment>foo</comment>"
+            b"<term>sort-reverse=threat result_hosts_only=1 notes=1 "
+            b"overrides=1 levels=hml first=1 rows=1000</term>"
+            b"</create_filter>"
         )
 
     def test_create_filter(self):
@@ -60,13 +60,13 @@ class GmpCreateFilterTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_filter>"
-            "<name>f1</name>"
-            "<comment>foo</comment>"
-            "<term>sort-reverse=threat result_hosts_only=1 notes=1 "
-            "overrides=1 levels=hml first=1 rows=1000</term>"
-            "<type>task</type>"
-            "</create_filter>"
+            b"<create_filter>"
+            b"<name>f1</name>"
+            b"<comment>foo</comment>"
+            b"<term>sort-reverse=threat result_hosts_only=1 notes=1 "
+            b"overrides=1 levels=hml first=1 rows=1000</term>"
+            b"<type>task</type>"
+            b"</create_filter>"
         )
 
     def test_create_filter_without_term(self):
@@ -77,11 +77,11 @@ class GmpCreateFilterTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_filter>"
-            "<name>f1</name>"
-            "<comment>foo</comment>"
-            "<type>task</type>"
-            "</create_filter>"
+            b"<create_filter>"
+            b"<name>f1</name>"
+            b"<comment>foo</comment>"
+            b"<type>task</type>"
+            b"</create_filter>"
         )
 
     def test_create_filter_make_unique(self):

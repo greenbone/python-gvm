@@ -11,7 +11,7 @@ class GmpGetNvtPreferenceTestMixin:
         self.gmp.get_nvt_preference(name="foo")
 
         self.connection.send.has_been_called_with(
-            '<get_preferences preference="foo"/>'
+            b'<get_preferences preference="foo"/>'
         )
 
     def test_get_nvt_preference_missing_name(self):
@@ -28,5 +28,5 @@ class GmpGetNvtPreferenceTestMixin:
         self.gmp.get_nvt_preference(name="foo", nvt_oid="oid")
 
         self.connection.send.has_been_called_with(
-            '<get_preferences preference="foo" nvt_oid="oid"/>'
+            b'<get_preferences preference="foo" nvt_oid="oid"/>'
         )

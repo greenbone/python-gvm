@@ -13,13 +13,13 @@ class GmpCreateTicketTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_ticket>"
-            '<result id="r1"/>'
-            "<assigned_to>"
-            '<user id="u1"/>'
-            "</assigned_to>"
-            "<open_note>lorem ipsum</open_note>"
-            "</create_ticket>"
+            b"<create_ticket>"
+            b'<result id="r1"/>'
+            b"<assigned_to>"
+            b'<user id="u1"/>'
+            b"</assigned_to>"
+            b"<open_note>lorem ipsum</open_note>"
+            b"</create_ticket>"
         )
 
     def test_create_ticket_with_comment(self):
@@ -31,14 +31,14 @@ class GmpCreateTicketTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            "<create_ticket>"
-            '<result id="r1"/>'
-            "<assigned_to>"
-            '<user id="u1"/>'
-            "</assigned_to>"
-            "<open_note>lorem ipsum</open_note>"
-            "<comment>bar</comment>"
-            "</create_ticket>"
+            b"<create_ticket>"
+            b'<result id="r1"/>'
+            b"<assigned_to>"
+            b'<user id="u1"/>'
+            b"</assigned_to>"
+            b"<open_note>lorem ipsum</open_note>"
+            b"<comment>bar</comment>"
+            b"</create_ticket>"
         )
 
     def test_create_ticket_missing_result_id(self):

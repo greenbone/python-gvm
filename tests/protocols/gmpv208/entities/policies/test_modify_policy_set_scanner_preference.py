@@ -13,33 +13,33 @@ class GmpModifyPolicySetScannerPreferenceTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<preference>"
-            "<name>foo</name>"
-            "</preference>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<preference>"
+            b"<name>foo</name>"
+            b"</preference>"
+            b"</modify_config>"
         )
 
         self.gmp.modify_policy_set_scanner_preference("c1", "foo")
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<preference>"
-            "<name>foo</name>"
-            "</preference>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<preference>"
+            b"<name>foo</name>"
+            b"</preference>"
+            b"</modify_config>"
         )
 
     def test_modify_policy_set_scanner_pref_with_value(self):
         self.gmp.modify_policy_set_scanner_preference("c1", "foo", value="bar")
 
         self.connection.send.has_been_called_with(
-            '<modify_config config_id="c1">'
-            "<preference>"
-            "<name>foo</name>"
-            "<value>YmFy</value>"
-            "</preference>"
-            "</modify_config>"
+            b'<modify_config config_id="c1">'
+            b"<preference>"
+            b"<name>foo</name>"
+            b"<value>YmFy</value>"
+            b"</preference>"
+            b"</modify_config>"
         )
 
     def test_modify_policy_scanner_pref_missing_name(self):

@@ -11,7 +11,7 @@ class GmpClonePermissionTestMixin:
         self.gmp.clone_permission("a1")
 
         self.connection.send.has_been_called_with(
-            "<create_permission><copy>a1</copy></create_permission>"
+            b"<create_permission><copy>a1</copy></create_permission>"
         )
 
     def test_missing_id(self):
