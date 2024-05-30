@@ -18,6 +18,8 @@ class Enum(PythonEnum):
 
     @classmethod
     def _missing_(cls, value: Any) -> Optional[Self]:
+        if isinstance(value, PythonEnum):
+            return cls.from_string(value.name)
         return cls.from_string(str(value) if value else None)
 
     @classmethod
@@ -40,3 +42,6 @@ class Enum(PythonEnum):
                 f"Invalid argument {value}. "
                 f"Allowed values are {','.join(e.name for e in cls)}."
             ) from None
+
+    def __str__(self) -> str:
+        return self.value

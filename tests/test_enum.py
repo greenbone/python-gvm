@@ -11,6 +11,11 @@ from gvm.errors import InvalidArgument
 class SomeEnum(Enum):
     FOO = "foo"
     BAR = "bar"
+    LOREM = "ipsum"
+
+
+class OtherEnum(Enum):
+    LOREM = "ipsum"
 
 
 class SomeClass:
@@ -33,10 +38,22 @@ class EnumTestCase(unittest.TestCase):
         enum = SomeEnum(SomeClass())
         self.assertEqual(enum, SomeEnum.FOO)
 
+        enum = SomeEnum(SomeEnum.BAR)
+        self.assertEqual(enum, SomeEnum.BAR)
+
+        enum = SomeEnum(SomeEnum.LOREM)
+        self.assertEqual(enum, SomeEnum.LOREM)
+
+        enum = SomeEnum("ipsum")
+        self.assertEqual(enum, SomeEnum.LOREM)
+
+        enum = SomeEnum(OtherEnum.LOREM)
+        self.assertEqual(enum, SomeEnum.LOREM)
+
     def test_invalid(self) -> None:
         with self.assertRaisesRegex(
             InvalidArgument,
-            "^Invalid argument BAZ. Allowed values are FOO,BAR.$",
+            "^Invalid argument BAZ. Allowed values are FOO,BAR,LOREM.$",
         ):
             SomeEnum("BAZ")
 
@@ -62,3 +79,7 @@ class EnumTestCase(unittest.TestCase):
         self.assertEqual(enum, SomeEnum.FOO)
         enum = SomeEnum.from_string("bar")
         self.assertEqual(enum, SomeEnum.BAR)
+
+    def test_str(self):
+        self.assertEqual(str(SomeEnum.FOO), "foo")
+        self.assertEqual(str(SomeEnum.BAR), "bar")
