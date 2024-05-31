@@ -14,7 +14,7 @@ from ._gmp224 import GMPv224
 from ._gmp225 import GMPv225
 from .requests import Version
 
-SUPPORTED_GMP_VERSIONS = Union[GMPv224, GMPv225]
+SUPPORTED_GMP_VERSIONS = Union[GMPv224[T], GMPv225[T]]
 
 
 class GMP(GvmProtocol[T]):
@@ -27,26 +27,14 @@ class GMP(GvmProtocol[T]):
 
         .. code-block:: python
 
-            from gvm.protocols.gmp import Gmp
+            from gvm.protocols.gmp import GMP
 
-            with Gmp(connection) as gmp:
-                # gmp can be an instance of gvm.protocols.gmpv208.Gmp,
-                # gvm.protocols.gmpv214.Gmp depending
+            with GMP(connection) as gmp:
+                # gmp can be an instance of gvm.protocols.gmp.GMPv224 or
+                # gvm.protocols.gmp.GMPv225 depending
                 # on the supported GMP version of the remote manager daemon
                 resp = gmp.get_tasks()
 
-    Attributes:
-        connection: Connection to use to talk with the remote daemon. See
-            :mod:`gvm.connections` for possible connection types.
-        transform: Optional transform `callable`_ to convert response data.
-            After each request the callable gets passed the plain response data
-            which can be used to check the data and/or conversion into different
-            representations like a xml dom.
-
-            See :mod:`gvm.transforms` for existing transforms.
-
-    .. _callable:
-        https://docs.python.org/3/library/functions.html#callable
     """
 
     def __init__(
@@ -55,7 +43,24 @@ class GMP(GvmProtocol[T]):
         *,
         transform: Callable[[Response], T] = str_transform,  # type: ignore[assignment]
     ):
+        """
+        Create a new GMP instance.
+
+        Args:
+            connection: Connection to use to talk with the remote daemon. See
+                :mod:`gvm.connections` for possible connection types.
+            transform: Optional transform `callable`_ to convert response data.
+                After each request the callable gets passed the plain response data
+                which can be used to check the data and/or conversion into different
+                representations like a xml dom.
+
+                See :mod:`gvm.transforms` for existing transforms.
+
+        .. _callable:
+            https://docs.python.org/3/library/functions.html#callable
+        """
         super().__init__(connection, transform=transform)
+        self._gmp: Optional[SUPPORTED_GMP_VERSIONS] = None
 
     def determine_remote_gmp_version(self) -> str:
         """Determine the supported GMP version of the remote daemon"""
@@ -74,7 +79,7 @@ class GMP(GvmProtocol[T]):
 
     def determine_supported_gmp(self) -> SUPPORTED_GMP_VERSIONS:
         """Determine supported GMP version of the remote daemon and return a
-        corresponding Gmp class instance
+        corresponding GMP class instance
         """
         version_str = self.determine_remote_gmp_version().split(".", 1)
         major_version = int(version_str[0])
@@ -93,7 +98,11 @@ class GMP(GvmProtocol[T]):
 
         return gmp_class(self._connection, transform=self._transform_callable)  # type: ignore[arg-type]
 
-    def __enter__(self):
+    def __enter__(self) -> SUPPORTED_GMP_VERSIONS:  # type: ignore[override]
+        """
+        Returns the corresponding GMP class of the supported GMP version of the
+        remote manager daemon.
+        """
         self._gmp = self.determine_supported_gmp()
 
         self._gmp.connect()
@@ -106,5 +115,6 @@ class GMP(GvmProtocol[T]):
         exc_value: Optional[BaseException],
         traceback: Optional[TracebackType],
     ) -> None:
-        self._gmp.disconnect()
+        if self._gmp:
+            self._gmp.disconnect()
         self._gmp = None

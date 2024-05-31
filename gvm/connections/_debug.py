@@ -30,14 +30,17 @@ class DebugConnection:
         connection = DebugConnection(socket_connection)
         gmp = Gmp(connection=connection)
 
-    Arg:
-        connection: GvmConnection to observe
-
     .. _logging:
         https://docs.python.org/3/library/logging.html
     """
 
     def __init__(self, connection: GvmConnection):
+        """
+        Create a new DebugConnection instance.
+
+        Args:
+            connection: GvmConnection to observe
+        """
         self._connection = connection
 
     def read(self) -> bytes:

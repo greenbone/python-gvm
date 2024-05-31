@@ -19,16 +19,7 @@ def str_transform(response: Response) -> str:
 
 
 class GvmProtocol(Generic[T]):
-    """Base class for different GVM protocols
-
-    Attributes:
-        connection: Connection to use to talk with the remote daemon. See
-            :mod:`gvm.connections` for possible connection types.
-        transform: Optional transform `callable`_ to convert response data.
-            After each request the callable gets passed the plain response data
-            which can be used to check the data and/or conversion into different
-            representations like a xml dom.
-    """
+    """Base class for different GVM protocols"""
 
     def __init__(
         self,
@@ -36,6 +27,17 @@ class GvmProtocol(Generic[T]):
         *,
         transform: Callable[[Response], T] = str_transform,  # type: ignore[assignment]
     ):
+        """
+        Create a new GvmProtocol instance.
+
+        Args:
+            connection: Connection to use to talk with the remote daemon. See
+                :mod:`gvm.connections` for possible connection types.
+            transform: Optional transform callable to convert response data.
+                After each request the callable gets passed the plain response data
+                which can be used to check the data and/or conversion into different
+                representations like a xml dom.
+        """
         self._connection = connection
         self._protocol = Connection()
 

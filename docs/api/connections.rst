@@ -10,15 +10,12 @@ Connections
 
 .. autoclass:: SSHConnection
    :members:
-   :inherited-members:
 
 .. autoclass:: TLSConnection
    :members:
-   :inherited-members:
 
 .. autoclass:: UnixSocketConnection
    :members:
-   :inherited-members:
 
 .. autoclass:: DebugConnection
    :members:

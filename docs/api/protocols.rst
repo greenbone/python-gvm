@@ -6,12 +6,9 @@ Protocols
 .. automodule:: gvm.protocols
 
 .. toctree::
-    :maxdepth: 2
+    :maxdepth: 1
 
-    gmpv208
-    gmpv214
-    gmpv224
-    gmpv225
+    gmp
     ospv1
 
 Dynamic

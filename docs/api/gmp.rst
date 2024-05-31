@@ -1,15 +1,16 @@
 .. _gmp:
 
-.. avoid TOCtree warning by marking this file as orphan
-
-:orphan:
 
 GMP
 ^^^
 .. automodule:: gvm.protocols.gmp
 
-Protocol
---------
-
-.. autoclass:: Gmp
+.. autoclass:: GMP
     :members:
+
+.. toctree::
+    :maxdepth: 1
+
+    gmpv224
+    gmpv225
+    enums

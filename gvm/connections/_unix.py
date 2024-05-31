@@ -17,10 +17,6 @@ class UnixSocketConnection(AbstractGvmConnection):
     """
     UNIX-Socket class to connect, read, write from a daemon via direct
     communicating UNIX-Socket
-
-    Arguments:
-        path: Path to the socket. Default is "/run/gvmd/gvmd.sock".
-        timeout: Timeout in seconds for the connection. Default is 60 seconds.
     """
 
     def __init__(
@@ -29,6 +25,13 @@ class UnixSocketConnection(AbstractGvmConnection):
         path: Optional[Union[str, PathLike[str]]] = DEFAULT_UNIX_SOCKET_PATH,
         timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT,
     ) -> None:
+        """
+        Create a new UnixSocketConnection instance.
+
+        Args:
+            path: Path to the socket. Default is "/run/gvmd/gvmd.sock".
+            timeout: Timeout in seconds for the connection. Default is 60 seconds.
+        """
         super().__init__(timeout=timeout)
 
         self.path = (
