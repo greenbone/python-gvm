@@ -54,7 +54,7 @@ def deprecated(
     Examples:
         .. code-block:: python
 
-            from pontos.helper import deprecated
+            from gvm.utils import deprecated
 
             @deprecated
             def my_function(*args, **kwargs):

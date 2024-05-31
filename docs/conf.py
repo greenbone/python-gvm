@@ -139,6 +139,8 @@ autodoc_typehints_description_target = "documented"
 
 autodoc_class_signature = "separated"
 
+add_module_names = False
+
 pygments_style = "zenburn"
 
 # -- Options for HTMLHelp output ---------------------------------------------

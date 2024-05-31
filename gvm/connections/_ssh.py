@@ -34,13 +34,6 @@ class SSHConnection:
     """
     SSH Class to connect, read and write from GVM via SSH
 
-    Arguments:
-        timeout: Timeout in seconds for the connection.
-        hostname: DNS name or IP address of the remote server. Default is
-            127.0.0.1.
-        port: Port of the remote SSH server. Default is port 22.
-        username: Username to use for SSH login. Default is "gmp".
-        password: Password to use for SSH login. Default is "".
     """
 
     def __init__(
@@ -57,6 +50,17 @@ class SSHConnection:
         input: Callable[[], str] = input,
         exit: Callable[[str], Any] = sys.exit,
     ) -> None:
+        """
+        Create a new SSH connection instance.
+
+        Args:
+            timeout: Timeout in seconds for the connection.
+            hostname: DNS name or IP address of the remote server. Default is
+                127.0.0.1.
+            port: Port of the remote SSH server. Default is port 22.
+            username: Username to use for SSH login. Default is "gmp".
+            password: Password to use for SSH login. Default is "".
+        """
         self._client: Optional[paramiko.SSHClient] = None
         self.hostname = hostname if hostname is not None else DEFAULT_HOSTNAME
         self.port = int(port) if port is not None else DEFAULT_SSH_PORT
@@ -284,11 +288,6 @@ class SSHConnection:
         self._send_all(data)
 
     def read(self) -> bytes:
-        """Read data from the remote server
-
-        Returns:
-            str: data as utf-8 encoded string
-        """
         break_timeout = (
             time() + self._timeout if self._timeout is not None else None
         )

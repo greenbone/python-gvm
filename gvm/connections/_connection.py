@@ -19,15 +19,38 @@ logger = logging.getLogger(__name__)
 
 @runtime_checkable
 class GvmConnection(Protocol):
-    def connect(self) -> None: ...
+    """
+    Python `protocol <https://docs.python.org/3/library/typing.html#typing.Protocol>`_
+    for GvmConnection classes.
+    """
 
-    def disconnect(self) -> None: ...
+    def connect(self) -> None:
+        """Establish a connection to a remote server"""
 
-    def send(self, data: bytes) -> None: ...
+    def disconnect(self) -> None:
+        """Send data to the connected remote server
 
-    def read(self) -> bytes: ...
+        Arguments:
+            data: Data to be send to the server. Either utf-8 encoded string or
+                bytes.
+        """
 
-    def finish_send(self): ...
+    def send(self, data: bytes) -> None:
+        """Send data to the connected remote server
+
+        Args:
+            data: Data to be send to the server as bytes.
+        """
+
+    def read(self) -> bytes:
+        """Read data from the remote server
+
+        Returns:
+            data as bytes
+        """
+
+    def finish_send(self):
+        """Indicate to the remote server you are done with sending data"""
 
 
 class AbstractGvmConnection(ABC):
@@ -57,9 +80,8 @@ class AbstractGvmConnection(ABC):
     def send(self, data: bytes) -> None:
         """Send data to the connected remote server
 
-        Arguments:
-            data: Data to be send to the server. Either utf-8 encoded string or
-                bytes.
+        Args:
+            data: Data to be send to the server as bytes.
         """
         if self._socket is None:
             raise GvmError("Socket is not connected")
@@ -70,7 +92,7 @@ class AbstractGvmConnection(ABC):
         """Read data from the remote server
 
         Returns:
-            str: data as utf-8 encoded string
+            data as bytes
         """
         break_timeout = (
             time() + self._timeout if self._timeout is not None else None

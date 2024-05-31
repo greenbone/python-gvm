@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+"""
+Greenbone Management Protocol (GMP) version 22.4
+"""
+
 from typing import Iterable, Mapping, Optional, Sequence, Union
 
 from gvm.utils import SupportsStr, to_dotted_types_dict
@@ -101,9 +105,40 @@ _TYPE_FIELDS = [
 
 
 class GMPv224(GvmProtocol[T]):
+    """
+    A class implementing the Greenbone Management Protocol (GMP) version 22.4
+
+    Example:
+
+        .. code-block:: python
+
+            from gvm.protocols.gmp import GMPv224 as GMP
+
+            with GMP(connection) as gmp:
+                resp = gmp.get_tasks()
+    """
+
     _authenticated = False
 
-    types = to_dotted_types_dict(_TYPE_FIELDS)
+    def __init__(self, *args, **kwargs):
+        """
+        Create a new GMPv224 instance.
+
+        Args:
+            connection: Connection to use to talk with the remote daemon. See
+                :mod:`gvm.connections` for possible connection types.
+            transform: Optional transform `callable`_ to convert response data.
+                After each request the callable gets passed the plain response data
+                which can be used to check the data and/or conversion into different
+                representations like a xml dom.
+
+                See :mod:`gvm.transforms` for existing transforms.
+
+        .. _callable:
+            https://docs.python.org/3/library/functions.html#callable
+        """
+        super().__init__(*args, **kwargs)
+        self.types = to_dotted_types_dict(_TYPE_FIELDS)
 
     @staticmethod
     def get_protocol_version() -> tuple[int, int]:
