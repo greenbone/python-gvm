@@ -357,7 +357,7 @@ class GMPv224(GvmProtocol[T]):
             Help.help(help_format=help_format, brief=brief)
         )
 
-    def system_reports(
+    def get_system_reports(
         self,
         *,
         name: Optional[str] = None,
@@ -391,7 +391,7 @@ class GMPv224(GvmProtocol[T]):
             )
         )
 
-    def empty_trash(self) -> T:
+    def empty_trashcan(self) -> T:
         """Empty the trashcan
 
         Remove all entities from the trashcan. **Attention:** this command can
@@ -399,7 +399,7 @@ class GMPv224(GvmProtocol[T]):
         """
         return self._send_and_transform_command(TrashCan.empty_trashcan())
 
-    def restore_from_trash(self, entity_id: EntityID) -> T:
+    def restore_from_trashcan(self, entity_id: EntityID) -> T:
         """Restore an entity from the trashcan
 
         Args:
