@@ -4,7 +4,7 @@
 
 from typing import Iterable, Mapping, Optional, Sequence, Union
 
-from gvm.utils import SupportsStr
+from gvm.utils import SupportsStr, to_dotted_types_dict
 
 from .._protocol import GvmProtocol, T
 from .requests import (
@@ -74,9 +74,36 @@ from .requests import (
     Vulnerabilities,
 )
 
+_TYPE_FIELDS = [
+    AggregateStatistic,
+    AlertCondition,
+    AlertEvent,
+    AlertMethod,
+    AliveTest,
+    CredentialFormat,
+    CredentialType,
+    EntityType,
+    FeedType,
+    FilterType,
+    HostsOrdering,
+    InfoType,
+    HelpFormat,
+    PortRangeType,
+    PermissionSubjectType,
+    ReportFormatType,
+    ScannerType,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+    SortOrder,
+    TicketStatus,
+    UserAuthType,
+]
+
 
 class GMPv224(GvmProtocol[T]):
     _authenticated = False
+
+    types = to_dotted_types_dict(_TYPE_FIELDS)
 
     @staticmethod
     def get_protocol_version() -> tuple[int, int]:
