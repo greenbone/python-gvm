@@ -127,7 +127,7 @@ class Aggregates:
                 raise InvalidArgumentType(
                     argument="sort_criteria",
                     function=cls.get_aggregates.__name__,
-                    arg_type=Iterable.__name__,
+                    arg_type=getattr(Iterable, "__name__", "Iterable"),
                 )
             for sort in sort_criteria:
                 if not isinstance(sort, dict):
@@ -161,7 +161,7 @@ class Aggregates:
                 raise InvalidArgumentType(
                     function=cls.get_aggregates.__name__,
                     argument="data_columns",
-                    arg_type=Iterable.__name__,
+                    arg_type=getattr(Iterable, "__name__", "Iterable"),
                 )
             for column in data_columns:
                 cmd.add_element("data_column", column)
@@ -186,7 +186,7 @@ class Aggregates:
                 raise InvalidArgumentType(
                     function=cls.get_aggregates.__name__,
                     argument="text_columns",
-                    arg_type=Iterable.__name__,
+                    arg_type=getattr(Iterable, "__name__", "Iterable"),
                 )
             for column in text_columns:
                 cmd.add_element("text_column", column)
