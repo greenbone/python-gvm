@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv225 import ScannerType
+from gvm.protocols.gmp.requests import ScannerType
 
 
 class GetScannerTypeFromStringTestCase(unittest.TestCase):

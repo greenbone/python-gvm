@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv225 import ResourceType
+from gvm.protocols.gmp.requests import ResourceType
 
 
 class GmpGetResourceNamesListTestMixin:

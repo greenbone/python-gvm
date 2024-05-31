@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208.entities.port_lists import PortRangeType
+from gvm.protocols.gmp.requests import PortRangeType
 
 
 class GmpCreatePortRangeTestMixin:

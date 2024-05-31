@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv208 import UserAuthType
+from gvm.protocols.gmp.requests import UserAuthType
 
 
 class GmpModifyUserTestMixin:

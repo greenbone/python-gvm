@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv224 import CredentialFormat
+from gvm.protocols.gmp.requests import CredentialFormat
 
 
 class GetCredentialFromatFromStringTestCase(unittest.TestCase):

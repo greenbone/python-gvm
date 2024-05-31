@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv224 import UserAuthType
+from gvm.protocols.gmp.requests import UserAuthType
 
 
 class GetUserAuthTypeFromStringTestCase(unittest.TestCase):

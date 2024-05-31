@@ -3,9 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.protocols.gmpv208.entities.hosts import HostsOrdering
-
-from . import Gmpv214TestCase
+from gvm.protocols.gmp.requests import HostsOrdering
 
 
 class GmpWithStatementTestMixin:
@@ -31,7 +29,3 @@ class GmpWithStatementTestMixin:
 
             # Test, that the Enum class types are equal
             self.assertEqual(self.gmp.types.HostsOrdering, HostsOrdering)
-
-
-class Gmpv214WithStatementTestCase(GmpWithStatementTestMixin, Gmpv214TestCase):
-    pass

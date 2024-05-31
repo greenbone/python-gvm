@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208 import TicketStatus
+from gvm.protocols.gmp.requests import TicketStatus
 
 
 class GmpModifyTicketTestMixin:

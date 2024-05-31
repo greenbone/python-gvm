@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
-from gvm.protocols.gmpv208 import AggregateStatistic, EntityType, SortOrder
+from gvm.protocols.gmp.requests import AggregateStatistic, EntityType, SortOrder
 
 
 class GmpGetAggregatesTestMixin:

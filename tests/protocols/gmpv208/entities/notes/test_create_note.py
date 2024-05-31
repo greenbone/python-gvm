@@ -6,7 +6,6 @@
 from decimal import Decimal
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208 import SeverityLevel
 
 
 class GmpCreateNoteTestMixin:
@@ -117,24 +116,6 @@ class GmpCreateNoteTestMixin:
             b"<severity>5.5</severity>"
             b"</create_note>"
         )
-
-    def test_create_note_with_threat(self):
-        self.gmp.create_note("foo", nvt_oid="oid1", threat=SeverityLevel.HIGH)
-
-        self.connection.send.has_been_called_with(
-            b"<create_note>"
-            b"<text>foo</text>"
-            b'<nvt oid="oid1"/>'
-            b"<threat>High</threat>"
-            b"</create_note>"
-        )
-
-    def test_create_note_invalid_threat(self):
-        with self.assertRaises(InvalidArgument):
-            self.gmp.create_note("foo", nvt_oid="oid1", threat="")
-
-        with self.assertRaises(InvalidArgument):
-            self.gmp.create_note("foo", nvt_oid="oid1", threat="foo")
 
     def test_create_note_with_days_active(self):
         self.gmp.create_note("foo", nvt_oid="oid1", days_active=0)

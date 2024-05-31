@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv224 import AlertMethod
+from gvm.protocols.gmp.requests import AlertMethod
 
 
 class GetAlertMethodFromStringTestCase(unittest.TestCase):

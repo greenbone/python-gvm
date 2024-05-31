@@ -6,7 +6,6 @@
 from decimal import Decimal
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208 import SeverityLevel
 
 
 class GmpModifyNoteTestMixin:
@@ -141,25 +140,6 @@ class GmpModifyNoteTestMixin:
             b"<severity>5.5</severity>"
             b"</modify_note>"
         )
-
-    def test_modify_note_with_threat(self):
-        self.gmp.modify_note(
-            note_id="n1", text="foo", threat=SeverityLevel.HIGH
-        )
-
-        self.connection.send.has_been_called_with(
-            b'<modify_note note_id="n1">'
-            b"<text>foo</text>"
-            b"<threat>High</threat>"
-            b"</modify_note>"
-        )
-
-    def test_modify_note_invalid_threat(self):
-        with self.assertRaises(InvalidArgument):
-            self.gmp.modify_note(note_id="n1", text="foo", threat="")
-
-        with self.assertRaises(InvalidArgument):
-            self.gmp.modify_note(note_id="n1", text="foo", threat="foo")
 
     def test_modify_note_with_invalid_port(self):
         with self.assertRaises(InvalidArgument):

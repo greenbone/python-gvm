@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import RequiredArgument
-from gvm.protocols.gmpv208.entities.report_formats import ReportFormatType
+from gvm.protocols.gmp.requests import ReportFormatType
 
 
 class GmpGetReportTestMixin:

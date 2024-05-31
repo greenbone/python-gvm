@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from . import Gmpv208TestCase
-
 
 class GmpWithStatementTestMixin:
     def test_with_statement(self):
@@ -16,7 +14,3 @@ class GmpWithStatementTestMixin:
 
         self.connection.connect.has_been_called()
         self.connection.disconnect.has_been_called()
-
-
-class Gmpv208WithStatementTestCase(GmpWithStatementTestMixin, Gmpv208TestCase):
-    pass

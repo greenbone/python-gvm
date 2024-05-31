@@ -6,7 +6,7 @@
 from decimal import Decimal
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv214 import SeverityLevel
+from gvm.protocols.gmp.requests import SeverityLevel
 
 
 class GmpModifyOverrideTestMixin:
