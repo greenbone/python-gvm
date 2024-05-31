@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import HelpFormat
+from gvm.protocols.gmp.requests import HelpFormat
 
 
 class GmpHelpTestMixin:

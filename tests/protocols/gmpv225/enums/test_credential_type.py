@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv225 import CredentialType
+from gvm.protocols.gmp.requests import CredentialType
 
 
 class GetCredentialTypeFromStringTestCase(unittest.TestCase):

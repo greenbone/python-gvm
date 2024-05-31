@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv225 import HostsOrdering
+from gvm.protocols.gmp.requests import HostsOrdering
 
 
 class GetHostsOrderingFromStringTestCase(unittest.TestCase):

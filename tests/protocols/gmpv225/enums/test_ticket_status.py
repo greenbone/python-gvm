@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv225 import TicketStatus
+from gvm.protocols.gmp.requests import TicketStatus
 
 
 class GetTicketStatusFromStringTestCase(unittest.TestCase):

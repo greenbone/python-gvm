@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208 import CredentialFormat
+from gvm.protocols.gmp.requests import CredentialFormat
 
 
 class GmpGetCredentialTestMixin:

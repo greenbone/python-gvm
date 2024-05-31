@@ -6,7 +6,7 @@
 from collections import OrderedDict
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208 import HostsOrdering
+from gvm.protocols.gmp.requests import HostsOrdering
 
 
 class GmpCreateAuditTestMixin:

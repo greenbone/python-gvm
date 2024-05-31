@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208 import AlertCondition, AlertEvent, AlertMethod
+from gvm.protocols.gmp.requests import AlertCondition, AlertEvent, AlertMethod
 
 
 class GmpModifyAlertTestMixin:

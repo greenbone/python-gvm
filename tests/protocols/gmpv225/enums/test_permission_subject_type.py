@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv225 import PermissionSubjectType
+from gvm.protocols.gmp.requests import PermissionSubjectType
 
 
 class GetPermissionSubjectTypeFromStringTestCase(unittest.TestCase):

@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv225 import ResourceType
+from gvm.protocols.gmp.requests import ResourceType
 
 
 class GetResourceTypeFromStringTestCase(unittest.TestCase):

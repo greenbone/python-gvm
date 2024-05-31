@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmpv208 import AggregateStatistic
+from gvm.protocols.gmp.requests import AggregateStatistic
 
 
 class GetAggregateStatisticFromStringTestCase(unittest.TestCase):

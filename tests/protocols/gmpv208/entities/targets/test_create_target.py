@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmpv208.entities.targets import AliveTest
+from gvm.protocols.gmp.requests import AliveTest
 
 
 class GmpCreateTargetTestMixin:
