@@ -323,6 +323,7 @@ class GMPv224(GvmProtocol[T]):
                 text_columns=text_columns,
                 first_group=first_group,
                 max_groups=max_groups,
+                mode=mode,
                 **kwargs,
             )
         )
