@@ -18,7 +18,7 @@ class OSPGetVersionTestCase(unittest.TestCase):
     def test_get_version(self):
         self.osp.get_version()
 
-        self.connection.send.has_been_called_with("<get_version/>")
+        self.connection.send.has_been_called_with(b"<get_version/>")
 
 
 if __name__ == "__main__":

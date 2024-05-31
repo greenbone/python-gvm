@@ -52,22 +52,22 @@ class OSPStartScanTestCase(unittest.TestCase):
         )
 
         self.connection.send.has_been_called_with(
-            '<start_scan scan_id="123-456" parallel="10">'
-            '<scanner_params key1="value1"/>'
-            "<targets><target><hosts>localhost</hosts>"
-            "<ports>22,80</ports></target>"
-            "<target><hosts>192.168.10.1</hosts>"
-            "<ports>443</ports>"
-            "<credentials>"
-            '<credential type="type" port="port" service="smb">'
-            "<username>username</username>"
-            "<password>pass</password>"
-            "</credential></credentials>"
-            "</target></targets><vt_selection>"
-            '<vt_single id="vt1">'
-            '<vt_value id="value_id">value</vt_value></vt_single>'
-            '<vt_group filter="family=A"/><vt_group filter="family=B"/>'
-            "</vt_selection></start_scan>"
+            b'<start_scan scan_id="123-456" parallel="10">'
+            b'<scanner_params key1="value1"/>'
+            b"<targets><target><hosts>localhost</hosts>"
+            b"<ports>22,80</ports></target>"
+            b"<target><hosts>192.168.10.1</hosts>"
+            b"<ports>443</ports>"
+            b"<credentials>"
+            b'<credential type="type" port="port" service="smb">'
+            b"<username>username</username>"
+            b"<password>pass</password>"
+            b"</credential></credentials>"
+            b"</target></targets><vt_selection>"
+            b'<vt_single id="vt1">'
+            b'<vt_value id="value_id">value</vt_value></vt_single>'
+            b'<vt_group filter="family=A"/><vt_group filter="family=B"/>'
+            b"</vt_selection></start_scan>"
         )
 
     def test_start_scan_without_target(self):
@@ -79,9 +79,9 @@ class OSPStartScanTestCase(unittest.TestCase):
             scan_id="123-456", parallel=10, target="localhost", ports="22"
         )
         self.connection.send.has_been_called_with(
-            '<start_scan scan_id="123-456" parallel="10" '
-            'target="localhost" ports="22">'
-            "<scanner_params/></start_scan>"
+            b'<start_scan scan_id="123-456" parallel="10" '
+            b'target="localhost" ports="22">'
+            b"<scanner_params/></start_scan>"
         )
 
 

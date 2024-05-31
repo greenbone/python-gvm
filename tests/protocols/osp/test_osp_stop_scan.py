@@ -20,7 +20,7 @@ class OSPStopScanTestCase(unittest.TestCase):
         self.osp.stop_scan(scan_id="123-456")
 
         self.connection.send.has_been_called_with(
-            '<stop_scan scan_id="123-456"/>'
+            b'<stop_scan scan_id="123-456"/>'
         )
 
     def test_stop_scan_without_id(self):
