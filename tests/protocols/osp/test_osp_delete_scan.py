@@ -19,12 +19,15 @@ class OSPDeleteScanTestCase(unittest.TestCase):
         self.osp.delete_scan(scan_id="123-456")
 
         self.connection.send.has_been_called_with(
-            '<delete_scan scan_id="123-456"/>'
+            b'<delete_scan scan_id="123-456"/>'
         )
 
     def test_delete_scan_without_id(self):
         with self.assertRaises(ValueError):
-            self.osp.delete_scan()
+            self.osp.delete_scan(None)
+
+        with self.assertRaises(ValueError):
+            self.osp.delete_scan("")
 
 
 if __name__ == "__main__":
