@@ -14,14 +14,17 @@ For details about the possible supported protocol versions please take a look at
 :py:mod:`gvm.protocols`.
 
 Exports:
-  - :py:class:`gvm.protocols.gmpv225.Gmp`
+  - :py:class:`gvm.protocols.gmp.GMPv225`
   - :py:class:`gvm.protocols.ospv1.Osp`
 
 .. _Greenbone Management Protocol:
     https://docs.greenbone.net/API/GMP/gmp.html
 """
 
-from .gmpv225 import (
+from .gmp import (
+    GMPv225 as Gmp,
+)
+from .gmp.requests import (
     AggregateStatistic,
     AlertCondition,
     AlertEvent,
@@ -32,7 +35,6 @@ from .gmpv225 import (
     EntityType,
     FeedType,
     FilterType,
-    Gmp,
     HelpFormat,
     HostsOrdering,
     InfoType,
@@ -41,7 +43,6 @@ from .gmpv225 import (
     ReportFormatType,
     ResourceType,
     ScannerType,
-    SeverityLevel,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
     SortOrder,
@@ -71,7 +72,6 @@ __all__ = [
     "ReportFormatType",
     "ResourceType",
     "ScannerType",
-    "SeverityLevel",
     "SnmpAuthAlgorithm",
     "SnmpPrivacyAlgorithm",
     "SortOrder",
