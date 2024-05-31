@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.protocols.gmpv208.entities.hosts import HostsOrdering
+from gvm.protocols.gmp.requests import HostsOrdering
 
 from . import Gmpv224TestCase
 
