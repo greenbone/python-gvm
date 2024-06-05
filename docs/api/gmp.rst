@@ -13,4 +13,3 @@ GMP
 
     gmpv224
     gmpv225
-    enums
