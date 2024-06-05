@@ -113,7 +113,7 @@ class GvmProtocol(Generic[T]):
         string
         """
         return bytes(
-            self._send_command(cmd.encode("utf-8", errors="ignore"))
+            self._send_command(cmd.encode("utf-8", errors="ignore"))  # type: ignore[arg-type] # it seems mypy on Python < 3.11 can't handle bytes here
         ).decode("utf-8", errors="ignore")
 
     def _transform(self, response: Response) -> T:
