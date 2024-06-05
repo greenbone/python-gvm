@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests import FilterType
+from gvm.protocols.gmp.requests.v224 import FilterType
 
 
 class GetFilterTypeFomStringTestCase(unittest.TestCase):

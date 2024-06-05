@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.schedules import (
+from ...gmpv224.entities.schedules import (
     GmpCloneScheduleTestMixin,
     GmpCreateScheduleTestMixin,
     GmpDeleteScheduleTestMixin,

@@ -3,11 +3,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.results import (
+from ...gmpv224 import Gmpv224TestCase
+from .results import (
     GmpGetResultsTestMixin,
     GmpGetResultTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224GetResultTestCase(GmpGetResultTestMixin, Gmpv224TestCase):

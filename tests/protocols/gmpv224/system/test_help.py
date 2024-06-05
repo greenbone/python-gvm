@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.system.help import GmpHelpTestMixin
 from ...gmpv224 import Gmpv224TestCase
+from .help import GmpHelpTestMixin
 
 
 class Gmpv224HelpTestCase(GmpHelpTestMixin, Gmpv224TestCase):

@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.system.feed import GmpGetFeedsTestMixin, GmpGetFeedTestMixin
+from ...gmpv224.system.feed import GmpGetFeedsTestMixin, GmpGetFeedTestMixin
 from ...gmpv225 import Gmpv225TestCase
 
 

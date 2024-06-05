@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.alerts import (
+from ...gmpv224 import Gmpv224TestCase
+from .alerts import (
     GmpCloneAlertTestMixin,
     GmpCreateAlertTestMixin,
     GmpDeleteAlertTestMixin,
@@ -13,7 +14,6 @@ from ...gmpv208.entities.alerts import (
     GmpTestAlertTestMixin,
     GmpTriggerAlertTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CloneAlertTestCase(GmpCloneAlertTestMixin, Gmpv224TestCase):

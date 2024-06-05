@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.port_lists import (
+from ...gmpv224 import Gmpv224TestCase
+from .port_lists import (
     GmpClonePortListTestMixin,
     GmpCreatePortListTestMixin,
     GmpCreatePortRangeTestMixin,
@@ -13,7 +14,6 @@ from ...gmpv208.entities.port_lists import (
     GmpGetPortListTestMixin,
     GmpModifyPortListTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224ClonePortListTestCase(GmpClonePortListTestMixin, Gmpv224TestCase):

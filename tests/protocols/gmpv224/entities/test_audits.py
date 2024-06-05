@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.audits import (
+from ...gmpv224 import Gmpv224TestCase
+from .audits import (
     GmpCloneAuditTestMixin,
     GmpCreateAuditTestMixin,
     GmpDeleteAuditTestMixin,
@@ -14,7 +15,6 @@ from ...gmpv208.entities.audits import (
     GmpStartAuditTestMixin,
     GmpStopAuditTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CloneAuditTestCase(GmpCloneAuditTestMixin, Gmpv224TestCase):

@@ -3,14 +3,15 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.notes import (
+from ...gmpv224 import Gmpv224TestCase
+from .notes import (
     GmpCloneNoteTestMixin,
+    GmpCreateNoteTestMixin,
     GmpDeleteNoteTestMixin,
     GmpGetNotesTestMixin,
     GmpGetNoteTestMixin,
+    GmpModifyNoteTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
-from .notes import GmpCreateNoteTestMixin, GmpModifyNoteTestMixin
 
 
 class Gmpv224DeleteNoteTestCase(GmpDeleteNoteTestMixin, Gmpv224TestCase):

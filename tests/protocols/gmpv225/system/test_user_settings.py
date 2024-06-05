@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.system.user_settings import (
+from ...gmpv224.system.user_settings import (
     GmpGetUserSettingsTestMixin,
     GmpGetUserSettingTestMixin,
     GmpModifyUserSettingTestMixin,

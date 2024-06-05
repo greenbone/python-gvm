@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.permissions import (
+from ...gmpv224 import Gmpv224TestCase
+from .permissions import (
     GmpClonePermissionTestMixin,
     GmpCreatePermissionTestMixin,
     GmpDeletePermissionTestMixin,
@@ -11,7 +12,6 @@ from ...gmpv208.entities.permissions import (
     GmpGetPermissionTestMixin,
     GmpModifyPermissionTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224DeletePermissionTestCase(

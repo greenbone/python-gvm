@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.report_formats import (
+from ...gmpv224.entities.report_formats import (
     GmpCloneReportFormatTestMixin,
     GmpDeleteReportFormatTestMixin,
     GmpGetReportFormatsTestMixin,

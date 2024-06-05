@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests import SortOrder
+from gvm.protocols.gmp.requests.v225 import SortOrder
 
 
 class GetSortOrderFromStringTestCase(unittest.TestCase):

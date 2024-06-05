@@ -3,14 +3,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.hosts import (
+from ...gmpv224 import Gmpv224TestCase
+from .hosts import (
     GmpCreateHostTestMixin,
     GmpDeleteHostTestMixin,
     GmpGetHostsTestMixin,
     GmpGetHostTestMixin,
     GmpModifyHostTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CreateHostTestCase(GmpCreateHostTestMixin, Gmpv224TestCase):

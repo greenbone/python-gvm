@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.filters import (
+from ...gmpv224 import Gmpv224TestCase
+from .filters import (
     GmpCloneFilterTestMixin,
     GmpCreateFilterTestMixin,
     GmpDeleteFilterTestMixin,
@@ -11,7 +12,6 @@ from ...gmpv208.entities.filters import (
     GmpGetFilterTestMixin,
     GmpModifyFilterTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224DeleteFilterTestCase(GmpDeleteFilterTestMixin, Gmpv224TestCase):

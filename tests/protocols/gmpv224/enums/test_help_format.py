@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests import HelpFormat
+from gvm.protocols.gmp.requests.v224 import HelpFormat
 
 
 class GetHelpFormatFromStringTestCase(unittest.TestCase):

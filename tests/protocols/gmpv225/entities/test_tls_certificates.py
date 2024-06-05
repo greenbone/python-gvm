@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.tls_certificates import (
+from ...gmpv224.entities.tls_certificates import (
     GmpCloneTLSCertificateTestMixin,
     GmpCreateTLSCertificateTestMixin,
     GmpDeleteTLSCertificateTestMixin,

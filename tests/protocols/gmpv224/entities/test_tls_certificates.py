@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.tls_certificates import (
+from ...gmpv224 import Gmpv224TestCase
+from .tls_certificates import (
     GmpCloneTLSCertificateTestMixin,
     GmpCreateTLSCertificateTestMixin,
     GmpDeleteTLSCertificateTestMixin,
@@ -11,7 +12,6 @@ from ...gmpv208.entities.tls_certificates import (
     GmpGetTLSCertificateTestMixin,
     GmpModifyTLSCertificateTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CloneTLSCertificateTestCase(

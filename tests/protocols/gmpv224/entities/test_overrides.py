@@ -3,14 +3,15 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.overrides import (
+from ...gmpv224 import Gmpv224TestCase
+from .overrides import (
     GmpCloneOverrideTestMixin,
+    GmpCreateOverrideTestMixin,
     GmpDeleteOverrideTestMixin,
     GmpGetOverridesTestMixin,
     GmpGetOverrideTestMixin,
+    GmpModifyOverrideTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
-from .overrides import GmpCreateOverrideTestMixin, GmpModifyOverrideTestMixin
 
 
 class Gmpv224CloneOverrideTestCase(GmpCloneOverrideTestMixin, Gmpv224TestCase):

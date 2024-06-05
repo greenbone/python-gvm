@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests import AliveTest
+from gvm.protocols.gmp.requests.v224 import AliveTest
 
 
 class GetAliveTestFromStringTestCase(unittest.TestCase):

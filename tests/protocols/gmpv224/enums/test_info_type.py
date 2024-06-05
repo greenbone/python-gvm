@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests import InfoType
+from gvm.protocols.gmp.requests.v224 import InfoType
 
 
 class GetInfoTypeFromStringTestCase(unittest.TestCase):

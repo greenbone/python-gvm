@@ -3,14 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.scanners import (
+from ...gmpv224.entities.scanners import (
     GmpCloneScannerTestMixin,
+    GmpCreateScannerTestMixin,
     GmpDeleteScannerTestMixin,
     GmpGetScannersTestMixin,
     GmpGetScannerTestMixin,
-)
-from ...gmpv224.entities.scanners import (
-    GmpCreateScannerTestMixin,
     GmpModifyScannerTestMixin,
 )
 from ...gmpv225 import Gmpv225TestCase

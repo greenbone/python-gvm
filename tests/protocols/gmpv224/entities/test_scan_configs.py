@@ -4,7 +4,7 @@
 #
 
 from ...gmpv224 import Gmpv224TestCase
-from ...gmpv224.entities.scan_configs import (
+from .scan_configs import (
     GmpCloneScanConfigTestMixin,
     GmpCreateScanConfigTestMixin,
     GmpDeleteScanConfigTestMixin,
