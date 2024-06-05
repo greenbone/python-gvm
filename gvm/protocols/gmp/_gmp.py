@@ -84,8 +84,6 @@ class GMP(GvmProtocol[T]):
         version_str = self.determine_remote_gmp_version().split(".", 1)
         major_version = int(version_str[0])
         minor_version = int(version_str[1])
-        # if major_version == 22 and minor_version == 4:
-        # gmp_class = Gmpv224
         if major_version == 22 and minor_version == 4:
             gmp_class = GMPv224
         elif major_version == 22 and minor_version == 5:
