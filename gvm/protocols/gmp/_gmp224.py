@@ -11,7 +11,7 @@ from typing import Iterable, Mapping, Optional, Sequence, Union
 from gvm.utils import SupportsStr, to_dotted_types_dict
 
 from .._protocol import GvmProtocol, T
-from .requests import (
+from .requests.v224 import (
     Aggregates,
     AggregateStatistic,
     AlertCondition,
