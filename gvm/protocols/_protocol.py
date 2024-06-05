@@ -107,6 +107,15 @@ class GvmProtocol(Generic[T]):
 
         self._protocol.close()
 
+    def send_command(self, cmd: str) -> str:
+        """
+        Send a string command to the remote daemon and return the response as
+        string
+        """
+        return bytes(
+            self._send_command(cmd.encode("utf-8", errors="ignore"))
+        ).decode("utf-8", errors="ignore")
+
     def _transform(self, response: Response) -> T:
         transform = self._transform_callable
         return transform(response)
