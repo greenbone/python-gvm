@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests import FeedType
+from gvm.protocols.gmp.requests.v225 import FeedType
 
 
 class GetFeedTypeFromStringTestCase(unittest.TestCase):

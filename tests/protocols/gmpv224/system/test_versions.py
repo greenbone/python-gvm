@@ -3,9 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.system.versions import GmpGetVersionTestCase
 from ...gmpv224 import Gmpv224TestCase
-from .versions import GmpGetProtocolVersionTestCase
+from .versions import GmpGetProtocolVersionTestCase, GmpGetVersionTestCase
 
 
 class Gmpv224GetVersionCommandTestCase(GmpGetVersionTestCase, Gmpv224TestCase):

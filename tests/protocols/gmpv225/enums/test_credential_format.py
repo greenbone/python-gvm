@@ -6,10 +6,10 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests import CredentialFormat
+from gvm.protocols.gmp.requests.v225 import CredentialFormat
 
 
-class GetCredentialFromatFromStringTestCase(unittest.TestCase):
+class GetCredentialFormatFromStringTestCase(unittest.TestCase):
     def test_invalid(self):
         with self.assertRaises(InvalidArgument):
             CredentialFormat.from_string("foo")

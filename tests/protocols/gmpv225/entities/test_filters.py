@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.filters import (
+from ...gmpv224.entities.filters import (
     GmpCloneFilterTestMixin,
     GmpCreateFilterTestMixin,
     GmpDeleteFilterTestMixin,

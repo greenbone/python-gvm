@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.port_lists import (
+from ...gmpv224.entities.port_lists import (
     GmpClonePortListTestMixin,
     GmpCreatePortListTestMixin,
     GmpCreatePortRangeTestMixin,

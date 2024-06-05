@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.tasks import (
+from ...gmpv224 import Gmpv224TestCase
+from .tasks import (
     GmpCloneTaskTestMixin,
     GmpCreateContainerTaskTestMixin,
     GmpCreateTaskTestMixin,
@@ -16,7 +17,6 @@ from ...gmpv208.entities.tasks import (
     GmpStartTaskTestMixin,
     GmpStopTaskTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CloneTaskTestCase(GmpCloneTaskTestMixin, Gmpv224TestCase):

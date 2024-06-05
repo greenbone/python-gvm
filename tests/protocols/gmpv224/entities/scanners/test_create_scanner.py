@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmp.requests import ScannerType
+from gvm.protocols.gmp.requests.v224 import ScannerType
 
 
 class GmpCreateScannerTestMixin:

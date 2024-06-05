@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.credentials import (
+from ...gmpv224 import Gmpv224TestCase
+from .credentials import (
     GmpCloneCredentialTestMixin,
     GmpCreateCredentialTestMixin,
     GmpDeleteCredentialTestMixin,
@@ -11,7 +12,6 @@ from ...gmpv208.entities.credentials import (
     GmpGetCredentialTestMixin,
     GmpModifyCredentialTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224CloneCredentialTestCase(

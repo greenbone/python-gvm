@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.report_formats import (
+from ...gmpv224 import Gmpv224TestCase
+from .report_formats import (
     GmpCloneReportFormatTestMixin,
     GmpDeleteReportFormatTestMixin,
     GmpGetReportFormatsTestMixin,
@@ -12,7 +13,6 @@ from ...gmpv208.entities.report_formats import (
     GmpModifyReportFormatTestMixin,
     GmpVerifyReportFormatTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224DeleteReportFormatTestCase(

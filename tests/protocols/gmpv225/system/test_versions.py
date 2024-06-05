@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.system.versions import GmpGetVersionTestCase
+from ...gmpv224.system.versions import GmpGetVersionTestCase
 from ...gmpv225 import Gmpv225TestCase
 from .versions import GmpGetProtocolVersionTestCase
 

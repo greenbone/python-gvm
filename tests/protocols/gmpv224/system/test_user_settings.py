@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.system.user_settings import (
+from ...gmpv224 import Gmpv224TestCase
+from .user_settings import (
     GmpGetUserSettingsTestMixin,
     GmpGetUserSettingTestMixin,
     GmpModifyUserSettingTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224GetUserSettingTestCase(

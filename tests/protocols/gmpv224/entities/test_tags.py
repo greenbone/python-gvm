@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.tags import (
+from ...gmpv224 import Gmpv224TestCase
+from .tags import (
     GmpCloneTagTestMixin,
     GmpCreateTagTestMixin,
     GmpDeleteTagTestMixin,
@@ -11,7 +12,6 @@ from ...gmpv208.entities.tags import (
     GmpGetTagTestMixin,
     GmpModifyTagTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224DeleteTagTestCase(GmpDeleteTagTestMixin, Gmpv224TestCase):

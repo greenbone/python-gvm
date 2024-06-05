@@ -3,11 +3,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.system.trashcan import (
+from ...gmpv224 import Gmpv224TestCase
+from .trashcan import (
     GmpEmptyTrashcanTestMixin,
     GmpRestoreFromTrashcanTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224EmptyTrashcanTestCase(GmpEmptyTrashcanTestMixin, Gmpv224TestCase):

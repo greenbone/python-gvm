@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.policies import (
+from ...gmpv224 import Gmpv224TestCase
+from .policies import (
     GmpClonePolicyTestMixin,
     GmpCreatePolicyTestMixin,
     GmpDeletePolicyTestMixin,
@@ -17,7 +18,6 @@ from ...gmpv208.entities.policies import (
     GmpModifyPolicySetNvtSelectionTestMixin,
     GmpModifyPolicySetScannerPreferenceTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224ClonePolicyTestCase(GmpClonePolicyTestMixin, Gmpv224TestCase):

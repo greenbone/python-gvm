@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests import ReportFormatType
+from gvm.protocols.gmp.requests.v224 import ReportFormatType
 
 
 class GetPortRangeTypeFromStringTestCase(unittest.TestCase):

@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.system.authentication import (
+from ...gmpv224.system.authentication import (
     GmpAuthenticateTestMixin,
     GmpDescribeAuthTestMixin,
     GmpModifyAuthTestMixin,

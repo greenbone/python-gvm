@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.tickets import (
+from ...gmpv224 import Gmpv224TestCase
+from .tickets import (
     GmpCloneTicketTestMixin,
     GmpCreateTicketTestMixin,
     GmpDeleteTicketTestMixin,
@@ -11,7 +12,6 @@ from ...gmpv208.entities.tickets import (
     GmpGetTicketTestMixin,
     GmpModifyTicketTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224DeleteTicketTestCase(GmpDeleteTicketTestMixin, Gmpv224TestCase):

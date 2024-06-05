@@ -3,14 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.users import (
+from ...gmpv224.entities.users import (
     GmpCloneUserTestMixin,
+    GmpCreateUserTestMixin,
     GmpDeleteUserTestMixin,
     GmpGetUsersTestMixin,
     GmpGetUserTestMixin,
-)
-from ...gmpv224.entities.users import (
-    GmpCreateUserTestMixin,
     GmpModifyUserTestMixin,
 )
 from ...gmpv225 import Gmpv225TestCase

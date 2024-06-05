@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.secinfo import (
+from ...gmpv224 import Gmpv224TestCase
+from .secinfo import (
     GmpGetCertBundListTestMixin,
     GmpGetCertBundTestMixin,
     GmpGetCpeListTestMixin,
@@ -20,7 +21,6 @@ from ...gmpv208.entities.secinfo import (
     GmpGetScanConfigNvtsTestMixin,
     GmpGetScanConfigNvtTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224GetCertBundTestCase(GmpGetCertBundTestMixin, Gmpv224TestCase):

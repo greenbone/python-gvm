@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.roles import (
+from ...gmpv224 import Gmpv224TestCase
+from .roles import (
     GmpCloneRoleTestMixin,
     GmpCreateRoleTestMixin,
     GmpDeleteRoleTestMixin,
@@ -11,7 +12,6 @@ from ...gmpv208.entities.roles import (
     GmpGetRoleTestMixin,
     GmpModifyRoleTestMixin,
 )
-from ...gmpv224 import Gmpv224TestCase
 
 
 class Gmpv224DeleteRoleTestCase(GmpDeleteRoleTestMixin, Gmpv224TestCase):

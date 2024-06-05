@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests import EntityType
+from gvm.protocols.gmp.requests.v225 import EntityType
 
 
 class GetEntityTypeFromStringTestCase(unittest.TestCase):

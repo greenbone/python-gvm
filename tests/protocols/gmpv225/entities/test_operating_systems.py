@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.operating_systems import (
+from ...gmpv224.entities.operating_systems import (
     GmpDeleteOperatingSystemTestMixin,
     GmpGetOperatingSystemsTestMixin,
     GmpGetOperatingSystemTestMixin,

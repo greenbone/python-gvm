@@ -3,14 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv208.entities.targets import (
+from ...gmpv224.entities.targets import (
     GmpCloneTargetTestMixin,
+    GmpCreateTargetTestMixin,
     GmpDeleteTargetTestMixin,
     GmpGetTargetsTestMixin,
     GmpGetTargetTestMixin,
-)
-from ...gmpv224.entities.targets import (
-    GmpCreateTargetTestMixin,
     GmpModifyTargetTestMixin,
 )
 from ...gmpv225 import Gmpv225TestCase
