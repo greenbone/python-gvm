@@ -10,7 +10,7 @@ from typing import Optional
 
 from .._protocol import T
 from ._gmp224 import GMPv224
-from .requests import (
+from .requests.v225 import (
     ResourceNames,
     ResourceType,
 )
