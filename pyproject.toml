@@ -38,6 +38,7 @@ coverage = ">=7.2"
 sphinx = ">=5.3.0"
 autohooks-plugin-ruff = ">=24.1.0"
 autohooks-plugin-black = ">=22.7.0"
+autohooks-plugin-mypy = ">=22.7.0"
 black = ">=22.6.0"
 pontos = ">=22.7.2"
 furo = ">=2022.6.21"
@@ -76,3 +77,9 @@ source = ["gvm"]
 
 [tool.pontos.version]
 version-module-file = "gvm/__version__.py"
+
+[tool.mypy]
+files = "gvm"
+ignore_missing_imports = true
+explicit_package_bases = true
+allow_redefinition = true

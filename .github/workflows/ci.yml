@@ -35,6 +35,23 @@ jobs:
     with:
       python-version: ${{ matrix.python-version }}
 
+  mypy:
+    name: Check type hints
+    runs-on: "ubuntu-latest"
+    strategy:
+      matrix:
+        python-version:
+          - "3.9"
+          - "3.10"
+          - "3.11"
+          - "3.12"
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run mypy
+        uses: greenbone/actions/mypy-python@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+
   codecov:
     name: Upload coverage to codecov.io
     needs: test
