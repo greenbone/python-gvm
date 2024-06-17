@@ -200,6 +200,7 @@ class Tasks:
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
         schedules_only: Optional[bool] = None,
+        ignore_pagination: Optional[bool] = None,
     ) -> Request:
         """Request a list of tasks
 
@@ -210,6 +211,8 @@ class Tasks:
             details: Whether to include full task details
             schedules_only: Whether to only include id, name and schedule
                 details
+            ignore_pagination: Whether to ignore pagination settings (filter
+                terms "first" and "rows"). Default is False.
         """
         cmd = XmlCommand("get_tasks")
         cmd.set_attribute("usage_type", "scan")
@@ -224,6 +227,9 @@ class Tasks:
 
         if schedules_only is not None:
             cmd.set_attribute("schedules_only", to_bool(schedules_only))
+
+        if ignore_pagination is not None:
+            cmd.set_attribute("ignore_pagination", to_bool(ignore_pagination))
 
         return cmd
 

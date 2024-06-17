@@ -3805,6 +3805,7 @@ class GMPv224(GvmProtocol[T]):
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
         schedules_only: Optional[bool] = None,
+        ignore_pagination: Optional[bool] = None,
     ) -> T:
         """Request a list of tasks
 
@@ -3815,6 +3816,8 @@ class GMPv224(GvmProtocol[T]):
             details: Whether to include full task details
             schedules_only: Whether to only include id, name and schedule
                 details
+            ignore_pagination: Whether to ignore pagination settings (filter
+                terms "first" and "rows"). Default is False.
         """
         return self._send_and_transform_command(
             Tasks.get_tasks(
@@ -3823,6 +3826,7 @@ class GMPv224(GvmProtocol[T]):
                 trash=trash,
                 details=details,
                 schedules_only=schedules_only,
+                ignore_pagination=ignore_pagination,
             )
         )
 

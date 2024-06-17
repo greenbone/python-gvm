@@ -53,3 +53,16 @@ class GmpGetTasksTestMixin:
         self.connection.send.has_been_called_with(
             b'<get_tasks usage_type="scan" schedules_only="1"/>'
         )
+
+    def test_get_tasks_with_ignore_pagination(self):
+        self.gmp.get_tasks(ignore_pagination=True)
+
+        self.connection.send.has_been_called_with(
+            b'<get_tasks usage_type="scan" ignore_pagination="1"/>'
+        )
+
+        self.gmp.get_tasks(ignore_pagination=False)
+
+        self.connection.send.has_been_called_with(
+            b'<get_tasks usage_type="scan" ignore_pagination="0"/>'
+        )
