@@ -453,6 +453,19 @@ class TasksTestCase(unittest.TestCase):
             b'<get_tasks usage_type="scan" schedules_only="0"/>',
         )
 
+    def test_get_tasks_with_ignore_pagination(self):
+        request = Tasks().get_tasks(ignore_pagination=True)
+        self.assertEqual(
+            bytes(request),
+            b'<get_tasks usage_type="scan" ignore_pagination="1"/>',
+        )
+
+        request = Tasks().get_tasks(ignore_pagination=False)
+        self.assertEqual(
+            bytes(request),
+            b'<get_tasks usage_type="scan" ignore_pagination="0"/>',
+        )
+
     def test_get_task(self):
         request = Tasks().get_task("task_id")
         self.assertEqual(
