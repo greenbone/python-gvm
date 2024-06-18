@@ -16,7 +16,7 @@ class CheckCommandTransformTestCase(unittest.TestCase):
         transform = CheckCommandTransform()
 
         with self.assertRaises(GvmError):
-            transform("<foo/>")
+            transform(b"<foo/>")
 
     def test_no_success_300status_transform(self):
         transform = CheckCommandTransform()
@@ -25,7 +25,7 @@ class CheckCommandTransformTestCase(unittest.TestCase):
         root.set("status", "300")
         root.set("status_text", "Foo error")
 
-        response = etree.tostring(root).decode("utf-8")
+        response = etree.tostring(root)
 
         with self.assertRaises(GvmError):
             transform(response)
@@ -37,7 +37,7 @@ class CheckCommandTransformTestCase(unittest.TestCase):
         root.set("status", "400")
         root.set("status_text", "Foo error")
 
-        response = etree.tostring(root).decode("utf-8")
+        response = etree.tostring(root)
 
         with self.assertRaises(GvmResponseError):
             transform(response)
@@ -49,7 +49,7 @@ class CheckCommandTransformTestCase(unittest.TestCase):
         root.set("status", "500")
         root.set("status_text", "Foo error")
 
-        response = etree.tostring(root).decode("utf-8")
+        response = etree.tostring(root)
 
         with self.assertRaises(GvmServerError):
             transform(response)
@@ -60,6 +60,6 @@ class CheckCommandTransformTestCase(unittest.TestCase):
         root = etree.Element("foo_response")
         root.set("status", "200")
 
-        response = etree.tostring(root).decode("utf-8")
+        response = etree.tostring(root)
 
-        self.assertEqual(transform(response), '<foo_response status="200"/>')
+        self.assertEqual(transform(response), b'<foo_response status="200"/>')
