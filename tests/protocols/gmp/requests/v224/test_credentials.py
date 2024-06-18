@@ -68,6 +68,21 @@ class CredentialsTestCase(unittest.TestCase):
             b"</create_credential>",
         )
 
+    def test_create_credential_username_password_auto_generate_password(self):
+        request = Credentials.create_credential(
+            "name",
+            CredentialType.USERNAME_PASSWORD,
+            login="username",
+        )
+        self.assertEqual(
+            bytes(request),
+            b"<create_credential>"
+            b"<name>name</name>"
+            b"<type>up</type>"
+            b"<login>username</login>"
+            b"</create_credential>",
+        )
+
     def test_create_username_password_credential_with_allow_insecure(self):
         request = Credentials.create_credential(
             "name",
@@ -207,12 +222,23 @@ class CredentialsTestCase(unittest.TestCase):
             b"</create_credential>",
         )
 
-    def test_create_credential_username_ssh_key_missing_private_key(self):
-        with self.assertRaises(RequiredArgument):
-            Credentials.create_credential(
-                "name", CredentialType.USERNAME_SSH_KEY, login="username"
-            )
+    def test_create_credential_username_ssh_key_auto_generate_key(self):
+        request = Credentials.create_credential(
+            "name",
+            CredentialType.USERNAME_SSH_KEY,
+            login="username",
+        )
 
+        self.assertEqual(
+            bytes(request),
+            b"<create_credential>"
+            b"<name>name</name>"
+            b"<type>usk</type>"
+            b"<login>username</login>"
+            b"</create_credential>",
+        )
+
+    def test_create_credential_username_ssh_key_missing_private_key(self):
         with self.assertRaises(RequiredArgument):
             Credentials.create_credential(
                 "name",
