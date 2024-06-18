@@ -7,6 +7,8 @@ Module for transforming responses
 """
 from lxml import etree
 
+from gvm.protocols.core import Response
+
 from .errors import GvmError, GvmResponseError, GvmServerError
 from .xml import Element, create_parser
 
@@ -19,10 +21,10 @@ class EtreeTransform:
     def __init__(self):
         self._parser = create_parser()
 
-    def _convert_response(self, response: str) -> Element:
-        return etree.XML(response, parser=self._parser)
+    def _convert_response(self, response: Response) -> Element:
+        return etree.XML(bytes(response), parser=self._parser)
 
-    def __call__(self, response: str) -> Element:
+    def __call__(self, response: Response) -> Element:
         return self._convert_response(response)
 
 
@@ -46,7 +48,7 @@ class CheckCommandTransform(EtreeTransform):
     response was an error response
     """
 
-    def __call__(self, response: str) -> str:  # type: ignore[override]
+    def __call__(self, response: Response) -> Response:  # type: ignore[override]
         root = self._convert_response(response)
 
         check_command_status(root)
@@ -60,7 +62,7 @@ class EtreeCheckCommandTransform(EtreeTransform):
     response was an error response
     """
 
-    def __call__(self, response: str) -> Element:
+    def __call__(self, response: Response) -> Element:
         root = self._convert_response(response)
 
         check_command_status(root)
