@@ -87,6 +87,21 @@ class GmpCreateCredentialTestMixin:
             b"</create_credential>"
         )
 
+    def test_create_up_credential_auto_generate_password(self):
+        self.gmp.create_credential(
+            name="foo",
+            credential_type=CredentialType.USERNAME_PASSWORD,
+            login="Max",
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>up</type>"
+            b"<login>Max</login>"
+            b"</create_credential>"
+        )
+
     def test_create_cc_credential_missing_certificate(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.create_credential(
@@ -133,6 +148,7 @@ class GmpCreateCredentialTestMixin:
                 name="foo",
                 credential_type=CredentialType.USERNAME_SSH_KEY,
                 login="foo",
+                private_key="",
             )
 
     def test_create_usk_credential_missing_login(self):
@@ -180,6 +196,21 @@ class GmpCreateCredentialTestMixin:
             b"<private>123456</private>"
             b"<phrase>abcdef</phrase>"
             b"</key>"
+            b"</create_credential>"
+        )
+
+    def test_create_usk_credential_auto_generate_ssh_key(self):
+        self.gmp.create_credential(
+            name="foo",
+            credential_type=CredentialType.USERNAME_SSH_KEY,
+            login="foo",
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<create_credential>"
+            b"<name>foo</name>"
+            b"<type>usk</type>"
+            b"<login>foo</login>"
             b"</create_credential>"
         )
 

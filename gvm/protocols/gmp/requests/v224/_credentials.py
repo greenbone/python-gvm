@@ -194,6 +194,26 @@ class Credentials:
                     credential_type=CredentialType.PASSWORD_ONLY,
                     password='foo',
                 )
+
+            Creating an auto-generated password
+
+            .. code-block:: python
+
+                request = Credentials.create_credential(
+                    name='UP Credential',
+                    credential_type=CredentialType.USERNAME_PASSWORD,
+                    login='foo',
+                )
+
+            Creating an auto-generated SSH-Key credential
+
+            .. code-block:: python
+
+                request = Credentials.create_credential(
+                    name='USK Credential',
+                    credential_type=CredentialType.USERNAME_SSH_KEY,
+                    login='foo',
+                )
         """
         if not name:
             raise RequiredArgument(
@@ -256,7 +276,10 @@ class Credentials:
         ) and password:
             cmd.add_element("password", password)
 
-        if credential_type == CredentialType.USERNAME_SSH_KEY:
+        if (
+            credential_type == CredentialType.USERNAME_SSH_KEY
+            and private_key is not None
+        ):
             if not private_key:
                 raise RequiredArgument(
                     function=cls.create_credential.__name__,
