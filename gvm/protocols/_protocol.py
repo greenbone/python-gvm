@@ -3,15 +3,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from types import TracebackType
-from typing import Callable, Generic, Optional, Type
-
-from typing_extensions import Self, TypeVar
+from typing import Callable, Generic, Optional, Type, TypeVar
 
 from gvm.connections import GvmConnection
 
 from .core import Connection, Request, Response
 
-T = TypeVar("T", default=str)
+T = TypeVar("T")
+Self = TypeVar("Self", bound="GvmProtocol")
 
 
 def str_transform(response: Response) -> str:

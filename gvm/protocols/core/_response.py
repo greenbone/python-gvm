@@ -3,9 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from functools import cached_property
-from typing import Optional
-
-from typing_extensions import Self
+from typing import Optional, TypeVar
 
 from gvm.errors import GvmError
 from gvm.xml import Element, parse_xml
@@ -24,6 +22,9 @@ class StatusError(GvmError):
         super().__init__(message, *args)
         self.response = response
         self.request = response.request
+
+
+Self = TypeVar("Self", bound="Response")
 
 
 class Response:

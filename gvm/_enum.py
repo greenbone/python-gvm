@@ -4,11 +4,11 @@
 #
 
 from enum import Enum as PythonEnum
-from typing import Any, Optional
-
-from typing_extensions import Self
+from typing import Any, Optional, TypeVar
 
 from gvm.errors import InvalidArgument
+
+Self = TypeVar("Self", bound="PythonEnum")
 
 
 class Enum(PythonEnum):
