@@ -95,7 +95,7 @@ class Response:
         status = self.status_code
         return status is not None and 200 <= status <= 299
 
-    def raise_for_status(self) -> Self:
+    def raise_for_status(self: Self) -> Self:
         if self.is_success:
             return self
         raise StatusError(
