@@ -4,11 +4,11 @@
 #
 
 from enum import Enum as PythonEnum
-from typing import Any, Optional, TypeVar
+from typing import Any, Optional, Type, TypeVar
 
 from gvm.errors import InvalidArgument
 
-Self = TypeVar("Self", bound="PythonEnum")
+Self = TypeVar("Self", bound="Enum")
 
 
 class Enum(PythonEnum):
@@ -17,14 +17,14 @@ class Enum(PythonEnum):
     """
 
     @classmethod
-    def _missing_(cls, value: Any) -> Optional[Self]:
+    def _missing_(cls: Type[Self], value: Any) -> Optional[Self]:
         if isinstance(value, PythonEnum):
             return cls.from_string(value.name)
         return cls.from_string(str(value) if value else None)
 
     @classmethod
     def from_string(
-        cls,
+        cls: Type[Self],
         value: Optional[str],
     ) -> Optional[Self]:
         """

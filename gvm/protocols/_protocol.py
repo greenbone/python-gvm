@@ -44,7 +44,7 @@ class GvmProtocol(Generic[T]):
 
         self._transform_callable = transform
 
-    def __enter__(self) -> Self:
+    def __enter__(self: Self) -> Self:
         self.connect()
         return self
 
