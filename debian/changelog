@@ -1,3 +1,11 @@
+python-gvm (24.7.0-gos2404~1) shredder; urgency=medium
+
+  * Change: new upstream release. (Closes: GOS-1918)
+  * Change: update patches.
+  * Fix: update autopkgtest.
+
+ -- Hendrik Deuper <hendrik.deuper@greenbone.net>  Tue, 30 Jul 2024 14:09:04 +0000
+
 python-gvm (24.1.0-gos2404~2) shredder; urgency=medium
 
   * Change: Increase Standards-Version to 4.6.2
