@@ -1,2 +1,2 @@
-Test-Command: python3 -m gvm.connections
+Test-Command: python3 -c "import gvm.connections"
 Depends: @, python3-setuptools
