@@ -1,16 +1,16 @@
 --- a/tests/xml/test_pretty_print.py
 +++ b/tests/xml/test_pretty_print.py
-@@ -22,7 +22,8 @@ from io import StringIO
+@@ -8,7 +8,8 @@ import unittest
+ from io import StringIO
  from unittest.mock import patch
  
- import defusedxml.lxml as secET
 -from pontos.testing import temp_directory
 +from tempfile import TemporaryDirectory
 +from pathlib import Path
  
  from gvm.errors import InvalidArgumentType
- from gvm.xml import pretty_print
-@@ -40,8 +41,9 @@ class PrettyPrintTestCase(unittest.TestC
+ from gvm.xml import parse_xml, pretty_print
+@@ -26,8 +27,9 @@ class PrettyPrintTestCase(unittest.TestC
              "</test>\n"
          )
  
