@@ -1,3 +1,9 @@
+python-gvm (24.8.0-gos2404~1) shredder; urgency=medium
+
+  * New upstream release (Closes: GOS-1948).
+
+ -- Lukas Hannigbrinck <lukas.hannigbrinck@greenbone.net>  Wed, 04 Sep 2024 12:21:20 +0200
+
 python-gvm (24.7.0-gos2404~1) shredder; urgency=medium
 
   * Change: new upstream release. (Closes: GOS-1918)
