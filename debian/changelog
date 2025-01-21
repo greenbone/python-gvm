@@ -1,3 +1,9 @@
+python-gvm (25.1.0-gos2404~1) shredder; urgency=medium
+
+  * Change New upstream release 25.1.0. (Closes: GOS-2087)
+
+ -- Hendrik Deuper <hendrik.deuper@greenbone.net>  Mon, 20 Jan 2025 16:09:39 +0000
+
 python-gvm (24.11.0-gos2404~1) shredder; urgency=medium
 
   * Change: New upstream release 24.11.0. (Closes: GOS-2057)
