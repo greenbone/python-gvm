@@ -12,9 +12,10 @@ from gvm.protocols.core import Response
 from .._protocol import GvmProtocol, T, str_transform
 from ._gmp224 import GMPv224
 from ._gmp225 import GMPv225
+from ._gmp226 import GMPv226
 from .requests import Version
 
-SUPPORTED_GMP_VERSIONS = Union[GMPv224[T], GMPv225[T]]
+SUPPORTED_GMP_VERSIONS = Union[GMPv224[T], GMPv225[T], GMPv226[T]]
 
 
 class GMP(GvmProtocol[T]):
@@ -30,9 +31,11 @@ class GMP(GvmProtocol[T]):
             from gvm.protocols.gmp import GMP
 
             with GMP(connection) as gmp:
-                # gmp can be an instance of gvm.protocols.gmp.GMPv224 or
-                # gvm.protocols.gmp.GMPv225 depending
-                # on the supported GMP version of the remote manager daemon
+                # gmp can be an instance of
+                # gvm.protocols.gmp.GMPv224,
+                # gvm.protocols.gmp.GMPv225
+                # or gvm.protocols.gmp.GMPv226
+                # depending on the supported GMP version of the remote manager daemon
                 resp = gmp.get_tasks()
 
     """
@@ -88,6 +91,8 @@ class GMP(GvmProtocol[T]):
             gmp_class = GMPv224
         elif major_version == 22 and minor_version == 5:
             gmp_class = GMPv225
+        elif major_version == 22 and minor_version == 6:
+            gmp_class = GMPv226
         else:
             raise GvmError(
                 "Remote manager daemon uses an unsupported version of GMP. "
