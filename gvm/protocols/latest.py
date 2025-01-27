@@ -14,7 +14,7 @@ For details about the possible supported protocol versions please take a look at
 :py:mod:`gvm.protocols`.
 
 Exports:
-  - :py:class:`gvm.protocols.gmp.GMPv224`
+  - :py:class:`gvm.protocols.gmp.GMPv226`
   - :py:class:`gvm.protocols.ospv1.Osp`
 
 .. _Greenbone Management Protocol:
@@ -22,7 +22,7 @@ Exports:
 """
 
 from .gmp import (
-    GMPv225 as Gmp,
+    GMPv226 as Gmp,
 )
 from .ospv1 import Osp
 

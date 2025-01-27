@@ -19,6 +19,7 @@ If you need to use a specific GMP version, you can use the :class:`GMPv224` or
 from ._gmp import GMP
 from ._gmp224 import GMPv224
 from ._gmp225 import GMPv225
+from ._gmp226 import GMPv226
 
 Gmp = GMP  # for backwards compatibility
 
@@ -27,4 +28,5 @@ __all__ = (
     "Gmp",
     "GMPv224",
     "GMPv225",
+    "GMPv226",
 )
