@@ -120,6 +120,12 @@ class GvmProtocol(Generic[T]):
         return transform(response)
 
     def _send_request(self, request: Request) -> Response:
+        """
+        Send a request to the remote daemon and return the response
+
+        Args:
+            request: The request to be send.
+        """
         try:
             send_data = self._protocol.send(request)
             self._send(send_data)
@@ -133,4 +139,10 @@ class GvmProtocol(Generic[T]):
             raise e
 
     def _send_request_and_transform_response(self, request: Request) -> T:
+        """
+        Send a request and transform its response using the transform callable.
+
+        Args:
+            request: The request to be send.
+        """
         return self._transform(self._send_request(request))
