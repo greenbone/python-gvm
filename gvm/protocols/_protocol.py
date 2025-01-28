@@ -112,16 +112,16 @@ class GvmProtocol(Generic[T]):
         string
         """
         return bytes(
-            self._send_command(cmd.encode("utf-8", errors="ignore"))  # type: ignore[arg-type] # it seems mypy on Python < 3.11 can't handle bytes here
+            self._send_request(cmd.encode("utf-8", errors="ignore"))  # type: ignore[arg-type] # it seems mypy on Python < 3.11 can't handle bytes here
         ).decode("utf-8", errors="ignore")
 
     def _transform(self, response: Response) -> T:
         transform = self._transform_callable
         return transform(response)
 
-    def _send_command(self, cmd: Request) -> Response:
+    def _send_request(self, request: Request) -> Response:
         try:
-            send_data = self._protocol.send(cmd)
+            send_data = self._protocol.send(request)
             self._send(send_data)
             response: Optional[Response] = None
             while not response:
@@ -132,5 +132,5 @@ class GvmProtocol(Generic[T]):
             self.disconnect()
             raise e
 
-    def _send_and_transform_command(self, cmd: Request) -> T:
-        return self._transform(self._send_command(cmd))
+    def _send_request_and_transform_response(self, request: Request) -> T:
+        return self._transform(self._send_request(request))

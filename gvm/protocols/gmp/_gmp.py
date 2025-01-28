@@ -71,7 +71,7 @@ class GMP(GvmProtocol[T]):
     def determine_remote_gmp_version(self) -> str:
         """Determine the supported GMP version of the remote daemon"""
         self.connect()
-        resp = self._send_command(Version.get_version())
+        resp = self._send_request(Version.get_version())
         self.disconnect()
 
         version_el = resp.xml().find("version")

@@ -78,7 +78,7 @@ class GMPv226(GMPv225[T]):
                 or USER
             filter_string: Filter term to use for the query
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ResourceNames.get_resource_names(
                 resource_type, filter_string=filter_string
             )
@@ -100,7 +100,7 @@ class GMPv226(GMPv225[T]):
                 SCANNER, SCHEDULE, TARGET, TASK, TLS_CERTIFICATE
                 or USER
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ResourceNames.get_resource_name(resource_id, resource_type)
         )
 
@@ -110,7 +110,7 @@ class GMPv226(GMPv225[T]):
         Args:
             report_id: UUID of the report to be deleted.
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             Reports.delete_report(report_id)
         )
 
@@ -139,7 +139,7 @@ class GMPv226(GMPv225[T]):
             details: Request additional report information details
                      defaults to True
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             Reports.get_report(
                 report_id,
                 filter_string=filter_string,
@@ -173,7 +173,7 @@ class GMPv226(GMPv225[T]):
                 "rows".
             details: Whether to exclude results
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             Reports.get_reports(
                 filter_string=filter_string,
                 filter_id=filter_id,
@@ -199,7 +199,7 @@ class GMPv226(GMPv225[T]):
             task_id: UUID of task to import report to
             in_asset: Whether to create or update assets using the report
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             Reports.import_report(report, task_id, in_assets=in_assets)
         )
 
@@ -209,7 +209,7 @@ class GMPv226(GMPv225[T]):
         Args:
             report_id: UUID of the report to be deleted.
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             AuditReports.delete_report(report_id)
         )
 
@@ -238,7 +238,7 @@ class GMPv226(GMPv225[T]):
             details: Request additional report information details
                      defaults to True
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             AuditReports.get_report(
                 report_id,
                 filter_string=filter_string,
@@ -272,7 +272,7 @@ class GMPv226(GMPv225[T]):
                 "rows".
             details: Whether to exclude results
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             AuditReports.get_reports(
                 filter_string=filter_string,
                 filter_id=filter_id,
@@ -301,7 +301,7 @@ class GMPv226(GMPv225[T]):
         """
         # override create_filter because of the different FilterType enum
         # this avoids warnings with type checkers
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             Filters.create_filter(
                 name, filter_type=filter_type, comment=comment, term=term
             )
@@ -327,7 +327,7 @@ class GMPv226(GMPv225[T]):
         """
         # override create_filter because of the different FilterType enum
         # this avoids warnings with type checkers
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             Filters.modify_filter(
                 filter_id,
                 comment=comment,
@@ -343,7 +343,7 @@ class GMPv226(GMPv225[T]):
         Args:
             report_config_id: UUID of the existing report config
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ReportConfigs.clone_report_config(report_config_id)
         )
 
@@ -359,7 +359,7 @@ class GMPv226(GMPv225[T]):
             report_config_id: UUID of the report config to be deleted.
             ultimate: Whether to remove entirely, or to the trashcan.
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ReportConfigs.delete_report_config(
                 report_config_id, ultimate=ultimate
             )
@@ -381,7 +381,7 @@ class GMPv226(GMPv225[T]):
             trash: Whether to get the trashcan report configs instead
             details: Include report config details
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ReportConfigs.get_report_configs(
                 filter_string=filter_string,
                 filter_id=filter_id,
@@ -399,7 +399,7 @@ class GMPv226(GMPv225[T]):
         Args:
             report_config_id: UUID of an existing report config
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ReportConfigs.get_report_config(report_config_id)
         )
 
@@ -419,7 +419,7 @@ class GMPv226(GMPv225[T]):
             comment: An optional comment for the report config.
             params: A list of report config parameters.
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ReportConfigs.create_report_config(
                 name, report_format_id, comment=comment, params=params
             )
@@ -441,7 +441,7 @@ class GMPv226(GMPv225[T]):
             comment: An optional comment for the report config.
             params: A list of report config parameters.
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ReportConfigs.modify_report_config(
                 report_config_id, name=name, comment=comment, params=params
             )

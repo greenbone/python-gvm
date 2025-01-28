@@ -70,7 +70,7 @@ class GMPv225(GMPv224[T]):
                 or USER
             filter_string: Filter term to use for the query
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ResourceNames.get_resource_names(
                 resource_type, filter_string=filter_string
             )
@@ -90,6 +90,6 @@ class GMPv225(GMPv224[T]):
                 SCANNER, SCHEDULE, TARGET, TASK, TLS_CERTIFICATE
                 or USER
         """
-        return self._send_and_transform_command(
+        return self._send_request_and_transform_response(
             ResourceNames.get_resource_name(resource_id, resource_type)
         )
