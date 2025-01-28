@@ -71,6 +71,7 @@ from ..v225 import (
 )
 from ._audit_reports import AuditReports
 from ._filters import Filters, FilterType
+from ._report_configs import ReportConfigParameter, ReportConfigs
 from ._reports import Reports
 from ._resource_names import ResourceNames, ResourceType
 
@@ -113,6 +114,8 @@ __all__ = (
     "Policies",
     "PortLists",
     "PortRangeType",
+    "ReportConfigs",
+    "ReportConfigParameter",
     "ReportFormatType",
     "ReportFormats",
     "Reports",

@@ -2,9 +2,11 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+import warnings
 from types import TracebackType
 from typing import Callable, Optional, Type, Union
 
+from gvm.__version__ import __version__
 from gvm.connections import GvmConnection
 from gvm.errors import GvmError
 from gvm.protocols.core import Response
@@ -16,6 +18,7 @@ from ._gmp226 import GMPv226
 from .requests import Version
 
 SUPPORTED_GMP_VERSIONS = Union[GMPv224[T], GMPv225[T], GMPv226[T]]
+_SUPPORTED_GMP_VERSION_STRINGS = ["22.4", "22.5", "22.6"]
 
 
 class GMP(GvmProtocol[T]):
@@ -91,12 +94,21 @@ class GMP(GvmProtocol[T]):
             gmp_class = GMPv224
         elif major_version == 22 and minor_version == 5:
             gmp_class = GMPv225
-        elif major_version == 22 and minor_version == 6:
+        elif major_version == 22 and minor_version >= 6:
             gmp_class = GMPv226
+            if minor_version > 6:
+                warnings.warn(
+                    "Remote manager daemon uses a newer GMP version then "
+                    f"supported by python-gvm {__version__}. Please update to "
+                    "a newer release of python-gvm if possible. "
+                    f"Remote GMP version is {major_version}.{minor_version}. "
+                    f"Supported GMP versions are {', '.join(_SUPPORTED_GMP_VERSION_STRINGS)}."
+                )
         else:
             raise GvmError(
                 "Remote manager daemon uses an unsupported version of GMP. "
                 f"The GMP version was {major_version}.{minor_version}"
+                f"Supported GMP versions are {', '.join(_SUPPORTED_GMP_VERSION_STRINGS)}."
             )
 
         return gmp_class(self._connection, transform=self._transform_callable)  # type: ignore[arg-type]

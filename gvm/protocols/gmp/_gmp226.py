@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2024 Greenbone AG
+# SPDX-FileCopyrightText: 2025 Greenbone AG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
@@ -6,7 +6,7 @@
 Greenbone Management Protocol (GMP) version 22.6
 """
 
-from typing import Optional, Union
+from typing import Optional, Sequence, Union
 
 from .._protocol import T
 from ._gmp225 import GMPv225
@@ -15,6 +15,8 @@ from .requests.v226 import (
     EntityID,
     Filters,
     FilterType,
+    ReportConfigParameter,
+    ReportConfigs,
     ReportFormatType,
     Reports,
     ResourceNames,
@@ -332,5 +334,115 @@ class GMPv226(GMPv225[T]):
                 name=name,
                 term=term,
                 filter_type=filter_type,
+            )
+        )
+
+    def clone_report_config(self, report_config_id: EntityID) -> T:
+        """Clone a report config from an existing one
+
+        Args:
+            report_config_id: UUID of the existing report config
+        """
+        return self._send_and_transform_command(
+            ReportConfigs.clone_report_config(report_config_id)
+        )
+
+    def delete_report_config(
+        self,
+        report_config_id: EntityID,
+        *,
+        ultimate: Optional[bool] = False,
+    ) -> T:
+        """Deletes an existing report config
+
+        Args:
+            report_config_id: UUID of the report config to be deleted.
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        return self._send_and_transform_command(
+            ReportConfigs.delete_report_config(
+                report_config_id, ultimate=ultimate
+            )
+        )
+
+    def get_report_configs(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of report configs
+
+        Args:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            trash: Whether to get the trashcan report configs instead
+            details: Include report config details
+        """
+        return self._send_and_transform_command(
+            ReportConfigs.get_report_configs(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                details=details,
+            )
+        )
+
+    def get_report_config(
+        self,
+        report_config_id: EntityID,
+    ) -> T:
+        """Request a single report config
+
+        Args:
+            report_config_id: UUID of an existing report config
+        """
+        return self._send_and_transform_command(
+            ReportConfigs.get_report_config(report_config_id)
+        )
+
+    def create_report_config(
+        self,
+        name: str,
+        report_format_id: Union[EntityID, ReportFormatType],
+        *,
+        comment: Optional[str] = None,
+        params: Optional[Sequence[ReportConfigParameter]] = None,
+    ) -> T:
+        """Create a report config
+
+        Args:
+            name: Name of the new report config
+            report_format_id: UUID of the report format to be used or ReportFormatType.
+            comment: An optional comment for the report config.
+            params: A list of report config parameters.
+        """
+        return self._send_and_transform_command(
+            ReportConfigs.create_report_config(
+                name, report_format_id, comment=comment, params=params
+            )
+        )
+
+    def modify_report_config(
+        self,
+        report_config_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        params: Optional[Sequence[ReportConfigParameter]] = None,
+    ) -> T:
+        """Create a report config
+
+        Args:
+            name: Name of the report config
+            report_config_id: UUID of the report config to be modified.
+            comment: An optional comment for the report config.
+            params: A list of report config parameters.
+        """
+        return self._send_and_transform_command(
+            ReportConfigs.modify_report_config(
+                report_config_id, name=name, comment=comment, params=params
             )
         )
