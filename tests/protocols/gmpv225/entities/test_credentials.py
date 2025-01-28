@@ -11,38 +11,34 @@ from ...gmpv224.entities.credentials import (
     GmpGetCredentialTestMixin,
     GmpModifyCredentialTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225CloneCredentialTestCase(
-    GmpCloneCredentialTestMixin, Gmpv225TestCase
-):
+class Gmpv225CloneCredentialTestCase(GmpCloneCredentialTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225CreateCredentialTestCase(
-    GmpCreateCredentialTestMixin, Gmpv225TestCase
+    GmpCreateCredentialTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225DeleteCredentialTestCase(
-    GmpDeleteCredentialTestMixin, Gmpv225TestCase
+    GmpDeleteCredentialTestMixin, GMPTestCase
 ):
     pass
 
 
-class Gmpv225GetCredentialTestCase(GmpGetCredentialTestMixin, Gmpv225TestCase):
+class Gmpv225GetCredentialTestCase(GmpGetCredentialTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetCredentialsTestCase(
-    GmpGetCredentialsTestMixin, Gmpv225TestCase
-):
+class Gmpv225GetCredentialsTestCase(GmpGetCredentialsTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225ModifyCredentialTestCase(
-    GmpModifyCredentialTestMixin, Gmpv225TestCase
+    GmpModifyCredentialTestMixin, GMPTestCase
 ):
     pass

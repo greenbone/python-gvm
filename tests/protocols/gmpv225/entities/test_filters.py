@@ -11,28 +11,28 @@ from ...gmpv224.entities.filters import (
     GmpGetFilterTestMixin,
     GmpModifyFilterTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225DeleteFilterTestCase(GmpDeleteFilterTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteFilterTestCase(GmpDeleteFilterTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetFilterTestCase(GmpGetFilterTestMixin, Gmpv225TestCase):
+class Gmpv225GetFilterTestCase(GmpGetFilterTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetFiltersTestCase(GmpGetFiltersTestMixin, Gmpv225TestCase):
+class Gmpv225GetFiltersTestCase(GmpGetFiltersTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CloneFilterTestCase(GmpCloneFilterTestMixin, Gmpv225TestCase):
+class Gmpv225CloneFilterTestCase(GmpCloneFilterTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateFilterTestCase(GmpCreateFilterTestMixin, Gmpv225TestCase):
+class Gmpv225CreateFilterTestCase(GmpCreateFilterTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyFilterTestCase(GmpModifyFilterTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyFilterTestCase(GmpModifyFilterTestMixin, GMPTestCase):
     pass

@@ -10,24 +10,24 @@ from ...gmpv224.entities.hosts import (
     GmpGetHostTestMixin,
     GmpModifyHostTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225CreateHostTestCase(GmpCreateHostTestMixin, Gmpv225TestCase):
+class Gmpv225CreateHostTestCase(GmpCreateHostTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225DeleteHostTestCase(GmpDeleteHostTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteHostTestCase(GmpDeleteHostTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetHostTestCase(GmpGetHostTestMixin, Gmpv225TestCase):
+class Gmpv225GetHostTestCase(GmpGetHostTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetHostsTestCase(GmpGetHostsTestMixin, Gmpv225TestCase):
+class Gmpv225GetHostsTestCase(GmpGetHostsTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyHostTestCase(GmpModifyHostTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyHostTestCase(GmpModifyHostTestMixin, GMPTestCase):
     pass

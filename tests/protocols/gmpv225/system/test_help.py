@@ -4,8 +4,8 @@
 #
 
 from ...gmpv224.system.help import GmpHelpTestMixin
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225HelpTestCase(GmpHelpTestMixin, Gmpv225TestCase):
+class Gmpv225HelpTestCase(GmpHelpTestMixin, GMPTestCase):
     pass

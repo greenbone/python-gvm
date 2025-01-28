@@ -11,38 +11,34 @@ from ...gmpv224.entities.permissions import (
     GmpGetPermissionTestMixin,
     GmpModifyPermissionTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
 class Gmpv225DeletePermissionTestCase(
-    GmpDeletePermissionTestMixin, Gmpv225TestCase
+    GmpDeletePermissionTestMixin, GMPTestCase
 ):
     pass
 
 
-class Gmpv225GetPermissionTestCase(GmpGetPermissionTestMixin, Gmpv225TestCase):
+class Gmpv225GetPermissionTestCase(GmpGetPermissionTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetPermissionsTestCase(
-    GmpGetPermissionsTestMixin, Gmpv225TestCase
-):
+class Gmpv225GetPermissionsTestCase(GmpGetPermissionsTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ClonePermissionTestCase(
-    GmpClonePermissionTestMixin, Gmpv225TestCase
-):
+class Gmpv225ClonePermissionTestCase(GmpClonePermissionTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225CreatePermissionTestCase(
-    GmpCreatePermissionTestMixin, Gmpv225TestCase
+    GmpCreatePermissionTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyPermissionTestCase(
-    GmpModifyPermissionTestMixin, Gmpv225TestCase
+    GmpModifyPermissionTestMixin, GMPTestCase
 ):
     pass

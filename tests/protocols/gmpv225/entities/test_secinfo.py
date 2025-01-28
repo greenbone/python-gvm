@@ -20,72 +20,68 @@ from ...gmpv224.entities.secinfo import (
     GmpGetScanConfigNvtsTestMixin,
     GmpGetScanConfigNvtTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225GetCertBundTestCase(GmpGetCertBundTestMixin, Gmpv225TestCase):
+class Gmpv225GetCertBundTestCase(GmpGetCertBundTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetCpeTestCase(GmpGetCpeTestMixin, Gmpv225TestCase):
+class Gmpv225GetCpeTestCase(GmpGetCpeTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetCveTestCase(GmpGetCveTestMixin, Gmpv225TestCase):
+class Gmpv225GetCveTestCase(GmpGetCveTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetDfnCertCase(GmpGetDfnCertTestMixin, Gmpv225TestCase):
+class Gmpv225GetDfnCertCase(GmpGetDfnCertTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetInfoListTestCase(GmpGetInfoListTestMixin, Gmpv225TestCase):
+class Gmpv225GetInfoListTestCase(GmpGetInfoListTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetInfoTestCase(GmpGetInfoTestMixin, Gmpv225TestCase):
+class Gmpv225GetInfoTestCase(GmpGetInfoTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetNvtTestCase(GmpGetNvtTestMixin, Gmpv225TestCase):
+class Gmpv225GetNvtTestCase(GmpGetNvtTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225GetScanConfigNvtTestCase(
-    GmpGetScanConfigNvtTestMixin, Gmpv225TestCase
+    GmpGetScanConfigNvtTestMixin, GMPTestCase
 ):
     pass
 
 
-class Gmpv225GetNvtFamiliesTestCase(
-    GmpGetNvtFamiliesTestMixin, Gmpv225TestCase
-):
+class Gmpv225GetNvtFamiliesTestCase(GmpGetNvtFamiliesTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225GetScanConfigNvtsTestCase(
-    GmpGetScanConfigNvtsTestMixin, Gmpv225TestCase
+    GmpGetScanConfigNvtsTestMixin, GMPTestCase
 ):
     pass
 
 
-class Gmpv225GetCertBundListTestCase(
-    GmpGetCertBundListTestMixin, Gmpv225TestCase
-):
+class Gmpv225GetCertBundListTestCase(GmpGetCertBundListTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetCpeListTestCase(GmpGetCpeListTestMixin, Gmpv225TestCase):
+class Gmpv225GetCpeListTestCase(GmpGetCpeListTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetCveListTestCase(GmpGetCveListTestMixin, Gmpv225TestCase):
+class Gmpv225GetCveListTestCase(GmpGetCveListTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetDfnCertListCase(GmpGetDfnCertListTestMixin, Gmpv225TestCase):
+class Gmpv225GetDfnCertListCase(GmpGetDfnCertListTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetNvtListTestCase(GmpGetNvtListTestMixin, Gmpv225TestCase):
+class Gmpv225GetNvtListTestCase(GmpGetNvtListTestMixin, GMPTestCase):
     pass

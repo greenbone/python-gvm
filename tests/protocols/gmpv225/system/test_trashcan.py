@@ -7,14 +7,14 @@ from ...gmpv224.system.trashcan import (
     GmpEmptyTrashcanTestMixin,
     GmpRestoreFromTrashcanTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225EmptyTrashcanTestCase(GmpEmptyTrashcanTestMixin, Gmpv225TestCase):
+class Gmpv225EmptyTrashcanTestCase(GmpEmptyTrashcanTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225RestoreFromTrashcanTestCase(
-    GmpRestoreFromTrashcanTestMixin, Gmpv225TestCase
+    GmpRestoreFromTrashcanTestMixin, GMPTestCase
 ):
     pass

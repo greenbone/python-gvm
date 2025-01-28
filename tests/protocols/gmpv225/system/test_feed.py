@@ -4,12 +4,12 @@
 #
 
 from ...gmpv224.system.feed import GmpGetFeedsTestMixin, GmpGetFeedTestMixin
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225GetFeedTestCase(GmpGetFeedTestMixin, Gmpv225TestCase):
+class Gmpv225GetFeedTestCase(GmpGetFeedTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetFeedsTestCase(GmpGetFeedsTestMixin, Gmpv225TestCase):
+class Gmpv225GetFeedsTestCase(GmpGetFeedsTestMixin, GMPTestCase):
     pass

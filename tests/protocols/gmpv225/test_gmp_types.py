@@ -5,7 +5,7 @@
 
 from gvm.protocols.gmp.requests.v225 import HostsOrdering
 
-from . import Gmpv225TestCase
+from . import GMPTestCase
 
 
 class GmpWithStatementTestMixin:
@@ -33,5 +33,5 @@ class GmpWithStatementTestMixin:
             self.assertEqual(self.gmp.types.HostsOrdering, HostsOrdering)
 
 
-class Gmpv225WithStatementTestCase(GmpWithStatementTestMixin, Gmpv225TestCase):
+class Gmpv225WithStatementTestCase(GmpWithStatementTestMixin, GMPTestCase):
     pass

@@ -12,46 +12,44 @@ from ...gmpv224.entities.report_formats import (
     GmpModifyReportFormatTestMixin,
     GmpVerifyReportFormatTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
 class Gmpv225DeleteReportFormatTestCase(
-    GmpDeleteReportFormatTestMixin, Gmpv225TestCase
+    GmpDeleteReportFormatTestMixin, GMPTestCase
 ):
     pass
 
 
-class Gmpv225GetReportFormatTestCase(
-    GmpGetReportFormatTestMixin, Gmpv225TestCase
-):
+class Gmpv225GetReportFormatTestCase(GmpGetReportFormatTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225GetReportFormatsTestCase(
-    GmpGetReportFormatsTestMixin, Gmpv225TestCase
+    GmpGetReportFormatsTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225CloneReportFormatTestCase(
-    GmpCloneReportFormatTestMixin, Gmpv225TestCase
+    GmpCloneReportFormatTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ImportReportFormatTestCase(
-    GmpImportReportFormatTestMixin, Gmpv225TestCase
+    GmpImportReportFormatTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyReportFormatTestCase(
-    GmpModifyReportFormatTestMixin, Gmpv225TestCase
+    GmpModifyReportFormatTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225VerifyReportFormatTestCase(
-    GmpVerifyReportFormatTestMixin, Gmpv225TestCase
+    GmpVerifyReportFormatTestMixin, GMPTestCase
 ):
     pass

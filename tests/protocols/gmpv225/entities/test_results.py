@@ -7,12 +7,12 @@ from ...gmpv224.entities.results import (
     GmpGetResultsTestMixin,
     GmpGetResultTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225GetResultTestCase(GmpGetResultTestMixin, Gmpv225TestCase):
+class Gmpv225GetResultTestCase(GmpGetResultTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetResultsTestCase(GmpGetResultsTestMixin, Gmpv225TestCase):
+class Gmpv225GetResultsTestCase(GmpGetResultsTestMixin, GMPTestCase):
     pass

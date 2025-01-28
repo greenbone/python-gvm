@@ -11,34 +11,28 @@ from ...gmpv224.entities.schedules import (
     GmpGetScheduleTestMixin,
     GmpModifyScheduleTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225DeleteScheduleTestCase(
-    GmpDeleteScheduleTestMixin, Gmpv225TestCase
-):
+class Gmpv225DeleteScheduleTestCase(GmpDeleteScheduleTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetScheduleTestCase(GmpGetScheduleTestMixin, Gmpv225TestCase):
+class Gmpv225GetScheduleTestCase(GmpGetScheduleTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetSchedulesTestCase(GmpGetSchedulesTestMixin, Gmpv225TestCase):
+class Gmpv225GetSchedulesTestCase(GmpGetSchedulesTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CloneScheduleTestCase(GmpCloneScheduleTestMixin, Gmpv225TestCase):
+class Gmpv225CloneScheduleTestCase(GmpCloneScheduleTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateScheduleTestCase(
-    GmpCreateScheduleTestMixin, Gmpv225TestCase
-):
+class Gmpv225CreateScheduleTestCase(GmpCreateScheduleTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyScheduleTestCase(
-    GmpModifyScheduleTestMixin, Gmpv225TestCase
-):
+class Gmpv225ModifyScheduleTestCase(GmpModifyScheduleTestMixin, GMPTestCase):
     pass

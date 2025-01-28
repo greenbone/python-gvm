@@ -9,5 +9,5 @@ from gvm.protocols.gmp import GMPv225
 from .. import GmpTestCase
 
 
-class Gmpv225TestCase(GmpTestCase):
+class GMPTestCase(GmpTestCase):
     gmp_class = GMPv225

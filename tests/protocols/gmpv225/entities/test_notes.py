@@ -11,28 +11,28 @@ from ...gmpv224.entities.notes import (
     GmpGetNoteTestMixin,
     GmpModifyNoteTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225DeleteNoteTestCase(GmpDeleteNoteTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteNoteTestCase(GmpDeleteNoteTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetNoteTestCase(GmpGetNoteTestMixin, Gmpv225TestCase):
+class Gmpv225GetNoteTestCase(GmpGetNoteTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetNotesTestCase(GmpGetNotesTestMixin, Gmpv225TestCase):
+class Gmpv225GetNotesTestCase(GmpGetNotesTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CloneNoteTestCase(GmpCloneNoteTestMixin, Gmpv225TestCase):
+class Gmpv225CloneNoteTestCase(GmpCloneNoteTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateNoteTestCase(GmpCreateNoteTestMixin, Gmpv225TestCase):
+class Gmpv225CreateNoteTestCase(GmpCreateNoteTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyNoteTestCase(GmpModifyNoteTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyNoteTestCase(GmpModifyNoteTestMixin, GMPTestCase):
     pass

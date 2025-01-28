@@ -13,46 +13,38 @@ from ...gmpv224.entities.port_lists import (
     GmpGetPortListTestMixin,
     GmpModifyPortListTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225ClonePortListTestCase(GmpClonePortListTestMixin, Gmpv225TestCase):
+class Gmpv225ClonePortListTestCase(GmpClonePortListTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreatePortListTestCase(
-    GmpCreatePortListTestMixin, Gmpv225TestCase
-):
+class Gmpv225CreatePortListTestCase(GmpCreatePortListTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225CreatePortRangeListTestCase(
-    GmpCreatePortRangeTestMixin, Gmpv225TestCase
+    GmpCreatePortRangeTestMixin, GMPTestCase
 ):
     pass
 
 
-class Gmpv225DeletePortListTestCase(
-    GmpDeletePortListTestMixin, Gmpv225TestCase
-):
+class Gmpv225DeletePortListTestCase(GmpDeletePortListTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225DeletePortRangeTestCase(
-    GmpDeletePortRangeTestMixin, Gmpv225TestCase
-):
+class Gmpv225DeletePortRangeTestCase(GmpDeletePortRangeTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetPortListTestCase(GmpGetPortListTestMixin, Gmpv225TestCase):
+class Gmpv225GetPortListTestCase(GmpGetPortListTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetPortListsTestCase(GmpGetPortListsTestMixin, Gmpv225TestCase):
+class Gmpv225GetPortListsTestCase(GmpGetPortListsTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyPortListTestCase(
-    GmpModifyPortListTestMixin, Gmpv225TestCase
-):
+class Gmpv225ModifyPortListTestCase(GmpModifyPortListTestMixin, GMPTestCase):
     pass

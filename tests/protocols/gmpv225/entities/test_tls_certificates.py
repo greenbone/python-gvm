@@ -11,40 +11,40 @@ from ...gmpv224.entities.tls_certificates import (
     GmpGetTLSCertificateTestMixin,
     GmpModifyTLSCertificateTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
 class Gmpv225CloneTLSCertificateTestCase(
-    GmpCloneTLSCertificateTestMixin, Gmpv225TestCase
+    GmpCloneTLSCertificateTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225CreateTLSCertificateTestCase(
-    GmpCreateTLSCertificateTestMixin, Gmpv225TestCase
+    GmpCreateTLSCertificateTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225DeleteTLSCertificateTestCase(
-    GmpDeleteTLSCertificateTestMixin, Gmpv225TestCase
+    GmpDeleteTLSCertificateTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225GetTLSCertificateTestCase(
-    GmpGetTLSCertificateTestMixin, Gmpv225TestCase
+    GmpGetTLSCertificateTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225GetTLSCertificatesTestCase(
-    GmpGetTLSCertificatesTestMixin, Gmpv225TestCase
+    GmpGetTLSCertificatesTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyTLSCertificateTestCase(
-    GmpModifyTLSCertificateTestMixin, Gmpv225TestCase
+    GmpModifyTLSCertificateTestMixin, GMPTestCase
 ):
     pass

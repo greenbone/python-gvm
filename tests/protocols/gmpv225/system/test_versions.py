@@ -4,15 +4,15 @@
 #
 
 from ...gmpv224.system.versions import GmpGetVersionTestCase
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 from .versions import GmpGetProtocolVersionTestCase
 
 
-class Gmpv225GetVersionCommandTestCase(GmpGetVersionTestCase, Gmpv225TestCase):
+class Gmpv225GetVersionCommandTestCase(GmpGetVersionTestCase, GMPTestCase):
     pass
 
 
 class Gmpv225GmpGetProtocolVersionTestCase(
-    GmpGetProtocolVersionTestCase, Gmpv225TestCase
+    GmpGetProtocolVersionTestCase, GMPTestCase
 ):
     pass

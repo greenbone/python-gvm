@@ -8,22 +8,18 @@ from ...gmpv224.system.user_settings import (
     GmpGetUserSettingTestMixin,
     GmpModifyUserSettingTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225GetUserSettingTestCase(
-    GmpGetUserSettingTestMixin, Gmpv225TestCase
-):
+class Gmpv225GetUserSettingTestCase(GmpGetUserSettingTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetUserSettingsTestCase(
-    GmpGetUserSettingsTestMixin, Gmpv225TestCase
-):
+class Gmpv225GetUserSettingsTestCase(GmpGetUserSettingsTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225ModifyUserSettingTestCase(
-    GmpModifyUserSettingTestMixin, Gmpv225TestCase
+    GmpModifyUserSettingTestMixin, GMPTestCase
 ):
     pass
