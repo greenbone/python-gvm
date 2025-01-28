@@ -13,6 +13,8 @@ from ._gmp225 import GMPv225
 from .requests.v226 import (
     AuditReports,
     EntityID,
+    Filters,
+    FilterType,
     ReportFormatType,
     Reports,
     ResourceNames,
@@ -81,7 +83,9 @@ class GMPv226(GMPv225[T]):
         )
 
     def get_resource_name(
-        self, resource_id: str, resource_type: ResourceType  # type: ignore[override]
+        self,
+        resource_id: str,
+        resource_type: ResourceType,  # type: ignore[override]
     ) -> T:
         """Request a single resource name
 
@@ -274,5 +278,59 @@ class GMPv226(GMPv225[T]):
                 override_details=override_details,
                 ignore_pagination=ignore_pagination,
                 details=details,
+            )
+        )
+
+    def create_filter(
+        self,
+        name: str,
+        *,
+        filter_type: Optional[FilterType] = None,  # type: ignore[override]
+        comment: Optional[str] = None,
+        term: Optional[str] = None,
+    ) -> T:
+        """Create a new filter
+
+        Args:
+            name: Name of the new filter
+            filter_type: Filter for entity type
+            comment: Comment for the filter
+            term: Filter term e.g. 'name=foo'
+        """
+        # override create_filter because of the different FilterType enum
+        # this avoids warnings with type checkers
+        return self._send_and_transform_command(
+            Filters.create_filter(
+                name, filter_type=filter_type, comment=comment, term=term
+            )
+        )
+
+    def modify_filter(
+        self,
+        filter_id: EntityID,
+        *,
+        comment: Optional[str] = None,
+        name: Optional[str] = None,
+        term: Optional[str] = None,
+        filter_type: Optional[FilterType] = None,  # type: ignore[override]
+    ) -> T:
+        """Modifies an existing filter.
+
+        Args:
+            filter_id: UUID of the filter to be modified
+            comment: Comment on filter.
+            name: Name of filter.
+            term: Filter term.
+            filter_type: Resource type filter applies to.
+        """
+        # override create_filter because of the different FilterType enum
+        # this avoids warnings with type checkers
+        return self._send_and_transform_command(
+            Filters.modify_filter(
+                filter_id,
+                comment=comment,
+                name=name,
+                term=term,
+                filter_type=filter_type,
             )
         )
