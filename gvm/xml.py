@@ -123,6 +123,15 @@ class XmlCommandElement:
 
         return self
 
+    def set_text(self, text: Optional[str]) -> "XmlCommandElement":
+        """Set the text of the element.
+
+        Args:
+            text: Text to be set on the element. None to remove the text.
+        """
+        self._element.text = text
+        return self
+
     def append_xml_str(self, xml_text: str) -> None:
         """Append a xml element in string format."""
         node = parse_xml(xml_text)
