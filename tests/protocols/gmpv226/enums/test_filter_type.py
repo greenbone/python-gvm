@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023-2024 Greenbone AG
+# SPDX-FileCopyrightText: 2025 Greenbone AG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -125,6 +125,14 @@ class GetFilterTypeFomStringTestCase(unittest.TestCase):
     def test_filter_type_os(self):
         ft = FilterType.from_string("os")
         self.assertEqual(ft, FilterType.OPERATING_SYSTEM)
+
+    def test_filter_type_report_config(self):
+        ft = FilterType.from_string("report_config")
+        self.assertEqual(ft, FilterType.REPORT_CONFIG)
+
+    def test_filter_type_audit_report(self):
+        ft = FilterType.from_string("audit_report")
+        self.assertEqual(ft, FilterType.AUDIT_REPORT)
 
     def test_invalid_filter_type(self):
         with self.assertRaises(InvalidArgument):

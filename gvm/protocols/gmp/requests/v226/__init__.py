@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2018-2025 Greenbone AG
+# SPDX-FileCopyrightText: 2025 Greenbone AG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -28,8 +28,6 @@ from ..v225 import (
     EntityType,
     Feed,
     FeedType,
-    Filters,
-    FilterType,
     Groups,
     Help,
     HelpFormat,
@@ -72,6 +70,7 @@ from ..v225 import (
     Vulnerabilities,
 )
 from ._audit_reports import AuditReports
+from ._filters import Filters, FilterType
 from ._reports import Reports
 from ._resource_names import ResourceNames, ResourceType
 
