@@ -11,28 +11,28 @@ from ...gmpv224.entities.roles import (
     GmpGetRoleTestMixin,
     GmpModifyRoleTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225DeleteRoleTestCase(GmpDeleteRoleTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteRoleTestCase(GmpDeleteRoleTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetRoleTestCase(GmpGetRoleTestMixin, Gmpv225TestCase):
+class Gmpv225GetRoleTestCase(GmpGetRoleTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetRolesTestCase(GmpGetRolesTestMixin, Gmpv225TestCase):
+class Gmpv225GetRolesTestCase(GmpGetRolesTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CloneRoleTestCase(GmpCloneRoleTestMixin, Gmpv225TestCase):
+class Gmpv225CloneRoleTestCase(GmpCloneRoleTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateRoleTestCase(GmpCreateRoleTestMixin, Gmpv225TestCase):
+class Gmpv225CreateRoleTestCase(GmpCreateRoleTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyRoleTestCase(GmpModifyRoleTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyRoleTestCase(GmpModifyRoleTestMixin, GMPTestCase):
     pass

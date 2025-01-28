@@ -14,40 +14,40 @@ from ...gmpv224.entities.audits import (
     GmpStartAuditTestMixin,
     GmpStopAuditTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225CloneAuditTestCase(GmpCloneAuditTestMixin, Gmpv225TestCase):
+class Gmpv225CloneAuditTestCase(GmpCloneAuditTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateAuditTestCase(GmpCreateAuditTestMixin, Gmpv225TestCase):
+class Gmpv225CreateAuditTestCase(GmpCreateAuditTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225DeleteAuditTestCase(GmpDeleteAuditTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteAuditTestCase(GmpDeleteAuditTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetAuditTestCase(GmpGetAuditTestMixin, Gmpv225TestCase):
+class Gmpv225GetAuditTestCase(GmpGetAuditTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetAuditsTestCase(GmpGetAuditsTestMixin, Gmpv225TestCase):
+class Gmpv225GetAuditsTestCase(GmpGetAuditsTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyAuditTestCase(GmpModifyAuditTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyAuditTestCase(GmpModifyAuditTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ResumeAuditTestCase(GmpResumeAuditTestMixin, Gmpv225TestCase):
+class Gmpv225ResumeAuditTestCase(GmpResumeAuditTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225StartAuditTestCase(GmpStartAuditTestMixin, Gmpv225TestCase):
+class Gmpv225StartAuditTestCase(GmpStartAuditTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225StopAuditTestCase(GmpStopAuditTestMixin, Gmpv225TestCase):
+class Gmpv225StopAuditTestCase(GmpStopAuditTestMixin, GMPTestCase):
     pass

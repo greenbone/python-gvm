@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from . import Gmpv225TestCase
+from . import GMPTestCase
 
 
 class GmpWithStatementTestMixin:
@@ -18,5 +18,5 @@ class GmpWithStatementTestMixin:
         self.connection.disconnect.has_been_called()
 
 
-class Gmpv225WithStatementTestCase(GmpWithStatementTestMixin, Gmpv225TestCase):
+class Gmpv225WithStatementTestCase(GmpWithStatementTestMixin, GMPTestCase):
     pass

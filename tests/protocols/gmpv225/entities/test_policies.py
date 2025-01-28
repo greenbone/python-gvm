@@ -17,64 +17,64 @@ from ...gmpv224.entities.policies import (
     GmpModifyPolicySetNvtSelectionTestMixin,
     GmpModifyPolicySetScannerPreferenceTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225ClonePolicyTestCase(GmpClonePolicyTestMixin, Gmpv225TestCase):
+class Gmpv225ClonePolicyTestCase(GmpClonePolicyTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreatePolicyTestCase(GmpCreatePolicyTestMixin, Gmpv225TestCase):
+class Gmpv225CreatePolicyTestCase(GmpCreatePolicyTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225DeletePolicyTestCase(GmpDeletePolicyTestMixin, Gmpv225TestCase):
+class Gmpv225DeletePolicyTestCase(GmpDeletePolicyTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetPolicyTestCase(GmpGetPolicyTestMixin, Gmpv225TestCase):
+class Gmpv225GetPolicyTestCase(GmpGetPolicyTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetPoliciesTestCase(GmpGetPoliciesTestMixin, Gmpv225TestCase):
+class Gmpv225GetPoliciesTestCase(GmpGetPoliciesTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ImportPolicyTestCase(GmpImportPolicyTestMixin, Gmpv225TestCase):
+class Gmpv225ImportPolicyTestCase(GmpImportPolicyTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225ModifyPolicySetCommentTestCase(
-    GmpModifyPolicySetCommentTestMixin, Gmpv225TestCase
+    GmpModifyPolicySetCommentTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyPolicySetFamilySelectionTestCase(
-    GmpModifyPolicySetFamilySelectionTestMixin, Gmpv225TestCase
+    GmpModifyPolicySetFamilySelectionTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyPolicySetNvtSelectionTestCase(
-    GmpModifyPolicySetNvtSelectionTestMixin, Gmpv225TestCase
+    GmpModifyPolicySetNvtSelectionTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyPolicySetNameTestCase(
-    GmpModifyPolicySetNameTestMixin, Gmpv225TestCase
+    GmpModifyPolicySetNameTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyPolicySetNvtPreferenceTestCase(
-    GmpModifyPolicySetNvtPreferenceTestMixin, Gmpv225TestCase
+    GmpModifyPolicySetNvtPreferenceTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyPolicySetScannerPreferenceTestCase(
-    GmpModifyPolicySetScannerPreferenceTestMixin, Gmpv225TestCase
+    GmpModifyPolicySetScannerPreferenceTestMixin, GMPTestCase
 ):
     pass

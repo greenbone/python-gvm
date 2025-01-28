@@ -13,36 +13,36 @@ from ...gmpv224.entities.alerts import (
     GmpTestAlertTestMixin,
     GmpTriggerAlertTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225CloneAlertTestCase(GmpCloneAlertTestMixin, Gmpv225TestCase):
+class Gmpv225CloneAlertTestCase(GmpCloneAlertTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateAlertTestCase(GmpCreateAlertTestMixin, Gmpv225TestCase):
+class Gmpv225CreateAlertTestCase(GmpCreateAlertTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225DeleteAlertTestCase(GmpDeleteAlertTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteAlertTestCase(GmpDeleteAlertTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetAlertTestCase(GmpGetAlertTestMixin, Gmpv225TestCase):
+class Gmpv225GetAlertTestCase(GmpGetAlertTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetAlertsTestCase(GmpGetAlertsTestMixin, Gmpv225TestCase):
+class Gmpv225GetAlertsTestCase(GmpGetAlertsTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyAlertTestCase(GmpModifyAlertTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyAlertTestCase(GmpModifyAlertTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225TestAlertTestCase(GmpTestAlertTestMixin, Gmpv225TestCase):
+class Gmpv225TestAlertTestCase(GmpTestAlertTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225TriggerAlertTestCase(GmpTriggerAlertTestMixin, Gmpv225TestCase):
+class Gmpv225TriggerAlertTestCase(GmpTriggerAlertTestMixin, GMPTestCase):
     pass

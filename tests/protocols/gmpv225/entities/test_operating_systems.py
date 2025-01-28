@@ -9,28 +9,28 @@ from ...gmpv224.entities.operating_systems import (
     GmpGetOperatingSystemTestMixin,
     GmpModifyOperatingSystemTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
 class Gmpv225DeleteOperatingSystemTestCase(
-    GmpDeleteOperatingSystemTestMixin, Gmpv225TestCase
+    GmpDeleteOperatingSystemTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225GetOperatingSystemTestCase(
-    GmpGetOperatingSystemTestMixin, Gmpv225TestCase
+    GmpGetOperatingSystemTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225GetOperatingSystemsTestCase(
-    GmpGetOperatingSystemsTestMixin, Gmpv225TestCase
+    GmpGetOperatingSystemsTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyOperatingSystemTestCase(
-    GmpModifyOperatingSystemTestMixin, Gmpv225TestCase
+    GmpModifyOperatingSystemTestMixin, GMPTestCase
 ):
     pass

@@ -11,28 +11,28 @@ from ...gmpv224.entities.tags import (
     GmpGetTagTestMixin,
     GmpModifyTagTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225DeleteTagTestCase(GmpDeleteTagTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteTagTestCase(GmpDeleteTagTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetTagTestCase(GmpGetTagTestMixin, Gmpv225TestCase):
+class Gmpv225GetTagTestCase(GmpGetTagTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetTagsTestCase(GmpGetTagsTestMixin, Gmpv225TestCase):
+class Gmpv225GetTagsTestCase(GmpGetTagsTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CloneTagTestCase(GmpCloneTagTestMixin, Gmpv225TestCase):
+class Gmpv225CloneTagTestCase(GmpCloneTagTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateTagTestCase(GmpCreateTagTestMixin, Gmpv225TestCase):
+class Gmpv225CreateTagTestCase(GmpCreateTagTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyTagTestCase(GmpModifyTagTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyTagTestCase(GmpModifyTagTestMixin, GMPTestCase):
     pass

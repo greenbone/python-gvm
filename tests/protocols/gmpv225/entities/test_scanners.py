@@ -11,28 +11,28 @@ from ...gmpv224.entities.scanners import (
     GmpGetScannerTestMixin,
     GmpModifyScannerTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225DeleteScannerTestCase(GmpDeleteScannerTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteScannerTestCase(GmpDeleteScannerTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetScannerTestCase(GmpGetScannerTestMixin, Gmpv225TestCase):
+class Gmpv225GetScannerTestCase(GmpGetScannerTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetScannersTestCase(GmpGetScannersTestMixin, Gmpv225TestCase):
+class Gmpv225GetScannersTestCase(GmpGetScannersTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CloneScannerTestCase(GmpCloneScannerTestMixin, Gmpv225TestCase):
+class Gmpv225CloneScannerTestCase(GmpCloneScannerTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateScannerTestCase(GmpCreateScannerTestMixin, Gmpv225TestCase):
+class Gmpv225CreateScannerTestCase(GmpCreateScannerTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyScannerTestCase(GmpModifyScannerTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyScannerTestCase(GmpModifyScannerTestMixin, GMPTestCase):
     pass

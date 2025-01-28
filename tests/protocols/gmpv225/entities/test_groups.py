@@ -11,28 +11,28 @@ from ...gmpv224.entities.groups import (
     GmpGetGroupTestMixin,
     GmpModifyGroupTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225DeleteGroupTestCase(GmpDeleteGroupTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteGroupTestCase(GmpDeleteGroupTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetGroupTestCase(GmpGetGroupTestMixin, Gmpv225TestCase):
+class Gmpv225GetGroupTestCase(GmpGetGroupTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetGroupsTestCase(GmpGetGroupsTestMixin, Gmpv225TestCase):
+class Gmpv225GetGroupsTestCase(GmpGetGroupsTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CloneGroupTestCase(GmpCloneGroupTestMixin, Gmpv225TestCase):
+class Gmpv225CloneGroupTestCase(GmpCloneGroupTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateGroupTestCase(GmpCreateGroupTestMixin, Gmpv225TestCase):
+class Gmpv225CreateGroupTestCase(GmpCreateGroupTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyGroupTestCase(GmpModifyGroupTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyGroupTestCase(GmpModifyGroupTestMixin, GMPTestCase):
     pass

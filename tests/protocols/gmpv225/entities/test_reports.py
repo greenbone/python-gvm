@@ -9,20 +9,20 @@ from ...gmpv224.entities.reports import (
     GmpGetReportTestMixin,
     GmpImportReportTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225DeleteReportTestCase(GmpDeleteReportTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteReportTestCase(GmpDeleteReportTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetReportTestCase(GmpGetReportTestMixin, Gmpv225TestCase):
+class Gmpv225GetReportTestCase(GmpGetReportTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetReportsTestCase(GmpGetReportsTestMixin, Gmpv225TestCase):
+class Gmpv225GetReportsTestCase(GmpGetReportsTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ImportReportTestCase(GmpImportReportTestMixin, Gmpv225TestCase):
+class Gmpv225ImportReportTestCase(GmpImportReportTestMixin, GMPTestCase):
     pass

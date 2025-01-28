@@ -17,74 +17,70 @@ from ...gmpv224.entities.scan_configs import (
     GmpModifyScanConfigSetNvtSelectionTestMixin,
     GmpModifyScanConfigSetScannerPreferenceTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225CloneScanConfigTestCase(
-    GmpCloneScanConfigTestMixin, Gmpv225TestCase
-):
+class Gmpv225CloneScanConfigTestCase(GmpCloneScanConfigTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225CreateScanConfigTestCase(
-    GmpCreateScanConfigTestMixin, Gmpv225TestCase
+    GmpCreateScanConfigTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225DeleteScanConfigTestCase(
-    GmpDeleteScanConfigTestMixin, Gmpv225TestCase
+    GmpDeleteScanConfigTestMixin, GMPTestCase
 ):
     pass
 
 
-class Gmpv225GetScanConfigTestCase(GmpGetScanConfigTestMixin, Gmpv225TestCase):
+class Gmpv225GetScanConfigTestCase(GmpGetScanConfigTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetScanConfigsTestCase(
-    GmpGetScanConfigsTestMixin, Gmpv225TestCase
-):
+class Gmpv225GetScanConfigsTestCase(GmpGetScanConfigsTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225ImportScanConfigTestCase(
-    GmpImportScanConfigTestMixin, Gmpv225TestCase
+    GmpImportScanConfigTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyScanConfigSetCommentTestCase(
-    GmpModifyScanConfigSetCommentTestMixin, Gmpv225TestCase
+    GmpModifyScanConfigSetCommentTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyScanConfigSetFamilySelectionTestCase(
-    GmpModifyScanConfigSetFamilySelectionTestMixin, Gmpv225TestCase
+    GmpModifyScanConfigSetFamilySelectionTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyScanConfigSetNvtSelectionTestCase(
-    GmpModifyScanConfigSetNvtSelectionTestMixin, Gmpv225TestCase
+    GmpModifyScanConfigSetNvtSelectionTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyScanConfigSetNameTestCase(
-    GmpModifyScanConfigSetNameTestMixin, Gmpv225TestCase
+    GmpModifyScanConfigSetNameTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyScanConfigSetNvtPreferenceTestCase(
-    GmpModifyScanConfigSetNvtPreferenceTestMixin, Gmpv225TestCase
+    GmpModifyScanConfigSetNvtPreferenceTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225ModifyScanConfigSetScannerPreferenceTestCase(
-    GmpModifyScanConfigSetScannerPreferenceTestMixin, Gmpv225TestCase
+    GmpModifyScanConfigSetScannerPreferenceTestMixin, GMPTestCase
 ):
     pass

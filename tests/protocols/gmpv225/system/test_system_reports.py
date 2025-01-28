@@ -4,10 +4,10 @@
 #
 
 from ...gmpv224.system.system_reports import GmpGetSystemReportsTestMixin
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
 class Gmpv225GetSystemReportsTestCase(
-    GmpGetSystemReportsTestMixin, Gmpv225TestCase
+    GmpGetSystemReportsTestMixin, GMPTestCase
 ):
     pass

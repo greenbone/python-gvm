@@ -11,34 +11,28 @@ from ...gmpv224.entities.overrides import (
     GmpGetOverrideTestMixin,
     GmpModifyOverrideTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225CloneOverrideTestCase(GmpCloneOverrideTestMixin, Gmpv225TestCase):
+class Gmpv225CloneOverrideTestCase(GmpCloneOverrideTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225CreateOverrideTestCase(
-    GmpCreateOverrideTestMixin, Gmpv225TestCase
-):
+class Gmpv225CreateOverrideTestCase(GmpCreateOverrideTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225DeleteOverrideTestCase(
-    GmpDeleteOverrideTestMixin, Gmpv225TestCase
-):
+class Gmpv225DeleteOverrideTestCase(GmpDeleteOverrideTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetOverrideTestCase(GmpGetOverrideTestMixin, Gmpv225TestCase):
+class Gmpv225GetOverrideTestCase(GmpGetOverrideTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetOverridesTestCase(GmpGetOverridesTestMixin, Gmpv225TestCase):
+class Gmpv225GetOverridesTestCase(GmpGetOverridesTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyOverrideTestCase(
-    GmpModifyOverrideTestMixin, Gmpv225TestCase
-):
+class Gmpv225ModifyOverrideTestCase(GmpModifyOverrideTestMixin, GMPTestCase):
     pass

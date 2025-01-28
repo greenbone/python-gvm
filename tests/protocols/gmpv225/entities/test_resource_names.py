@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 from .resourcenames import (
     GmpGetResourceNamesListTestMixin,
     GmpGetResourceNameTestMixin,
@@ -11,12 +11,10 @@ from .resourcenames import (
 
 
 class Gmpv225GetResourceNamesListTestCase(
-    GmpGetResourceNamesListTestMixin, Gmpv225TestCase
+    GmpGetResourceNamesListTestMixin, GMPTestCase
 ):
     pass
 
 
-class Gmpv225GetResourceNameTestCase(
-    GmpGetResourceNameTestMixin, Gmpv225TestCase
-):
+class Gmpv225GetResourceNameTestCase(GmpGetResourceNameTestMixin, GMPTestCase):
     pass

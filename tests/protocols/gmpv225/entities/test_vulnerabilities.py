@@ -7,16 +7,16 @@ from ...gmpv224.entities.vulnerabilities import (
     GmpGetVulnerabilitiesTestMixin,
     GmpGetVulnerabilityTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
 class Gmpv225GetVulnerabilityTestCase(
-    GmpGetVulnerabilityTestMixin, Gmpv225TestCase
+    GmpGetVulnerabilityTestMixin, GMPTestCase
 ):
     pass
 
 
 class Gmpv225GetVulnerabilitiesTestCase(
-    GmpGetVulnerabilitiesTestMixin, Gmpv225TestCase
+    GmpGetVulnerabilitiesTestMixin, GMPTestCase
 ):
     pass

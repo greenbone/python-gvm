@@ -16,50 +16,50 @@ from ...gmpv224.entities.tasks import (
     GmpStartTaskTestMixin,
     GmpStopTaskTestMixin,
 )
-from ...gmpv225 import Gmpv225TestCase
+from ...gmpv225 import GMPTestCase
 
 
-class Gmpv225CloneTaskTestCase(GmpCloneTaskTestMixin, Gmpv225TestCase):
+class Gmpv225CloneTaskTestCase(GmpCloneTaskTestMixin, GMPTestCase):
     pass
 
 
 class Gmpv225CreateContainerTaskTestCase(
-    GmpCreateContainerTaskTestMixin, Gmpv225TestCase
+    GmpCreateContainerTaskTestMixin, GMPTestCase
 ):
     pass
 
 
-class Gmpv225CreateTaskTestCase(GmpCreateTaskTestMixin, Gmpv225TestCase):
+class Gmpv225CreateTaskTestCase(GmpCreateTaskTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225DeleteTaskTestCase(GmpDeleteTaskTestMixin, Gmpv225TestCase):
+class Gmpv225DeleteTaskTestCase(GmpDeleteTaskTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetTaskTestCase(GmpGetTaskTestMixin, Gmpv225TestCase):
+class Gmpv225GetTaskTestCase(GmpGetTaskTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225GetTasksTestCase(GmpGetTasksTestMixin, Gmpv225TestCase):
+class Gmpv225GetTasksTestCase(GmpGetTasksTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ModifyTaskTestCase(GmpModifyTaskTestMixin, Gmpv225TestCase):
+class Gmpv225ModifyTaskTestCase(GmpModifyTaskTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225MoveTaskTestCase(GmpMoveTaskTestMixin, Gmpv225TestCase):
+class Gmpv225MoveTaskTestCase(GmpMoveTaskTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225ResumeTaskTestCase(GmpResumeTaskTestMixin, Gmpv225TestCase):
+class Gmpv225ResumeTaskTestCase(GmpResumeTaskTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225StartTaskTestCase(GmpStartTaskTestMixin, Gmpv225TestCase):
+class Gmpv225StartTaskTestCase(GmpStartTaskTestMixin, GMPTestCase):
     pass
 
 
-class Gmpv225StopTaskTestCase(GmpStopTaskTestMixin, Gmpv225TestCase):
+class Gmpv225StopTaskTestCase(GmpStopTaskTestMixin, GMPTestCase):
     pass
