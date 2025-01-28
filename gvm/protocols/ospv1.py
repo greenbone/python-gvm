@@ -8,6 +8,7 @@ Module for communication to a daemon speaking `Open Scanner Protocol version 1`_
 .. _Open Scanner Protocol version 1:
     https://docs.greenbone.net/API/OSP/osp-20.08.html
 """
+
 import logging
 from typing import Any, Optional
 
@@ -78,9 +79,9 @@ class Osp(GvmProtocol[T]):
         """
         return PROTOCOL_VERSION
 
-    def _send_command(self, cmd: Request) -> Response:
+    def _send_request(self, cmd: Request) -> Response:
         try:
-            return super()._send_command(cmd)
+            return super()._send_request(cmd)
         finally:
             # OSP is stateless. Therefore the connection is closed after each
             # response and we must reset the connection
@@ -89,12 +90,12 @@ class Osp(GvmProtocol[T]):
     def get_version(self) -> T:
         """Get the version of the OSPD server which is connected to."""
         cmd = XmlCommand("get_version")
-        return self._send_and_transform_command(cmd)
+        return self._send_request_and_transform_response(cmd)
 
     def help(self) -> T:
         """Get the help text."""
         cmd = XmlCommand("help")
-        return self._send_and_transform_command(cmd)
+        return self._send_request_and_transform_response(cmd)
 
     def get_scans(
         self,
@@ -118,7 +119,7 @@ class Osp(GvmProtocol[T]):
         cmd.set_attribute("details", to_bool(details))
         cmd.set_attribute("pop_results", to_bool(pop_results))
 
-        return self._send_and_transform_command(cmd)
+        return self._send_request_and_transform_response(cmd)
 
     def delete_scan(self, scan_id: str) -> T:
         """Delete a finished scan.
@@ -132,12 +133,12 @@ class Osp(GvmProtocol[T]):
         cmd = XmlCommand("delete_scan")
         cmd.set_attribute("scan_id", scan_id)
 
-        return self._send_and_transform_command(cmd)
+        return self._send_request_and_transform_response(cmd)
 
     def get_scanner_details(self) -> T:
         """Return scanner description and parameters."""
         cmd = XmlCommand("get_scanner_details")
-        return self._send_and_transform_command(cmd)
+        return self._send_request_and_transform_response(cmd)
 
     def get_vts(self, vt_id: Optional[str] = None) -> T:
         """Return information about vulnerability tests,
@@ -150,7 +151,7 @@ class Osp(GvmProtocol[T]):
         if vt_id:
             cmd.set_attribute("vt_id", vt_id)
 
-        return self._send_and_transform_command(cmd)
+        return self._send_request_and_transform_response(cmd)
 
     def start_scan(
         self,
@@ -250,7 +251,7 @@ class Osp(GvmProtocol[T]):
                 cmd.add_element("vt_selection"), vt_selection
             )
 
-        return self._send_and_transform_command(cmd)
+        return self._send_request_and_transform_response(cmd)
 
     def stop_scan(self, scan_id: str) -> T:
         """Stop a currently running scan.
@@ -266,4 +267,4 @@ class Osp(GvmProtocol[T]):
         cmd = XmlCommand("stop_scan")
         cmd.set_attribute("scan_id", scan_id)
 
-        return self._send_and_transform_command(cmd)
+        return self._send_request_and_transform_response(cmd)
