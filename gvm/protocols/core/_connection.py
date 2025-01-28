@@ -184,7 +184,7 @@ class Connection:
 
         Raises:
             An InvalidStateError if no data can be received currently. For
-            example if not request is send yet.
+            example if no request is send yet.
         """
         return self._state.receive_data(data)
 
