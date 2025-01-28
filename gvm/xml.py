@@ -82,6 +82,12 @@ def parse_xml(xml: AnyStr) -> Element:
 
 
 class XmlCommandElement:
+    """
+    Base class for XML commands
+
+    It's used to create XML command requests for the XML based protocols.
+    """
+
     def __init__(self, element: Element):
         self._element = element
 
@@ -97,14 +103,20 @@ class XmlCommandElement:
         return XmlCommandElement(node)
 
     def set_attribute(self, name: str, value: str) -> "XmlCommandElement":
+        """Set an attribute on the element.
+
+        Args:
+            name: Name of the attribute
+            value: Value of the attribute
+        """
         self._element.set(name, value)
         return self
 
     def set_attributes(self, attrs: dict[str, str]) -> "XmlCommandElement":
         """Set several attributes at once.
 
-        Arguments:
-            attrs (dict): Attributes to be set on the element
+        Args:
+            attrs: Attributes to be set on the element
         """
         for key, value in attrs.items():
             self._element.set(key, value)
@@ -116,21 +128,46 @@ class XmlCommandElement:
         node = parse_xml(xml_text)
         self._element.append(node)
 
-    def to_string(self) -> str:
-        return self.to_bytes().decode("utf-8")
+    def to_string(self, *, encoding: str = "utf-8") -> str:
+        """
+        Convert the XML element to a string
+
+        Args:
+            encoding: The encoding to use for the string. Default is 'utf-8'.
+        """
+        return self.to_bytes().decode(encoding)
 
     def to_bytes(self) -> bytes:
+        """
+        Convert the XML element to a bytes object
+        """
         return xml_to_string(self._element)
 
     def __str__(self) -> str:
+        """
+        Convert the XML element to a string using the default encoding.
+        """
         return self.to_string()
 
     def __bytes__(self) -> bytes:
+        """
+        Convert the XML element to a bytes object
+        """
         return self.to_bytes()
 
 
 class XmlCommand(XmlCommandElement):
+    """
+    Class to create XML commands
+    """
+
     def __init__(self, name: str) -> None:
+        """
+        Create a new XML command
+
+        Args:
+            name: The name of the root element of the command.
+        """
         super().__init__(create_element(name))
 
     def add_filter(
@@ -138,6 +175,13 @@ class XmlCommand(XmlCommandElement):
         filter_string: Optional[str],
         filter_id: Optional[Union[str, UUID]],
     ) -> "XmlCommand":
+        """
+        Add a filter to the command.
+
+        Args:
+            filter_string: The filter string to be added.
+            filter_id: The filter ID to be added.
+        """
         if filter_string:
             self.set_attribute("filter", filter_string)
 
