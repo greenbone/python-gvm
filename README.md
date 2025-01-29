@@ -137,8 +137,10 @@ The python-gvm repository uses [autohooks](https://github.com/greenbone/autohook
 to apply linting and auto formatting via git hooks. Please ensure the git hooks
 are active.
 
-    $ poetry install
-    $ poetry run autohooks activate --force
+```shell
+poetry install
+poetry run autohooks activate --force
+```
 
 ## License
 
