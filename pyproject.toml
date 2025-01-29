@@ -63,7 +63,7 @@ exclude = '''
 
 [tool.ruff]
 line-length = 80
-target-version = "py311"
+target-version = "py39"
 
 [tool.ruff.lint]
 extend-select = ["I", "PLE", "PLW"]
