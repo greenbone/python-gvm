@@ -144,6 +144,6 @@ poetry run autohooks activate --force
 
 ## License
 
-Copyright (C) 2017-2024 [Greenbone AG](https://www.greenbone.net/)
+Copyright (C) 2017-2025 [Greenbone AG](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
