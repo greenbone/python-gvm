@@ -63,20 +63,22 @@ Python 3.9 and later is supported.
 You can install the latest stable release of python-gvm from the Python Package
 Index using [pip](https://pip.pypa.io/):
 
-    python3 -m pip install --user python-gvm
+```shell
+python3 -m pip install --user python-gvm
+```
 
 ## Example
 
 ```python3
 from gvm.connections import UnixSocketConnection
-from gvm.protocols.gmp import Gmp
+from gvm.protocols.gmp import GMP
 from gvm.transforms import EtreeTransform
 from gvm.xml import pretty_print
 
 connection = UnixSocketConnection()
 transform = EtreeTransform()
 
-with Gmp(connection, transform=transform) as gmp:
+with GMP(connection, transform=transform) as gmp:
     # Retrieve GMP version supported by the remote daemon
     version = gmp.get_version()
 
