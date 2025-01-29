@@ -37,9 +37,12 @@ Please always take a look at the documentation for further details. This
 
 ### Version
 
-Please consider to always use the **newest** version of `gvm-tools` and `python-gvm`.
-We frequently update this projects to add features and keep them free from bugs.
-This is why installing `python-gvm` using pip is recommended.
+`python-gvm` uses [semantic versioning](https://semver.org/).
+
+Versions prior to 26.0.0 used [calendar versioning](https://calver.org/).
+
+Please consider to always use the **newest** releases of `gvm-tools` and `python-gvm`.
+We frequently update these projects to add features and keep them free from bugs.
 
 > [!IMPORTANT]
 > To use `python-gvm` with GMP version of 7, 8 or 9 you must use a release version
