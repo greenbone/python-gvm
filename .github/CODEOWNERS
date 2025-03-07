@@ -1,7 +1,7 @@
 # default reviewers
-*                 @greenbone/python-gvm-maintainers
+*                 @greenbone/gea
 
 # dev ops
-.github/          @greenbone/devops @greenbone/python-gvm-maintainers
-pyproject.toml    @greenbone/devops @greenbone/python-gvm-maintainers
-poetry.lock       @greenbone/devops @greenbone/python-gvm-maintainers
+.github/          @greenbone/devops @greenbone/gea
+pyproject.toml    @greenbone/devops @greenbone/gea
+poetry.lock       @greenbone/devops @greenbone/gea
