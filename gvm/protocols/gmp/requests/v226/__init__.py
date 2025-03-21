@@ -48,8 +48,6 @@ from ..v225 import (
     Results,
     Roles,
     ScanConfigs,
-    Scanners,
-    ScannerType,
     Schedules,
     SecInfo,
     Severity,
@@ -71,6 +69,7 @@ from ..v225 import (
 )
 from ._audit_reports import AuditReports
 from ._filters import Filters, FilterType
+from ._scanners import Scanners, ScannerType
 from ._report_configs import ReportConfigParameter, ReportConfigs
 from ._reports import Reports
 from ._resource_names import ResourceNames, ResourceType
