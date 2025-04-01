@@ -47,3 +47,10 @@ class GetScannerTypeFromStringTestCase(unittest.TestCase):
 
         ct = ScannerType.from_string("greenbone")
         self.assertEqual(ct, ScannerType.GREENBONE_SENSOR_SCANNER_TYPE)
+
+    def test_openvasd_scanner(self):
+        ct = ScannerType.from_string("6")
+        self.assertEqual(ct, ScannerType.OPENVASD_SCANNER_TYPE)
+
+        ct = ScannerType.from_string("openvasd")
+        self.assertEqual(ct, ScannerType.OPENVASD_SCANNER_TYPE)
