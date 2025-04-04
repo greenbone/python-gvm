@@ -20,7 +20,7 @@ def new_mock_empty_response(
     if status is None:
         status = int(HTTPStatus.NO_CONTENT)
     if headers is None:
-        headers = []
+        headers = {}
     content_type = ContentType.from_string(None)
     return HttpResponse(
         body=None, status=status, headers=headers, content_type=content_type
@@ -126,7 +126,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         # minimal scan
         response = api.create_scan(
             {"hosts": "somehost"},
-            ["some_vt", "another_vt"],
+            [{"oid": "some_vt"}, {"oid": "another_vt"}],
         )
         mock_connector.post_json.assert_called_once_with(
             "/scans",
@@ -142,7 +142,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         mock_connector.post_json.reset_mock()
         response = api.create_scan(
             {"hosts": "somehost"},
-            ["some_vt", "another_vt"],
+            [{"oid": "some_vt"}, {"oid": "another_vt"}],
             {"my_scanner_param": "abc"},
         )
         mock_connector.post_json.assert_called_once_with(

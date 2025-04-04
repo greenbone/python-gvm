@@ -7,7 +7,7 @@ openvasd HTTP API version 1
 """
 
 import urllib.parse
-from typing import Any, Optional
+from typing import Any, Optional, Union
 
 from gvm.errors import InvalidArgumentType
 from gvm.http.core._api import GvmHttpApi
@@ -150,7 +150,7 @@ class OpenvasdHttpApiV1(GvmHttpApi):
     def create_scan(
         self,
         target: dict[str, Any],
-        vt_selection: dict[str, Any],
+        vt_selection: list[dict[str, Any]],
         scanner_params: Optional[dict[str, Any]] = None,
         *,
         raise_for_status: bool = False,
@@ -288,7 +288,7 @@ class OpenvasdHttpApiV1(GvmHttpApi):
     def get_scan_result(
         self,
         scan_id: str,
-        result_id: str | int,
+        result_id: Union[str, int],
         *,
         raise_for_status: bool = False,
     ) -> HttpResponse:
