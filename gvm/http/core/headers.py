@@ -7,7 +7,10 @@ Module for handling special HTTP headers
 """
 
 from dataclasses import dataclass
-from typing import Dict, Optional, Self
+from typing import Dict, Optional, TypeVar
+
+
+Self = TypeVar("Self", bound="ContentType")
 
 
 @dataclass
