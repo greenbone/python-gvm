@@ -12,6 +12,7 @@ from gvm.http.core.response import HttpResponse
 
 class HttpResponseFromRequestsLibTestCase(unittest.TestCase):
     def test_from_empty_response(self):
+        # pylint: disable=protected-access
         requests_response = requests_lib.Response()
         requests_response.status_code = int(HTTPStatus.OK)
         requests_response._content = b""
@@ -23,6 +24,7 @@ class HttpResponseFromRequestsLibTestCase(unittest.TestCase):
         self.assertEqual({}, response.headers)
 
     def test_from_plain_text_response(self):
+        # pylint: disable=protected-access
         requests_response = requests_lib.Response()
         requests_response.status_code = int(HTTPStatus.OK)
         requests_response.headers.update({"content-type": "text/plain"})
@@ -35,6 +37,7 @@ class HttpResponseFromRequestsLibTestCase(unittest.TestCase):
         self.assertEqual({"content-type": "text/plain"}, response.headers)
 
     def test_from_json_response(self):
+        # pylint: disable=protected-access
         test_content = {"foo": ["bar", 12345], "baz": True}
         requests_response = requests_lib.Response()
         requests_response.status_code = int(HTTPStatus.OK)
@@ -48,6 +51,7 @@ class HttpResponseFromRequestsLibTestCase(unittest.TestCase):
         self.assertEqual({"content-type": "application/json"}, response.headers)
 
     def test_from_error_json_response(self):
+        # pylint: disable=protected-access
         test_content = {"error": "Internal server error"}
         requests_response = requests_lib.Response()
         requests_response.status_code = int(HTTPStatus.INTERNAL_SERVER_ERROR)
