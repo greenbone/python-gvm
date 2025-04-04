@@ -132,7 +132,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
             "/scans",
             {
                 "target": {"hosts": "somehost"},
-                "vts": ["some_vt", "another_vt"],
+                "vts": [{"oid": "some_vt"}, {"oid": "another_vt"}],
             },
             raise_for_status=False,
         )
@@ -149,7 +149,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
             "/scans",
             {
                 "target": {"hosts": "somehost"},
-                "vts": ["some_vt", "another_vt"],
+                "vts": [{"oid": "some_vt"}, {"oid": "another_vt"}],
                 "scan_preferences": {"my_scanner_param": "abc"},
             },
             raise_for_status=False,
