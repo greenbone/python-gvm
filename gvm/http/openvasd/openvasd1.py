@@ -44,7 +44,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Gets the "alive" health status of the scanner.
 
         Args:
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /health/alive in the openvasd API documentation.
@@ -60,7 +61,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Gets the "ready" health status of the scanner.
 
         Args:
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /health/ready in the openvasd API documentation.
@@ -76,7 +78,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Gets the "started" health status of the scanner.
 
         Args:
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /health/started in the openvasd API documentation.
@@ -92,7 +95,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Gets the list of operating systems available in Notus.
 
         Args:
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /notus in the openvasd API documentation.
@@ -110,9 +114,11 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Gets the Notus results for a given operating system and list of packages.
 
         Args:
-            os: Name of the operating system as returned in the list returned by get_notus_os_products.
+            os: Name of the operating system as returned in the list returned by
+             get_notus_os_products.
             package_list: List of package names to check.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See POST /notus/{os} in the openvasd API documentation.
@@ -131,7 +137,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Gets the list of available scan preferences.
 
         Args:
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See POST /scans/preferences in the openvasd API documentation.
@@ -157,7 +164,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
             target: The target definition for the scan.
             vt_selection: The VT selection for the scan, including VT preferences.
             scanner_params: The optional scanner parameters.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See POST /scans in the openvasd API documentation.
@@ -180,7 +188,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
 
         Args:
             scan_id: The id of the scan to perform the action on.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See DELETE /scans/{id} in the openvasd API documentation.
@@ -195,7 +204,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Gets the list of available scans.
 
         Args:
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /scans in the openvasd API documentation.
@@ -210,7 +220,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
 
         Args:
             scan_id: The id of the scan to get.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /scans/{id} in the openvasd API documentation.
@@ -235,7 +246,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
             scan_id: The id of the scan to get the results of.
             range_start: Optional index of the first result to get.
             range_end: Optional index of the last result to get.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /scans/{id}/results in the openvasd API documentation.
@@ -286,7 +298,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Args:
             scan_id: The id of the scan to get the results of.
             result_id: The id of the result to get.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /scans/{id}/{rid} in the openvasd API documentation.
@@ -307,7 +320,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
 
         Args:
             scan_id: The id of the scan to get the status of.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /scans/{id}/{rid} in the openvasd API documentation.
@@ -326,7 +340,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Args:
             scan_id: The id of the scan to perform the action on.
             scan_action: The action to perform.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See POST /scans/{id} in the openvasd API documentation.
@@ -347,7 +362,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
 
         Args:
             scan_id: The id of the scan to perform the action on.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See POST /scans/{id} in the openvasd API documentation.
@@ -364,7 +380,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
 
         Args:
             scan_id: The id of the scan to perform the action on.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See POST /scans/{id} in the openvasd API documentation.
@@ -378,7 +395,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Gets a list of available vulnerability tests (VTs) on the scanner.
 
         Args:
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See GET /vts in the openvasd API documentation.
@@ -393,7 +411,8 @@ class OpenvasdHttpApiV1(GvmHttpApi):
 
         Args:
             oid: OID of the VT to get.
-            raise_for_status: Whether to raise an error if scanner responded with a non-success HTTP status code.
+            raise_for_status: Whether to raise an error if scanner responded with a
+             non-success HTTP status code.
 
         Return:
             The HTTP response. See DELETE /scans/{id} in the openvasd API documentation.
