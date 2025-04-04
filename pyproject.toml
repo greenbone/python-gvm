@@ -33,7 +33,6 @@ python = "^3.9.2"
 paramiko = ">=2.7.1"
 lxml = ">=4.5.0"
 requests = "^2.32.3"
-types-requests = "^2.32.0.20250328"
 
 [tool.poetry.group.dev.dependencies]
 coverage = ">=7.2"
