@@ -18,6 +18,7 @@ class HttpResponse:
     """
     Class representing an HTTP response.
     """
+
     body: Any
     "The body of the response"
 
@@ -45,13 +46,13 @@ class HttpResponse:
             If the content-type header in the response is set to 'application/json'.
             A non-empty body will be parsed accordingly.
         """
-        ct = ContentType.from_string(r.headers.get('content-type'))
+        ct = ContentType.from_string(r.headers.get("content-type"))
         body = r.content
 
-        if r.content == b'':
+        if r.content == b"":
             body = None
         elif ct is not None:
-            if ct.media_type.lower() == 'application/json':
+            if ct.media_type.lower() == "application/json":
                 body = r.json()
 
         return HttpResponse(body, r.status_code, r.headers, ct)
