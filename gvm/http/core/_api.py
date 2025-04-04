@@ -2,6 +2,10 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+"""
+Base class module for GVM HTTP APIs
+"""
+
 from typing import Optional
 
 from gvm.http.core.connector import HttpApiConnector

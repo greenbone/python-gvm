@@ -5,7 +5,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 
-from gvm.http.core.api import GvmHttpApi
+from gvm.http.core._api import GvmHttpApi
 
 
 class GvmHttpApiTestCase(unittest.TestCase):

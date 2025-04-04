@@ -8,7 +8,7 @@ from typing import Optional, Any
 from unittest.mock import patch, MagicMock, Mock
 from requests.exceptions import HTTPError
 
-from gvm.http.core.connector import HttpApiConnector, url_join
+from gvm.http.core.connector import HttpApiConnector
 import requests as requests_lib
 
 from gvm.http.core.headers import ContentType
@@ -81,27 +81,27 @@ class HttpApiConnectorTestCase(unittest.TestCase):
     def test_url_join(self):
         self.assertEqual(
             "http://localhost/foo/bar/baz",
-            url_join("http://localhost/foo", "bar/baz")
+            HttpApiConnector.url_join("http://localhost/foo", "bar/baz")
         )
         self.assertEqual(
             "http://localhost/foo/bar/baz",
-            url_join("http://localhost/foo/", "bar/baz")
+            HttpApiConnector.url_join("http://localhost/foo/", "bar/baz")
         )
         self.assertEqual(
             "http://localhost/foo/bar/baz",
-            url_join("http://localhost/foo", "./bar/baz")
+            HttpApiConnector.url_join("http://localhost/foo", "./bar/baz")
         )
         self.assertEqual(
             "http://localhost/foo/bar/baz",
-            url_join("http://localhost/foo/", "./bar/baz")
+            HttpApiConnector.url_join("http://localhost/foo/", "./bar/baz")
         )
         self.assertEqual(
             "http://localhost/bar/baz",
-            url_join("http://localhost/foo", "../bar/baz")
+            HttpApiConnector.url_join("http://localhost/foo", "../bar/baz")
         )
         self.assertEqual(
             "http://localhost/bar/baz",
-            url_join("http://localhost/foo", "../bar/baz")
+            HttpApiConnector.url_join("http://localhost/foo", "../bar/baz")
         )
 
     def test_new_session(self):

@@ -2,12 +2,16 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+"""
+openvasd HTTP API version 1
+"""
+
 import urllib.parse
 from typing import Optional, Any
 
 from gvm.errors import InvalidArgumentType
 
-from gvm.http.core.api import GvmHttpApi
+from gvm.http.core._api import GvmHttpApi
 from gvm.http.core.connector import HttpApiConnector
 from gvm.http.core.response import HttpResponse
 
@@ -29,7 +33,6 @@ class OpenvasdHttpApiV1(GvmHttpApi):
         Args:
             connector: The connector handling the HTTP(S) connection
             api_key: Optional API key for authentication
-            default_raise_for_status: whether to raise an exception if HTTP status is not a success
         """
         super().__init__(connector, api_key=api_key)
         if api_key:
