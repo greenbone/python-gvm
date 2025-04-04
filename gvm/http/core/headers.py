@@ -17,9 +17,9 @@ class ContentType:
     """
 
     media_type: str
-    "The MIME media type, e.g. \"application/json\""
+    'The MIME media type, e.g. "application/json"'
 
-    params: Dict[str,str]
+    params: Dict[str, str]
     "Dictionary of parameters in the content type header"
 
     charset: Optional[str]
@@ -29,7 +29,7 @@ class ContentType:
     def from_string(
         cls,
         header_string: str,
-        fallback_media_type: Optional[str] = "application/octet-stream"
+        fallback_media_type: Optional[str] = "application/octet-stream",
     ) -> Self:
         """
         Parse the content of content type header into a ContentType object.
@@ -50,9 +50,11 @@ class ContentType:
                 if "=" in param:
                     key, value = map(lambda x: x.strip(), param.split("=", 1))
                     params[key] = value
-                    if key == 'charset':
+                    if key == "charset":
                         charset = value
                 else:
                     params[param] = True
 
-        return ContentType(media_type=media_type, params=params, charset=charset)
+        return ContentType(
+            media_type=media_type, params=params, charset=charset
+        )

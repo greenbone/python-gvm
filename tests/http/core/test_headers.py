@@ -28,9 +28,13 @@ class ContentTypeTestCase(unittest.TestCase):
         self.assertEqual("utf-32", ct.charset)
 
     def test_from_string_with_param(self):
-        ct = ContentType.from_string("multipart/form-data; boundary===boundary==; charset=utf-32 ")
+        ct = ContentType.from_string(
+            "multipart/form-data; boundary===boundary==; charset=utf-32 "
+        )
         self.assertEqual("multipart/form-data", ct.media_type)
-        self.assertEqual({"boundary": "==boundary==", "charset": "utf-32"}, ct.params)
+        self.assertEqual(
+            {"boundary": "==boundary==", "charset": "utf-32"}, ct.params
+        )
         self.assertEqual("utf-32", ct.charset)
 
     def test_from_string_with_valueless_param(self):

@@ -11,12 +11,12 @@ from gvm.http.core._api import GvmHttpApi
 class GvmHttpApiTestCase(unittest.TestCase):
     # pylint: disable=protected-access
 
-    @patch('gvm.http.core.connector.HttpApiConnector')
+    @patch("gvm.http.core.connector.HttpApiConnector")
     def test_basic_init(self, connector_mock: MagicMock):
         api = GvmHttpApi(connector_mock)
         self.assertEqual(connector_mock, api._connector)
 
-    @patch('gvm.http.core.connector.HttpApiConnector')
+    @patch("gvm.http.core.connector.HttpApiConnector")
     def test_init_with_key(self, connector_mock: MagicMock):
         api = GvmHttpApi(connector_mock, api_key="my-api-key")
         self.assertEqual(connector_mock, api._connector)

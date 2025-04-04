@@ -13,6 +13,7 @@ from requests import Session
 
 from gvm.http.core.response import HttpResponse
 
+
 class HttpApiConnector:
     """
     Class for connecting to HTTP based API servers, sending requests and receiving the responses.
@@ -39,11 +40,11 @@ class HttpApiConnector:
             return urllib.parse.urljoin(base + "/", rel_path)
 
     def __init__(
-            self,
-            base_url: str,
-            *,
-            server_ca_path: Optional[str] = None,
-            client_cert_paths: Optional[str | Tuple[str]] = None,
+        self,
+        base_url: str,
+        *,
+        server_ca_path: Optional[str] = None,
+        client_cert_paths: Optional[str | Tuple[str]] = None,
     ):
         """
         Create a new HTTP API Connector.
@@ -81,8 +82,8 @@ class HttpApiConnector:
         rel_path: str,
         *,
         raise_for_status: bool = True,
-        params: Optional[Dict[str,str]] = None,
-        headers: Optional[Dict[str,str]] = None,
+        params: Optional[Dict[str, str]] = None,
+        headers: Optional[Dict[str, str]] = None,
     ) -> HttpResponse:
         """
         Sends a ``DELETE`` request and returns the response.
@@ -107,8 +108,8 @@ class HttpApiConnector:
         rel_path: str,
         *,
         raise_for_status: bool = True,
-        params: Optional[Dict[str,str]] = None,
-        headers: Optional[Dict[str,str]] = None,
+        params: Optional[Dict[str, str]] = None,
+        headers: Optional[Dict[str, str]] = None,
     ) -> HttpResponse:
         """
         Sends a ``GET`` request and returns the response.
