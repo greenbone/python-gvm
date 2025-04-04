@@ -31,8 +31,8 @@ class HttpApiConnector:
         """
         Combines a base URL and a relative path into one URL.
 
-        Unlike `urrlib.parse.urljoin` the base path will always be the parent of the relative path as if it
-        ends with "/".
+        Unlike `urrlib.parse.urljoin` the base path will always be the parent of the
+         relative path as if it ends with "/".
         """
         if base.endswith("/"):
             return urllib.parse.urljoin(base, rel_path)
@@ -50,12 +50,14 @@ class HttpApiConnector:
         Create a new HTTP API Connector.
 
         Args:
-            base_url: The base server URL to which request-specific paths will be appended for the requests
+            base_url: The base server URL to which request-specific paths will be appended
+             for the requests
             server_ca_path: Optional path to a CA certificate for verifying the server.
                 If none is given, server verification is disabled.
-            client_cert_paths: Optional path to a client private key and certificate for authentication.
-                Can be a combined key and certificate file or a tuple containing separate files.
-                The key must not be encrypted.
+            client_cert_paths: Optional path to a client private key and certificate
+             for authentication.
+             Can be a combined key and certificate file or a tuple containing separate files.
+             The key must not be encrypted.
         """
 
         self.base_url = base_url
@@ -90,7 +92,8 @@ class HttpApiConnector:
 
         Args:
             rel_path: The relative path for the request
-            raise_for_status: Whether to raise an error if response has a non-success HTTP status code
+            raise_for_status: Whether to raise an error if response has a
+             non-success HTTP status code
             params: Optional dict of URL-encoded parameters
             headers: Optional additional headers added to the request
 
@@ -116,7 +119,8 @@ class HttpApiConnector:
 
         Args:
             rel_path: The relative path for the request
-            raise_for_status: Whether to raise an error if response has a non-success HTTP status code
+            raise_for_status: Whether to raise an error if response has a
+             non-success HTTP status code
             params: Optional dict of URL-encoded parameters
             headers: Optional additional headers added to the request
 
@@ -139,12 +143,14 @@ class HttpApiConnector:
         headers: Optional[Dict[str, str]] = None,
     ) -> HttpResponse:
         """
-        Sends a ``POST`` request, using the given JSON-compatible object as the request body, and returns the response.
+        Sends a ``POST`` request, using the given JSON-compatible object as the
+         request body, and returns the response.
 
         Args:
             rel_path: The relative path for the request
             json: The object to use as the request body.
-            raise_for_status: Whether to raise an error if response has a non-success HTTP status code
+            raise_for_status: Whether to raise an error if response has a
+             non-success HTTP status code
             params: Optional dict of URL-encoded parameters
             headers: Optional additional headers added to the request
 
