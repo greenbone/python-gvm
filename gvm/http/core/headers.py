@@ -7,7 +7,7 @@ Module for handling special HTTP headers
 """
 
 from dataclasses import dataclass
-from typing import Self, Dict, Optional
+from typing import Dict, Optional, Self
 
 
 @dataclass
@@ -45,8 +45,8 @@ class ContentType:
         if header_string:
             parts = header_string.split(";")
             media_type = parts[0].strip()
-            for param in parts[1:]:
-                param = param.strip()
+            for part in parts[1:]:
+                param = part.strip()
                 if "=" in param:
                     key, value = map(lambda x: x.strip(), param.split("=", 1))
                     params[key] = value

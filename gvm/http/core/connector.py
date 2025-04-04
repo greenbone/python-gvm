@@ -7,7 +7,7 @@ Module for handling GVM HTTP API connections
 """
 
 import urllib.parse
-from typing import Optional, Tuple, Dict, Any
+from typing import Any, Dict, Optional, Tuple
 
 from requests import Session
 
@@ -36,8 +36,8 @@ class HttpApiConnector:
         """
         if base.endswith("/"):
             return urllib.parse.urljoin(base, rel_path)
-        else:
-            return urllib.parse.urljoin(base + "/", rel_path)
+
+        return urllib.parse.urljoin(base + "/", rel_path)
 
     def __init__(
         self,

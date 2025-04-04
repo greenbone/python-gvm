@@ -7,10 +7,9 @@ openvasd HTTP API version 1
 """
 
 import urllib.parse
-from typing import Optional, Any
+from typing import Any, Optional
 
 from gvm.errors import InvalidArgumentType
-
 from gvm.http.core._api import GvmHttpApi
 from gvm.http.core.connector import HttpApiConnector
 from gvm.http.core.response import HttpResponse
