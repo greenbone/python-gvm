@@ -4,15 +4,14 @@
 import json
 import unittest
 from http import HTTPStatus
-from typing import Optional, Any
-from unittest.mock import patch, MagicMock, Mock
+from typing import Any, Optional
+from unittest.mock import MagicMock, Mock, patch
+
+import requests as requests_lib
 from requests.exceptions import HTTPError
 
 from gvm.http.core.connector import HttpApiConnector
-import requests as requests_lib
-
 from gvm.http.core.headers import ContentType
-
 
 TEST_JSON_HEADERS = {
     "content-type": "application/json;charset=utf-8",

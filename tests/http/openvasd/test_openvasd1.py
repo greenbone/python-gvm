@@ -8,7 +8,6 @@ from typing import Optional
 from unittest.mock import Mock, patch
 
 from gvm.errors import InvalidArgumentType
-
 from gvm.http.core.headers import ContentType
 from gvm.http.core.response import HttpResponse
 from gvm.http.openvasd.openvasd1 import OpenvasdHttpApiV1

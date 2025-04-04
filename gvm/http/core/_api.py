@@ -27,8 +27,9 @@ class GvmHttpApi:
             api_key: Optional API key for authentication
         """
 
-        "The connector handling the HTTP(S) connection"
-        self._connector: HttpApiConnector = connector
 
-        "Optional API key for authentication"
+        self._connector: HttpApiConnector = connector
+        "The connector handling the HTTP(S) connection"
+
         self._api_key: Optional[str] = api_key
+        "Optional API key for authentication"

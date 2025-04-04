@@ -7,8 +7,9 @@ Module for abstracting HTTP responses
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict, Self, Optional
-from requests import Request, Response
+from typing import Any, Dict, Optional, Self
+
+from requests import Response
 
 from gvm.http.core.headers import ContentType
 
