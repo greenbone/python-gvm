@@ -9,11 +9,12 @@ import requests as requests_lib
 
 from gvm.http.core.response import HttpResponse
 
+
 class HttpResponseFromRequestsLibTestCase(unittest.TestCase):
     def test_from_empty_response(self):
         requests_response = requests_lib.Response()
         requests_response.status_code = int(HTTPStatus.OK)
-        requests_response._content = b''
+        requests_response._content = b""
 
         response = HttpResponse.from_requests_lib(requests_response)
 
@@ -25,11 +26,11 @@ class HttpResponseFromRequestsLibTestCase(unittest.TestCase):
         requests_response = requests_lib.Response()
         requests_response.status_code = int(HTTPStatus.OK)
         requests_response.headers.update({"content-type": "text/plain"})
-        requests_response._content = b'ABCDEF'
+        requests_response._content = b"ABCDEF"
 
         response = HttpResponse.from_requests_lib(requests_response)
 
-        self.assertEqual(b'ABCDEF', response.body)
+        self.assertEqual(b"ABCDEF", response.body)
         self.assertEqual(int(HTTPStatus.OK), response.status)
         self.assertEqual({"content-type": "text/plain"}, response.headers)
 

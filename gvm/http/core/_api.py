@@ -16,7 +16,9 @@ class GvmHttpApi:
     Base class for HTTP-based GVM APIs.
     """
 
-    def __init__(self, connector: HttpApiConnector, *, api_key: Optional[str] = None):
+    def __init__(
+        self, connector: HttpApiConnector, *, api_key: Optional[str] = None
+    ):
         """
         Create a new generic GVM HTTP API instance.
 
