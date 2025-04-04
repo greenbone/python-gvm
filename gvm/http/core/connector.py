@@ -7,7 +7,7 @@ Module for handling GVM HTTP API connections
 """
 
 import urllib.parse
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Optional, Tuple, Union
 
 from requests import Session
 
@@ -44,7 +44,7 @@ class HttpApiConnector:
         base_url: str,
         *,
         server_ca_path: Optional[str] = None,
-        client_cert_paths: Optional[str | Tuple[str]] = None,
+        client_cert_paths: Optional[Union[str, Tuple[str]]] = None,
     ):
         """
         Create a new HTTP API Connector.

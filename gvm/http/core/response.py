@@ -7,9 +7,10 @@ Module for abstracting HTTP responses
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, TypeVar
+from typing import Any, Dict, Optional, TypeVar, Type, Union
 
 from requests import Response
+from requests.structures import CaseInsensitiveDict
 
 from gvm.http.core.headers import ContentType
 
@@ -29,14 +30,14 @@ class HttpResponse:
     status: int
     "HTTP status code of the response"
 
-    headers: Dict[str, str]
+    headers: Union[Dict[str, str], CaseInsensitiveDict[str]]
     "Dict containing the headers of the response"
 
     content_type: Optional[ContentType]
     "The content type of the response if it was included in the headers"
 
     @classmethod
-    def from_requests_lib(cls, r: Response) -> Self:
+    def from_requests_lib(cls: Type[Self], r: Response) -> "HttpResponse":
         """
         Creates a new HTTP response object from a Request object created by the "Requests" library.
 
