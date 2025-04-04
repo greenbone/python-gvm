@@ -4,7 +4,7 @@
 import json
 import unittest
 from http import HTTPStatus
-from typing import Any, Optional
+from typing import Any, Optional, Union
 from unittest.mock import MagicMock, Mock, patch
 
 import requests as requests_lib
@@ -36,7 +36,7 @@ TEST_JSON_REQUEST_BODY = {"request_number": 5}
 
 
 def new_mock_empty_response(
-    status: Optional[int | HTTPStatus] = None,
+    status: Optional[Union[int, HTTPStatus]] = None,
 ) -> requests_lib.Response:
     # pylint: disable=protected-access
     response = requests_lib.Response()
@@ -50,7 +50,7 @@ def new_mock_empty_response(
 
 def new_mock_json_response(
     content: Optional[Any] = None,
-    status: Optional[int | HTTPStatus] = None,
+    status: Optional[Union[int, HTTPStatus]] = None,
 ) -> requests_lib.Response:
     # pylint: disable=protected-access
     response = requests_lib.Response()

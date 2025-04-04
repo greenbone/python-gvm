@@ -4,7 +4,7 @@
 
 import unittest
 from http import HTTPStatus
-from typing import Optional
+from typing import Optional, Union
 from unittest.mock import Mock, patch
 
 from gvm.errors import InvalidArgumentType
@@ -14,7 +14,7 @@ from gvm.http.openvasd.openvasd1 import OpenvasdHttpApiV1
 
 
 def new_mock_empty_response(
-    status: Optional[int | HTTPStatus] = None,
+    status: Optional[Union[int, HTTPStatus]] = None,
     headers: Optional[dict[str, str]] = None,
 ):
     if status is None:
