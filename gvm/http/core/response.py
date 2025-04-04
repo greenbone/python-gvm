@@ -7,11 +7,14 @@ Module for abstracting HTTP responses
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Self
+from typing import Any, Dict, Optional, TypeVar
 
 from requests import Response
 
 from gvm.http.core.headers import ContentType
+
+
+Self = TypeVar("Self", bound="HttpResponse")
 
 
 @dataclass
