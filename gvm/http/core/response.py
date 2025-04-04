@@ -1,6 +1,11 @@
 # SPDX-FileCopyrightText: 2025 Greenbone AG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
+
+"""
+Module for abstracting HTTP responses
+"""
+
 from dataclasses import dataclass
 from typing import Any, Dict, Self, Optional
 from requests import Request, Response
@@ -14,9 +19,16 @@ class HttpResponse:
     Class representing an HTTP response.
     """
     body: Any
+    "The body of the response"
+
     status: int
+    "HTTP status code of the response"
+
     headers: Dict[str, str]
+    "Dict containing the headers of the response"
+
     content_type: Optional[ContentType]
+    "The content type of the response if it was included in the headers"
 
     @classmethod
     def from_requests_lib(cls, r: Response) -> Self:

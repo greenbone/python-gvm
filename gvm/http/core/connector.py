@@ -2,26 +2,16 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+"""
+Module for handling GVM HTTP API connections
+"""
+
 import urllib.parse
 from typing import Optional, Tuple, Dict, Any
 
 from requests import Session
 
 from gvm.http.core.response import HttpResponse
-
-
-def url_join(base: str, rel_path: str) -> str:
-    """
-    Combines a base URL and a relative path into one URL.
-
-    Unlike `urrlib.parse.urljoin` the base path will always be the parent of the relative path as if it
-    ends with "/".
-    """
-    if base.endswith("/"):
-        return urllib.parse.urljoin(base, rel_path)
-    else:
-        return urllib.parse.urljoin(base + "/", rel_path)
-
 
 class HttpApiConnector:
     """
@@ -34,6 +24,19 @@ class HttpApiConnector:
         Creates a new session
         """
         return Session()
+
+    @classmethod
+    def url_join(cls, base: str, rel_path: str) -> str:
+        """
+        Combines a base URL and a relative path into one URL.
+
+        Unlike `urrlib.parse.urljoin` the base path will always be the parent of the relative path as if it
+        ends with "/".
+        """
+        if base.endswith("/"):
+            return urllib.parse.urljoin(base, rel_path)
+        else:
+            return urllib.parse.urljoin(base + "/", rel_path)
 
     def __init__(
             self,
@@ -93,7 +96,7 @@ class HttpApiConnector:
         Return:
             The HTTP response.
         """
-        url = url_join(self.base_url, rel_path)
+        url = self.url_join(self.base_url, rel_path)
         r = self._session.delete(url, params=params, headers=headers)
         if raise_for_status:
             r.raise_for_status()
@@ -119,7 +122,7 @@ class HttpApiConnector:
         Return:
             The HTTP response.
         """
-        url = url_join(self.base_url, rel_path)
+        url = self.url_join(self.base_url, rel_path)
         r = self._session.get(url, params=params, headers=headers)
         if raise_for_status:
             r.raise_for_status()
@@ -147,7 +150,7 @@ class HttpApiConnector:
         Return:
             The HTTP response.
         """
-        url = url_join(self.base_url, rel_path)
+        url = self.url_join(self.base_url, rel_path)
         r = self._session.post(url, json=json, params=params, headers=headers)
         if raise_for_status:
             r.raise_for_status()
