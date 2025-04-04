@@ -136,6 +136,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
             },
             raise_for_status=False,
         )
+        self.assertEqual(expected_response, response)
 
         # scan with all options
         mock_connector.post_json.reset_mock()
@@ -153,7 +154,6 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
             },
             raise_for_status=False,
         )
-        self.assertEqual(expected_response, response)
         self.assertEqual(expected_response, response)
 
     @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
