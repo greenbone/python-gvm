@@ -134,8 +134,8 @@ class GmpModifyScannerTestMixin:
 
         self.connection.send.has_been_called_with(
             b'<modify_scanner scanner_id="s1">'
-            b'<type>6</type>'
-            b'</modify_scanner>'
+            b"<type>6</type>"
+            b"</modify_scanner>"
         )
 
     def test_modify_scanner_with_relay_host(self):
@@ -146,8 +146,8 @@ class GmpModifyScannerTestMixin:
 
         self.connection.send.has_been_called_with(
             b'<modify_scanner scanner_id="s1">'
-            b'<relay_host>localhost</relay_host>'
-            b'</modify_scanner>'
+            b"<relay_host>localhost</relay_host>"
+            b"</modify_scanner>"
         )
 
     def test_modify_scanner_with_relay_port(self):
@@ -158,6 +158,6 @@ class GmpModifyScannerTestMixin:
 
         self.connection.send.has_been_called_with(
             b'<modify_scanner scanner_id="s1">'
-            b'<relay_port>2345</relay_port>'
-            b'</modify_scanner>'
+            b"<relay_port>2345</relay_port>"
+            b"</modify_scanner>"
         )

@@ -228,7 +228,7 @@ class GmpCreateScannerTestMixin:
             b"<port>1234</port>"
             b"<type>6</type>"
             b'<credential id="c1"/>'
-            b'<relay_host>localhost</relay_host>'
+            b"<relay_host>localhost</relay_host>"
             b"</create_scanner>"
         )
 
@@ -249,6 +249,6 @@ class GmpCreateScannerTestMixin:
             b"<port>1234</port>"
             b"<type>6</type>"
             b'<credential id="c1"/>'
-            b'<relay_port>2345</relay_port>'
+            b"<relay_port>2345</relay_port>"
             b"</create_scanner>"
         )
