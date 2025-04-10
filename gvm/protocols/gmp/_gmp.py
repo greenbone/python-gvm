@@ -15,10 +15,11 @@ from .._protocol import GvmProtocol, T, str_transform
 from ._gmp224 import GMPv224
 from ._gmp225 import GMPv225
 from ._gmp226 import GMPv226
+from ._gmp227 import GMPv227
 from .requests import Version
 
-SUPPORTED_GMP_VERSIONS = Union[GMPv224[T], GMPv225[T], GMPv226[T]]
-_SUPPORTED_GMP_VERSION_STRINGS = ["22.4", "22.5", "22.6"]
+SUPPORTED_GMP_VERSIONS = Union[GMPv224[T], GMPv225[T], GMPv226[T], GMPv227[T]]
+_SUPPORTED_GMP_VERSION_STRINGS = ["22.4", "22.5", "22.6", "22.7"]
 
 
 class GMP(GvmProtocol[T]):
@@ -36,8 +37,9 @@ class GMP(GvmProtocol[T]):
             with GMP(connection) as gmp:
                 # gmp can be an instance of
                 # gvm.protocols.gmp.GMPv224,
-                # gvm.protocols.gmp.GMPv225
-                # or gvm.protocols.gmp.GMPv226
+                # gvm.protocols.gmp.GMPv225,
+                # gvm.protocols.gmp.GMPv226,
+                # or gvm.protocols.gmp.GMPv227
                 # depending on the supported GMP version of the remote manager daemon
                 resp = gmp.get_tasks()
 

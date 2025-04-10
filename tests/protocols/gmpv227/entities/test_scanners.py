@@ -1,9 +1,13 @@
-# SPDX-FileCopyrightText: 2025 Greenbone AG
+#  SPDX-FileCopyrightText: 2025 Greenbone AG
+#
+#  SPDX-License-Identifier: GPL-3.0-or-later
+#
+#  SPDX-License-Identifier: GPL-3.0-or-later
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from tests.protocols.gmpv224.entities.scanners import (
+from tests.protocols.gmpv227.entities.scanners import (
     GmpCloneScannerTestMixin,
     GmpCreateScannerTestMixin,
     GmpDeleteScannerTestMixin,
@@ -11,7 +15,7 @@ from tests.protocols.gmpv224.entities.scanners import (
     GmpGetScannerTestMixin,
     GmpModifyScannerTestMixin,
 )
-from tests.protocols.gmpv226 import GMPTestCase
+from tests.protocols.gmpv227 import GMPTestCase
 
 
 class GMPDeleteScannerTestCase(GmpDeleteScannerTestMixin, GMPTestCase):

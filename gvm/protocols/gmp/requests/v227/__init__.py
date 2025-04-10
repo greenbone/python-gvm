@@ -1,14 +1,14 @@
 # SPDX-FileCopyrightText: 2025 Greenbone AG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
-#
+
 """
-GMP Request implementations for GMP version 22.6.
+GMP Request implementations for GMP version 22.7.
 """
 
 from .._entity_id import EntityID
 from .._version import Version
-from ..v225 import (
+from ..v226 import (
     Aggregates,
     AggregateStatistic,
     AlertCondition,
@@ -16,6 +16,7 @@ from ..v225 import (
     AlertMethod,
     Alerts,
     AliveTest,
+    AuditReports,
     Audits,
     Authentication,
     CertBundAdvisories,
@@ -28,6 +29,8 @@ from ..v225 import (
     EntityType,
     Feed,
     FeedType,
+    Filters,
+    FilterType,
     Groups,
     Help,
     HelpFormat,
@@ -43,12 +46,15 @@ from ..v225 import (
     Policies,
     PortLists,
     PortRangeType,
+    ReportConfigs,
+    ReportConfigParameter,
     ReportFormats,
     ReportFormatType,
+    Reports,
+    ResourceNames,
+    ResourceType,
     Results,
     Roles,
-    ScannerType,
-    Scanners,
     ScanConfigs,
     Schedules,
     SecInfo,
@@ -69,11 +75,8 @@ from ..v225 import (
     UserSettings,
     Vulnerabilities,
 )
-from ._audit_reports import AuditReports
-from ._filters import Filters, FilterType
-from ._report_configs import ReportConfigParameter, ReportConfigs
-from ._reports import Reports
-from ._resource_names import ResourceNames, ResourceType
+
+from gvm.protocols.gmp.requests.v227._scanners import Scanners, ScannerType
 
 __all__ = (
     "Aggregates",
