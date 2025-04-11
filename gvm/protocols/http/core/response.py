@@ -50,7 +50,7 @@ class HttpResponse:
             A non-empty body will be parsed accordingly.
         """
         ct = ContentType.from_string(r.headers.get("content-type"))
-        body = r.content
+        body: Optional[bytes] = r.content
 
         if r.content == b"":
             body = None

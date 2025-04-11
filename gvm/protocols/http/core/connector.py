@@ -23,7 +23,7 @@ class HttpApiConnector:
     def _new_client(
         cls,
         server_ca_path: Optional[str] = None,
-        client_cert_paths: Optional[Union[str, Tuple[str]]] = None,
+        client_cert_paths: Optional[Union[str, Tuple[str, str]]] = None,
     ):
         """
         Creates a new httpx client
@@ -51,7 +51,7 @@ class HttpApiConnector:
         base_url: str,
         *,
         server_ca_path: Optional[str] = None,
-        client_cert_paths: Optional[Union[str, Tuple[str]]] = None,
+        client_cert_paths: Optional[Union[str, Tuple[str, str]]] = None,
     ):
         """
         Create a new HTTP API Connector.
