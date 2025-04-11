@@ -3,7 +3,7 @@
 openvasd v1
 ^^^^^^^^^^^
 
-.. automodule:: gvm.http.openvasd.openvasd1
+.. automodule:: gvm.protocols.http.openvasd.openvasd1
 
 .. autoclass:: OpenvasdHttpApiV1
     :members:

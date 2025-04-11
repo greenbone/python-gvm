@@ -3,7 +3,7 @@
 HTTP APIs
 ---------
 
-.. automodule:: gvm.http
+.. automodule:: gvm.protocols.http
 
 .. toctree::
     :maxdepth: 1

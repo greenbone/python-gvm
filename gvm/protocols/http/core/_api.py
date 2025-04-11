@@ -8,7 +8,7 @@ Base class module for GVM HTTP APIs
 
 from typing import Optional
 
-from gvm.http.core.connector import HttpApiConnector
+from gvm.protocols.http.core.connector import HttpApiConnector
 
 
 class GvmHttpApi:

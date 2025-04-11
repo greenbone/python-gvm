@@ -6,7 +6,7 @@ HTTP core classes
 Connector
 #########
 
-.. automodule:: gvm.http.core.connector
+.. automodule:: gvm.protocols.http.core.connector
 
 .. autoclass:: HttpApiConnector
     :members:
@@ -14,7 +14,7 @@ Connector
 Headers
 #######
 
-.. automodule:: gvm.http.core.headers
+.. automodule:: gvm.protocols.http.core.headers
 
 .. autoclass:: ContentType
     :members:
@@ -22,7 +22,7 @@ Headers
 Response
 ########
 
-.. automodule:: gvm.http.core.response
+.. automodule:: gvm.protocols.http.core.response
 
 .. autoclass:: HttpResponse
     :members:

@@ -11,8 +11,8 @@ from unittest.mock import MagicMock, Mock, patch
 import httpx
 from httpx import HTTPError
 
-from gvm.http.core.connector import HttpApiConnector
-from gvm.http.core.headers import ContentType
+from gvm.protocols.http.core.connector import HttpApiConnector
+from gvm.protocols.http.core import ContentType
 
 TEST_JSON_HEADERS = {
     "content-type": "application/json;charset=utf-8",

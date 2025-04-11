@@ -11,7 +11,7 @@ from typing import Any, MutableMapping, Optional, Type, TypeVar
 
 from httpx import Response
 
-from gvm.http.core.headers import ContentType
+from gvm.protocols.http.core.headers import ContentType
 
 Self = TypeVar("Self", bound="HttpResponse")
 
