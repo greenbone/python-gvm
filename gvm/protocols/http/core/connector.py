@@ -11,7 +11,7 @@ from typing import Any, MutableMapping, Optional, Tuple, Union
 
 from httpx import Client
 
-from gvm.http.core.response import HttpResponse
+from gvm.protocols.http.core.response import HttpResponse
 
 
 class HttpApiConnector:

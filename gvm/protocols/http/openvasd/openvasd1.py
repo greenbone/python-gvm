@@ -10,9 +10,9 @@ import urllib.parse
 from typing import Any, Optional, Union
 
 from gvm.errors import InvalidArgumentType
-from gvm.http.core._api import GvmHttpApi
-from gvm.http.core.connector import HttpApiConnector
-from gvm.http.core.response import HttpResponse
+from gvm.protocols.http.core._api import GvmHttpApi
+from gvm.protocols.http.core.connector import HttpApiConnector
+from gvm.protocols.http.core.response import HttpResponse
 
 
 class OpenvasdHttpApiV1(GvmHttpApi):

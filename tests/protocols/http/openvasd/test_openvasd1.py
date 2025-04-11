@@ -8,9 +8,9 @@ from typing import Optional, Union
 from unittest.mock import Mock, patch
 
 from gvm.errors import InvalidArgumentType
-from gvm.http.core.headers import ContentType
-from gvm.http.core.response import HttpResponse
-from gvm.http.openvasd.openvasd1 import OpenvasdHttpApiV1
+from gvm.protocols.http.core.headers import ContentType
+from gvm.protocols.http.core.response import HttpResponse
+from gvm.protocols.http.openvasd.openvasd1 import OpenvasdHttpApiV1
 
 
 def new_mock_empty_response(
@@ -29,13 +29,13 @@ def new_mock_empty_response(
 
 class OpenvasdHttpApiV1TestCase(unittest.TestCase):
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_init(self, mock_connector: Mock):
         api = OpenvasdHttpApiV1(mock_connector)
         mock_connector.update_headers.assert_not_called()
         self.assertIsNotNone(api)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_init_with_api_key(self, mock_connector: Mock):
         api = OpenvasdHttpApiV1(mock_connector, api_key="my-API-key")
         mock_connector.update_headers.assert_called_once_with(
@@ -43,7 +43,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertIsNotNone(api)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_health_alive(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -55,7 +55,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_health_ready(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -67,7 +67,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_health_started(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -79,7 +79,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_notus_os_list(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -91,7 +91,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_run_notus_scan(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.post_json.return_value = expected_response
@@ -105,7 +105,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_scan_preferences(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -117,7 +117,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_create_scan(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.post_json.return_value = expected_response
@@ -156,7 +156,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_delete_scan(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.delete.return_value = expected_response
@@ -168,7 +168,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_scans(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -180,7 +180,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_scan(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -192,7 +192,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_scan_results(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -204,7 +204,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_scan_results_with_ranges(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -239,7 +239,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_scan_results_with_invalid_ranges(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -263,7 +263,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
             range_end="invalid",
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_scan_result(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -275,7 +275,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_scan_status(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -287,7 +287,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_run_scan_action(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.post_json.return_value = expected_response
@@ -301,7 +301,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_start_scan(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.post_json.return_value = expected_response
@@ -313,7 +313,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_stop_scan(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.post_json.return_value = expected_response
@@ -325,7 +325,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_vts(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response
@@ -337,7 +337,7 @@ class OpenvasdHttpApiV1TestCase(unittest.TestCase):
         )
         self.assertEqual(expected_response, response)
 
-    @patch("gvm.http.core.connector.HttpApiConnector", autospec=True)
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector", autospec=True)
     def test_get_vt(self, mock_connector: Mock):
         expected_response = new_mock_empty_response()
         mock_connector.get.return_value = expected_response

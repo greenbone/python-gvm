@@ -7,7 +7,7 @@ from http import HTTPStatus
 
 import requests as requests_lib
 
-from gvm.http.core.response import HttpResponse
+from gvm.protocols.http.core.response import HttpResponse
 
 
 class HttpResponseFromRequestsLibTestCase(unittest.TestCase):
