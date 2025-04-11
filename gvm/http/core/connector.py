@@ -7,9 +7,9 @@ Module for handling GVM HTTP API connections
 """
 
 import urllib.parse
-from typing import Any, Dict, Optional, Tuple, Union
+from typing import Any, MutableMapping, Optional, Tuple, Union
 
-from requests import Session
+from httpx import Client
 
 from gvm.http.core.response import HttpResponse
 
@@ -20,11 +20,18 @@ class HttpApiConnector:
     """
 
     @classmethod
-    def _new_session(cls):
+    def _new_client(
+        cls,
+        server_ca_path: Optional[str] = None,
+        client_cert_paths: Optional[Union[str, Tuple[str]]] = None,
+    ):
         """
-        Creates a new session
+        Creates a new httpx client
         """
-        return Session()
+        return Client(
+            verify=server_ca_path if server_ca_path else False,
+            cert=client_cert_paths,
+        )
 
     @classmethod
     def url_join(cls, base: str, rel_path: str) -> str:
@@ -63,29 +70,26 @@ class HttpApiConnector:
         self.base_url = base_url
         "The base server URL to which request-specific paths will be appended for the requests"
 
-        self._session = self._new_session()
-        "Internal session handling the HTTP requests"
-        if server_ca_path:
-            self._session.verify = server_ca_path
-        if client_cert_paths:
-            self._session.cert = client_cert_paths
+        self._client: Client = self._new_client(
+            server_ca_path, client_cert_paths
+        )
 
-    def update_headers(self, new_headers: Dict[str, str]) -> None:
+    def update_headers(self, new_headers: MutableMapping[str, str]) -> None:
         """
         Updates the headers sent with each request, e.g. for passing an API key
 
         Args:
-            new_headers: Dict containing the new headers
+            new_headers: MutableMapping, e.g. dict, containing the new headers
         """
-        self._session.headers.update(new_headers)
+        self._client.headers.update(new_headers)
 
     def delete(
         self,
         rel_path: str,
         *,
         raise_for_status: bool = True,
-        params: Optional[Dict[str, str]] = None,
-        headers: Optional[Dict[str, str]] = None,
+        params: Optional[MutableMapping[str, str]] = None,
+        headers: Optional[MutableMapping[str, str]] = None,
     ) -> HttpResponse:
         """
         Sends a ``DELETE`` request and returns the response.
@@ -94,14 +98,14 @@ class HttpApiConnector:
             rel_path: The relative path for the request
             raise_for_status: Whether to raise an error if response has a
              non-success HTTP status code
-            params: Optional dict of URL-encoded parameters
+            params: Optional MutableMapping, e.g. dict of URL-encoded parameters
             headers: Optional additional headers added to the request
 
         Return:
             The HTTP response.
         """
         url = self.url_join(self.base_url, rel_path)
-        r = self._session.delete(url, params=params, headers=headers)
+        r = self._client.delete(url, params=params, headers=headers)
         if raise_for_status:
             r.raise_for_status()
         return HttpResponse.from_requests_lib(r)
@@ -111,8 +115,8 @@ class HttpApiConnector:
         rel_path: str,
         *,
         raise_for_status: bool = True,
-        params: Optional[Dict[str, str]] = None,
-        headers: Optional[Dict[str, str]] = None,
+        params: Optional[MutableMapping[str, str]] = None,
+        headers: Optional[MutableMapping[str, str]] = None,
     ) -> HttpResponse:
         """
         Sends a ``GET`` request and returns the response.
@@ -128,7 +132,7 @@ class HttpApiConnector:
             The HTTP response.
         """
         url = self.url_join(self.base_url, rel_path)
-        r = self._session.get(url, params=params, headers=headers)
+        r = self._client.get(url, params=params, headers=headers)
         if raise_for_status:
             r.raise_for_status()
         return HttpResponse.from_requests_lib(r)
@@ -139,8 +143,8 @@ class HttpApiConnector:
         json: Any,
         *,
         raise_for_status: bool = True,
-        params: Optional[Dict[str, str]] = None,
-        headers: Optional[Dict[str, str]] = None,
+        params: Optional[MutableMapping[str, str]] = None,
+        headers: Optional[MutableMapping[str, str]] = None,
     ) -> HttpResponse:
         """
         Sends a ``POST`` request, using the given JSON-compatible object as the
@@ -151,14 +155,14 @@ class HttpApiConnector:
             json: The object to use as the request body.
             raise_for_status: Whether to raise an error if response has a
              non-success HTTP status code
-            params: Optional dict of URL-encoded parameters
+            params: Optional MutableMapping, e.g. dict of URL-encoded parameters
             headers: Optional additional headers added to the request
 
         Return:
             The HTTP response.
         """
         url = self.url_join(self.base_url, rel_path)
-        r = self._session.post(url, json=json, params=params, headers=headers)
+        r = self._client.post(url, json=json, params=params, headers=headers)
         if raise_for_status:
             r.raise_for_status()
         return HttpResponse.from_requests_lib(r)

@@ -7,10 +7,9 @@ Module for abstracting HTTP responses
 """
 
 from dataclasses import dataclass
-from typing import Any, Dict, Optional, Type, TypeVar, Union
+from typing import Any, MutableMapping, Optional, Type, TypeVar
 
-from requests import Response
-from requests.structures import CaseInsensitiveDict
+from httpx import Response
 
 from gvm.http.core.headers import ContentType
 
@@ -29,7 +28,7 @@ class HttpResponse:
     status: int
     "HTTP status code of the response"
 
-    headers: Union[Dict[str, str], CaseInsensitiveDict[str]]
+    headers: MutableMapping[str, str]
     "Dict containing the headers of the response"
 
     content_type: Optional[ContentType]
