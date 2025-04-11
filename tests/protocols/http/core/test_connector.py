@@ -12,7 +12,7 @@ import httpx
 from httpx import HTTPError
 
 from gvm.protocols.http.core.connector import HttpApiConnector
-from gvm.protocols.http.core import ContentType
+from gvm.protocols.http.core.headers import ContentType
 
 TEST_JSON_HEADERS = {
     "content-type": "application/json;charset=utf-8",
@@ -115,7 +115,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
         new_client = HttpApiConnector._new_client()
         self.assertIsInstance(new_client, httpx.Client)
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_basic_init(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -125,7 +125,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
         new_client_mock.assert_called_once_with(None, None)
         self.assertEqual({}, mock_client.headers)
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_https_init(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -139,7 +139,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
         new_client_mock.assert_called_once_with("foo.crt", "bar.key")
         self.assertEqual({}, mock_client.headers)
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_update_headers(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -151,7 +151,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
 
         self.assertEqual({"x-foo": "bar", "x-baz": "123"}, mock_client.headers)
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_delete(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -176,7 +176,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             headers={"baz": "456"},
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_minimal_delete(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -193,7 +193,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             "https://localhost/foo", params=None, headers=None
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_delete_raise_on_status(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -207,7 +207,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             "https://localhost/foo", params=None, headers=None
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_delete_no_raise_on_status(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -237,7 +237,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             headers={"baz": "456"},
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_get(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -262,7 +262,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             headers={"baz": "456"},
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_minimal_get(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -279,7 +279,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             "https://localhost/foo", params=None, headers=None
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_get_raise_on_status(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -293,7 +293,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             "https://localhost/foo", params=None, headers=None
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_get_no_raise_on_status(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -323,7 +323,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             headers={"baz": "456"},
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_post_json(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -352,7 +352,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             headers={"baz": "456"},
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_minimal_post_json(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -372,7 +372,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             headers=None,
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_post_json_raise_on_status(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 
@@ -391,7 +391,7 @@ class HttpApiConnectorTestCase(unittest.TestCase):
             headers=None,
         )
 
-    @patch("gvm.http.core.connector.HttpApiConnector._new_client")
+    @patch("gvm.protocols.http.core.connector.HttpApiConnector._new_client")
     def test_post_json_no_raise_on_status(self, new_client_mock: MagicMock):
         mock_client = new_client_mock.return_value = new_mock_client()
 

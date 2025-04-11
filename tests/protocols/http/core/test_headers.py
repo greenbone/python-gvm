@@ -4,7 +4,7 @@
 
 import unittest
 
-from gvm.protocols.http.core import ContentType
+from gvm.protocols.http.core.headers import ContentType
 
 
 class ContentTypeTestCase(unittest.TestCase):
