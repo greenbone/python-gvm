@@ -10,6 +10,7 @@ from tests.protocols.gmpv224.entities.scanners import (
     GmpGetScannersTestMixin,
     GmpGetScannerTestMixin,
     GmpModifyScannerTestMixin,
+    GmpVerifyScannerTestMixin,
 )
 from tests.protocols.gmpv226 import GMPTestCase
 
@@ -35,4 +36,8 @@ class GMPCreateScannerTestCase(GmpCreateScannerTestMixin, GMPTestCase):
 
 
 class GMPModifyScannerTestCase(GmpModifyScannerTestMixin, GMPTestCase):
+    pass
+
+
+class GMPVerifyScannerTestCase(GmpVerifyScannerTestMixin, GMPTestCase):
     pass
