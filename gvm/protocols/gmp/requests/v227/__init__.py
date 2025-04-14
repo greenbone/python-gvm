@@ -6,6 +6,8 @@
 GMP Request implementations for GMP version 22.7.
 """
 
+from gvm.protocols.gmp.requests.v227._scanners import Scanners, ScannerType
+
 from .._entity_id import EntityID
 from .._version import Version
 from ..v226 import (
@@ -46,8 +48,8 @@ from ..v226 import (
     Policies,
     PortLists,
     PortRangeType,
-    ReportConfigs,
     ReportConfigParameter,
+    ReportConfigs,
     ReportFormats,
     ReportFormatType,
     Reports,
@@ -75,8 +77,6 @@ from ..v226 import (
     UserSettings,
     Vulnerabilities,
 )
-
-from gvm.protocols.gmp.requests.v227._scanners import Scanners, ScannerType
 
 __all__ = (
     "Aggregates",

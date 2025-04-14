@@ -6,7 +6,7 @@
 Greenbone Management Protocol (GMP) version 22.7
 """
 
-from typing import Optional, Sequence, Union
+from typing import Optional, Union
 
 from .._protocol import T
 from ._gmp226 import GMPv226
