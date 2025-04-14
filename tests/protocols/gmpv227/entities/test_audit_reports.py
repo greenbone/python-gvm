@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv227 import GMPTestCase
 from ...gmpv226.entities.audit_reports import (
     GmpDeleteAuditReportTestMixin,
     GmpGetAuditReportsTestMixin,
     GmpGetAuditReportTestMixin,
 )
+from ...gmpv227 import GMPTestCase
 
 
 class GMPDeleteAuditReportTestCase(GmpDeleteAuditReportTestMixin, GMPTestCase):

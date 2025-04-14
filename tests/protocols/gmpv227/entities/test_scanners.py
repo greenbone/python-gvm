@@ -2,11 +2,9 @@
 #
 #  SPDX-License-Identifier: GPL-3.0-or-later
 #
-#  SPDX-License-Identifier: GPL-3.0-or-later
-#
-# SPDX-License-Identifier: GPL-3.0-or-later
-#
 
+
+from tests.protocols.gmpv227 import GMPTestCase
 from tests.protocols.gmpv227.entities.scanners import (
     GmpCloneScannerTestMixin,
     GmpCreateScannerTestMixin,
@@ -15,7 +13,6 @@ from tests.protocols.gmpv227.entities.scanners import (
     GmpGetScannerTestMixin,
     GmpModifyScannerTestMixin,
 )
-from tests.protocols.gmpv227 import GMPTestCase
 
 
 class GMPDeleteScannerTestCase(GmpDeleteScannerTestMixin, GMPTestCase):

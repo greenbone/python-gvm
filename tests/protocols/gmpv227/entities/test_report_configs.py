@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from ...gmpv227 import GMPTestCase
 from ...gmpv226.entities.report_configs import (
     GMPCloneReportConfigTestMixin,
     GMPCreateReportConfigTestMixin,
@@ -12,6 +11,7 @@ from ...gmpv226.entities.report_configs import (
     GMPGetReportConfigTestMixin,
     GMPModifyReportConfigTestMixin,
 )
+from ...gmpv227 import GMPTestCase
 
 
 class GMPCloneReportConfigTestCase(GMPCloneReportConfigTestMixin, GMPTestCase):
