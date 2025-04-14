@@ -35,7 +35,7 @@ class GMPv227(GMPv226[T]):
     def get_protocol_version() -> tuple[int, int]:
         return (22, 7)
 
-    def create_scanner(
+    def create_scanner(  # type:ignore[override]
         self,
         name: str,
         host: str,
@@ -76,7 +76,7 @@ class GMPv227(GMPv226[T]):
             )
         )
 
-    def modify_scanner(
+    def modify_scanner(  # type:ignore[override]
         self,
         scanner_id: EntityID,
         *,
