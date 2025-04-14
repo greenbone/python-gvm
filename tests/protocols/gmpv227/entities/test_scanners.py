@@ -2,8 +2,7 @@
 #
 #  SPDX-License-Identifier: GPL-3.0-or-later
 #
-
-
+from tests.protocols.gmpv224.entities.scanners import GmpVerifyScannerTestMixin
 from tests.protocols.gmpv227 import GMPTestCase
 from tests.protocols.gmpv227.entities.scanners import (
     GmpCloneScannerTestMixin,
@@ -36,4 +35,8 @@ class GMPCreateScannerTestCase(GmpCreateScannerTestMixin, GMPTestCase):
 
 
 class GMPModifyScannerTestCase(GmpModifyScannerTestMixin, GMPTestCase):
+    pass
+
+
+class GMPVerifyScannerTestCase(GmpVerifyScannerTestMixin, GMPTestCase):
     pass
