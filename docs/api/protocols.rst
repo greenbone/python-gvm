@@ -8,6 +8,7 @@ Protocols
 .. toctree::
     :maxdepth: 1
 
+    http
     gmp
     ospv1
 
