@@ -40,7 +40,7 @@ class GMPv226(GMPv225[T]):
 
     def __init__(self, *args, **kwargs):
         """
-        Create a new GMPv226 instance.
+        Create a new GMP protocol instance.
 
         Args:
             connection: Connection to use to talk with the remote daemon. See
