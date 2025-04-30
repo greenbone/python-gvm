@@ -1,7 +1,8 @@
-.. _transforms:
+(transforms)=
 
-Transforms
-==========
+# Transforms
 
+```{eval-rst}
 .. automodule:: gvm.transforms
     :members:
+```

@@ -127,15 +127,13 @@ class GMPv224(GvmProtocol[T]):
         Args:
             connection: Connection to use to talk with the remote daemon. See
                 :mod:`gvm.connections` for possible connection types.
-            transform: Optional transform `callable`_ to convert response data.
+            transform: Optional transform `callable <https://docs.python.org/3/library/functions.html#callable>`_
+                to convert response data.
                 After each request the callable gets passed the plain response data
                 which can be used to check the data and/or conversion into different
                 representations like a xml dom.
 
                 See :mod:`gvm.transforms` for existing transforms.
-
-        .. _callable:
-            https://docs.python.org/3/library/functions.html#callable
         """
         super().__init__(*args, **kwargs)
         self.types = to_dotted_types_dict(_TYPE_FIELDS)
@@ -3141,7 +3139,7 @@ class GMPv224(GvmProtocol[T]):
         *,
         comment: Optional[str] = None,
     ) -> T:
-        """Create a new schedule based in `iCalendar`_ data.
+        """Create a new schedule based in `iCalendar <https://tools.ietf.org/html/rfc5545>`_ data.
 
         Example:
             Requires https://pypi.org/project/icalendar/
@@ -3173,16 +3171,13 @@ class GMPv224(GvmProtocol[T]):
 
         Args:
             name: Name of the new schedule
-            icalendar: `iCalendar`_ (RFC 5545) based data.
+            icalendar: `iCalendar <https://tools.ietf.org/html/rfc5545>`_ (RFC 5545) based data.
             timezone: Timezone to use for the icalendar events e.g
                 Europe/Berlin. If the datetime values in the icalendar data are
                 missing timezone information this timezone gets applied.
                 Otherwise the datetime values from the icalendar data are
                 displayed in this timezone
             comment: Comment on schedule.
-
-        .. _iCalendar:
-            https://tools.ietf.org/html/rfc5545
         """
         return self._send_request_and_transform_response(
             Schedules.create_schedule(
@@ -3255,16 +3250,14 @@ class GMPv224(GvmProtocol[T]):
         Args:
             schedule_id: UUID of the schedule to be modified
             name: Name of the schedule
-            icalendar: `iCalendar`_ (RFC 5545) based data.
+            icalendar: `iCalendar <https://tools.ietf.org/html/rfc5545>`_
+                (RFC 5545) based data.
             timezone: Timezone to use for the icalendar events e.g
                 Europe/Berlin. If the datetime values in the icalendar data are
                 missing timezone information this timezone gets applied.
                 Otherwise the datetime values from the icalendar data are
                 displayed in this timezone
             comment: Comment on schedule.
-
-        .. _iCalendar:
-            https://tools.ietf.org/html/rfc5545
         """
         return self._send_request_and_transform_response(
             Schedules.modify_schedule(
