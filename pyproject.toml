@@ -45,6 +45,7 @@ furo = ">=2022.6.21"
 lxml-stubs = "^0.5.1"
 types-paramiko = "^3.4.0.20240205"
 git-cliff = "^2.8.0"
+myst-parser = { version = "^4.0.0", python = "^3.10" }
 
 [tool.black]
 line-length = 80

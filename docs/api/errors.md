@@ -1,7 +1,8 @@
-.. _errors:
+(errors)=
 
-Errors
-======
+# Errors
 
+```{eval-rst}
 .. automodule:: gvm.errors
     :members:
+```

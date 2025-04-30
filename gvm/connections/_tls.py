@@ -41,17 +41,14 @@ class TLSConnection(AbstractGvmConnection):
             hostname: DNS name or IP address of the remote TLS server.
             port: Port for the TLS connection. Default is 9390.
             certfile: Path to PEM encoded certificate file. See
-                `python certificates`_ for details.
-            cafile: Path to PEM encoded CA file. See `python certificates`_
+                `python certificates <https://docs.python.org/3/library/ssl.html#certificates>`_ for details.
+            cafile: Path to PEM encoded CA file. See `python certificates <https://docs.python.org/3/library/ssl.html#certificates>`_
                 for details.
-            keyfile: Path to PEM encoded private key. See `python certificates`_
+            keyfile: Path to PEM encoded private key. See `python certificates <https://docs.python.org/3/library/ssl.html#certificates>`_
                 for details.
             password: Password for the private key. If the password argument is not
                 specified and a password is required it will be interactively prompt
                 the user for a password.
-
-        .. _python certificates:
-            https://docs.python.org/3/library/ssl.html#certificates
         """
         super().__init__(timeout=timeout)
 
