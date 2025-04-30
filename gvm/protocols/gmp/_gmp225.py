@@ -30,23 +30,6 @@ class GMPv225(GMPv224[T]):
                 resp = gmp.get_tasks()
     """
 
-    def __init__(self, *args, **kwargs):
-        """
-        Create a new GMPv225 instance.
-
-        Args:
-            connection: Connection to use to talk with the remote daemon. See
-                :mod:`gvm.connections` for possible connection types.
-            transform: Optional transform `callable <https://docs.python.org/3/library/functions.html#callable>`_
-                to convert response data.
-                After each request the callable gets passed the plain response data
-                which can be used to check the data and/or conversion into different
-                representations like a xml dom.
-
-                See :mod:`gvm.transforms` for existing transforms.
-        """
-        super().__init__(*args, **kwargs)
-
     @staticmethod
     def get_protocol_version() -> tuple[int, int]:
         return (22, 5)
