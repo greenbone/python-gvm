@@ -41,6 +41,7 @@ class Reports:
         filter_id: Optional[str] = None,
         delta_report_id: Optional[EntityID] = None,
         report_format_id: Optional[Union[str, ReportFormatType]] = None,
+        report_config_id: Optional[str] = None,
         ignore_pagination: Optional[bool] = None,
         details: Optional[bool] = True,
     ) -> Request:
@@ -53,6 +54,7 @@ class Reports:
             delta_report_id: UUID of an existing report to compare report to.
             report_format_id: UUID of report format to use
                               or ReportFormatType (enum)
+            report_config_id: UUID of report format config to use
             ignore_pagination: Whether to ignore the filter terms "first" and
                 "rows".
             details: Request additional report information details
@@ -75,6 +77,9 @@ class Reports:
 
         if report_format_id:
             cmd.set_attribute("format_id", str(report_format_id))
+
+        if report_config_id:
+            cmd.set_attribute("config_id", str(report_config_id))
 
         if ignore_pagination is not None:
             cmd.set_attribute("ignore_pagination", to_bool(ignore_pagination))
