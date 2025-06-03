@@ -26,6 +26,20 @@ class GmpGetTasksTestMixin:
             b'<get_tasks usage_type="scan" filt_id="f1"/>'
         )
 
+    def test_get_tasks_with_task_limit(self):
+        self.gmp.get_tasks(task_limit="5")
+
+        self.connection.send.has_been_called_with(
+            b'<get_tasks usage_type="scan" filter="rows=5"/>'
+        )
+
+    def test_get_tasks_with_task_limit_and_filter_string(self):
+        self.gmp.get_tasks(filter_string="foo", task_limit="5")
+
+        self.connection.send.has_been_called_with(
+            b'<get_tasks usage_type="scan" filter="foo rows=5"/>'
+        )
+
     def test_get_tasks_from_trash(self):
         self.gmp.get_tasks(trash=True)
 

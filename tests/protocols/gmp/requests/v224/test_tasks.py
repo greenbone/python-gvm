@@ -414,6 +414,20 @@ class TasksTestCase(unittest.TestCase):
             b'<get_tasks usage_type="scan" filt_id="filter_id"/>',
         )
 
+    def test_get_tasks_with_task_limit(self):
+        request = Tasks().get_tasks(task_limit=5)
+        self.assertEqual(
+            bytes(request),
+            b'<get_tasks usage_type="scan" filter="rows=5"/>',
+        )
+
+    def test_get_tasks_with_task_limit_and_filter_string(self):
+        request = Tasks().get_tasks(filter_string="foo", task_limit=5)
+        self.assertEqual(
+            bytes(request),
+            b'<get_tasks usage_type="scan" filter="foo rows=5"/>',
+        )
+
     def test_get_tasks_with_trash(self):
         request = Tasks().get_tasks(trash=True)
         self.assertEqual(

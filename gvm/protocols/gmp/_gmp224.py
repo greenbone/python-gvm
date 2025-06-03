@@ -3843,6 +3843,7 @@ class GMPv224(GvmProtocol[T]):
         *,
         filter_string: Optional[str] = None,
         filter_id: Optional[EntityID] = None,
+        task_limit: Optional[int] = None,
         trash: Optional[bool] = None,
         details: Optional[bool] = None,
         schedules_only: Optional[bool] = None,
@@ -3853,6 +3854,7 @@ class GMPv224(GvmProtocol[T]):
         Args:
             filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
+            task_limit: Limits the amount of tasks being returned (Default:10)
             trash: Whether to get the trashcan tasks instead
             details: Whether to include full task details
             schedules_only: Whether to only include id, name and schedule
@@ -3864,6 +3866,7 @@ class GMPv224(GvmProtocol[T]):
             Tasks.get_tasks(
                 filter_string=filter_string,
                 filter_id=filter_id,
+                task_limit=task_limit,
                 trash=trash,
                 details=details,
                 schedules_only=schedules_only,
