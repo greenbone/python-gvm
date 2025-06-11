@@ -91,9 +91,11 @@ class GMP(GvmProtocol[T]):
             gmp_class = GMPv224
         elif major_version == 22 and minor_version == 5:
             gmp_class = GMPv225
-        elif major_version == 22 and minor_version >= 6:
+        elif major_version == 22 and minor_version == 6:
             gmp_class = GMPv226
-            if minor_version > 6:
+        elif major_version == 22 and minor_version >= 7:
+            gmp_class = GMPv227
+            if minor_version > 7:
                 warnings.warn(
                     "Remote manager daemon uses a newer GMP version than "
                     f"supported by python-gvm {__version__}. Please update to "
