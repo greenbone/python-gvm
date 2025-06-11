@@ -124,15 +124,6 @@ class GmpContextManagerTestCase(GmpTestCase):
         with self.gmp as gmp:
             self.assertEqual(gmp.get_protocol_version(), (22, 6))
             self.assertIsInstance(gmp, GMPv226)
-        self.connection.read.return_value(
-            b'<get_version_response status="200" status_text="OK">'
-            b"<version>22.6</version>"
-            b"</get_version_response>"
-        )
-
-        with self.gmp as gmp:
-            self.assertEqual(gmp.get_protocol_version(), (22, 6))
-            self.assertIsInstance(gmp, GMPv226)
 
     def test_select_gmpv227(self):
         self.connection.read.return_value(
