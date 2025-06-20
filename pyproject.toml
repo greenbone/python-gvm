@@ -32,7 +32,7 @@ packages = [{ include = "gvm" }, { include = "tests", format = "sdist" }]
 python = "^3.9.2"
 paramiko = ">=2.7.1"
 lxml = ">=4.5.0"
-httpx = "^0.28.1"
+httpx = {extras = ["http2"], version = "^0.28.1"}
 
 [tool.poetry.group.dev.dependencies]
 coverage = ">=7.2"
