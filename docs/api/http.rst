@@ -8,5 +8,4 @@ HTTP APIs
 .. toctree::
     :maxdepth: 1
 
-    httpcore
     openvasdv1
