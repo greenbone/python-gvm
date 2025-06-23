@@ -3,7 +3,11 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 """
-Package for sending openvasd and handling the responses of HTTP API requests.
+Package for sending requests to openvasd and handling HTTP API responses.
 
-* :class:`OpenvasdHttpApiV1` - openvasd version 1
+Modules:
+- :class:`OpenvasdHttpApiV1` – Main class for communicating with OpenVASD API v1.
+
+Usage:
+    from gvm.protocols.http.openvasd import OpenvasdHttpApiV1
 """
