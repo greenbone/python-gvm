@@ -11,6 +11,7 @@ from .scanners import (
     GmpGetScannersTestMixin,
     GmpGetScannerTestMixin,
     GmpModifyScannerTestMixin,
+    GmpVerifyScannerTestMixin,
 )
 
 
@@ -35,4 +36,8 @@ class Gmpv224CreateScannerTestCase(GmpCreateScannerTestMixin, Gmpv224TestCase):
 
 
 class Gmpv224ModifyScannerTestCase(GmpModifyScannerTestMixin, Gmpv224TestCase):
+    pass
+
+
+class Gmpv224VerifyScannerTestCase(GmpVerifyScannerTestMixin, Gmpv224TestCase):
     pass
