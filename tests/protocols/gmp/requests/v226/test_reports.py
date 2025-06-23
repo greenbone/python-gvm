@@ -72,6 +72,17 @@ class ReportsTestCase(unittest.TestCase):
             b'<get_reports report_id="report_id" usage_type="scan" format_id="report_format_id" details="1"/>',
         )
 
+    def test_get_report_with_report_format_id_and_config_id(self):
+        request = Reports.get_report(
+            "report_id",
+            report_format_id="report_format_id",
+            report_config_id="report_config_id",
+        )
+        self.assertEqual(
+            bytes(request),
+            b'<get_reports report_id="report_id" usage_type="scan" format_id="report_format_id" config_id="report_config_id" details="1"/>',
+        )
+
     def test_get_report_with_ignore_pagination(self):
         request = Reports.get_report("report_id", ignore_pagination=True)
         self.assertEqual(

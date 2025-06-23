@@ -36,6 +36,15 @@ class GmpGetReportTestMixin:
             b'<get_reports report_id="r1" usage_type="scan" format_id="bar" details="1"/>'
         )
 
+    def test_get_report_with_report_format_id_and_config_id(self):
+        self.gmp.get_report(
+            report_id="r1", report_format_id="bar", report_config_id="c1"
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<get_reports report_id="r1" usage_type="scan" format_id="bar" config_id="c1" details="1"/>'
+        )
+
     def test_get_report_with_report_format_type(self):
         self.gmp.get_report(
             report_id="r1", report_format_id=ReportFormatType.TXT

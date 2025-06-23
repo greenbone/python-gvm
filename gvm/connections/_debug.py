@@ -13,9 +13,9 @@ class DebugConnection:
     """Wrapper around a connection for debugging purposes
 
     Allows to debug the connection flow including send and read data. Internally
-    it uses the python `logging`_ framework to create debug messages. Please
-    take a look at `the logging tutorial
-    <https://docs.python.org/3/howto/logging.html#logging-basic-tutorial>`_
+    it uses the python `logging <https://docs.python.org/3/library/logging.html>`_
+    framework to create debug messages. Please take a look at
+    `the logging tutorial <https://docs.python.org/3/howto/logging.html#logging-basic-tutorial>`_
     for further details.
 
     Example:
@@ -29,9 +29,6 @@ class DebugConnection:
         socket_connection = UnixSocketConnection(path='/var/run/gvm.sock')
         connection = DebugConnection(socket_connection)
         gmp = Gmp(connection=connection)
-
-    .. _logging:
-        https://docs.python.org/3/library/logging.html
     """
 
     def __init__(self, connection: GvmConnection):

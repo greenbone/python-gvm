@@ -86,10 +86,7 @@ class GvmProtocol(Generic[T]):
 
         Normally connect is not called directly. Either it is called
         automatically when sending a protocol command or when using a
-        `with statement`_.
-
-        .. _with statement:
-            https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers
+        `with statement <https://docs.python.org/3/reference/datamodel.html#with-statement-context-managers>`_.
         """
         if not self.is_connected():
             self._connection.connect()

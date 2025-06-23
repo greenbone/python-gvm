@@ -25,8 +25,7 @@ _SUPPORTED_GMP_VERSION_STRINGS = ["22.4", "22.5", "22.6", "22.7"]
 class GMP(GvmProtocol[T]):
     """Dynamically select supported GMP protocol of the remote manager daemon.
 
-    Must be used as a `Context Manager
-    <https://docs.python.org/3/reference/datamodel.html#context-managers>`_
+    Must be used as a `Context Manager <https://docs.python.org/3/reference/datamodel.html#context-managers>`_
 
     Example:
 
@@ -42,7 +41,6 @@ class GMP(GvmProtocol[T]):
                 # or gvm.protocols.gmp.GMPv227
                 # depending on the supported GMP version of the remote manager daemon
                 resp = gmp.get_tasks()
-
     """
 
     def __init__(
@@ -57,15 +55,12 @@ class GMP(GvmProtocol[T]):
         Args:
             connection: Connection to use to talk with the remote daemon. See
                 :mod:`gvm.connections` for possible connection types.
-            transform: Optional transform `callable`_ to convert response data.
-                After each request the callable gets passed the plain response data
+            transform: Optional transform `callable <https://docs.python.org/3/library/functions.html#callable>`_
+                to convert response data. After each request the callable gets passed the plain response data
                 which can be used to check the data and/or conversion into different
                 representations like a xml dom.
 
                 See :mod:`gvm.transforms` for existing transforms.
-
-        .. _callable:
-            https://docs.python.org/3/library/functions.html#callable
         """
         super().__init__(connection, transform=transform)
         self._gmp: Optional[SUPPORTED_GMP_VERSIONS] = None
@@ -96,11 +91,13 @@ class GMP(GvmProtocol[T]):
             gmp_class = GMPv224
         elif major_version == 22 and minor_version == 5:
             gmp_class = GMPv225
-        elif major_version == 22 and minor_version >= 6:
+        elif major_version == 22 and minor_version == 6:
             gmp_class = GMPv226
-            if minor_version > 6:
+        elif major_version == 22 and minor_version >= 7:
+            gmp_class = GMPv227
+            if minor_version > 7:
                 warnings.warn(
-                    "Remote manager daemon uses a newer GMP version then "
+                    "Remote manager daemon uses a newer GMP version than "
                     f"supported by python-gvm {__version__}. Please update to "
                     "a newer release of python-gvm if possible. "
                     f"Remote GMP version is {major_version}.{minor_version}. "

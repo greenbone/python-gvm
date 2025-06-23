@@ -1,11 +1,13 @@
-Utils
------
+# Utils
 
+```{eval-rst}
 .. automodule:: gvm.utils
     :members:
+```
 
-XML
----
+# XML
 
+```{eval-rst}
 .. automodule:: gvm.xml
     :members:
+```

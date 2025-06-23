@@ -38,25 +38,6 @@ class GMPv226(GMPv225[T]):
                 resp = gmp.get_tasks()
     """
 
-    def __init__(self, *args, **kwargs):
-        """
-        Create a new GMPv226 instance.
-
-        Args:
-            connection: Connection to use to talk with the remote daemon. See
-                :mod:`gvm.connections` for possible connection types.
-            transform: Optional transform `callable`_ to convert response data.
-                After each request the callable gets passed the plain response data
-                which can be used to check the data and/or conversion into different
-                representations like a xml dom.
-
-                See :mod:`gvm.transforms` for existing transforms.
-
-        .. _callable:
-            https://docs.python.org/3/library/functions.html#callable
-        """
-        super().__init__(*args, **kwargs)
-
     @staticmethod
     def get_protocol_version() -> tuple[int, int]:
         return (22, 6)
@@ -122,6 +103,7 @@ class GMPv226(GMPv225[T]):
         filter_id: Optional[str] = None,
         delta_report_id: Optional[EntityID] = None,
         report_format_id: Optional[Union[str, ReportFormatType]] = None,
+        report_config_id: Optional[str] = None,
         ignore_pagination: Optional[bool] = None,
         details: Optional[bool] = True,
     ) -> T:
@@ -134,6 +116,7 @@ class GMPv226(GMPv225[T]):
             delta_report_id: UUID of an existing report to compare report to.
             report_format_id: UUID of report format to use
                               or ReportFormatType (enum)
+            report_config_id: UUID of report format config to use
             ignore_pagination: Whether to ignore the filter terms "first" and
                 "rows".
             details: Request additional report information details
@@ -146,6 +129,7 @@ class GMPv226(GMPv225[T]):
                 filter_id=filter_id,
                 delta_report_id=delta_report_id,
                 report_format_id=report_format_id,
+                report_config_id=report_config_id,
                 ignore_pagination=ignore_pagination,
                 details=details,
             )
