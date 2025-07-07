@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from gvm.errors import GvmError
-from gvm.protocols.gmp import Gmp
+from gvm.protocols.gmp import Gmp, GMPv228
 from gvm.protocols.gmp._gmp224 import GMPv224
 from gvm.protocols.gmp._gmp225 import GMPv225
 from gvm.protocols.gmp._gmp226 import GMPv226
@@ -146,7 +146,17 @@ class GmpContextManagerTestCase(GmpTestCase):
             self.assertEqual(gmp.get_protocol_version(), (22, 7))
             self.assertIsInstance(gmp, GMPv227)
 
-    def test_next_version_fallback(self):
+    def test_select_gmpv228(self):
+        self.connection.read.return_value(
+            b'<get_version_response status="200" status_text="OK">'
+            b"<version>22.08</version>"
+            b"</get_version_response>"
+        )
+
+        with self.gmp as gmp:
+            self.assertEqual(gmp.get_protocol_version(), (22, 8))
+            self.assertIsInstance(gmp, GMPv228)
+
         self.connection.read.return_value(
             b'<get_version_response status="200" status_text="OK">'
             b"<version>22.8</version>"
@@ -154,7 +164,18 @@ class GmpContextManagerTestCase(GmpTestCase):
         )
 
         with self.gmp as gmp:
-            self.assertEqual(gmp.get_protocol_version(), (22, 7))
+            self.assertEqual(gmp.get_protocol_version(), (22, 8))
+            self.assertIsInstance(gmp, GMPv227)
+
+    def test_next_version_fallback(self):
+        self.connection.read.return_value(
+            b'<get_version_response status="200" status_text="OK">'
+            b"<version>22.9</version>"
+            b"</get_version_response>"
+        )
+
+        with self.gmp as gmp:
+            self.assertEqual(gmp.get_protocol_version(), (22, 8))
             self.assertIsInstance(gmp, GMPv227)
 
     def test_newer_version_fallback(self):
@@ -165,7 +186,7 @@ class GmpContextManagerTestCase(GmpTestCase):
         )
 
         with self.gmp as gmp:
-            self.assertEqual(gmp.get_protocol_version(), (22, 7))
+            self.assertEqual(gmp.get_protocol_version(), (22, 8))
             self.assertIsInstance(gmp, GMPv227)
 
     def test_unknown_protocol(self):

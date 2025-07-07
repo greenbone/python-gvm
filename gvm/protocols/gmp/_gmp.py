@@ -16,10 +16,13 @@ from ._gmp224 import GMPv224
 from ._gmp225 import GMPv225
 from ._gmp226 import GMPv226
 from ._gmp227 import GMPv227
+from ._gmp228 import GMPv228
 from .requests import Version
 
-SUPPORTED_GMP_VERSIONS = Union[GMPv224[T], GMPv225[T], GMPv226[T], GMPv227[T]]
-_SUPPORTED_GMP_VERSION_STRINGS = ["22.4", "22.5", "22.6", "22.7"]
+SUPPORTED_GMP_VERSIONS = Union[
+    GMPv224[T], GMPv225[T], GMPv226[T], GMPv227[T], GMPv228[T]
+]
+_SUPPORTED_GMP_VERSION_STRINGS = ["22.4", "22.5", "22.6", "22.7", "22.8"]
 
 
 class GMP(GvmProtocol[T]):
@@ -38,7 +41,8 @@ class GMP(GvmProtocol[T]):
                 # gvm.protocols.gmp.GMPv224,
                 # gvm.protocols.gmp.GMPv225,
                 # gvm.protocols.gmp.GMPv226,
-                # or gvm.protocols.gmp.GMPv227
+                # gvm.protocols.gmp.GMPv227,
+                # or gvm.protocols.gmp.GMPv228
                 # depending on the supported GMP version of the remote manager daemon
                 resp = gmp.get_tasks()
     """
@@ -93,9 +97,11 @@ class GMP(GvmProtocol[T]):
             gmp_class = GMPv225
         elif major_version == 22 and minor_version == 6:
             gmp_class = GMPv226
-        elif major_version == 22 and minor_version >= 7:
+        elif major_version == 22 and minor_version == 7:
             gmp_class = GMPv227
-            if minor_version > 7:
+        elif major_version == 22 and minor_version >= 8:
+            gmp_class = GMPv228
+            if minor_version > 8:
                 warnings.warn(
                     "Remote manager daemon uses a newer GMP version than "
                     f"supported by python-gvm {__version__}. Please update to "
