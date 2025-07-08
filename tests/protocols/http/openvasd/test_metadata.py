@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 
 import httpx
 
-from gvm.protocols.http.openvasd.metadata import MetadataAPI
+from gvm.protocols.http.openvasd._metadata import MetadataAPI
 
 
 def _mock_head_response(status_code=200, headers=None):

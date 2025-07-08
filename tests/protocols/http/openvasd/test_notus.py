@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 
 import httpx
 
-from gvm.protocols.http.openvasd.notus import NotusAPI
+from gvm.protocols.http.openvasd._notus import NotusAPI
 
 
 def _mock_response(status_code=200, json_data=None):

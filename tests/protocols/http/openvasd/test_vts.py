@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 
 import httpx
 
-from gvm.protocols.http.openvasd.vts import VtsAPI
+from gvm.protocols.http.openvasd._vts import VtsAPI
 
 
 def _mock_response(status_code=200):
@@ -18,7 +18,6 @@ def _mock_response(status_code=200):
 
 
 class TestVtsAPI(unittest.TestCase):
-
     def setUp(self):
         self.mock_client = MagicMock(spec=httpx.Client)
         self.api = VtsAPI(self.mock_client)
