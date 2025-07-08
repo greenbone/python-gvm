@@ -11,3 +11,7 @@ Modules:
 Usage:
     from gvm.protocols.http.openvasd import OpenvasdHttpApiV1
 """
+
+from .openvasd1 import OpenvasdHttpAPIv1
+
+__all__ = ["OpenvasdHttpAPIv1"]
