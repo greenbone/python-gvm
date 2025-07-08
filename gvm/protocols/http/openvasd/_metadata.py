@@ -6,11 +6,42 @@
 API wrapper for retrieving metadata from the openvasd HTTP API using HEAD requests.
 """
 
+from dataclasses import dataclass
 from typing import Union
 
 import httpx
 
 from ._api import OpenvasdAPI
+
+
+@dataclass
+class Metadata:
+    """
+    Represents metadata returned by the openvasd API.
+
+    Attributes:
+        api_version: Comma separated list of available API versions
+        feed_version: Version of the feed.
+        authentication: Supported authentication methods
+    """
+
+    api_version: str
+    feed_version: str
+    authentication: str
+
+
+@dataclass
+class MetadataError:
+    """
+    Represents an error response from the metadata API.
+
+    Attributes:
+        error: Error message.
+        status_code: HTTP status code of the error response.
+    """
+
+    error: str
+    status_code: int
 
 
 class MetadataAPI(OpenvasdAPI):
@@ -27,20 +58,12 @@ class MetadataAPI(OpenvasdAPI):
     is handled gracefully.
     """
 
-    def get(self) -> dict[str, Union[str, int]]:
+    def get(self) -> Union[Metadata, MetadataError]:
         """
         Perform a HEAD request to `/` to retrieve top-level API metadata.
 
         Returns:
-            A dictionary containing:
-
-              - "api-version"
-              - "feed-version"
-              - "authentication"
-
-            Or if exceptions are suppressed and error occurs:
-
-              - {"error": str, "status_code": int}
+            A Metadata instance or MetadataError if exceptions are suppressed and an error occurs.
 
         Raises:
             httpx.HTTPStatusError: For non-401 HTTP errors if exceptions are not suppressed.
@@ -50,30 +73,24 @@ class MetadataAPI(OpenvasdAPI):
         try:
             response = self._client.head("/")
             response.raise_for_status()
-            return {
-                "api-version": response.headers.get("api-version"),
-                "feed-version": response.headers.get("feed-version"),
-                "authentication": response.headers.get("authentication"),
-            }
+            return Metadata(
+                api_version=response.headers.get("api-version"),
+                feed_version=response.headers.get("feed-version"),
+                authentication=response.headers.get("authentication"),
+            )
         except httpx.HTTPStatusError as e:
             if self._suppress_exceptions:
-                return {"error": str(e), "status_code": e.response.status_code}
+                return MetadataError(
+                    error=str(e), status_code=e.response.status_code
+                )
             raise
 
-    def get_scans(self) -> dict[str, Union[str, int]]:
+    def get_scans(self) -> Union[Metadata, MetadataError]:
         """
-         Perform a HEAD request to `/scans` to retrieve scan endpoint metadata.
+        Perform a HEAD request to `/scans` to retrieve scan endpoint metadata.
 
         Returns:
-             A dictionary containing:
-
-               - "api-version"
-               - "feed-version"
-               - "authentication"
-
-             Or if safe=True and error occurs:
-
-               - {"error": str, "status_code": int}
+            A Metadata instance or MetadataError if exceptions are suppressed and an error occurs.
 
          Raises:
              httpx.HTTPStatusError: For non-401 HTTP errors if exceptions are not suppressed.
@@ -83,12 +100,14 @@ class MetadataAPI(OpenvasdAPI):
         try:
             response = self._client.head("/scans")
             response.raise_for_status()
-            return {
-                "api-version": response.headers.get("api-version"),
-                "feed-version": response.headers.get("feed-version"),
-                "authentication": response.headers.get("authentication"),
-            }
+            return Metadata(
+                api_version=response.headers.get("api-version"),
+                feed_version=response.headers.get("feed-version"),
+                authentication=response.headers.get("authentication"),
+            )
         except httpx.HTTPStatusError as e:
             if self._suppress_exceptions:
-                return {"error": str(e), "status_code": e.response.status_code}
+                return MetadataError(
+                    error=str(e), status_code=e.response.status_code
+                )
             raise

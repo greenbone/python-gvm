@@ -7,7 +7,11 @@ from unittest.mock import MagicMock
 
 import httpx
 
-from gvm.protocols.http.openvasd._metadata import MetadataAPI
+from gvm.protocols.http.openvasd._metadata import (
+    Metadata,
+    MetadataAPI,
+    MetadataError,
+)
 
 
 def _mock_head_response(status_code=200, headers=None):
@@ -35,7 +39,14 @@ class TestMetadataAPI(unittest.TestCase):
         result = api.get()
         self.mock_client.head.assert_called_once_with("/")
         mock_response.raise_for_status.assert_called_once()
-        self.assertEqual(result, headers)
+        self.assertEqual(
+            result,
+            Metadata(
+                api_version="1.0",
+                feed_version="2025.01",
+                authentication="API-KEY",
+            ),
+        )
 
     def test_get_unauthorized_with_suppress_exceptions(self):
         mock_response = MagicMock(spec=httpx.Response)
@@ -47,7 +58,9 @@ class TestMetadataAPI(unittest.TestCase):
 
         api = MetadataAPI(self.mock_client, suppress_exceptions=True)
         result = api.get()
-        self.assertEqual(result, {"error": "Unauthorized", "status_code": 401})
+        self.assertEqual(
+            result, MetadataError(error="Unauthorized", status_code=401)
+        )
 
     def test_get_failure_raises_httpx_error(self):
         mock_response = _mock_head_response(500, None)
@@ -77,7 +90,14 @@ class TestMetadataAPI(unittest.TestCase):
         result = api.get_scans()
         self.mock_client.head.assert_called_once_with("/scans")
         mock_response.raise_for_status.assert_called_once()
-        self.assertEqual(result, headers)
+        self.assertEqual(
+            result,
+            Metadata(
+                api_version="1.0",
+                feed_version="2025.01",
+                authentication="API-KEY",
+            ),
+        )
 
     def test_get_scans_unauthorized_with_suppress_exceptions(self):
         mock_response = MagicMock(spec=httpx.Response)
@@ -89,7 +109,9 @@ class TestMetadataAPI(unittest.TestCase):
 
         api = MetadataAPI(self.mock_client, suppress_exceptions=True)
         result = api.get_scans()
-        self.assertEqual(result, {"error": "Unauthorized", "status_code": 401})
+        self.assertEqual(
+            result, MetadataError(error="Unauthorized", status_code=401)
+        )
 
     def test_get_scans_failure_raises_httpx_error(self):
         mock_response = _mock_head_response(500, None)
