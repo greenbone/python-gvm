@@ -39,6 +39,7 @@ class OpenvasdHttpAPIv1:
         client_cert_paths: Optional[
             Union[StrOrPathLike, Tuple[StrOrPathLike, StrOrPathLike]]
         ] = None,
+        suppress_exceptions: bool = False,
     ):
         """
         Initialize the OpenvasdHttpApiV1 entry point.
@@ -49,10 +50,8 @@ class OpenvasdHttpAPIv1:
             api_key: Optional API key to be used for authentication.
             server_ca_path: Path to the server CA certificate (for HTTPS/mTLS).
             client_cert_paths: Path to client certificate or (cert, key) tuple for mTLS.
-
-        Behavior:
-            - Sets up an underlying `httpx.Client` using `OpenvasdClient`.
-            - Initializes sub-API modules with the shared client instance.
+            suppress_exceptions: If True, suppress exceptions and return structured error
+                responses. Default is False, which means exceptions will be raised.
         """
         self._client = create_openvasd_http_client(
             host_name=host_name,
@@ -63,8 +62,67 @@ class OpenvasdHttpAPIv1:
         )
 
         # Sub-API modules
-        self.health = HealthAPI(self._client)
-        self.metadata = MetadataAPI(self._client)
-        self.notus = NotusAPI(self._client)
-        self.scans = ScansAPI(self._client)
-        self.vts = VtsAPI(self._client)
+        self.__health = HealthAPI(
+            self._client, suppress_exceptions=suppress_exceptions
+        )
+        self.__metadata = MetadataAPI(
+            self._client, suppress_exceptions=suppress_exceptions
+        )
+        self.__notus = NotusAPI(
+            self._client, suppress_exceptions=suppress_exceptions
+        )
+        self.__scans = ScansAPI(
+            self._client, suppress_exceptions=suppress_exceptions
+        )
+        self.__vts = VtsAPI(
+            self._client, suppress_exceptions=suppress_exceptions
+        )
+
+    @property
+    def health(self) -> HealthAPI:
+        """
+        Access the health API module.
+
+        Provides methods to check the health status of the openvasd service.
+        """
+        return self.__health
+
+    @property
+    def metadata(self) -> MetadataAPI:
+        """
+        Access the metadata API module.
+
+        Provides methods to retrieve metadata about the openvasd service,
+        including version and feed information.
+        """
+        return self.__metadata
+
+    @property
+    def notus(self) -> NotusAPI:
+        """
+        Access the Notus API module.
+
+        Provides methods to interact with the Notus service for package-based
+        vulnerability scanning.
+        """
+        return self.__notus
+
+    @property
+    def scans(self) -> ScansAPI:
+        """
+        Access the scans API module.
+
+        Provides methods to manage and interact with vulnerability scans,
+        including starting, stopping, and retrieving scan results.
+        """
+        return self.__scans
+
+    @property
+    def vts(self) -> VtsAPI:
+        """
+        Access the VTS API module.
+
+        Provides methods to manage and interact with Vulnerability Tests
+        (VTs) for vulnerability assessment.
+        """
+        return self.__vts

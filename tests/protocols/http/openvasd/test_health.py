@@ -20,71 +20,84 @@ def _mock_response(status_code=200):
 class TestHealthAPI(unittest.TestCase):
     def setUp(self):
         self.mock_client = MagicMock(spec=httpx.Client)
-        self.health_api = HealthAPI(self.mock_client)
 
     def test_alive_returns_status_code(self):
         mock_response = _mock_response(200)
         self.mock_client.get.return_value = mock_response
 
-        result = self.health_api.get_alive()
+        health_api = HealthAPI(self.mock_client)
+        result = health_api.get_alive()
         self.mock_client.get.assert_called_once_with("/health/alive")
         mock_response.raise_for_status.assert_called_once()
         self.assertEqual(result, 200)
 
-    def test_alive_raises_httpx_error_returns_503_with_safe_true(self):
+    def test_alive_raises_httpx_error_returns_503_with_suppress_exceptions(
+        self,
+    ):
         self.mock_client.get.side_effect = httpx.HTTPStatusError(
             "Not OK", request=MagicMock(), response=MagicMock(status_code=503)
         )
 
-        result = self.health_api.get_alive(safe=True)
+        health_api = HealthAPI(self.mock_client, suppress_exceptions=True)
+        result = health_api.get_alive()
         self.assertEqual(result, 503)
 
     def test_alive_raises_httpx_error(self):
         self.mock_client.get.side_effect = httpx.HTTPStatusError(
             "Not OK", request=MagicMock(), response=MagicMock(status_code=503)
         )
+        health_api = HealthAPI(self.mock_client)
         with self.assertRaises(httpx.HTTPStatusError):
-            self.health_api.get_alive()
+            health_api.get_alive()
 
     def test_ready_returns_status_code(self):
         mock_response = _mock_response(204)
         self.mock_client.get.return_value = mock_response
 
-        result = self.health_api.get_ready()
+        health_api = HealthAPI(self.mock_client)
+        result = health_api.get_ready()
         self.mock_client.get.assert_called_once_with("/health/ready")
         mock_response.raise_for_status.assert_called_once()
         self.assertEqual(result, 204)
 
-    def test_ready_raises_httpx_error_returns_503_with_safe_true(self):
+    def test_ready_raises_httpx_error_returns_503_with_suppress_exceptions(
+        self,
+    ):
         self.mock_client.get.side_effect = httpx.HTTPStatusError(
             "Not OK", request=MagicMock(), response=MagicMock(status_code=503)
         )
 
-        result = self.health_api.get_ready(safe=True)
+        health_api = HealthAPI(self.mock_client, suppress_exceptions=True)
+        result = health_api.get_ready()
         self.assertEqual(result, 503)
 
     def test_ready_raises_httpx_error(self):
         self.mock_client.get.side_effect = httpx.HTTPStatusError(
             "Not OK", request=MagicMock(), response=MagicMock(status_code=503)
         )
+        health_api = HealthAPI(self.mock_client)
         with self.assertRaises(httpx.HTTPStatusError):
-            self.health_api.get_ready()
+            health_api.get_ready()
 
     def test_started_returns_status_code(self):
         mock_response = _mock_response(202)
         self.mock_client.get.return_value = mock_response
 
-        result = self.health_api.get_started()
+        health_api = HealthAPI(self.mock_client)
+        result = health_api.get_started()
         self.mock_client.get.assert_called_once_with("/health/started")
         mock_response.raise_for_status.assert_called_once()
         self.assertEqual(result, 202)
 
-    def test_started_raises_httpx_error_returns_503_with_safe_true(self):
+    def test_started_raises_httpx_error_returns_503_with_suppress_exceptions(
+        self,
+    ):
         self.mock_client.get.side_effect = httpx.HTTPStatusError(
             "Not OK", request=MagicMock(), response=MagicMock(status_code=503)
         )
 
-        result = self.health_api.get_started(safe=True)
+        health_api = HealthAPI(self.mock_client, suppress_exceptions=True)
+        result = health_api.get_started()
         self.assertEqual(result, 503)
 
     def test_started_raises_httpx_error(self):
@@ -92,5 +105,6 @@ class TestHealthAPI(unittest.TestCase):
             "Not OK", request=MagicMock(), response=MagicMock(status_code=503)
         )
 
+        health_api = HealthAPI(self.mock_client)
         with self.assertRaises(httpx.HTTPStatusError):
-            self.health_api.get_started()
+            health_api.get_started()

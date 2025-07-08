@@ -21,7 +21,6 @@ def _mock_head_response(status_code=200, headers=None):
 class TestMetadataAPI(unittest.TestCase):
     def setUp(self):
         self.mock_client = MagicMock(spec=httpx.Client)
-        self.api = MetadataAPI(self.mock_client)
 
     def test_get_successful(self):
         headers = {
@@ -32,12 +31,13 @@ class TestMetadataAPI(unittest.TestCase):
         mock_response = _mock_head_response(200, headers)
         self.mock_client.head.return_value = mock_response
 
-        result = self.api.get()
+        api = MetadataAPI(self.mock_client)
+        result = api.get()
         self.mock_client.head.assert_called_once_with("/")
         mock_response.raise_for_status.assert_called_once()
         self.assertEqual(result, headers)
 
-    def test_get_unauthorized_with_safe_true(self):
+    def test_get_unauthorized_with_suppress_exceptions(self):
         mock_response = MagicMock(spec=httpx.Response)
         mock_response.status_code = 401
 
@@ -45,7 +45,8 @@ class TestMetadataAPI(unittest.TestCase):
             "Unauthorized", request=MagicMock(), response=mock_response
         )
 
-        result = self.api.get(safe=True)
+        api = MetadataAPI(self.mock_client, suppress_exceptions=True)
+        result = api.get()
         self.assertEqual(result, {"error": "Unauthorized", "status_code": 401})
 
     def test_get_failure_raises_httpx_error(self):
@@ -57,8 +58,9 @@ class TestMetadataAPI(unittest.TestCase):
         )
         self.mock_client.head.return_value = mock_response
 
+        api = MetadataAPI(self.mock_client)
         with self.assertRaises(httpx.HTTPStatusError):
-            self.api.get()
+            api.get()
 
         self.mock_client.head.assert_called_once_with("/")
 
@@ -71,12 +73,13 @@ class TestMetadataAPI(unittest.TestCase):
         mock_response = _mock_head_response(200, headers)
         self.mock_client.head.return_value = mock_response
 
-        result = self.api.get_scans()
+        api = MetadataAPI(self.mock_client)
+        result = api.get_scans()
         self.mock_client.head.assert_called_once_with("/scans")
         mock_response.raise_for_status.assert_called_once()
         self.assertEqual(result, headers)
 
-    def test_get_scans_unauthorized_with_safe_true(self):
+    def test_get_scans_unauthorized_with_suppress_exceptions(self):
         mock_response = MagicMock(spec=httpx.Response)
         mock_response.status_code = 401
 
@@ -84,7 +87,8 @@ class TestMetadataAPI(unittest.TestCase):
             "Unauthorized", request=MagicMock(), response=mock_response
         )
 
-        result = self.api.get_scans(safe=True)
+        api = MetadataAPI(self.mock_client, suppress_exceptions=True)
+        result = api.get_scans()
         self.assertEqual(result, {"error": "Unauthorized", "status_code": 401})
 
     def test_get_scans_failure_raises_httpx_error(self):
@@ -96,7 +100,8 @@ class TestMetadataAPI(unittest.TestCase):
         )
         self.mock_client.head.return_value = mock_response
 
+        api = MetadataAPI(self.mock_client)
         with self.assertRaises(httpx.HTTPStatusError):
-            self.api.get_scans()
+            api.get_scans()
 
         self.mock_client.head.assert_called_once_with("/scans")
