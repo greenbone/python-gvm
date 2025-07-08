@@ -11,7 +11,7 @@ logical modules (health, metadata, scans, etc.).
 
 from typing import Optional, Tuple, Union
 
-from ._client import OpenvasdClient
+from ._client import StrOrPathLike, create_openvasd_http_client
 from .health import HealthAPI
 from .metadata import MetadataAPI
 from .notus import NotusAPI
@@ -35,8 +35,10 @@ class OpenvasdHttpApiV1:
         port: int = 3000,
         *,
         api_key: Optional[str] = None,
-        server_ca_path: Optional[str] = None,
-        client_cert_paths: Optional[Union[str, Tuple[str, str]]] = None,
+        server_ca_path: Optional[StrOrPathLike] = None,
+        client_cert_paths: Optional[
+            Union[StrOrPathLike, Tuple[StrOrPathLike, StrOrPathLike]]
+        ] = None,
     ):
         """
         Initialize the OpenvasdHttpApiV1 entry point.
@@ -52,13 +54,13 @@ class OpenvasdHttpApiV1:
             - Sets up an underlying `httpx.Client` using `OpenvasdClient`.
             - Initializes sub-API modules with the shared client instance.
         """
-        self._client = OpenvasdClient(
+        self._client = create_openvasd_http_client(
             host_name=host_name,
             port=port,
             api_key=api_key,
             server_ca_path=server_ca_path,
             client_cert_paths=client_cert_paths,
-        ).client
+        )
 
         # Sub-API modules
         self.health = HealthAPI(self._client)

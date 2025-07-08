@@ -6,29 +6,26 @@ import ssl
 import unittest
 from unittest.mock import MagicMock, patch
 
-from gvm.protocols.http.openvasd._client import OpenvasdClient
+from gvm.protocols.http.openvasd._client import create_openvasd_http_client
 
 
 class TestOpenvasdClient(unittest.TestCase):
-
     @patch("gvm.protocols.http.openvasd._client.Client")
     def test_init_without_tls_or_api_key(self, mock_httpx_client):
-        client = OpenvasdClient("localhost")
+        create_openvasd_http_client("localhost")
         mock_httpx_client.assert_called_once()
-        args, kwargs = mock_httpx_client.call_args
+        _, kwargs = mock_httpx_client.call_args
         self.assertEqual(kwargs["base_url"], "http://localhost:3000")
         self.assertFalse(kwargs["verify"])
         self.assertNotIn("X-API-KEY", kwargs["headers"])
-        self.assertEqual(client.client, mock_httpx_client())
 
     @patch("gvm.protocols.http.openvasd._client.Client")
     def test_init_with_api_key_only(self, mock_httpx_client):
-        client = OpenvasdClient("localhost", api_key="secret")
-        args, kwargs = mock_httpx_client.call_args
+        create_openvasd_http_client("localhost", api_key="secret")
+        _, kwargs = mock_httpx_client.call_args
         self.assertEqual(kwargs["headers"]["X-API-KEY"], "secret")
         self.assertEqual(kwargs["base_url"], "http://localhost:3000")
         self.assertFalse(kwargs["verify"])
-        self.assertEqual(client.client, mock_httpx_client())
 
     @patch("gvm.protocols.http.openvasd._client.ssl.create_default_context")
     @patch("gvm.protocols.http.openvasd._client.Client")
@@ -38,7 +35,7 @@ class TestOpenvasdClient(unittest.TestCase):
         mock_context = MagicMock(spec=ssl.SSLContext)
         mock_ssl_ctx_factory.return_value = mock_context
 
-        OpenvasdClient(
+        create_openvasd_http_client(
             "localhost",
             server_ca_path="/path/ca.pem",
             client_cert_paths=("/path/cert.pem", "/path/key.pem"),
@@ -51,7 +48,7 @@ class TestOpenvasdClient(unittest.TestCase):
             certfile="/path/cert.pem", keyfile="/path/key.pem"
         )
         mock_httpx_client.assert_called_once()
-        args, kwargs = mock_httpx_client.call_args
+        _, kwargs = mock_httpx_client.call_args
         self.assertEqual(kwargs["base_url"], "https://localhost:3000")
         self.assertEqual(kwargs["verify"], mock_context)
 
@@ -63,7 +60,7 @@ class TestOpenvasdClient(unittest.TestCase):
         mock_context = MagicMock(spec=ssl.SSLContext)
         mock_ssl_ctx_factory.return_value = mock_context
 
-        OpenvasdClient(
+        create_openvasd_http_client(
             "localhost",
             server_ca_path="/path/ca.pem",
             client_cert_paths="/path/client.pem",
@@ -72,6 +69,6 @@ class TestOpenvasdClient(unittest.TestCase):
         mock_context.load_cert_chain.assert_called_once_with(
             certfile="/path/client.pem"
         )
-        args, kwargs = mock_httpx_client.call_args
+        _, kwargs = mock_httpx_client.call_args
         self.assertEqual(kwargs["base_url"], "https://localhost:3000")
         self.assertEqual(kwargs["verify"], mock_context)
