@@ -5,17 +5,14 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from gvm.protocols.http.openvasd.openvasdv1 import OpenvasdHttpApiV1
+from gvm.protocols.http.openvasd.openvasd1 import OpenvasdHttpApiV1
 
 
 class TestOpenvasdHttpApiV1(unittest.TestCase):
-
-    @patch("gvm.protocols.http.openvasd.openvasdv1.OpenvasdClient")
-    def test_initializes_all_sub_apis(self, mock_openvasd_client_class):
+    @patch("gvm.protocols.http.openvasd.openvasd1.create_openvasd_http_client")
+    def test_initializes_all_sub_apis(self, mock_crate_openvasd_client):
         mock_httpx_client = MagicMock()
-        mock_openvasd_client_instance = MagicMock()
-        mock_openvasd_client_instance.client = mock_httpx_client
-        mock_openvasd_client_class.return_value = mock_openvasd_client_instance
+        mock_crate_openvasd_client.return_value = mock_httpx_client
 
         api = OpenvasdHttpApiV1(
             host_name="localhost",
@@ -25,7 +22,7 @@ class TestOpenvasdHttpApiV1(unittest.TestCase):
             client_cert_paths=("/path/to/client.pem", "/path/to/key.pem"),
         )
 
-        mock_openvasd_client_class.assert_called_once_with(
+        mock_crate_openvasd_client.assert_called_once_with(
             host_name="localhost",
             port=3000,
             api_key="test-key",
