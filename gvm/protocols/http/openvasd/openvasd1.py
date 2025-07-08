@@ -19,7 +19,7 @@ from .scans import ScansAPI
 from .vts import VtsAPI
 
 
-class OpenvasdHttpApiV1:
+class OpenvasdHttpAPIv1:
     """
     High-level interface for accessing openvasd HTTP API v1 endpoints.
 
