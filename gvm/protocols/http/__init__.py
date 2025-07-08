@@ -5,8 +5,5 @@
 """
 Package for supported Greenbone HTTP APIs.
 
-Currently only `openvasd version 1`_ is supported.
-
-.. _openvasd version 1:
-    https://greenbone.github.io/scanner-api/#/
+Currently only `openvasd version 1 <https://greenbone.github.io/scanner-api/#/>`_ is supported.
 """

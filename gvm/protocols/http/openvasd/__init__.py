@@ -3,13 +3,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 """
-Package for sending requests to openvasd and handling HTTP API responses.
-
-Modules:
-- :class:`OpenvasdHttpApiV1` – Main class for communicating with OpenVASD API v1.
+High-level API interface for interacting with openvasd HTTP services via
+logical modules (health, metadata, scans, etc.).
 
 Usage:
-    from gvm.protocols.http.openvasd import OpenvasdHttpApiV1
+
+.. code-block:: python
+
+    from gvm.protocols.http.openvasd import OpenvasdHttpAPIv1
 """
 
 from ._openvasd1 import OpenvasdHttpAPIv1
