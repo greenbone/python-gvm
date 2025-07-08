@@ -6,13 +6,14 @@
 API wrapper for interacting with the Notus component of the openvasd HTTP API.
 """
 
-import urllib.parse
-from typing import List
+import urllib
 
 import httpx
 
+from ._api import OpenvasdAPI
 
-class NotusAPI:
+
+class NotusAPI(OpenvasdAPI):
     """
     Provides access to the Notus-related endpoints of the openvasd HTTP API.
 
@@ -20,21 +21,9 @@ class NotusAPI:
     package-based vulnerability scans for a specific OS.
     """
 
-    def __init__(self, client: httpx.Client):
-        """
-        Initialize a NotusAPI instance.
-
-        Args:
-            client: An `httpx.Client` configured to communicate with the openvasd server.
-        """
-        self._client = client
-
-    def get_os_list(self, safe: bool = False) -> httpx.Response:
+    def get_os_list(self) -> httpx.Response:
         """
         Retrieve the list of supported operating systems from the Notus service.
-
-        Args:
-            safe: If True, return error info on failure instead of raising.
 
         Returns:
             The full `httpx.Response` on success.
@@ -46,12 +35,14 @@ class NotusAPI:
             response.raise_for_status()
             return response
         except httpx.HTTPStatusError as e:
-            if safe:
+            if self._suppress_exceptions:
                 return e.response
             raise
 
     def run_scan(
-        self, os: str, package_list: List[str], safe: bool = False
+        self,
+        os: str,
+        package_list: list[str],
     ) -> httpx.Response:
         """
         Trigger a Notus scan for a given OS and list of packages.
@@ -59,7 +50,6 @@ class NotusAPI:
         Args:
             os: Operating system name (e.g., "debian", "alpine").
             package_list: List of package names to evaluate for vulnerabilities.
-            safe: If True, return error info on failure instead of raising.
 
         Returns:
             The full `httpx.Response` on success.
@@ -74,6 +64,6 @@ class NotusAPI:
             response.raise_for_status()
             return response
         except httpx.HTTPStatusError as e:
-            if safe:
+            if self._suppress_exceptions:
                 return e.response
             raise

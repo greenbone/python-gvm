@@ -6,10 +6,14 @@
 API wrapper for retrieving metadata from the openvasd HTTP API using HEAD requests.
 """
 
+from typing import Union
+
 import httpx
 
+from ._api import OpenvasdAPI
 
-class MetadataAPI:
+
+class MetadataAPI(OpenvasdAPI):
     """
     Provides access to metadata endpoints exposed by the openvasd server
     using lightweight HTTP HEAD requests.
@@ -23,21 +27,9 @@ class MetadataAPI:
     is handled gracefully.
     """
 
-    def __init__(self, client: httpx.Client):
-        """
-        Initialize a MetadataAPI instance.
-
-        Args:
-            client: An `httpx.Client` configured to communicate with the openvasd server.
-        """
-        self._client = client
-
-    def get(self, safe: bool = False) -> dict:
+    def get(self) -> dict[str, Union[str, int]]:
         """
         Perform a HEAD request to `/` to retrieve top-level API metadata.
-
-        Args:
-            safe: If True, suppress exceptions and return structured error responses.
 
         Returns:
             A dictionary containing:
@@ -46,12 +38,12 @@ class MetadataAPI:
               - "feed-version"
               - "authentication"
 
-            Or if safe=True and error occurs:
+            Or if exceptions are suppressed and error occurs:
 
               - {"error": str, "status_code": int}
 
         Raises:
-            httpx.HTTPStatusError: For non-401 HTTP errors if safe=False.
+            httpx.HTTPStatusError: For non-401 HTTP errors if exceptions are not suppressed.
 
         See: HEAD / in the openvasd API documentation.
         """
@@ -64,16 +56,13 @@ class MetadataAPI:
                 "authentication": response.headers.get("authentication"),
             }
         except httpx.HTTPStatusError as e:
-            if safe:
+            if self._suppress_exceptions:
                 return {"error": str(e), "status_code": e.response.status_code}
             raise
 
-    def get_scans(self, safe: bool = False) -> dict:
+    def get_scans(self) -> dict[str, Union[str, int]]:
         """
          Perform a HEAD request to `/scans` to retrieve scan endpoint metadata.
-
-         Args:
-             safe: If True, suppress exceptions and return structured error responses.
 
         Returns:
              A dictionary containing:
@@ -87,7 +76,7 @@ class MetadataAPI:
                - {"error": str, "status_code": int}
 
          Raises:
-             httpx.HTTPStatusError: For non-401 HTTP errors if safe=False.
+             httpx.HTTPStatusError: For non-401 HTTP errors if exceptions are not suppressed.
 
          See: HEAD /scans in the openvasd API documentation.
         """
@@ -100,6 +89,6 @@ class MetadataAPI:
                 "authentication": response.headers.get("authentication"),
             }
         except httpx.HTTPStatusError as e:
-            if safe:
+            if self._suppress_exceptions:
                 return {"error": str(e), "status_code": e.response.status_code}
             raise
