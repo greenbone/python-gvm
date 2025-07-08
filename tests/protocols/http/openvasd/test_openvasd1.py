@@ -5,7 +5,7 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from gvm.protocols.http.openvasd.openvasd1 import OpenvasdHttpApiV1
+from gvm.protocols.http.openvasd.openvasd1 import OpenvasdHttpAPIv1
 
 
 class TestOpenvasdHttpApiV1(unittest.TestCase):
@@ -14,7 +14,7 @@ class TestOpenvasdHttpApiV1(unittest.TestCase):
         mock_httpx_client = MagicMock()
         mock_crate_openvasd_client.return_value = mock_httpx_client
 
-        api = OpenvasdHttpApiV1(
+        api = OpenvasdHttpAPIv1(
             host_name="localhost",
             port=3000,
             api_key="test-key",
