@@ -12,11 +12,11 @@ logical modules (health, metadata, scans, etc.).
 from typing import Optional, Tuple, Union
 
 from ._client import StrOrPathLike, create_openvasd_http_client
-from .health import HealthAPI
-from .metadata import MetadataAPI
-from .notus import NotusAPI
-from .scans import ScansAPI
-from .vts import VtsAPI
+from ._health import HealthAPI
+from ._metadata import MetadataAPI
+from ._notus import NotusAPI
+from ._scans import ScansAPI
+from ._vts import VtsAPI
 
 
 class OpenvasdHttpAPIv1:

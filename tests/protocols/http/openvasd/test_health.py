@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 
 import httpx
 
-from gvm.protocols.http.openvasd.health import HealthAPI
+from gvm.protocols.http.openvasd._health import HealthAPI
 
 
 def _mock_response(status_code=200):
@@ -18,7 +18,6 @@ def _mock_response(status_code=200):
 
 
 class TestHealthAPI(unittest.TestCase):
-
     def setUp(self):
         self.mock_client = MagicMock(spec=httpx.Client)
         self.health_api = HealthAPI(self.mock_client)

@@ -8,7 +8,7 @@ from unittest.mock import MagicMock
 import httpx
 
 from gvm.errors import InvalidArgumentType
-from gvm.protocols.http.openvasd.scans import ScanAction, ScansAPI
+from gvm.protocols.http.openvasd._scans import ScanAction, ScansAPI
 
 
 def _mock_response(status_code=200, json_data=None):
@@ -20,7 +20,6 @@ def _mock_response(status_code=200, json_data=None):
 
 
 class TestScansAPI(unittest.TestCase):
-
     def setUp(self):
         self.mock_client = MagicMock(spec=httpx.Client)
         self.api = ScansAPI(self.mock_client)

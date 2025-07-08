@@ -5,11 +5,11 @@
 import unittest
 from unittest.mock import MagicMock, patch
 
-from gvm.protocols.http.openvasd.openvasd1 import OpenvasdHttpAPIv1
+from gvm.protocols.http.openvasd import OpenvasdHttpAPIv1
 
 
 class TestOpenvasdHttpApiV1(unittest.TestCase):
-    @patch("gvm.protocols.http.openvasd.openvasd1.create_openvasd_http_client")
+    @patch("gvm.protocols.http.openvasd._openvasd1.create_openvasd_http_client")
     def test_initializes_all_sub_apis(self, mock_crate_openvasd_client):
         mock_httpx_client = MagicMock()
         mock_crate_openvasd_client.return_value = mock_httpx_client
