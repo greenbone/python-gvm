@@ -8,7 +8,16 @@ from unittest.mock import MagicMock
 import httpx
 
 from gvm.errors import InvalidArgumentType
-from gvm.protocols.http.openvasd._scans import ScanAction, ScansAPI
+from gvm.protocols.http.openvasd._scans import (
+    Credential,
+    CredentialUP,
+    ScanAction,
+    ScanPreference,
+    ScansAPI,
+    Target,
+    VTParameter,
+    VTSelection,
+)
 
 
 def _mock_response(status_code=200, json_data=None):
@@ -28,15 +37,65 @@ class TestScansAPI(unittest.TestCase):
         self.mock_client.post.return_value = mock_resp
 
         api = ScansAPI(self.mock_client)
-        api.create(
-            {"host": "localhost"}, [{"id": "1"}], scanner_params={"threads": 4}
+
+        target = Target(
+            hosts=["localhost"],
+            credentials=[
+                Credential(
+                    service="ssh",
+                    port=22,
+                    up=CredentialUP(username="user", password="pass"),
+                )
+            ],
         )
+        vt_selection = [
+            VTSelection(
+                oid="1.3.6.1.4.1.25623.1.0.100001",
+                parameters=[VTParameter(id=1, value="true")],
+            )
+        ]
+        preferences = [
+            ScanPreference(id="auto_enable_dependencies", value="True")
+        ]
+
+        api.create(target, vt_selection, scan_preferences=preferences)
+
         self.mock_client.post.assert_called_once_with(
             "/scans",
             json={
-                "target": {"host": "localhost"},
-                "vts": [{"id": "1"}],
-                "scan_preferences": {"threads": 4},
+                "target": {
+                    "hosts": ["localhost"],
+                    "excluded_hosts": [],
+                    "ports": [],
+                    "credentials": [
+                        {
+                            "service": "ssh",
+                            "port": 22,
+                            "up": {
+                                "username": "user",
+                                "password": "pass",
+                                "privilege_username": None,
+                                "privilege_password": None,
+                            },
+                            "krb5": None,
+                            "usk": None,
+                            "snmp": None,
+                        }
+                    ],
+                    "alive_test_ports": [],
+                    "alive_test_methods": [],
+                    "reverse_lookup_unify": False,
+                    "reverse_lookup_only": False,
+                },
+                "vts": [
+                    {
+                        "oid": "1.3.6.1.4.1.25623.1.0.100001",
+                        "parameters": [{"id": 1, "value": "true"}],
+                    }
+                ],
+                "scan_preferences": [
+                    {"id": "auto_enable_dependencies", "value": "True"}
+                ],
             },
         )
 
@@ -45,11 +104,29 @@ class TestScansAPI(unittest.TestCase):
         self.mock_client.post.return_value = mock_resp
 
         api = ScansAPI(self.mock_client)
-        api.create({"host": "localhost"}, [{"id": "1"}])
+
+        target = Target(hosts=["localhost"])
+        vt_selection = [VTSelection(oid="1.3.6.1.4.1.25623.1.0.100001")]
+
+        api.create(target, vt_selection)
 
         self.mock_client.post.assert_called_once_with(
             "/scans",
-            json={"target": {"host": "localhost"}, "vts": [{"id": "1"}]},
+            json={
+                "target": {
+                    "hosts": ["localhost"],
+                    "excluded_hosts": [],
+                    "ports": [],
+                    "credentials": [],
+                    "alive_test_ports": [],
+                    "alive_test_methods": [],
+                    "reverse_lookup_unify": False,
+                    "reverse_lookup_only": False,
+                },
+                "vts": [
+                    {"oid": "1.3.6.1.4.1.25623.1.0.100001", "parameters": []}
+                ],
+            },
         )
 
     def test_create_scan_failure_raises_httpx_error(self):
@@ -62,17 +139,29 @@ class TestScansAPI(unittest.TestCase):
         self.mock_client.post.return_value = mock_response
 
         api = ScansAPI(self.mock_client)
+
+        target = Target(hosts=["localhost"])
+        vt_selection = [VTSelection(oid="test-oid")]
+        preferences = [ScanPreference(id="test", value="4")]
+
         with self.assertRaises(httpx.HTTPStatusError):
-            api.create(
-                {"host": "localhost"}, [{"id": "1"}], scanner_params={"test": 4}
-            )
+            api.create(target, vt_selection, scan_preferences=preferences)
 
         self.mock_client.post.assert_called_once_with(
             "/scans",
             json={
-                "target": {"host": "localhost"},
-                "vts": [{"id": "1"}],
-                "scan_preferences": {"test": 4},
+                "target": {
+                    "hosts": ["localhost"],
+                    "excluded_hosts": [],
+                    "ports": [],
+                    "credentials": [],
+                    "alive_test_ports": [],
+                    "alive_test_methods": [],
+                    "reverse_lookup_unify": False,
+                    "reverse_lookup_only": False,
+                },
+                "vts": [{"oid": "test-oid", "parameters": []}],
+                "scan_preferences": [{"id": "test", "value": "4"}],
             },
         )
 
@@ -87,16 +176,30 @@ class TestScansAPI(unittest.TestCase):
         self.mock_client.post.return_value = mock_response
 
         api = ScansAPI(self.mock_client, suppress_exceptions=True)
+
+        target = Target(hosts=["localhost"])
+        vt_selection = [VTSelection(oid="1")]
+        preferences = [ScanPreference(id="test", value="4")]
+
         response = api.create(
-            {"host": "localhost"}, [{"id": "1"}], scanner_params={"test": 4}
+            target, vt_selection, scan_preferences=preferences
         )
 
         self.mock_client.post.assert_called_once_with(
             "/scans",
             json={
-                "target": {"host": "localhost"},
-                "vts": [{"id": "1"}],
-                "scan_preferences": {"test": 4},
+                "target": {
+                    "hosts": ["localhost"],
+                    "excluded_hosts": [],
+                    "ports": [],
+                    "credentials": [],
+                    "alive_test_ports": [],
+                    "alive_test_methods": [],
+                    "reverse_lookup_unify": False,
+                    "reverse_lookup_only": False,
+                },
+                "vts": [{"oid": "1", "parameters": []}],
+                "scan_preferences": [{"id": "test", "value": "4"}],
             },
         )
 
@@ -477,3 +580,57 @@ class TestScansAPI(unittest.TestCase):
         api._run_action = MagicMock(return_value=500)
         result = api.stop("scan-abc")
         self.assertEqual(result, 500)
+
+    def test_get_preferences_success(self):
+        mock_resp = _mock_response(
+            200,
+            [
+                {
+                    "id": "optimize_test",
+                    "name": "Optimize Test",
+                    "default": True,
+                    "description": "By default, optimize_test is enabled...",
+                }
+            ],
+        )
+        self.mock_client.get.return_value = mock_resp
+
+        api = ScansAPI(self.mock_client)
+        response = api.get_preferences()
+
+        self.mock_client.get.assert_called_once_with("/scans/preferences")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()[0]["id"], "optimize_test")
+
+    def test_get_preferences_failure_raises_httpx_error(self):
+        mock_resp = _mock_response()
+        mock_resp.raise_for_status.side_effect = httpx.HTTPStatusError(
+            "Server error",
+            request=MagicMock(),
+            response=MagicMock(status_code=500),
+        )
+        self.mock_client.get.return_value = mock_resp
+
+        api = ScansAPI(self.mock_client)
+
+        with self.assertRaises(httpx.HTTPStatusError):
+            api.get_preferences()
+
+        self.mock_client.get.assert_called_once_with("/scans/preferences")
+
+    def test_get_preferences_suppressed_exception_returns_response(self):
+        mock_error_response = MagicMock(status_code=400)
+        mock_resp = MagicMock()
+        mock_resp.raise_for_status.side_effect = httpx.HTTPStatusError(
+            "Bad Request",
+            request=MagicMock(),
+            response=mock_error_response,
+        )
+        self.mock_client.get.return_value = mock_resp
+
+        api = ScansAPI(self.mock_client, suppress_exceptions=True)
+        response = api.get_preferences()
+
+        self.mock_client.get.assert_called_once_with("/scans/preferences")
+        self.assertEqual(response, mock_error_response)
+        self.assertEqual(response.status_code, 400)
