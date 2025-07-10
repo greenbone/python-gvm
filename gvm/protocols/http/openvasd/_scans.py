@@ -7,6 +7,7 @@ API wrapper for interacting with the /scans endpoints of the openvasd HTTP API.
 """
 
 import urllib.parse
+from dataclasses import asdict, dataclass, field
 from enum import Enum
 from typing import Any, Optional, Union
 from uuid import UUID
@@ -18,6 +19,211 @@ from gvm.errors import InvalidArgumentType
 from ._api import OpenvasdAPI
 
 ID = Union[str, UUID]
+
+
+@dataclass
+class PortRange:
+    """
+    Represents a range of ports.
+
+    Attributes:
+        start: The starting port number.
+        end: The ending port number.
+    """
+
+    start: int
+    end: int
+
+
+@dataclass
+class Port:
+    """
+    Represents a port configuration for scanning.
+
+    Attributes:
+        protocol: The protocol to use ("tcp" or "udp").
+        range: A list of port ranges to scan.
+    """
+
+    protocol: str  # e.g., "tcp", "udp"
+    range: list[PortRange]
+
+
+@dataclass
+class CredentialUP:
+    """
+    Represents username/password credentials for a service.
+
+    Attributes:
+        username: The login username.
+        password: The login password.
+        privilege_username: Optional privilege escalation username.
+        privilege_password: Optional privilege escalation password.
+    """
+
+    username: str
+    password: str
+    privilege_username: Optional[str] = None
+    privilege_password: Optional[str] = None
+
+
+@dataclass
+class CredentialKRB5:
+    """
+    Represents Kerberos credentials.
+
+    Attributes:
+        username: Kerberos username.
+        password: Kerberos password.
+        realm: Kerberos realm.
+        kdc: Key Distribution Center hostname.
+    """
+
+    username: str
+    password: str
+    realm: str
+    kdc: str
+
+
+@dataclass
+class CredentialUSK:
+    """
+    Represents credentials using a user/SSH key combination.
+
+    Attributes:
+        username: SSH username.
+        password: Password for SSH key (if encrypted).
+        private: Private key content or reference.
+        privilege_username: Optional privilege escalation username.
+        privilege_password: Optional privilege escalation password.
+    """
+
+    username: str
+    password: str
+    private: str
+    privilege_username: Optional[str] = None
+    privilege_password: Optional[str] = None
+
+
+@dataclass
+class CredentialSNMP:
+    """
+    Represents SNMP credentials.
+
+    Attributes:
+        username: SNMP username.
+        password: SNMP authentication password.
+        community: SNMP community string.
+        auth_algorithm: Authentication algorithm (e.g., "md5").
+        privacy_password: Privacy password for SNMPv3.
+        privacy_algorithm: Privacy algorithm (e.g., "aes").
+    """
+
+    username: str
+    password: str
+    community: str
+    auth_algorithm: str
+    privacy_password: str
+    privacy_algorithm: str
+
+
+@dataclass
+class Credential:
+    """
+    Represents a full credential configuration for a specific service.
+
+    Attributes:
+        service: Name of the service (e.g., "ssh", "snmp").
+        port: Port number associated with the service.
+        up: Optional username/password credentials.
+        krb5: Optional Kerberos credentials.
+        usk: Optional user/SSH key credentials.
+        snmp: Optional SNMP credentials.
+    """
+
+    service: str
+    port: int
+    up: Optional[CredentialUP] = None
+    krb5: Optional[CredentialKRB5] = None
+    usk: Optional[CredentialUSK] = None
+    snmp: Optional[CredentialSNMP] = None
+
+
+@dataclass
+class Target:
+    """
+    Represents the scan target configuration.
+
+    Attributes:
+        hosts: List of target IPs or hostnames.
+        excluded_hosts: List of IPs or hostnames to exclude.
+        ports: List of port configurations.
+        credentials: List of credentials to use during scanning.
+        alive_test_ports: Port ranges used to test if hosts are alive.
+        alive_test_methods: Methods used to check if hosts are alive (e.g., "icmp").
+        reverse_lookup_unify: Whether to unify reverse lookup results.
+        reverse_lookup_only: Whether to rely solely on reverse DNS lookups.
+    """
+
+    hosts: list[str]
+    excluded_hosts: list[str] = field(default_factory=list)
+    ports: list[Port] = field(default_factory=list)
+    credentials: list[Credential] = field(default_factory=list)
+    alive_test_ports: list[Port] = field(default_factory=list)
+    alive_test_methods: list[str] = field(default_factory=list)
+    reverse_lookup_unify: bool = False
+    reverse_lookup_only: bool = False
+
+
+@dataclass
+class VTParameter:
+    """
+    Represents a parameter for a specific vulnerability test.
+
+    Attributes:
+        id: Identifier of the VT parameter.
+        value: Value to assign to the parameter.
+    """
+
+    id: int
+    value: str
+
+
+@dataclass
+class VTSelection:
+    """
+    Represents a selected vulnerability test (VT) and its parameters.
+
+    Attributes:
+        oid: The OID (Object Identifier) of the VT.
+        parameters: A list of parameters to customize VT behavior.
+    """
+
+    oid: str
+    parameters: list[VTParameter] = field(default_factory=list)
+
+
+@dataclass
+class ScanPreference:
+    """
+    Represents a scan-level preference or configuration option.
+
+    Attributes:
+        id: Preference ID or name (e.g., "max_checks", "scan_speed").
+        value: The value assigned to the preference.
+    """
+
+    id: str
+    value: str
+
+
+def _to_dict(obj: Any) -> Any:
+    """Recursively convert dataclass instances to dictionaries."""
+    if isinstance(obj, list):
+        return [_to_dict(item) for item in obj]
+    elif hasattr(obj, "__dataclass_fields__"):
+        return {k: _to_dict(v) for k, v in asdict(obj).items() if v is not None}
+    return obj
 
 
 class ScanAction(str, Enum):
@@ -47,21 +253,21 @@ class ScansAPI(OpenvasdAPI):
 
     def create(
         self,
-        target: dict[str, Any],
-        vt_selection: list[dict[str, Any]],
+        target: Target,
+        vt_selection: list[VTSelection],
         *,
-        scanner_params: Optional[dict[str, Any]] = None,
+        scan_preferences: Optional[list[ScanPreference]] = None,
     ) -> httpx.Response:
         """
-        Create a new scan with the specified target and VT selection.
+        Create a new scan with the specified target configuration and VT selection.
 
         Args:
-            target: Dictionary describing the scan target (e.g., host and port).
-            vt_selection: List of dictionaries specifying which VTs to run.
-            scanner_params: Optional dictionary of scan preferences.
+            target: A `Target` dataclass instance describing the scan target(s), including hosts, ports, credentials, and alive test settings.
+            vt_selection: A list of `VTSelection` instances specifying which vulnerability tests (VTs) to include in the scan.
+            scan_preferences: Optional list of `ScanPreference` instances to customize scan behavior (e.g., number of threads, timeout values).
 
         Returns:
-            The full HTTP response of the POST /scans request.
+            The full HTTP response returned by the POST /scans request.
 
         Raises:
             httpx.HTTPStatusError: If the server responds with an error status
@@ -69,9 +275,12 @@ class ScansAPI(OpenvasdAPI):
 
         See: POST /scans in the openvasd API documentation.
         """
-        request_json = {"target": target, "vts": vt_selection}
-        if scanner_params:
-            request_json["scan_preferences"] = scanner_params
+        request_json = {
+            "target": _to_dict(target),
+            "vts": _to_dict(vt_selection),
+        }
+        if scan_preferences:
+            request_json["scan_preferences"] = _to_dict(scan_preferences)
 
         try:
             response = self._client.post("/scans", json=request_json)
@@ -329,3 +538,25 @@ class ScansAPI(OpenvasdAPI):
         See: POST /scans/{id} with action=stop in the openvasd API documentation.
         """
         return self._run_action(scan_id, ScanAction.STOP)
+
+    def get_preferences(self) -> httpx.Response:
+        """
+        Retrieve all available scan preferences from the scanner.
+
+        Returns:
+            The full HTTP response of the GET /scans/preferences request.
+
+        Raises:
+            httpx.HTTPStatusError: If the server responds with an error status
+                and the exception is not suppressed.
+
+        See: GET /scans/preferences in the openvasd API documentation.
+        """
+        try:
+            response = self._client.get("/scans/preferences")
+            response.raise_for_status()
+            return response
+        except httpx.HTTPStatusError as e:
+            if self._suppress_exceptions:
+                return e.response
+            raise
