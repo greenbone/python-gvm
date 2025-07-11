@@ -2,7 +2,7 @@
 #
 #  SPDX-License-Identifier: GPL-3.0-or-later
 
-from gvm.protocols.gmp.requests.v228._agent_installers import AgentInstallers
+from gvm.protocols.gmp.requests.next._agent_installers import AgentInstallers
 
 from .._entity_id import EntityID
 from .._version import Version
