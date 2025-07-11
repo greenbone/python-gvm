@@ -7,7 +7,7 @@ import unittest
 from unittest.mock import MagicMock, patch
 
 from gvm.errors import GvmError
-from gvm.protocols.gmp import Gmp, GMPv228
+from gvm.protocols.gmp import Gmp, GMPNext
 from gvm.protocols.gmp._gmp224 import GMPv224
 from gvm.protocols.gmp._gmp225 import GMPv225
 from gvm.protocols.gmp._gmp226 import GMPv226
@@ -155,7 +155,7 @@ class GmpContextManagerTestCase(GmpTestCase):
 
         with self.gmp as gmp:
             self.assertEqual(gmp.get_protocol_version(), (22, 8))
-            self.assertIsInstance(gmp, GMPv228)
+            self.assertIsInstance(gmp, GMPNext)
 
         self.connection.read.return_value(
             b'<get_version_response status="200" status_text="OK">'
