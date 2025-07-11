@@ -8,18 +8,22 @@ from gvm.protocols.gmp.requests import EntityID
 
 from .._protocol import T
 from ._gmp227 import GMPv227
-from .requests.v228 import AgentInstallers
+from .requests.next import AgentInstallers
 
 
-class GMPv228(GMPv227[T]):
+class GMPNext(GMPv227[T]):
     """
-    A class implementing the Greenbone Management Protocol (GMP) version 22.8
+    A class implementing the "Next" version of Greenbone Management Protocol (GMP)
+    containing features that are not part of the stable release yet.
+
+    These features may change at any time and may not be available in all builds
+    of the gvmd back-end.
 
     Example:
 
         .. code-block:: python
 
-            from gvm.protocols.gmp import GMPv228 as GMP
+            from gvm.protocols.gmp import GMPNext as GMP
 
             with GMP(connection) as gmp:
                 resp = gmp.get_tasks()

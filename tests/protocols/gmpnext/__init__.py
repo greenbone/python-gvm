@@ -3,10 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from gvm.protocols.gmp import GMPv228
+from gvm.protocols.gmp import GMPNext
 
 from .. import GmpTestCase as BaseGMPTestCase
 
 
 class GMPTestCase(BaseGMPTestCase):
-    gmp_class = GMPv228
+    gmp_class = GMPNext
