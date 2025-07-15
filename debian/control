@@ -17,7 +17,7 @@ Build-Depends:
   dh-python,
   python3-poetry-core,
   pybuild-plugin-pyproject (>= 5),
-Standards-Version: 4.6.2
+Standards-Version: 4.7.2
 
 Package: python3-gvm
 Architecture: all
