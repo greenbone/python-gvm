@@ -17,6 +17,7 @@ Build-Depends:
   dh-python,
   python3-poetry-core,
   pybuild-plugin-pyproject (>= 5),
+  python3-pontos,
 Standards-Version: 4.7.2
 
 Package: python3-gvm
