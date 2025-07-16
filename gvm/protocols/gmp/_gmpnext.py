@@ -23,7 +23,7 @@ class GMPNext(GMPv227[T]):
 
         .. code-block:: python
 
-            from gvm.protocols.gmp import GMPNext as GMP
+            from gvm.protocols.gmp.next import GMP
 
             with GMP(connection) as gmp:
                 resp = gmp.get_tasks()
