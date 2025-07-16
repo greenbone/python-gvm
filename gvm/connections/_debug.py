@@ -28,7 +28,7 @@ class DebugConnection:
 
         socket_connection = UnixSocketConnection(path='/var/run/gvm.sock')
         connection = DebugConnection(socket_connection)
-        gmp = Gmp(connection=connection)
+        gmp = GMP(connection=connection)
     """
 
     def __init__(self, connection: GvmConnection):
