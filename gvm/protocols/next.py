@@ -20,11 +20,14 @@ Exports:
 """
 
 from .gmp import (
-    GMPNext as Gmp,
+    GMPNext as GMP,
 )
 from .ospv1 import Osp
 
+Gmp = GMP  # for backwards compatibility
+
 __all__ = [
     "Gmp",
+    "GMP",
     "Osp",
 ]
