@@ -1,3 +1,11 @@
+python-gvm (26.2.1-gos2500~1) prometheus; urgency=medium
+
+  * Change: Prepare for prometheus
+  * Change: Use Standards-Version 4.7.2
+  * Change: Replace patch with upstream package pontos
+
+ -- Raphael Grewe <raphael.grewe@greenbone.net>  Wed, 09 Jul 2025 12:24:07 +0200
+
 python-gvm (26.1.1-gos2404~1) shredder; urgency=medium
 
   * Change: New upstream release 26.1.1. (Closes: GOS-2082)
