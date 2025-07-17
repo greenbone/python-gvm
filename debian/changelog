@@ -1,3 +1,9 @@
+python-gvm (26.4.0-gos2500~1) prometheus; urgency=medium
+
+  * Change: New upstream release 26.4.0. (Closes: GOS-2301)
+
+ -- Hendrik Deuper <hendrik.deuper@greenbone.net>  Thu, 17 Jul 2025 09:00:39 -0400
+
 python-gvm (26.2.1-gos2500~1) prometheus; urgency=medium
 
   * Change: Prepare for prometheus
