@@ -8,7 +8,7 @@ from gvm.protocols.gmp.requests import EntityID
 
 from .._protocol import T
 from ._gmp227 import GMPv227
-from .requests.next import AgentGroups, AgentInstallers, Agents
+from .requests.next import AgentGroups, AgentInstallers, Agents, OCIImageTargets
 
 
 class GMPNext(GMPv227[T]):
@@ -273,4 +273,122 @@ class GMPNext(GMPv227[T]):
         """
         return self._send_request_and_transform_response(
             AgentGroups.clone_agent_group(agent_group_id)
+        )
+
+    def create_oci_image_target(
+        self,
+        name: str,
+        image_references: list[str],
+        *,
+        comment: Optional[str] = None,
+        credential_id: Optional[EntityID] = None,
+    ) -> T:
+        """Create a new OCI image target
+
+        Args:
+            name: Name of the OCI image target
+            image_references: List of OCI image URLs to scan
+            comment: Comment for the target
+            credential_id: UUID of a credential to use on target
+        """
+        return self._send_request_and_transform_response(
+            OCIImageTargets.create_oci_image_target(
+                name=name,
+                image_references=image_references,
+                comment=comment,
+                credential_id=credential_id,
+            )
+        )
+
+    def modify_oci_image_target(
+        self,
+        oci_image_target_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        image_references: Optional[list[str]] = None,
+        credential_id: Optional[EntityID] = None,
+    ) -> T:
+        """Modify an existing OCI image target.
+
+        Args:
+            oci_image_target_id: UUID of target to modify.
+            comment: Comment on target.
+            name: Name of target.
+            image_references: List of OCI image URLs to scan.
+            credential_id: UUID of credential to use on target.
+        """
+        return self._send_request_and_transform_response(
+            OCIImageTargets.modify_oci_image_target(
+                oci_image_target_id,
+                name=name,
+                comment=comment,
+                image_references=image_references,
+                credential_id=credential_id,
+            )
+        )
+
+    def clone_oci_image_target(self, oci_image_target_id: EntityID) -> T:
+        """Clone an existing OCI image target.
+
+        Args:
+            oci_image_target_id: UUID of an existing OCI image target to clone.
+        """
+        return self._send_request_and_transform_response(
+            OCIImageTargets.clone_oci_image_target(oci_image_target_id)
+        )
+
+    def delete_oci_image_target(
+        self, oci_image_target_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> T:
+        """Delete an existing OCI image target.
+
+        Args:
+            oci_image_target_id: UUID of an existing OCI image target to delete.
+            ultimate: Whether to remove entirely or to the trashcan.
+        """
+        return self._send_request_and_transform_response(
+            OCIImageTargets.delete_oci_image_target(
+                oci_image_target_id, ultimate=ultimate
+            )
+        )
+
+    def get_oci_image_target(
+        self, oci_image_target_id: EntityID, *, tasks: Optional[bool] = None
+    ) -> T:
+        """Request a single OCI image target.
+
+        Args:
+            oci_image_target_id: UUID of the OCI image target to request.
+            tasks: Whether to include list of tasks that use the target
+        """
+        return self._send_request_and_transform_response(
+            OCIImageTargets.get_oci_image_target(
+                oci_image_target_id, tasks=tasks
+            )
+        )
+
+    def get_oci_image_targets(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        trash: Optional[bool] = None,
+        tasks: Optional[bool] = None,
+    ) -> T:
+        """Request a list of OCI image targets.
+
+        Args:
+            filter_string: Filter term to use for the query.
+            filter_id: UUID of an existing filter to use for the query.
+            trash: Whether to include targets in the trashcan.
+            tasks: Whether to include list of tasks that use the target.
+        """
+        return self._send_request_and_transform_response(
+            OCIImageTargets.get_oci_image_targets(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                tasks=tasks,
+            )
         )
