@@ -188,8 +188,8 @@ class GMPNext(GMPv227[T]):
     def create_agent_group(
         self,
         name: str,
-        *,
         agent_ids: list[str],
+        *,
         comment: Optional[str] = None,
     ) -> T:
         """Create a new agent group.
