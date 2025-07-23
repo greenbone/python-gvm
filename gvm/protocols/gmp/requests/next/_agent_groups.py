@@ -16,8 +16,8 @@ class AgentGroups:
     def create_agent_group(
         cls,
         name: str,
-        *,
         agent_ids: list[str],
+        *,
         comment: Optional[str] = None,
     ) -> Request:
         """Create a new agent group.
