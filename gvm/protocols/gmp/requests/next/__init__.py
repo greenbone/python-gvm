@@ -6,6 +6,7 @@ from gvm.protocols.gmp.requests.next._agent_groups import AgentGroups
 from gvm.protocols.gmp.requests.next._agent_installers import AgentInstallers
 from gvm.protocols.gmp.requests.next._agents import Agents
 from gvm.protocols.gmp.requests.next._oci_image_targets import OCIImageTargets
+from gvm.protocols.gmp.requests.next._tasks import Tasks
 
 from .._entity_id import EntityID
 from .._version import Version
@@ -68,7 +69,6 @@ from ..v227 import (
     SystemReports,
     Tags,
     Targets,
-    Tasks,
     Tickets,
     TicketStatus,
     TLSCertificates,
