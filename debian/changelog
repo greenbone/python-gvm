@@ -1,3 +1,9 @@
+python-gvm (26.5.0-gos2500~1) prometheus; urgency=medium
+
+  * Change: New upstream release 26.5.0. (Closes: GOS-2411)
+
+ -- Lukas Hannigbrinck <lukas.hannigbrinck@greenbone.net>  Wed, 13 Aug 2025 15:10:32 +0200
+
 python-gvm (26.4.0-gos2500~1) prometheus; urgency=medium
 
   * Change: New upstream release 26.4.0. (Closes: GOS-2301)
