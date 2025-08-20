@@ -5,6 +5,9 @@
 
 from .test_clone_task import GmpCloneTaskTestMixin
 from .test_create_agent_group_task import GmpCreateAgentGroupTaskTestMixin
+from .test_create_container_image_task import (
+    GmpCreateContainerImageTaskTestMixin,
+)
 from .test_create_container_task import GmpCreateContainerTaskTestMixin
 from .test_create_task import GmpCreateTaskTestMixin
 from .test_delete_task import GmpDeleteTaskTestMixin
@@ -19,6 +22,7 @@ from .test_stop_task import GmpStopTaskTestMixin
 __all__ = (
     "GmpCloneTaskTestMixin",
     "GmpCreateAgentGroupTaskTestMixin",
+    "GmpCreateContainerImageTaskTestMixin",
     "GmpCreateContainerTaskTestMixin",
     "GmpCreateTaskTestMixin",
     "GmpDeleteTaskTestMixin",
