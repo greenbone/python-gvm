@@ -122,27 +122,8 @@ class GMPNext(GMPv227[T]):
 
         Args:
             agent_ids: List of agent UUIDs to modify.
-            authorized: Whether the agent is authorized (writes <authorized>1/0</authorized>).
-            config: Nested config matching the new schema, e.g.:
-                {
-                  "agent_control": {
-                    "retry": {
-                      "attempts": 6,
-                      "delay_in_seconds": 60,
-                      "max_jitter_in_seconds": 10,
-                    }
-                  },
-                  "agent_script_executor": {
-                      "bulk_size": 2,
-                      "bulk_throttle_time_in_ms": 300,
-                      "indexer_dir_depth": 100,
-                      "scheduler_cron_time": ["0 */12 * * *"],  # str or list[str]
-                  },
-                  "heartbeat": {
-                      "interval_in_seconds": 300,
-                      "miss_until_inactive": 1,
-                  },
-                }
+            authorized: Whether the agent is authorized.
+            config: Nested config for Agent Controller.
             comment: Optional comment for the change.
         """
         return self._send_request_and_transform_response(
@@ -174,28 +155,7 @@ class GMPNext(GMPv227[T]):
 
         Args:
             agent_control_id: The agent control UUID.
-            config: Nested config, e.g.:
-                {
-                  "agent_control": {
-                  "retry": {
-                      "attempts": 6,
-                      "delay_in_seconds": 60,
-                      "max_jitter_in_seconds": 10,
-                    }
-                  },
-                  "agent_script_executor": {
-                      "bulk_size": 2,
-                      "bulk_throttle_time_in_ms": 300,
-                      "indexer_dir_depth": 100,
-                      "scheduler_cron_time": ["0 */12 * * *"],  # str or list[str]
-                  },
-                  "heartbeat": {
-                      "interval_in_seconds": 300,
-                      "miss_until_inactive": 1,
-                  },
-                }
-        Returns:
-            Request: Prepared XML command.
+            config: Nested config for Agent Controller.
         """
         return self._send_request_and_transform_response(
             Agents.modify_agent_control_scan_config(

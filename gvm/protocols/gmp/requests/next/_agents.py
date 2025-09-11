@@ -15,11 +15,51 @@ class Agents:
 
     @staticmethod
     def _add_el(parent, name: str, value) -> None:
+        """
+        Helper to add a sub-element with a value if the value is not None.
+
+        Args:
+            parent: The XML parent element to which the new element is added.
+            name: Name of the sub-element to create.
+            value: Value to set as the text of the sub-element. If None, the
+                element will not be created.
+        """
         if value is not None:
             parent.add_element(name, str(value))
 
     @classmethod
     def _append_agent_config(cls, parent, config: Mapping[str, Any]) -> None:
+        """
+        Append an agent configuration block to the given XML parent element.
+
+        Expected config structure::
+
+            {
+                "agent_control": {
+                    "retry": {
+                        "attempts": 6,
+                        "delay_in_seconds": 60,
+                        "max_jitter_in_seconds": 10
+                    }
+                },
+                "agent_script_executor": {
+                    "bulk_size": 2,
+                    "bulk_throttle_time_in_ms": 300,
+                    "indexer_dir_depth": 100,
+                    "scheduler_cron_time": ["0 */12 * * *"]
+                },
+                "heartbeat": {
+                    "interval_in_seconds": 300,
+                    "miss_until_inactive": 1
+                }
+            }
+
+        Args:
+            parent: The XML parent element to which the `<config>` element
+                should be appended.
+            config: Mapping containing the agent configuration fields to
+                serialize.
+        """
         xml_config = parent.add_element("config")
 
         # agent_control.retry
@@ -101,10 +141,10 @@ class Agents:
         Args:
             agent_ids: List of agent UUIDs to modify.
             authorized: Whether the agent is authorized.
-            config: Nested config matching the new schema, e.g.:
+            config: Nested config, e.g.:
                 {
                   "agent_control": {
-                  "retry": {
+                    "retry": {
                       "attempts": 6,
                       "delay_in_seconds": 60,
                       "max_jitter_in_seconds": 10,
@@ -114,7 +154,7 @@ class Agents:
                       "bulk_size": 2,
                       "bulk_throttle_time_in_ms": 300,
                       "indexer_dir_depth": 100,
-                      "scheduler_cron_time": ["0 */12 * * *"],  # list[str]
+                      "scheduler_cron_time": ["0 */12 * * *"],  # str or list[str]
                   },
                   "heartbeat": {
                       "interval_in_seconds": 300,
@@ -196,8 +236,6 @@ class Agents:
                       "miss_until_inactive": 1,
                   },
                 }
-        Returns:
-            Request: Prepared XML command.
         """
         if not agent_control_id:
             raise RequiredArgument(
