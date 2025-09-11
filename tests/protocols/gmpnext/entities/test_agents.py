@@ -10,6 +10,9 @@ from .agents.test_delete_agents import (
 from .agents.test_get_agents import (
     GmpGetAgentsTestMixin,
 )
+from .agents.test_modify_agent_controller_scan_config import (
+    GmpModifyAgentControllerScanConfigTestMixin,
+)
 from .agents.test_modify_agents import (
     GmpModifyAgentsTestMixin,
 )
@@ -24,4 +27,10 @@ class GMPModifyAgentsTestCase(GmpModifyAgentsTestMixin, GMPTestCase):
 
 
 class GMPDeleteAgentsTestCase(GmpDeleteAgentsTestMixin, GMPTestCase):
+    pass
+
+
+class GMPModifyAgentControllerScanConfigTestCase(
+    GmpModifyAgentControllerScanConfigTestMixin, GMPTestCase
+):
     pass

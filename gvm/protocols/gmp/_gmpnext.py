@@ -2,7 +2,7 @@
 #
 #  SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Mapping, Optional, Sequence
+from typing import Any, Mapping, Optional, Sequence
 
 from gvm.protocols.gmp.requests import EntityID
 
@@ -114,28 +114,42 @@ class GMPNext(GMPv227[T]):
         agent_ids: list[EntityID],
         *,
         authorized: Optional[bool] = None,
-        min_interval: Optional[int] = None,
-        heartbeat_interval: Optional[int] = None,
-        schedule: Optional[str] = None,
+        config: Optional[Mapping[str, Any]] = None,
         comment: Optional[str] = None,
     ) -> T:
-        """Modify multiple agents
+        """
+        Modify multiple agents.
 
         Args:
-            agent_ids: List of agent UUIDs to modify
-            authorized: Whether the agent is authorized
-            min_interval: Minimum scan interval
-            heartbeat_interval: Interval for sending heartbeats
-            schedule: Cron-style schedule for agent
-            comment: Comment for the agents
+            agent_ids: List of agent UUIDs to modify.
+            authorized: Whether the agent is authorized (writes <authorized>1/0</authorized>).
+            config: Nested config matching the new schema, e.g.:
+                {
+                  "agent_control": {
+                    "retry": {
+                      "attempts": 6,
+                      "delay_in_seconds": 60,
+                      "max_jitter_in_seconds": 10,
+                    }
+                  },
+                  "agent_script_executor": {
+                      "bulk_size": 2,
+                      "bulk_throttle_time_in_ms": 300,
+                      "indexer_dir_depth": 100,
+                      "scheduler_cron_time": ["0 */12 * * *"],  # str or list[str]
+                  },
+                  "heartbeat": {
+                      "interval_in_seconds": 300,
+                      "miss_until_inactive": 1,
+                  },
+                }
+            comment: Optional comment for the change.
         """
         return self._send_request_and_transform_response(
             Agents.modify_agents(
                 agent_ids=agent_ids,
                 authorized=authorized,
-                min_interval=min_interval,
-                heartbeat_interval=heartbeat_interval,
-                schedule=schedule,
+                config=config,
                 comment=comment,
             )
         )
@@ -148,6 +162,46 @@ class GMPNext(GMPv227[T]):
         """
         return self._send_request_and_transform_response(
             Agents.delete_agents(agent_ids=agent_ids)
+        )
+
+    def modify_agent_control_scan_config(
+        self,
+        agent_control_id: EntityID,
+        config: Mapping[str, Any],
+    ) -> T:
+        """
+        Modify agent control scan config.
+
+        Args:
+            agent_control_id: The agent control UUID.
+            config: Nested config, e.g.:
+                {
+                  "agent_control": {
+                  "retry": {
+                      "attempts": 6,
+                      "delay_in_seconds": 60,
+                      "max_jitter_in_seconds": 10,
+                    }
+                  },
+                  "agent_script_executor": {
+                      "bulk_size": 2,
+                      "bulk_throttle_time_in_ms": 300,
+                      "indexer_dir_depth": 100,
+                      "scheduler_cron_time": ["0 */12 * * *"],  # str or list[str]
+                  },
+                  "heartbeat": {
+                      "interval_in_seconds": 300,
+                      "miss_until_inactive": 1,
+                  },
+                }
+        Returns:
+            Request: Prepared XML command.
+        """
+        return self._send_request_and_transform_response(
+            Agents.modify_agent_control_scan_config(
+                agent_control_id=agent_control_id,
+                config=config,
+            )
         )
 
     def get_agent_groups(

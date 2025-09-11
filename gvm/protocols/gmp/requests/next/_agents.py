@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
+from typing import Any, Mapping, Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -12,6 +12,57 @@ from gvm.xml import XmlCommand
 
 
 class Agents:
+
+    @staticmethod
+    def _add_el(parent, name: str, value) -> None:
+        if value is not None:
+            parent.add_element(name, str(value))
+
+    @classmethod
+    def _append_agent_config(cls, parent, config: Mapping[str, Any]) -> None:
+        xml_config = parent.add_element("config")
+
+        # agent_control.retry
+        ac = config["agent_control"]
+        retry = ac["retry"]
+        xml_ac = xml_config.add_element("agent_control")
+        xml_retry = xml_ac.add_element("retry")
+        cls._add_el(xml_retry, "attempts", retry.get("attempts"))
+        cls._add_el(
+            xml_retry, "delay_in_seconds", retry.get("delay_in_seconds")
+        )
+        cls._add_el(
+            xml_retry,
+            "max_jitter_in_seconds",
+            retry.get("max_jitter_in_seconds"),
+        )
+
+        # agent_script_executor
+        se = config["agent_script_executor"]
+        xml_se = xml_config.add_element("agent_script_executor")
+        cls._add_el(xml_se, "bulk_size", se.get("bulk_size"))
+        cls._add_el(
+            xml_se,
+            "bulk_throttle_time_in_ms",
+            se.get("bulk_throttle_time_in_ms"),
+        )
+        cls._add_el(xml_se, "indexer_dir_depth", se.get("indexer_dir_depth"))
+        sched = se.get("scheduler_cron_time")
+        if sched:
+            xml_sched = xml_se.add_element("scheduler_cron_time")
+            for item in sched:
+                xml_sched.add_element("item", str(item))
+
+        # heartbeat
+        hb = config["heartbeat"]
+        xml_hb = xml_config.add_element("heartbeat")
+        cls._add_el(
+            xml_hb, "interval_in_seconds", hb.get("interval_in_seconds")
+        )
+        cls._add_el(
+            xml_hb, "miss_until_inactive", hb.get("miss_until_inactive")
+        )
+
     @classmethod
     def get_agents(
         cls,
@@ -41,20 +92,36 @@ class Agents:
         agent_ids: list[EntityID],
         *,
         authorized: Optional[bool] = None,
-        min_interval: Optional[int] = None,
-        heartbeat_interval: Optional[int] = None,
-        schedule: Optional[str] = None,
+        config: Optional[Mapping[str, Any]] = None,
         comment: Optional[str] = None,
     ) -> Request:
-        """Modify multiple agents
+        """
+        Modify multiple agents.
 
         Args:
-            agent_ids: List of agent UUIDs to modify
-            authorized: Whether the agent is authorized
-            min_interval: Minimum scan interval
-            heartbeat_interval: Interval for sending heartbeats
-            schedule: Cron-style schedule for agent
-            comment: Comment for the agents
+            agent_ids: List of agent UUIDs to modify.
+            authorized: Whether the agent is authorized.
+            config: Nested config matching the new schema, e.g.:
+                {
+                  "agent_control": {
+                  "retry": {
+                      "attempts": 6,
+                      "delay_in_seconds": 60,
+                      "max_jitter_in_seconds": 10,
+                    }
+                  },
+                  "agent_script_executor": {
+                      "bulk_size": 2,
+                      "bulk_throttle_time_in_ms": 300,
+                      "indexer_dir_depth": 100,
+                      "scheduler_cron_time": ["0 */12 * * *"],  # list[str]
+                  },
+                  "heartbeat": {
+                      "interval_in_seconds": 300,
+                      "miss_until_inactive": 1,
+                  },
+                }
+            comment: Optional comment for the change.
         """
         if not agent_ids:
             raise RequiredArgument(
@@ -69,12 +136,10 @@ class Agents:
 
         if authorized is not None:
             cmd.add_element("authorized", to_bool(authorized))
-        if min_interval is not None:
-            cmd.add_element("min_interval", str(min_interval))
-        if heartbeat_interval is not None:
-            cmd.add_element("heartbeat_interval", str(heartbeat_interval))
-        if schedule:
-            cmd.add_element("schedule", schedule)
+
+        if config is not None:
+            cls._append_agent_config(cmd, config)
+
         if comment:
             cmd.add_element("comment", comment)
 
@@ -97,5 +162,59 @@ class Agents:
 
         for agent_id in agent_ids:
             xml_agents.add_element("agent", attrs={"id": agent_id})
+
+        return cmd
+
+    @classmethod
+    def modify_agent_control_scan_config(
+        cls,
+        agent_control_id: EntityID,
+        config: Mapping[str, Any],
+    ) -> Request:
+        """
+        Modify agent control scan config.
+
+        Args:
+            agent_control_id: The agent control UUID.
+            config: Nested config, e.g.:
+                {
+                  "agent_control": {
+                    "retry": {
+                      "attempts": 6,
+                      "delay_in_seconds": 60,
+                      "max_jitter_in_seconds": 10,
+                    }
+                  },
+                  "agent_script_executor": {
+                      "bulk_size": 2,
+                      "bulk_throttle_time_in_ms": 300,
+                      "indexer_dir_depth": 100,
+                      "scheduler_cron_time": ["0 */12 * * *"],  # str or list[str]
+                  },
+                  "heartbeat": {
+                      "interval_in_seconds": 300,
+                      "miss_until_inactive": 1,
+                  },
+                }
+        Returns:
+            Request: Prepared XML command.
+        """
+        if not agent_control_id:
+            raise RequiredArgument(
+                function=cls.modify_agent_control_scan_config.__name__,
+                argument="agent_control_id",
+            )
+        if not config:
+            raise RequiredArgument(
+                function=cls.modify_agent_control_scan_config.__name__,
+                argument="config",
+            )
+
+        cmd = XmlCommand(
+            "modify_agent_control_scan_config",
+        )
+        cmd.set_attribute("agent_control_id", str(agent_control_id))
+
+        cls._append_agent_config(cmd, config)
 
         return cmd
