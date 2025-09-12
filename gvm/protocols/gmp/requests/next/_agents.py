@@ -2,19 +2,19 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Any, Mapping, Optional
+from typing import Any, Mapping, Optional, Sequence
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.protocols.gmp.requests._entity_id import EntityID
-from gvm.utils import SupportsStr, to_bool
+from gvm.utils import to_bool
 from gvm.xml import XmlCommand
 
 
 class Agents:
 
     @staticmethod
-    def _add_element(element, name: str, value: Optional[SupportsStr]) -> None:
+    def _add_element(element, name: str, value: Any) -> None:
         """
         Helper to add a sub-element with a value if the value is not None.
 
@@ -31,52 +31,56 @@ class Agents:
     def _validate_agent_config(
         cls, config: Mapping[str, Any], *, caller: str
     ) -> None:
-        """Ensure all required fields exist and are non-empty."""
+        """Ensure all required fields exist, are well-shaped, and non-empty."""
 
-        def valid(d: Mapping[str, Any], key: str, path: str):
-            if (
-                not isinstance(d, Mapping)
-                or d.get(key) is None
-                or d.get(key) == ""
-            ):
+        def valid_map(d: Any, key: str, path: str) -> Mapping[str, Any]:
+            if not isinstance(d, Mapping):
+                raise RequiredArgument(
+                    function=caller, argument=f"config.{path.rstrip('.')}"
+                )
+            v = d.get(key)
+            if not isinstance(v, Mapping):
                 raise RequiredArgument(
                     function=caller, argument=f"config.{path}{key}"
                 )
+            return v
+
+        def valid_value(d: Mapping[str, Any], key: str, path: str) -> Any:
+            v = d.get(key)
+            if v is None or (isinstance(v, str) and v.strip() == ""):
+                raise RequiredArgument(
+                    function=caller, argument=f"config.{path}{key}"
+                )
+            return v
 
         # agent_control.retry
-        ac = config.get("agent_control")
-        valid(config, "agent_control", "")
-        retry = ac.get("retry") if isinstance(ac, Mapping) else None
-        valid(ac, "retry", "agent_control.")
-        valid(retry, "attempts", "agent_control.retry.")
-        valid(retry, "delay_in_seconds", "agent_control.retry.")
-        valid(retry, "max_jitter_in_seconds", "agent_control.retry.")
+        ac = valid_map(config, "agent_control", "")
+        retry = valid_map(ac, "retry", "agent_control.")
+        valid_value(retry, "attempts", "agent_control.retry.")
+        valid_value(retry, "delay_in_seconds", "agent_control.retry.")
+        valid_value(retry, "max_jitter_in_seconds", "agent_control.retry.")
 
         # agent_script_executor
-        se = config.get("agent_script_executor")
-        valid(config, "agent_script_executor", "")
-        valid(se, "bulk_size", "agent_script_executor.")
-        valid(se, "bulk_throttle_time_in_ms", "agent_script_executor.")
-        valid(se, "indexer_dir_depth", "agent_script_executor.")
+        se = valid_map(config, "agent_script_executor", "")
+        valid_value(se, "bulk_size", "agent_script_executor.")
+        valid_value(se, "bulk_throttle_time_in_ms", "agent_script_executor.")
+        valid_value(se, "indexer_dir_depth", "agent_script_executor.")
 
-        sched = (
-            se.get("scheduler_cron_time") if isinstance(se, Mapping) else None
-        )
-        if isinstance(sched, (list, tuple, set)):
-            items = list(sched)
+        sched = se.get("scheduler_cron_time")
+        if isinstance(sched, Sequence) and not isinstance(sched, (str, bytes)):
+            items = [str(x) for x in sched]
         else:
             items = []
-        if not items or any(str(x).strip() == "" for x in items):
+        if not items or any(not str(x).strip() for x in items):
             raise RequiredArgument(
                 function=caller,
                 argument="config.agent_script_executor.scheduler_cron_time",
             )
 
         # heartbeat
-        hb = config.get("heartbeat")
-        valid(config, "heartbeat", "")
-        valid(hb, "interval_in_seconds", "heartbeat.")
-        valid(hb, "miss_until_inactive", "heartbeat.")
+        hb = valid_map(config, "heartbeat", "")
+        valid_value(hb, "interval_in_seconds", "heartbeat.")
+        valid_value(hb, "miss_until_inactive", "heartbeat.")
 
     @classmethod
     def _append_agent_config(cls, parent, config: Mapping[str, Any]) -> None:
