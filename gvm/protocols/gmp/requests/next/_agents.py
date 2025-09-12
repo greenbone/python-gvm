@@ -7,25 +7,76 @@ from typing import Any, Mapping, Optional
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.protocols.gmp.requests._entity_id import EntityID
-from gvm.utils import to_bool
+from gvm.utils import SupportsStr, to_bool
 from gvm.xml import XmlCommand
 
 
 class Agents:
 
     @staticmethod
-    def _add_el(parent, name: str, value) -> None:
+    def _add_element(element, name: str, value: Optional[SupportsStr]) -> None:
         """
         Helper to add a sub-element with a value if the value is not None.
 
         Args:
-            parent: The XML parent element to which the new element is added.
+            element: The XML parent element to which the new element is added.
             name: Name of the sub-element to create.
             value: Value to set as the text of the sub-element. If None, the
                 element will not be created.
         """
         if value is not None:
-            parent.add_element(name, str(value))
+            element.add_element(name, str(value))
+
+    @classmethod
+    def _validate_agent_config(
+        cls, config: Mapping[str, Any], *, caller: str
+    ) -> None:
+        """Ensure all required fields exist and are non-empty."""
+
+        def valid(d: Mapping[str, Any], key: str, path: str):
+            if (
+                not isinstance(d, Mapping)
+                or d.get(key) is None
+                or d.get(key) == ""
+            ):
+                raise RequiredArgument(
+                    function=caller, argument=f"config.{path}{key}"
+                )
+
+        # agent_control.retry
+        ac = config.get("agent_control")
+        valid(config, "agent_control", "")
+        retry = ac.get("retry") if isinstance(ac, Mapping) else None
+        valid(ac, "retry", "agent_control.")
+        valid(retry, "attempts", "agent_control.retry.")
+        valid(retry, "delay_in_seconds", "agent_control.retry.")
+        valid(retry, "max_jitter_in_seconds", "agent_control.retry.")
+
+        # agent_script_executor
+        se = config.get("agent_script_executor")
+        valid(config, "agent_script_executor", "")
+        valid(se, "bulk_size", "agent_script_executor.")
+        valid(se, "bulk_throttle_time_in_ms", "agent_script_executor.")
+        valid(se, "indexer_dir_depth", "agent_script_executor.")
+
+        sched = (
+            se.get("scheduler_cron_time") if isinstance(se, Mapping) else None
+        )
+        if isinstance(sched, (list, tuple, set)):
+            items = list(sched)
+        else:
+            items = []
+        if not items or any(str(x).strip() == "" for x in items):
+            raise RequiredArgument(
+                function=caller,
+                argument="config.agent_script_executor.scheduler_cron_time",
+            )
+
+        # heartbeat
+        hb = config.get("heartbeat")
+        valid(config, "heartbeat", "")
+        valid(hb, "interval_in_seconds", "heartbeat.")
+        valid(hb, "miss_until_inactive", "heartbeat.")
 
     @classmethod
     def _append_agent_config(cls, parent, config: Mapping[str, Any]) -> None:
@@ -67,11 +118,11 @@ class Agents:
         retry = ac["retry"]
         xml_ac = xml_config.add_element("agent_control")
         xml_retry = xml_ac.add_element("retry")
-        cls._add_el(xml_retry, "attempts", retry.get("attempts"))
-        cls._add_el(
+        cls._add_element(xml_retry, "attempts", retry.get("attempts"))
+        cls._add_element(
             xml_retry, "delay_in_seconds", retry.get("delay_in_seconds")
         )
-        cls._add_el(
+        cls._add_element(
             xml_retry,
             "max_jitter_in_seconds",
             retry.get("max_jitter_in_seconds"),
@@ -80,26 +131,27 @@ class Agents:
         # agent_script_executor
         se = config["agent_script_executor"]
         xml_se = xml_config.add_element("agent_script_executor")
-        cls._add_el(xml_se, "bulk_size", se.get("bulk_size"))
-        cls._add_el(
+        cls._add_element(xml_se, "bulk_size", se.get("bulk_size"))
+        cls._add_element(
             xml_se,
             "bulk_throttle_time_in_ms",
             se.get("bulk_throttle_time_in_ms"),
         )
-        cls._add_el(xml_se, "indexer_dir_depth", se.get("indexer_dir_depth"))
+        cls._add_element(
+            xml_se, "indexer_dir_depth", se.get("indexer_dir_depth")
+        )
         sched = se.get("scheduler_cron_time")
-        if sched:
-            xml_sched = xml_se.add_element("scheduler_cron_time")
-            for item in sched:
-                xml_sched.add_element("item", str(item))
+        xml_sched = xml_se.add_element("scheduler_cron_time")
+        for item in sched:
+            xml_sched.add_element("item", str(item))
 
         # heartbeat
         hb = config["heartbeat"]
         xml_hb = xml_config.add_element("heartbeat")
-        cls._add_el(
+        cls._add_element(
             xml_hb, "interval_in_seconds", hb.get("interval_in_seconds")
         )
-        cls._add_el(
+        cls._add_element(
             xml_hb, "miss_until_inactive", hb.get("miss_until_inactive")
         )
 
@@ -178,6 +230,9 @@ class Agents:
             cmd.add_element("authorized", to_bool(authorized))
 
         if config is not None:
+            cls._validate_agent_config(
+                config, caller=cls.modify_agents.__name__
+            )
             cls._append_agent_config(cmd, config)
 
         if comment:
@@ -247,6 +302,10 @@ class Agents:
                 function=cls.modify_agent_control_scan_config.__name__,
                 argument="config",
             )
+
+        cls._validate_agent_config(
+            config, caller=cls.modify_agent_control_scan_config.__name__
+        )
 
         cmd = XmlCommand(
             "modify_agent_control_scan_config",

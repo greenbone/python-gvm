@@ -99,38 +99,13 @@ class GmpModifyAgentsTestMixin:
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
 
-        self.gmp.modify_agents(
-            agent_ids=["agent-123", "agent-456"],
-            authorized=True,
-            config=cfg,
-            comment="Updated agents",
-        )
-
-        self.connection.send.has_been_called_with(
-            b"<modify_agents>"
-            b'<agents><agent id="agent-123"/><agent id="agent-456"/></agents>'
-            b"<authorized>1</authorized>"
-            b"<config>"
-            b"<agent_control>"
-            b"<retry>"
-            b"<attempts>6</attempts>"
-            b"<delay_in_seconds>60</delay_in_seconds>"
-            b"<max_jitter_in_seconds>10</max_jitter_in_seconds>"
-            b"</retry>"
-            b"</agent_control>"
-            b"<agent_script_executor>"
-            b"<bulk_size>2</bulk_size>"
-            b"<bulk_throttle_time_in_ms>300</bulk_throttle_time_in_ms>"
-            b"<indexer_dir_depth>100</indexer_dir_depth>"
-            b"</agent_script_executor>"
-            b"<heartbeat>"
-            b"<interval_in_seconds>300</interval_in_seconds>"
-            b"<miss_until_inactive>1</miss_until_inactive>"
-            b"</heartbeat>"
-            b"</config>"
-            b"<comment>Updated agents</comment>"
-            b"</modify_agents>"
-        )
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(
+                agent_ids=["agent-123", "agent-456"],
+                authorized=True,
+                config=cfg,
+                comment="Updated agents",
+            )
 
     def test_modify_agents_without_ids_raises(self):
         with self.assertRaises(RequiredArgument):
