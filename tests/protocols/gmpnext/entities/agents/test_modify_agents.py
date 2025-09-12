@@ -110,3 +110,294 @@ class GmpModifyAgentsTestMixin:
     def test_modify_agents_without_ids_raises(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_agents(agent_ids=[])
+
+    def test_modify_agents_scheduler_empty_list_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": [],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_scheduler_with_empty_item_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["", "   "],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_agent_control_raises(self):
+        cfg = {
+            # "agent_control": missing
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_retry_block_raises(self):
+        cfg = {
+            "agent_control": {  # retry missing
+                # "retry": {}
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_retry_attempts_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    # "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_retry_delay_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    # "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_retry_max_jitter_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    # "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_agent_script_executor_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            # "agent_script_executor": missing
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_bulk_size_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                # "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_bulk_throttle_time_in_ms_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                # "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_indexer_dir_depth_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                # "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_heartbeat_block_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            # "heartbeat": missing
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_heartbeat_interval_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {
+                # "interval_in_seconds": 300,
+                "miss_until_inactive": 1,
+            },
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_missing_heartbeat_miss_until_inactive_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {
+                "interval_in_seconds": 300,
+                # "miss_until_inactive": 1,
+            },
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_config_not_mapping_raises(self):
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(
+                agent_ids=["agent-123"], config="not-a-mapping"
+            )
+
+    def test_modify_agents_agent_control_not_mapping_raises(self):
+        cfg = {
+            "agent_control": "oops-not-a-mapping",
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+        with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
