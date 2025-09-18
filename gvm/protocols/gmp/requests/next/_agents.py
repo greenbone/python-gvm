@@ -224,7 +224,7 @@ class Agents:
                 function=cls.modify_agents.__name__, argument="agent_ids"
             )
 
-        cmd = XmlCommand("modify_agents")
+        cmd = XmlCommand("modify_agent")
         xml_agents = cmd.add_element("agents")
 
         for agent_id in agent_ids:
@@ -256,7 +256,7 @@ class Agents:
                 function=cls.delete_agents.__name__, argument="agent_ids"
             )
 
-        cmd = XmlCommand("delete_agents")
+        cmd = XmlCommand("delete_agent")
         xml_agents = cmd.add_element("agents")
 
         for agent_id in agent_ids:

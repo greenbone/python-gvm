@@ -10,9 +10,9 @@ class GmpModifyAgentsTestMixin:
         self.gmp.modify_agents(agent_ids=["agent-123"])
 
         self.connection.send.has_been_called_with(
-            b"<modify_agents>"
+            b"<modify_agent>"
             b'<agents><agent id="agent-123"/></agents>'
-            b"</modify_agents>"
+            b"</modify_agent>"
         )
 
     def test_modify_agents_with_authorized_only(self):
@@ -21,10 +21,10 @@ class GmpModifyAgentsTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b"<modify_agents>"
+            b"<modify_agent>"
             b'<agents><agent id="agent-123"/><agent id="agent-456"/></agents>'
             b"<authorized>1</authorized>"
-            b"</modify_agents>"
+            b"</modify_agent>"
         )
 
     def test_modify_agents_with_full_config_and_comment(self):
@@ -53,7 +53,7 @@ class GmpModifyAgentsTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b"<modify_agents>"
+            b"<modify_agent>"
             b'<agents><agent id="agent-123"/><agent id="agent-456"/></agents>'
             b"<authorized>1</authorized>"
             b"<config>"
@@ -78,7 +78,7 @@ class GmpModifyAgentsTestMixin:
             b"</heartbeat>"
             b"</config>"
             b"<comment>Updated agents</comment>"
-            b"</modify_agents>"
+            b"</modify_agent>"
         )
 
     def test_modify_agents_with_full_config_with_missing_element(self):
