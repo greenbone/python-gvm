@@ -14,13 +14,14 @@ from .._entity_id import EntityID
 
 class CredentialStores:
     @classmethod
-    def get_credential_stores(cls,
-                              *,
-                              credential_store_id: Optional[EntityID] = None,
-                              filter_string: Optional[str] = None,
-                              filter_id: Optional[EntityID] = None,
-                              details: Optional[bool] = None,
-                              ) -> Request:
+    def get_credential_stores(
+        cls,
+        *,
+        credential_store_id: Optional[EntityID] = None,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        details: Optional[bool] = None,
+    ) -> Request:
         """Request a list of credential stores
 
         Args:
@@ -37,26 +38,27 @@ class CredentialStores:
             cmd.set_attribute("details", to_bool(details))
 
         if credential_store_id:
-            cmd.add_element("credential_store_id", credential_store_id)
+            cmd.add_element("credential_store_id", str(credential_store_id))
 
         return cmd
 
     @classmethod
-    def modify_credential_store(cls,
-                                credential_store_id: EntityID,
-                                *,
-                                active: Optional[bool] = None,
-                                host: Optional[str] = None,
-                                port: Optional[int] = None,
-                                path: Optional[str] = None,
-                                app_id: Optional[str] = None,
-                                client_cert: Optional[str] = None,
-                                client_key: Optional[str] = None,
-                                client_pkcs12_file: Optional[str] = None,
-                                passphrase: Optional[str] = None,
-                                server_ca_cert: Optional[str] = None,
-                                comment: Optional[str] = None,
-                                ) -> Request:
+    def modify_credential_store(
+        cls,
+        credential_store_id: EntityID,
+        *,
+        active: Optional[bool] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        path: Optional[str] = None,
+        app_id: Optional[str] = None,
+        client_cert: Optional[str] = None,
+        client_key: Optional[str] = None,
+        client_pkcs12_file: Optional[str] = None,
+        passphrase: Optional[str] = None,
+        server_ca_cert: Optional[str] = None,
+        comment: Optional[str] = None,
+    ) -> Request:
         """Modify a credential store
 
         Args:
@@ -76,7 +78,7 @@ class CredentialStores:
         """
 
         cmd = XmlCommand("modify_credential_store")
-        cmd.set_attribute("credential_store_id", credential_store_id)
+        cmd.set_attribute("credential_store_id", str(credential_store_id))
 
         if active:
             cmd.add_element("active", to_bool(active))
@@ -107,9 +109,10 @@ class CredentialStores:
         return cmd
 
     @classmethod
-    def verify_credential_store(cls,
-                                credential_store_id: EntityID,
-                                ) -> Request:
+    def verify_credential_store(
+        cls,
+        credential_store_id: EntityID,
+    ) -> Request:
         """Verify that the connection to a credential store works
 
         Args:
@@ -122,5 +125,5 @@ class CredentialStores:
             )
 
         cmd = XmlCommand("verify_credential_store")
-        cmd.add_element("credential_store_id", credential_store_id)
+        cmd.add_element("credential_store_id", str(credential_store_id))
         return cmd
