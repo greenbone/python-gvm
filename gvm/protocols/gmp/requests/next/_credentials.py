@@ -1,0 +1,469 @@
+# SPDX-FileCopyrightText: 2025 Greenbone AG
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+from typing import Optional, Union, override
+
+from gvm._enum import Enum
+from gvm.errors import RequiredArgument
+from gvm.protocols.core import Request
+from gvm.utils import to_bool
+from gvm.xml import XmlCommand
+
+from .._entity_id import EntityID
+
+from ..v224._credentials import Credentials as CredentialsV224, SnmpAuthAlgorithm, \
+    SnmpPrivacyAlgorithm
+
+
+class CredentialType(Enum):
+    """Enum for credential types"""
+
+    CLIENT_CERTIFICATE = "cc"
+    SNMP = "snmp"
+    USERNAME_PASSWORD = "up"
+    USERNAME_SSH_KEY = "usk"
+    SMIME_CERTIFICATE = "smime"
+    PGP_ENCRYPTION_KEY = "pgp"
+    PASSWORD_ONLY = "pw"
+
+    CREDENTIAL_STORE_CLIENT_CERTIFICATE = "cs_cc"
+    CREDENTIAL_STORE_SNMP = "cs_snmp"
+    CREDENTIAL_STORE_USERNAME_PASSWORD = "cs_up"
+    CREDENTIAL_STORE_USERNAME_SSH_KEY = "cs_usk"
+    CREDENTIAL_STORE_SMIME_CERTIFICATE = "cs_smime"
+    CREDENTIAL_STORE_PGP_ENCRYPTION_KEY = "cs_pgp"
+    CREDENTIAL_STORE_PASSWORD_ONLY = "cs_pw"
+
+
+class Credentials(CredentialsV224):
+    @override
+    @classmethod
+    def create_credential(
+            cls,
+            name: str,
+            credential_type: Union[CredentialType, str],
+            *,
+            comment: Optional[str] = None,
+            allow_insecure: Optional[bool] = None,
+            certificate: Optional[str] = None,
+            key_phrase: Optional[str] = None,
+            private_key: Optional[str] = None,
+            login: Optional[str] = None,
+            password: Optional[str] = None,
+            credential_store_id: Optional[EntityID] = None,
+            vault_id: Optional[str] = None,
+            host_identifier: Optional[str] = None,
+            auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
+            community: Optional[str] = None,
+            privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
+            privacy_password: Optional[str] = None,
+            public_key: Optional[str] = None,
+    ) -> Request:
+        """Create a new credential
+
+        Create a new credential e.g. to be used in the method of an alert.
+
+        Currently the following credential types are supported:
+
+            - Username + Password
+            - Username + SSH-Key
+            - Client Certificates
+            - SNMPv1 or SNMPv2c protocol
+            - S/MIME Certificate
+            - OpenPGP Key
+            - Password only
+
+        Arguments:
+            name: Name of the new credential
+            credential_type: The credential type.
+            comment: Comment for the credential
+            allow_insecure: Whether to allow insecure use of the credential
+            certificate: Certificate for the credential.
+                Required for client-certificate and smime credential types.
+            key_phrase: Key passphrase for the private key.
+                Used for the username+ssh-key credential type.
+            private_key: Private key to use for login. Required
+                for usk credential type. Also used for the cc credential type.
+                The supported key types (dsa, rsa, ecdsa, ...) and formats (PEM,
+                PKC#12, OpenSSL, ...) depend on your installed GnuTLS version.
+            login: Username for the credential. Required for username+password,
+                username+ssh-key and snmp credential type.
+            password: Password for the credential. Used for username+password
+                and snmp credential types.
+            credential_store_id: The id of the credential store to use
+                (defaults to '94e74cbe-0504-4ab1-b96f-0739f786f57c')
+            vault_id: Vault-ID used to access the secret in credential store
+            host_identifier: Host-Identifier used to access the secret in credential store
+            community: The SNMP community
+            auth_algorithm: The SNMP authentication algorithm. Required for snmp
+                credential type.
+            privacy_algorithm: The SNMP privacy algorithm
+            privacy_password: The SNMP privacy password
+            public_key: PGP public key in *armor* plain text format. Required
+                for pgp credential type.
+
+        Examples:
+            Creating a Username + Password credential
+
+            .. code-block:: python
+
+                request = Credentials.create_credential(
+                    name='UP Credential',
+                    credential_type=CredentialType.USERNAME_PASSWORD,
+                    login='foo',
+                    password='bar',
+                )
+
+            Creating a Username + SSH Key credential
+
+            .. code-block:: python
+
+                with open('path/to/private-ssh-key') as f:
+                    key = f.read()
+
+                request = Credentials.create_credential(
+                    name='USK Credential',
+                    credential_type=CredentialType.USERNAME_SSH_KEY,
+                    login='foo',
+                    key_phrase='foobar',
+                    private_key=key,
+                )
+
+            Creating a PGP credential
+
+            .. note::
+
+                A compatible public pgp key file can be exported with GnuPG via
+                ::
+
+                    $ gpg --armor --export alice@cyb.org > alice.asc
+
+            .. code-block:: python
+
+                with open('path/to/pgp.key.asc') as f:
+                    key = f.read()
+
+                request = Credentials.create_credential(
+                    name='PGP Credential',
+                    credential_type=CredentialType.PGP_ENCRYPTION_KEY,
+                    public_key=key,
+                )
+
+            Creating a S/MIME credential
+
+            .. code-block:: python
+
+                with open('path/to/smime-cert') as f:
+                    cert = f.read()
+
+                request = Credentials.create_credential(
+                    name='SMIME Credential',
+                    credential_type=CredentialType.SMIME_CERTIFICATE,
+                    certificate=cert,
+                )
+
+            Creating a Password-Only credential
+
+            .. code-block:: python
+
+                request = Credentials.create_credential(
+                    name='Password-Only Credential',
+                    credential_type=CredentialType.PASSWORD_ONLY,
+                    password='foo',
+                )
+
+            Creating an auto-generated password
+
+            .. code-block:: python
+
+                request = Credentials.create_credential(
+                    name='UP Credential',
+                    credential_type=CredentialType.USERNAME_PASSWORD,
+                    login='foo',
+                )
+
+            Creating an auto-generated SSH-Key credential
+
+            .. code-block:: python
+
+                request = Credentials.create_credential(
+                    name='USK Credential',
+                    credential_type=CredentialType.USERNAME_SSH_KEY,
+                    login='foo',
+                )
+
+            Creating a Password-Only credential stored in a Credential Store
+
+            .. code-block:: python
+
+                request = Credentials.create_credential(
+                    name='Credential-Store Password-Only Credential',
+                    credential_type=CredentialType.CREDENTIAL_STOREPASSWORD_ONLY,
+                    vault_id='a5f84dd4-da18-447c-a9fb-b77b5df49076',
+                    host_identifier='/My/Secret',
+                )
+        """
+        if not name:
+            raise RequiredArgument(
+                function=cls.create_credential.__name__, argument="name"
+            )
+
+        if not credential_type:
+            raise RequiredArgument(
+                function=cls.create_credential.__name__,
+                argument="credential_type",
+            )
+
+        if not isinstance(credential_type, CredentialType):
+            credential_type = CredentialType(credential_type)
+
+        cmd = XmlCommand("create_credential")
+        cmd.add_element("name", name)
+
+        cmd.add_element("type", credential_type.value)
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if allow_insecure is not None:
+            cmd.add_element("allow_insecure", to_bool(allow_insecure))
+
+        if (
+                credential_type == CredentialType.CLIENT_CERTIFICATE
+                or credential_type == CredentialType.SMIME_CERTIFICATE
+        ):
+            if not certificate:
+                raise RequiredArgument(
+                    function=cls.create_credential.__name__,
+                    argument="certificate",
+                )
+
+            cmd.add_element("certificate", certificate)
+
+        if (
+                credential_type == CredentialType.USERNAME_PASSWORD
+                or credential_type == CredentialType.USERNAME_SSH_KEY
+                or credential_type == CredentialType.SNMP
+        ):
+            if not login:
+                raise RequiredArgument(
+                    function=cls.create_credential.__name__, argument="login"
+                )
+
+            cmd.add_element("login", login)
+
+        if credential_type == CredentialType.PASSWORD_ONLY and not password:
+            raise RequiredArgument(
+                function=cls.create_credential.__name__, argument="password"
+            )
+
+        if (
+                credential_type == CredentialType.USERNAME_PASSWORD
+                or credential_type == CredentialType.SNMP
+                or credential_type == CredentialType.PASSWORD_ONLY
+        ) and password:
+            cmd.add_element("password", password)
+
+        if (
+                credential_type == CredentialType.USERNAME_SSH_KEY
+                and private_key is not None
+        ):
+            if not private_key:
+                raise RequiredArgument(
+                    function=cls.create_credential.__name__,
+                    argument="private_key",
+                )
+
+            xml_key = cmd.add_element("key")
+            xml_key.add_element("private", private_key)
+
+            if key_phrase:
+                xml_key.add_element("phrase", key_phrase)
+
+        if credential_type == CredentialType.CLIENT_CERTIFICATE and private_key:
+            xml_key = cmd.add_element("key")
+            xml_key.add_element("private", private_key)
+
+        if credential_type == CredentialType.SNMP:
+            if not auth_algorithm:
+                raise RequiredArgument(
+                    function=cls.create_credential.__name__,
+                    argument="auth_algorithm",
+                )
+            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
+                auth_algorithm = SnmpAuthAlgorithm(auth_algorithm)
+
+            cmd.add_element("auth_algorithm", auth_algorithm.value)
+
+            if community:
+                cmd.add_element("community", community)
+
+            if privacy_algorithm is not None or privacy_password:
+                xml_privacy = cmd.add_element("privacy")
+
+                if privacy_algorithm is not None:
+                    if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
+                        privacy_algorithm = SnmpPrivacyAlgorithm(
+                            privacy_algorithm
+                        )
+
+                    xml_privacy.add_element(
+                        "algorithm", privacy_algorithm.value
+                    )
+
+                if privacy_password:
+                    xml_privacy.add_element("password", privacy_password)
+
+        if credential_type == CredentialType.PGP_ENCRYPTION_KEY:
+            if not public_key:
+                raise RequiredArgument(
+                    function=cls.create_credential.__name__,
+                    argument="public_key",
+                )
+
+            xml_key = cmd.add_element("key")
+            xml_key.add_element("public", public_key)
+
+        if credential_type == CredentialType.CREDENTIAL_STORE_CLIENT_CERTIFICATE \
+                or credential_type == CredentialType.CREDENTIAL_STORE_SNMP \
+                or credential_type == CredentialType.CREDENTIAL_STORE_USERNAME_PASSWORD \
+                or credential_type == CredentialType.CREDENTIAL_STORE_USERNAME_SSH_KEY \
+                or credential_type == CredentialType.CREDENTIAL_STORE_SMIME_CERTIFICATE \
+                or credential_type == CredentialType.CREDENTIAL_STORE_PGP_ENCRYPTION_KEY \
+                or credential_type == CredentialType.CREDENTIAL_STORE_PASSWORD_ONLY:
+            if not vault_id:
+                raise RequiredArgument(
+                    function=cls.create_credential.__name__,
+                    argument="vault_id",
+                )
+            if not host_identifier:
+                raise RequiredArgument(
+                    function=cls.create_credential.__name__,
+                    argument="host_identifier",
+                )
+
+            if credential_store_id:
+                cmd.add_element("credential_store_id", credential_store_id)
+
+            cmd.add_element("vault_id", vault_id)
+            cmd.add_element("host_identifier", host_identifier)
+
+        return cmd
+
+    @override
+    @classmethod
+    def modify_credential(
+            cls,
+            credential_id: EntityID,
+            *,
+            name: Optional[str] = None,
+            comment: Optional[str] = None,
+            allow_insecure: Optional[bool] = None,
+            certificate: Optional[str] = None,
+            key_phrase: Optional[str] = None,
+            private_key: Optional[str] = None,
+            login: Optional[str] = None,
+            password: Optional[str] = None,
+            credential_store_id: Optional[EntityID] = None,
+            vault_id: Optional[str] = None,
+            host_identifier: Optional[str] = None,
+            auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
+            community: Optional[str] = None,
+            privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
+            privacy_password: Optional[str] = None,
+            public_key: Optional[str] = None,
+    ) -> Request:
+        """Modifies an existing credential.
+
+        Arguments:
+            credential_id: UUID of the credential
+            name: Name of the credential
+            comment: Comment for the credential
+            allow_insecure: Whether to allow insecure use of the credential
+            certificate: Certificate for the credential
+            key_phrase: Key passphrase for the private key
+            private_key: Private key to use for login
+            login: Username for the credential
+            password: Password for the credential
+            credential_store_id: The id of the credential store to use
+                (defaults to '94e74cbe-0504-4ab1-b96f-0739f786f57c')
+            vault_id: Vault-ID used to access the secret in credential store
+            host_identifier: Host-Identifier used to access the secret in credential store
+            auth_algorithm: The authentication algorithm for SNMP
+            community: The SNMP community
+            privacy_algorithm: The privacy algorithm for SNMP
+            privacy_password: The SNMP privacy password
+            public_key: PGP public key in *armor* plain text format
+        """
+        if not credential_id:
+            raise RequiredArgument(
+                function=cls.modify_credential.__name__,
+                argument="credential_id",
+            )
+
+        cmd = XmlCommand("modify_credential")
+        cmd.set_attribute("credential_id", str(credential_id))
+
+        if comment:
+            cmd.add_element("comment", comment)
+
+        if name:
+            cmd.add_element("name", name)
+
+        if allow_insecure is not None:
+            cmd.add_element("allow_insecure", to_bool(allow_insecure))
+
+        if certificate:
+            cmd.add_element("certificate", certificate)
+
+        if key_phrase and private_key:
+            xml_key = cmd.add_element("key")
+            xml_key.add_element("phrase", key_phrase)
+            xml_key.add_element("private", private_key)
+        elif (not key_phrase and private_key) or (
+                key_phrase and not private_key
+        ):
+            raise RequiredArgument(
+                function=cls.modify_credential.__name__,
+                argument="key_phrase and private_key",
+            )
+
+        if login:
+            cmd.add_element("login", login)
+
+        if password:
+            cmd.add_element("password", password)
+
+        if auth_algorithm:
+            if not isinstance(auth_algorithm, SnmpAuthAlgorithm):
+                auth_algorithm = SnmpAuthAlgorithm(auth_algorithm)
+
+            cmd.add_element("auth_algorithm", auth_algorithm.value)
+
+        if community:
+            cmd.add_element("community", community)
+
+        if privacy_algorithm is not None or privacy_password is not None:
+            xml_privacy = cmd.add_element("privacy")
+
+            if privacy_algorithm is not None:
+                if not isinstance(privacy_algorithm, SnmpPrivacyAlgorithm):
+                    privacy_algorithm = SnmpPrivacyAlgorithm(privacy_algorithm)
+                xml_privacy.add_element("algorithm", privacy_algorithm.value)
+
+            if privacy_password is not None:
+                xml_privacy.add_element("password", privacy_password)
+
+        if public_key:
+            xml_key = cmd.add_element("key")
+            xml_key.add_element("public", public_key)
+
+        if credential_store_id:
+            cmd.add_element("credential_store_id", credential_store_id)
+        if vault_id:
+            cmd.add_element("vault_id", vault_id)
+        if host_identifier:
+            cmd.add_element("host_identifier", host_identifier)
+
+        return cmd
