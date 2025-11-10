@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union, override
+from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -12,8 +12,11 @@ from gvm.xml import XmlCommand
 
 from .._entity_id import EntityID
 
-from ..v224._credentials import Credentials as CredentialsV224, SnmpAuthAlgorithm, \
-    SnmpPrivacyAlgorithm
+from ..v224._credentials import (
+    Credentials as CredentialsV224,
+    SnmpAuthAlgorithm,
+    SnmpPrivacyAlgorithm,
+)
 
 
 class CredentialType(Enum):
@@ -37,28 +40,27 @@ class CredentialType(Enum):
 
 
 class Credentials(CredentialsV224):
-    @override
     @classmethod
     def create_credential(
-            cls,
-            name: str,
-            credential_type: Union[CredentialType, str],
-            *,
-            comment: Optional[str] = None,
-            allow_insecure: Optional[bool] = None,
-            certificate: Optional[str] = None,
-            key_phrase: Optional[str] = None,
-            private_key: Optional[str] = None,
-            login: Optional[str] = None,
-            password: Optional[str] = None,
-            credential_store_id: Optional[EntityID] = None,
-            vault_id: Optional[str] = None,
-            host_identifier: Optional[str] = None,
-            auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
-            community: Optional[str] = None,
-            privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
-            privacy_password: Optional[str] = None,
-            public_key: Optional[str] = None,
+        cls,
+        name: str,
+        credential_type: Union[CredentialType, str],
+        *,
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        certificate: Optional[str] = None,
+        key_phrase: Optional[str] = None,
+        private_key: Optional[str] = None,
+        login: Optional[str] = None,
+        password: Optional[str] = None,
+        credential_store_id: Optional[EntityID] = None,
+        vault_id: Optional[str] = None,
+        host_identifier: Optional[str] = None,
+        auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
+        community: Optional[str] = None,
+        privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
+        privacy_password: Optional[str] = None,
+        public_key: Optional[str] = None,
     ) -> Request:
         """Create a new credential
 
@@ -230,8 +232,8 @@ class Credentials(CredentialsV224):
             cmd.add_element("allow_insecure", to_bool(allow_insecure))
 
         if (
-                credential_type == CredentialType.CLIENT_CERTIFICATE
-                or credential_type == CredentialType.SMIME_CERTIFICATE
+            credential_type == CredentialType.CLIENT_CERTIFICATE
+            or credential_type == CredentialType.SMIME_CERTIFICATE
         ):
             if not certificate:
                 raise RequiredArgument(
@@ -242,9 +244,9 @@ class Credentials(CredentialsV224):
             cmd.add_element("certificate", certificate)
 
         if (
-                credential_type == CredentialType.USERNAME_PASSWORD
-                or credential_type == CredentialType.USERNAME_SSH_KEY
-                or credential_type == CredentialType.SNMP
+            credential_type == CredentialType.USERNAME_PASSWORD
+            or credential_type == CredentialType.USERNAME_SSH_KEY
+            or credential_type == CredentialType.SNMP
         ):
             if not login:
                 raise RequiredArgument(
@@ -259,15 +261,15 @@ class Credentials(CredentialsV224):
             )
 
         if (
-                credential_type == CredentialType.USERNAME_PASSWORD
-                or credential_type == CredentialType.SNMP
-                or credential_type == CredentialType.PASSWORD_ONLY
+            credential_type == CredentialType.USERNAME_PASSWORD
+            or credential_type == CredentialType.SNMP
+            or credential_type == CredentialType.PASSWORD_ONLY
         ) and password:
             cmd.add_element("password", password)
 
         if (
-                credential_type == CredentialType.USERNAME_SSH_KEY
-                and private_key is not None
+            credential_type == CredentialType.USERNAME_SSH_KEY
+            and private_key is not None
         ):
             if not private_key:
                 raise RequiredArgument(
@@ -325,13 +327,20 @@ class Credentials(CredentialsV224):
             xml_key = cmd.add_element("key")
             xml_key.add_element("public", public_key)
 
-        if credential_type == CredentialType.CREDENTIAL_STORE_CLIENT_CERTIFICATE \
-                or credential_type == CredentialType.CREDENTIAL_STORE_SNMP \
-                or credential_type == CredentialType.CREDENTIAL_STORE_USERNAME_PASSWORD \
-                or credential_type == CredentialType.CREDENTIAL_STORE_USERNAME_SSH_KEY \
-                or credential_type == CredentialType.CREDENTIAL_STORE_SMIME_CERTIFICATE \
-                or credential_type == CredentialType.CREDENTIAL_STORE_PGP_ENCRYPTION_KEY \
-                or credential_type == CredentialType.CREDENTIAL_STORE_PASSWORD_ONLY:
+        if (
+            credential_type
+            == CredentialType.CREDENTIAL_STORE_CLIENT_CERTIFICATE
+            or credential_type == CredentialType.CREDENTIAL_STORE_SNMP
+            or credential_type
+            == CredentialType.CREDENTIAL_STORE_USERNAME_PASSWORD
+            or credential_type
+            == CredentialType.CREDENTIAL_STORE_USERNAME_SSH_KEY
+            or credential_type
+            == CredentialType.CREDENTIAL_STORE_SMIME_CERTIFICATE
+            or credential_type
+            == CredentialType.CREDENTIAL_STORE_PGP_ENCRYPTION_KEY
+            or credential_type == CredentialType.CREDENTIAL_STORE_PASSWORD_ONLY
+        ):
             if not vault_id:
                 raise RequiredArgument(
                     function=cls.create_credential.__name__,
@@ -344,35 +353,34 @@ class Credentials(CredentialsV224):
                 )
 
             if credential_store_id:
-                cmd.add_element("credential_store_id", credential_store_id)
+                cmd.add_element("credential_store_id", str(credential_store_id))
 
             cmd.add_element("vault_id", vault_id)
             cmd.add_element("host_identifier", host_identifier)
 
         return cmd
 
-    @override
     @classmethod
     def modify_credential(
-            cls,
-            credential_id: EntityID,
-            *,
-            name: Optional[str] = None,
-            comment: Optional[str] = None,
-            allow_insecure: Optional[bool] = None,
-            certificate: Optional[str] = None,
-            key_phrase: Optional[str] = None,
-            private_key: Optional[str] = None,
-            login: Optional[str] = None,
-            password: Optional[str] = None,
-            credential_store_id: Optional[EntityID] = None,
-            vault_id: Optional[str] = None,
-            host_identifier: Optional[str] = None,
-            auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
-            community: Optional[str] = None,
-            privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
-            privacy_password: Optional[str] = None,
-            public_key: Optional[str] = None,
+        cls,
+        credential_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        certificate: Optional[str] = None,
+        key_phrase: Optional[str] = None,
+        private_key: Optional[str] = None,
+        login: Optional[str] = None,
+        password: Optional[str] = None,
+        credential_store_id: Optional[EntityID] = None,
+        vault_id: Optional[str] = None,
+        host_identifier: Optional[str] = None,
+        auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
+        community: Optional[str] = None,
+        privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
+        privacy_password: Optional[str] = None,
+        public_key: Optional[str] = None,
     ) -> Request:
         """Modifies an existing credential.
 
@@ -422,7 +430,7 @@ class Credentials(CredentialsV224):
             xml_key.add_element("phrase", key_phrase)
             xml_key.add_element("private", private_key)
         elif (not key_phrase and private_key) or (
-                key_phrase and not private_key
+            key_phrase and not private_key
         ):
             raise RequiredArgument(
                 function=cls.modify_credential.__name__,
@@ -460,7 +468,7 @@ class Credentials(CredentialsV224):
             xml_key.add_element("public", public_key)
 
         if credential_store_id:
-            cmd.add_element("credential_store_id", credential_store_id)
+            cmd.add_element("credential_store_id", str(credential_store_id))
         if vault_id:
             cmd.add_element("vault_id", vault_id)
         if host_identifier:
