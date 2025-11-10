@@ -5,11 +5,11 @@
 from gvm.protocols.gmp.requests.next._agent_groups import AgentGroups
 from gvm.protocols.gmp.requests.next._agent_installers import AgentInstallers
 from gvm.protocols.gmp.requests.next._agents import Agents
+from gvm.protocols.gmp.requests.next._credential_stores import CredentialStores
 from gvm.protocols.gmp.requests.next._credentials import (
     Credentials,
     CredentialType,
 )
-from gvm.protocols.gmp.requests.next._credential_stores import CredentialStores
 from gvm.protocols.gmp.requests.next._oci_image_targets import OCIImageTargets
 from gvm.protocols.gmp.requests.next._tasks import Tasks
 

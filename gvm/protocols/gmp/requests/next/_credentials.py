@@ -11,9 +11,8 @@ from gvm.utils import to_bool
 from gvm.xml import XmlCommand
 
 from .._entity_id import EntityID
-
 from ..v224._credentials import (
-    Credentials as CredentialsV224,
+    CredentialFormat,
     SnmpAuthAlgorithm,
     SnmpPrivacyAlgorithm,
 )
@@ -39,7 +38,24 @@ class CredentialType(Enum):
     CREDENTIAL_STORE_PASSWORD_ONLY = "cs_pw"
 
 
-class Credentials(CredentialsV224):
+class Credentials:
+    @classmethod
+    def clone_credential(cls, credential_id: EntityID) -> Request:
+        """Clone a credential
+
+        Args:
+            credential_id: The ID of the credential to clone
+        """
+        if not credential_id:
+            raise RequiredArgument(
+                function=cls.clone_credential.__name__,
+                argument="credential_id",
+            )
+
+        cmd = XmlCommand("create_credential")
+        cmd.add_element("copy", str(credential_id))
+        return cmd
+
     @classmethod
     def create_credential(
         cls,
@@ -357,6 +373,101 @@ class Credentials(CredentialsV224):
 
             cmd.add_element("vault_id", vault_id)
             cmd.add_element("host_identifier", host_identifier)
+
+        return cmd
+
+    @classmethod
+    def delete_credential(
+        cls, credential_id: EntityID, *, ultimate: Optional[bool] = False
+    ) -> Request:
+        """Delete a credential
+
+        Args:
+            credential_id: The ID of the credential to delete
+            ultimate: Whether to remove entirely, or to the trashcan.
+        """
+        if not credential_id:
+            raise RequiredArgument(
+                function=cls.delete_credential.__name__,
+                argument="credential_id",
+            )
+
+        cmd = XmlCommand("delete_credential")
+        cmd.set_attribute("credential_id", str(credential_id))
+        cmd.set_attribute("ultimate", to_bool(ultimate))
+        return cmd
+
+    @staticmethod
+    def get_credentials(
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        scanners: Optional[bool] = None,
+        trash: Optional[bool] = None,
+        targets: Optional[bool] = None,
+    ) -> Request:
+        """Request a list of credentials
+
+        Arguments:
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            scanners: Whether to include a list of scanners using the
+                credentials
+            trash: Whether to get the trashcan credentials instead
+            targets: Whether to include a list of targets using the credentials
+        """
+        cmd = XmlCommand("get_credentials")
+
+        cmd.add_filter(filter_string, filter_id)
+
+        if scanners is not None:
+            cmd.set_attribute("scanners", to_bool(scanners))
+
+        if trash is not None:
+            cmd.set_attribute("trash", to_bool(trash))
+
+        if targets is not None:
+            cmd.set_attribute("targets", to_bool(targets))
+
+        return cmd
+
+    @classmethod
+    def get_credential(
+        cls,
+        credential_id: EntityID,
+        *,
+        scanners: Optional[bool] = None,
+        targets: Optional[bool] = None,
+        credential_format: Optional[Union[CredentialFormat, str]] = None,
+    ) -> Request:
+        """Request a single credential
+
+        Arguments:
+            credential_id: UUID of an existing credential
+            scanners: Whether to include a list of scanners using the
+                credentials
+            targets: Whether to include a list of targets using the credentials
+            credential_format: One of "key", "rpm", "deb", "exe" or "pem"
+        """
+        if not credential_id:
+            raise RequiredArgument(
+                function=cls.get_credential.__name__, argument="credential_id"
+            )
+
+        cmd = XmlCommand("get_credentials")
+        cmd.set_attribute("credential_id", str(credential_id))
+
+        if credential_format:
+            if not isinstance(credential_format, CredentialFormat):
+                credential_format = CredentialFormat(credential_format)
+
+            cmd.set_attribute("format", credential_format.value)
+
+        if scanners is not None:
+            cmd.set_attribute("scanners", to_bool(scanners))
+
+        if targets is not None:
+            cmd.set_attribute("targets", to_bool(targets))
 
         return cmd
 
