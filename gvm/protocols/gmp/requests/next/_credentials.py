@@ -60,8 +60,8 @@ class Credentials(CredentialsV224):
             credential_type: The credential type.
             comment: Comment for the credential
             allow_insecure: Whether to allow insecure use of the credential
-            credential_store_id: The id of the credential store to use
-                (defaults to '94e74cbe-0504-4ab1-b96f-0739f786f57c')
+            credential_store_id: Optional id of the credential store to use
+                (gvmd will pick default one if none is provided)
             vault_id: Vault-ID used to access the secret in credential store
             host_identifier: Host-Identifier used to access the secret in credential store
 
@@ -152,8 +152,8 @@ class Credentials(CredentialsV224):
             name: Name of the credential
             comment: Comment for the credential
             allow_insecure: Whether to allow insecure use of the credential
-            credential_store_id: The id of the credential store to use
-                (defaults to '94e74cbe-0504-4ab1-b96f-0739f786f57c')
+            credential_store_id: Optional id of the credential store to use
+                (gvmd will pick default one if none is provided)
             vault_id: Vault-ID used to access the secret in credential store
             host_identifier: Host-Identifier used to access the secret in credential store
         """
