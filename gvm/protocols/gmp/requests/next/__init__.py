@@ -8,7 +8,7 @@ from gvm.protocols.gmp.requests.next._agents import Agents
 from gvm.protocols.gmp.requests.next._credential_stores import CredentialStores
 from gvm.protocols.gmp.requests.next._credentials import (
     Credentials,
-    CredentialType,
+    CredentialStoreCredentialType,
 )
 from gvm.protocols.gmp.requests.next._oci_image_targets import OCIImageTargets
 from gvm.protocols.gmp.requests.next._tasks import Tasks
@@ -100,7 +100,7 @@ __all__ = (
     "Cpes",
     "Credentials",
     "CredentialFormat",
-    "CredentialType",
+    "CredentialStoreCredentialType",
     "CredentialStores",
     "Cves",
     "DfnCertAdvisories",
