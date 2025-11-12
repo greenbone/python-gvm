@@ -2,7 +2,7 @@
 #
 #  SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Any, Mapping, Optional, Sequence
+from typing import Any, Mapping, Optional, Sequence, Union
 
 from gvm.protocols.gmp.requests import EntityID
 
@@ -13,6 +13,9 @@ from .requests.next import (
     AgentGroups,
     AgentInstallers,
     Agents,
+    Credentials,
+    CredentialStoreCredentialType,
+    CredentialStores,
     OCIImageTargets,
     Tasks,
 )
@@ -295,6 +298,164 @@ class GMPNext(GMPv227[T]):
         """
         return self._send_request_and_transform_response(
             AgentGroups.clone_agent_group(agent_group_id)
+        )
+
+    def create_credential_store_credential(
+        self,
+        name: str,
+        credential_type: Union[CredentialStoreCredentialType, str],
+        *,
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        credential_store_id: Optional[EntityID] = None,
+        vault_id: Optional[str] = None,
+        host_identifier: Optional[str] = None,
+    ) -> T:
+        """Create a new credential store type credential
+
+        Args:
+            name: Name of the credential
+            credential_type: Type of the credential
+            comment: Optional comment for the credential object
+            allow_insecure: Whether to allow insecure usage of credential
+            credential_store_id: Optional credential store id to fetch the credential from
+            vault_id: Vault id used to fetch the credential from credential store
+            host_identifier: Host identifier used to fetch the credential from credential store
+        """
+        return self._send_request_and_transform_response(
+            Credentials.create_credential_store_credential(
+                name=name,
+                credential_type=credential_type,
+                comment=comment,
+                allow_insecure=allow_insecure,
+                credential_store_id=credential_store_id,
+                vault_id=vault_id,
+                host_identifier=host_identifier,
+            )
+        )
+
+    def modify_credential_store_credential(
+        self,
+        credential_id: EntityID,
+        *,
+        name: Optional[str] = None,
+        comment: Optional[str] = None,
+        allow_insecure: Optional[bool] = None,
+        credential_store_id: Optional[EntityID] = None,
+        vault_id: Optional[str] = None,
+        host_identifier: Optional[str] = None,
+    ) -> T:
+        """Modify an existing credential stored in a credential store
+
+        Args:
+            credential_id: UUID of the credential to modify
+            name: Name of the credential
+            comment: Optional comment for the credential object
+            allow_insecure: Whether to allow insecure usage of credential
+            credential_store_id: Optional credential store id to fetch the credential from
+            vault_id: Vault id used to fetch the credential from credential store
+            host_identifier: Host identifier used to fetch the credential from credential store
+        """
+        self._send_request_and_transform_response(
+            Credentials.modify_credential_store_credential(
+                credential_id=credential_id,
+                name=name,
+                comment=comment,
+                allow_insecure=allow_insecure,
+                credential_store_id=credential_store_id,
+                vault_id=vault_id,
+                host_identifier=host_identifier,
+            )
+        )
+
+    def get_credential_stores(
+        self,
+        *,
+        credential_store_id: Optional[EntityID] = None,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+        details: Optional[bool] = None,
+    ) -> T:
+        """Request a list of credential stores
+
+        Args:
+            credential_store_id: ID of credential store to fetch
+            filter_string: Filter term to use for the query
+            filter_id: UUID of an existing filter to use for the query
+            details: Whether to exclude results
+        """
+        return self._send_request_and_transform_response(
+            CredentialStores.get_credential_stores(
+                credential_store_id=credential_store_id,
+                filter_string=filter_string,
+                filter_id=filter_id,
+                details=details,
+            )
+        )
+
+    def modify_credential_store(
+        self,
+        credential_store_id: EntityID,
+        *,
+        active: Optional[bool] = None,
+        host: Optional[str] = None,
+        port: Optional[int] = None,
+        path: Optional[str] = None,
+        app_id: Optional[str] = None,
+        client_cert: Optional[str] = None,
+        client_key: Optional[str] = None,
+        client_pkcs12_file: Optional[str] = None,
+        passphrase: Optional[str] = None,
+        server_ca_cert: Optional[str] = None,
+        comment: Optional[str] = None,
+    ) -> T:
+        """Modify an existing credential store
+
+        Args:
+            credential_store_id: ID of credential store to fetch
+            active: Whether the credential store is active
+            host: The host to use for reaching the credential store
+            port: The port to use for reaching the credential store
+            path: The URI path the credential store is using
+            app_id: Depends on the credential store used. Usually called the same in the credential store
+            client_cert: The client certificate to use for authorization, as a plain string
+            client_key: The client key to use for authorization, as a plain string
+            client_pkcs12_file: The pkcs12 file contents to use for authorization, as a plain string
+                (alternative to using client_cert and client_key)
+            passphrase: The passphrase to use to decrypt client_pkcs12_file or client_key file
+            server_ca_cert: The server certificate, so the credential store can be trusted
+            comment: An optional comment to store alongside the credential store
+        """
+        self._send_request_and_transform_response(
+            CredentialStores.modify_credential_store(
+                credential_store_id=credential_store_id,
+                active=active,
+                host=host,
+                port=port,
+                path=path,
+                app_id=app_id,
+                client_cert=client_cert,
+                client_key=client_key,
+                client_pkcs12_file=client_pkcs12_file,
+                passphrase=passphrase,
+                server_ca_cert=server_ca_cert,
+                comment=comment,
+            )
+        )
+
+    def verify_credential_store(
+        self,
+        credential_store_id: EntityID,
+    ) -> T:
+        """Verify that the connection to an existing credential store works
+
+        Args:
+            credential_store_id: The uuid of the credential store to verify
+        """
+        self._send_request_and_transform_response(
+            CredentialStores.verify_credential_store(
+                credential_store_id=credential_store_id,
+            )
         )
 
     def create_oci_image_target(
