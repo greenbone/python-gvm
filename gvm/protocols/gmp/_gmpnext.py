@@ -356,7 +356,7 @@ class GMPNext(GMPv227[T]):
             vault_id: Vault id used to fetch the credential from credential store
             host_identifier: Host identifier used to fetch the credential from credential store
         """
-        self._send_request_and_transform_response(
+        return self._send_request_and_transform_response(
             Credentials.modify_credential_store_credential(
                 credential_id=credential_id,
                 name=name,
@@ -426,7 +426,7 @@ class GMPNext(GMPv227[T]):
             server_ca_cert: The server certificate, so the credential store can be trusted
             comment: An optional comment to store alongside the credential store
         """
-        self._send_request_and_transform_response(
+        return self._send_request_and_transform_response(
             CredentialStores.modify_credential_store(
                 credential_store_id=credential_store_id,
                 active=active,
@@ -452,7 +452,7 @@ class GMPNext(GMPv227[T]):
         Args:
             credential_store_id: The uuid of the credential store to verify
         """
-        self._send_request_and_transform_response(
+        return self._send_request_and_transform_response(
             CredentialStores.verify_credential_store(
                 credential_store_id=credential_store_id,
             )
