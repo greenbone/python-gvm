@@ -2,6 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from base64 import b64encode
 from typing import Optional
 
 from gvm.errors import RequiredArgument
@@ -96,15 +97,27 @@ class CredentialStores:
         if app_id:
             preferences.add_element("app_id", app_id)
         if client_cert:
-            preferences.add_element("client_cert", client_cert)
+            preferences.add_element(
+                "client_cert",
+                b64encode(client_cert.encode("ascii")).decode("ascii"),
+            )
         if client_key:
-            preferences.add_element("client_key", client_key)
+            preferences.add_element(
+                "client_key",
+                b64encode(client_key.encode("ascii")).decode("ascii"),
+            )
         if client_pkcs12_file:
-            preferences.add_element("client_pkcs12_file", client_pkcs12_file)
+            preferences.add_element(
+                "client_pkcs12_file",
+                b64encode(client_pkcs12_file.encode("ascii")).decode("ascii"),
+            )
         if passphrase:
             preferences.add_element("passphrase", passphrase)
         if server_ca_cert:
-            preferences.add_element("server_ca_cert", server_ca_cert)
+            preferences.add_element(
+                "server_ca_cert",
+                b64encode(server_ca_cert.encode("ascii")).decode("ascii"),
+            )
 
         return cmd
 
