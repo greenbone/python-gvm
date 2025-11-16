@@ -35,7 +35,7 @@ class CredentialStores:
         cmd = XmlCommand("get_credential_stores")
         cmd.add_filter(filter_string, filter_id)
 
-        if details:
+        if details is not None:
             cmd.set_attribute("details", to_bool(details))
 
         if credential_store_id:

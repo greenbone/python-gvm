@@ -5,7 +5,7 @@
 from typing import Optional, Union
 
 from gvm._enum import Enum
-from gvm.errors import RequiredArgument
+from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.core import Request
 from gvm.utils import to_bool
 from gvm.xml import XmlCommand
@@ -103,33 +103,39 @@ class Credentials(CredentialsV224):
             cmd.add_element("allow_insecure", to_bool(allow_insecure))
 
         if (
-            credential_type == CredentialStoreCredentialType.CLIENT_CERTIFICATE
-            or credential_type == CredentialStoreCredentialType.SNMP
-            or credential_type
-            == CredentialStoreCredentialType.USERNAME_PASSWORD
-            or credential_type == CredentialStoreCredentialType.USERNAME_SSH_KEY
-            or credential_type
-            == CredentialStoreCredentialType.SMIME_CERTIFICATE
-            or credential_type
-            == CredentialStoreCredentialType.PGP_ENCRYPTION_KEY
-            or credential_type == CredentialStoreCredentialType.PASSWORD_ONLY
+            credential_type != CredentialStoreCredentialType.CLIENT_CERTIFICATE
+            and credential_type != CredentialStoreCredentialType.SNMP
+            and credential_type
+            != CredentialStoreCredentialType.USERNAME_PASSWORD
+            and credential_type
+            != CredentialStoreCredentialType.USERNAME_SSH_KEY
+            and credential_type
+            != CredentialStoreCredentialType.SMIME_CERTIFICATE
+            and credential_type
+            != CredentialStoreCredentialType.PGP_ENCRYPTION_KEY
+            and credential_type != CredentialStoreCredentialType.PASSWORD_ONLY
         ):
-            if not vault_id:
-                raise RequiredArgument(
-                    function=cls.create_credential.__name__,
-                    argument="vault_id",
-                )
-            if not host_identifier:
-                raise RequiredArgument(
-                    function=cls.create_credential.__name__,
-                    argument="host_identifier",
-                )
+            raise InvalidArgument(
+                function=cls.create_credential.__name__,
+                argument="credential_type",
+            )
 
-            if credential_store_id:
-                cmd.add_element("credential_store_id", str(credential_store_id))
+        if not vault_id:
+            raise RequiredArgument(
+                function=cls.create_credential.__name__,
+                argument="vault_id",
+            )
+        if not host_identifier:
+            raise RequiredArgument(
+                function=cls.create_credential.__name__,
+                argument="host_identifier",
+            )
 
-            cmd.add_element("vault_id", vault_id)
-            cmd.add_element("host_identifier", host_identifier)
+        if credential_store_id:
+            cmd.add_element("credential_store_id", str(credential_store_id))
+
+        cmd.add_element("vault_id", vault_id)
+        cmd.add_element("host_identifier", host_identifier)
 
         return cmd
 

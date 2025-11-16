@@ -24,6 +24,19 @@ class GmpGetCredentialStoresTestMixin:
             b'<get_credential_stores filt_id="f1"/>'
         )
 
+    def test_get_credential_stores_with_details(self):
+        self.gmp.get_credential_stores(details=True)
+
+        self.connection.send.has_been_called_with(
+            b'<get_credential_stores details="1"/>'
+        )
+
+        self.gmp.get_credential_stores(details=False)
+
+        self.connection.send.has_been_called_with(
+            b'<get_credential_stores details="0"/>'
+        )
+
     def test_get_credential_stores_with_id(self):
         self.gmp.get_credential_stores(credential_store_id="cs1")
 
