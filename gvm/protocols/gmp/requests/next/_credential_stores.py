@@ -78,10 +78,16 @@ class CredentialStores:
             comment: An optional comment to store alongside the credential store
         """
 
+        if not credential_store_id:
+            raise RequiredArgument(
+                function=cls.verify_credential_store.__name__,
+                argument="credential_store_id",
+            )
+
         cmd = XmlCommand("modify_credential_store")
         cmd.set_attribute("credential_store_id", str(credential_store_id))
 
-        if active:
+        if active is not None:
             cmd.add_element("active", to_bool(active))
         if host:
             cmd.add_element("host", host)
@@ -138,5 +144,5 @@ class CredentialStores:
             )
 
         cmd = XmlCommand("verify_credential_store")
-        cmd.add_element("credential_store_id", str(credential_store_id))
+        cmd.set_attribute("credential_store_id", str(credential_store_id))
         return cmd
