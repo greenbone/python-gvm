@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+from ...gmpnext import GMPTestCase
 from ...gmpv224.entities.credentials import (
     GmpCloneCredentialTestMixin,
     GmpCreateCredentialTestMixin,
@@ -11,14 +12,21 @@ from ...gmpv224.entities.credentials import (
     GmpGetCredentialTestMixin,
     GmpModifyCredentialTestMixin,
 )
-from ...gmpv227 import GMPTestCase
+from ..entities.credentials import (
+    GmpCreateCredentialStoreCredentialTestMixin,
+    GmpModifyCredentialStoreCredentialTestMixin,
+)
 
 
 class GMPCloneCredentialTestCase(GmpCloneCredentialTestMixin, GMPTestCase):
     pass
 
 
-class GMPCreateCredentialTestCase(GmpCreateCredentialTestMixin, GMPTestCase):
+class GMPCreateCredentialTestCase(
+    GmpCreateCredentialTestMixin,
+    GmpCreateCredentialStoreCredentialTestMixin,
+    GMPTestCase,
+):
     pass
 
 
@@ -34,5 +42,9 @@ class GMPGetCredentialsTestCase(GmpGetCredentialsTestMixin, GMPTestCase):
     pass
 
 
-class GMPModifyCredentialTestCase(GmpModifyCredentialTestMixin, GMPTestCase):
+class GMPModifyCredentialTestCase(
+    GmpModifyCredentialTestMixin,
+    GmpModifyCredentialStoreCredentialTestMixin,
+    GMPTestCase,
+):
     pass
