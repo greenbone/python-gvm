@@ -365,15 +365,19 @@ class GMPNext(GMPv227[T]):
     def get_credential_store(
         self,
         credential_store_id: EntityID,
+        *,
+        details: Optional[bool] = None,
     ) -> T:
         """Request a credential store
 
         Args:
             credential_store_id: ID of credential store to fetch
+            details: True to request all details
         """
         return self._send_request_and_transform_response(
             CredentialStores.get_credential_store(
                 credential_store_id=credential_store_id,
+                details=details,
             )
         )
 
@@ -389,7 +393,7 @@ class GMPNext(GMPv227[T]):
         Args:
             filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
-            details: Whether to exclude results
+            details: True to request all details
         """
         return self._send_request_and_transform_response(
             CredentialStores.get_credential_stores(
