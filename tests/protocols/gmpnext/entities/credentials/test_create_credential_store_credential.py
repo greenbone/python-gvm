@@ -83,47 +83,6 @@ class GmpCreateCredentialStoreCredentialTestMixin:
                 vault_id="123",
             )
 
-    def test_create_cs_up_credential_with_allow_insecure(self):
-        self.gmp.create_credential_store_credential(
-            name="foo",
-            credential_type=CredentialStoreCredentialType.USERNAME_PASSWORD,
-            comment="bar",
-            vault_id="123",
-            host_identifier="456",
-            allow_insecure=True,
-        )
-
-        self.connection.send.has_been_called_with(
-            b"<create_credential>"
-            b"<name>foo</name>"
-            b"<type>cs_up</type>"
-            b"<comment>bar</comment>"
-            b"<allow_insecure>1</allow_insecure>"
-            b"<vault_id>123</vault_id>"
-            b"<host_identifier>456</host_identifier>"
-            b"</create_credential>"
-        )
-
-        self.gmp.create_credential_store_credential(
-            name="foo",
-            credential_type=CredentialStoreCredentialType.USERNAME_PASSWORD,
-            comment="bar",
-            vault_id="123",
-            host_identifier="456",
-            allow_insecure=False,
-        )
-
-        self.connection.send.has_been_called_with(
-            b"<create_credential>"
-            b"<name>foo</name>"
-            b"<type>cs_up</type>"
-            b"<comment>bar</comment>"
-            b"<allow_insecure>0</allow_insecure>"
-            b"<vault_id>123</vault_id>"
-            b"<host_identifier>456</host_identifier>"
-            b"</create_credential>"
-        )
-
     def test_create_cs_cc_credential(self):
         self.gmp.create_credential_store_credential(
             name="foo",

@@ -46,27 +46,6 @@ class GmpModifyCredentialStoreCredentialTestMixin:
             b"</modify_credential>"
         )
 
-    def test_modify_cs_credential_with_allow_insecure(self):
-        self.gmp.modify_credential_store_credential(
-            credential_id="c1", allow_insecure=True
-        )
-
-        self.connection.send.has_been_called_with(
-            b'<modify_credential credential_id="c1">'
-            b"<allow_insecure>1</allow_insecure>"
-            b"</modify_credential>"
-        )
-
-        self.gmp.modify_credential_store_credential(
-            credential_id="c1", allow_insecure=False
-        )
-
-        self.connection.send.has_been_called_with(
-            b'<modify_credential credential_id="c1">'
-            b"<allow_insecure>0</allow_insecure>"
-            b"</modify_credential>"
-        )
-
     def test_modify_cs_credential_with_credential_store_id(self):
         self.gmp.modify_credential_store_credential(
             credential_id="c1", credential_store_id="foo"
@@ -112,8 +91,8 @@ class GmpModifyCredentialStoreCredentialTestMixin:
 
         self.connection.send.has_been_called_with(
             b'<modify_credential credential_id="c1">'
-            b"<comment>foo_comment</comment>"
             b"<name>foo_name</name>"
+            b"<comment>foo_comment</comment>"
             b"<credential_store_id>foo_csid</credential_store_id>"
             b"<vault_id>foo_vid</vault_id>"
             b"<host_identifier>foo_hid</host_identifier>"

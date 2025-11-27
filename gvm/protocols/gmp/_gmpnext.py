@@ -306,7 +306,6 @@ class GMPNext(GMPv227[T]):
         credential_type: Union[CredentialStoreCredentialType, str],
         *,
         comment: Optional[str] = None,
-        allow_insecure: Optional[bool] = None,
         credential_store_id: Optional[EntityID] = None,
         vault_id: Optional[str] = None,
         host_identifier: Optional[str] = None,
@@ -317,7 +316,6 @@ class GMPNext(GMPv227[T]):
             name: Name of the credential
             credential_type: Type of the credential
             comment: Optional comment for the credential object
-            allow_insecure: Whether to allow insecure usage of credential
             credential_store_id: Optional credential store id to fetch the credential from
             vault_id: Vault id used to fetch the credential from credential store
             host_identifier: Host identifier used to fetch the credential from credential store
@@ -327,7 +325,6 @@ class GMPNext(GMPv227[T]):
                 name=name,
                 credential_type=credential_type,
                 comment=comment,
-                allow_insecure=allow_insecure,
                 credential_store_id=credential_store_id,
                 vault_id=vault_id,
                 host_identifier=host_identifier,
@@ -340,7 +337,6 @@ class GMPNext(GMPv227[T]):
         *,
         name: Optional[str] = None,
         comment: Optional[str] = None,
-        allow_insecure: Optional[bool] = None,
         credential_store_id: Optional[EntityID] = None,
         vault_id: Optional[str] = None,
         host_identifier: Optional[str] = None,
@@ -351,7 +347,6 @@ class GMPNext(GMPv227[T]):
             credential_id: UUID of the credential to modify
             name: Name of the credential
             comment: Optional comment for the credential object
-            allow_insecure: Whether to allow insecure usage of credential
             credential_store_id: Optional credential store id to fetch the credential from
             vault_id: Vault id used to fetch the credential from credential store
             host_identifier: Host identifier used to fetch the credential from credential store
@@ -361,7 +356,6 @@ class GMPNext(GMPv227[T]):
                 credential_id=credential_id,
                 name=name,
                 comment=comment,
-                allow_insecure=allow_insecure,
                 credential_store_id=credential_store_id,
                 vault_id=vault_id,
                 host_identifier=host_identifier,

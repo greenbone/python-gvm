@@ -7,7 +7,6 @@ from typing import Optional, Union
 from gvm._enum import Enum
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.core import Request
-from gvm.utils import to_bool
 from gvm.xml import XmlCommand
 
 from .._entity_id import EntityID
@@ -36,7 +35,6 @@ class Credentials(CredentialsV224):
         credential_type: Union[CredentialStoreCredentialType, str],
         *,
         comment: Optional[str] = None,
-        allow_insecure: Optional[bool] = None,
         credential_store_id: Optional[EntityID] = None,
         vault_id: Optional[str] = None,
         host_identifier: Optional[str] = None,
@@ -59,7 +57,6 @@ class Credentials(CredentialsV224):
             name: Name of the new credential
             credential_type: The credential type.
             comment: Comment for the credential
-            allow_insecure: Whether to allow insecure use of the credential
             credential_store_id: Optional id of the credential store to use
                 (gvmd will pick default one if none is provided)
             vault_id: Vault-ID used to access the secret in credential store
@@ -98,9 +95,6 @@ class Credentials(CredentialsV224):
 
         if comment:
             cmd.add_element("comment", comment)
-
-        if allow_insecure is not None:
-            cmd.add_element("allow_insecure", to_bool(allow_insecure))
 
         if (
             credential_type != CredentialStoreCredentialType.CLIENT_CERTIFICATE
@@ -146,7 +140,6 @@ class Credentials(CredentialsV224):
         *,
         name: Optional[str] = None,
         comment: Optional[str] = None,
-        allow_insecure: Optional[bool] = None,
         credential_store_id: Optional[EntityID] = None,
         vault_id: Optional[str] = None,
         host_identifier: Optional[str] = None,
@@ -157,7 +150,6 @@ class Credentials(CredentialsV224):
             credential_id: UUID of the credential
             name: Name of the credential
             comment: Comment for the credential
-            allow_insecure: Whether to allow insecure use of the credential
             credential_store_id: Optional id of the credential store to use
                 (gvmd will pick default one if none is provided)
             vault_id: Vault-ID used to access the secret in credential store
@@ -172,14 +164,10 @@ class Credentials(CredentialsV224):
         cmd = XmlCommand("modify_credential")
         cmd.set_attribute("credential_id", str(credential_id))
 
-        if comment:
-            cmd.add_element("comment", comment)
-
         if name:
             cmd.add_element("name", name)
-
-        if allow_insecure is not None:
-            cmd.add_element("allow_insecure", to_bool(allow_insecure))
+        if comment:
+            cmd.add_element("comment", comment)
 
         if credential_store_id:
             cmd.add_element("credential_store_id", str(credential_store_id))
