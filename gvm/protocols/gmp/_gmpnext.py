@@ -362,10 +362,24 @@ class GMPNext(GMPv227[T]):
             )
         )
 
+    def get_credential_store(
+        self,
+        credential_store_id: EntityID,
+    ) -> T:
+        """Request a credential store
+
+        Args:
+            credential_store_id: ID of credential store to fetch
+        """
+        return self._send_request_and_transform_response(
+            CredentialStores.get_credential_store(
+                credential_store_id=credential_store_id,
+            )
+        )
+
     def get_credential_stores(
         self,
         *,
-        credential_store_id: Optional[EntityID] = None,
         filter_string: Optional[str] = None,
         filter_id: Optional[EntityID] = None,
         details: Optional[bool] = None,
@@ -373,14 +387,12 @@ class GMPNext(GMPv227[T]):
         """Request a list of credential stores
 
         Args:
-            credential_store_id: ID of credential store to fetch
             filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             details: Whether to exclude results
         """
         return self._send_request_and_transform_response(
             CredentialStores.get_credential_stores(
-                credential_store_id=credential_store_id,
                 filter_string=filter_string,
                 filter_id=filter_id,
                 details=details,

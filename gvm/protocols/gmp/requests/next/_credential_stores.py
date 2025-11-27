@@ -15,10 +15,31 @@ from .._entity_id import EntityID
 
 class CredentialStores:
     @classmethod
+    def get_credential_store(
+        cls,
+        credential_store_id: EntityID,
+    ) -> Request:
+        """Request a credential store
+
+        Args:
+            credential_store_id: ID of credential store to fetch
+        """
+
+        if not credential_store_id:
+            raise RequiredArgument(
+                function=cls.get_credential_store.__name__,
+                argument="credential_store_id",
+            )
+
+        cmd = XmlCommand("get_credential_stores")
+        cmd.add_element("credential_store_id", str(credential_store_id))
+
+        return cmd
+
+    @classmethod
     def get_credential_stores(
         cls,
         *,
-        credential_store_id: Optional[EntityID] = None,
         filter_string: Optional[str] = None,
         filter_id: Optional[EntityID] = None,
         details: Optional[bool] = None,
@@ -26,7 +47,6 @@ class CredentialStores:
         """Request a list of credential stores
 
         Args:
-            credential_store_id: ID of credential store to fetch
             filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
             details: Whether to exclude results
@@ -37,9 +57,6 @@ class CredentialStores:
 
         if details is not None:
             cmd.set_attribute("details", to_bool(details))
-
-        if credential_store_id:
-            cmd.add_element("credential_store_id", str(credential_store_id))
 
         return cmd
 
