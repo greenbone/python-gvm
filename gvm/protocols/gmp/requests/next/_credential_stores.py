@@ -18,11 +18,14 @@ class CredentialStores:
     def get_credential_store(
         cls,
         credential_store_id: EntityID,
+        *,
+        details: Optional[bool] = None,
     ) -> Request:
         """Request a credential store
 
         Args:
             credential_store_id: ID of credential store to fetch
+            details: True to request all details
         """
 
         if not credential_store_id:
@@ -33,6 +36,9 @@ class CredentialStores:
 
         cmd = XmlCommand("get_credential_stores")
         cmd.add_element("credential_store_id", str(credential_store_id))
+
+        if details is not None:
+            cmd.set_attribute("details", to_bool(details))
 
         return cmd
 
@@ -49,7 +55,7 @@ class CredentialStores:
         Args:
             filter_string: Filter term to use for the query
             filter_id: UUID of an existing filter to use for the query
-            details: Whether to exclude results
+            details: True to request all details
         """
 
         cmd = XmlCommand("get_credential_stores")
