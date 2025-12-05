@@ -6,12 +6,9 @@
 from gvm.errors import RequiredArgument
 
 
-class GmpCreateContainerTaskTestMixin:
-    def test_create_container_task_emits_deprecation_warning_and_sends_xml(
-        self,
-    ):
-        with self.assertWarns(DeprecationWarning):
-            self.gmp.create_container_task(name="foo")
+class GmpCreateImportTaskTestMixin:
+    def test_create_task(self):
+        self.gmp.create_import_task(name="foo")
 
         self.connection.send.has_been_called_with(
             b"<create_task>"
@@ -20,16 +17,15 @@ class GmpCreateContainerTaskTestMixin:
             b"</create_task>"
         )
 
-    def test_create_container_task_missing_name(self):
+    def test_create_task_missing_name(self):
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_container_task(name=None)
+            self.gmp.create_import_task(name=None)
 
         with self.assertRaises(RequiredArgument):
-            self.gmp.create_container_task(name="")
+            self.gmp.create_import_task(name="")
 
-    def test_create_container_task_with_comment_emits_warning(self):
-        with self.assertWarns(DeprecationWarning):
-            self.gmp.create_container_task(name="foo", comment="bar")
+    def test_create_task_with_comment(self):
+        self.gmp.create_import_task(name="foo", comment="bar")
 
         self.connection.send.has_been_called_with(
             b"<create_task>"
