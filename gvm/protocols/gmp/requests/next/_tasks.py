@@ -7,7 +7,7 @@ from typing import Mapping, Optional, Sequence
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.core import Request
-from gvm.utils import SupportsStr, to_bool, to_comma_list
+from gvm.utils import SupportsStr, deprecated, to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 from .._entity_id import EntityID
@@ -210,12 +210,12 @@ class Tasks:
         return cmd
 
     @classmethod
-    def create_container_task(
+    def create_import_task(
         cls, name: str, *, comment: Optional[str] = None
     ) -> Request:
-        """Create a new container task
+        """Create a new import task
 
-        A container task is a "meta" task to import and view reports from other
+        An import task is a "meta" task to import and view reports from other
         systems.
 
         Args:
@@ -224,7 +224,7 @@ class Tasks:
         """
         if not name:
             raise RequiredArgument(
-                function=cls.create_container_task.__name__, argument="name"
+                function=cls.create_import_task.__name__, argument="name"
             )
 
         cmd = XmlCommand("create_task")
@@ -235,6 +235,19 @@ class Tasks:
             cmd.add_element("comment", comment)
 
         return cmd
+
+    @classmethod
+    @deprecated(
+        "The function is obsolete. Please use create_import_task instead."
+    )
+    def create_container_task(
+        cls, name: str, *, comment: Optional[str] = None
+    ) -> "Request":
+        """[DEPRECATED] Use create_import_task instead.
+
+        This method will be removed in a future version.
+        """
+        return cls.create_import_task(name=name, comment=comment)
 
     @classmethod
     def create_task(

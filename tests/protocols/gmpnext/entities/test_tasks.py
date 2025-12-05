@@ -2,13 +2,13 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
-
 from ...gmpnext import GMPTestCase
 from ...gmpnext.entities.tasks import (
     GmpCloneTaskTestMixin,
     GmpCreateAgentGroupTaskTestMixin,
     GmpCreateContainerImageTaskTestMixin,
     GmpCreateContainerTaskTestMixin,
+    GmpCreateImportTaskTestMixin,
     GmpCreateTaskTestMixin,
     GmpDeleteTaskTestMixin,
     GmpGetTasksTestMixin,
@@ -40,6 +40,10 @@ class GMPCreateContainerImageTaskTestCase(
 class GMPCreateContainerTaskTestCase(
     GmpCreateContainerTaskTestMixin, GMPTestCase
 ):
+    pass
+
+
+class GMPCreateImportTaskTestCase(GmpCreateImportTaskTestMixin, GMPTestCase):
     pass
 
 

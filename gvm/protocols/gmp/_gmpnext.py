@@ -682,17 +682,28 @@ class GMPNext(GMPv227[T]):
             )
         )
 
-    def create_container_task(
+    def create_import_task(
         self, name: str, *, comment: Optional[str] = None
     ) -> T:
-        """Create a new container task
+        """Create a new import task
 
-        A container task is a "meta" task to import and view reports from other
+        An import task is a "meta" task to import and view reports from other
         systems.
 
         Args:
             name: Name of the task
             comment: Comment for the task
+        """
+        return self._send_request_and_transform_response(
+            Tasks.create_import_task(name=name, comment=comment)
+        )
+
+    def create_container_task(
+        self, name: str, *, comment: Optional[str] = None
+    ) -> T:
+        """[DEPRECATED] Use create_import_task instead.
+
+        This method will be removed in a future version.
         """
         return self._send_request_and_transform_response(
             Tasks.create_container_task(name=name, comment=comment)
