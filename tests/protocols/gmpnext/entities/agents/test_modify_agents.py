@@ -27,6 +27,18 @@ class GmpModifyAgentsTestMixin:
             b"</modify_agent>"
         )
 
+    def test_modify_agents_with_update_to_latest_only(self):
+        self.gmp.modify_agents(
+            agent_ids=["agent-123", "agent-456"], update_to_latest=True
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<modify_agent>"
+            b'<agents><agent id="agent-123"/><agent id="agent-456"/></agents>'
+            b"<update_to_latest>1</update_to_latest>"
+            b"</modify_agent>"
+        )
+
     def test_modify_agents_with_full_config_and_comment(self):
         cfg = {
             "agent_control": {
@@ -48,6 +60,7 @@ class GmpModifyAgentsTestMixin:
         self.gmp.modify_agents(
             agent_ids=["agent-123", "agent-456"],
             authorized=True,
+            update_to_latest=True,
             config=cfg,
             comment="Updated agents",
         )
@@ -56,6 +69,7 @@ class GmpModifyAgentsTestMixin:
             b"<modify_agent>"
             b'<agents><agent id="agent-123"/><agent id="agent-456"/></agents>'
             b"<authorized>1</authorized>"
+            b"<update_to_latest>1</update_to_latest>"
             b"<config>"
             b"<agent_control>"
             b"<retry>"

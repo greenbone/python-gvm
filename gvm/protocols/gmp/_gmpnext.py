@@ -117,6 +117,7 @@ class GMPNext(GMPv227[T]):
         agent_ids: list[EntityID],
         *,
         authorized: Optional[bool] = None,
+        update_to_latest: Optional[bool] = None,
         config: Optional[Mapping[str, Any]] = None,
         comment: Optional[str] = None,
     ) -> T:
@@ -126,6 +127,7 @@ class GMPNext(GMPv227[T]):
         Args:
             agent_ids: List of agent UUIDs to modify.
             authorized: Whether the agent is authorized.
+            update_to_latest: Whether the agent is allowed to update to latest automatically.
             config: Nested config for Agent Controller.
             comment: Optional comment for the change.
         """
@@ -133,6 +135,7 @@ class GMPNext(GMPv227[T]):
             Agents.modify_agents(
                 agent_ids=agent_ids,
                 authorized=authorized,
+                update_to_latest=update_to_latest,
                 config=config,
                 comment=comment,
             )
