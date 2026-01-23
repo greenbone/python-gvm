@@ -188,6 +188,7 @@ class Agents:
         agent_ids: list[EntityID],
         *,
         authorized: Optional[bool] = None,
+        update_to_latest: Optional[bool] = None,
         config: Optional[Mapping[str, Any]] = None,
         comment: Optional[str] = None,
     ) -> Request:
@@ -197,6 +198,7 @@ class Agents:
         Args:
             agent_ids: List of agent UUIDs to modify.
             authorized: Whether the agent is authorized.
+            update_to_latest: Whether the agent is allowed to update to latest automatically.
             config: Nested config, e.g.:
                 {
                   "agent_control": {
@@ -232,6 +234,9 @@ class Agents:
 
         if authorized is not None:
             cmd.add_element("authorized", to_bool(authorized))
+
+        if update_to_latest is not None:
+            cmd.add_element("update_to_latest", to_bool(update_to_latest))
 
         if config is not None:
             cls._validate_agent_config(
