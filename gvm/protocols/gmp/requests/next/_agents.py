@@ -4,7 +4,7 @@
 
 from typing import Any, Mapping, Optional, Sequence
 
-from gvm.errors import RequiredArgument
+from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.protocols.core import Request
 from gvm.protocols.gmp.requests._entity_id import EntityID
 from gvm.utils import to_bool
@@ -12,7 +12,6 @@ from gvm.xml import XmlCommand
 
 
 class Agents:
-
     @staticmethod
     def _add_element(element, name: str, value: Any) -> None:
         """
@@ -24,8 +23,14 @@ class Agents:
             value: Value to set as the text of the sub-element. If None, the
                 element will not be created.
         """
-        if value is not None:
-            element.add_element(name, str(value))
+        if value is None:
+            return
+        if isinstance(value, bool):
+            value = "1" if value else "0"
+        else:
+            value = str(value)
+
+        element.add_element(name, value)
 
     @classmethod
     def _validate_agent_config(
@@ -67,7 +72,11 @@ class Agents:
         valid_value(se, "indexer_dir_depth", "agent_script_executor.")
 
         sched = se.get("scheduler_cron_time")
-        if isinstance(sched, Sequence) and not isinstance(sched, (str, bytes)):
+        if isinstance(sched, str):
+            items = [sched]
+        elif isinstance(sched, Sequence) and not isinstance(
+            sched, (str, bytes)
+        ):
             items = [str(x) for x in sched]
         else:
             items = []
@@ -83,7 +92,58 @@ class Agents:
         valid_value(hb, "miss_until_inactive", "heartbeat.")
 
     @classmethod
-    def _append_agent_config(cls, parent, config: Mapping[str, Any]) -> None:
+    def _validate_config_defaults(
+        cls, config_defaults: Mapping[str, Any], *, caller: str
+    ) -> None:
+        """Ensure agent config defaults structure is valid."""
+
+        def valid_map(d: Any, key: str, path: str) -> Mapping[str, Any]:
+            if not isinstance(d, Mapping):
+                raise RequiredArgument(
+                    function=caller,
+                    argument=path.rstrip("."),
+                )
+            v = d.get(key)
+            if not isinstance(v, Mapping):
+                raise RequiredArgument(
+                    function=caller,
+                    argument=f"{path}{key}",
+                )
+            return v
+
+        def valid_bool(d: Mapping[str, Any], key: str, path: str) -> bool:
+            v = d.get(key)
+            if not isinstance(v, bool):
+                raise InvalidArgumentType(
+                    function=caller,
+                    argument=f"{path}{key}",
+                    arg_type="bool",
+                )
+            return v
+
+        agent_defaults = valid_map(
+            config_defaults, "agent_defaults", "config_defaults."
+        )
+        cls._validate_agent_config(agent_defaults, caller=caller)
+
+        agent_control_defaults = valid_map(
+            config_defaults,
+            "agent_control_defaults",
+            "config_defaults.",
+        )
+        valid_bool(
+            agent_control_defaults,
+            "update_to_latest",
+            "config_defaults.agent_control_defaults.",
+        )
+
+    @classmethod
+    def _append_agent_config(
+        cls,
+        parent,
+        config: Mapping[str, Any],
+        wrapper_tag: Optional[str] = "config",
+    ) -> None:
         """
         Append an agent configuration block to the given XML parent element.
 
@@ -110,12 +170,18 @@ class Agents:
             }
 
         Args:
-            parent: The XML parent element to which the `<config>` element
+            parent: The XML parent element to which the wrapper element
                 should be appended.
             config: Mapping containing the agent configuration fields to
                 serialize.
+            wrapper_tag: Optional wrapper element name. If None, fields are
+                appended directly to parent.
         """
-        xml_config = parent.add_element("config")
+        xml_config = (
+            parent.add_element(wrapper_tag)
+            if wrapper_tag is not None
+            else parent
+        )
 
         # agent_control.retry
         ac = config["agent_control"]
@@ -145,9 +211,18 @@ class Agents:
             xml_se, "indexer_dir_depth", se.get("indexer_dir_depth")
         )
         sched = se.get("scheduler_cron_time")
-        xml_sched = xml_se.add_element("scheduler_cron_time")
-        for item in sched:
-            xml_sched.add_element("item", str(item))
+        if isinstance(sched, str):
+            sched_items = [sched]
+        else:
+            sched_items = list(sched or [])
+
+        if sched_items:
+            xml_sched = xml_se.add_element(
+                "scheduler_cron_time",
+                attrs={"is_list": "1"},
+            )
+            for item in sched_items:
+                xml_sched.add_element("item", str(item))
 
         # heartbeat
         hb = config["heartbeat"]
@@ -158,6 +233,29 @@ class Agents:
         cls._add_element(
             xml_hb, "miss_until_inactive", hb.get("miss_until_inactive")
         )
+
+    @classmethod
+    def _append_config_defaults(
+        cls, parent, config_defaults: Mapping[str, Any]
+    ) -> None:
+        xml_defaults = parent.add_element("config_defaults")
+
+        cls._append_agent_config(
+            xml_defaults,
+            config_defaults["agent_defaults"],
+            wrapper_tag="agent_defaults",
+        )
+
+        control_defaults = config_defaults.get("agent_control_defaults")
+        if control_defaults:
+            xml_control_defaults = xml_defaults.add_element(
+                "agent_control_defaults"
+            )
+            cls._add_element(
+                xml_control_defaults,
+                "update_to_latest",
+                control_defaults.get("update_to_latest"),
+            )
 
     @classmethod
     def get_agents(
@@ -273,32 +371,37 @@ class Agents:
     def modify_agent_control_scan_config(
         cls,
         agent_control_id: EntityID,
-        config: Mapping[str, Any],
+        config_defaults: Mapping[str, Any],
     ) -> Request:
         """
         Modify agent control scan config.
 
         Args:
             agent_control_id: The agent control UUID.
-            config: Nested config, e.g.:
+            config_defaults: Nested config, e.g.:
                 {
-                  "agent_control": {
-                    "retry": {
-                      "attempts": 6,
-                      "delay_in_seconds": 60,
-                      "max_jitter_in_seconds": 10,
-                    }
-                  },
-                  "agent_script_executor": {
-                      "bulk_size": 2,
-                      "bulk_throttle_time_in_ms": 300,
-                      "indexer_dir_depth": 100,
-                      "scheduler_cron_time": ["0 */12 * * *"],  # str or list[str]
-                  },
-                  "heartbeat": {
-                      "interval_in_seconds": 300,
-                      "miss_until_inactive": 1,
-                  },
+                    "agent_defaults": {
+                        "agent_control": {
+                            "retry": {
+                                "attempts": 6,
+                                "delay_in_seconds": 60,
+                                "max_jitter_in_seconds": 10,
+                            }
+                        },
+                        "agent_script_executor": {
+                            "bulk_size": 2,
+                            "bulk_throttle_time_in_ms": 300,
+                            "indexer_dir_depth": 100,
+                            "scheduler_cron_time": ["0 */12 * * *"],
+                        },
+                        "heartbeat": {
+                            "interval_in_seconds": 300,
+                            "miss_until_inactive": 1,
+                        },
+                    },
+                    "agent_control_defaults": {
+                        "update_to_latest": False,
+                    },
                 }
         """
         if not agent_control_id:
@@ -306,21 +409,24 @@ class Agents:
                 function=cls.modify_agent_control_scan_config.__name__,
                 argument="agent_control_id",
             )
-        if not config:
+        if not config_defaults:
             raise RequiredArgument(
                 function=cls.modify_agent_control_scan_config.__name__,
-                argument="config",
+                argument="config_defaults",
             )
 
-        cls._validate_agent_config(
-            config, caller=cls.modify_agent_control_scan_config.__name__
+        cls._validate_config_defaults(
+            config_defaults,
+            caller=cls.modify_agent_control_scan_config.__name__,
         )
 
-        cmd = XmlCommand(
-            "modify_agent_control_scan_config",
-        )
+        cmd = XmlCommand("modify_agent_control_scan_config")
         cmd.set_attribute("agent_control_id", str(agent_control_id))
-
-        cls._append_agent_config(cmd, config)
+        cls._append_config_defaults(cmd, config_defaults)
 
         return cmd
+
+    @classmethod
+    def sync_agents(cls) -> Request:
+        """Trigger agents synchronization from all agent controllers."""
+        return XmlCommand("sync_agents")

@@ -82,7 +82,7 @@ class GmpModifyAgentsTestMixin:
             b"<bulk_size>2</bulk_size>"
             b"<bulk_throttle_time_in_ms>300</bulk_throttle_time_in_ms>"
             b"<indexer_dir_depth>100</indexer_dir_depth>"
-            b"<scheduler_cron_time>"
+            b'<scheduler_cron_time is_list="1">'
             b"<item>0 */12 * * *</item>"
             b"</scheduler_cron_time>"
             b"</agent_script_executor>"
