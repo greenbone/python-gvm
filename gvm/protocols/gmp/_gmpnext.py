@@ -166,7 +166,7 @@ class GMPNext(GMPv227[T]):
         return self._send_request_and_transform_response(
             Agents.modify_agent_control_scan_config(
                 agent_control_id=agent_control_id,
-                config=config,
+                config_defaults=config,
             )
         )
 
