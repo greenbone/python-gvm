@@ -303,6 +303,10 @@ class GMPNext(GMPv227[T]):
             AgentGroups.clone_agent_group(agent_group_id)
         )
 
+    def sync_agents(self) -> T:
+        """Trigger agents synchronization from all agent controllers."""
+        return self._send_request_and_transform_response(Agents.sync_agents())
+
     def create_credential_store_credential(
         self,
         name: str,

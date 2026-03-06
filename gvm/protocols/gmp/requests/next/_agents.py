@@ -425,3 +425,8 @@ class Agents:
         cls._append_config_defaults(cmd, config_defaults)
 
         return cmd
+
+    @classmethod
+    def sync_agents(cls) -> Request:
+        """Trigger agents synchronization from all agent controllers."""
+        return XmlCommand("sync_agents")
