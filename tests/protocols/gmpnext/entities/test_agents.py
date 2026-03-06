@@ -16,6 +16,7 @@ from .agents.test_modify_agent_controller_scan_config import (
 from .agents.test_modify_agents import (
     GmpModifyAgentsTestMixin,
 )
+from .agents.test_sync_agents import GmpSyncAgentsTestMixin
 
 
 class GMPGetAgentsTestCase(GmpGetAgentsTestMixin, GMPTestCase):
@@ -33,4 +34,8 @@ class GMPDeleteAgentsTestCase(GmpDeleteAgentsTestMixin, GMPTestCase):
 class GMPModifyAgentControllerScanConfigTestCase(
     GmpModifyAgentControllerScanConfigTestMixin, GMPTestCase
 ):
+    pass
+
+
+class GMPSyncAgentsTestCase(GmpSyncAgentsTestMixin, GMPTestCase):
     pass
