@@ -95,6 +95,62 @@ class GmpModifyAgentsTestMixin:
             b"</modify_agent>"
         )
 
+    def test_modify_agents_omits_optional_elements_when_none(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": ["0 */12 * * *"],
+            },
+            "heartbeat": {
+                "interval_in_seconds": 300,
+                "miss_until_inactive": 1,
+            },
+        }
+
+        self.gmp.modify_agents(
+            agent_ids=["agent-123"],
+            authorized=None,
+            update_to_latest=None,
+            config=cfg,
+            comment=None,
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<modify_agent>"
+            b'<agents><agent id="agent-123"/></agents>'
+            b"<config>"
+            b"<agent_control>"
+            b"<retry>"
+            b"<attempts>6</attempts>"
+            b"<delay_in_seconds>60</delay_in_seconds>"
+            b"<max_jitter_in_seconds>10</max_jitter_in_seconds>"
+            b"</retry>"
+            b"</agent_control>"
+            b"<agent_script_executor>"
+            b"<bulk_size>2</bulk_size>"
+            b"<bulk_throttle_time_in_ms>300</bulk_throttle_time_in_ms>"
+            b"<indexer_dir_depth>100</indexer_dir_depth>"
+            b'<scheduler_cron_time is_list="1">'
+            b"<item>0 */12 * * *</item>"
+            b"</scheduler_cron_time>"
+            b"</agent_script_executor>"
+            b"<heartbeat>"
+            b"<interval_in_seconds>300</interval_in_seconds>"
+            b"<miss_until_inactive>1</miss_until_inactive>"
+            b"</heartbeat>"
+            b"</config>"
+            b"</modify_agent>"
+        )
+
     def test_modify_agents_with_full_config_with_missing_element(self):
         cfg = {
             "agent_control": {
