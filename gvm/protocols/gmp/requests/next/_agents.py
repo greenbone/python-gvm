@@ -26,7 +26,7 @@ class Agents:
         if value is None:
             return
         if isinstance(value, bool):
-            value = "1" if value else "0"
+            value = to_bool(value)
         else:
             value = str(value)
 
