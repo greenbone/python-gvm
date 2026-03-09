@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gvm.errors import RequiredArgument
+from gvm.errors import InvalidArgumentType, RequiredArgument
 
 
 class GmpModifyAgentControllerScanConfigTestMixin:
@@ -691,6 +691,41 @@ class GmpModifyAgentControllerScanConfigTestMixin:
             }
         }
         with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agent_control_scan_config(
+                "fb6451bf-ec5a-45a8-8bab-5cf4b862e51b", config=cfg
+            )
+
+    def test_modify_agent_control_scan_config_wrong_update_to_latest_raises(
+        self,
+    ):
+        cfg = {
+            "agent_defaults": {
+                "agent_control": {
+                    "retry": {
+                        "attempts": 6,
+                        "delay_in_seconds": 60,
+                        "max_jitter_in_seconds": 10,
+                    }
+                },
+                "agent_script_executor": {
+                    "bulk_size": 1,
+                    "bulk_throttle_time_in_ms": 100,
+                    "indexer_dir_depth": 10,
+                    "scheduler_cron_time": [
+                        "0 23 * * *",
+                        "0 22 * * *",
+                    ],
+                },
+                "heartbeat": {
+                    "interval_in_seconds": 600,
+                    "miss_until_inactive": 1,
+                },
+            },
+            "agent_control_defaults": {
+                "update_to_latest": "test",
+            },
+        }
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_agent_control_scan_config(
                 "fb6451bf-ec5a-45a8-8bab-5cf4b862e51b", config=cfg
             )
