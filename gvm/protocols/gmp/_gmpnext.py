@@ -16,6 +16,7 @@ from .requests.next import (
     Credentials,
     CredentialStoreCredentialType,
     CredentialStores,
+    IntegrationConfigs,
     OCIImageTargets,
     Tasks,
 )
@@ -926,4 +927,69 @@ class GMPNext(GMPv227[T]):
         """
         return self._send_request_and_transform_response(
             Tasks.stop_task(task_id=task_id)
+        )
+
+    def get_integration_config(
+        self, integration_config_id: EntityID, *, details: Optional[bool] = None
+    ) -> T:
+        """Request a single Integration Configuration.
+
+        Args:
+           integration_config_id: UUID of the integration config to request.
+           details: Whether to include detail information.
+        """
+        return self._send_request_and_transform_response(
+            IntegrationConfigs.get_integration_config(
+                integration_config_id=integration_config_id, details=details
+            )
+        )
+
+    def get_integration_configs(
+        self,
+        *,
+        filter_string: Optional[str] = None,
+        filter_id: Optional[EntityID] = None,
+    ) -> T:
+        """Request a list of Integration Configurations.
+
+        Args:
+            filter_string: Filter term to use for the query.
+            filter_id: UUID of an existing filter to use for the query.
+        """
+        return self._send_request_and_transform_response(
+            IntegrationConfigs.get_integration_configs(
+                filter_string=filter_string,
+                filter_id=filter_id,
+            )
+        )
+
+    def modify_integration_config(
+        self,
+        integration_config_id: EntityID,
+        *,
+        service_url: Optional[str] = None,
+        service_cacert: Optional[str] = None,
+        oidc_provider_url: Optional[str] = None,
+        oidc_provider_client_id: Optional[str] = None,
+        oidc_provider_client_secret: Optional[str] = None,
+    ) -> T:
+        """Modify an existing Integration Configuration.
+
+        Args:
+            integration_config_id: UUID of configuration to modify.
+            service_url: Integration Service URL.
+            service_cacert: Integration Service Certificate.
+            oidc_provider_url: OIDC Provider URL.
+            oidc_provider_client_id: OIDC Provider Client ID.
+            oidc_provider_client_secret: OIDC Provider Client Secret.
+        """
+        return self._send_request_and_transform_response(
+            IntegrationConfigs.modify_integration_config(
+                integration_config_id=integration_config_id,
+                service_url=service_url,
+                service_cacert=service_cacert,
+                oidc_provider_url=oidc_provider_url,
+                oidc_provider_client_id=oidc_provider_client_id,
+                oidc_provider_client_secret=oidc_provider_client_secret,
+            )
         )
