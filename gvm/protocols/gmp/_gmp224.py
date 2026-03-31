@@ -1080,7 +1080,7 @@ class GMPv224(GvmProtocol[T]):
 
         Args:
             text: Text of the new note
-            nvt_id: OID of the nvt to which note applies
+            nvt_oid: OID of the nvt to which note applies
             days_active: Days note will be active. -1 on
                 always, 0 off
             hosts: A list of host addresses
@@ -1217,7 +1217,7 @@ class GMPv224(GvmProtocol[T]):
 
         Args:
             text: Text of the new override
-            nvt_id: OID of the nvt to which override applies
+            nvt_oid: OID of the nvt to which override applies
             days_active: Days override will be active. -1 on always, 0 off
             hosts: A list of host addresses
             port: Port to which the override applies, needs to be a string

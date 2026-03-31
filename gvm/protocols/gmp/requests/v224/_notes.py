@@ -31,7 +31,7 @@ class Notes:
 
         Args:
             text: Text of the new note
-            nvt_id: OID of the nvt to which note applies
+            nvt_oid: OID of the nvt to which note applies
             days_active: Days note will be active. -1 on
                 always, 0 off
             hosts: A list of host addresses
