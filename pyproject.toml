@@ -1,52 +1,58 @@
 [build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+requires = ["uv_build>=0.11.2,<0.12.0"]
+build-backend = "uv_build"
 
-[tool.poetry]
+[project]
 name = "python-gvm"
 version = "26.11.2.dev1"
 description = "Library to communicate with remote servers over GMP or OSP"
-license = "GPL-3.0-or-later"
-authors = ["Greenbone AG <info@greenbone.net>"]
+authors = [{ name = "Greenbone AG", email = "info@greenbone.net" }]
+requires-python = ">=3.9.2,<4"
 readme = "README.md"
-homepage = "https://github.com/greenbone/python-gvm/"
-repository = "https://github.com/greenbone/python-gvm/"
-documentation = "https://greenbone.github.io/python-gvm/"
+license = "GPL-3.0-or-later"
 classifiers = [
-  # Full list: https://pypi.org/pypi?%3Aaction=list_classifiers
-  "Development Status :: 5 - Production/Stable",
-  "License :: OSI Approved :: GNU General Public License v3 or later (GPLv3+)",
-  "Environment :: Console",
-  "Intended Audience :: Developers",
-  "Programming Language :: Python :: 3.9",
-  "Programming Language :: Python :: 3.10",
-  "Programming Language :: Python :: 3.11",
-  "Programming Language :: Python :: 3.12",
-  "Programming Language :: Python :: 3.13",
-  "Operating System :: OS Independent",
-  "Topic :: Software Development :: Libraries :: Python Modules",
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Python Modules",
 ]
-packages = [{ include = "gvm" }, { include = "tests", format = "sdist" }]
+dependencies = ["paramiko>=2.7.1", "lxml>=4.5.0", "httpx[http2]>=0.28.1,<0.29"]
 
-[tool.poetry.dependencies]
-python = "^3.9.2"
-paramiko = ">=2.7.1"
-lxml = ">=4.5.0"
-httpx = {extras = ["http2"], version = "^0.28.1"}
+[project.urls]
+Homepage = "https://github.com/greenbone/python-gvm/"
+Repository = "https://github.com/greenbone/python-gvm/"
+Documentation = "https://greenbone.github.io/python-gvm/"
 
-[tool.poetry.group.dev.dependencies]
-coverage = ">=7.2"
-sphinx = ">=5.3.0"
-autohooks-plugin-ruff = ">=24.1.0"
-autohooks-plugin-black = ">=22.7.0"
-autohooks-plugin-mypy = ">=22.7.0"
-black = ">=22.6.0"
-pontos = ">=22.7.2"
-furo = ">=2022.6.21"
-lxml-stubs = "^0.5.1"
-types-paramiko = ">=3.4.0.20240205,<5.0.0.0"
-git-cliff = "^2.8.0"
-myst-parser = { version = "^4.0.0", python = "^3.10" }
+[dependency-groups]
+dev = [
+    "coverage>=7.2",
+    "sphinx>=5.3.0",
+    "autohooks-plugin-ruff>=24.1.0",
+    "autohooks-plugin-black>=22.7.0",
+    "autohooks-plugin-mypy>=22.7.0",
+    "black>=22.6.0",
+    "pontos>=22.7.2",
+    "furo>=2022.6.21",
+    "lxml-stubs>=0.5.1,<0.6",
+    "types-paramiko>=3.4.0.20240205,<5.0.0.0",
+    "git-cliff>=2.8.0,<3",
+    "myst-parser>=4.0.0,<5 ; python_full_version >= '3.10' and python_full_version < '4'",
+]
+
+[tool.uv]
+default-groups = "all"
+
+[tool.uv.build-backend]
+module-name = ["gvm", "tests"]
+module-root = ""
+wheel-exclude = ["tests"]
 
 [tool.black]
 line-length = 80
@@ -72,7 +78,7 @@ target-version = "py39"
 extend-select = ["I", "PLE", "PLW"]
 
 [tool.autohooks]
-mode = "poetry"
+mode = "uv"
 pre-commit = ['autohooks.plugins.black', "autohooks.plugins.ruff"]
 
 [tool.coverage.run]
@@ -153,22 +159,22 @@ filter_unconventional = false
 split_commits = false
 # regex for preprocessing the commit messages
 commit_preprocessors = [
-  # remove issue numbers from commits
-  { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "" },
+    # remove issue numbers from commits
+    { pattern = '\((\w+\s)?#([0-9]+)\)', replace = "" },
 ]
 # regex for parsing and grouping commits
 commit_parsers = [
-  { message = "^[a|A]dd", group = "<!-- 1 -->:sparkles: Added" },
-  { message = "^[c|C]hange", group = "<!-- 2 -->:construction_worker: Changed" },
-  { message = "^[f|F]ix", group = "<!-- 3 -->:bug: Bug Fixes" },
-  { message = "^[r|R]emove", group = "<!-- 4 -->:fire: Removed" },
-  { message = "^[d|D]rop", group = "<!-- 4 -->:fire: Removed" },
-  { message = "^[d|D]oc", group = "<!-- 5 -->:books: Documentation" },
-  { message = "^[t|T]est", group = "<!-- 6 -->:white_check_mark: Testing" },
-  { message = "^[c|C]hore", group = "<!-- 7 -->:wrench: Miscellaneous" },
-  { message = "^[c|C]i", group = "<!-- 7 -->️:wrench: Miscellaneous" },
-  { message = "^[m|M]isc", group = "<!-- 7 -->:wrench: Miscellaneous" },
-  { message = "^[d|D]eps", group = "<!-- 8 -->:ship: Dependencies" },
+    { message = "^[a|A]dd", group = "<!-- 1 -->:sparkles: Added" },
+    { message = "^[c|C]hange", group = "<!-- 2 -->:construction_worker: Changed" },
+    { message = "^[f|F]ix", group = "<!-- 3 -->:bug: Bug Fixes" },
+    { message = "^[r|R]emove", group = "<!-- 4 -->:fire: Removed" },
+    { message = "^[d|D]rop", group = "<!-- 4 -->:fire: Removed" },
+    { message = "^[d|D]oc", group = "<!-- 5 -->:books: Documentation" },
+    { message = "^[t|T]est", group = "<!-- 6 -->:white_check_mark: Testing" },
+    { message = "^[c|C]hore", group = "<!-- 7 -->:wrench: Miscellaneous" },
+    { message = "^[c|C]i", group = "<!-- 7 -->️:wrench: Miscellaneous" },
+    { message = "^[m|M]isc", group = "<!-- 7 -->:wrench: Miscellaneous" },
+    { message = "^[d|D]eps", group = "<!-- 8 -->:ship: Dependencies" },
 ]
 # filter out the commits that are not matched by commit parsers
 filter_commits = true

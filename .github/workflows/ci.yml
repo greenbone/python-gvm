@@ -9,6 +9,7 @@ on:
 jobs:
   linting:
     name: Linting
+    runs-on: "ubuntu-latest"
     strategy:
       matrix:
         python-version:
@@ -17,14 +18,19 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
-    uses: greenbone/workflows/.github/workflows/lint-python.yml@main
-    with:
-      lint-packages: gvm tests
-      python-version: ${{ matrix.python-version }}
-      linter: ruff check
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Check and lint python packages
+        uses: greenbone/actions/lint-python@v3
+        with:
+          package-manager: uv
+          packages: gvm tests
+          python-version: ${{ matrix.python-version }}
+          linter: ruff check
 
   test:
     name: Run tests
+    runs-on: "ubuntu-latest"
     strategy:
       matrix:
         python-version:
@@ -33,9 +39,15 @@ jobs:
           - "3.11"
           - "3.12"
           - "3.13"
-    uses: greenbone/workflows/.github/workflows/test-python.yml@main
-    with:
-      python-version: ${{ matrix.python-version }}
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: greenbone/actions/uv@v3
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Run unit test
+        run: |
+          uv run python -m unittest -v
 
   mypy:
     name: Check type hints
@@ -49,36 +61,34 @@ jobs:
           - "3.12"
           - "3.13"
     steps:
-      - uses: actions/checkout@v6
-      - name: Run mypy
-        uses: greenbone/actions/mypy-python@v3
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: greenbone/actions/uv@v3
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Run mypy
+        run: |
+          uv run mypy
 
   codecov:
     name: Upload coverage to codecov.io
     needs: test
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
       - name: Calculate and upload coverage to codecov.io
         uses: greenbone/actions/coverage-python@v3
         with:
-          python-version: "3.10"
+          package-manager: uv
           token: ${{ secrets.CODECOV_TOKEN }}
 
   build-docs:
     name: Build the documentation
     runs-on: "ubuntu-latest"
     steps:
-      - uses: actions/checkout@v6
-      - name: Install poetry and dependencies
-        uses: greenbone/actions/poetry@v3
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: greenbone/actions/uv@v3
       - name: Build docs
         run: |
-          cd docs
-          poetry run make html
-
-  versioning:
-    name: Check versioning
-    uses: greenbone/workflows/.github/workflows/check-version.yml@main
+          cd docs && uv run make html

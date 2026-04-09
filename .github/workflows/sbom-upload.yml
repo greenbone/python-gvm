@@ -1,8 +1,11 @@
 name: SBOM upload
+
 on:
   workflow_dispatch:
   push:
-    branches: ["main"]
+    branches:
+      - main
+
 jobs:
   SBOM-upload:
     runs-on: ubuntu-latest
@@ -10,5 +13,5 @@ jobs:
       id-token: write
       contents: write
     steps:
-      - name: 'SBOM upload'
+      - name: "SBOM upload"
         uses: greenbone/actions/sbom-upload@v3
