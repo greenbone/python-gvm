@@ -27,10 +27,7 @@ class TasksTestCase(unittest.TestCase):
         request = Tasks().create_container_task("name")
         self.assertEqual(
             bytes(request),
-            b"<create_task>"
-            b"<name>name</name>"
-            b'<target id="0"/>'
-            b"</create_task>",
+            b'<create_task><name>name</name><target id="0"/></create_task>',
         )
 
     def test_create_container_task_with_comment(self):
@@ -491,9 +488,7 @@ class TasksTestCase(unittest.TestCase):
         request = Tasks().modify_task("task_id", name="name")
         self.assertEqual(
             bytes(request),
-            b'<modify_task task_id="task_id">'
-            b"<name>name</name>"
-            b"</modify_task>",
+            b'<modify_task task_id="task_id"><name>name</name></modify_task>',
         )
 
     def test_modify_task_with_config_id(self):
@@ -601,9 +596,7 @@ class TasksTestCase(unittest.TestCase):
         request = Tasks().modify_task("task_id", alert_ids=[])
         self.assertEqual(
             bytes(request),
-            b'<modify_task task_id="task_id">'
-            b'<alert id="0"/>'
-            b"</modify_task>",
+            b'<modify_task task_id="task_id"><alert id="0"/></modify_task>',
         )
 
     def test_modify_task_with_observers(self):
@@ -647,9 +640,7 @@ class TasksTestCase(unittest.TestCase):
         request = Tasks().modify_task("task_id", preferences={})
         self.assertEqual(
             bytes(request),
-            b'<modify_task task_id="task_id">'
-            b"<preferences/>"
-            b"</modify_task>",
+            b'<modify_task task_id="task_id"><preferences/></modify_task>',
         )
 
     def test_modify_task_missing_task_id(self):

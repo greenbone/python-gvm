@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -35,9 +34,9 @@ class Groups:
         cls,
         name: str,
         *,
-        comment: Optional[str] = None,
-        special: Optional[bool] = False,
-        users: Optional[list[str]] = None,
+        comment: str | None = None,
+        special: bool | None = False,
+        users: list[str] | None = None,
     ) -> Request:
         """Create a new group
 
@@ -70,7 +69,7 @@ class Groups:
 
     @classmethod
     def delete_group(
-        cls, group_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, group_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing group
 
@@ -92,9 +91,9 @@ class Groups:
     @staticmethod
     def get_groups(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
     ) -> Request:
         """Request a list of groups
 
@@ -134,9 +133,9 @@ class Groups:
         cls,
         group_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        users: Optional[list[str]] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        users: list[str] | None = None,
     ) -> Request:
         """Modifies an existing group.
 

@@ -2,7 +2,8 @@
 #
 #  SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Any, Mapping, Optional, Sequence, Union
+from collections.abc import Mapping, Sequence
+from typing import Any
 
 from gvm.protocols.gmp.requests import EntityID
 
@@ -48,10 +49,10 @@ class GMPNext(GMPv227[T]):
     def get_agent_installers(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of agent installers
 
@@ -94,9 +95,9 @@ class GMPNext(GMPv227[T]):
     def get_agents(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of agents.
 
@@ -117,10 +118,10 @@ class GMPNext(GMPv227[T]):
         self,
         agent_ids: list[EntityID],
         *,
-        authorized: Optional[bool] = None,
-        update_to_latest: Optional[bool] = None,
-        config: Optional[Mapping[str, Any]] = None,
-        comment: Optional[str] = None,
+        authorized: bool | None = None,
+        update_to_latest: bool | None = None,
+        config: Mapping[str, Any] | None = None,
+        comment: str | None = None,
     ) -> T:
         """
         Modify multiple agents.
@@ -174,9 +175,9 @@ class GMPNext(GMPv227[T]):
     def get_agent_groups(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
     ) -> T:
         """Request a list of agent groups.
 
@@ -219,7 +220,7 @@ class GMPNext(GMPv227[T]):
         name: str,
         agent_ids: list[str],
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> T:
         """Create a new agent group.
 
@@ -243,9 +244,9 @@ class GMPNext(GMPv227[T]):
         self,
         agent_group_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        agent_ids: Optional[list[str]] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        agent_ids: list[str] | None = None,
     ) -> T:
         """Modify an existing agent group.
 
@@ -311,12 +312,12 @@ class GMPNext(GMPv227[T]):
     def create_credential_store_credential(
         self,
         name: str,
-        credential_type: Union[CredentialStoreCredentialType, str],
+        credential_type: CredentialStoreCredentialType | str,
         *,
-        comment: Optional[str] = None,
-        credential_store_id: Optional[EntityID] = None,
-        vault_id: Optional[str] = None,
-        host_identifier: Optional[str] = None,
+        comment: str | None = None,
+        credential_store_id: EntityID | None = None,
+        vault_id: str | None = None,
+        host_identifier: str | None = None,
     ) -> T:
         """Create a new credential store type credential
 
@@ -343,11 +344,11 @@ class GMPNext(GMPv227[T]):
         self,
         credential_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        credential_store_id: Optional[EntityID] = None,
-        vault_id: Optional[str] = None,
-        host_identifier: Optional[str] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        credential_store_id: EntityID | None = None,
+        vault_id: str | None = None,
+        host_identifier: str | None = None,
     ) -> T:
         """Modify an existing credential stored in a credential store
 
@@ -374,7 +375,7 @@ class GMPNext(GMPv227[T]):
         self,
         credential_store_id: EntityID,
         *,
-        details: Optional[bool] = None,
+        details: bool | None = None,
     ) -> T:
         """Request a credential store
 
@@ -392,9 +393,9 @@ class GMPNext(GMPv227[T]):
     def get_credential_stores(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of credential stores
 
@@ -415,17 +416,17 @@ class GMPNext(GMPv227[T]):
         self,
         credential_store_id: EntityID,
         *,
-        active: Optional[bool] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        path: Optional[str] = None,
-        app_id: Optional[str] = None,
-        client_cert: Optional[str] = None,
-        client_key: Optional[str] = None,
-        client_pkcs12_file: Optional[str] = None,
-        passphrase: Optional[str] = None,
-        server_ca_cert: Optional[str] = None,
-        comment: Optional[str] = None,
+        active: bool | None = None,
+        host: str | None = None,
+        port: int | None = None,
+        path: str | None = None,
+        app_id: str | None = None,
+        client_cert: str | None = None,
+        client_key: str | None = None,
+        client_pkcs12_file: str | None = None,
+        passphrase: str | None = None,
+        server_ca_cert: str | None = None,
+        comment: str | None = None,
     ) -> T:
         """Modify an existing credential store
 
@@ -481,8 +482,8 @@ class GMPNext(GMPv227[T]):
         name: str,
         image_references: list[str],
         *,
-        comment: Optional[str] = None,
-        credential_id: Optional[EntityID] = None,
+        comment: str | None = None,
+        credential_id: EntityID | None = None,
     ) -> T:
         """Create a new OCI image target
 
@@ -505,10 +506,10 @@ class GMPNext(GMPv227[T]):
         self,
         oci_image_target_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        image_references: Optional[list[str]] = None,
-        credential_id: Optional[EntityID] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        image_references: list[str] | None = None,
+        credential_id: EntityID | None = None,
     ) -> T:
         """Modify an existing OCI image target.
 
@@ -540,7 +541,7 @@ class GMPNext(GMPv227[T]):
         )
 
     def delete_oci_image_target(
-        self, oci_image_target_id: EntityID, *, ultimate: Optional[bool] = False
+        self, oci_image_target_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Delete an existing OCI image target.
 
@@ -555,7 +556,7 @@ class GMPNext(GMPv227[T]):
         )
 
     def get_oci_image_target(
-        self, oci_image_target_id: EntityID, *, tasks: Optional[bool] = None
+        self, oci_image_target_id: EntityID, *, tasks: bool | None = None
     ) -> T:
         """Request a single OCI image target.
 
@@ -572,10 +573,10 @@ class GMPNext(GMPv227[T]):
     def get_oci_image_targets(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        tasks: bool | None = None,
     ) -> T:
         """Request a list of OCI image targets.
 
@@ -610,13 +611,13 @@ class GMPNext(GMPv227[T]):
         agent_group_id: EntityID,
         scanner_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        alterable: Optional[bool] = None,
-        schedule_id: Optional[EntityID] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        comment: str | None = None,
+        alterable: bool | None = None,
+        schedule_id: EntityID | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        schedule_periods: int | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> T:
         """Create a new scan task using an agent group.
 
@@ -653,13 +654,13 @@ class GMPNext(GMPv227[T]):
         oci_image_target_id: EntityID,
         scanner_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        alterable: Optional[bool] = None,
-        schedule_id: Optional[EntityID] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        comment: str | None = None,
+        alterable: bool | None = None,
+        schedule_id: EntityID | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        schedule_periods: int | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> T:
         """Create a new scan task using an OCI image target.
 
@@ -690,9 +691,7 @@ class GMPNext(GMPv227[T]):
             )
         )
 
-    def create_import_task(
-        self, name: str, *, comment: Optional[str] = None
-    ) -> T:
+    def create_import_task(self, name: str, *, comment: str | None = None) -> T:
         """Create a new import task
 
         An import task is a "meta" task to import and view reports from other
@@ -707,7 +706,7 @@ class GMPNext(GMPv227[T]):
         )
 
     def create_container_task(
-        self, name: str, *, comment: Optional[str] = None
+        self, name: str, *, comment: str | None = None
     ) -> T:
         """[DEPRECATED] Use create_import_task instead.
 
@@ -724,14 +723,14 @@ class GMPNext(GMPv227[T]):
         target_id: EntityID,
         scanner_id: EntityID,
         *,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[EntityID] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        comment: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        alterable: bool | None = None,
+        hosts_ordering: HostsOrdering | None = None,
+        schedule_id: EntityID | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        comment: str | None = None,
+        schedule_periods: int | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> T:
         """Create a new scan task
 
@@ -769,7 +768,7 @@ class GMPNext(GMPv227[T]):
         )
 
     def delete_task(
-        self, task_id: EntityID, *, ultimate: Optional[bool] = False
+        self, task_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing task
 
@@ -784,12 +783,12 @@ class GMPNext(GMPv227[T]):
     def get_tasks(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
-        ignore_pagination: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
+        schedules_only: bool | None = None,
+        ignore_pagination: bool | None = None,
     ) -> T:
         """Request a list of tasks
 
@@ -828,20 +827,20 @@ class GMPNext(GMPv227[T]):
         self,
         task_id: EntityID,
         *,
-        name: Optional[str] = None,
-        config_id: Optional[EntityID] = None,
-        target_id: Optional[EntityID] = None,
-        scanner_id: Optional[EntityID] = None,
-        agent_group_id: Optional[EntityID] = None,
-        oci_image_target_id: Optional[EntityID] = None,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[EntityID] = None,
-        schedule_periods: Optional[int] = None,
-        comment: Optional[str] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        name: str | None = None,
+        config_id: EntityID | None = None,
+        target_id: EntityID | None = None,
+        scanner_id: EntityID | None = None,
+        agent_group_id: EntityID | None = None,
+        oci_image_target_id: EntityID | None = None,
+        alterable: bool | None = None,
+        hosts_ordering: HostsOrdering | None = None,
+        schedule_id: EntityID | None = None,
+        schedule_periods: int | None = None,
+        comment: str | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> T:
         """Modifies an existing task.
 
@@ -884,7 +883,7 @@ class GMPNext(GMPv227[T]):
         )
 
     def move_task(
-        self, task_id: EntityID, *, slave_id: Optional[EntityID] = None
+        self, task_id: EntityID, *, slave_id: EntityID | None = None
     ) -> T:
         """Move an existing task to another GMP slave scanner or the master
 
@@ -930,7 +929,7 @@ class GMPNext(GMPv227[T]):
         )
 
     def get_integration_config(
-        self, integration_config_id: EntityID, *, details: Optional[bool] = None
+        self, integration_config_id: EntityID, *, details: bool | None = None
     ) -> T:
         """Request a single Integration Configuration.
 
@@ -947,8 +946,8 @@ class GMPNext(GMPv227[T]):
     def get_integration_configs(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
     ) -> T:
         """Request a list of Integration Configurations.
 
@@ -967,11 +966,11 @@ class GMPNext(GMPv227[T]):
         self,
         integration_config_id: EntityID,
         *,
-        service_url: Optional[str] = None,
-        service_cacert: Optional[str] = None,
-        oidc_provider_url: Optional[str] = None,
-        oidc_provider_client_id: Optional[str] = None,
-        oidc_provider_client_secret: Optional[str] = None,
+        service_url: str | None = None,
+        service_cacert: str | None = None,
+        oidc_provider_url: str | None = None,
+        oidc_provider_client_id: str | None = None,
+        oidc_provider_client_secret: str | None = None,
     ) -> T:
         """Modify an existing Integration Configuration.
 

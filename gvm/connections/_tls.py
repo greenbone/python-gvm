@@ -5,7 +5,6 @@
 import logging
 import socket as socketlib
 import ssl
-from typing import Optional, Union
 
 from ._connection import DEFAULT_TIMEOUT, AbstractGvmConnection
 
@@ -25,13 +24,13 @@ class TLSConnection(AbstractGvmConnection):
     def __init__(
         self,
         *,
-        certfile: Optional[str] = None,
-        cafile: Optional[str] = None,
-        keyfile: Optional[str] = None,
-        hostname: Optional[str] = DEFAULT_HOSTNAME,
-        port: Optional[int] = DEFAULT_GVM_PORT,
-        password: Optional[str] = None,
-        timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT,
+        certfile: str | None = None,
+        cafile: str | None = None,
+        keyfile: str | None = None,
+        hostname: str | None = DEFAULT_HOSTNAME,
+        port: int | None = DEFAULT_GVM_PORT,
+        password: str | None = None,
+        timeout: int | float | None = DEFAULT_TIMEOUT,
     ) -> None:
         """
         Create a new TLSConnection instance.

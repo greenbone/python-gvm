@@ -53,7 +53,7 @@ class GmpGetReportTestMixin:
 
         self.connection.send.has_been_called_with(
             '<get_reports report_id="r1" usage_type="scan" format_id='
-            f'"{report_format_id}" details="1"/>'.encode("utf-8")
+            f'"{report_format_id}" details="1"/>'.encode()
         )
 
     def test_get_report_with_delta_report_id(self):

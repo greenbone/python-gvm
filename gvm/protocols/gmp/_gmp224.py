@@ -6,7 +6,7 @@
 Greenbone Management Protocol (GMP) version 22.4
 """
 
-from typing import Iterable, Mapping, Optional, Sequence, Union
+from collections.abc import Iterable, Mapping, Sequence
 
 from gvm.utils import SupportsStr, to_dotted_types_dict
 
@@ -216,7 +216,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def create_port_list(
-        self, name: str, port_range: str, *, comment: Optional[str] = None
+        self, name: str, port_range: str, *, comment: str | None = None
     ) -> T:
         """Create a new port list
 
@@ -235,9 +235,9 @@ class GMPv224(GvmProtocol[T]):
         port_list_id: EntityID,
         start: int,
         end: int,
-        port_range_type: Union[str, PortRangeType],
+        port_range_type: str | PortRangeType,
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> T:
         """Create new port range
 
@@ -280,11 +280,11 @@ class GMPv224(GvmProtocol[T]):
     def get_port_lists(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
-        targets: Optional[bool] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
+        targets: bool | None = None,
+        trash: bool | None = None,
     ) -> T:
         """Request a list of port lists
 
@@ -319,8 +319,8 @@ class GMPv224(GvmProtocol[T]):
         self,
         port_list_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
+        comment: str | None = None,
+        name: str | None = None,
     ) -> T:
         """Modify an existing port list.
 
@@ -335,20 +335,19 @@ class GMPv224(GvmProtocol[T]):
 
     def get_aggregates(
         self,
-        resource_type: Union[EntityType, str],
+        resource_type: EntityType | str,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        sort_criteria: Optional[
-            Iterable[dict[str, Union[str, SortOrder, AggregateStatistic]]]
-        ] = None,
-        data_columns: Optional[Iterable[str]] = None,
-        group_column: Optional[str] = None,
-        subgroup_column: Optional[str] = None,
-        text_columns: Optional[Iterable[str]] = None,
-        first_group: Optional[int] = None,
-        max_groups: Optional[int] = None,
-        mode: Optional[int] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        sort_criteria: Iterable[dict[str, str | SortOrder | AggregateStatistic]]
+        | None = None,
+        data_columns: Iterable[str] | None = None,
+        group_column: str | None = None,
+        subgroup_column: str | None = None,
+        text_columns: Iterable[str] | None = None,
+        first_group: int | None = None,
+        max_groups: int | None = None,
+        mode: int | None = None,
         **kwargs,
     ) -> T:
         """Request aggregated information on a resource / entity type
@@ -394,7 +393,7 @@ class GMPv224(GvmProtocol[T]):
         """Request the list of feeds"""
         return self._send_request_and_transform_response(Feed.get_feeds())
 
-    def get_feed(self, feed_type: Union[FeedType, str]) -> T:
+    def get_feed(self, feed_type: FeedType | str) -> T:
         """Request a single feed
 
         Args:
@@ -407,8 +406,8 @@ class GMPv224(GvmProtocol[T]):
     def help(
         self,
         *,
-        help_format: Optional[Union[HelpFormat, str]] = None,
-        brief: Optional[bool] = None,
+        help_format: HelpFormat | str | None = None,
+        brief: bool | None = None,
     ) -> T:
         """Get the help text
 
@@ -424,12 +423,12 @@ class GMPv224(GvmProtocol[T]):
     def get_system_reports(
         self,
         *,
-        name: Optional[str] = None,
-        duration: Optional[int] = None,
-        start_time: Optional[str] = None,
-        end_time: Optional[str] = None,
-        brief: Optional[bool] = None,
-        slave_id: Optional[EntityID] = None,
+        name: str | None = None,
+        duration: int | None = None,
+        start_time: str | None = None,
+        end_time: str | None = None,
+        brief: bool | None = None,
+        slave_id: EntityID | None = None,
     ) -> T:
         """Request a list of system reports
 
@@ -475,7 +474,7 @@ class GMPv224(GvmProtocol[T]):
             TrashCan.restore_from_trashcan(entity_id)
         )
 
-    def get_user_settings(self, *, filter_string: Optional[str] = None) -> T:
+    def get_user_settings(self, *, filter_string: str | None = None) -> T:
         """Request a list of user settings
 
         Args:
@@ -498,9 +497,9 @@ class GMPv224(GvmProtocol[T]):
     def modify_user_setting(
         self,
         *,
-        setting_id: Optional[EntityID] = None,
-        name: Optional[str] = None,
-        value: Optional[str] = None,
+        setting_id: EntityID | None = None,
+        name: str | None = None,
+        value: str | None = None,
     ) -> T:
         """Modifies an existing user setting.
 
@@ -531,7 +530,7 @@ class GMPv224(GvmProtocol[T]):
         config_id: EntityID,
         name: str,
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> T:
         """Create a new scan config
 
@@ -545,7 +544,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_scan_config(
-        self, config_id: EntityID, *, ultimate: Optional[bool] = False
+        self, config_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing config
 
@@ -560,13 +559,13 @@ class GMPv224(GvmProtocol[T]):
     def get_scan_configs(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        families: Optional[bool] = None,
-        preferences: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
+        families: bool | None = None,
+        preferences: bool | None = None,
+        tasks: bool | None = None,
     ) -> T:
         """Request a list of scan configs
 
@@ -595,7 +594,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def get_scan_config(
-        self, config_id: EntityID, *, tasks: Optional[bool] = None
+        self, config_id: EntityID, *, tasks: bool | None = None
     ) -> T:
         """Request a single scan config
 
@@ -610,8 +609,8 @@ class GMPv224(GvmProtocol[T]):
     def get_scan_config_preferences(
         self,
         *,
-        nvt_oid: Optional[str] = None,
-        config_id: Optional[EntityID] = None,
+        nvt_oid: str | None = None,
+        config_id: EntityID | None = None,
     ) -> T:
         """Request a list of scan_config preferences
 
@@ -635,8 +634,8 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         *,
-        nvt_oid: Optional[str] = None,
-        config_id: Optional[EntityID] = None,
+        nvt_oid: str | None = None,
+        config_id: EntityID | None = None,
     ) -> T:
         """Request a nvt preference
 
@@ -668,7 +667,7 @@ class GMPv224(GvmProtocol[T]):
         name: str,
         nvt_oid: str,
         *,
-        value: Optional[str] = None,
+        value: str | None = None,
     ) -> T:
         """Modifies the nvt preferences of an existing scan config.
 
@@ -697,7 +696,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def modify_scan_config_set_comment(
-        self, config_id: EntityID, *, comment: Optional[str] = None
+        self, config_id: EntityID, *, comment: str | None = None
     ) -> T:
         """Modifies the comment of an existing scan config
 
@@ -718,7 +717,7 @@ class GMPv224(GvmProtocol[T]):
         config_id: EntityID,
         name: str,
         *,
-        value: Optional[str] = None,
+        value: str | None = None,
     ) -> T:
         """Modifies the scanner preferences of an existing scan config
 
@@ -738,7 +737,7 @@ class GMPv224(GvmProtocol[T]):
         self,
         config_id: EntityID,
         family: str,
-        nvt_oids: Union[tuple[str], list[str]],
+        nvt_oids: tuple[str] | list[str],
     ) -> T:
         """Modifies the selected nvts of an existing scan config
 
@@ -761,7 +760,7 @@ class GMPv224(GvmProtocol[T]):
         config_id: EntityID,
         families: list[tuple[str, bool, bool]],
         *,
-        auto_add_new_families: Optional[bool] = True,
+        auto_add_new_families: bool | None = True,
     ) -> T:
         """
         Selected the NVTs of a scan config at a family level.
@@ -785,12 +784,12 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         host: str,
-        port: Union[str, int],
+        port: str | int,
         scanner_type: ScannerType,
         credential_id: str,
         *,
-        ca_pub: Optional[str] = None,
-        comment: Optional[str] = None,
+        ca_pub: str | None = None,
+        comment: str | None = None,
     ) -> T:
         """Create a new scanner
 
@@ -820,13 +819,13 @@ class GMPv224(GvmProtocol[T]):
         self,
         scanner_id: EntityID,
         *,
-        name: Optional[str] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        scanner_type: Optional[ScannerType] = None,
-        credential_id: Optional[EntityID] = None,
-        ca_pub: Optional[str] = None,
-        comment: Optional[str] = None,
+        name: str | None = None,
+        host: str | None = None,
+        port: int | None = None,
+        scanner_type: ScannerType | None = None,
+        credential_id: EntityID | None = None,
+        ca_pub: str | None = None,
+        comment: str | None = None,
     ) -> T:
         """Modify an existing scanner
 
@@ -857,10 +856,10 @@ class GMPv224(GvmProtocol[T]):
     def get_scanners(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of scanners
 
@@ -911,7 +910,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_scanner(
-        self, scanner_id: EntityID, ultimate: Optional[bool] = False
+        self, scanner_id: EntityID, ultimate: bool | None = False
     ) -> T:
         """Delete an existing scanner
 
@@ -926,10 +925,10 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         *,
-        password: Optional[str] = None,
-        hosts: Optional[list[str]] = None,
-        hosts_allow: Optional[bool] = False,
-        role_ids: Optional[list[EntityID]] = None,
+        password: str | None = None,
+        hosts: list[str] | None = None,
+        hosts_allow: bool | None = False,
+        role_ids: list[EntityID] | None = None,
     ) -> T:
         """Create a new user
 
@@ -955,14 +954,14 @@ class GMPv224(GvmProtocol[T]):
         self,
         user_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        password: Optional[str] = None,
-        auth_source: Optional[UserAuthType] = None,
-        role_ids: Optional[list[EntityID]] = None,
-        hosts: Optional[list[str]] = None,
-        hosts_allow: Optional[bool] = False,
-        group_ids: Optional[list[EntityID]] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        password: str | None = None,
+        auth_source: UserAuthType | None = None,
+        role_ids: list[EntityID] | None = None,
+        hosts: list[str] | None = None,
+        hosts_allow: bool | None = False,
+        group_ids: list[EntityID] | None = None,
     ) -> T:
         """Modify an existing user.
 
@@ -1012,11 +1011,11 @@ class GMPv224(GvmProtocol[T]):
 
     def delete_user(
         self,
-        user_id: Optional[EntityID] = None,
+        user_id: EntityID | None = None,
         *,
-        name: Optional[str] = None,
-        inheritor_id: Optional[EntityID] = None,
-        inheritor_name: Optional[str] = None,
+        name: str | None = None,
+        inheritor_id: EntityID | None = None,
+        inheritor_name: str | None = None,
     ) -> T:
         """Delete an existing user
 
@@ -1041,8 +1040,8 @@ class GMPv224(GvmProtocol[T]):
     def get_users(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
     ) -> T:
         """Request a list of users
 
@@ -1069,12 +1068,12 @@ class GMPv224(GvmProtocol[T]):
         text: str,
         nvt_oid: str,
         *,
-        days_active: Optional[int] = None,
-        hosts: Optional[list[str]] = None,
-        port: Optional[str] = None,
-        result_id: Optional[EntityID] = None,
-        severity: Optional[Severity] = None,
-        task_id: Optional[EntityID] = None,
+        days_active: int | None = None,
+        hosts: list[str] | None = None,
+        port: str | None = None,
+        result_id: EntityID | None = None,
+        severity: Severity | None = None,
+        task_id: EntityID | None = None,
     ) -> T:
         """Create a new note
 
@@ -1108,12 +1107,12 @@ class GMPv224(GvmProtocol[T]):
         note_id: EntityID,
         text: str,
         *,
-        days_active: Optional[int] = None,
-        hosts: Optional[list[str]] = None,
-        port: Optional[str] = None,
-        result_id: Optional[EntityID] = None,
-        severity: Optional[Severity] = None,
-        task_id: Optional[EntityID] = None,
+        days_active: int | None = None,
+        hosts: list[str] | None = None,
+        port: str | None = None,
+        result_id: EntityID | None = None,
+        severity: Severity | None = None,
+        task_id: EntityID | None = None,
     ) -> T:
         """Modify a note
 
@@ -1152,7 +1151,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_note(
-        self, note_id: EntityID, *, ultimate: Optional[bool] = False
+        self, note_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Delete an existing note
 
@@ -1167,10 +1166,10 @@ class GMPv224(GvmProtocol[T]):
     def get_notes(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
-        result: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
+        result: bool | None = None,
     ) -> T:
         """Request a list of notes
 
@@ -1205,13 +1204,13 @@ class GMPv224(GvmProtocol[T]):
         text: str,
         nvt_oid: str,
         *,
-        days_active: Optional[int] = None,
-        hosts: Optional[list[str]] = None,
-        port: Optional[str] = None,
-        result_id: Optional[EntityID] = None,
-        severity: Optional[Severity] = None,
-        new_severity: Optional[Severity] = None,
-        task_id: Optional[EntityID] = None,
+        days_active: int | None = None,
+        hosts: list[str] | None = None,
+        port: str | None = None,
+        result_id: EntityID | None = None,
+        severity: Severity | None = None,
+        new_severity: Severity | None = None,
+        task_id: EntityID | None = None,
     ) -> T:
         """Create a new override
 
@@ -1246,13 +1245,13 @@ class GMPv224(GvmProtocol[T]):
         override_id: EntityID,
         text: str,
         *,
-        days_active: Optional[int] = None,
-        hosts: Optional[list[str]] = None,
-        port: Optional[str] = None,
-        result_id: Optional[EntityID] = None,
-        severity: Optional[Severity] = None,
-        new_severity: Optional[Severity] = None,
-        task_id: Optional[EntityID] = None,
+        days_active: int | None = None,
+        hosts: list[str] | None = None,
+        port: str | None = None,
+        result_id: EntityID | None = None,
+        severity: Severity | None = None,
+        new_severity: Severity | None = None,
+        task_id: EntityID | None = None,
     ) -> T:
         """Modify an existing override.
 
@@ -1294,7 +1293,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_override(
-        self, override_id: EntityID, *, ultimate: Optional[bool] = False
+        self, override_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Delete an existing override
 
@@ -1309,10 +1308,10 @@ class GMPv224(GvmProtocol[T]):
     def get_overrides(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
-        result: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
+        result: bool | None = None,
     ) -> T:
         """Request a list of overrides
 
@@ -1345,21 +1344,21 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         *,
-        asset_hosts_filter: Optional[str] = None,
-        hosts: Optional[list[str]] = None,
-        comment: Optional[str] = None,
-        exclude_hosts: Optional[list[str]] = None,
-        ssh_credential_id: Optional[EntityID] = None,
-        ssh_credential_port: Optional[Union[int, str]] = None,
-        smb_credential_id: Optional[EntityID] = None,
-        esxi_credential_id: Optional[EntityID] = None,
-        snmp_credential_id: Optional[EntityID] = None,
-        alive_test: Optional[Union[str, AliveTest]] = None,
-        allow_simultaneous_ips: Optional[bool] = None,
-        reverse_lookup_only: Optional[bool] = None,
-        reverse_lookup_unify: Optional[bool] = None,
-        port_range: Optional[str] = None,
-        port_list_id: Optional[EntityID] = None,
+        asset_hosts_filter: str | None = None,
+        hosts: list[str] | None = None,
+        comment: str | None = None,
+        exclude_hosts: list[str] | None = None,
+        ssh_credential_id: EntityID | None = None,
+        ssh_credential_port: int | str | None = None,
+        smb_credential_id: EntityID | None = None,
+        esxi_credential_id: EntityID | None = None,
+        snmp_credential_id: EntityID | None = None,
+        alive_test: str | AliveTest | None = None,
+        allow_simultaneous_ips: bool | None = None,
+        reverse_lookup_only: bool | None = None,
+        reverse_lookup_unify: bool | None = None,
+        port_range: str | None = None,
+        port_list_id: EntityID | None = None,
     ) -> T:
         """Create a new target
 
@@ -1408,20 +1407,20 @@ class GMPv224(GvmProtocol[T]):
         self,
         target_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        hosts: Optional[list[str]] = None,
-        exclude_hosts: Optional[list[str]] = None,
-        ssh_credential_id: Optional[EntityID] = None,
-        ssh_credential_port: Optional[Union[str, int]] = None,
-        smb_credential_id: Optional[EntityID] = None,
-        esxi_credential_id: Optional[EntityID] = None,
-        snmp_credential_id: Optional[EntityID] = None,
-        alive_test: Optional[Union[AliveTest, str]] = None,
-        allow_simultaneous_ips: Optional[bool] = None,
-        reverse_lookup_only: Optional[bool] = None,
-        reverse_lookup_unify: Optional[bool] = None,
-        port_list_id: Optional[EntityID] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        hosts: list[str] | None = None,
+        exclude_hosts: list[str] | None = None,
+        ssh_credential_id: EntityID | None = None,
+        ssh_credential_port: str | int | None = None,
+        smb_credential_id: EntityID | None = None,
+        esxi_credential_id: EntityID | None = None,
+        snmp_credential_id: EntityID | None = None,
+        alive_test: AliveTest | str | None = None,
+        allow_simultaneous_ips: bool | None = None,
+        reverse_lookup_only: bool | None = None,
+        reverse_lookup_unify: bool | None = None,
+        port_list_id: EntityID | None = None,
     ) -> T:
         """Modify an existing target.
 
@@ -1475,7 +1474,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_target(
-        self, target_id: EntityID, *, ultimate: Optional[bool] = False
+        self, target_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Delete an existing target.
 
@@ -1488,7 +1487,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def get_target(
-        self, target_id: EntityID, *, tasks: Optional[bool] = None
+        self, target_id: EntityID, *, tasks: bool | None = None
     ) -> T:
         """Request a single target.
 
@@ -1503,10 +1502,10 @@ class GMPv224(GvmProtocol[T]):
     def get_targets(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        tasks: bool | None = None,
     ) -> T:
         """Request a list of targets.
 
@@ -1532,11 +1531,11 @@ class GMPv224(GvmProtocol[T]):
         event: AlertEvent,
         method: AlertMethod,
         *,
-        method_data: Optional[dict[str, str]] = None,
-        event_data: Optional[dict[str, str]] = None,
-        condition_data: Optional[dict[str, str]] = None,
-        filter_id: Optional[EntityID] = None,
-        comment: Optional[str] = None,
+        method_data: dict[str, str] | None = None,
+        event_data: dict[str, str] | None = None,
+        condition_data: dict[str, str] | None = None,
+        filter_id: EntityID | None = None,
+        comment: str | None = None,
     ) -> T:
         """Create a new alert
 
@@ -1579,15 +1578,15 @@ class GMPv224(GvmProtocol[T]):
         self,
         alert_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        event: Optional[Union[AlertEvent, str]] = None,
-        event_data: Optional[dict] = None,
-        condition: Optional[Union[AlertCondition, str]] = None,
-        condition_data: Optional[dict[str, str]] = None,
-        method: Optional[Union[AlertMethod, str]] = None,
-        method_data: Optional[dict[str, str]] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        filter_id: EntityID | None = None,
+        event: AlertEvent | str | None = None,
+        event_data: dict | None = None,
+        condition: AlertCondition | str | None = None,
+        condition_data: dict[str, str] | None = None,
+        method: AlertMethod | str | None = None,
+        method_data: dict[str, str] | None = None,
     ) -> T:
         """Modify an existing alert.
 
@@ -1639,7 +1638,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_alert(
-        self, alert_id: EntityID, *, ultimate: Optional[bool] = False
+        self, alert_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Delete an existing alert
 
@@ -1668,10 +1667,10 @@ class GMPv224(GvmProtocol[T]):
         alert_id: EntityID,
         report_id: EntityID,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        report_format_id: Optional[Union[EntityID, ReportFormatType]] = None,
-        delta_report_id: Optional[EntityID] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        report_format_id: EntityID | ReportFormatType | None = None,
+        delta_report_id: EntityID | None = None,
     ) -> T:
         """Run an alert by ignoring its event and conditions
 
@@ -1700,10 +1699,10 @@ class GMPv224(GvmProtocol[T]):
     def get_alerts(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        tasks: bool | None = None,
     ) -> T:
         """Request a list of alerts
 
@@ -1722,9 +1721,7 @@ class GMPv224(GvmProtocol[T]):
             )
         )
 
-    def get_alert(
-        self, alert_id: EntityID, *, tasks: Optional[bool] = None
-    ) -> T:
+    def get_alert(self, alert_id: EntityID, *, tasks: bool | None = None) -> T:
         """Request a single alert
 
         Arguments:
@@ -1742,14 +1739,14 @@ class GMPv224(GvmProtocol[T]):
         target_id: EntityID,
         scanner_id: EntityID,
         *,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[Union[HostsOrdering, str]] = None,
-        schedule_id: Optional[str] = None,
-        alert_ids: Optional[list[EntityID]] = None,
-        comment: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[list[EntityID]] = None,
-        preferences: Optional[dict[str, str]] = None,
+        alterable: bool | None = None,
+        hosts_ordering: HostsOrdering | str | None = None,
+        schedule_id: str | None = None,
+        alert_ids: list[EntityID] | None = None,
+        comment: str | None = None,
+        schedule_periods: int | None = None,
+        observers: list[EntityID] | None = None,
+        preferences: dict[str, str] | None = None,
     ) -> T:
         """Create a new audit
 
@@ -1790,18 +1787,18 @@ class GMPv224(GvmProtocol[T]):
         self,
         audit_id: EntityID,
         *,
-        name: Optional[str] = None,
-        policy_id: Optional[EntityID] = None,
-        target_id: Optional[EntityID] = None,
-        scanner_id: Optional[EntityID] = None,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[Union[str, HostsOrdering]] = None,
-        schedule_id: Optional[EntityID] = None,
-        schedule_periods: Optional[int] = None,
-        comment: Optional[str] = None,
-        alert_ids: Optional[list[EntityID]] = None,
-        observers: Optional[list[EntityID]] = None,
-        preferences: Optional[dict[str, str]] = None,
+        name: str | None = None,
+        policy_id: EntityID | None = None,
+        target_id: EntityID | None = None,
+        scanner_id: EntityID | None = None,
+        alterable: bool | None = None,
+        hosts_ordering: str | HostsOrdering | None = None,
+        schedule_id: EntityID | None = None,
+        schedule_periods: int | None = None,
+        comment: str | None = None,
+        alert_ids: list[EntityID] | None = None,
+        observers: list[EntityID] | None = None,
+        preferences: dict[str, str] | None = None,
     ) -> T:
         """Modifies an existing audit.
 
@@ -1850,7 +1847,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_audit(
-        self, audit_id: EntityID, *, ultimate: Optional[bool] = False
+        self, audit_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Delete an existing audit
 
@@ -1865,11 +1862,11 @@ class GMPv224(GvmProtocol[T]):
     def get_audits(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
+        schedules_only: bool | None = None,
     ) -> T:
         """Request a list of audits
 
@@ -1944,20 +1941,20 @@ class GMPv224(GvmProtocol[T]):
     def create_credential(
         self,
         name: str,
-        credential_type: Union[CredentialType, str],
+        credential_type: CredentialType | str,
         *,
-        comment: Optional[str] = None,
-        allow_insecure: Optional[bool] = None,
-        certificate: Optional[str] = None,
-        key_phrase: Optional[str] = None,
-        private_key: Optional[str] = None,
-        login: Optional[str] = None,
-        password: Optional[str] = None,
-        auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
-        community: Optional[str] = None,
-        privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
-        privacy_password: Optional[str] = None,
-        public_key: Optional[str] = None,
+        comment: str | None = None,
+        allow_insecure: bool | None = None,
+        certificate: str | None = None,
+        key_phrase: str | None = None,
+        private_key: str | None = None,
+        login: str | None = None,
+        password: str | None = None,
+        auth_algorithm: SnmpAuthAlgorithm | str | None = None,
+        community: str | None = None,
+        privacy_algorithm: SnmpPrivacyAlgorithm | str | None = None,
+        privacy_password: str | None = None,
+        public_key: str | None = None,
     ) -> T:
         """Create a new credential
 
@@ -2004,24 +2001,24 @@ class GMPv224(GvmProtocol[T]):
             .. code-block:: python
 
                 gmp.create_credential(
-                    name='UP Credential',
+                    name="UP Credential",
                     credential_type=CredentialType.USERNAME_PASSWORD,
-                    login='foo',
-                    password='bar',
+                    login="foo",
+                    password="bar",
                 )
 
             Creating a Username + SSH Key credential
 
             .. code-block:: python
 
-                with open('path/to/private-ssh-key') as f:
+                with open("path/to/private-ssh-key") as f:
                     key = f.read()
 
                 gmp.create_credential(
-                    name='USK Credential',
+                    name="USK Credential",
                     credential_type=CredentialType.USERNAME_SSH_KEY,
-                    login='foo',
-                    key_phrase='foobar',
+                    login="foo",
+                    key_phrase="foobar",
                     private_key=key,
                 )
 
@@ -2036,11 +2033,11 @@ class GMPv224(GvmProtocol[T]):
 
             .. code-block:: python
 
-                with open('path/to/pgp.key.asc') as f:
+                with open("path/to/pgp.key.asc") as f:
                     key = f.read()
 
                 gmp.create_credential(
-                    name='PGP Credential',
+                    name="PGP Credential",
                     credential_type=CredentialType.PGP_ENCRYPTION_KEY,
                     public_key=key,
                 )
@@ -2049,11 +2046,11 @@ class GMPv224(GvmProtocol[T]):
 
             .. code-block:: python
 
-                with open('path/to/smime-cert') as f:
+                with open("path/to/smime-cert") as f:
                     cert = f.read()
 
                 gmp.create_credential(
-                    name='SMIME Credential',
+                    name="SMIME Credential",
                     credential_type=CredentialType.SMIME_CERTIFICATE,
                     certificate=cert,
                 )
@@ -2063,9 +2060,9 @@ class GMPv224(GvmProtocol[T]):
             .. code-block:: python
 
                 gmp.create_credential(
-                    name='Password-Only Credential',
+                    name="Password-Only Credential",
                     credential_type=CredentialType.PASSWORD_ONLY,
-                    password='foo',
+                    password="foo",
                 )
         """
         return self._send_request_and_transform_response(
@@ -2088,7 +2085,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_credential(
-        self, credential_id: EntityID, *, ultimate: Optional[bool] = False
+        self, credential_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Delete an existing credential
 
@@ -2103,11 +2100,11 @@ class GMPv224(GvmProtocol[T]):
     def get_credentials(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        scanners: Optional[bool] = None,
-        trash: Optional[bool] = None,
-        targets: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        scanners: bool | None = None,
+        trash: bool | None = None,
+        targets: bool | None = None,
     ) -> T:
         """Request a list of credentials
 
@@ -2133,9 +2130,9 @@ class GMPv224(GvmProtocol[T]):
         self,
         credential_id: str,
         *,
-        scanners: Optional[bool] = None,
-        targets: Optional[bool] = None,
-        credential_format: Optional[Union[CredentialFormat, str]] = None,
+        scanners: bool | None = None,
+        targets: bool | None = None,
+        credential_format: CredentialFormat | str | None = None,
     ) -> T:
         """Request a single credential
 
@@ -2159,19 +2156,19 @@ class GMPv224(GvmProtocol[T]):
         self,
         credential_id: str,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        allow_insecure: Optional[bool] = None,
-        certificate: Optional[str] = None,
-        key_phrase: Optional[str] = None,
-        private_key: Optional[str] = None,
-        login: Optional[str] = None,
-        password: Optional[str] = None,
-        auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
-        community: Optional[str] = None,
-        privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
-        privacy_password: Optional[str] = None,
-        public_key: Optional[str] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        allow_insecure: bool | None = None,
+        certificate: str | None = None,
+        key_phrase: str | None = None,
+        private_key: str | None = None,
+        login: str | None = None,
+        password: str | None = None,
+        auth_algorithm: SnmpAuthAlgorithm | str | None = None,
+        community: str | None = None,
+        privacy_algorithm: SnmpPrivacyAlgorithm | str | None = None,
+        privacy_password: str | None = None,
+        public_key: str | None = None,
     ) -> T:
         """Modifies an existing credential.
 
@@ -2224,9 +2221,9 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         *,
-        filter_type: Optional[FilterType] = None,
-        comment: Optional[str] = None,
-        term: Optional[str] = None,
+        filter_type: FilterType | None = None,
+        comment: str | None = None,
+        term: str | None = None,
     ) -> T:
         """Create a new filter
 
@@ -2243,7 +2240,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_filter(
-        self, filter_id: EntityID, *, ultimate: Optional[bool] = False
+        self, filter_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing filter
 
@@ -2258,10 +2255,10 @@ class GMPv224(GvmProtocol[T]):
     def get_filters(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        alerts: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        alerts: bool | None = None,
     ) -> T:
         """Request a list of filters
 
@@ -2281,7 +2278,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def get_filter(
-        self, filter_id: EntityID, *, alerts: Optional[bool] = None
+        self, filter_id: EntityID, *, alerts: bool | None = None
     ) -> T:
         """Request a single filter
 
@@ -2297,10 +2294,10 @@ class GMPv224(GvmProtocol[T]):
         self,
         filter_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        term: Optional[str] = None,
-        filter_type: Optional[FilterType] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        term: str | None = None,
+        filter_type: FilterType | None = None,
     ) -> T:
         """Modifies an existing filter.
 
@@ -2335,9 +2332,9 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         *,
-        comment: Optional[str] = None,
-        special: Optional[bool] = False,
-        users: Optional[list[str]] = None,
+        comment: str | None = None,
+        special: bool | None = False,
+        users: list[str] | None = None,
     ) -> T:
         """Create a new group
 
@@ -2355,7 +2352,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_group(
-        self, group_id: EntityID, *, ultimate: Optional[bool] = False
+        self, group_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing group
 
@@ -2370,9 +2367,9 @@ class GMPv224(GvmProtocol[T]):
     def get_groups(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
     ) -> T:
         """Request a list of groups
 
@@ -2401,9 +2398,9 @@ class GMPv224(GvmProtocol[T]):
         self,
         group_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        users: Optional[list[str]] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        users: list[str] | None = None,
     ) -> T:
         """Modifies an existing group.
 
@@ -2419,7 +2416,7 @@ class GMPv224(GvmProtocol[T]):
             )
         )
 
-    def create_host(self, name: str, *, comment: Optional[str] = None) -> T:
+    def create_host(self, name: str, *, comment: str | None = None) -> T:
         """Create a new host host
 
         Args:
@@ -2443,9 +2440,9 @@ class GMPv224(GvmProtocol[T]):
     def get_hosts(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of hosts
 
@@ -2462,9 +2459,7 @@ class GMPv224(GvmProtocol[T]):
             )
         )
 
-    def get_host(
-        self, host_id: EntityID, *, details: Optional[bool] = None
-    ) -> T:
+    def get_host(self, host_id: EntityID, *, details: bool | None = None) -> T:
         """Request a single host
 
         Arguments:
@@ -2476,7 +2471,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def modify_host(
-        self, host_id: EntityID, *, comment: Optional[str] = None
+        self, host_id: EntityID, *, comment: str | None = None
     ) -> T:
         """Modifies an existing host.
 
@@ -2505,9 +2500,9 @@ class GMPv224(GvmProtocol[T]):
     def get_operating_systems(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of operating systems
 
@@ -2525,7 +2520,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def get_operating_system(
-        self, operating_system_id: EntityID, *, details: Optional[bool] = None
+        self, operating_system_id: EntityID, *, details: bool | None = None
     ) -> T:
         """Request a single operating system
 
@@ -2540,7 +2535,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def modify_operating_system(
-        self, operating_system_id: EntityID, *, comment: Optional[str] = None
+        self, operating_system_id: EntityID, *, comment: str | None = None
     ) -> T:
         """Modifies an existing operating system.
 
@@ -2569,11 +2564,11 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         subject_id: EntityID,
-        subject_type: Union[PermissionSubjectType, str],
+        subject_type: PermissionSubjectType | str,
         *,
-        resource_id: Optional[str] = None,
-        resource_type: Optional[Union[EntityType, str]] = None,
-        comment: Optional[str] = None,
+        resource_id: str | None = None,
+        resource_type: EntityType | str | None = None,
+        comment: str | None = None,
     ) -> T:
         """Create a new permission
 
@@ -2598,7 +2593,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_permission(
-        self, permission_id: EntityID, *, ultimate: Optional[bool] = False
+        self, permission_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing permission
 
@@ -2613,9 +2608,9 @@ class GMPv224(GvmProtocol[T]):
     def get_permissions(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        trash: bool | None = None,
     ) -> T:
         """Request a list of permissions
 
@@ -2644,12 +2639,12 @@ class GMPv224(GvmProtocol[T]):
         self,
         permission_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        resource_id: Optional[EntityID] = None,
-        resource_type: Optional[Union[EntityType, str]] = None,
-        subject_id: Optional[EntityID] = None,
-        subject_type: Optional[Union[PermissionSubjectType, str]] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        resource_id: EntityID | None = None,
+        resource_type: EntityType | str | None = None,
+        subject_id: EntityID | None = None,
+        subject_type: PermissionSubjectType | str | None = None,
     ) -> T:
         """Modifies an existing permission.
 
@@ -2689,8 +2684,8 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         *,
-        policy_id: Optional[EntityID] = None,
-        comment: Optional[str] = None,
+        policy_id: EntityID | None = None,
+        comment: str | None = None,
     ) -> T:
         """Create a new policy
 
@@ -2705,7 +2700,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_policy(
-        self, policy_id: EntityID, *, ultimate: Optional[bool] = False
+        self, policy_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing policy
 
@@ -2720,13 +2715,13 @@ class GMPv224(GvmProtocol[T]):
     def get_policies(
         self,
         *,
-        audits: Optional[bool] = None,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
-        families: Optional[bool] = None,
-        preferences: Optional[bool] = None,
-        trash: Optional[bool] = None,
+        audits: bool | None = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
+        families: bool | None = None,
+        preferences: bool | None = None,
+        trash: bool | None = None,
     ) -> T:
         """Request a list of policies
 
@@ -2755,7 +2750,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def get_policy(
-        self, policy_id: EntityID, *, audits: Optional[bool] = None
+        self, policy_id: EntityID, *, audits: bool | None = None
     ) -> T:
         """Request a single policy
 
@@ -2784,7 +2779,7 @@ class GMPv224(GvmProtocol[T]):
         name: str,
         nvt_oid: str,
         *,
-        value: Optional[str] = None,
+        value: str | None = None,
     ) -> T:
         """Modifies the nvt preferences of an existing policy.
 
@@ -2813,7 +2808,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def modify_policy_set_comment(
-        self, policy_id: EntityID, comment: Optional[str] = None
+        self, policy_id: EntityID, comment: str | None = None
     ) -> T:
         """Modifies the comment of an existing policy
 
@@ -2828,7 +2823,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def modify_policy_set_scanner_preference(
-        self, policy_id: EntityID, name: str, *, value: Optional[str] = None
+        self, policy_id: EntityID, name: str, *, value: str | None = None
     ) -> T:
         """Modifies the scanner preferences of an existing policy
 
@@ -2868,7 +2863,7 @@ class GMPv224(GvmProtocol[T]):
         policy_id: EntityID,
         families: Sequence[tuple[str, bool, bool]],
         *,
-        auto_add_new_families: Optional[bool] = True,
+        auto_add_new_families: bool | None = True,
     ) -> T:
         """
         Selected the NVTs of a policy at a family level.
@@ -2903,12 +2898,12 @@ class GMPv224(GvmProtocol[T]):
         self,
         report_id: EntityID,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        delta_report_id: Optional[EntityID] = None,
-        report_format_id: Optional[Union[str, ReportFormatType]] = None,
-        ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = True,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        delta_report_id: EntityID | None = None,
+        report_format_id: str | ReportFormatType | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = True,
     ) -> T:
         """Request a single report
 
@@ -2939,12 +2934,12 @@ class GMPv224(GvmProtocol[T]):
     def get_reports(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        note_details: Optional[bool] = None,
-        override_details: Optional[bool] = None,
-        ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        note_details: bool | None = None,
+        override_details: bool | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of reports
 
@@ -2974,7 +2969,7 @@ class GMPv224(GvmProtocol[T]):
         report: str,
         task_id: EntityID,
         *,
-        in_assets: Optional[bool] = None,
+        in_assets: bool | None = None,
     ) -> T:
         """Import a Report from XML
 
@@ -3001,12 +2996,12 @@ class GMPv224(GvmProtocol[T]):
     def get_results(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        task_id: Optional[str] = None,
-        note_details: Optional[bool] = None,
-        override_details: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        task_id: str | None = None,
+        note_details: bool | None = None,
+        override_details: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of results
 
@@ -3044,8 +3039,8 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         *,
-        comment: Optional[str] = None,
-        users: Optional[list[str]] = None,
+        comment: str | None = None,
+        users: list[str] | None = None,
     ) -> T:
         """Create a new role
 
@@ -3058,9 +3053,7 @@ class GMPv224(GvmProtocol[T]):
             Roles.create_role(name, comment=comment, users=users)
         )
 
-    def delete_role(
-        self, role_id: str, *, ultimate: Optional[bool] = False
-    ) -> T:
+    def delete_role(self, role_id: str, *, ultimate: bool | None = False) -> T:
         """Deletes an existing role
 
         Args:
@@ -3074,9 +3067,9 @@ class GMPv224(GvmProtocol[T]):
     def get_roles(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
     ) -> T:
         """Request a list of roles
 
@@ -3105,9 +3098,9 @@ class GMPv224(GvmProtocol[T]):
         self,
         role_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        users: Optional[list[str]] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        users: list[str] | None = None,
     ) -> T:
         """Modifies an existing role.
 
@@ -3137,7 +3130,7 @@ class GMPv224(GvmProtocol[T]):
         icalendar: str,
         timezone: str,
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> T:
         """Create a new schedule based in `iCalendar <https://tools.ietf.org/html/rfc5545>`_ data.
 
@@ -3154,19 +3147,17 @@ class GMPv224(GvmProtocol[T]):
 
                 cal = Calendar()
 
-                cal.add('prodid', '-//Foo Bar//')
-                cal.add('version', '2.0')
+                cal.add("prodid", "-//Foo Bar//")
+                cal.add("version", "2.0")
 
                 event = Event()
-                event.add('dtstamp', datetime.now(tz=pytz.UTC))
-                event.add('dtstart', datetime(2020, 1, 1, tzinfo=pytz.utc))
+                event.add("dtstamp", datetime.now(tz=pytz.UTC))
+                event.add("dtstart", datetime(2020, 1, 1, tzinfo=pytz.utc))
 
                 cal.add_component(event)
 
                 gmp.create_schedule(
-                    name="My Schedule",
-                    icalendar=cal.to_ical(),
-                    timezone='UTC'
+                    name="My Schedule", icalendar=cal.to_ical(), timezone="UTC"
                 )
 
         Args:
@@ -3186,7 +3177,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_schedule(
-        self, schedule_id: EntityID, *, ultimate: Optional[bool] = False
+        self, schedule_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing schedule
 
@@ -3201,10 +3192,10 @@ class GMPv224(GvmProtocol[T]):
     def get_schedules(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        tasks: bool | None = None,
     ) -> T:
         """Request a list of schedules
 
@@ -3224,7 +3215,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def get_schedule(
-        self, schedule_id: EntityID, *, tasks: Optional[bool] = None
+        self, schedule_id: EntityID, *, tasks: bool | None = None
     ) -> T:
         """Request a single schedule
 
@@ -3240,10 +3231,10 @@ class GMPv224(GvmProtocol[T]):
         self,
         schedule_id: EntityID,
         *,
-        name: Optional[str] = None,
-        icalendar: Optional[str] = None,
-        timezone: Optional[str] = None,
-        comment: Optional[str] = None,
+        name: str | None = None,
+        icalendar: str | None = None,
+        timezone: str | None = None,
+        comment: str | None = None,
     ) -> T:
         """Modifies an existing schedule
 
@@ -3269,7 +3260,7 @@ class GMPv224(GvmProtocol[T]):
             )
         )
 
-    def get_nvt_families(self, *, sort_order: Optional[str] = None) -> T:
+    def get_nvt_families(self, *, sort_order: str | None = None) -> T:
         """Request a list of nvt families
 
         Args:
@@ -3282,15 +3273,15 @@ class GMPv224(GvmProtocol[T]):
     def get_scan_config_nvts(
         self,
         *,
-        details: Optional[bool] = None,
-        preferences: Optional[bool] = None,
-        preference_count: Optional[bool] = None,
-        timeout: Optional[bool] = None,
-        config_id: Optional[EntityID] = None,
-        preferences_config_id: Optional[EntityID] = None,
-        family: Optional[str] = None,
-        sort_order: Optional[str] = None,
-        sort_field: Optional[str] = None,
+        details: bool | None = None,
+        preferences: bool | None = None,
+        preference_count: bool | None = None,
+        timeout: bool | None = None,
+        config_id: EntityID | None = None,
+        preferences_config_id: EntityID | None = None,
+        family: str | None = None,
+        sort_order: str | None = None,
+        sort_field: str | None = None,
     ) -> T:
         """Request a list of nvts
 
@@ -3333,19 +3324,19 @@ class GMPv224(GvmProtocol[T]):
     def get_nvts(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        name: Optional[str] = None,
-        details: Optional[bool] = None,
-        extended: Optional[bool] = None,
-        preferences: Optional[bool] = None,
-        preference_count: Optional[bool] = None,
-        timeout: Optional[bool] = None,
-        config_id: Optional[str] = None,
-        preferences_config_id: Optional[str] = None,
-        family: Optional[str] = None,
-        sort_order: Optional[str] = None,
-        sort_field: Optional[str] = None,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        name: str | None = None,
+        details: bool | None = None,
+        extended: bool | None = None,
+        preferences: bool | None = None,
+        preference_count: bool | None = None,
+        timeout: bool | None = None,
+        config_id: str | None = None,
+        preferences_config_id: str | None = None,
+        family: str | None = None,
+        sort_order: str | None = None,
+        sort_field: str | None = None,
     ) -> T:
         """Request a list of NVTs
 
@@ -3385,7 +3376,7 @@ class GMPv224(GvmProtocol[T]):
             )
         )
 
-    def get_nvt(self, nvt_id: str, *, extended: Optional[bool] = None) -> T:
+    def get_nvt(self, nvt_id: str, *, extended: bool | None = None) -> T:
         """Request a single NVT
 
         Args:
@@ -3400,7 +3391,7 @@ class GMPv224(GvmProtocol[T]):
     def get_nvt_preferences(
         self,
         *,
-        nvt_oid: Optional[str] = None,
+        nvt_oid: str | None = None,
     ) -> T:
         """Request a list of preferences
 
@@ -3418,7 +3409,7 @@ class GMPv224(GvmProtocol[T]):
         self,
         name: str,
         *,
-        nvt_oid: Optional[str] = None,
+        nvt_oid: str | None = None,
     ) -> T:
         """Request a nvt preference
 
@@ -3447,10 +3438,10 @@ class GMPv224(GvmProtocol[T]):
         self,
         info_type: InfoType,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        name: Optional[str] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        name: str | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of security information
 
@@ -3476,10 +3467,10 @@ class GMPv224(GvmProtocol[T]):
     def get_cves(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        name: Optional[str] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        name: str | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of CVEs
 
@@ -3510,10 +3501,10 @@ class GMPv224(GvmProtocol[T]):
     def get_cpes(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        name: Optional[str] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        name: str | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of CPEs
 
@@ -3544,10 +3535,10 @@ class GMPv224(GvmProtocol[T]):
     def get_dfn_cert_advisories(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        name: Optional[str] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        name: str | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of DFN-CERT Advisories
 
@@ -3580,10 +3571,10 @@ class GMPv224(GvmProtocol[T]):
     def get_cert_bund_advisories(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        name: Optional[str] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        name: str | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of CERT-BUND Advisories
 
@@ -3626,11 +3617,11 @@ class GMPv224(GvmProtocol[T]):
         name: str,
         resource_type: EntityType,
         *,
-        resource_filter: Optional[str] = None,
-        resource_ids: Optional[list[EntityID]] = None,
-        value: Optional[str] = None,
-        comment: Optional[str] = None,
-        active: Optional[bool] = None,
+        resource_filter: str | None = None,
+        resource_ids: list[EntityID] | None = None,
+        value: str | None = None,
+        comment: str | None = None,
+        active: bool | None = None,
     ) -> T:
         """Create a tag
 
@@ -3660,7 +3651,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_tag(
-        self, tag_id: EntityID, *, ultimate: Optional[bool] = False
+        self, tag_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing tag
 
@@ -3675,10 +3666,10 @@ class GMPv224(GvmProtocol[T]):
     def get_tags(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        names_only: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        names_only: bool | None = None,
     ) -> T:
         """Request a list of tags
 
@@ -3709,14 +3700,14 @@ class GMPv224(GvmProtocol[T]):
         self,
         tag_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        value: Optional[str] = None,
-        active: Optional[bool] = None,
-        resource_action: Optional[str] = None,
-        resource_type: Optional[EntityType] = None,
-        resource_filter: Optional[str] = None,
-        resource_ids: Optional[list[EntityID]] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        value: str | None = None,
+        active: bool | None = None,
+        resource_action: str | None = None,
+        resource_type: EntityType | None = None,
+        resource_filter: str | None = None,
+        resource_ids: list[EntityID] | None = None,
     ) -> T:
         """Modifies an existing tag.
 
@@ -3759,7 +3750,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def create_container_task(
-        self, name: str, *, comment: Optional[str] = None
+        self, name: str, *, comment: str | None = None
     ) -> T:
         """Create a new container task
 
@@ -3781,14 +3772,14 @@ class GMPv224(GvmProtocol[T]):
         target_id: EntityID,
         scanner_id: EntityID,
         *,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[EntityID] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        comment: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        alterable: bool | None = None,
+        hosts_ordering: HostsOrdering | None = None,
+        schedule_id: EntityID | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        comment: str | None = None,
+        schedule_periods: int | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> T:
         """Create a new scan task
 
@@ -3826,7 +3817,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_task(
-        self, task_id: EntityID, *, ultimate: Optional[bool] = False
+        self, task_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing task
 
@@ -3841,12 +3832,12 @@ class GMPv224(GvmProtocol[T]):
     def get_tasks(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
-        ignore_pagination: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
+        schedules_only: bool | None = None,
+        ignore_pagination: bool | None = None,
     ) -> T:
         """Request a list of tasks
 
@@ -3885,18 +3876,18 @@ class GMPv224(GvmProtocol[T]):
         self,
         task_id: EntityID,
         *,
-        name: Optional[str] = None,
-        config_id: Optional[EntityID] = None,
-        target_id: Optional[EntityID] = None,
-        scanner_id: Optional[EntityID] = None,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[EntityID] = None,
-        schedule_periods: Optional[int] = None,
-        comment: Optional[str] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        name: str | None = None,
+        config_id: EntityID | None = None,
+        target_id: EntityID | None = None,
+        scanner_id: EntityID | None = None,
+        alterable: bool | None = None,
+        hosts_ordering: HostsOrdering | None = None,
+        schedule_id: EntityID | None = None,
+        schedule_periods: int | None = None,
+        comment: str | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> T:
         """Modifies an existing task.
 
@@ -3935,7 +3926,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def move_task(
-        self, task_id: EntityID, *, slave_id: Optional[EntityID] = None
+        self, task_id: EntityID, *, slave_id: EntityID | None = None
     ) -> T:
         """Move an existing task to another GMP slave scanner or the master
 
@@ -3993,7 +3984,7 @@ class GMPv224(GvmProtocol[T]):
         result_id: EntityID,
         assigned_to_user_id: EntityID,
         note: str,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> T:
         """Create a new ticket
 
@@ -4013,7 +4004,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def delete_ticket(
-        self, ticket_id: EntityID, *, ultimate: Optional[bool] = False
+        self, ticket_id: EntityID, *, ultimate: bool | None = False
     ) -> T:
         """Deletes an existing ticket
 
@@ -4028,9 +4019,9 @@ class GMPv224(GvmProtocol[T]):
     def get_tickets(
         self,
         *,
-        trash: Optional[bool] = None,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
+        trash: bool | None = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
     ) -> T:
         """Request a list of tickets
 
@@ -4059,10 +4050,10 @@ class GMPv224(GvmProtocol[T]):
         self,
         ticket_id: EntityID,
         *,
-        status: Optional[Union[TicketStatus, str]] = None,
-        note: Optional[str] = None,
-        assigned_to_user_id: Optional[EntityID] = None,
-        comment: Optional[str] = None,
+        status: TicketStatus | str | None = None,
+        note: str | None = None,
+        assigned_to_user_id: EntityID | None = None,
+        comment: str | None = None,
     ) -> T:
         """Modify a single ticket
 
@@ -4099,8 +4090,8 @@ class GMPv224(GvmProtocol[T]):
         name: str,
         certificate: str,
         *,
-        comment: Optional[str] = None,
-        trust: Optional[bool] = None,
+        comment: str | None = None,
+        trust: bool | None = None,
     ) -> T:
         """Create a new TLS certificate
 
@@ -4130,10 +4121,10 @@ class GMPv224(GvmProtocol[T]):
     def get_tls_certificates(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        include_certificate_data: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        include_certificate_data: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of TLS certificates
 
@@ -4168,9 +4159,9 @@ class GMPv224(GvmProtocol[T]):
         self,
         tls_certificate_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        trust: Optional[bool] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        trust: bool | None = None,
     ) -> T:
         """Modifies an existing TLS certificate.
 
@@ -4189,8 +4180,8 @@ class GMPv224(GvmProtocol[T]):
     def get_vulnerabilities(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
     ) -> T:
         """Request a list of vulnerabilities
 
@@ -4215,7 +4206,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def clone_report_format(
-        self, report_format_id: Union[EntityID, ReportFormatType]
+        self, report_format_id: EntityID | ReportFormatType
     ) -> T:
         """Clone a report format from an existing one
 
@@ -4229,9 +4220,9 @@ class GMPv224(GvmProtocol[T]):
 
     def delete_report_format(
         self,
-        report_format_id: Union[EntityID, ReportFormatType],
+        report_format_id: EntityID | ReportFormatType,
         *,
-        ultimate: Optional[bool] = False,
+        ultimate: bool | None = False,
     ) -> T:
         """Deletes an existing report format
 
@@ -4249,12 +4240,12 @@ class GMPv224(GvmProtocol[T]):
     def get_report_formats(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        alerts: Optional[bool] = None,
-        params: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        alerts: bool | None = None,
+        params: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of report formats
 
@@ -4278,7 +4269,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def get_report_format(
-        self, report_format_id: Union[EntityID, ReportFormatType]
+        self, report_format_id: EntityID | ReportFormatType
     ) -> T:
         """Request a single report format
 
@@ -4303,13 +4294,13 @@ class GMPv224(GvmProtocol[T]):
 
     def modify_report_format(
         self,
-        report_format_id: Union[EntityID, ReportFormatType],
+        report_format_id: EntityID | ReportFormatType,
         *,
-        active: Optional[bool] = None,
-        name: Optional[str] = None,
-        summary: Optional[str] = None,
-        param_name: Optional[str] = None,
-        param_value: Optional[str] = None,
+        active: bool | None = None,
+        name: str | None = None,
+        summary: str | None = None,
+        param_name: str | None = None,
+        param_value: str | None = None,
     ) -> T:
         """Modifies an existing report format.
 
@@ -4334,7 +4325,7 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def verify_report_format(
-        self, report_format_id: Union[EntityID, ReportFormatType]
+        self, report_format_id: EntityID | ReportFormatType
     ) -> T:
         """Verify an existing report format
 

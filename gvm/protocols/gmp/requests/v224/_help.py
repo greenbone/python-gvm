@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.protocols.core import Request
@@ -22,8 +21,8 @@ class Help:
     @staticmethod
     def help(
         *,
-        help_format: Optional[Union[HelpFormat, str]] = None,
-        brief: Optional[bool] = None,
+        help_format: HelpFormat | str | None = None,
+        brief: bool | None = None,
     ) -> Request:
         """Get the help text
 

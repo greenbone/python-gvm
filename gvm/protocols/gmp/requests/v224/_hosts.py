@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -22,11 +21,8 @@ class HostsOrdering(Enum):
 
 
 class Hosts:
-
     @classmethod
-    def create_host(
-        cls, name: str, *, comment: Optional[str] = None
-    ) -> Request:
+    def create_host(cls, name: str, *, comment: str | None = None) -> Request:
         """Create a new host host
 
         Args:
@@ -69,9 +65,9 @@ class Hosts:
     @staticmethod
     def get_hosts(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of hosts
 
@@ -94,7 +90,7 @@ class Hosts:
 
     @classmethod
     def get_host(
-        cls, host_id: EntityID, *, details: Optional[bool] = None
+        cls, host_id: EntityID, *, details: bool | None = None
     ) -> Request:
         """Request a single host
 
@@ -119,7 +115,7 @@ class Hosts:
 
     @classmethod
     def modify_host(
-        cls, host_id: EntityID, *, comment: Optional[str] = None
+        cls, host_id: EntityID, *, comment: str | None = None
     ) -> Request:
         """Modifies an existing host.
 

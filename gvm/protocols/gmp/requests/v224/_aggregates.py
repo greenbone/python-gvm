@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Iterable, Optional, Union
+from collections.abc import Iterable
 
 from gvm._enum import Enum
 from gvm.errors import InvalidArgumentType, RequiredArgument
@@ -38,20 +38,19 @@ class Aggregates:
     @classmethod
     def get_aggregates(
         cls,
-        resource_type: Union[EntityType, str],
+        resource_type: EntityType | str,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        sort_criteria: Optional[
-            Iterable[dict[str, Union[str, SortOrder, AggregateStatistic]]]
-        ] = None,
-        data_columns: Optional[Union[Iterable[str], str]] = None,
-        group_column: Optional[str] = None,
-        subgroup_column: Optional[str] = None,
-        text_columns: Optional[Union[Iterable[str], str]] = None,
-        first_group: Optional[int] = None,
-        max_groups: Optional[int] = None,
-        mode: Optional[int] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        sort_criteria: Iterable[dict[str, str | SortOrder | AggregateStatistic]]
+        | None = None,
+        data_columns: Iterable[str] | str | None = None,
+        group_column: str | None = None,
+        subgroup_column: str | None = None,
+        text_columns: Iterable[str] | str | None = None,
+        first_group: int | None = None,
+        max_groups: int | None = None,
+        mode: int | None = None,
         **kwargs,
     ) -> Request:
         """Request aggregated information on a resource / entity type

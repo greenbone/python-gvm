@@ -752,7 +752,7 @@ class AlertsTestCase(unittest.TestCase):
         self.assertEqual(
             bytes(request),
             '<get_reports report_id="r1" alert_id="a1" '
-            f'format_id="{ReportFormatType.SVG}"/>'.encode(encoding="utf-8"),
+            f'format_id="{ReportFormatType.SVG}"/>'.encode(),
         )
 
     def test_trigger_alert_with_delta_report_id(self):

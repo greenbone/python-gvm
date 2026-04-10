@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -71,20 +70,20 @@ class Credentials:
     def create_credential(
         cls,
         name: str,
-        credential_type: Union[CredentialType, str],
+        credential_type: CredentialType | str,
         *,
-        comment: Optional[str] = None,
-        allow_insecure: Optional[bool] = None,
-        certificate: Optional[str] = None,
-        key_phrase: Optional[str] = None,
-        private_key: Optional[str] = None,
-        login: Optional[str] = None,
-        password: Optional[str] = None,
-        auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
-        community: Optional[str] = None,
-        privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
-        privacy_password: Optional[str] = None,
-        public_key: Optional[str] = None,
+        comment: str | None = None,
+        allow_insecure: bool | None = None,
+        certificate: str | None = None,
+        key_phrase: str | None = None,
+        private_key: str | None = None,
+        login: str | None = None,
+        password: str | None = None,
+        auth_algorithm: SnmpAuthAlgorithm | str | None = None,
+        community: str | None = None,
+        privacy_algorithm: SnmpPrivacyAlgorithm | str | None = None,
+        privacy_password: str | None = None,
+        public_key: str | None = None,
     ) -> Request:
         """Create a new credential
 
@@ -131,24 +130,24 @@ class Credentials:
             .. code-block:: python
 
                 request = Credentials.create_credential(
-                    name='UP Credential',
+                    name="UP Credential",
                     credential_type=CredentialType.USERNAME_PASSWORD,
-                    login='foo',
-                    password='bar',
+                    login="foo",
+                    password="bar",
                 )
 
             Creating a Username + SSH Key credential
 
             .. code-block:: python
 
-                with open('path/to/private-ssh-key') as f:
+                with open("path/to/private-ssh-key") as f:
                     key = f.read()
 
                 request = Credentials.create_credential(
-                    name='USK Credential',
+                    name="USK Credential",
                     credential_type=CredentialType.USERNAME_SSH_KEY,
-                    login='foo',
-                    key_phrase='foobar',
+                    login="foo",
+                    key_phrase="foobar",
                     private_key=key,
                 )
 
@@ -163,11 +162,11 @@ class Credentials:
 
             .. code-block:: python
 
-                with open('path/to/pgp.key.asc') as f:
+                with open("path/to/pgp.key.asc") as f:
                     key = f.read()
 
                 request = Credentials.create_credential(
-                    name='PGP Credential',
+                    name="PGP Credential",
                     credential_type=CredentialType.PGP_ENCRYPTION_KEY,
                     public_key=key,
                 )
@@ -176,11 +175,11 @@ class Credentials:
 
             .. code-block:: python
 
-                with open('path/to/smime-cert') as f:
+                with open("path/to/smime-cert") as f:
                     cert = f.read()
 
                 request = Credentials.create_credential(
-                    name='SMIME Credential',
+                    name="SMIME Credential",
                     credential_type=CredentialType.SMIME_CERTIFICATE,
                     certificate=cert,
                 )
@@ -190,9 +189,9 @@ class Credentials:
             .. code-block:: python
 
                 request = Credentials.create_credential(
-                    name='Password-Only Credential',
+                    name="Password-Only Credential",
                     credential_type=CredentialType.PASSWORD_ONLY,
-                    password='foo',
+                    password="foo",
                 )
 
             Creating an auto-generated password
@@ -200,9 +199,9 @@ class Credentials:
             .. code-block:: python
 
                 request = Credentials.create_credential(
-                    name='UP Credential',
+                    name="UP Credential",
                     credential_type=CredentialType.USERNAME_PASSWORD,
-                    login='foo',
+                    login="foo",
                 )
 
             Creating an auto-generated SSH-Key credential
@@ -210,9 +209,9 @@ class Credentials:
             .. code-block:: python
 
                 request = Credentials.create_credential(
-                    name='USK Credential',
+                    name="USK Credential",
                     credential_type=CredentialType.USERNAME_SSH_KEY,
-                    login='foo',
+                    login="foo",
                 )
         """
         if not name:
@@ -340,7 +339,7 @@ class Credentials:
 
     @classmethod
     def delete_credential(
-        cls, credential_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, credential_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Delete a credential
 
@@ -362,11 +361,11 @@ class Credentials:
     @staticmethod
     def get_credentials(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        scanners: Optional[bool] = None,
-        trash: Optional[bool] = None,
-        targets: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        scanners: bool | None = None,
+        trash: bool | None = None,
+        targets: bool | None = None,
     ) -> Request:
         """Request a list of credentials
 
@@ -398,9 +397,9 @@ class Credentials:
         cls,
         credential_id: EntityID,
         *,
-        scanners: Optional[bool] = None,
-        targets: Optional[bool] = None,
-        credential_format: Optional[Union[CredentialFormat, str]] = None,
+        scanners: bool | None = None,
+        targets: bool | None = None,
+        credential_format: CredentialFormat | str | None = None,
     ) -> Request:
         """Request a single credential
 
@@ -438,19 +437,19 @@ class Credentials:
         cls,
         credential_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        allow_insecure: Optional[bool] = None,
-        certificate: Optional[str] = None,
-        key_phrase: Optional[str] = None,
-        private_key: Optional[str] = None,
-        login: Optional[str] = None,
-        password: Optional[str] = None,
-        auth_algorithm: Optional[Union[SnmpAuthAlgorithm, str]] = None,
-        community: Optional[str] = None,
-        privacy_algorithm: Optional[Union[SnmpPrivacyAlgorithm, str]] = None,
-        privacy_password: Optional[str] = None,
-        public_key: Optional[str] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        allow_insecure: bool | None = None,
+        certificate: str | None = None,
+        key_phrase: str | None = None,
+        private_key: str | None = None,
+        login: str | None = None,
+        password: str | None = None,
+        auth_algorithm: SnmpAuthAlgorithm | str | None = None,
+        community: str | None = None,
+        privacy_algorithm: SnmpPrivacyAlgorithm | str | None = None,
+        privacy_password: str | None = None,
+        public_key: str | None = None,
     ) -> Request:
         """Modifies an existing credential.
 

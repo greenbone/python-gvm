@@ -9,7 +9,6 @@ from gvm.protocols.gmp.requests.v224 import Scanners, ScannerType
 
 
 class ScannersTestCase(unittest.TestCase):
-
     def test_create_scanner(self):
         request = Scanners.create_scanner(
             "foo",
@@ -270,18 +269,14 @@ class ScannersTestCase(unittest.TestCase):
 
         self.assertEqual(
             bytes(request),
-            b'<modify_scanner scanner_id="s1">'
-            b"<type>2</type>"
-            b"</modify_scanner>",
+            b'<modify_scanner scanner_id="s1"><type>2</type></modify_scanner>',
         )
 
         request = Scanners.modify_scanner("s1", scanner_type="2")
 
         self.assertEqual(
             bytes(request),
-            b'<modify_scanner scanner_id="s1">'
-            b"<type>2</type>"
-            b"</modify_scanner>",
+            b'<modify_scanner scanner_id="s1"><type>2</type></modify_scanner>',
         )
 
     def test_modify_scanner_invalid_scanner_type(self):

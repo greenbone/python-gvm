@@ -6,7 +6,7 @@
 Greenbone Management Protocol (GMP) version 22.6
 """
 
-from typing import Optional, Sequence, Union
+from collections.abc import Sequence
 
 from .._protocol import T
 from ._gmp225 import GMPv225
@@ -46,7 +46,7 @@ class GMPv226(GMPv225[T]):
         self,
         resource_type: ResourceType,  # type: ignore[override]
         *,
-        filter_string: Optional[str] = None,
+        filter_string: str | None = None,
     ) -> T:
         """Request a list of resource names and IDs
 
@@ -99,13 +99,13 @@ class GMPv226(GMPv225[T]):
         self,
         report_id: EntityID,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        delta_report_id: Optional[EntityID] = None,
-        report_format_id: Optional[Union[str, ReportFormatType]] = None,
-        report_config_id: Optional[str] = None,
-        ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = True,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        delta_report_id: EntityID | None = None,
+        report_format_id: str | ReportFormatType | None = None,
+        report_config_id: str | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = True,
     ) -> T:
         """Request a single scan report
 
@@ -138,12 +138,12 @@ class GMPv226(GMPv225[T]):
     def get_reports(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        note_details: Optional[bool] = None,
-        override_details: Optional[bool] = None,
-        ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        note_details: bool | None = None,
+        override_details: bool | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of scan reports
 
@@ -173,7 +173,7 @@ class GMPv226(GMPv225[T]):
         report: str,
         task_id: EntityID,
         *,
-        in_assets: Optional[bool] = None,
+        in_assets: bool | None = None,
     ) -> T:
         """Import a scan Report from XML
 
@@ -201,12 +201,12 @@ class GMPv226(GMPv225[T]):
         self,
         report_id: EntityID,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        delta_report_id: Optional[EntityID] = None,
-        report_format_id: Optional[Union[str, ReportFormatType]] = None,
-        ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = True,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        delta_report_id: EntityID | None = None,
+        report_format_id: str | ReportFormatType | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = True,
     ) -> T:
         """Request a single audit report
 
@@ -237,12 +237,12 @@ class GMPv226(GMPv225[T]):
     def get_audit_reports(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        note_details: Optional[bool] = None,
-        override_details: Optional[bool] = None,
-        ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        note_details: bool | None = None,
+        override_details: bool | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of audit reports
 
@@ -271,9 +271,9 @@ class GMPv226(GMPv225[T]):
         self,
         name: str,
         *,
-        filter_type: Optional[FilterType] = None,  # type: ignore[override]
-        comment: Optional[str] = None,
-        term: Optional[str] = None,
+        filter_type: FilterType | None = None,  # type: ignore[override]
+        comment: str | None = None,
+        term: str | None = None,
     ) -> T:
         """Create a new filter
 
@@ -295,10 +295,10 @@ class GMPv226(GMPv225[T]):
         self,
         filter_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        term: Optional[str] = None,
-        filter_type: Optional[FilterType] = None,  # type: ignore[override]
+        comment: str | None = None,
+        name: str | None = None,
+        term: str | None = None,
+        filter_type: FilterType | None = None,  # type: ignore[override]
     ) -> T:
         """Modifies an existing filter.
 
@@ -335,7 +335,7 @@ class GMPv226(GMPv225[T]):
         self,
         report_config_id: EntityID,
         *,
-        ultimate: Optional[bool] = False,
+        ultimate: bool | None = False,
     ) -> T:
         """Deletes an existing report config
 
@@ -352,10 +352,10 @@ class GMPv226(GMPv225[T]):
     def get_report_configs(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of report configs
 
@@ -390,10 +390,10 @@ class GMPv226(GMPv225[T]):
     def create_report_config(
         self,
         name: str,
-        report_format_id: Union[EntityID, ReportFormatType],
+        report_format_id: EntityID | ReportFormatType,
         *,
-        comment: Optional[str] = None,
-        params: Optional[Sequence[ReportConfigParameter]] = None,
+        comment: str | None = None,
+        params: Sequence[ReportConfigParameter] | None = None,
     ) -> T:
         """Create a report config
 
@@ -413,9 +413,9 @@ class GMPv226(GMPv225[T]):
         self,
         report_config_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        params: Optional[Sequence[ReportConfigParameter]] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        params: Sequence[ReportConfigParameter] | None = None,
     ) -> T:
         """Create a report config
 

@@ -460,9 +460,7 @@ class AuditsTestCase(unittest.TestCase):
 
         self.assertEqual(
             bytes(request),
-            b'<modify_task task_id="t1">'
-            b"<comment>bar</comment>"
-            b"</modify_task>",
+            b'<modify_task task_id="t1"><comment>bar</comment></modify_task>',
         )
 
     def test_modify_audit_with_alerts_ids(self):

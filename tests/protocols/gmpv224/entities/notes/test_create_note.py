@@ -13,10 +13,7 @@ class GmpCreateNoteTestMixin:
         self.gmp.create_note("foo", nvt_oid="oid1")
 
         self.connection.send.has_been_called_with(
-            b"<create_note>"
-            b"<text>foo</text>"
-            b'<nvt oid="oid1"/>'
-            b"</create_note>"
+            b'<create_note><text>foo</text><nvt oid="oid1"/></create_note>'
         )
 
     def test_create_note_missing_text(self):
@@ -37,10 +34,7 @@ class GmpCreateNoteTestMixin:
         self.gmp.create_note("foo", nvt_oid="oid1", hosts=[])
 
         self.connection.send.has_been_called_with(
-            b"<create_note>"
-            b"<text>foo</text>"
-            b'<nvt oid="oid1"/>'
-            b"</create_note>"
+            b'<create_note><text>foo</text><nvt oid="oid1"/></create_note>'
         )
 
         self.gmp.create_note("foo", nvt_oid="oid1", hosts=["h1", "h2"])
@@ -107,7 +101,7 @@ class GmpCreateNoteTestMixin:
             b"</create_note>"
         )
 
-        self.gmp.create_note("foo", nvt_oid="oid1", severity=Decimal(5.5))
+        self.gmp.create_note("foo", nvt_oid="oid1", severity=Decimal("5.5"))
 
         self.connection.send.has_been_called_with(
             b"<create_note>"

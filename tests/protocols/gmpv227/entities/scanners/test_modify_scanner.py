@@ -35,9 +35,7 @@ class GmpModifyScannerTestMixin:
         self.gmp.modify_scanner(scanner_id="s1", host="foo")
 
         self.connection.send.has_been_called_with(
-            b'<modify_scanner scanner_id="s1">'
-            b"<host>foo</host>"
-            b"</modify_scanner>"
+            b'<modify_scanner scanner_id="s1"><host>foo</host></modify_scanner>'
         )
 
     def test_modify_scanner_with_port(self):
@@ -61,9 +59,7 @@ class GmpModifyScannerTestMixin:
         self.gmp.modify_scanner(scanner_id="s1", name="foo")
 
         self.connection.send.has_been_called_with(
-            b'<modify_scanner scanner_id="s1">'
-            b"<name>foo</name>"
-            b"</modify_scanner>"
+            b'<modify_scanner scanner_id="s1"><name>foo</name></modify_scanner>'
         )
 
     def test_modify_scanner_with_ca_pub(self):
@@ -90,9 +86,7 @@ class GmpModifyScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<modify_scanner scanner_id="s1">'
-            b"<type>2</type>"
-            b"</modify_scanner>"
+            b'<modify_scanner scanner_id="s1"><type>2</type></modify_scanner>'
         )
 
         self.gmp.modify_scanner(
@@ -100,9 +94,7 @@ class GmpModifyScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<modify_scanner scanner_id="s1">'
-            b"<type>3</type>"
-            b"</modify_scanner>"
+            b'<modify_scanner scanner_id="s1"><type>3</type></modify_scanner>'
         )
 
         self.gmp.modify_scanner(
@@ -111,9 +103,7 @@ class GmpModifyScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<modify_scanner scanner_id="s1">'
-            b"<type>5</type>"
-            b"</modify_scanner>"
+            b'<modify_scanner scanner_id="s1"><type>5</type></modify_scanner>'
         )
 
     def test_modify_scanner_invalid_scanner_type(self):
@@ -133,9 +123,7 @@ class GmpModifyScannerTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<modify_scanner scanner_id="s1">'
-            b"<type>6</type>"
-            b"</modify_scanner>"
+            b'<modify_scanner scanner_id="s1"><type>6</type></modify_scanner>'
         )
 
     def test_modify_scanner_with_relay_host(self):

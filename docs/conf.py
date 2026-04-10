@@ -1,4 +1,3 @@
-﻿# -*- coding: utf-8 -*-
 #
 # Configuration file for the Sphinx documentation builder.
 #
@@ -14,20 +13,20 @@
 #
 # pylint: disable=invalid-name,redefined-builtin,wrong-import-position
 
-import os
 import sys
 from datetime import datetime
+from pathlib import Path
 
-sys.path.insert(0, os.path.abspath(".."))
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-import gvm  # noqa: E402
+import gvm
 
 # -- Project information -----------------------------------------------------
 
 year = datetime.now().year
 
 project = "python-gvm"
-copyright = f"2018 - {year}, Greenbone AG"
+copyright = f"2018 - {year}, Greenbone AG"  # noqa: A001
 author = "Greenbone AG"
 
 # The short X.Y version

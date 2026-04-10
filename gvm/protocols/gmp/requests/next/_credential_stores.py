@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from base64 import b64encode
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -19,7 +18,7 @@ class CredentialStores:
         cls,
         credential_store_id: EntityID,
         *,
-        details: Optional[bool] = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a credential store
 
@@ -46,9 +45,9 @@ class CredentialStores:
     def get_credential_stores(
         cls,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of credential stores
 
@@ -71,17 +70,17 @@ class CredentialStores:
         cls,
         credential_store_id: EntityID,
         *,
-        active: Optional[bool] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        path: Optional[str] = None,
-        app_id: Optional[str] = None,
-        client_cert: Optional[str] = None,
-        client_key: Optional[str] = None,
-        client_pkcs12_file: Optional[str] = None,
-        passphrase: Optional[str] = None,
-        server_ca_cert: Optional[str] = None,
-        comment: Optional[str] = None,
+        active: bool | None = None,
+        host: str | None = None,
+        port: int | None = None,
+        path: str | None = None,
+        app_id: str | None = None,
+        client_cert: str | None = None,
+        client_key: str | None = None,
+        client_pkcs12_file: str | None = None,
+        passphrase: str | None = None,
+        server_ca_cert: str | None = None,
+        comment: str | None = None,
     ) -> Request:
         """Modify a credential store
 

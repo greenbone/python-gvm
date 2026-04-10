@@ -9,8 +9,6 @@ High-level API interface for interacting with openvasd HTTP services via
 logical modules (health, metadata, scans, etc.).
 """
 
-from typing import Optional, Tuple, Union
-
 from ._client import StrOrPathLike, create_openvasd_http_client
 from ._health import HealthAPI
 from ._metadata import MetadataAPI
@@ -34,11 +32,11 @@ class OpenvasdHttpAPIv1:
         host_name: str,
         port: int = 3000,
         *,
-        api_key: Optional[str] = None,
-        server_ca_path: Optional[StrOrPathLike] = None,
-        client_cert_paths: Optional[
-            Union[StrOrPathLike, Tuple[StrOrPathLike, StrOrPathLike]]
-        ] = None,
+        api_key: str | None = None,
+        server_ca_path: StrOrPathLike | None = None,
+        client_cert_paths: StrOrPathLike
+        | tuple[StrOrPathLike, StrOrPathLike]
+        | None = None,
         suppress_exceptions: bool = False,
     ):
         """

@@ -66,9 +66,7 @@ class GmpModifyTaskTestMixin:
         self.gmp.modify_task(task_id="t1", comment="bar")
 
         self.connection.send.has_been_called_with(
-            b'<modify_task task_id="t1">'
-            b"<comment>bar</comment>"
-            b"</modify_task>"
+            b'<modify_task task_id="t1"><comment>bar</comment></modify_task>'
         )
 
     def test_modify_task_with_alerts_ids(self):
@@ -93,17 +91,13 @@ class GmpModifyTaskTestMixin:
         self.gmp.modify_task(task_id="t1", alterable=True)
 
         self.connection.send.has_been_called_with(
-            b'<modify_task task_id="t1">'
-            b"<alterable>1</alterable>"
-            b"</modify_task>"
+            b'<modify_task task_id="t1"><alterable>1</alterable></modify_task>'
         )
 
         self.gmp.modify_task(task_id="t1", alterable=False)
 
         self.connection.send.has_been_called_with(
-            b'<modify_task task_id="t1">'
-            b"<alterable>0</alterable>"
-            b"</modify_task>"
+            b'<modify_task task_id="t1"><alterable>0</alterable></modify_task>'
         )
 
     def test_modify_task_with_hosts_ordering(self):

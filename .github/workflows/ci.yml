@@ -26,7 +26,8 @@ jobs:
           package-manager: uv
           packages: gvm tests
           python-version: ${{ matrix.python-version }}
-          linter: ruff check
+          linter: ruff check --diff
+          formatter: ruff format --check --diff
 
   test:
     name: Run tests

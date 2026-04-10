@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -18,7 +17,7 @@ class AgentGroups:
         name: str,
         agent_ids: list[str],
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> Request:
         """Create a new agent group.
 
@@ -78,9 +77,9 @@ class AgentGroups:
         cls,
         agent_group_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        agent_ids: Optional[list[str]] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        agent_ids: list[str] | None = None,
     ) -> Request:
         """Modify an existing agent group.
 
@@ -120,7 +119,7 @@ class AgentGroups:
         cls,
         agent_group_id: EntityID,
         *,
-        ultimate: Optional[bool] = False,
+        ultimate: bool | None = False,
     ) -> Request:
         """Delete an existing agent group.
 
@@ -147,9 +146,9 @@ class AgentGroups:
     def get_agent_groups(
         cls,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
     ) -> Request:
         """Request a list of agent groups.
 

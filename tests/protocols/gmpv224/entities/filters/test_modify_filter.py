@@ -19,9 +19,7 @@ class GmpModifyFilterTestMixin:
         self.gmp.modify_filter(filter_id="f1", filter_type=FilterType.TASK)
 
         self.connection.send.has_been_called_with(
-            b'<modify_filter filter_id="f1">'
-            b"<type>task</type>"
-            b"</modify_filter>"
+            b'<modify_filter filter_id="f1"><type>task</type></modify_filter>'
         )
 
     def test_modify_filter_invalid_filter_type(self):
@@ -51,9 +49,7 @@ class GmpModifyFilterTestMixin:
         self.gmp.modify_filter(filter_id="f1", name="foo")
 
         self.connection.send.has_been_called_with(
-            b'<modify_filter filter_id="f1">'
-            b"<name>foo</name>"
-            b"</modify_filter>"
+            b'<modify_filter filter_id="f1"><name>foo</name></modify_filter>'
         )
 
     def test_modify_filter_with_term(self):

@@ -5,11 +5,11 @@
 
 import sys
 from io import IOBase
-from typing import AnyStr, Optional, TextIO, Union
+from typing import AnyStr, TextIO
 from uuid import UUID
 
 from lxml.etree import DocInfo, SubElement, XMLParser
-from lxml.etree import Element as create_element
+from lxml.etree import Element as create_element  # noqa: N813
 from lxml.etree import Error as EtreeError
 from lxml.etree import _Element as Element
 from lxml.etree import iselement as is_xml_element
@@ -19,10 +19,10 @@ from gvm.errors import GvmError, InvalidArgumentType
 
 __all__ = (
     "Element",
+    "XmlCommand",
+    "XmlCommandElement",
     "create_parser",
     "parse_xml",
-    "XmlCommandElement",
-    "XmlCommand",
     "pretty_print",
 )
 
@@ -94,9 +94,9 @@ class XmlCommandElement:
     def add_element(
         self,
         name: str,
-        text: Optional[str] = None,
+        text: str | None = None,
         *,
-        attrs: Optional[dict] = None,
+        attrs: dict | None = None,
     ) -> "XmlCommandElement":
         node = SubElement(self._element, name, attrib=attrs)
         node.text = text
@@ -123,7 +123,7 @@ class XmlCommandElement:
 
         return self
 
-    def set_text(self, text: Optional[str]) -> "XmlCommandElement":
+    def set_text(self, text: str | None) -> "XmlCommandElement":
         """Set the text of the element.
 
         Args:
@@ -181,8 +181,8 @@ class XmlCommand(XmlCommandElement):
 
     def add_filter(
         self,
-        filter_string: Optional[str],
-        filter_id: Optional[Union[str, UUID]],
+        filter_string: str | None,
+        filter_id: str | UUID | None,
     ) -> "XmlCommand":
         """
         Add a filter to the command.
@@ -201,8 +201,8 @@ class XmlCommand(XmlCommandElement):
 
 
 def pretty_print(
-    xml: Union[str, list[Union[Element, str]], Element],
-    file: Union[TextIO, IOBase] = sys.stdout,
+    xml: str | list[Element | str] | Element,
+    file: TextIO | IOBase = sys.stdout,
 ):
     """Prints beautiful XML-Code
 

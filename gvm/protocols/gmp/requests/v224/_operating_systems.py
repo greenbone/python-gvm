@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -13,7 +12,6 @@ from .._entity_id import EntityID
 
 
 class OperatingSystems:
-
     @classmethod
     def delete_operating_system(
         cls,
@@ -38,9 +36,9 @@ class OperatingSystems:
     @staticmethod
     def get_operating_systems(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of operating systems
 
@@ -63,7 +61,7 @@ class OperatingSystems:
 
     @classmethod
     def get_operating_system(
-        cls, operating_system_id: EntityID, *, details: Optional[bool] = None
+        cls, operating_system_id: EntityID, *, details: bool | None = None
     ) -> Request:
         """Request a single operating system
 
@@ -89,7 +87,7 @@ class OperatingSystems:
 
     @classmethod
     def modify_operating_system(
-        cls, operating_system_id: EntityID, *, comment: Optional[str] = None
+        cls, operating_system_id: EntityID, *, comment: str | None = None
     ) -> Request:
         """Modifies an existing operating system.
 

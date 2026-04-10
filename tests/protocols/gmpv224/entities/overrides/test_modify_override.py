@@ -137,7 +137,7 @@ class GmpModifyOverrideTestMixin:
         )
 
         self.gmp.modify_override(
-            override_id="o1", text="foo", severity=Decimal(5.5)
+            override_id="o1", text="foo", severity=Decimal("5.5")
         )
 
         self.connection.send.has_been_called_with(
@@ -169,7 +169,7 @@ class GmpModifyOverrideTestMixin:
         )
 
         self.gmp.modify_override(
-            override_id="o1", text="foo", new_severity=Decimal(5.5)
+            override_id="o1", text="foo", new_severity=Decimal("5.5")
         )
 
         self.connection.send.has_been_called_with(

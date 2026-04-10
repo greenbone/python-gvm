@@ -4,7 +4,7 @@
 #
 
 from enum import Enum as PythonEnum
-from typing import Any, Optional, Type, TypeVar
+from typing import Any, TypeVar
 
 from gvm.errors import InvalidArgument
 
@@ -17,16 +17,16 @@ class Enum(PythonEnum):
     """
 
     @classmethod
-    def _missing_(cls: Type[Self], value: Any) -> Optional[Self]:
+    def _missing_(cls: type[Self], value: Any) -> Self | None:
         if isinstance(value, PythonEnum):
             return cls.from_string(value.name)
         return cls.from_string(str(value) if value else None)
 
     @classmethod
     def from_string(
-        cls: Type[Self],
-        value: Optional[str],
-    ) -> Optional[Self]:
+        cls: type[Self],
+        value: str | None,
+    ) -> Self | None:
         """
         Convert a string value into an Enum instance
 

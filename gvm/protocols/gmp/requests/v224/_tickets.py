@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -22,7 +21,6 @@ class TicketStatus(Enum):
 
 
 class Tickets:
-
     @classmethod
     def clone_ticket(cls, ticket_id: EntityID) -> Request:
         """Clone an existing ticket
@@ -48,7 +46,7 @@ class Tickets:
         result_id: EntityID,
         assigned_to_user_id: EntityID,
         note: str,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> Request:
         """Create a new ticket
 
@@ -92,7 +90,7 @@ class Tickets:
 
     @classmethod
     def delete_ticket(
-        cls, ticket_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, ticket_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing ticket
 
@@ -114,9 +112,9 @@ class Tickets:
     @staticmethod
     def get_tickets(
         *,
-        trash: Optional[bool] = None,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
+        trash: bool | None = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
     ) -> Request:
         """Request a list of tickets
 
@@ -155,10 +153,10 @@ class Tickets:
         cls,
         ticket_id: EntityID,
         *,
-        status: Optional[Union[TicketStatus, str]] = None,
-        note: Optional[str] = None,
-        assigned_to_user_id: Optional[EntityID] = None,
-        comment: Optional[str] = None,
+        status: TicketStatus | str | None = None,
+        note: str | None = None,
+        assigned_to_user_id: EntityID | None = None,
+        comment: str | None = None,
     ) -> Request:
         """Modify a single ticket
 

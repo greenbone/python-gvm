@@ -45,7 +45,7 @@ class FilterType(Enum):
     @classmethod
     def from_string(
         cls,
-        filter_type: Optional[str],
+        filter_type: str | None,
     ) -> Optional["FilterType"]:
         """Convert a filter type string to an actual FilterType instance
 
@@ -89,9 +89,9 @@ class Filters:
         cls,
         name: str,
         *,
-        filter_type: Optional[FilterType] = None,
-        comment: Optional[str] = None,
-        term: Optional[str] = None,
+        filter_type: FilterType | None = None,
+        comment: str | None = None,
+        term: str | None = None,
     ) -> Request:
         """Create a new filter
 
@@ -125,7 +125,7 @@ class Filters:
 
     @classmethod
     def delete_filter(
-        cls, filter_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, filter_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing filter
 
@@ -147,10 +147,10 @@ class Filters:
     @staticmethod
     def get_filters(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        alerts: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        alerts: bool | None = None,
     ) -> Request:
         """Request a list of filters
 
@@ -174,7 +174,7 @@ class Filters:
 
     @classmethod
     def get_filter(
-        cls, filter_id: EntityID, *, alerts: Optional[bool] = None
+        cls, filter_id: EntityID, *, alerts: bool | None = None
     ) -> Request:
         """Request a single filter
 
@@ -201,10 +201,10 @@ class Filters:
         cls,
         filter_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        term: Optional[str] = None,
-        filter_type: Optional[FilterType] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        term: str | None = None,
+        filter_type: FilterType | None = None,
     ) -> Request:
         """Modifies an existing filter.
 

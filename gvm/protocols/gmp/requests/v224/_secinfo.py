@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -61,10 +60,10 @@ class SecInfo:
         cls,
         info_type: InfoType,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        name: Optional[str] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        name: str | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of security information
 

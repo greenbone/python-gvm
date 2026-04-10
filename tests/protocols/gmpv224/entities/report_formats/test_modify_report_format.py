@@ -51,7 +51,7 @@ class GmpModifyReportFormatTestMixin:
         report_format_id = ReportFormatType.from_string("xml").value
         self.connection.send.has_been_called_with(
             f'<modify_report_format report_format_id="{report_format_id}">'
-            "<name>foo</name></modify_report_format>".encode("utf-8")
+            "<name>foo</name></modify_report_format>".encode()
         )
 
     def test_modify_report_format_with_active(self):

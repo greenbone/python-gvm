@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -15,8 +14,8 @@ class Vulnerabilities:
     @staticmethod
     def get_vulnerabilities(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
     ) -> Request:
         """Request a list of vulnerabilities
 

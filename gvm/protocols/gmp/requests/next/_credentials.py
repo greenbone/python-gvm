@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import InvalidArgument, RequiredArgument
@@ -32,12 +31,12 @@ class Credentials(CredentialsV224):
     def create_credential_store_credential(
         cls,
         name: str,
-        credential_type: Union[CredentialStoreCredentialType, str],
+        credential_type: CredentialStoreCredentialType | str,
         *,
-        comment: Optional[str] = None,
-        credential_store_id: Optional[EntityID] = None,
-        vault_id: Optional[str] = None,
-        host_identifier: Optional[str] = None,
+        comment: str | None = None,
+        credential_store_id: EntityID | None = None,
+        vault_id: str | None = None,
+        host_identifier: str | None = None,
     ) -> Request:
         """Create a new credential that is fetched from a credential store
 
@@ -68,10 +67,10 @@ class Credentials(CredentialsV224):
             .. code-block:: python
 
                 request = Credentials.create_credential(
-                    name='Credential-Store Password-Only Credential',
+                    name="Credential-Store Password-Only Credential",
                     credential_type=CredentialType.CREDENTIAL_STOREPASSWORD_ONLY,
-                    vault_id='a5f84dd4-da18-447c-a9fb-b77b5df49076',
-                    host_identifier='/My/Secret',
+                    vault_id="a5f84dd4-da18-447c-a9fb-b77b5df49076",
+                    host_identifier="/My/Secret",
                 )
         """
         if not name:
@@ -138,11 +137,11 @@ class Credentials(CredentialsV224):
         cls,
         credential_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        credential_store_id: Optional[EntityID] = None,
-        vault_id: Optional[str] = None,
-        host_identifier: Optional[str] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        credential_store_id: EntityID | None = None,
+        vault_id: str | None = None,
+        host_identifier: str | None = None,
     ) -> Request:
         """Modifies an existing credential.
 

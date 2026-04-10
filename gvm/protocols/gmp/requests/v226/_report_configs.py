@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+from collections.abc import Sequence
 from dataclasses import dataclass
-from typing import Optional, Sequence, Union
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -27,7 +27,7 @@ class ReportConfigParameter:
     """
 
     name: str
-    value: Optional[str] = None
+    value: str | None = None
     use_default: bool = False
 
 
@@ -62,7 +62,7 @@ class ReportConfigs:
         cls,
         report_config_id: EntityID,
         *,
-        ultimate: Optional[bool] = False,
+        ultimate: bool | None = False,
     ) -> Request:
         """Deletes an existing report config
 
@@ -76,7 +76,9 @@ class ReportConfigs:
 
                 from gvm.protocols.gmp.requests.v226 import ReportConfigs
 
-                request = ReportConfigs.delete_report_config("report_config_id", ultimate=True)
+                request = ReportConfigs.delete_report_config(
+                    "report_config_id", ultimate=True
+                )
         """
         if not report_config_id:
             raise RequiredArgument(
@@ -95,10 +97,10 @@ class ReportConfigs:
     @staticmethod
     def get_report_configs(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of report configs
 
@@ -120,7 +122,9 @@ class ReportConfigs:
 
                 from gvm.protocols.gmp.requests.v226 import ReportConfigs
 
-                request = ReportConfigs.get_report_configs(filter_string="name=foo", details=True)
+                request = ReportConfigs.get_report_configs(
+                    filter_string="name=foo", details=True
+                )
         """
         cmd = XmlCommand("get_report_configs")
 
@@ -170,10 +174,10 @@ class ReportConfigs:
     def create_report_config(
         cls,
         name: str,
-        report_format_id: Union[EntityID, ReportFormatType],
+        report_format_id: EntityID | ReportFormatType,
         *,
-        comment: Optional[str] = None,
-        params: Optional[Sequence[ReportConfigParameter]] = None,
+        comment: str | None = None,
+        params: Sequence[ReportConfigParameter] | None = None,
     ) -> Request:
         """Create a report config
 
@@ -187,7 +191,10 @@ class ReportConfigs:
 
             .. code-block:: python
 
-                from gvm.protocols.gmp.requests.v226 import ReportConfigs, ReportFormatType
+                from gvm.protocols.gmp.requests.v226 import (
+                    ReportConfigs,
+                    ReportFormatType,
+                )
 
                 request = ReportConfigs.create_report_config(
                     "Adjusted Node Distance",
@@ -231,9 +238,9 @@ class ReportConfigs:
         cls,
         report_config_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        params: Optional[Sequence[ReportConfigParameter]] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        params: Sequence[ReportConfigParameter] | None = None,
     ) -> Request:
         """Create a report config
 

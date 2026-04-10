@@ -7,7 +7,6 @@ API wrapper for retrieving metadata from the openvasd HTTP API using HEAD reques
 """
 
 from dataclasses import dataclass
-from typing import Union
 
 import httpx
 
@@ -58,7 +57,7 @@ class MetadataAPI(OpenvasdAPI):
     is handled gracefully.
     """
 
-    def get(self) -> Union[Metadata, MetadataError]:
+    def get(self) -> Metadata | MetadataError:
         """
         Perform a HEAD request to `/` to retrieve top-level API metadata.
 
@@ -85,7 +84,7 @@ class MetadataAPI(OpenvasdAPI):
                 )
             raise
 
-    def get_scans(self) -> Union[Metadata, MetadataError]:
+    def get_scans(self) -> Metadata | MetadataError:
         """
         Perform a HEAD request to `/scans` to retrieve scan endpoint metadata.
 

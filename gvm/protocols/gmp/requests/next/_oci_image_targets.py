@@ -3,7 +3,6 @@
 #  SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -19,8 +18,8 @@ class OCIImageTargets:
         name: str,
         image_references: list[str],
         *,
-        comment: Optional[str] = None,
-        credential_id: Optional[EntityID] = None,
+        comment: str | None = None,
+        credential_id: EntityID | None = None,
     ) -> Request:
         """Create a new OCI image target
 
@@ -58,10 +57,10 @@ class OCIImageTargets:
         cls,
         oci_image_target_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        image_references: Optional[list[str]] = None,
-        credential_id: Optional[EntityID] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        image_references: list[str] | None = None,
+        credential_id: EntityID | None = None,
     ) -> Request:
         """Modify an existing target.
 
@@ -114,7 +113,7 @@ class OCIImageTargets:
 
     @classmethod
     def delete_oci_image_target(
-        cls, oci_image_target_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, oci_image_target_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Delete an existing OCI image target.
 
@@ -135,7 +134,7 @@ class OCIImageTargets:
 
     @classmethod
     def get_oci_image_target(
-        cls, oci_image_target_id: EntityID, *, tasks: Optional[bool] = None
+        cls, oci_image_target_id: EntityID, *, tasks: bool | None = None
     ) -> Request:
         """Request a single OCI Image target.
 
@@ -161,10 +160,10 @@ class OCIImageTargets:
     def get_oci_image_targets(
         cls,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        tasks: bool | None = None,
     ) -> Request:
         """Request a list of OCI image targets.
 

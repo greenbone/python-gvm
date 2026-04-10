@@ -30,5 +30,5 @@ class GmpCloneReportFormatTestMixin:
         self.connection.send.has_been_called_with(
             "<create_report_format>"
             f"<copy>{report_format_id}</copy>"
-            "</create_report_format>".encode("utf-8")
+            "</create_report_format>".encode()
         )

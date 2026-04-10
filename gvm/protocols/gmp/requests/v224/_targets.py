@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
+from typing import Optional
 
 from gvm._enum import Enum
 from gvm.errors import InvalidArgument, RequiredArgument
@@ -33,7 +33,7 @@ class AliveTest(Enum):
     @classmethod
     def from_string(
         cls,
-        alive_test: Optional[str],
+        alive_test: str | None,
     ) -> Optional["AliveTest"]:
         """Convert an alive test string into a AliveTest instance"""
         if not alive_test:
@@ -62,21 +62,21 @@ class Targets:
         cls,
         name: str,
         *,
-        asset_hosts_filter: Optional[str] = None,
-        hosts: Optional[list[str]] = None,
-        comment: Optional[str] = None,
-        exclude_hosts: Optional[list[str]] = None,
-        ssh_credential_id: Optional[EntityID] = None,
-        ssh_credential_port: Optional[Union[int, str]] = None,
-        smb_credential_id: Optional[EntityID] = None,
-        esxi_credential_id: Optional[EntityID] = None,
-        snmp_credential_id: Optional[EntityID] = None,
-        alive_test: Optional[Union[str, AliveTest]] = None,
-        allow_simultaneous_ips: Optional[bool] = None,
-        reverse_lookup_only: Optional[bool] = None,
-        reverse_lookup_unify: Optional[bool] = None,
-        port_range: Optional[str] = None,
-        port_list_id: Optional[EntityID] = None,
+        asset_hosts_filter: str | None = None,
+        hosts: list[str] | None = None,
+        comment: str | None = None,
+        exclude_hosts: list[str] | None = None,
+        ssh_credential_id: EntityID | None = None,
+        ssh_credential_port: int | str | None = None,
+        smb_credential_id: EntityID | None = None,
+        esxi_credential_id: EntityID | None = None,
+        snmp_credential_id: EntityID | None = None,
+        alive_test: str | AliveTest | None = None,
+        allow_simultaneous_ips: bool | None = None,
+        reverse_lookup_only: bool | None = None,
+        reverse_lookup_unify: bool | None = None,
+        port_range: str | None = None,
+        port_list_id: EntityID | None = None,
     ) -> Request:
         """Create a new target
 
@@ -179,20 +179,20 @@ class Targets:
         cls,
         target_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        hosts: Optional[list[str]] = None,
-        exclude_hosts: Optional[list[str]] = None,
-        ssh_credential_id: Optional[EntityID] = None,
-        ssh_credential_port: Optional[Union[str, int]] = None,
-        smb_credential_id: Optional[EntityID] = None,
-        esxi_credential_id: Optional[EntityID] = None,
-        snmp_credential_id: Optional[EntityID] = None,
-        alive_test: Optional[Union[AliveTest, str]] = None,
-        allow_simultaneous_ips: Optional[bool] = None,
-        reverse_lookup_only: Optional[bool] = None,
-        reverse_lookup_unify: Optional[bool] = None,
-        port_list_id: Optional[EntityID] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        hosts: list[str] | None = None,
+        exclude_hosts: list[str] | None = None,
+        ssh_credential_id: EntityID | None = None,
+        ssh_credential_port: str | int | None = None,
+        smb_credential_id: EntityID | None = None,
+        esxi_credential_id: EntityID | None = None,
+        snmp_credential_id: EntityID | None = None,
+        alive_test: AliveTest | str | None = None,
+        allow_simultaneous_ips: bool | None = None,
+        reverse_lookup_only: bool | None = None,
+        reverse_lookup_unify: bool | None = None,
+        port_list_id: EntityID | None = None,
     ) -> Request:
         """Modify an existing target.
 
@@ -301,7 +301,7 @@ class Targets:
 
     @classmethod
     def delete_target(
-        cls, target_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, target_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Delete an existing target.
 
@@ -321,7 +321,7 @@ class Targets:
 
     @classmethod
     def get_target(
-        cls, target_id: EntityID, *, tasks: Optional[bool] = None
+        cls, target_id: EntityID, *, tasks: bool | None = None
     ) -> Request:
         """Request a single target.
 
@@ -346,10 +346,10 @@ class Targets:
     def get_targets(
         cls,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        tasks: bool | None = None,
     ) -> Request:
         """Request a list of targets.
 

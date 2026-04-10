@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import AnyStr, Optional, Protocol
+from typing import AnyStr, Protocol
 
 from lxml import etree
 
@@ -18,7 +18,7 @@ class XmlReader:
     """
 
     def start_xml(self) -> None:
-        self._first_element: Optional[etree._Element] = None
+        self._first_element: etree._Element | None = None
         # act on start and end element events and
         # allow huge text data (for report content)
         self._parser = etree.XMLPullParser(
@@ -60,7 +60,7 @@ class InvalidStateError(GvmError):
 class State(Protocol):
     def __set_context__(self, context: "Context") -> None: ...
     def send(self, request: Request) -> bytes: ...
-    def receive_data(self, data: bytes) -> Optional[Response]: ...
+    def receive_data(self, data: bytes) -> Response | None: ...
     def close(self) -> None: ...
 
 
@@ -83,7 +83,7 @@ class InitialState(AbstractState):
         self.set_next_state(AwaitingResponseState(request))
         return bytes(request)
 
-    def receive_data(self, data: bytes) -> Optional[Response]:
+    def receive_data(self, data: bytes) -> Response | None:
         raise InvalidStateError()
 
     def close(self) -> None:
@@ -101,7 +101,7 @@ class AwaitingResponseState(AbstractState):
     def close(self) -> None:
         self.set_next_state(InitialState())
 
-    def receive_data(self, data: bytes) -> Optional[Response]:
+    def receive_data(self, data: bytes) -> Response | None:
         next_state = ReceivingDataState(self._request)
         self.set_next_state(next_state)
         return next_state.receive_data(data)
@@ -118,7 +118,7 @@ class ErrorState(AbstractState):
     def close(self) -> None:
         self.set_next_state(InitialState())
 
-    def receive_data(self, data: bytes) -> Optional[Response]:
+    def receive_data(self, data: bytes) -> Response | None:
         raise InvalidStateError(self.message)
 
 
@@ -135,7 +135,7 @@ class ReceivingDataState(AbstractState):
     def close(self) -> None:
         self.set_next_state(InitialState())
 
-    def receive_data(self, data: bytes) -> Optional[Response]:
+    def receive_data(self, data: bytes) -> Response | None:
         self._data += data
         try:
             self._reader.feed_xml(data)
@@ -174,7 +174,7 @@ class Connection:
         """
         return self._state.send(request)
 
-    def receive_data(self, data: bytes) -> Optional[Response]:
+    def receive_data(self, data: bytes) -> Response | None:
         """
         Feed received data a response is complete
 

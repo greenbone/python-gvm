@@ -11,9 +11,7 @@ class GmpModifyOperatingSystemTestMixin:
         self.gmp.modify_operating_system(operating_system_id="a1")
 
         self.connection.send.has_been_called_with(
-            b'<modify_asset asset_id="a1">'
-            b"<comment></comment>"
-            b"</modify_asset>"
+            b'<modify_asset asset_id="a1"><comment></comment></modify_asset>'
         )
 
     def test_modify_operating_system_without_operating_system_id(self):
@@ -34,31 +32,23 @@ class GmpModifyOperatingSystemTestMixin:
         self.gmp.modify_operating_system("a1", comment="foo")
 
         self.connection.send.has_been_called_with(
-            b'<modify_asset asset_id="a1">'
-            b"<comment>foo</comment>"
-            b"</modify_asset>"
+            b'<modify_asset asset_id="a1"><comment>foo</comment></modify_asset>'
         )
 
         self.gmp.modify_operating_system("a1", comment="foo")
 
         self.connection.send.has_been_called_with(
-            b'<modify_asset asset_id="a1">'
-            b"<comment>foo</comment>"
-            b"</modify_asset>"
+            b'<modify_asset asset_id="a1"><comment>foo</comment></modify_asset>'
         )
 
         self.gmp.modify_operating_system("a1", comment="")
 
         self.connection.send.has_been_called_with(
-            b'<modify_asset asset_id="a1">'
-            b"<comment></comment>"
-            b"</modify_asset>"
+            b'<modify_asset asset_id="a1"><comment></comment></modify_asset>'
         )
 
         self.gmp.modify_operating_system("a1", comment=None)
 
         self.connection.send.has_been_called_with(
-            b'<modify_asset asset_id="a1">'
-            b"<comment></comment>"
-            b"</modify_asset>"
+            b'<modify_asset asset_id="a1"><comment></comment></modify_asset>'
         )

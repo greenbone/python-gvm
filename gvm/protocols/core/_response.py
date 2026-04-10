@@ -3,7 +3,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from functools import cached_property
-from typing import Optional, TypeVar
+from typing import TypeVar
 
 from gvm.errors import GvmError
 from gvm.xml import Element, parse_xml
@@ -18,7 +18,7 @@ class StatusError(GvmError):
     May be raised when calling `response.raise_for_status()`
     """
 
-    def __init__(self, message: Optional[str], *args, response: "Response"):
+    def __init__(self, message: str | None, *args, response: "Response"):
         super().__init__(message, *args)
         self.response = response
         self.request = response.request
@@ -42,7 +42,7 @@ class Response:
         """
         self._request = request
         self._data = data
-        self.__xml: Optional[Element] = None
+        self.__xml: Element | None = None
 
     def __root_element(self) -> Element:
         if self.__xml is None:
@@ -72,7 +72,7 @@ class Response:
         return self._request
 
     @cached_property
-    def status_code(self) -> Optional[int]:
+    def status_code(self) -> int | None:
         """
         The status code of the response
 

@@ -10,7 +10,7 @@ Module for communication to a daemon speaking `Open Scanner Protocol version 1`_
 """
 
 import logging
-from typing import Any, Optional
+from typing import Any
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.utils import to_bool
@@ -99,7 +99,7 @@ class Osp(GvmProtocol[T]):
 
     def get_scans(
         self,
-        scan_id: Optional[str] = None,
+        scan_id: str | None = None,
         details: bool = True,
         pop_results: bool = False,
     ) -> T:
@@ -140,7 +140,7 @@ class Osp(GvmProtocol[T]):
         cmd = XmlCommand("get_scanner_details")
         return self._send_request_and_transform_response(cmd)
 
-    def get_vts(self, vt_id: Optional[str] = None) -> T:
+    def get_vts(self, vt_id: str | None = None) -> T:
         """Return information about vulnerability tests,
         if offered by scanner.
 
@@ -155,13 +155,13 @@ class Osp(GvmProtocol[T]):
 
     def start_scan(
         self,
-        scan_id: Optional[str] = None,
+        scan_id: str | None = None,
         parallel: int = 1,
         target=None,
         ports=None,
-        targets: Optional[list[dict[str, str]]] = None,
-        scanner_params: Optional[dict[str, Any]] = None,
-        vt_selection: Optional[dict[str, Any]] = None,
+        targets: list[dict[str, str]] | None = None,
+        scanner_params: dict[str, Any] | None = None,
+        vt_selection: dict[str, Any] | None = None,
     ) -> T:
         """Start a new scan.
 
@@ -180,35 +180,36 @@ class Osp(GvmProtocol[T]):
             Scanner Parameters::
 
                 scanner_parameters = {
-                    'scan_param1': 'scan_param1_value',
-                    'scan_param2': 'scan_param2_value',
+                    "scan_param1": "scan_param1_value",
+                    "scan_param2": "scan_param2_value",
                 }
 
             Targets::
 
-                targets = [{
-                    'hosts': 'localhost',
-                    'ports': '80,43'
-                }, {
-                    'hosts': '192.168.0.0/24',
-                    'ports': '22',
-                }, {
-                    'credentials': {
-                        'smb': {
-                            'password': 'pass',
-                            'port': 'port',
-                            'type': 'type',
-                            'username': 'username',
+                targets = [
+                    {"hosts": "localhost", "ports": "80,43"},
+                    {
+                        "hosts": "192.168.0.0/24",
+                        "ports": "22",
+                    },
+                    {
+                        "credentials": {
+                            "smb": {
+                                "password": "pass",
+                                "port": "port",
+                                "type": "type",
+                                "username": "username",
+                            }
                         }
-                    }
-                }]
+                    },
+                ]
 
             VT Selection::
 
                 vt_selection = {
-                    'vt1': {},
-                    'vt2': {'value_id': 'value'},
-                    'vt_groups': ['family=debian', 'family=general']
+                    "vt1": {},
+                    "vt2": {"value_id": "value"},
+                    "vt_groups": ["family=debian", "family=general"],
                 }
         """
         cmd = XmlCommand("start_scan")

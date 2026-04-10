@@ -35,7 +35,7 @@ class ThreadedUnixStreamServer(
 class UnixSocketConnectionTestCase(unittest.TestCase):
     # pylint: disable=protected-access, invalid-name
     def setUp(self):
-        self.socket_name = f"{tempfile.gettempdir()}/{str(uuid.uuid4())}.sock"
+        self.socket_name = f"{tempfile.gettempdir()}/{uuid.uuid4()!s}.sock"
         self.socket_path = Path(self.socket_name)
         self.socket_server = ThreadedUnixStreamServer(
             self.socket_name, DummyRequestHandler
@@ -81,7 +81,7 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         connection = UnixSocketConnection(
             path=self.socket_name, timeout=DEFAULT_TIMEOUT
         )
-        with patch("socket.socket.connect") as ConnectMock:
+        with patch("socket.socket.connect") as ConnectMock:  # noqa: N806
             connect_mock = ConnectMock
             connect_mock.side_effect = ConnectionError
             with self.assertRaises(

@@ -2,7 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Any, Mapping, Optional, Sequence
+from collections.abc import Mapping, Sequence
+from typing import Any
 
 from gvm.errors import InvalidArgumentType, RequiredArgument
 from gvm.protocols.core import Request
@@ -142,7 +143,7 @@ class Agents:
         cls,
         parent,
         config: Mapping[str, Any],
-        wrapper_tag: Optional[str] = "config",
+        wrapper_tag: str | None = "config",
     ) -> None:
         """
         Append an agent configuration block to the given XML parent element.
@@ -154,19 +155,19 @@ class Agents:
                     "retry": {
                         "attempts": 6,
                         "delay_in_seconds": 60,
-                        "max_jitter_in_seconds": 10
+                        "max_jitter_in_seconds": 10,
                     }
                 },
                 "agent_script_executor": {
                     "bulk_size": 2,
                     "bulk_throttle_time_in_ms": 300,
                     "indexer_dir_depth": 100,
-                    "scheduler_cron_time": ["0 */12 * * *"]
+                    "scheduler_cron_time": ["0 */12 * * *"],
                 },
                 "heartbeat": {
                     "interval_in_seconds": 300,
-                    "miss_until_inactive": 1
-                }
+                    "miss_until_inactive": 1,
+                },
             }
 
         Args:
@@ -261,9 +262,9 @@ class Agents:
     def get_agents(
         cls,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of agents.
 
@@ -285,10 +286,10 @@ class Agents:
         cls,
         agent_ids: list[EntityID],
         *,
-        authorized: Optional[bool] = None,
-        update_to_latest: Optional[bool] = None,
-        config: Optional[Mapping[str, Any]] = None,
-        comment: Optional[str] = None,
+        authorized: bool | None = None,
+        update_to_latest: bool | None = None,
+        config: Mapping[str, Any] | None = None,
+        comment: str | None = None,
     ) -> Request:
         """
         Modify multiple agents.

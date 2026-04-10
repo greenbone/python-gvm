@@ -66,9 +66,7 @@ class GmpModifyTargetTestMixin:
         self.gmp.modify_target(target_id="t1", name="foo")
 
         self.connection.send.has_been_called_with(
-            b'<modify_target target_id="t1">'
-            b"<name>foo</name>"
-            b"</modify_target>"
+            b'<modify_target target_id="t1"><name>foo</name></modify_target>'
         )
 
     def test_modify_target_with_exclude_hosts(self):

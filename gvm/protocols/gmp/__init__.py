@@ -30,10 +30,10 @@ Gmp = GMP  # for backwards compatibility
 
 __all__ = (
     "GMP",
-    "Gmp",
+    "GMPNext",
     "GMPv224",
     "GMPv225",
     "GMPv226",
     "GMPv227",
-    "GMPNext",
+    "Gmp",
 )

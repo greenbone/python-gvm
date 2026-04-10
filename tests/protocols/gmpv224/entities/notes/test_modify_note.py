@@ -132,7 +132,7 @@ class GmpModifyNoteTestMixin:
             b"</modify_note>"
         )
 
-        self.gmp.modify_note(note_id="n1", text="foo", severity=Decimal(5.5))
+        self.gmp.modify_note(note_id="n1", text="foo", severity=Decimal("5.5"))
 
         self.connection.send.has_been_called_with(
             b'<modify_note note_id="n1">'

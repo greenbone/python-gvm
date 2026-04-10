@@ -6,7 +6,7 @@ import logging
 import socket as socketlib
 from abc import ABC, abstractmethod
 from time import time
-from typing import Optional, Protocol, Union, runtime_checkable
+from typing import Protocol, runtime_checkable
 
 from gvm.errors import GvmError
 
@@ -62,8 +62,8 @@ class AbstractGvmConnection(ABC):
             wait indefinitely
     """
 
-    def __init__(self, timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT):
-        self._socket: Optional[socketlib.SocketType] = None
+    def __init__(self, timeout: int | float | None = DEFAULT_TIMEOUT):
+        self._socket: socketlib.SocketType | None = None
         self._timeout = timeout if timeout is not None else DEFAULT_TIMEOUT
 
     def _read(self) -> bytes:

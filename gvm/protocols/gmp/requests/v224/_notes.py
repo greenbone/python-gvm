@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.core import Request
@@ -20,12 +19,12 @@ class Notes:
         text: str,
         nvt_oid: str,
         *,
-        days_active: Optional[int] = None,
-        hosts: Optional[list[str]] = None,
-        port: Optional[str] = None,
-        result_id: Optional[EntityID] = None,
-        severity: Optional[Severity] = None,
-        task_id: Optional[EntityID] = None,
+        days_active: int | None = None,
+        hosts: list[str] | None = None,
+        port: str | None = None,
+        result_id: EntityID | None = None,
+        severity: Severity | None = None,
+        task_id: EntityID | None = None,
     ) -> Request:
         """Create a new note
 
@@ -86,12 +85,12 @@ class Notes:
         note_id: EntityID,
         text: str,
         *,
-        days_active: Optional[int] = None,
-        hosts: Optional[list[str]] = None,
-        port: Optional[str] = None,
-        result_id: Optional[EntityID] = None,
-        severity: Optional[Severity] = None,
-        task_id: Optional[EntityID] = None,
+        days_active: int | None = None,
+        hosts: list[str] | None = None,
+        port: str | None = None,
+        result_id: EntityID | None = None,
+        severity: Severity | None = None,
+        task_id: EntityID | None = None,
     ) -> Request:
         """Modify a note
 
@@ -163,7 +162,7 @@ class Notes:
 
     @classmethod
     def delete_note(
-        cls, note_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, note_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Delete an existing note
 
@@ -185,10 +184,10 @@ class Notes:
     def get_notes(
         cls,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
-        result: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
+        result: bool | None = None,
     ) -> Request:
         """Request a list of notes
 

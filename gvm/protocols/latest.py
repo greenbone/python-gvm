@@ -22,14 +22,14 @@ Exports:
 """
 
 from .gmp import (
-    GMPv227 as GMP,
+    GMPv227 as GMP,  # noqa: N817
 )
 from .ospv1 import Osp
 
 Gmp = GMP  # for backwards compatibility
 
 __all__ = [
-    "Gmp",
     "GMP",
+    "Gmp",
     "Osp",
 ]

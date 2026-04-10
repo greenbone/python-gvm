@@ -33,16 +33,12 @@ class GmpGetReportFormatTestMixin:
         report_format_id = ReportFormatType.from_string("pdf").value
         self.connection.send.has_been_called_with(
             "<get_report_formats "
-            f'report_format_id="{report_format_id}" details="1"/>'.encode(
-                "utf-8"
-            )
+            f'report_format_id="{report_format_id}" details="1"/>'.encode()
         )
 
         self.gmp.get_report_format(report_format_id=ReportFormatType.PDF)
 
         self.connection.send.has_been_called_with(
             "<get_report_formats "
-            f'report_format_id="{report_format_id}" details="1"/>'.encode(
-                "utf-8"
-            )
+            f'report_format_id="{report_format_id}" details="1"/>'.encode()
         )

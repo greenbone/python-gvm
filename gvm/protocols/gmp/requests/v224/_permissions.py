@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -23,7 +22,6 @@ class PermissionSubjectType(Enum):
 
 
 class Permissions:
-
     @classmethod
     def clone_permission(cls, permission_id: EntityID) -> Request:
         """Clone an existing permission
@@ -46,11 +44,11 @@ class Permissions:
         cls,
         name: str,
         subject_id: EntityID,
-        subject_type: Union[PermissionSubjectType, str],
+        subject_type: PermissionSubjectType | str,
         *,
-        resource_id: Optional[str] = None,
-        resource_type: Optional[Union[EntityType, str]] = None,
-        comment: Optional[str] = None,
+        resource_id: str | None = None,
+        resource_type: EntityType | str | None = None,
+        comment: str | None = None,
     ) -> Request:
         """Create a new permission
 
@@ -117,7 +115,7 @@ class Permissions:
 
     @classmethod
     def delete_permission(
-        cls, permission_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, permission_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing permission
 
@@ -140,9 +138,9 @@ class Permissions:
     @staticmethod
     def get_permissions(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        trash: bool | None = None,
     ) -> Request:
         """Request a list of permissions
 
@@ -182,12 +180,12 @@ class Permissions:
         cls,
         permission_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        resource_id: Optional[EntityID] = None,
-        resource_type: Optional[Union[EntityType, str]] = None,
-        subject_id: Optional[EntityID] = None,
-        subject_type: Optional[Union[PermissionSubjectType, str]] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        resource_id: EntityID | None = None,
+        resource_type: EntityType | str | None = None,
+        subject_id: EntityID | None = None,
+        subject_type: PermissionSubjectType | str | None = None,
     ) -> Request:
         """Modifies an existing permission.
 
