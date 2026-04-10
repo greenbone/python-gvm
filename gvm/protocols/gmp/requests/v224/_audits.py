@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 from numbers import Integral
-from typing import Optional, Union
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.core import Request
@@ -23,14 +22,14 @@ class Audits:
         target_id: EntityID,
         scanner_id: EntityID,
         *,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[Union[HostsOrdering, str]] = None,
-        schedule_id: Optional[str] = None,
-        alert_ids: Optional[list[EntityID]] = None,
-        comment: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[list[EntityID]] = None,
-        preferences: Optional[dict[str, str]] = None,
+        alterable: bool | None = None,
+        hosts_ordering: HostsOrdering | str | None = None,
+        schedule_id: str | None = None,
+        alert_ids: list[EntityID] | None = None,
+        comment: str | None = None,
+        schedule_periods: int | None = None,
+        observers: list[EntityID] | None = None,
+        preferences: dict[str, str] | None = None,
     ) -> Request:
         """Create a new audit
 
@@ -132,18 +131,18 @@ class Audits:
         cls,
         audit_id: EntityID,
         *,
-        name: Optional[str] = None,
-        policy_id: Optional[EntityID] = None,
-        target_id: Optional[EntityID] = None,
-        scanner_id: Optional[EntityID] = None,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[Union[str, HostsOrdering]] = None,
-        schedule_id: Optional[EntityID] = None,
-        schedule_periods: Optional[int] = None,
-        comment: Optional[str] = None,
-        alert_ids: Optional[list[EntityID]] = None,
-        observers: Optional[list[EntityID]] = None,
-        preferences: Optional[dict[str, str]] = None,
+        name: str | None = None,
+        policy_id: EntityID | None = None,
+        target_id: EntityID | None = None,
+        scanner_id: EntityID | None = None,
+        alterable: bool | None = None,
+        hosts_ordering: str | HostsOrdering | None = None,
+        schedule_id: EntityID | None = None,
+        schedule_periods: int | None = None,
+        comment: str | None = None,
+        alert_ids: list[EntityID] | None = None,
+        observers: list[EntityID] | None = None,
+        preferences: dict[str, str] | None = None,
     ) -> Request:
         """Modifies an existing audit.
 
@@ -245,7 +244,7 @@ class Audits:
 
     @classmethod
     def delete_audit(
-        cls, audit_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, audit_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Delete an existing audit
 
@@ -266,11 +265,11 @@ class Audits:
     @staticmethod
     def get_audits(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
+        schedules_only: bool | None = None,
     ) -> Request:
         """Request a list of audits
 

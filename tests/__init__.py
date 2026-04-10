@@ -25,9 +25,9 @@ class CallableMock:
         assert len(self.calls) > 0, f"{self.name} has not been called."
 
     def has_been_called_times(self, times):
-        assert (
-            len(self.calls) == times
-        ), f"{self.name} has not been called {times} times."
+        assert len(self.calls) == times, (
+            f"{self.name} has not been called {times} times."
+        )
 
     def has_been_called_with(self, *args, **kwargs):
         if len(self.calls) == 0:
@@ -41,12 +41,12 @@ class CallableMock:
         )
 
         # not sure if this is correct
-        assert (
-            lastcall["args"] == args and lastcall["kwargs"] == kwargs
-        ), resp.format(
-            name=self.name,
-            eargs=args,
-            ekwargs=kwargs,
-            rargs=lastcall["args"],
-            rkwargs=lastcall["kwargs"],
+        assert lastcall["args"] == args and lastcall["kwargs"] == kwargs, (
+            resp.format(
+                name=self.name,
+                eargs=args,
+                ekwargs=kwargs,
+                rargs=lastcall["args"],
+                rkwargs=lastcall["kwargs"],
+            )
         )

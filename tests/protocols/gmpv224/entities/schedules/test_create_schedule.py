@@ -68,7 +68,7 @@ class GmpCreateScheduleTestMixin:
             "<name>foo</name>"
             f"<icalendar>{ICAL}</icalendar>"
             "<timezone>Europe/Berlin</timezone>"
-            "</create_schedule>".encode("utf-8")
+            "</create_schedule>".encode()
         )
 
     def test_create_schedule_with_comment(self):
@@ -82,5 +82,5 @@ class GmpCreateScheduleTestMixin:
             f"<icalendar>{ICAL}</icalendar>"
             "<timezone>Europe/Berlin</timezone>"
             "<comment>bar</comment>"
-            "</create_schedule>".encode("utf-8")
+            "</create_schedule>".encode()
         )

@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -39,7 +38,7 @@ class PortLists:
 
     @classmethod
     def create_port_list(
-        cls, name: str, port_range: str, *, comment: Optional[str] = None
+        cls, name: str, port_range: str, *, comment: str | None = None
     ) -> Request:
         """Create a new port list
 
@@ -74,9 +73,9 @@ class PortLists:
         port_list_id: EntityID,
         start: int,
         end: int,
-        port_range_type: Union[str, PortRangeType],
+        port_range_type: str | PortRangeType,
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> Request:
         """Create new port range
 
@@ -166,11 +165,11 @@ class PortLists:
     def get_port_lists(
         cls,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
-        targets: Optional[bool] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
+        targets: bool | None = None,
+        trash: bool | None = None,
     ) -> Request:
         """Request a list of port lists
 
@@ -222,8 +221,8 @@ class PortLists:
         cls,
         port_list_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
+        comment: str | None = None,
+        name: str | None = None,
     ) -> Request:
         """Modifies an existing port list.
 

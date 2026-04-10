@@ -26,18 +26,14 @@ class GmpModifyUserTestMixin:
         self.gmp.modify_user(user_id="u1", name="foo")
 
         self.connection.send.has_been_called_with(
-            b'<modify_user user_id="u1">'
-            b"<new_name>foo</new_name>"
-            b"</modify_user>"
+            b'<modify_user user_id="u1"><new_name>foo</new_name></modify_user>'
         )
 
     def test_modify_user_with_new_comment(self):
         self.gmp.modify_user(user_id="u1", comment="foo")
 
         self.connection.send.has_been_called_with(
-            b'<modify_user user_id="u1">'
-            b"<comment>foo</comment>"
-            b"</modify_user>"
+            b'<modify_user user_id="u1"><comment>foo</comment></modify_user>'
         )
 
     def test_modify_user_with_role_ids(self):
@@ -92,9 +88,7 @@ class GmpModifyUserTestMixin:
         self.gmp.modify_user(user_id="u1", password="foo")
 
         self.connection.send.has_been_called_with(
-            b'<modify_user user_id="u1">'
-            b"<password>foo</password>"
-            b"</modify_user>"
+            b'<modify_user user_id="u1"><password>foo</password></modify_user>'
         )
 
     def test_modify_user_with_auth_source(self):

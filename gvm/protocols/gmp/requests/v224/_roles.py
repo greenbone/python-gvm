@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -13,7 +12,6 @@ from .._entity_id import EntityID
 
 
 class Roles:
-
     @classmethod
     def clone_role(cls, role_id: EntityID) -> Request:
         """Clone an existing role
@@ -35,8 +33,8 @@ class Roles:
         cls,
         name: str,
         *,
-        comment: Optional[str] = None,
-        users: Optional[list[str]] = None,
+        comment: str | None = None,
+        users: list[str] | None = None,
     ) -> Request:
         """Create a new role
 
@@ -63,7 +61,7 @@ class Roles:
 
     @classmethod
     def delete_role(
-        cls, role_id: str, *, ultimate: Optional[bool] = False
+        cls, role_id: str, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing role
 
@@ -84,9 +82,9 @@ class Roles:
     @staticmethod
     def get_roles(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
     ) -> Request:
         """Request a list of roles
 
@@ -125,9 +123,9 @@ class Roles:
         cls,
         role_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        users: Optional[list[str]] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        users: list[str] | None = None,
     ) -> Request:
         """Modifies an existing role.
 

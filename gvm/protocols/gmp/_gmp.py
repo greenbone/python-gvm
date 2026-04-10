@@ -3,8 +3,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 import warnings
+from collections.abc import Callable
 from types import TracebackType
-from typing import Callable, Optional, Type, Union
 
 from gvm.__version__ import __version__
 from gvm.connections import GvmConnection
@@ -19,9 +19,9 @@ from ._gmp227 import GMPv227
 from ._gmpnext import GMPNext
 from .requests import Version
 
-SUPPORTED_GMP_VERSIONS = Union[
-    GMPv224[T], GMPv225[T], GMPv226[T], GMPv227[T], GMPNext[T]
-]
+SUPPORTED_GMP_VERSIONS = (
+    GMPv224[T] | GMPv225[T] | GMPv226[T] | GMPv227[T] | GMPNext[T]
+)
 _SUPPORTED_GMP_VERSION_STRINGS = ["22.4", "22.5", "22.6", "22.7", "22.8"]
 
 
@@ -67,7 +67,7 @@ class GMP(GvmProtocol[T]):
                 See :mod:`gvm.transforms` for existing transforms.
         """
         super().__init__(connection, transform=transform)
-        self._gmp: Optional[SUPPORTED_GMP_VERSIONS] = None
+        self._gmp: SUPPORTED_GMP_VERSIONS | None = None
 
     def determine_remote_gmp_version(self) -> str:
         """Determine the supported GMP version of the remote daemon"""
@@ -131,9 +131,9 @@ class GMP(GvmProtocol[T]):
 
     def __exit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        exc_value: Optional[BaseException],
-        traceback: Optional[TracebackType],
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
     ) -> None:
         if self._gmp:
             self._gmp.disconnect()

@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -13,7 +12,6 @@ from .._entity_id import EntityID
 
 
 class Schedules:
-
     @classmethod
     def clone_schedule(cls, schedule_id: EntityID) -> Request:
         """Clone an existing schedule
@@ -37,7 +35,7 @@ class Schedules:
         icalendar: str,
         timezone: str,
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> Request:
         """Create a new schedule based in `iCalendar`_ data.
 
@@ -54,19 +52,17 @@ class Schedules:
 
                 cal = Calendar()
 
-                cal.add('prodid', '-//Foo Bar//')
-                cal.add('version', '2.0')
+                cal.add("prodid", "-//Foo Bar//")
+                cal.add("version", "2.0")
 
                 event = Event()
-                event.add('dtstamp', datetime.now(tz=pytz.UTC))
-                event.add('dtstart', datetime(2020, 1, 1, tzinfo=pytz.utc))
+                event.add("dtstamp", datetime.now(tz=pytz.UTC))
+                event.add("dtstart", datetime(2020, 1, 1, tzinfo=pytz.utc))
 
                 cal.add_component(event)
 
                 Schedules.create_schedule(
-                    name="My Schedule",
-                    icalendar=cal.to_ical(),
-                    timezone='UTC'
+                    name="My Schedule", icalendar=cal.to_ical(), timezone="UTC"
                 )
 
         Args:
@@ -110,7 +106,7 @@ class Schedules:
 
     @classmethod
     def delete_schedule(
-        cls, schedule_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, schedule_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing schedule
 
@@ -132,10 +128,10 @@ class Schedules:
     @staticmethod
     def get_schedules(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        tasks: bool | None = None,
     ) -> Request:
         """Request a list of schedules
 
@@ -159,7 +155,7 @@ class Schedules:
 
     @classmethod
     def get_schedule(
-        cls, schedule_id: EntityID, *, tasks: Optional[bool] = None
+        cls, schedule_id: EntityID, *, tasks: bool | None = None
     ) -> Request:
         """Request a single schedule
 
@@ -186,10 +182,10 @@ class Schedules:
         cls,
         schedule_id: EntityID,
         *,
-        name: Optional[str] = None,
-        icalendar: Optional[str] = None,
-        timezone: Optional[str] = None,
-        comment: Optional[str] = None,
+        name: str | None = None,
+        icalendar: str | None = None,
+        timezone: str | None = None,
+        comment: str | None = None,
     ) -> Request:
         """Modifies an existing schedule
 

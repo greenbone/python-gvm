@@ -8,7 +8,6 @@ from gvm.xml import XmlCommand
 
 
 class Authentication:
-
     @classmethod
     def authenticate(cls, username: str, password: str) -> Request:
         """Authenticate to gvmd.

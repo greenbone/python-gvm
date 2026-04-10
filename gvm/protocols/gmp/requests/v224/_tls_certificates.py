@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -38,8 +37,8 @@ class TLSCertificates:
         name: str,
         certificate: str,
         *,
-        comment: Optional[str] = None,
-        trust: Optional[bool] = None,
+        comment: str | None = None,
+        trust: bool | None = None,
     ) -> Request:
         """Create a new TLS certificate
 
@@ -93,10 +92,10 @@ class TLSCertificates:
     @staticmethod
     def get_tls_certificates(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        include_certificate_data: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        include_certificate_data: bool | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of TLS certificates
 
@@ -152,9 +151,9 @@ class TLSCertificates:
         cls,
         tls_certificate_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        trust: Optional[bool] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        trust: bool | None = None,
     ) -> Request:
         """Modifies an existing TLS certificate.
 

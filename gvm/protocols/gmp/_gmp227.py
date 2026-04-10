@@ -6,8 +6,6 @@
 Greenbone Management Protocol (GMP) version 22.7
 """
 
-from typing import Optional, Union
-
 from .._protocol import T
 from ._gmp226 import GMPv226
 from .requests.v227 import (
@@ -39,14 +37,14 @@ class GMPv227(GMPv226[T]):
         self,
         name: str,
         host: str,
-        port: Union[str, int],
+        port: str | int,
         scanner_type: ScannerType,
         credential_id: str,
         *,
-        ca_pub: Optional[str] = None,
-        comment: Optional[str] = None,
-        relay_host: Optional[str] = None,
-        relay_port: Optional[Union[str, int]] = None,
+        ca_pub: str | None = None,
+        comment: str | None = None,
+        relay_host: str | None = None,
+        relay_port: str | int | None = None,
     ) -> T:
         """Create a new scanner
 
@@ -80,15 +78,15 @@ class GMPv227(GMPv226[T]):
         self,
         scanner_id: EntityID,
         *,
-        name: Optional[str] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        scanner_type: Optional[ScannerType] = None,
-        credential_id: Optional[EntityID] = None,
-        ca_pub: Optional[str] = None,
-        comment: Optional[str] = None,
-        relay_host: Optional[str] = None,
-        relay_port: Optional[Union[str, int]] = None,
+        name: str | None = None,
+        host: str | None = None,
+        port: int | None = None,
+        scanner_type: ScannerType | None = None,
+        credential_id: EntityID | None = None,
+        ca_pub: str | None = None,
+        comment: str | None = None,
+        relay_host: str | None = None,
+        relay_port: str | int | None = None,
     ) -> T:
         """Modify an existing scanner
 
@@ -123,10 +121,10 @@ class GMPv227(GMPv226[T]):
     def get_scanners(
         self,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
     ) -> T:
         """Request a list of scanners
 
@@ -177,7 +175,7 @@ class GMPv227(GMPv226[T]):
         )
 
     def delete_scanner(
-        self, scanner_id: EntityID, ultimate: Optional[bool] = False
+        self, scanner_id: EntityID, ultimate: bool | None = False
     ) -> T:
         """Delete an existing scanner
 

@@ -8,21 +8,20 @@ http client for initializing a connection to the openvasd HTTP API using optiona
 
 import ssl
 from os import PathLike
-from typing import Optional, Tuple, Union
 
 from httpx import Client
 
-StrOrPathLike = Union[str, PathLike[str]]
+StrOrPathLike = str | PathLike[str]
 
 
 def create_openvasd_http_client(
     host_name: str,
     *,
-    api_key: Optional[str] = None,
-    server_ca_path: Optional[StrOrPathLike] = None,
-    client_cert_paths: Optional[
-        Union[StrOrPathLike, Tuple[StrOrPathLike, StrOrPathLike]]
-    ] = None,
+    api_key: str | None = None,
+    server_ca_path: StrOrPathLike | None = None,
+    client_cert_paths: StrOrPathLike
+    | tuple[StrOrPathLike, StrOrPathLike]
+    | None = None,
     port: int = 3000,
 ) -> Client:
     """
@@ -45,7 +44,7 @@ def create_openvasd_http_client(
     """
     headers = {}
 
-    context: Optional[ssl.SSLContext] = None
+    context: ssl.SSLContext | None = None
 
     # Prepare mTLS SSL context if needed
     if client_cert_paths and server_ca_path:
@@ -63,7 +62,7 @@ def create_openvasd_http_client(
         context.verify_mode = ssl.CERT_REQUIRED
 
     # Set verify based on context presence
-    verify: Union[bool, ssl.SSLContext] = context if context else False
+    verify: bool | ssl.SSLContext = context if context else False
 
     if api_key:
         headers["X-API-KEY"] = api_key

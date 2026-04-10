@@ -2,8 +2,8 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from collections.abc import Mapping, Sequence
 from numbers import Integral
-from typing import Mapping, Optional, Sequence
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.core import Request
@@ -15,7 +15,6 @@ from ..v224 import HostsOrdering
 
 
 class Tasks:
-
     @classmethod
     def clone_task(cls, task_id: EntityID) -> Request:
         """Clone an existing task
@@ -39,13 +38,13 @@ class Tasks:
         agent_group_id: EntityID,
         scanner_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        alterable: Optional[bool] = None,
-        schedule_id: Optional[EntityID] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        comment: str | None = None,
+        alterable: bool | None = None,
+        schedule_id: EntityID | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        schedule_periods: int | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> Request:
         """Create a new scan task using an agent group.
 
@@ -126,13 +125,13 @@ class Tasks:
         oci_image_target_id: EntityID,
         scanner_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        alterable: Optional[bool] = None,
-        schedule_id: Optional[EntityID] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        comment: str | None = None,
+        alterable: bool | None = None,
+        schedule_id: EntityID | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        schedule_periods: int | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> Request:
         """Create a new scan task using an OCI image target.
 
@@ -211,7 +210,7 @@ class Tasks:
 
     @classmethod
     def create_import_task(
-        cls, name: str, *, comment: Optional[str] = None
+        cls, name: str, *, comment: str | None = None
     ) -> Request:
         """Create a new import task
 
@@ -241,7 +240,7 @@ class Tasks:
         "The function is obsolete. Please use create_import_task instead."
     )
     def create_container_task(
-        cls, name: str, *, comment: Optional[str] = None
+        cls, name: str, *, comment: str | None = None
     ) -> "Request":
         """[DEPRECATED] Use create_import_task instead.
 
@@ -257,14 +256,14 @@ class Tasks:
         target_id: EntityID,
         scanner_id: EntityID,
         *,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[EntityID] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        comment: Optional[str] = None,
-        schedule_periods: Optional[int] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        alterable: bool | None = None,
+        hosts_ordering: HostsOrdering | None = None,
+        schedule_id: EntityID | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        comment: str | None = None,
+        schedule_periods: int | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> Request:
         """Create a new scan task
 
@@ -363,7 +362,7 @@ class Tasks:
 
     @classmethod
     def delete_task(
-        cls, task_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, task_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing task
 
@@ -385,12 +384,12 @@ class Tasks:
     @staticmethod
     def get_tasks(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        schedules_only: Optional[bool] = None,
-        ignore_pagination: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
+        schedules_only: bool | None = None,
+        ignore_pagination: bool | None = None,
     ) -> Request:
         """Request a list of tasks
 
@@ -448,20 +447,20 @@ class Tasks:
         cls,
         task_id: EntityID,
         *,
-        name: Optional[str] = None,
-        config_id: Optional[EntityID] = None,
-        target_id: Optional[EntityID] = None,
-        scanner_id: Optional[EntityID] = None,
-        agent_group_id: Optional[EntityID] = None,
-        oci_image_target_id: Optional[EntityID] = None,
-        alterable: Optional[bool] = None,
-        hosts_ordering: Optional[HostsOrdering] = None,
-        schedule_id: Optional[EntityID] = None,
-        schedule_periods: Optional[int] = None,
-        comment: Optional[str] = None,
-        alert_ids: Optional[Sequence[EntityID]] = None,
-        observers: Optional[Sequence[str]] = None,
-        preferences: Optional[Mapping[str, SupportsStr]] = None,
+        name: str | None = None,
+        config_id: EntityID | None = None,
+        target_id: EntityID | None = None,
+        scanner_id: EntityID | None = None,
+        agent_group_id: EntityID | None = None,
+        oci_image_target_id: EntityID | None = None,
+        alterable: bool | None = None,
+        hosts_ordering: HostsOrdering | None = None,
+        schedule_id: EntityID | None = None,
+        schedule_periods: int | None = None,
+        comment: str | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
     ) -> Request:
         """Modifies an existing task.
 
@@ -490,8 +489,12 @@ class Tasks:
 
         if (
             sum(
-                id is not None
-                for id in (target_id, agent_group_id, oci_image_target_id)
+                entity_id is not None
+                for entity_id in (
+                    target_id,
+                    agent_group_id,
+                    oci_image_target_id,
+                )
             )
             > 1
         ):
@@ -570,7 +573,7 @@ class Tasks:
 
     @classmethod
     def move_task(
-        cls, task_id: EntityID, *, slave_id: Optional[EntityID] = None
+        cls, task_id: EntityID, *, slave_id: EntityID | None = None
     ) -> Request:
         """Move an existing task to another GMP slave scanner or the master
 

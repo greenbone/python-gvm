@@ -15,10 +15,7 @@ class NotesTestCase(unittest.TestCase):
 
         self.assertEqual(
             bytes(request),
-            b"<create_note>"
-            b"<text>foo</text>"
-            b'<nvt oid="oid1"/>'
-            b"</create_note>",
+            b'<create_note><text>foo</text><nvt oid="oid1"/></create_note>',
         )
 
     def test_create_note_missing_text(self):
@@ -40,10 +37,7 @@ class NotesTestCase(unittest.TestCase):
 
         self.assertEqual(
             bytes(request),
-            b"<create_note>"
-            b"<text>foo</text>"
-            b'<nvt oid="oid1"/>'
-            b"</create_note>",
+            b'<create_note><text>foo</text><nvt oid="oid1"/></create_note>',
         )
 
         request = Notes.create_note("foo", nvt_oid="oid1", hosts=["h1", "h2"])
@@ -255,7 +249,7 @@ class NotesTestCase(unittest.TestCase):
             b"</modify_note>",
         )
 
-        request = Notes.modify_note("n1", "foo", severity=Decimal(5.5))
+        request = Notes.modify_note("n1", "foo", severity=Decimal("5.5"))
 
         self.assertEqual(
             bytes(request),

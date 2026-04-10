@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -13,14 +12,13 @@ from .._entity_id import EntityID
 
 
 class CertBundAdvisories:
-
     @staticmethod
     def get_cert_bund_advisories(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        name: Optional[str] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        name: str | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of CERT-BUND Advisories
 

@@ -35,7 +35,5 @@ class GmpDeleteReportFormatTestMixin:
         report_format_id = ReportFormatType.from_string("svg").value
         self.connection.send.has_been_called_with(
             "<delete_report_format "
-            f'report_format_id="{report_format_id}" ultimate="0"/>'.encode(
-                "utf-8"
-            )
+            f'report_format_id="{report_format_id}" ultimate="0"/>'.encode()
         )

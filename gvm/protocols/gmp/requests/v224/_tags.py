@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.core import Request
@@ -14,7 +13,6 @@ from ._entity_type import EntityType
 
 
 class Tags:
-
     @classmethod
     def clone_tag(cls, tag_id: EntityID) -> Request:
         """Clone an existing tag
@@ -37,11 +35,11 @@ class Tags:
         name: str,
         resource_type: EntityType,
         *,
-        resource_filter: Optional[str] = None,
-        resource_ids: Optional[list[EntityID]] = None,
-        value: Optional[str] = None,
-        comment: Optional[str] = None,
-        active: Optional[bool] = None,
+        resource_filter: str | None = None,
+        resource_ids: list[EntityID] | None = None,
+        value: str | None = None,
+        comment: str | None = None,
+        active: bool | None = None,
     ) -> Request:
         """Create a tag
 
@@ -110,7 +108,7 @@ class Tags:
 
     @classmethod
     def delete_tag(
-        cls, tag_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, tag_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing tag
 
@@ -132,10 +130,10 @@ class Tags:
     @staticmethod
     def get_tags(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        names_only: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        names_only: bool | None = None,
     ) -> Request:
         """Request a list of tags
 
@@ -179,14 +177,14 @@ class Tags:
         cls,
         tag_id: EntityID,
         *,
-        comment: Optional[str] = None,
-        name: Optional[str] = None,
-        value: Optional[str] = None,
-        active: Optional[bool] = None,
-        resource_action: Optional[str] = None,
-        resource_type: Optional[EntityType] = None,
-        resource_filter: Optional[str] = None,
-        resource_ids: Optional[list[EntityID]] = None,
+        comment: str | None = None,
+        name: str | None = None,
+        value: str | None = None,
+        active: bool | None = None,
+        resource_action: str | None = None,
+        resource_type: EntityType | None = None,
+        resource_filter: str | None = None,
+        resource_ids: list[EntityID] | None = None,
     ) -> Request:
         """Modifies an existing tag.
 

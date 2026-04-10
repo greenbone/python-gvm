@@ -42,9 +42,7 @@ class GmpModifyAlertTestMixin:
         self.gmp.modify_alert(alert_id="a1", name="lorem")
 
         self.connection.send.has_been_called_with(
-            b'<modify_alert alert_id="a1">'
-            b"<name>lorem</name>"
-            b"</modify_alert>"
+            b'<modify_alert alert_id="a1"><name>lorem</name></modify_alert>'
         )
 
     def test_modify_alert_with_filter_id(self):

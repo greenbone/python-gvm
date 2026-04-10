@@ -48,7 +48,7 @@ class EntityType(Enum):
     @classmethod
     def from_string(
         cls,
-        entity_type: Optional[str],
+        entity_type: str | None,
     ) -> Optional["EntityType"]:
         """Convert a entity type string to an actual EntityType instance
 

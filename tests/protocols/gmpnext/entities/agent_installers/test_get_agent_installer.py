@@ -7,7 +7,6 @@ from gvm.errors import RequiredArgument
 
 
 class GmpGetAgentInstallerTestMixin:
-
     def test_get_agent_installer(self):
         self.gmp.get_agent_installer(agent_installer_id="installer1")
 

@@ -22,7 +22,7 @@ from gvm.connections import (
 from gvm.errors import GvmError
 
 
-class AbortException(Exception):
+class AbortException(Exception):  # noqa: N818
     """Just for testing purposes"""
 
 
@@ -77,7 +77,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection.connect()
 
     def test_connect(self):
-        with patch("paramiko.SSHClient") as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:  # noqa: N806
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ["a", "b", "c"]
             ssh_connection = SSHConnection(
@@ -91,7 +91,7 @@ class SSHConnectionTestCase(unittest.TestCase):
             ssh_connection.disconnect()
 
     def test_connect_auto_accept_host(self):
-        with patch("paramiko.SSHClient", autospec=True) as SSHClientMock:
+        with patch("paramiko.SSHClient", autospec=True) as SSHClientMock:  # noqa: N806
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ["a", "b", "c"]
             ssh_connection = SSHConnection(
@@ -333,7 +333,7 @@ FsAQI=
         )
 
     def test_disconnect(self):
-        with patch("paramiko.SSHClient") as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:  # noqa: N806
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ["a", "b", "c"]
             ssh_connection = SSHConnection(
@@ -355,7 +355,7 @@ FsAQI=
                 type(ssh_connection._stderr)
 
     def test_disconnect_os_error(self):
-        with patch("paramiko.SSHClient") as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:  # noqa: N806
             client_mock = SSHClientMock.return_value
             client_mock.exec_command.return_value = ["a", "b", "c"]
             client_mock.close.side_effect = OSError
@@ -371,7 +371,7 @@ FsAQI=
                     self.assertEqual(cm.output, ["Connection closing error: "])
 
     def test_trigger_paramiko_ssh_except_in_get_remote_key(self):
-        with patch("paramiko.transport.Transport") as TransportMock:
+        with patch("paramiko.transport.Transport") as TransportMock:  # noqa: N806
             client_mock = TransportMock.return_value
             client_mock.start_client.side_effect = paramiko.SSHException("foo")
 
@@ -386,7 +386,7 @@ FsAQI=
                 ssh_connection._get_remote_host_key()
 
     def test_trigger_oserror_in_get_remote_key_connect(self):
-        with patch("socket.socket") as SocketMock:
+        with patch("socket.socket") as SocketMock:  # noqa: N806
             client_mock = SocketMock.return_value
             client_mock.connect.side_effect = OSError("foo")
 
@@ -402,7 +402,7 @@ FsAQI=
                 ssh_connection._get_remote_host_key()
 
     def test_trigger_oserror_in_get_remote_key_disconnect(self):
-        with patch("paramiko.transport.Transport") as TransportMock:
+        with patch("paramiko.transport.Transport") as TransportMock:  # noqa: N806
             client_mock = TransportMock.return_value
             client_mock.close.side_effect = paramiko.SSHException("foo")
 
@@ -418,7 +418,7 @@ FsAQI=
                 ssh_connection._get_remote_host_key()
 
     def test_send(self):
-        with patch("paramiko.SSHClient") as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:  # noqa: N806
             client_mock = SSHClientMock.return_value
             stdin = Mock()
             stdin.channel.send.return_value = 4
@@ -432,7 +432,7 @@ FsAQI=
             ssh_connection.disconnect()
 
     def test_send_error(self):
-        with patch("paramiko.SSHClient") as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:  # noqa: N806
             client_mock = SSHClientMock.return_value
             stdin = Mock()
             stdin.channel.send.return_value = None
@@ -449,7 +449,7 @@ FsAQI=
             ssh_connection.disconnect()
 
     def test_send_and_slice(self):
-        with patch("paramiko.SSHClient") as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:  # noqa: N806
             client_mock = SSHClientMock.return_value
             stdin = Mock()
             stdin.channel.send.side_effect = [2, 2]
@@ -467,7 +467,7 @@ FsAQI=
             ssh_connection.disconnect()
 
     def test_read(self):
-        with patch("paramiko.SSHClient") as SSHClientMock:
+        with patch("paramiko.SSHClient") as SSHClientMock:  # noqa: N806
             client_mock = SSHClientMock.return_value
             stdout = Mock()
             stdout.channel.recv.return_value = b"foo bar baz"

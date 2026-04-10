@@ -26,7 +26,7 @@ class DebugConnection:
 
         logging.basicConfig(level=logging.DEBUG)
 
-        socket_connection = UnixSocketConnection(path='/var/run/gvm.sock')
+        socket_connection = UnixSocketConnection(path="/var/run/gvm.sock")
         connection = DebugConnection(socket_connection)
         gmp = GMP(connection=connection)
     """

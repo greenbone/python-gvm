@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -13,9 +12,8 @@ from .._entity_id import EntityID
 
 
 class Nvts:
-
     @staticmethod
-    def get_nvt_families(*, sort_order: Optional[str] = None) -> Request:
+    def get_nvt_families(*, sort_order: str | None = None) -> Request:
         """Request a list of nvt families
 
         Args:
@@ -31,15 +29,15 @@ class Nvts:
     @staticmethod
     def get_scan_config_nvts(
         *,
-        details: Optional[bool] = None,
-        preferences: Optional[bool] = None,
-        preference_count: Optional[bool] = None,
-        timeout: Optional[bool] = None,
-        config_id: Optional[EntityID] = None,
-        preferences_config_id: Optional[EntityID] = None,
-        family: Optional[str] = None,
-        sort_order: Optional[str] = None,
-        sort_field: Optional[str] = None,
+        details: bool | None = None,
+        preferences: bool | None = None,
+        preference_count: bool | None = None,
+        timeout: bool | None = None,
+        config_id: EntityID | None = None,
+        preferences_config_id: EntityID | None = None,
+        family: str | None = None,
+        sort_order: str | None = None,
+        sort_field: str | None = None,
     ) -> Request:
         """Request a list of nvts
 
@@ -115,19 +113,19 @@ class Nvts:
     def get_nvts(
         cls,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        name: Optional[str] = None,
-        details: Optional[bool] = None,
-        extended: Optional[bool] = None,
-        preferences: Optional[bool] = None,
-        preference_count: Optional[bool] = None,
-        timeout: Optional[bool] = None,
-        config_id: Optional[str] = None,
-        preferences_config_id: Optional[str] = None,
-        family: Optional[str] = None,
-        sort_order: Optional[str] = None,
-        sort_field: Optional[str] = None,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        name: str | None = None,
+        details: bool | None = None,
+        extended: bool | None = None,
+        preferences: bool | None = None,
+        preference_count: bool | None = None,
+        timeout: bool | None = None,
+        config_id: str | None = None,
+        preferences_config_id: str | None = None,
+        family: str | None = None,
+        sort_order: str | None = None,
+        sort_field: str | None = None,
     ) -> Request:
         """Request a list of NVTs
 
@@ -177,9 +175,7 @@ class Nvts:
         return cmd
 
     @classmethod
-    def get_nvt(
-        cls, nvt_id: str, *, extended: Optional[bool] = None
-    ) -> Request:
+    def get_nvt(cls, nvt_id: str, *, extended: bool | None = None) -> Request:
         """Request a single NVT
 
         Args:
@@ -207,7 +203,7 @@ class Nvts:
     @staticmethod
     def get_nvt_preferences(
         *,
-        nvt_oid: Optional[str] = None,
+        nvt_oid: str | None = None,
     ) -> Request:
         """Request a list of preferences
 
@@ -229,7 +225,7 @@ class Nvts:
         cls,
         name: str,
         *,
-        nvt_oid: Optional[str] = None,
+        nvt_oid: str | None = None,
     ) -> Request:
         """Request a nvt preference
 

@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional
 
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
@@ -13,7 +12,6 @@ from .._entity_id import EntityID
 
 
 class Results:
-
     @classmethod
     def get_result(cls, result_id: EntityID) -> Request:
         """Request a single result
@@ -37,12 +35,12 @@ class Results:
     @staticmethod
     def get_results(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        task_id: Optional[str] = None,
-        note_details: Optional[bool] = None,
-        override_details: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        task_id: str | None = None,
+        note_details: bool | None = None,
+        override_details: bool | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of results
 

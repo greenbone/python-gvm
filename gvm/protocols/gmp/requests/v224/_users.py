@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -22,16 +21,15 @@ class UserAuthType(Enum):
 
 
 class Users:
-
     @classmethod
     def create_user(
         cls,
         name: str,
         *,
-        password: Optional[str] = None,
-        hosts: Optional[list[str]] = None,
-        hosts_allow: Optional[bool] = False,
-        role_ids: Optional[list[EntityID]] = None,
+        password: str | None = None,
+        hosts: list[str] | None = None,
+        hosts_allow: bool | None = False,
+        role_ids: list[EntityID] | None = None,
     ) -> Request:
         """Create a new user
 
@@ -72,14 +70,14 @@ class Users:
         cls,
         user_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        password: Optional[str] = None,
-        auth_source: Optional[Union[UserAuthType, str]] = None,
-        role_ids: Optional[list[EntityID]] = None,
-        hosts: Optional[list[str]] = None,
-        hosts_allow: Optional[bool] = False,
-        group_ids: Optional[list[EntityID]] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        password: str | None = None,
+        auth_source: UserAuthType | str | None = None,
+        role_ids: list[EntityID] | None = None,
+        hosts: list[str] | None = None,
+        hosts_allow: bool | None = False,
+        group_ids: list[EntityID] | None = None,
     ) -> Request:
         """Modify an existing user.
 
@@ -164,11 +162,11 @@ class Users:
     @classmethod
     def delete_user(
         cls,
-        user_id: Optional[EntityID] = None,
+        user_id: EntityID | None = None,
         *,
-        name: Optional[str] = None,
-        inheritor_id: Optional[EntityID] = None,
-        inheritor_name: Optional[str] = None,
+        name: str | None = None,
+        inheritor_id: EntityID | None = None,
+        inheritor_name: str | None = None,
     ) -> Request:
         """Delete an existing user
 
@@ -205,8 +203,8 @@ class Users:
     @staticmethod
     def get_users(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
     ) -> Request:
         """Request a list of users
 

@@ -22,9 +22,7 @@ class GmpImportPolicyTestMixin:
         self.gmp.import_policy(self.POLICY_XML_STRING)
 
         self.connection.send.has_been_called_with(
-            f"<create_config>{self.POLICY_XML_STRING}</create_config>".encode(
-                "utf-8"
-            )
+            f"<create_config>{self.POLICY_XML_STRING}</create_config>".encode()
         )
 
     def test_import_missing_policy_xml(self):

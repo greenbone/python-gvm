@@ -107,7 +107,7 @@ class GmpCreateOverrideTestMixin:
             b"</create_override>"
         )
 
-        self.gmp.create_override("foo", nvt_oid="oid1", severity=Decimal(5.5))
+        self.gmp.create_override("foo", nvt_oid="oid1", severity=Decimal("5.5"))
 
         self.connection.send.has_been_called_with(
             b"<create_override>"
@@ -139,7 +139,7 @@ class GmpCreateOverrideTestMixin:
         )
 
         self.gmp.create_override(
-            "foo", nvt_oid="oid1", new_severity=Decimal(5.5)
+            "foo", nvt_oid="oid1", new_severity=Decimal("5.5")
         )
 
         self.connection.send.has_been_called_with(

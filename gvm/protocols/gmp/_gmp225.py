@@ -6,8 +6,6 @@
 Greenbone Management Protocol (GMP) version 22.5
 """
 
-from typing import Optional
-
 from .._protocol import T
 from ._gmp224 import GMPv224
 from .requests.v225 import (
@@ -38,7 +36,7 @@ class GMPv225(GMPv224[T]):
         self,
         resource_type: ResourceType,
         *,
-        filter_string: Optional[str] = None,
+        filter_string: str | None = None,
     ) -> T:
         """Request a list of resource names and IDs
 

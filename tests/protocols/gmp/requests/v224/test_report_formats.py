@@ -9,7 +9,6 @@ from gvm.protocols.gmp.requests.v224 import ReportFormats, ReportFormatType
 
 
 class ReportFormatsTestCase(unittest.TestCase):
-
     def test_clone_report_format(self):
         request = ReportFormats.clone_report_format("report_format_id")
         self.assertEqual(
@@ -167,7 +166,7 @@ class ReportFormatsTestCase(unittest.TestCase):
             ReportFormats.get_report_format("")
 
     def test_import_report_format(self):
-        REPORT_FORMAT_XML_STRING = (
+        report_format_xml_string = (
             '<get_report_formats_response status="200" status_text="OK">'
             '<report_format id="c4aa21e4-23e6-4064-ae49-c0d425738a98">'
             "<name>Foobar</name>"
@@ -177,7 +176,7 @@ class ReportFormatsTestCase(unittest.TestCase):
             "</report_format>"
             "</get_report_formats_response>"
         )
-        request = ReportFormats.import_report_format(REPORT_FORMAT_XML_STRING)
+        request = ReportFormats.import_report_format(report_format_xml_string)
         self.assertEqual(
             bytes(request),
             b"<create_report_format>"

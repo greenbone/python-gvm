@@ -8,10 +8,11 @@ import hashlib
 import logging
 import socket as socketlib
 import sys
+from collections.abc import Callable
 from os import PathLike
 from pathlib import Path
 from time import time
-from typing import Any, Callable, Optional, TextIO, Union
+from typing import Any, TextIO
 
 import paramiko
 import paramiko.ssh_exception
@@ -39,16 +40,16 @@ class SSHConnection:
     def __init__(
         self,
         *,
-        timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT,
-        hostname: Optional[str] = DEFAULT_HOSTNAME,
-        port: Optional[int] = DEFAULT_SSH_PORT,
-        username: Optional[str] = DEFAULT_SSH_USERNAME,
-        password: Optional[str] = DEFAULT_SSH_PASSWORD,
-        known_hosts_file: Optional[Union[str, PathLike]] = None,
-        auto_accept_host: Optional[bool] = None,
+        timeout: int | float | None = DEFAULT_TIMEOUT,
+        hostname: str | None = DEFAULT_HOSTNAME,
+        port: int | None = DEFAULT_SSH_PORT,
+        username: str | None = DEFAULT_SSH_USERNAME,
+        password: str | None = DEFAULT_SSH_PASSWORD,
+        known_hosts_file: str | PathLike | None = None,
+        auto_accept_host: bool | None = None,
         file: TextIO = sys.stdout,
-        input: Callable[[], str] = input,
-        exit: Callable[[str], Any] = sys.exit,
+        input: Callable[[], str] = input,  # noqa: A002
+        exit: Callable[[str], Any] = sys.exit,  # noqa: A002
     ) -> None:
         """
         Create a new SSH connection instance.
@@ -61,7 +62,7 @@ class SSHConnection:
             username: Username to use for SSH login. Default is "gmp".
             password: Password to use for SSH login. Default is "".
         """
-        self._client: Optional[paramiko.SSHClient] = None
+        self._client: paramiko.SSHClient | None = None
         self.hostname = hostname if hostname is not None else DEFAULT_HOSTNAME
         self.port = int(port) if port is not None else DEFAULT_SSH_PORT
         self.username = (
@@ -118,8 +119,7 @@ class SSHConnection:
         key_type = key.get_name().replace("ssh-", "").upper()
 
         logger.info(
-            "Warning: Permanently added '%s' (%s) to "
-            "the list of known hosts.",
+            "Warning: Permanently added '%s' (%s) to the list of known hosts.",
             self.hostname,
             key_type,
         )
@@ -135,8 +135,7 @@ class SSHConnection:
         key_type = key.get_name().replace("ssh-", "").upper()
 
         print(
-            f"The authenticity of host '{self.hostname}' can't "
-            "be established.",
+            f"The authenticity of host '{self.hostname}' can't be established.",
             file=self._file,
         )
         print(

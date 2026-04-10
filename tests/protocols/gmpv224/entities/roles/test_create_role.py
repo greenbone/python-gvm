@@ -25,10 +25,7 @@ class GmpCreateRoleTestMixin:
         self.gmp.create_role(name="foo", comment="bar")
 
         self.connection.send.has_been_called_with(
-            b"<create_role>"
-            b"<name>foo</name>"
-            b"<comment>bar</comment>"
-            b"</create_role>"
+            b"<create_role><name>foo</name><comment>bar</comment></create_role>"
         )
 
     def test_create_role_with_users(self):
@@ -41,8 +38,5 @@ class GmpCreateRoleTestMixin:
         self.gmp.create_role(name="foo", users=["u1", "u2"])
 
         self.connection.send.has_been_called_with(
-            b"<create_role>"
-            b"<name>foo</name>"
-            b"<users>u1,u2</users>"
-            b"</create_role>"
+            b"<create_role><name>foo</name><users>u1,u2</users></create_role>"
         )

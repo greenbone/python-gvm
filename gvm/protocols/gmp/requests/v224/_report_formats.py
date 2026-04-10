@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import InvalidArgument, RequiredArgument
@@ -42,10 +41,9 @@ class ReportFormatType(Enum):
 
 
 class ReportFormats:
-
     @classmethod
     def clone_report_format(
-        cls, report_format_id: Union[EntityID, ReportFormatType]
+        cls, report_format_id: EntityID | ReportFormatType
     ) -> Request:
         """Clone a report format from an existing one
 
@@ -66,9 +64,9 @@ class ReportFormats:
     @classmethod
     def delete_report_format(
         cls,
-        report_format_id: Union[EntityID, ReportFormatType],
+        report_format_id: EntityID | ReportFormatType,
         *,
-        ultimate: Optional[bool] = False,
+        ultimate: bool | None = False,
     ) -> Request:
         """Deletes an existing report format
 
@@ -94,12 +92,12 @@ class ReportFormats:
     @staticmethod
     def get_report_formats(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        alerts: Optional[bool] = None,
-        params: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        alerts: bool | None = None,
+        params: bool | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of report formats
 
@@ -131,7 +129,7 @@ class ReportFormats:
 
     @classmethod
     def get_report_format(
-        cls, report_format_id: Union[EntityID, ReportFormatType]
+        cls, report_format_id: EntityID | ReportFormatType
     ) -> Request:
         """Request a single report format
 
@@ -182,13 +180,13 @@ class ReportFormats:
     @classmethod
     def modify_report_format(
         cls,
-        report_format_id: Union[EntityID, ReportFormatType],
+        report_format_id: EntityID | ReportFormatType,
         *,
-        active: Optional[bool] = None,
-        name: Optional[str] = None,
-        summary: Optional[str] = None,
-        param_name: Optional[str] = None,
-        param_value: Optional[str] = None,
+        active: bool | None = None,
+        name: str | None = None,
+        summary: str | None = None,
+        param_name: str | None = None,
+        param_value: str | None = None,
     ) -> Request:
         """Modifies an existing report format.
 
@@ -231,7 +229,7 @@ class ReportFormats:
 
     @classmethod
     def verify_report_format(
-        cls, report_format_id: Union[EntityID, ReportFormatType]
+        cls, report_format_id: EntityID | ReportFormatType
     ) -> Request:
         """Verify an existing report format
 

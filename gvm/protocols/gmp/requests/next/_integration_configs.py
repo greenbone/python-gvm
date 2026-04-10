@@ -1,5 +1,3 @@
-from typing import Optional
-
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.protocols.gmp.requests import EntityID
@@ -10,7 +8,7 @@ from gvm.xml import XmlCommand
 class IntegrationConfigs:
     @classmethod
     def get_integration_config(
-        cls, integration_config_id: EntityID, *, details: Optional[bool] = None
+        cls, integration_config_id: EntityID, *, details: bool | None = None
     ) -> Request:
         """Request a single Integration Configuration.
 
@@ -36,8 +34,8 @@ class IntegrationConfigs:
     def get_integration_configs(
         cls,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
     ) -> Request:
         """Request a list of Integration Configurations.
 
@@ -55,11 +53,11 @@ class IntegrationConfigs:
         cls,
         integration_config_id: EntityID,
         *,
-        service_url: Optional[str] = None,
-        service_cacert: Optional[str] = None,
-        oidc_provider_url: Optional[str] = None,
-        oidc_provider_client_id: Optional[str] = None,
-        oidc_provider_client_secret: Optional[str] = None,
+        service_url: str | None = None,
+        service_cacert: str | None = None,
+        oidc_provider_url: str | None = None,
+        oidc_provider_client_id: str | None = None,
+        oidc_provider_client_secret: str | None = None,
     ) -> Request:
         """Modify an existing Integration Configuration.
 

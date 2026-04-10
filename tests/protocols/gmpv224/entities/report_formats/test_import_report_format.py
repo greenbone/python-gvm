@@ -23,9 +23,7 @@ class GmpImportReportFormatTestMixin:
 
         self.connection.send.has_been_called_with(
             "<create_report_format>"
-            f"{self.REPORT_FORMAT_XML_STRING}</create_report_format>".encode(
-                "utf-8"
-            )
+            f"{self.REPORT_FORMAT_XML_STRING}</create_report_format>".encode()
         )
 
     def test_import_missing_report_format_xml(self):

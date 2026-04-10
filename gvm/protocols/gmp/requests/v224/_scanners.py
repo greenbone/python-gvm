@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
+from typing import Optional
 
 from gvm._enum import Enum
 from gvm.errors import InvalidArgument, RequiredArgument
@@ -24,7 +24,7 @@ class ScannerType(Enum):
     @classmethod
     def from_string(
         cls,
-        scanner_type: Optional[str],
+        scanner_type: str | None,
     ) -> Optional["ScannerType"]:
         """Convert a scanner type string to an actual ScannerType instance
 
@@ -68,12 +68,12 @@ class Scanners:
         cls,
         name: str,
         host: str,
-        port: Union[str, int],
+        port: str | int,
         scanner_type: ScannerType,
         credential_id: str,
         *,
-        ca_pub: Optional[str] = None,
-        comment: Optional[str] = None,
+        ca_pub: str | None = None,
+        comment: str | None = None,
     ) -> Request:
         """Create a new scanner
 
@@ -137,13 +137,13 @@ class Scanners:
         cls,
         scanner_id: EntityID,
         *,
-        name: Optional[str] = None,
-        host: Optional[str] = None,
-        port: Optional[int] = None,
-        scanner_type: Optional[ScannerType] = None,
-        credential_id: Optional[EntityID] = None,
-        ca_pub: Optional[str] = None,
-        comment: Optional[str] = None,
+        name: str | None = None,
+        host: str | None = None,
+        port: int | None = None,
+        scanner_type: ScannerType | None = None,
+        credential_id: EntityID | None = None,
+        ca_pub: str | None = None,
+        comment: str | None = None,
     ) -> Request:
         """Modify an existing scanner
 
@@ -199,10 +199,10 @@ class Scanners:
     @staticmethod
     def get_scanners(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of scanners
 
@@ -279,7 +279,7 @@ class Scanners:
 
     @classmethod
     def delete_scanner(
-        cls, scanner_id: EntityID, ultimate: Optional[bool] = False
+        cls, scanner_id: EntityID, ultimate: bool | None = False
     ) -> Request:
         """Delete an existing scanner
 

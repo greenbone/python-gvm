@@ -4,7 +4,6 @@
 #
 
 from numbers import Integral
-from typing import Optional
 
 from gvm.errors import InvalidArgument
 from gvm.protocols.core import Request
@@ -19,12 +18,12 @@ class SystemReports:
     def get_system_reports(
         cls,
         *,
-        name: Optional[str] = None,
-        duration: Optional[int] = None,
-        start_time: Optional[str] = None,
-        end_time: Optional[str] = None,
-        brief: Optional[bool] = None,
-        slave_id: Optional[EntityID] = None,
+        name: str | None = None,
+        duration: int | None = None,
+        start_time: str | None = None,
+        end_time: str | None = None,
+        brief: bool | None = None,
+        slave_id: EntityID | None = None,
     ) -> Request:
         """Request a list of system reports
 

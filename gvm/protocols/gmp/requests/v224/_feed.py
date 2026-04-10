@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Union
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -26,7 +25,7 @@ class Feed:
         return XmlCommand("get_feeds")
 
     @classmethod
-    def get_feed(cls, feed_type: Union[FeedType, str]) -> Request:
+    def get_feed(cls, feed_type: FeedType | str) -> Request:
         """Request a single feed
 
         Arguments:

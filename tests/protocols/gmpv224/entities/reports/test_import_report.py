@@ -25,7 +25,7 @@ class GmpImportReportTestMixin:
             "<create_report>"
             f'<task id="{self.TASK_ID}"/>'
             f"{self.REPORT_XML_STRING}"
-            "</create_report>".encode("utf-8")
+            "</create_report>".encode()
         )
 
     def test_import_report_missing_report(self):
@@ -41,7 +41,8 @@ class GmpImportReportTestMixin:
 
         with self.assertRaises(InvalidArgument):
             self.gmp.import_report(
-                "<Foo>", task_id=self.TASK_ID  # missing closing tag
+                "<Foo>",
+                task_id=self.TASK_ID,  # missing closing tag
             )
 
     def test_import_report_with_in_assets(self):
@@ -54,7 +55,7 @@ class GmpImportReportTestMixin:
             f'<task id="{self.TASK_ID}"/>'
             "<in_assets>0</in_assets>"
             f"{self.REPORT_XML_STRING}"
-            "</create_report>".encode("utf-8")
+            "</create_report>".encode()
         )
 
         self.gmp.import_report(
@@ -66,5 +67,5 @@ class GmpImportReportTestMixin:
             f'<task id="{self.TASK_ID}"/>'
             "<in_assets>1</in_assets>"
             f"{self.REPORT_XML_STRING}"
-            "</create_report>".encode("utf-8")
+            "</create_report>".encode()
         )

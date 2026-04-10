@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Sequence
+from collections.abc import Sequence
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.core import Request
@@ -15,7 +15,6 @@ _EMPTY_POLICY_ID = "085569ce-73ed-11df-83c3-002264764cea"
 
 
 class Policies:
-
     @classmethod
     def clone_policy(cls, policy_id: EntityID) -> Request:
         """Clone a policy from an existing one
@@ -37,8 +36,8 @@ class Policies:
         cls,
         name: str,
         *,
-        policy_id: Optional[EntityID] = None,
-        comment: Optional[str] = None,
+        policy_id: EntityID | None = None,
+        comment: str | None = None,
     ) -> Request:
         """Create a new policy
 
@@ -68,7 +67,7 @@ class Policies:
 
     @classmethod
     def delete_policy(
-        cls, policy_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, policy_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing policy
 
@@ -90,13 +89,13 @@ class Policies:
     @staticmethod
     def get_policies(
         *,
-        audits: Optional[bool] = None,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        details: Optional[bool] = None,
-        families: Optional[bool] = None,
-        preferences: Optional[bool] = None,
-        trash: Optional[bool] = None,
+        audits: bool | None = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        details: bool | None = None,
+        families: bool | None = None,
+        preferences: bool | None = None,
+        trash: bool | None = None,
     ) -> Request:
         """Request a list of policies
 
@@ -136,7 +135,7 @@ class Policies:
 
     @classmethod
     def get_policy(
-        cls, policy_id: EntityID, *, audits: Optional[bool] = None
+        cls, policy_id: EntityID, *, audits: bool | None = None
     ) -> Request:
         """Request a single policy
 
@@ -193,7 +192,7 @@ class Policies:
         name: str,
         nvt_oid: str,
         *,
-        value: Optional[str] = None,
+        value: str | None = None,
     ) -> Request:
         """Modifies the nvt preferences of an existing policy.
 
@@ -264,7 +263,7 @@ class Policies:
 
     @classmethod
     def modify_policy_set_comment(
-        cls, policy_id: EntityID, comment: Optional[str] = None
+        cls, policy_id: EntityID, comment: str | None = None
     ) -> Request:
         """Modifies the comment of an existing policy
 
@@ -290,7 +289,7 @@ class Policies:
 
     @classmethod
     def modify_policy_set_scanner_preference(
-        cls, policy_id: EntityID, name: str, *, value: Optional[str] = None
+        cls, policy_id: EntityID, name: str, *, value: str | None = None
     ) -> Request:
         """Modifies the scanner preferences of an existing policy
 
@@ -373,7 +372,7 @@ class Policies:
         policy_id: EntityID,
         families: Sequence[tuple[str, bool, bool]],
         *,
-        auto_add_new_families: Optional[bool] = True,
+        auto_add_new_families: bool | None = True,
     ) -> Request:
         """
         Selected the NVTs of a policy at a family level.

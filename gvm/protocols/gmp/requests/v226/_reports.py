@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm.errors import InvalidArgument, RequiredArgument
 from gvm.protocols.core import Request
@@ -14,7 +13,6 @@ from ..v224._report_formats import ReportFormatType
 
 
 class Reports:
-
     @classmethod
     def delete_report(cls, report_id: EntityID) -> Request:
         """Deletes an existing report
@@ -37,13 +35,13 @@ class Reports:
         cls,
         report_id: EntityID,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[str] = None,
-        delta_report_id: Optional[EntityID] = None,
-        report_format_id: Optional[Union[str, ReportFormatType]] = None,
-        report_config_id: Optional[str] = None,
-        ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = True,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        delta_report_id: EntityID | None = None,
+        report_format_id: str | ReportFormatType | None = None,
+        report_config_id: str | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = True,
     ) -> Request:
         """Request a single report
 
@@ -91,12 +89,12 @@ class Reports:
     @staticmethod
     def get_reports(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        note_details: Optional[bool] = None,
-        override_details: Optional[bool] = None,
-        ignore_pagination: Optional[bool] = None,
-        details: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        note_details: bool | None = None,
+        override_details: bool | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = None,
     ) -> Request:
         """Request a list of reports
 
@@ -139,7 +137,7 @@ class Reports:
         report: str,
         task_id: EntityID,
         *,
-        in_assets: Optional[bool] = None,
+        in_assets: bool | None = None,
     ) -> Request:
         """Import a Report from XML
 

@@ -2,8 +2,9 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
+from collections.abc import Callable
 from types import TracebackType
-from typing import Callable, Generic, Optional, Type, TypeVar
+from typing import Generic, TypeVar
 
 from gvm.connections import GvmConnection
 
@@ -50,9 +51,9 @@ class GvmProtocol(Generic[T]):
 
     def __exit__(
         self,
-        exc_type: Optional[Type[BaseException]],
-        exc_value: Optional[BaseException],
-        traceback: Optional[TracebackType],
+        exc_type: type[BaseException] | None,
+        exc_value: BaseException | None,
+        traceback: TracebackType | None,
     ) -> None:
         self.disconnect()
 
@@ -126,7 +127,7 @@ class GvmProtocol(Generic[T]):
         try:
             send_data = self._protocol.send(request)
             self._send(send_data)
-            response: Optional[Response] = None
+            response: Response | None = None
             while not response:
                 received_data = self._read()
                 response = self._protocol.receive_data(received_data)

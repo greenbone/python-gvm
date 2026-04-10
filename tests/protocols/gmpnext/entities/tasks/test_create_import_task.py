@@ -11,10 +11,7 @@ class GmpCreateImportTaskTestMixin:
         self.gmp.create_import_task(name="foo")
 
         self.connection.send.has_been_called_with(
-            b"<create_task>"
-            b"<name>foo</name>"
-            b'<target id="0"/>'
-            b"</create_task>"
+            b'<create_task><name>foo</name><target id="0"/></create_task>'
         )
 
     def test_create_task_missing_name(self):

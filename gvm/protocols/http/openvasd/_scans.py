@@ -9,7 +9,7 @@ API wrapper for interacting with the /scans endpoints of the openvasd HTTP API.
 import urllib.parse
 from dataclasses import asdict, dataclass, field
 from enum import Enum
-from typing import Any, Optional, Union
+from typing import Any
 from uuid import UUID
 
 import httpx
@@ -18,7 +18,7 @@ from gvm.errors import InvalidArgumentType
 
 from ._api import OpenvasdAPI
 
-ID = Union[str, UUID]
+ID = str | UUID
 
 
 @dataclass
@@ -63,8 +63,8 @@ class CredentialUP:
 
     username: str
     password: str
-    privilege_username: Optional[str] = None
-    privilege_password: Optional[str] = None
+    privilege_username: str | None = None
+    privilege_password: str | None = None
 
 
 @dataclass
@@ -101,8 +101,8 @@ class CredentialUSK:
     username: str
     password: str
     private: str
-    privilege_username: Optional[str] = None
-    privilege_password: Optional[str] = None
+    privilege_username: str | None = None
+    privilege_password: str | None = None
 
 
 @dataclass
@@ -143,10 +143,10 @@ class Credential:
 
     service: str
     port: int
-    up: Optional[CredentialUP] = None
-    krb5: Optional[CredentialKRB5] = None
-    usk: Optional[CredentialUSK] = None
-    snmp: Optional[CredentialSNMP] = None
+    up: CredentialUP | None = None
+    krb5: CredentialKRB5 | None = None
+    usk: CredentialUSK | None = None
+    snmp: CredentialSNMP | None = None
 
 
 @dataclass
@@ -256,7 +256,7 @@ class ScansAPI(OpenvasdAPI):
         target: Target,
         vt_selection: list[VTSelection],
         *,
-        scan_preferences: Optional[list[ScanPreference]] = None,
+        scan_preferences: list[ScanPreference] | None = None,
     ) -> httpx.Response:
         """
         Create a new scan with the specified target configuration and VT selection.
@@ -370,8 +370,8 @@ class ScansAPI(OpenvasdAPI):
         self,
         scan_id: ID,
         *,
-        range_start: Optional[int] = None,
-        range_end: Optional[int] = None,
+        range_start: int | None = None,
+        range_end: int | None = None,
     ) -> httpx.Response:
         """
         Retrieve a range of results for a given scan.

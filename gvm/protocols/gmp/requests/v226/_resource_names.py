@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import RequiredArgument
@@ -50,9 +49,9 @@ class ResourceNames:
     @classmethod
     def get_resource_names(
         cls,
-        resource_type: Union[ResourceType, str],
+        resource_type: ResourceType | str,
         *,
-        filter_string: Optional[str] = None,
+        filter_string: str | None = None,
     ) -> Request:
         """Request a list of resource names and IDs
 
@@ -84,7 +83,7 @@ class ResourceNames:
     def get_resource_name(
         cls,
         resource_id: EntityID,
-        resource_type: Union[ResourceType, str],
+        resource_type: ResourceType | str,
     ) -> Request:
         """Request a single resource name
 

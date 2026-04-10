@@ -9,16 +9,11 @@ import base64
 import logging
 import re
 import warnings
+from collections.abc import Callable, Iterable
 from functools import wraps
 from typing import (
     Any,
-    Callable,
-    Iterable,
-    List,
-    Optional,
     Protocol,
-    Type,
-    Union,
 )
 
 from gvm.xml import XmlCommand, XmlError, parse_xml
@@ -39,10 +34,10 @@ def deprecation(message: str):
 
 
 def deprecated(
-    _func_or_cls: Union[str, Callable, Type, None] = None,
+    _func_or_cls: str | Callable | type | None = None,
     *,
-    since: Optional[str] = None,
-    reason: Optional[str] = None,
+    since: str | None = None,
+    reason: str | None = None,
 ):
     """
     A decorator to mark functions, classes and methods as deprecated
@@ -56,29 +51,29 @@ def deprecated(
 
             from gvm.utils import deprecated
 
+
             @deprecated
-            def my_function(*args, **kwargs):
-                ...
+            def my_function(*args, **kwargs): ...
+
 
             @deprecated("The function is obsolete. Please use my_func instead.")
-            def my_function(*args, **kwargs):
-                ...
+            def my_function(*args, **kwargs): ...
+
 
             @deprecated(
                 since="1.2.3",
-                reason="The function is obsolete. Please use my_func instead."
+                reason="The function is obsolete. Please use my_func instead.",
             )
-            def my_function(*args, **kwargs):
-                ...
+            def my_function(*args, **kwargs): ...
+
 
             @deprecated(reason="The class will be removed in version 3.4.5")
-            class Foo:
-                ...
+            class Foo: ...
+
 
             class Foo:
                 @deprecated(since="2.3.4")
-                def bar(self, *args, **kwargs):
-                    ...
+                def bar(self, *args, **kwargs): ...
     """
     if isinstance(_func_or_cls, str):
         reason = _func_or_cls
@@ -139,7 +134,7 @@ def check_command_status(xml: str) -> bool:
         return False
 
 
-def to_dotted_types_dict(types: List) -> TypesDict:
+def to_dotted_types_dict(types: list) -> TypesDict:
     """Create a dictionary accessible via dot notation"""
     dic = {}
     for typ in types:
@@ -147,7 +142,7 @@ def to_dotted_types_dict(types: List) -> TypesDict:
     return TypesDict(dic)
 
 
-def to_bool(value: Union[bool, int, None]) -> str:
+def to_bool(value: bool | int | None) -> str:
     return "1" if value else "0"
 
 
@@ -165,7 +160,7 @@ def to_comma_list(value: Iterable[SupportsStr]) -> str:
 
 @deprecated(since="24.3.0", reason="Please use XmlCommand.add_filter instead.")
 def add_filter(
-    cmd: XmlCommand, filter_string: Optional[str], filter_id: Optional[str]
+    cmd: XmlCommand, filter_string: str | None, filter_id: str | None
 ) -> None:
     cmd.add_filter(filter_string, filter_id)
 

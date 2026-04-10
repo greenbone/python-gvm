@@ -53,8 +53,5 @@ class GmpCreateGroupTestMixin:
         self.gmp.create_group(name="foo", users=["u1", "u2"])
 
         self.connection.send.has_been_called_with(
-            b"<create_group>"
-            b"<name>foo</name>"
-            b"<users>u1,u2</users>"
-            b"</create_group>"
+            b"<create_group><name>foo</name><users>u1,u2</users></create_group>"
         )

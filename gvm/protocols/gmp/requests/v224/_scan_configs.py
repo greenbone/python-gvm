@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm.errors import InvalidArgument, InvalidArgumentType, RequiredArgument
 from gvm.protocols.core import Request
@@ -35,7 +34,7 @@ class ScanConfigs:
         config_id: EntityID,
         name: str,
         *,
-        comment: Optional[str] = None,
+        comment: str | None = None,
     ) -> Request:
         """Create a new scan config
 
@@ -66,7 +65,7 @@ class ScanConfigs:
 
     @classmethod
     def delete_scan_config(
-        cls, config_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, config_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Deletes an existing config
 
@@ -88,13 +87,13 @@ class ScanConfigs:
     @staticmethod
     def get_scan_configs(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        details: Optional[bool] = None,
-        families: Optional[bool] = None,
-        preferences: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        details: bool | None = None,
+        families: bool | None = None,
+        preferences: bool | None = None,
+        tasks: bool | None = None,
     ) -> Request:
         """Request a list of scan configs
 
@@ -134,7 +133,7 @@ class ScanConfigs:
 
     @classmethod
     def get_scan_config(
-        cls, config_id: EntityID, *, tasks: Optional[bool] = None
+        cls, config_id: EntityID, *, tasks: bool | None = None
     ) -> Request:
         """Request a single scan config
 
@@ -164,8 +163,8 @@ class ScanConfigs:
     def get_scan_config_preferences(
         cls,
         *,
-        nvt_oid: Optional[str] = None,
-        config_id: Optional[EntityID] = None,
+        nvt_oid: str | None = None,
+        config_id: EntityID | None = None,
     ) -> Request:
         """Request a list of scan_config preferences
 
@@ -194,8 +193,8 @@ class ScanConfigs:
         cls,
         name: str,
         *,
-        nvt_oid: Optional[str] = None,
-        config_id: Optional[EntityID] = None,
+        nvt_oid: str | None = None,
+        config_id: EntityID | None = None,
     ) -> Request:
         """Request a nvt preference
 
@@ -253,7 +252,7 @@ class ScanConfigs:
         name: str,
         nvt_oid: str,
         *,
-        value: Optional[str] = None,
+        value: str | None = None,
     ) -> Request:
         """Modifies the nvt preferences of an existing scan config.
 
@@ -326,7 +325,7 @@ class ScanConfigs:
 
     @classmethod
     def modify_scan_config_set_comment(
-        cls, config_id: EntityID, *, comment: Optional[str] = None
+        cls, config_id: EntityID, *, comment: str | None = None
     ) -> Request:
         """Modifies the comment of an existing scan config
 
@@ -358,7 +357,7 @@ class ScanConfigs:
         config_id: EntityID,
         name: str,
         *,
-        value: Optional[str] = None,
+        value: str | None = None,
     ) -> Request:
         """Modifies the scanner preferences of an existing scan config
 
@@ -401,7 +400,7 @@ class ScanConfigs:
         cls,
         config_id: EntityID,
         family: str,
-        nvt_oids: Union[tuple[str], list[str]],
+        nvt_oids: tuple[str] | list[str],
     ) -> Request:
         """Modifies the selected nvts of an existing scan config
 
@@ -449,7 +448,7 @@ class ScanConfigs:
         config_id: EntityID,
         families: list[tuple[str, bool, bool]],
         *,
-        auto_add_new_families: Optional[bool] = True,
+        auto_add_new_families: bool | None = True,
     ) -> Request:
         """
         Selected the NVTs of a scan config at a family level.

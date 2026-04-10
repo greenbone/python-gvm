@@ -125,7 +125,7 @@ class OverridesTestCase(unittest.TestCase):
         )
 
         request = Overrides.create_override(
-            "foo", nvt_oid="oid1", severity=Decimal(5.5)
+            "foo", nvt_oid="oid1", severity=Decimal("5.5")
         )
 
         self.assertEqual(
@@ -165,7 +165,7 @@ class OverridesTestCase(unittest.TestCase):
         )
 
         request = Overrides.create_override(
-            "foo", nvt_oid="oid1", new_severity=Decimal(5.5)
+            "foo", nvt_oid="oid1", new_severity=Decimal("5.5")
         )
 
         self.assertEqual(
@@ -359,7 +359,9 @@ class OverridesTestCase(unittest.TestCase):
             b"</modify_override>",
         )
 
-        request = Overrides.modify_override("o1", "foo", severity=Decimal(5.5))
+        request = Overrides.modify_override(
+            "o1", "foo", severity=Decimal("5.5")
+        )
 
         self.assertEqual(
             bytes(request),
@@ -391,7 +393,7 @@ class OverridesTestCase(unittest.TestCase):
         )
 
         request = Overrides.modify_override(
-            "o1", "foo", new_severity=Decimal(5.5)
+            "o1", "foo", new_severity=Decimal("5.5")
         )
 
         self.assertEqual(

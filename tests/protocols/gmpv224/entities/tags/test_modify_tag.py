@@ -150,9 +150,7 @@ class GmpModifyTagTestMixin:
         self.gmp.modify_tag(tag_id="t1", resource_action="add")
 
         self.connection.send.has_been_called_with(
-            b'<modify_tag tag_id="t1">'
-            b'<resources action="add"/>'
-            b"</modify_tag>"
+            b'<modify_tag tag_id="t1"><resources action="add"/></modify_tag>'
         )
 
     def test_modify_tag_with_missing_resource_type(self):

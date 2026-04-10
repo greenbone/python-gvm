@@ -21,7 +21,7 @@ class GmpCreateFilterTestMixin:
                 "<name>f1</name>"
                 "<term>sort-reverse=threat first=1 rows=1000</term>"
                 f"<type>{filter_type.value}</type>"
-                "</create_filter>".encode("utf-8")
+                "</create_filter>".encode()
             )
 
     def test_create_filter_invalid_filter_type(self):

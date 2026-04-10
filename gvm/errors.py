@@ -6,8 +6,6 @@
 Module for GVM errors
 """
 
-from typing import Optional
-
 
 class GvmError(Exception):
     """An exception for gvm errors
@@ -15,7 +13,7 @@ class GvmError(Exception):
     Base class for all exceptions originating in python-gvm.
     """
 
-    def __init__(self, message: Optional[str], *args):
+    def __init__(self, message: str | None, *args):
         super().__init__(message, *args)
         self.message = message
 
@@ -44,9 +42,7 @@ class GvmServerError(GvmError):
             and function
     """
 
-    def __init__(
-        self, status: Optional[str] = None, message: Optional[str] = None
-    ):
+    def __init__(self, status: str | None = None, message: str | None = None):
         super().__init__(message, status)
         self.status = status
 
@@ -71,9 +67,7 @@ class GvmResponseError(GvmClientError):
             and function
     """
 
-    def __init__(
-        self, status: Optional[str] = None, message: Optional[str] = None
-    ):
+    def __init__(self, status: str | None = None, message: str | None = None):
         super().__init__(message, status)
         self.status = status
 
@@ -87,7 +81,7 @@ class GvmResponseError(GvmClientError):
         )
 
 
-class InvalidArgument(GvmError):
+class InvalidArgument(GvmError):  # noqa: N818
     """Raised if an invalid argument/parameter is passed
 
     Derives from :py:class:`GvmError`
@@ -101,10 +95,10 @@ class InvalidArgument(GvmError):
 
     def __init__(
         self,
-        message: Optional[str] = None,
+        message: str | None = None,
         *,
-        argument: Optional[str] = None,
-        function: Optional[str] = None,
+        argument: str | None = None,
+        function: str | None = None,
     ):
         super().__init__(message, argument, function)
         self.argument = argument
@@ -123,7 +117,7 @@ class InvalidArgument(GvmError):
         return f"Invalid argument {self.argument} for {self.function}"
 
 
-class InvalidArgumentType(GvmError):
+class InvalidArgumentType(GvmError):  # noqa: N818
     """Raised if a passed argument has an invalid type
 
     Derives from :py:class:`GvmError`
@@ -138,8 +132,8 @@ class InvalidArgumentType(GvmError):
         self,
         argument: str,
         *,
-        arg_type: Optional[str] = None,
-        function: Optional[str] = None,
+        arg_type: str | None = None,
+        function: str | None = None,
     ):
         super().__init__(None)
         self.argument = argument
@@ -165,7 +159,7 @@ class InvalidArgumentType(GvmError):
         return f"Invalid argument type for argument {self.argument}."
 
 
-class RequiredArgument(GvmError):
+class RequiredArgument(GvmError):  # noqa: N818
     """Raised if a required argument/parameter is missing
 
     Derives from :py:class:`GvmError`
@@ -179,10 +173,10 @@ class RequiredArgument(GvmError):
 
     def __init__(
         self,
-        message: Optional[str] = None,
+        message: str | None = None,
         *,
-        argument: Optional[str] = None,
-        function: Optional[str] = None,
+        argument: str | None = None,
+        function: str | None = None,
     ):
         super().__init__(message, argument, function)
         self.argument = argument

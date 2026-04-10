@@ -9,7 +9,6 @@ from gvm.protocols.gmp.requests.v224 import ScanConfigs
 
 
 class ScanConfigsTestCase(unittest.TestCase):
-
     def test_clone_scan_config(self):
         request = ScanConfigs.clone_scan_config("a1")
 
@@ -236,7 +235,7 @@ class ScanConfigsTestCase(unittest.TestCase):
         )
 
     def test_import_scan_config(self):
-        CONFIG_XML_STRING = (
+        config_xml_string = (
             '<get_configs_response status="200" status_text="OK">'
             '<config id="c4aa21e4-23e6-4064-ae49-c0d425738a98">'
             "<name>Foobar</name>"
@@ -246,13 +245,11 @@ class ScanConfigsTestCase(unittest.TestCase):
             "</config>"
             "</get_configs_response>"
         )
-        request = ScanConfigs.import_scan_config(CONFIG_XML_STRING)
+        request = ScanConfigs.import_scan_config(config_xml_string)
 
         self.assertEqual(
             bytes(request),
-            f"<create_config>{CONFIG_XML_STRING}</create_config>".encode(
-                encoding="utf-8"
-            ),
+            f"<create_config>{config_xml_string}</create_config>".encode(),
         )
 
     def test_import_missing_scan_config_xml(self):

@@ -17,7 +17,6 @@ class RequestMock:
 
 
 class ResponseTestCase(unittest.TestCase):
-
     def test_data(self) -> None:
         request = RequestMock(b"<request/>")
         response = Response(data=b"<response/>", request=request)

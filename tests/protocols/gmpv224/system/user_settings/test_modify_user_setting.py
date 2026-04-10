@@ -28,9 +28,7 @@ class GmpModifyUserSettingTestMixin:
         self.gmp.modify_user_setting(setting_id="s1", value="")
 
         self.connection.send.has_been_called_with(
-            b'<modify_setting setting_id="s1">'
-            b"<value></value>"
-            b"</modify_setting>"
+            b'<modify_setting setting_id="s1"><value></value></modify_setting>'
         )
 
     def test_modify_user_setting_missing_setting_id(self):

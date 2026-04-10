@@ -56,7 +56,6 @@ class InitialStateTestCase(unittest.TestCase):
 
 
 class AwaitingResponseStateTestCase(unittest.TestCase):
-
     def test_receive_data(self) -> None:
         context = MagicMock(spec=Context)
         request = RequestMock(b"<start>")
@@ -94,7 +93,6 @@ class AwaitingResponseStateTestCase(unittest.TestCase):
 
 
 class ErrorStateTestCase(unittest.TestCase):
-
     def test_receive_data(self) -> None:
         context = MagicMock(spec=Context)
         state = ErrorState()
@@ -130,7 +128,6 @@ class ErrorStateTestCase(unittest.TestCase):
 
 
 class ReceivingDataStateTestCase(unittest.TestCase):
-
     def test_receive_data(self) -> None:
         context = MagicMock(spec=Context)
         request = RequestMock(b"<start/>")

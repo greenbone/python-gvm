@@ -42,7 +42,8 @@ class AuthenticationTestCase(unittest.TestCase):
 
     def test_modify_auth(self) -> None:
         request = Authentication.modify_auth(
-            "foo", dict([("foo", "bar"), ("lorem", "ipsum")])
+            "foo",
+            dict([("foo", "bar"), ("lorem", "ipsum")]),  # noqa: C406
         )
 
         self.assertIsInstance(request, Request)
@@ -65,7 +66,8 @@ class AuthenticationTestCase(unittest.TestCase):
     def test_modify_auth_missing_group_name(self) -> None:
         with self.assertRaises(RequiredArgument):
             Authentication.modify_auth(
-                group_name=None, auth_conf_settings={"foo": "bar"}  # type: ignore
+                group_name=None,
+                auth_conf_settings={"foo": "bar"},  # type: ignore
             )
 
         with self.assertRaises(RequiredArgument):
@@ -79,7 +81,8 @@ class AuthenticationTestCase(unittest.TestCase):
     def test_modify_auth_auth_conf_settings(self) -> None:
         with self.assertRaises(RequiredArgument):
             Authentication.modify_auth(
-                group_name="foo", auth_conf_settings=None  # type: ignore
+                group_name="foo",
+                auth_conf_settings=None,  # type: ignore
             )
 
         with self.assertRaises(RequiredArgument):

@@ -15,7 +15,7 @@ class GmpCloneOCIImageTargetTestMixin:
         self.connection.send.has_been_called_with(
             "<create_oci_image_target>"
             f"<copy>{self.TARGET_ID}</copy>"
-            "</create_oci_image_target>".encode("utf-8")
+            "</create_oci_image_target>".encode()
         )
 
     def test_missing_id(self):

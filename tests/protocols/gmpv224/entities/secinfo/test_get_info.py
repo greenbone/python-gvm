@@ -47,7 +47,8 @@ class GmpGetInfoTestMixin:
 
         with self.assertRaises(AttributeError):
             self.gmp.get_info(
-                "i1", InfoType.ALLINFO  # pylint: disable=no-member
+                "i1",
+                InfoType.ALLINFO,  # pylint: disable=no-member
             )
 
     def test_get_info_missing_info_type(self):

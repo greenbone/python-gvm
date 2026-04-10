@@ -4,7 +4,6 @@
 
 import socket as socketlib
 from os import PathLike, fspath
-from typing import Optional, Union
 
 from gvm.errors import GvmError
 
@@ -22,8 +21,8 @@ class UnixSocketConnection(AbstractGvmConnection):
     def __init__(
         self,
         *,
-        path: Optional[Union[str, PathLike[str]]] = DEFAULT_UNIX_SOCKET_PATH,
-        timeout: Optional[Union[int, float]] = DEFAULT_TIMEOUT,
+        path: str | PathLike[str] | None = DEFAULT_UNIX_SOCKET_PATH,
+        timeout: int | float | None = DEFAULT_TIMEOUT,
     ) -> None:
         """
         Create a new UnixSocketConnection instance.

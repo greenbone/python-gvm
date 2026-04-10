@@ -2,7 +2,6 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from typing import Optional, Union
 
 from gvm._enum import Enum
 from gvm.errors import InvalidArgument, RequiredArgument
@@ -55,8 +54,8 @@ class AlertMethod(Enum):
 
 def _check_event(
     event: AlertEvent,
-    condition: Optional[AlertCondition],
-    method: Optional[AlertMethod],
+    condition: AlertCondition | None,
+    method: AlertMethod | None,
 ):
     if event == AlertEvent.TASK_RUN_STATUS_CHANGED:
         if not condition:
@@ -139,11 +138,11 @@ class Alerts:
         event: AlertEvent,
         method: AlertMethod,
         *,
-        method_data: Optional[dict[str, str]] = None,
-        event_data: Optional[dict[str, str]] = None,
-        condition_data: Optional[dict[str, str]] = None,
-        filter_id: Optional[EntityID] = None,
-        comment: Optional[str] = None,
+        method_data: dict[str, str] | None = None,
+        event_data: dict[str, str] | None = None,
+        condition_data: dict[str, str] | None = None,
+        filter_id: EntityID | None = None,
+        comment: str | None = None,
     ) -> Request:
         """Create a new alert
 
@@ -234,15 +233,15 @@ class Alerts:
         cls,
         alert_id: EntityID,
         *,
-        name: Optional[str] = None,
-        comment: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        event: Optional[Union[AlertEvent, str]] = None,
-        event_data: Optional[dict] = None,
-        condition: Optional[Union[AlertCondition, str]] = None,
-        condition_data: Optional[dict[str, str]] = None,
-        method: Optional[Union[AlertMethod, str]] = None,
-        method_data: Optional[dict[str, str]] = None,
+        name: str | None = None,
+        comment: str | None = None,
+        filter_id: EntityID | None = None,
+        event: AlertEvent | str | None = None,
+        event_data: dict | None = None,
+        condition: AlertCondition | str | None = None,
+        condition_data: dict[str, str] | None = None,
+        method: AlertMethod | str | None = None,
+        method_data: dict[str, str] | None = None,
     ) -> Request:
         """Modify an existing alert.
 
@@ -340,7 +339,7 @@ class Alerts:
 
     @classmethod
     def delete_alert(
-        cls, alert_id: EntityID, *, ultimate: Optional[bool] = False
+        cls, alert_id: EntityID, *, ultimate: bool | None = False
     ) -> Request:
         """Delete an existing alert
 
@@ -382,10 +381,10 @@ class Alerts:
         alert_id: EntityID,
         report_id: EntityID,
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        report_format_id: Optional[Union[EntityID, ReportFormatType]] = None,
-        delta_report_id: Optional[EntityID] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        report_format_id: EntityID | ReportFormatType | None = None,
+        delta_report_id: EntityID | None = None,
     ) -> Request:
         """Run an alert by ignoring its event and conditions
 
@@ -428,10 +427,10 @@ class Alerts:
     @staticmethod
     def get_alerts(
         *,
-        filter_string: Optional[str] = None,
-        filter_id: Optional[EntityID] = None,
-        trash: Optional[bool] = None,
-        tasks: Optional[bool] = None,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        tasks: bool | None = None,
     ) -> Request:
         """Request a list of alerts
 
@@ -454,7 +453,7 @@ class Alerts:
 
     @classmethod
     def get_alert(
-        cls, alert_id: EntityID, *, tasks: Optional[bool] = None
+        cls, alert_id: EntityID, *, tasks: bool | None = None
     ) -> Request:
         """Request a single alert
 

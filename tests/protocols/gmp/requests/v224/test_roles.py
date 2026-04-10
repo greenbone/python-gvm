@@ -125,9 +125,7 @@ class RolesTestCase(unittest.TestCase):
         request = Roles.modify_role("role_id", name="name")
         self.assertEqual(
             bytes(request),
-            b'<modify_role role_id="role_id">'
-            b"<name>name</name>"
-            b"</modify_role>",
+            b'<modify_role role_id="role_id"><name>name</name></modify_role>',
         )
 
     def test_modify_role_with_users(self):
