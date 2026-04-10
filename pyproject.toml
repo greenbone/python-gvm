@@ -1,6 +1,6 @@
 [build-system]
-requires = ["uv_build>=0.11.2,<0.12.0"]
-build-backend = "uv_build"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "python-gvm"
@@ -47,10 +47,11 @@ dev = [
 [tool.uv]
 default-groups = "all"
 
-[tool.uv.build-backend]
-module-name = ["gvm", "tests"]
-module-root = ""
-wheel-exclude = ["tests"]
+[tool.hatch.build.targets.wheel]
+packages = ["gvm"]
+
+[tool.hatch.build.targets.sdist]
+include = ["docs", "tests", "gvm", "uv.lock"]
 
 [tool.ruff]
 line-length = 80
