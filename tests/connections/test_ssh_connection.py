@@ -154,16 +154,14 @@ class SSHConnectionTestCase(unittest.TestCase):
     @patch("builtins.print")
     def test_connect_adding_and_save_hostkey(self, _print_mock):
         input_mock = MagicMock(spec=input)
-        key_io = StringIO(
-            """-----BEGIN OPENSSH PRIVATE KEY-----
+        key_io = StringIO("""-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
 QyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXwAAAKhjwAdrY8AH
 awAAAAtzc2gtZWQyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXw
 AAAEA9tGQi2IrprbOSbDCF+RmAHd6meNSXBUQ2ekKXm4/8xnr1K9komH/1WBIvQbbtvnFV
 hryd62EfcgRFuLRiokNfAAAAI2FsZXhfZ2F5bm9yQEFsZXhzLU1hY0Jvb2stQWlyLmxvY2
 FsAQI=
-            -----END OPENSSH PRIVATE KEY-----"""
-        )
+            -----END OPENSSH PRIVATE KEY-----""")
         key = paramiko.Ed25519Key.from_private_key(key_io)
         key_type = key.get_name().replace("ssh-", "").upper()
         hostname = "0.0.0.0"
@@ -205,16 +203,14 @@ FsAQI=
     @patch("builtins.print")
     def test_connect_adding_and_dont_save_hostkey(self, _print_mock):
         input_mock = MagicMock(spec=input)
-        key_io = StringIO(
-            """-----BEGIN OPENSSH PRIVATE KEY-----
+        key_io = StringIO("""-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
 QyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXwAAAKhjwAdrY8AH
 awAAAAtzc2gtZWQyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXw
 AAAEA9tGQi2IrprbOSbDCF+RmAHd6meNSXBUQ2ekKXm4/8xnr1K9komH/1WBIvQbbtvnFV
 hryd62EfcgRFuLRiokNfAAAAI2FsZXhfZ2F5bm9yQEFsZXhzLU1hY0Jvb2stQWlyLmxvY2
 FsAQI=
-            -----END OPENSSH PRIVATE KEY-----"""
-        )
+            -----END OPENSSH PRIVATE KEY-----""")
         key = paramiko.Ed25519Key.from_private_key(key_io)
         key_type = key.get_name().replace("ssh-", "").upper()
         hostname = "0.0.0.0"
@@ -257,16 +253,14 @@ FsAQI=
     def test_connect_wrong_input(self):
         input_mock = MagicMock(spec=input)
         stdout_mock = StringIO()
-        key_io = StringIO(
-            """-----BEGIN OPENSSH PRIVATE KEY-----
+        key_io = StringIO("""-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
 QyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXwAAAKhjwAdrY8AH
 awAAAAtzc2gtZWQyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXw
 AAAEA9tGQi2IrprbOSbDCF+RmAHd6meNSXBUQ2ekKXm4/8xnr1K9komH/1WBIvQbbtvnFV
 hryd62EfcgRFuLRiokNfAAAAI2FsZXhfZ2F5bm9yQEFsZXhzLU1hY0Jvb2stQWlyLmxvY2
 FsAQI=
-            -----END OPENSSH PRIVATE KEY-----"""
-        )
+            -----END OPENSSH PRIVATE KEY-----""")
         key = paramiko.Ed25519Key.from_private_key(key_io)
         hostname = "0.0.0.0"
         key_type = key.get_name().replace("ssh-", "").upper()
@@ -309,16 +303,14 @@ FsAQI=
         input_mock = MagicMock(spec=input)
         stdout_mock = StringIO()
         exit_mock = MagicMock(side_effect=AbortException("Exit called"))
-        key_io = StringIO(
-            """-----BEGIN OPENSSH PRIVATE KEY-----
+        key_io = StringIO("""-----BEGIN OPENSSH PRIVATE KEY-----
 b3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW
 QyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXwAAAKhjwAdrY8AH
 awAAAAtzc2gtZWQyNTUxOQAAACB69SvZKJh/9VgSL0G27b5xVYa8nethH3IERbi0YqJDXw
 AAAEA9tGQi2IrprbOSbDCF+RmAHd6meNSXBUQ2ekKXm4/8xnr1K9komH/1WBIvQbbtvnFV
 hryd62EfcgRFuLRiokNfAAAAI2FsZXhfZ2F5bm9yQEFsZXhzLU1hY0Jvb2stQWlyLmxvY2
 FsAQI=
-            -----END OPENSSH PRIVATE KEY-----"""
-        )
+            -----END OPENSSH PRIVATE KEY-----""")
         key = paramiko.Ed25519Key.from_private_key(key_io)
         hostname = "0.0.0.0"
         input_mock.return_value = "no"

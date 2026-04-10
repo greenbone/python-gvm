@@ -5,6 +5,7 @@
 """
 Module for transforming responses
 """
+
 from lxml import etree
 
 from gvm.protocols.core import Response
