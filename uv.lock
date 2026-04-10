@@ -1155,7 +1155,7 @@ wheels = [
 
 [[package]]
 name = "pontos"
-version = "26.2.0"
+version = "26.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "colorful" },
@@ -1168,9 +1168,9 @@ dependencies = [
     { name = "shtab" },
     { name = "tomlkit" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/38/90/fd15a633c1039b59fa8d414494e7d4fefed16c6240ab9167c7c4d850a372/pontos-26.2.0.tar.gz", hash = "sha256:54ed2d1532879647d6f51b94d988c4295da419f7531910b5511a100f7ed81c8b", size = 348755, upload-time = "2026-02-20T07:00:38.648Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/55/12/f0043cc0902adffe3f26d1c45a0ef40b58b16f883e2c40ea94c471aedf99/pontos-26.4.0.tar.gz", hash = "sha256:be1fbb9edd841ef977355387bd2fe181e67be803496efaf9db4c5af62379db92", size = 349957, upload-time = "2026-04-10T12:13:07.048Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/be/11/673b7d246457f3e6fbfc722ef183dfd13921991b677437e5511360238bb0/pontos-26.2.0-py3-none-any.whl", hash = "sha256:37d5dc30ea65cef9b5aa12e00997165ae906be8eef2b6c017c9eb41431bb1d71", size = 250348, upload-time = "2026-02-20T07:00:37.157Z" },
+    { url = "https://files.pythonhosted.org/packages/95/b1/e2d2e80baf5f86bf8bc22d369190fda748978959f8d18726201531390a94/pontos-26.4.0-py3-none-any.whl", hash = "sha256:91328332b2f1803c3259877a05e4d944885ec0f2c69670bff7a8c0b555ee9d9b", size = 250462, upload-time = "2026-04-10T12:13:05.422Z" },
 ]
 
 [[package]]
@@ -1240,7 +1240,7 @@ wheels = [
 
 [[package]]
 name = "python-gvm"
-version = "26.11.2.dev1"
+version = "27.0.1.dev1"
 source = { editable = "." }
 dependencies = [
     { name = "httpx", extra = ["http2"] },
@@ -1278,7 +1278,7 @@ dev = [
     { name = "git-cliff", specifier = ">=2.8.0,<3" },
     { name = "lxml-stubs", specifier = ">=0.5.1,<0.6" },
     { name = "myst-parser", marker = "python_full_version >= '3.10' and python_full_version < '4'", specifier = ">=4.0.0,<5" },
-    { name = "pontos", specifier = ">=22.7.2" },
+    { name = "pontos", specifier = ">=26.4.0" },
     { name = "sphinx", specifier = ">=5.3.0" },
     { name = "types-paramiko", specifier = ">=3.4.0.20240205,<5.0.0.0" },
 ]
