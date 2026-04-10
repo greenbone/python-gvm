@@ -167,3 +167,6 @@ filter_commits = true
 topo_order = false
 # sort the commits inside sections by oldest/newest order
 sort_commits = "oldest"
+
+[tool.poetry]
+version = "27.0.0"
