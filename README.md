@@ -56,7 +56,7 @@ We frequently update these projects to add features and keep them free from bugs
 
 ### Requirements
 
-Python 3.9 and later is supported.
+Python 3.10 and later is supported.
 
 ### Install using pip
 
@@ -115,35 +115,26 @@ Your contributions are highly appreciated. Please
 For bigger changes, please discuss it first in the
 [issues](https://github.com/greenbone/python-gvm/issues).
 
-For development you should use [poetry](https://python-poetry.org)
+For development you should use [uv].
 to keep you python packages separated in different environments. First install
-poetry via pip
+uv via pip
 
 ```shell
-python3 -m pip install --user poetry
+python3 -m pip install --user uv
 ```
-
-Afterwards run
-
-```shell
-poetry install
-```
-
-in the checkout directory of python-gvm (the directory containing the
-`pyproject.toml` file) to install all dependencies including the packages only
-required for development.
 
 The python-gvm repository uses [autohooks](https://github.com/greenbone/autohooks)
 to apply linting and auto formatting via git hooks. Please ensure the git hooks
 are active.
 
 ```shell
-poetry install
-poetry run autohooks activate --force
+uv run autohooks activate --force
 ```
 
 ## License
 
-Copyright (C) 2017-2025 [Greenbone AG](https://www.greenbone.net/)
+Copyright (C) 2017-2026 [Greenbone AG](https://www.greenbone.net/)
 
 Licensed under the [GNU General Public License v3.0 or later](LICENSE).
+
+[uv]: https://docs.astral.sh/uv/
