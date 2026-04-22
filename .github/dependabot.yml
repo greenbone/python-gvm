@@ -5,15 +5,8 @@ updates:
     schedule:
       interval: weekly
       time: "04:00"
-    allow:
-      - dependency-type: direct
-      - dependency-type: indirect
     commit-message:
       prefix: "Deps"
-    groups:
-      python-packages:
-        patterns:
-          - "*"
 
   - package-ecosystem: "github-actions"
     directory: "/"
