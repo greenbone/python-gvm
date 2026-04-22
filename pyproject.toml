@@ -39,7 +39,7 @@ dev = [
     "pontos>=26.4.0",
     "furo>=2022.6.21",
     "lxml-stubs>=0.5.1,<0.6",
-    "types-paramiko>=3.4.0.20240205,<5.0.0.0",
+    "types-paramiko>=4.0.0.20260408,<5.0.0.0",
     "git-cliff>=2.8.0,<3",
     "myst-parser>=4.0.0,<5 ; python_full_version >= '3.10' and python_full_version < '4'",
 ]
