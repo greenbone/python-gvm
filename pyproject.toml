@@ -33,7 +33,7 @@ Documentation = "https://greenbone.github.io/python-gvm/"
 [dependency-groups]
 dev = [
     "coverage>=7.2",
-    "sphinx>=5.3.0",
+    "sphinx>=8.1.3",
     "autohooks-plugin-ruff>=25.2.0",
     "autohooks-plugin-mypy>=22.7.0",
     "pontos>=26.4.0",
