@@ -17,6 +17,9 @@ from gvm.protocols.gmp.requests.next._oci_image_targets import OCIImageTargets
 from gvm.protocols.gmp.requests.next._report_hosts import (
     ReportHosts,
 )
+from gvm.protocols.gmp.requests.next._report_ports import (
+    ReportPorts,
+)
 from gvm.protocols.gmp.requests.next._tasks import Tasks
 
 from .._entity_id import EntityID
@@ -140,6 +143,7 @@ __all__ = (
     "ReportFormatType",
     "ReportFormats",
     "ReportHosts",
+    "ReportPorts",
     "Reports",
     "ResourceNames",
     "ResourceType",
