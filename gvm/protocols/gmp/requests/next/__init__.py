@@ -14,6 +14,9 @@ from gvm.protocols.gmp.requests.next._integration_configs import (
     IntegrationConfigs,
 )
 from gvm.protocols.gmp.requests.next._oci_image_targets import OCIImageTargets
+from gvm.protocols.gmp.requests.next._report_applications import (
+    ReportApplications,
+)
 from gvm.protocols.gmp.requests.next._report_hosts import (
     ReportHosts,
 )
@@ -138,6 +141,7 @@ __all__ = (
     "Policies",
     "PortLists",
     "PortRangeType",
+    "ReportApplications",
     "ReportConfigParameter",
     "ReportConfigs",
     "ReportFormatType",
