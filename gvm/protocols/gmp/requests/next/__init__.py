@@ -20,6 +20,9 @@ from gvm.protocols.gmp.requests.next._report_applications import (
 from gvm.protocols.gmp.requests.next._report_hosts import (
     ReportHosts,
 )
+from gvm.protocols.gmp.requests.next._report_operating_systems import (
+    ReportOperatingSystems,
+)
 from gvm.protocols.gmp.requests.next._report_ports import (
     ReportPorts,
 )
@@ -147,6 +150,7 @@ __all__ = (
     "ReportFormatType",
     "ReportFormats",
     "ReportHosts",
+    "ReportOperatingSystems",
     "ReportPorts",
     "Reports",
     "ResourceNames",
