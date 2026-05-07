@@ -17,6 +17,9 @@ from gvm.protocols.gmp.requests.next._oci_image_targets import OCIImageTargets
 from gvm.protocols.gmp.requests.next._report_applications import (
     ReportApplications,
 )
+from gvm.protocols.gmp.requests.next._report_cves import (
+    ReportCVEs,
+)
 from gvm.protocols.gmp.requests.next._report_hosts import (
     ReportHosts,
 )
@@ -145,6 +148,7 @@ __all__ = (
     "PortLists",
     "PortRangeType",
     "ReportApplications",
+    "ReportCVEs",
     "ReportConfigParameter",
     "ReportConfigs",
     "ReportFormatType",
