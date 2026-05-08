@@ -20,6 +20,7 @@ from .requests.next import (
     IntegrationConfigs,
     OCIImageTargets,
     ReportApplications,
+    ReportCVEs,
     ReportHosts,
     ReportOperatingSystems,
     ReportPorts,
@@ -1140,6 +1141,36 @@ class GMPNext(GMPv227[T]):
         """
         return self._send_request_and_transform_response(
             ReportApplications.get_report_applications(
+                report_id=report_id,
+                filter_string=filter_string,
+                filter_id=filter_id,
+                ignore_pagination=ignore_pagination,
+                details=details,
+            )
+        )
+
+    def get_report_cves(
+        self,
+        report_id: EntityID,
+        *,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = True,
+    ) -> T:
+        """Request CVEs of a single report.
+
+        Args:
+            report_id: UUID of an existing report.
+            filter_string: Filter term to use to filter results in the report
+            filter_id: UUID of filter to use to filter results in the report
+            ignore_pagination: Whether to ignore the filter terms "first" and
+                "rows".
+            details: Request additional report CVE information details.
+                Defaults to True.
+        """
+        return self._send_request_and_transform_response(
+            ReportCVEs.get_report_cves(
                 report_id=report_id,
                 filter_string=filter_string,
                 filter_id=filter_id,
