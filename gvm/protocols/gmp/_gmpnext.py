@@ -20,6 +20,7 @@ from .requests.next import (
     IntegrationConfigs,
     OCIImageTargets,
     ReportApplications,
+    ReportClosedCVEs,
     ReportCVEs,
     ReportHosts,
     ReportOperatingSystems,
@@ -1143,6 +1144,30 @@ class GMPNext(GMPv227[T]):
                 report_id=report_id,
                 filter_string=filter_string,
                 filter_id=filter_id,
+                ignore_pagination=ignore_pagination,
+                details=details,
+            )
+        )
+
+    def get_report_closed_cves(
+        self,
+        report_id: EntityID,
+        *,
+        ignore_pagination: bool | None = None,
+        details: bool | None = True,
+    ) -> T:
+        """Request closed CVEs of a single report.
+
+        Args:
+            report_id: UUID of an existing report.
+            ignore_pagination: Whether to ignore the filter terms "first" and
+                "rows".
+            details: Request additional report closed CVE information details.
+                Defaults to True.
+        """
+        return self._send_request_and_transform_response(
+            ReportClosedCVEs.get_report_closed_cves(
+                report_id=report_id,
                 ignore_pagination=ignore_pagination,
                 details=details,
             )
