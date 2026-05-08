@@ -25,6 +25,7 @@ from .requests.next import (
     ReportHosts,
     ReportOperatingSystems,
     ReportPorts,
+    ReportTlsCertificates,
     Tasks,
 )
 from .requests.v224 import HostsOrdering
@@ -1081,6 +1082,36 @@ class GMPNext(GMPv227[T]):
         """
         return self._send_request_and_transform_response(
             ReportPorts.get_report_ports(
+                report_id=report_id,
+                filter_string=filter_string,
+                filter_id=filter_id,
+                ignore_pagination=ignore_pagination,
+                details=details,
+            )
+        )
+
+    def get_report_tls_certificates(
+        self,
+        report_id: EntityID,
+        *,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = True,
+    ) -> T:
+        """Request TLS certificates of a single report.
+
+        Args:
+            report_id: UUID of an existing report.
+            filter_string: Filter term to use to filter results in the report
+            filter_id: UUID of filter to use to filter results in the report
+            ignore_pagination: Whether to ignore the filter terms "first" and
+                "rows".
+            details: Request additional report TLS certificate information details.
+                Defaults to True.
+        """
+        return self._send_request_and_transform_response(
+            ReportTlsCertificates.get_report_tls_certificates(
                 report_id=report_id,
                 filter_string=filter_string,
                 filter_id=filter_id,
