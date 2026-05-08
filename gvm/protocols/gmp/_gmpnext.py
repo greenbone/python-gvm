@@ -27,7 +27,7 @@ from .requests.next import (
     ReportOperatingSystems,
     ReportPorts,
     ReportTlsCertificates,
-    ReportVulns,
+    ReportVulnerabilities,
     Tasks,
 )
 from .requests.v224 import HostsOrdering
@@ -1236,7 +1236,7 @@ class GMPNext(GMPv227[T]):
             )
         )
 
-    def get_report_vulns(
+    def get_report_vulnerabilities(
         self,
         report_id: EntityID,
         *,
@@ -1257,7 +1257,7 @@ class GMPNext(GMPv227[T]):
                 Defaults to True.
         """
         return self._send_request_and_transform_response(
-            ReportVulns.get_report_vulns(
+            ReportVulnerabilities.get_report_vulnerabilities(
                 report_id=report_id,
                 filter_string=filter_string,
                 filter_id=filter_id,

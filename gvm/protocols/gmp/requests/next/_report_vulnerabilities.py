@@ -5,9 +5,9 @@ from gvm.utils import to_bool
 from gvm.xml import XmlCommand
 
 
-class ReportVulns:
+class ReportVulnerabilities:
     @classmethod
-    def get_report_vulns(
+    def get_report_vulnerabilities(
         cls,
         report_id: EntityID,
         *,
@@ -31,7 +31,8 @@ class ReportVulns:
 
         if not report_id:
             raise RequiredArgument(
-                function=cls.get_report_vulns.__name__, argument="report_id"
+                function=cls.get_report_vulnerabilities.__name__,
+                argument="report_id",
             )
 
         cmd.set_attribute("report_id", str(report_id))
