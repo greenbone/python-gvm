@@ -23,6 +23,9 @@ from gvm.protocols.gmp.requests.next._report_closed_cves import (
 from gvm.protocols.gmp.requests.next._report_cves import (
     ReportCVEs,
 )
+from gvm.protocols.gmp.requests.next._report_errors import (
+    ReportErrors,
+)
 from gvm.protocols.gmp.requests.next._report_hosts import (
     ReportHosts,
 )
@@ -158,6 +161,7 @@ __all__ = (
     "ReportClosedCVEs",
     "ReportConfigParameter",
     "ReportConfigs",
+    "ReportErrors",
     "ReportFormatType",
     "ReportFormats",
     "ReportHosts",
