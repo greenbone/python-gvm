@@ -38,6 +38,9 @@ from gvm.protocols.gmp.requests.next._report_ports import (
 from gvm.protocols.gmp.requests.next._report_tls_certificates import (
     ReportTlsCertificates,
 )
+from gvm.protocols.gmp.requests.next._report_vulns import (
+    ReportVulns,
+)
 from gvm.protocols.gmp.requests.next._tasks import Tasks
 
 from .._entity_id import EntityID
@@ -168,6 +171,7 @@ __all__ = (
     "ReportOperatingSystems",
     "ReportPorts",
     "ReportTlsCertificates",
+    "ReportVulns",
     "Reports",
     "ResourceNames",
     "ResourceType",
