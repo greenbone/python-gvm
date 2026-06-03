@@ -27,10 +27,10 @@ class DummyRequestHandler(socketserver.BaseRequestHandler):
         self.request.settimeout(0.2)
         try:
             self.request.recv(16 * 1024)
-        except TimeoutError:
-            pass
-        except OSError:
-            pass
+        except (TimeoutError, OSError):
+            # In tests, receiving request data is optional; on timeout/socket read
+            # issues we still return the canned response to keep behavior deterministic.
+            _ = None
 
         self.request.sendall(response)
 
