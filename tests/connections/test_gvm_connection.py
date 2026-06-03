@@ -14,7 +14,7 @@ from gvm.connections._connection import AbstractGvmConnection
 from gvm.errors import GvmError
 
 
-class TestConnection(AbstractGvmConnection):
+class DummyConnection(AbstractGvmConnection):
     def connect(self) -> None:
         pass
 
@@ -22,13 +22,13 @@ class TestConnection(AbstractGvmConnection):
 class GvmConnectionTestCase(unittest.TestCase):
     # pylint: disable=protected-access
     def test_init_no_args(self):
-        connection = TestConnection()
+        connection = DummyConnection()
 
         self.assertIsNone(connection._socket)
         self.assertEqual(connection._timeout, DEFAULT_TIMEOUT)
 
     def test_init_with_none(self):
-        connection = TestConnection(timeout=None)
+        connection = DummyConnection(timeout=None)
 
         self.assertIsNone(connection._socket)
         self.assertEqual(connection._timeout, DEFAULT_TIMEOUT)
@@ -37,7 +37,7 @@ class GvmConnectionTestCase(unittest.TestCase):
         read_mock = MagicMock()
         read_mock.return_value = None
 
-        connection = TestConnection()
+        connection = DummyConnection()
         connection._read = read_mock
 
         with self.assertRaises(GvmError, msg="Remote closed the connection"):
@@ -49,7 +49,7 @@ class GvmConnectionTestCase(unittest.TestCase):
         read_mock = MagicMock()
         read_mock.side_effect = [b"<foo>xyz<bar></bar>", b"</foo>"]
 
-        connection = TestConnection(timeout=0)
+        connection = DummyConnection(timeout=0)
         connection._read = read_mock
 
         with self.assertRaises(
@@ -58,5 +58,5 @@ class GvmConnectionTestCase(unittest.TestCase):
             connection.read()
 
     def test_is_gvm_connection(self):
-        connection = TestConnection()
+        connection = DummyConnection()
         self.assertTrue(isinstance(connection, GvmConnection))
