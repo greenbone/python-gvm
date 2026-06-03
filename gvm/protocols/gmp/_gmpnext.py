@@ -12,7 +12,8 @@ from .._protocol import T
 from ._gmp227 import GMPv227
 from .requests.next import (
     AgentGroups,
-    AgentInstallers,
+    AgentInstallerInstructionLanguageType,
+    AgentInstallerInstructions,
     Agents,
     Credentials,
     CredentialStoreCredentialType,
@@ -55,50 +56,23 @@ class GMPNext(GMPv227[T]):
     def get_protocol_version() -> tuple[int, int]:
         return (22, 8)
 
-    def get_agent_installers(
+    def get_agent_installer_instruction(
         self,
         *,
-        filter_string: str | None = None,
-        filter_id: EntityID | None = None,
-        trash: bool | None = None,
-        details: bool | None = None,
+        scanner_id: EntityID,
+        language_type: AgentInstallerInstructionLanguageType,
     ) -> T:
-        """Request a list of agent installers
+        """Request an agent installer instruction.
 
         Args:
-            filter_string: Filter term to use for the query
-            filter_id: UUID of an existing filter to use for the query
-            trash: Whether to get the trashcan agent installers instead
-            details: Whether to include extra details like tasks using this
-                scanner
+            scanner_id: UUID of the Agent controller to get the installer instruction for.
+            language_type: Language of the installer instruction.
         """
         return self._send_request_and_transform_response(
-            AgentInstallers.get_agent_installers(
-                filter_string=filter_string,
-                filter_id=filter_id,
-                trash=trash,
-                details=details,
+            AgentInstallerInstructions.get_agent_installer_instruction(
+                scanner_id=scanner_id,
+                language_type=language_type,
             )
-        )
-
-    def get_agent_installer(self, agent_installer_id: EntityID) -> T:
-        """Request a single agent installer
-
-        Args:
-            agent_installer_id: UUID of an existing agent installer
-        """
-        return self._send_request_and_transform_response(
-            AgentInstallers.get_agent_installer(agent_installer_id)
-        )
-
-    def get_agent_installer_file(self, agent_installer_id: EntityID) -> T:
-        """Request a single agent installer file
-
-        Args:
-            agent_installer_id: UUID of an existing agent installer
-        """
-        return self._send_request_and_transform_response(
-            AgentInstallers.get_agent_installer_file(agent_installer_id)
         )
 
     def get_agents(
