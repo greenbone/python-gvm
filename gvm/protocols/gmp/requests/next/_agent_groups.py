@@ -16,6 +16,7 @@ class AgentGroups:
         cls,
         name: str,
         agent_ids: list[str],
+        scheduler_cron_time: str,
         *,
         comment: str | None = None,
     ) -> Request:
@@ -24,6 +25,7 @@ class AgentGroups:
         Args:
             name: Name of the new agent group.
             agent_ids: List of agent UUIDs to include in the group (required).
+            scheduler_cron_time: Cron-like time to schedule new agent groups (required).
             comment: Optional comment for the group.
 
         Raises:
@@ -38,9 +40,15 @@ class AgentGroups:
             raise RequiredArgument(
                 function=cls.create_agent_group.__name__, argument="agent_ids"
             )
+        if not scheduler_cron_time:
+            raise RequiredArgument(
+                function=cls.create_agent_group.__name__,
+                argument="scheduler_cron_time",
+            )
 
         cmd = XmlCommand("create_agent_group")
         cmd.add_element("name", name)
+        cmd.add_element("scheduler_cron_time", scheduler_cron_time)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -76,6 +84,7 @@ class AgentGroups:
     def modify_agent_group(
         cls,
         agent_group_id: EntityID,
+        scheduler_cron_time: str,
         *,
         name: str | None = None,
         comment: str | None = None,
@@ -85,6 +94,7 @@ class AgentGroups:
 
         Args:
             agent_group_id: UUID of the group to modify.
+            scheduler_cron_time: Cron-like time to schedule the agent groups.
             name: Optional new name for the group.
             comment: Optional comment for the group.
             agent_ids: Optional list of agent UUIDs to set for the group.
@@ -98,9 +108,15 @@ class AgentGroups:
                 argument="agent_group_id",
             )
 
+        if not scheduler_cron_time:
+            raise RequiredArgument(
+                function=cls.modify_agent_group.__name__,
+                argument="scheduler_cron_time",
+            )
+
         cmd = XmlCommand("modify_agent_group")
         cmd.set_attribute("agent_group_id", str(agent_group_id))
-
+        cmd.add_element("scheduler_cron_time", scheduler_cron_time)
         if name:
             cmd.add_element("name", name)
 
