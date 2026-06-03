@@ -228,6 +228,7 @@ class GMPNext(GMPv227[T]):
         self,
         name: str,
         agent_ids: list[str],
+        scheduler_cron_time: str,
         *,
         comment: str | None = None,
     ) -> T:
@@ -236,6 +237,7 @@ class GMPNext(GMPv227[T]):
         Args:
             name: Name of the new agent group.
             agent_ids: List of agent UUIDs to include in the group (required).
+            scheduler_cron_time: Scheduler cron to use.
             comment: Optional comment for the group.
 
         Raises:
@@ -246,12 +248,14 @@ class GMPNext(GMPv227[T]):
                 name=name,
                 comment=comment,
                 agent_ids=agent_ids,
+                scheduler_cron_time=scheduler_cron_time,
             )
         )
 
     def modify_agent_group(
         self,
         agent_group_id: EntityID,
+        scheduler_cron_time: str,
         *,
         name: str | None = None,
         comment: str | None = None,
@@ -262,6 +266,7 @@ class GMPNext(GMPv227[T]):
         Args:
             agent_group_id: UUID of the group to modify.
             name: Optional new name for the group.
+            scheduler_cron_time: Scheduler cron to use.
             comment: Optional comment for the group.
             agent_ids: Optional list of agent UUIDs to set for the group.
 
@@ -274,6 +279,7 @@ class GMPNext(GMPv227[T]):
                 name=name,
                 comment=comment,
                 agent_ids=agent_ids,
+                scheduler_cron_time=scheduler_cron_time,
             )
         )
 
