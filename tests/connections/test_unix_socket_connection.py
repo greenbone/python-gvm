@@ -23,6 +23,15 @@ from gvm.errors import GvmError
 class DummyRequestHandler(socketserver.BaseRequestHandler):
     def handle(self):
         response = b'<gmp_response status="200" status_text="OK"/>'
+
+        self.request.settimeout(0.2)
+        try:
+            self.request.recv(16 * 1024)
+        except TimeoutError:
+            pass
+        except OSError:
+            pass
+
         self.request.sendall(response)
 
 
@@ -47,29 +56,33 @@ class UnixSocketConnectionTestCase(unittest.TestCase):
         self.server_thread.start()
 
     def tearDown(self):
-        self.socket_server.server_close()
         self.socket_server.shutdown()
         self.server_thread.join(60.0)
+        self.socket_server.server_close()
         self.socket_path.unlink(missing_ok=True)
 
     def test_unix_socket_connection_connect_read(self):
         connection = UnixSocketConnection(
             path=self.socket_name, timeout=DEFAULT_TIMEOUT
         )
+        self.addCleanup(connection.disconnect)
+
         connection.connect()
         resp = connection.read()
+
         self.assertEqual(resp, b'<gmp_response status="200" status_text="OK"/>')
-        connection.disconnect()
 
     def test_unix_socket_connection_connect_send_bytes_read(self):
         connection = UnixSocketConnection(
             path=self.socket_name, timeout=DEFAULT_TIMEOUT
         )
+        self.addCleanup(connection.disconnect)
+
         connection.connect()
         connection.send(b"<gmp/>")
         resp = connection.read()
+
         self.assertEqual(resp, b'<gmp_response status="200" status_text="OK"/>')
-        connection.disconnect()
 
     def test_unix_socket_connect_file_not_found(self):
         connection = UnixSocketConnection(path="foo", timeout=DEFAULT_TIMEOUT)

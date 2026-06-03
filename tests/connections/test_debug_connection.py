@@ -8,12 +8,12 @@ from gvm.connections import DebugConnection, GvmConnection
 from gvm.connections._connection import AbstractGvmConnection
 
 
-class TestConnection(AbstractGvmConnection):
+class DummyConnection(AbstractGvmConnection):
     def connect(self) -> None:
         pass
 
 
 class DebugConnectionTestCase(unittest.TestCase):
     def test_is_gvm_connection(self):
-        connection = DebugConnection(TestConnection())
+        connection = DebugConnection(DummyConnection())
         self.assertTrue(isinstance(connection, GvmConnection))
