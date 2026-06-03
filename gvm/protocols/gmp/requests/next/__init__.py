@@ -3,7 +3,10 @@
 #  SPDX-License-Identifier: GPL-3.0-or-later
 
 from gvm.protocols.gmp.requests.next._agent_groups import AgentGroups
-from gvm.protocols.gmp.requests.next._agent_installers import AgentInstallers
+from gvm.protocols.gmp.requests.next._agent_installer_instructions import (
+    AgentInstallerInstructionLanguageType,
+    AgentInstallerInstructions,
+)
 from gvm.protocols.gmp.requests.next._agents import Agents
 from gvm.protocols.gmp.requests.next._credential_stores import CredentialStores
 from gvm.protocols.gmp.requests.next._credentials import (
@@ -115,7 +118,8 @@ from ..v227 import (
 
 __all__ = (
     "AgentGroups",
-    "AgentInstallers",
+    "AgentInstallerInstructionLanguageType",
+    "AgentInstallerInstructions",
     "Agents",
     "AggregateStatistic",
     "Aggregates",
