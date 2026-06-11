@@ -11,6 +11,7 @@ from gvm.utils import to_bool, to_comma_list
 from gvm.xml import XmlCommand
 
 from .._entity_id import EntityID
+from ..v224 import AliveTest as AliveTestV224
 
 
 class AliveTest(Enum):
@@ -72,7 +73,7 @@ class Targets:
         smb_credential_id: EntityID | None = None,
         esxi_credential_id: EntityID | None = None,
         snmp_credential_id: EntityID | None = None,
-        alive_test: str | AliveTest | None = None,
+        alive_test: str | AliveTest | AliveTestV224 | None = None,
         allow_simultaneous_ips: bool | None = None,
         reverse_lookup_only: bool | None = None,
         reverse_lookup_unify: bool | None = None,
@@ -189,7 +190,7 @@ class Targets:
         smb_credential_id: EntityID | None = None,
         esxi_credential_id: EntityID | None = None,
         snmp_credential_id: EntityID | None = None,
-        alive_test: AliveTest | str | None = None,
+        alive_test: str | AliveTest | AliveTestV224 | None = None,
         allow_simultaneous_ips: bool | None = None,
         reverse_lookup_only: bool | None = None,
         reverse_lookup_unify: bool | None = None,

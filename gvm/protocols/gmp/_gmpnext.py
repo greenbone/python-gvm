@@ -34,6 +34,7 @@ from .requests.next import (
     Tasks,
     WebApplicationTargets,
 )
+from .requests.v224 import AliveTest as AliveTestV224
 from .requests.v224 import HostsOrdering
 
 
@@ -1398,7 +1399,7 @@ class GMPNext(GMPv227[T]):
         smb_credential_id: EntityID | None = None,
         esxi_credential_id: EntityID | None = None,
         snmp_credential_id: EntityID | None = None,
-        alive_test: str | AliveTest | None = None,
+        alive_test: str | AliveTest | AliveTestV224 | None = None,
         allow_simultaneous_ips: bool | None = None,
         reverse_lookup_only: bool | None = None,
         reverse_lookup_unify: bool | None = None,
@@ -1461,7 +1462,7 @@ class GMPNext(GMPv227[T]):
         smb_credential_id: EntityID | None = None,
         esxi_credential_id: EntityID | None = None,
         snmp_credential_id: EntityID | None = None,
-        alive_test: AliveTest | str | None = None,
+        alive_test: str | AliveTest | AliveTestV224 | None = None,
         allow_simultaneous_ips: bool | None = None,
         reverse_lookup_only: bool | None = None,
         reverse_lookup_unify: bool | None = None,
