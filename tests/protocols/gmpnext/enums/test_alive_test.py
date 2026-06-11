@@ -6,7 +6,7 @@
 import unittest
 
 from gvm.errors import InvalidArgument
-from gvm.protocols.gmp.requests.v227 import AliveTest
+from gvm.protocols.gmp.requests.next import AliveTest
 
 
 class GetAliveTestFromStringTestCase(unittest.TestCase):
@@ -17,6 +17,7 @@ class GetAliveTestFromStringTestCase(unittest.TestCase):
     def test_none_or_empty(self):
         ct = AliveTest.from_string(None)
         self.assertIsNone(ct)
+
         ct = AliveTest.from_string("")
         self.assertIsNone(ct)
 
@@ -32,7 +33,7 @@ class GetAliveTestFromStringTestCase(unittest.TestCase):
         ct = AliveTest.from_string("TCP-ACK Service Ping")
         self.assertEqual(ct, AliveTest.TCP_ACK_SERVICE_PING)
 
-    def test_tcp_sync_service_ping(self):
+    def test_tcp_syn_service_ping(self):
         ct = AliveTest.from_string("TCP-SYN Service Ping")
         self.assertEqual(ct, AliveTest.TCP_SYN_SERVICE_PING)
 
@@ -59,3 +60,7 @@ class GetAliveTestFromStringTestCase(unittest.TestCase):
     def test_consider_alive(self):
         ct = AliveTest.from_string("Consider Alive")
         self.assertEqual(ct, AliveTest.CONSIDER_ALIVE)
+
+    def test_host_discovery_ipv6(self):
+        ct = AliveTest.from_string("Host Discovery IPv6")
+        self.assertEqual(ct, AliveTest.HOST_DISCOVERY_IPV6)
