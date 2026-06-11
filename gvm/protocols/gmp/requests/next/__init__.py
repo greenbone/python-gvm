@@ -45,6 +45,9 @@ from gvm.protocols.gmp.requests.next._report_vulnerabilities import (
     ReportVulnerabilities,
 )
 from gvm.protocols.gmp.requests.next._tasks import Tasks
+from gvm.protocols.gmp.requests.next._web_application_targets import (
+    WebApplicationTargets,
+)
 
 from .._entity_id import EntityID
 from .._version import Version
@@ -203,4 +206,5 @@ __all__ = (
     "Users",
     "Version",
     "Vulnerabilities",
+    "WebApplicationTargets",
 )

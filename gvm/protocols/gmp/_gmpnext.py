@@ -30,6 +30,7 @@ from .requests.next import (
     ReportTlsCertificates,
     ReportVulnerabilities,
     Tasks,
+    WebApplicationTargets,
 )
 from .requests.v224 import HostsOrdering
 
@@ -1243,5 +1244,141 @@ class GMPNext(GMPv227[T]):
                 filter_id=filter_id,
                 ignore_pagination=ignore_pagination,
                 details=details,
+            )
+        )
+
+    def create_web_application_target(
+        self,
+        name: str,
+        urls: list[str],
+        *,
+        comment: str | None = None,
+        exclude_urls: list[str] | None = None,
+        credential_id: EntityID | None = None,
+    ) -> T:
+        """Create a new web application target.
+
+        Args:
+            name: Name of the web application target.
+            urls: List of URLs to scan.
+            comment: Comment for the target.
+            exclude_urls: List of URLs to exclude from the scan.
+            credential_id: UUID of a credential to use on target.
+        """
+        return self._send_request_and_transform_response(
+            WebApplicationTargets.create_web_application_target(
+                name=name,
+                urls=urls,
+                comment=comment,
+                exclude_urls=exclude_urls,
+                credential_id=credential_id,
+            )
+        )
+
+    def modify_web_application_target(
+        self,
+        web_application_target_id: EntityID,
+        *,
+        name: str | None = None,
+        comment: str | None = None,
+        urls: list[str] | None = None,
+        exclude_urls: list[str] | None = None,
+        credential_id: EntityID | None = None,
+    ) -> T:
+        """Modify an existing web application target.
+
+        Args:
+            web_application_target_id: UUID of target to modify.
+            name: Name of target.
+            comment: Comment on target.
+            urls: List of URLs to scan.
+            exclude_urls: List of URLs to exclude from the scan.
+            credential_id: UUID of credential to use on target.
+        """
+        return self._send_request_and_transform_response(
+            WebApplicationTargets.modify_web_application_target(
+                web_application_target_id,
+                name=name,
+                comment=comment,
+                urls=urls,
+                exclude_urls=exclude_urls,
+                credential_id=credential_id,
+            )
+        )
+
+    def clone_web_application_target(
+        self, web_application_target_id: EntityID
+    ) -> T:
+        """Clone an existing web application target.
+
+        Args:
+            web_application_target_id: UUID of an existing web application target to clone.
+        """
+        return self._send_request_and_transform_response(
+            WebApplicationTargets.clone_web_application_target(
+                web_application_target_id
+            )
+        )
+
+    def delete_web_application_target(
+        self,
+        web_application_target_id: EntityID,
+        *,
+        ultimate: bool | None = False,
+    ) -> T:
+        """Delete an existing web application target.
+
+        Args:
+            web_application_target_id: UUID of an existing web application target to delete.
+            ultimate: Whether to remove entirely or to the trashcan.
+        """
+        return self._send_request_and_transform_response(
+            WebApplicationTargets.delete_web_application_target(
+                web_application_target_id,
+                ultimate=ultimate,
+            )
+        )
+
+    def get_web_application_target(
+        self,
+        web_application_target_id: EntityID,
+        *,
+        tasks: bool | None = None,
+    ) -> T:
+        """Request a single web application target.
+
+        Args:
+            web_application_target_id: UUID of the web application target to request.
+            tasks: Whether to include list of tasks that use the target.
+        """
+        return self._send_request_and_transform_response(
+            WebApplicationTargets.get_web_application_target(
+                web_application_target_id,
+                tasks=tasks,
+            )
+        )
+
+    def get_web_application_targets(
+        self,
+        *,
+        filter_string: str | None = None,
+        filter_id: EntityID | None = None,
+        trash: bool | None = None,
+        tasks: bool | None = None,
+    ) -> T:
+        """Request a list of web application targets.
+
+        Args:
+            filter_string: Filter term to use for the query.
+            filter_id: UUID of an existing filter to use for the query.
+            trash: Whether to include targets in the trashcan.
+            tasks: Whether to include list of tasks that use the target.
+        """
+        return self._send_request_and_transform_response(
+            WebApplicationTargets.get_web_application_targets(
+                filter_string=filter_string,
+                filter_id=filter_id,
+                trash=trash,
+                tasks=tasks,
             )
         )
