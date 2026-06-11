@@ -44,6 +44,7 @@ from gvm.protocols.gmp.requests.next._report_tls_certificates import (
 from gvm.protocols.gmp.requests.next._report_vulnerabilities import (
     ReportVulnerabilities,
 )
+from gvm.protocols.gmp.requests.next._targets import AliveTest, Targets
 from gvm.protocols.gmp.requests.next._tasks import Tasks
 from gvm.protocols.gmp.requests.next._web_application_targets import (
     WebApplicationTargets,
@@ -58,7 +59,6 @@ from ..v227 import (
     AlertEvent,
     AlertMethod,
     Alerts,
-    AliveTest,
     AuditReports,
     Audits,
     Authentication,
@@ -108,7 +108,6 @@ from ..v227 import (
     SortOrder,
     SystemReports,
     Tags,
-    Targets,
     Tickets,
     TicketStatus,
     TLSCertificates,
