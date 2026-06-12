@@ -205,3 +205,36 @@ class GmpModifyTaskTestMixin:
             b"</preferences>"
             b"</modify_task>"
         )
+
+    def test_modify_task_with_web_application_target_id(self):
+        self.gmp.modify_task(task_id="t1", web_application_target_id="wt1")
+
+        self.connection.send.has_been_called_with(
+            b'<modify_task task_id="t1">'
+            b'<web_application_target id="wt1"/>'
+            b"</modify_task>"
+        )
+
+    def test_modify_task_with_target_and_web_application_target(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_task(
+                task_id="t1",
+                target_id="t1",
+                web_application_target_id="wt1",
+            )
+
+    def test_modify_task_with_agent_group_and_web_application_target(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_task(
+                task_id="t1",
+                agent_group_id="ag1",
+                web_application_target_id="wt1",
+            )
+
+    def test_modify_task_with_oci_image_target_and_web_application_target(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_task(
+                task_id="t1",
+                oci_image_target_id="it1",
+                web_application_target_id="wt1",
+            )

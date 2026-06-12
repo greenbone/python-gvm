@@ -709,6 +709,49 @@ class GMPNext(GMPv227[T]):
             Tasks.create_container_task(name=name, comment=comment)
         )
 
+    def create_web_application_task(
+        self,
+        name: str,
+        web_application_target_id: EntityID,
+        scanner_id: EntityID,
+        *,
+        comment: str | None = None,
+        alterable: bool | None = None,
+        schedule_id: EntityID | None = None,
+        alert_ids: Sequence[EntityID] | None = None,
+        schedule_periods: int | None = None,
+        observers: Sequence[str] | None = None,
+        preferences: Mapping[str, SupportsStr] | None = None,
+    ) -> T:
+        """Create a new scan task using an OCI image target.
+
+        Args:
+            name: Name of the new task.
+            web_application_target_id: UUID of the web application target to be scanned.
+            scanner_id: UUID of scanner to use for scanning the agents.
+            comment: Optional comment for the task.
+            alterable: Whether the task should be alterable.
+            alert_ids: List of UUIDs for alerts to be applied to the task.
+            schedule_id: UUID of a schedule when the task should be run.
+            schedule_periods: Limit to number of scheduled runs, 0 for unlimited.
+            observers: List of usernames or IDs allowed to observe the task.
+            preferences: Scanner preferences as name/value pairs.
+        """
+        return self._send_request_and_transform_response(
+            Tasks.create_web_application_task(
+                name=name,
+                web_application_target_id=web_application_target_id,
+                scanner_id=scanner_id,
+                comment=comment,
+                alterable=alterable,
+                schedule_id=schedule_id,
+                alert_ids=alert_ids,
+                schedule_periods=schedule_periods,
+                observers=observers,
+                preferences=preferences,
+            )
+        )
+
     def create_task(
         self,
         name: str,
@@ -826,6 +869,7 @@ class GMPNext(GMPv227[T]):
         scanner_id: EntityID | None = None,
         agent_group_id: EntityID | None = None,
         oci_image_target_id: EntityID | None = None,
+        web_application_target_id: EntityID | None = None,
         alterable: bool | None = None,
         hosts_ordering: HostsOrdering | None = None,
         schedule_id: EntityID | None = None,
@@ -845,6 +889,7 @@ class GMPNext(GMPv227[T]):
             scanner_id: UUID of scanner to use for scanning the target
             agent_group_id: UUID of agent group to use for scanning
             oci_image_target_id: UUID of the OCI Image target to be scanned.
+            web_application_target_id: UUID of the web application target to be scanned.
             comment: The comment on the task.
             alert_ids: List of UUIDs for alerts to be applied to the task
             hosts_ordering: The order hosts are scanned in
@@ -864,6 +909,7 @@ class GMPNext(GMPv227[T]):
                 scanner_id=scanner_id,
                 agent_group_id=agent_group_id,
                 oci_image_target_id=oci_image_target_id,
+                web_application_target_id=web_application_target_id,
                 alterable=alterable,
                 hosts_ordering=hosts_ordering,
                 schedule_id=schedule_id,

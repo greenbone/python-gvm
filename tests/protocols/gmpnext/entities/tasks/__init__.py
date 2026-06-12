@@ -11,6 +11,9 @@ from .test_create_container_image_task import (
 from .test_create_container_task import GmpCreateContainerTaskTestMixin
 from .test_create_import_task import GmpCreateImportTaskTestMixin
 from .test_create_task import GmpCreateTaskTestMixin
+from .test_create_web_application_task import (
+    GmpCreateWebApplicationTaskTestMixin,
+)
 from .test_delete_task import GmpDeleteTaskTestMixin
 from .test_get_task import GmpGetTaskTestMixin
 from .test_get_tasks import GmpGetTasksTestMixin
@@ -27,6 +30,7 @@ __all__ = (
     "GmpCreateContainerTaskTestMixin",
     "GmpCreateImportTaskTestMixin",
     "GmpCreateTaskTestMixin",
+    "GmpCreateWebApplicationTaskTestMixin",
     "GmpDeleteTaskTestMixin",
     "GmpGetTaskTestMixin",
     "GmpGetTasksTestMixin",
