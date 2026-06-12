@@ -10,6 +10,7 @@ from ...gmpnext.entities.tasks import (
     GmpCreateContainerTaskTestMixin,
     GmpCreateImportTaskTestMixin,
     GmpCreateTaskTestMixin,
+    GmpCreateWebApplicationTaskTestMixin,
     GmpDeleteTaskTestMixin,
     GmpGetTasksTestMixin,
     GmpGetTaskTestMixin,
@@ -44,6 +45,12 @@ class GMPCreateContainerTaskTestCase(
 
 
 class GMPCreateImportTaskTestCase(GmpCreateImportTaskTestMixin, GMPTestCase):
+    pass
+
+
+class GmpCreateWebApplicationTaskTestCase(
+    GmpCreateWebApplicationTaskTestMixin, GMPTestCase
+):
     pass
 
 
