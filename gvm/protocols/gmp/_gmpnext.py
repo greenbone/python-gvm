@@ -723,7 +723,7 @@ class GMPNext(GMPv227[T]):
         observers: Sequence[str] | None = None,
         preferences: Mapping[str, SupportsStr] | None = None,
     ) -> T:
-        """Create a new scan task using an OCI image target.
+        """Create a new scan task using a web application target.
 
         Args:
             name: Name of the new task.
