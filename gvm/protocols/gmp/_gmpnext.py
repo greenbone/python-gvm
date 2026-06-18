@@ -65,17 +65,21 @@ class GMPNext(GMPv227[T]):
         *,
         scanner_id: EntityID,
         language_type: AgentInstallerInstructionLanguageType,
+        origin_url: str,
     ) -> T:
         """Request an agent installer instruction.
 
         Args:
             scanner_id: UUID of the Agent controller to get the installer instruction for.
             language_type: Language of the installer instruction.
+            origin_url: Origin URL used to generate the executable agent
+                installation command.
         """
         return self._send_request_and_transform_response(
             AgentInstallerInstructions.get_agent_installer_instruction(
                 scanner_id=scanner_id,
                 language_type=language_type,
+                origin_url=origin_url,
             )
         )
 
