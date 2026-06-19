@@ -1267,7 +1267,7 @@ wheels = [
 
 [[package]]
 name = "python-gvm"
-version = "27.3.2.dev1"
+version = "27.4.1.dev1"
 source = { editable = "." }
 dependencies = [
     { name = "httpx", extra = ["http2"] },

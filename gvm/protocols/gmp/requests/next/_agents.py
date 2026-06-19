@@ -431,3 +431,39 @@ class Agents:
     def sync_agents(cls) -> Request:
         """Trigger agents synchronization from all agent controllers."""
         return XmlCommand("sync_agents")
+
+    @classmethod
+    def get_agent_support_bundle(
+        cls,
+        agent_id: EntityID,
+        *,
+        days: int | None = None,
+    ) -> Request:
+        """Request a support bundle for an agent.
+
+        Args:
+            agent_id: ID of the agent to get the support bundle for.
+            days: Number of days of logs to include. If None, zero is sent so the
+                Agent Controller uses its configured default.
+
+        Raises:
+            RequiredArgument: If agent_id is missing.
+            ValueError: If days is negative.
+        """
+        if not agent_id:
+            raise RequiredArgument(
+                function=cls.get_agent_support_bundle.__name__,
+                argument="agent_id",
+            )
+
+        if days is None:
+            days = 0
+
+        if days < 0:
+            raise ValueError("days must be greater than or equal to zero")
+
+        cmd = XmlCommand("get_agent_support_bundle")
+        cmd.set_attribute("agent_uuid", str(agent_id))
+        cmd.set_attribute("days", str(days))
+
+        return cmd

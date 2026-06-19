@@ -7,6 +7,9 @@ from ...gmpnext import GMPTestCase
 from .agents.test_delete_agents import (
     GmpDeleteAgentsTestMixin,
 )
+from .agents.test_get_agent_support_bundle import (
+    GmpGetAgentSupportBundleTestMixin,
+)
 from .agents.test_get_agents import (
     GmpGetAgentsTestMixin,
 )
@@ -38,4 +41,10 @@ class GMPModifyAgentControllerScanConfigTestCase(
 
 
 class GMPSyncAgentsTestCase(GmpSyncAgentsTestMixin, GMPTestCase):
+    pass
+
+
+class GmpGetAgentSupportBundleTestCase(
+    GmpGetAgentSupportBundleTestMixin, GMPTestCase
+):
     pass
