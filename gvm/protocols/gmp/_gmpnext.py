@@ -306,6 +306,29 @@ class GMPNext(GMPv227[T]):
         """Trigger agents synchronization from all agent controllers."""
         return self._send_request_and_transform_response(Agents.sync_agents())
 
+    def get_agent_support_bundle(
+        self,
+        agent_id: EntityID,
+        days: int | None = None,
+    ) -> T:
+        """Request a support bundle for an agent.
+
+        Args:
+            agent_id: ID of the agent to get the support bundle for.
+            days: Number of days of logs to include. If None, zero is sent so the
+                Agent Controller uses its configured default.
+
+        Raises:
+            RequiredArgument: If agent_id is missing.
+            ValueError: If days is negative.
+        """
+        return self._send_request_and_transform_response(
+            Agents.get_agent_support_bundle(
+                agent_id,
+                days=days,
+            )
+        )
+
     def create_credential_store_credential(
         self,
         name: str,
