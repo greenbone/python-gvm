@@ -437,7 +437,7 @@ class Agents:
         cls,
         agent_id: EntityID,
         *,
-        days: int | None = None,
+        days: int = 0,
     ) -> Request:
         """Request a support bundle for an agent.
 
@@ -455,9 +455,6 @@ class Agents:
                 function=cls.get_agent_support_bundle.__name__,
                 argument="agent_id",
             )
-
-        if days is None:
-            days = 0
 
         if days < 0:
             raise ValueError("days must be greater than or equal to zero")

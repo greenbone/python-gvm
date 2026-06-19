@@ -309,7 +309,7 @@ class GMPNext(GMPv227[T]):
     def get_agent_support_bundle(
         self,
         agent_id: EntityID,
-        days: int | None = None,
+        days: int = 0,
     ) -> T:
         """Request a support bundle for an agent.
 

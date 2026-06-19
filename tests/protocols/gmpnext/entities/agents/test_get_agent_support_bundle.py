@@ -25,16 +25,6 @@ class GmpGetAgentSupportBundleTestMixin:
             b'<get_agent_support_bundle agent_uuid="agent-123" days="0"/>'
         )
 
-    def test_get_agent_support_bundle_with_none_days_uses_zero(self):
-        self.gmp.get_agent_support_bundle(
-            agent_id="agent-123",
-            days=None,
-        )
-
-        self.connection.send.has_been_called_with(
-            b'<get_agent_support_bundle agent_uuid="agent-123" days="0"/>'
-        )
-
     def test_get_agent_support_bundle_with_zero_days(self):
         self.gmp.get_agent_support_bundle(
             agent_id="agent-123",
