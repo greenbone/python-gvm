@@ -44,6 +44,7 @@ from gvm.protocols.gmp.requests.next._report_tls_certificates import (
 from gvm.protocols.gmp.requests.next._report_vulnerabilities import (
     ReportVulnerabilities,
 )
+from gvm.protocols.gmp.requests.next._scan_report import ScanReports
 from gvm.protocols.gmp.requests.next._targets import AliveTest, Targets
 from gvm.protocols.gmp.requests.next._tasks import Tasks
 from gvm.protocols.gmp.requests.next._web_application_targets import (
@@ -184,6 +185,7 @@ __all__ = (
     "Results",
     "Roles",
     "ScanConfigs",
+    "ScanReports",
     "ScannerType",
     "Scanners",
     "Schedules",

@@ -30,6 +30,7 @@ from .requests.next import (
     ReportPorts,
     ReportTlsCertificates,
     ReportVulnerabilities,
+    ScanReports,
     Targets,
     Tasks,
     WebApplicationTargets,
@@ -1640,5 +1641,33 @@ class GMPNext(GMPv227[T]):
                 filter_id=filter_id,
                 trash=trash,
                 tasks=tasks,
+            )
+        )
+
+    def get_scan_report(
+        self,
+        scan_report_id: EntityID,
+        *,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+    ) -> T:
+        """ "Request a structured summary of a single scan report.
+
+        Args:
+            scan_report_id: UUID of an existing scan report.
+            filter_string: Filter term to apply to the report results.
+            filter_id: UUID of a saved filter to apply to the report results.
+
+        Returns:
+            A request for the get_scan_report GMP command.
+
+        Raises:
+            RequiredArgument: If scan_report_id is not provided.
+        """
+        return self._send_request_and_transform_response(
+            ScanReports.get_scan_report(
+                scan_report_id=scan_report_id,
+                filter_string=filter_string,
+                filter_id=filter_id,
             )
         )
