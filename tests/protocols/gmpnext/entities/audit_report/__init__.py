@@ -6,5 +6,11 @@
 from .test_get_audit_report import (
     GmpGetAuditReportTestMixin,
 )
+from .test_get_audit_report_legacy import (
+    GmpGetAuditReportLegacyTestMixin,
+)
 
-__all__ = ("GmpGetAuditReportTestMixin",)
+__all__ = (
+    "GmpGetAuditReportLegacyTestMixin",
+    "GmpGetAuditReportTestMixin",
+)
