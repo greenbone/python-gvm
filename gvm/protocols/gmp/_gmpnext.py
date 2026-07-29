@@ -38,6 +38,7 @@ from .requests.next import (
 )
 from .requests.v224 import AliveTest as AliveTestV224
 from .requests.v224 import HostsOrdering
+from .requests.v226 import ReportFormatType
 
 
 class GMPNext(GMPv227[T]):
@@ -1673,7 +1674,7 @@ class GMPNext(GMPv227[T]):
             )
         )
 
-    def get_audit_report(
+    def get_audit_report(  # type: ignore[override]
         self,
         audit_report_id: EntityID,
         *,
@@ -1699,4 +1700,31 @@ class GMPNext(GMPv227[T]):
                 filter_string=filter_string,
                 filter_id=filter_id,
             )
+        )
+
+    def get_audit_report_legacy(
+        self,
+        report_id: EntityID,
+        *,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+        delta_report_id: EntityID | None = None,
+        report_format_id: str | ReportFormatType | None = None,
+        ignore_pagination: bool | None = None,
+        details: bool | None = True,
+    ) -> T:
+        """Request an audit report using the legacy command.
+
+        Deprecated:
+            Use ``get_audit_report`` instead. This method will be removed
+            in the next major release.
+        """
+        return super().get_audit_report(
+            report_id,
+            filter_string=filter_string,
+            filter_id=filter_id,
+            delta_report_id=delta_report_id,
+            report_format_id=report_format_id,
+            ignore_pagination=ignore_pagination,
+            details=details,
         )

@@ -4,10 +4,17 @@
 #
 
 from ...gmpnext import GMPTestCase
-from .audit_report.test_get_audit_report import (
+from ...gmpnext.entities.audit_report import (
+    GmpGetAuditReportLegacyTestMixin,
     GmpGetAuditReportTestMixin,
 )
 
 
 class GmpGetAuditReportTestCase(GmpGetAuditReportTestMixin, GMPTestCase):
+    pass
+
+
+class GmpGetAuditReportLegacyTestCase(
+    GmpGetAuditReportLegacyTestMixin, GMPTestCase
+):
     pass
