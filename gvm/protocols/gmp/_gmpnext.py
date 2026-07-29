@@ -16,6 +16,7 @@ from .requests.next import (
     AgentInstallerInstructions,
     Agents,
     AliveTest,
+    AuditReport,
     Credentials,
     CredentialStoreCredentialType,
     CredentialStores,
@@ -1667,6 +1668,34 @@ class GMPNext(GMPv227[T]):
         return self._send_request_and_transform_response(
             ScanReports.get_scan_report(
                 scan_report_id=scan_report_id,
+                filter_string=filter_string,
+                filter_id=filter_id,
+            )
+        )
+
+    def get_audit_report(
+        self,
+        audit_report_id: EntityID,
+        *,
+        filter_string: str | None = None,
+        filter_id: str | None = None,
+    ) -> T:
+        """Request a structured summary of a single audit report.
+
+        Args:
+            audit_report_id: UUID of an existing audit report.
+            filter_string: Filter term to apply to the report results.
+            filter_id: UUID of a saved filter to apply to the report results.
+
+        Returns:
+            A request for the get_audit_report GMP command.
+
+        Raises:
+            RequiredArgument: If audit_report_id is not provided.
+        """
+        return self._send_request_and_transform_response(
+            AuditReport.get_audit_report(
+                audit_report_id=audit_report_id,
                 filter_string=filter_string,
                 filter_id=filter_id,
             )
