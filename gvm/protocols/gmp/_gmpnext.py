@@ -1758,3 +1758,53 @@ class GMPNext(GMPv227[T]):
             ignore_pagination=ignore_pagination,
             details=details,
         )
+
+    def export_scan_report(
+        self,
+        report_id: EntityID,
+        format_id: EntityID,
+        *,
+        config_id: EntityID | None = None,
+        filter_string: str | None = None,
+        ignore_pagination: bool = False,
+        lean: bool = False,
+        notes_details: bool = False,
+        overrides_details: bool = False,
+        result_tags: bool = False,
+    ) -> T:
+        """Request an asynchronous export of a scan report.
+
+        If an identical export is already pending or running, the existing
+        report export is returned instead of creating a duplicate.
+
+        Args:
+            report_id: UUID of the scan report to export.
+            format_id: UUID of the report format to apply.
+            config_id: UUID of an optional report configuration.
+            filter_string: Filter term to apply while generating the report.
+            ignore_pagination: Whether pagination settings in the filter
+                should be ignored.
+            lean: Whether lean report data should be generated.
+            notes_details: Whether note details should be included.
+            overrides_details: Whether override details should be included.
+            result_tags: Whether result tags should be included.
+
+        Returns:
+            A request for the export_scan_report GMP command.
+
+        Raises:
+            RequiredArgument: If report_id or format_id is not provided.
+        """
+        return self._send_request_and_transform_response(
+            ScanReports.export_scan_report(
+                report_id=report_id,
+                format_id=format_id,
+                config_id=config_id,
+                filter_string=filter_string,
+                ignore_pagination=ignore_pagination,
+                lean=lean,
+                notes_details=notes_details,
+                overrides_details=overrides_details,
+                result_tags=result_tags,
+            )
+        )
