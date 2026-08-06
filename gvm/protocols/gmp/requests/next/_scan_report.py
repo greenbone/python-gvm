@@ -1,6 +1,7 @@
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.protocols.gmp.requests import EntityID
+from gvm.utils import to_bool
 from gvm.xml import XmlCommand
 
 
@@ -93,20 +94,20 @@ class ScanReports:
 
         cmd.set_attribute(
             "ignore_pagination",
-            "1" if ignore_pagination else "0",
+            to_bool(ignore_pagination),
         )
-        cmd.set_attribute("lean", "1" if lean else "0")
+        cmd.set_attribute("lean", to_bool(lean))
         cmd.set_attribute(
             "notes_details",
-            "1" if notes_details else "0",
+            to_bool(notes_details),
         )
         cmd.set_attribute(
             "overrides_details",
-            "1" if overrides_details else "0",
+            to_bool(overrides_details),
         )
         cmd.set_attribute(
             "result_tags",
-            "1" if result_tags else "0",
+            to_bool(result_tags),
         )
 
         return cmd
