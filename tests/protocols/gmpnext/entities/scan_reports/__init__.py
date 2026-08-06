@@ -3,8 +3,14 @@
 #  SPDX-License-Identifier: GPL-3.0-or-later
 #
 
+from .test_export_scan_report import (
+    GmpExportScanReportTestMixin,
+)
 from .test_get_scan_report import (
     GmpGetScanReportTestMixin,
 )
 
-__all__ = ("GmpGetScanReportTestMixin",)
+__all__ = (
+    "GmpExportScanReportTestMixin",
+    "GmpGetScanReportTestMixin",
+)

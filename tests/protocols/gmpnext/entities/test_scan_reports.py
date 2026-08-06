@@ -4,10 +4,15 @@
 #
 
 from ...gmpnext import GMPTestCase
-from .scan_reports.test_get_scan_report import (
+from .scan_reports import (
+    GmpExportScanReportTestMixin,
     GmpGetScanReportTestMixin,
 )
 
 
 class GmpGetScanReportTestCase(GmpGetScanReportTestMixin, GMPTestCase):
+    pass
+
+
+class GmpExportScanReportTestCase(GmpExportScanReportTestMixin, GMPTestCase):
     pass
