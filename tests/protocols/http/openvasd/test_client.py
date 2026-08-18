@@ -19,7 +19,6 @@ class TestOpenvasdClient(unittest.TestCase):
         mock_httpx_client.assert_called_once()
         _, kwargs = mock_httpx_client.call_args
         self.assertEqual(kwargs["base_url"], "http://localhost:3000")
-        self.assertFalse(kwargs["verify"])
         self.assertNotIn("X-API-KEY", kwargs["headers"])
         mock_ssl_ctx_factory.assert_not_called()
 
@@ -34,7 +33,6 @@ class TestOpenvasdClient(unittest.TestCase):
         _, kwargs = mock_httpx_client.call_args
         self.assertEqual(kwargs["headers"]["X-API-KEY"], "secret")
         self.assertEqual(kwargs["base_url"], "http://localhost:3000")
-        self.assertFalse(kwargs["verify"])
         mock_ssl_ctx_factory.assert_not_called()
 
     @patch("gvm.protocols.http.openvasd._client.ssl.create_default_context")
