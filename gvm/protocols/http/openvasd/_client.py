@@ -31,7 +31,7 @@ def create_openvasd_http_client(
     """
     Create a `httpx.Client` configured for the OpenVASD HTTP API.
 
-    mTLS is used by default. Set `insecure_http=True` to use plain HTTP without SSL verification.
+    mTLS is used by default. Set `insecure_http=True` to use plain HTTP.
     In this case, an API key can be used for authorization.
 
     Args:
@@ -44,9 +44,9 @@ def create_openvasd_http_client(
         port: The port to connect to (default: 3000).
 
     Behavior:
-        - If `insecure_http=True`, `verify` is set to False (insecure), and HTTP is used instead of HTTPS.
+        - If `insecure_http=True`, HTTP is used instead of HTTPS.
             An API key can be used for authorization.
-        - If `insecure_http=False` (default), HTTPs with mTLS is used.
+        - If `insecure_http=False` (default), HTTPS with mTLS is used.
           Both `server_ca_path` and `client_cert_paths` are required.
 
     Raises:
@@ -54,40 +54,40 @@ def create_openvasd_http_client(
             `server_ca_path` or `client_cert_paths` is missing.
     """
     headers = {}
-
-    context: ssl.SSLContext | None = None
-    protocol = "http" if insecure_http else "https"
-    verify: bool | ssl.SSLContext = False if insecure_http else True
-
-    if not insecure_http:
-        if not server_ca_path or not client_cert_paths:
-            raise ValueError(
-                "Both server_ca_path and client_cert_paths must be provided "
-                "when insecure_http is False."
-            )
-        # Prepare mTLS SSL context
-        context = ssl.create_default_context(
-            ssl.Purpose.SERVER_AUTH, cafile=server_ca_path
-        )
-        if isinstance(client_cert_paths, tuple):
-            context.load_cert_chain(
-                certfile=client_cert_paths[0], keyfile=client_cert_paths[1]
-            )
-        else:
-            context.load_cert_chain(certfile=client_cert_paths)
-
-        context.check_hostname = False
-        context.verify_mode = ssl.CERT_REQUIRED
-        verify = context
     if api_key:
         headers["X-API-KEY"] = api_key
 
-    base_url = f"{protocol}://{host_name}:{port}"
+    if insecure_http:
+        return Client(
+            base_url=f"http://{host_name}:{port}",
+            headers=headers,
+            http2=True,
+            timeout=10.0,
+        )
+
+    if not server_ca_path or not client_cert_paths:
+        raise ValueError(
+            "Both server_ca_path and client_cert_paths must be provided "
+            "when insecure_http is False."
+        )
+    # Prepare mTLS SSL context
+    context = ssl.create_default_context(
+        ssl.Purpose.SERVER_AUTH, cafile=server_ca_path
+    )
+    if isinstance(client_cert_paths, tuple):
+        context.load_cert_chain(
+            certfile=client_cert_paths[0], keyfile=client_cert_paths[1]
+        )
+    else:
+        context.load_cert_chain(certfile=client_cert_paths)
+
+    context.check_hostname = False
+    context.verify_mode = ssl.CERT_REQUIRED
 
     return Client(
-        base_url=base_url,
+        base_url=f"https://{host_name}:{port}",
         headers=headers,
-        verify=verify,
+        verify=context,
         http2=True,
         timeout=10.0,
     )
