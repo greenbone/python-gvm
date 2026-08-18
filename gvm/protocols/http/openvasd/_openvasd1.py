@@ -37,6 +37,7 @@ class OpenvasdHttpAPIv1:
         client_cert_paths: StrOrPathLike
         | tuple[StrOrPathLike, StrOrPathLike]
         | None = None,
+        insecure_http: bool = False,
         suppress_exceptions: bool = False,
     ):
         """
@@ -48,6 +49,7 @@ class OpenvasdHttpAPIv1:
             api_key: Optional API key to be used for authentication.
             server_ca_path: Path to the server CA certificate (for HTTPS/mTLS).
             client_cert_paths: Path to client certificate or (cert, key) tuple for mTLS.
+            insecure_http: If True, use HTTP instead of HTTPS and disable certificate verification.
             suppress_exceptions: If True, suppress exceptions and return structured error
                 responses. Default is False, which means exceptions will be raised.
         """
@@ -57,6 +59,7 @@ class OpenvasdHttpAPIv1:
             api_key=api_key,
             server_ca_path=server_ca_path,
             client_cert_paths=client_cert_paths,
+            insecure_http=insecure_http,
         )
 
         # Sub-API modules

@@ -3,7 +3,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 """
-http client for initializing a connection to the openvasd HTTP API using optional mTLS authentication.
+http client for initializing a connection to the openvasd HTTP API.
+
+HTTPS with mTLS is used by default. Plain HTTP can be enabled explicitly
+with `insecure_http=True`.
 """
 
 import ssl
@@ -22,11 +25,14 @@ def create_openvasd_http_client(
     client_cert_paths: StrOrPathLike
     | tuple[StrOrPathLike, StrOrPathLike]
     | None = None,
+    insecure_http: bool = False,
     port: int = 3000,
 ) -> Client:
     """
-    Create a `httpx.Client` configured for mTLS-secured or API KEY access
-    to an openvasd HTTP API instance.
+    Create a `httpx.Client` configured for the OpenVASD HTTP API.
+
+    mTLS is used by default. Set `insecure_http=True` to use plain HTTP without SSL verification.
+    In this case, an API key can be used for authorization.
 
     Args:
         host_name: Hostname or IP of the OpenVASD server (e.g., "localhost").
@@ -34,20 +40,32 @@ def create_openvasd_http_client(
         server_ca_path: Path to the server's CA certificate (for verifying the server).
         client_cert_paths: Path to the client certificate (str) or a tuple of
                             (cert_path, key_path) for mTLS authentication.
+        insecure_http: If True, disables SSL verification and uses HTTP instead of HTTPS.
         port: The port to connect to (default: 3000).
 
     Behavior:
-        - If both `server_ca_path` and `client_cert_paths` are set, an mTLS connection
-            is established using an SSLContext.
-        - If not, `verify` is set to False (insecure), and HTTP is used instead of HTTPS.
-            HTTP connection needs api_key for authorization.
+        - If `insecure_http=True`, `verify` is set to False (insecure), and HTTP is used instead of HTTPS.
+            An API key can be used for authorization.
+        - If `insecure_http=False` (default), HTTPs with mTLS is used.
+          Both `server_ca_path` and `client_cert_paths` are required.
+
+    Raises:
+        ValueError: If `insecure_http=False` and either
+            `server_ca_path` or `client_cert_paths` is missing.
     """
     headers = {}
 
     context: ssl.SSLContext | None = None
+    protocol = "http" if insecure_http else "https"
+    verify: bool | ssl.SSLContext = False if insecure_http else True
 
-    # Prepare mTLS SSL context if needed
-    if client_cert_paths and server_ca_path:
+    if not insecure_http:
+        if not server_ca_path or not client_cert_paths:
+            raise ValueError(
+                "Both server_ca_path and client_cert_paths must be provided "
+                "when insecure_http is False."
+            )
+        # Prepare mTLS SSL context
         context = ssl.create_default_context(
             ssl.Purpose.SERVER_AUTH, cafile=server_ca_path
         )
@@ -60,14 +78,10 @@ def create_openvasd_http_client(
 
         context.check_hostname = False
         context.verify_mode = ssl.CERT_REQUIRED
-
-    # Set verify based on context presence
-    verify: bool | ssl.SSLContext = context if context else False
-
+        verify = context
     if api_key:
         headers["X-API-KEY"] = api_key
 
-    protocol = "https" if context else "http"
     base_url = f"{protocol}://{host_name}:{port}"
 
     return Client(
