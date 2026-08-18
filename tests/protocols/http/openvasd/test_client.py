@@ -11,21 +11,31 @@ from gvm.protocols.http.openvasd._client import create_openvasd_http_client
 
 class TestOpenvasdClient(unittest.TestCase):
     @patch("gvm.protocols.http.openvasd._client.Client")
-    def test_init_without_tls_or_api_key(self, mock_httpx_client):
-        create_openvasd_http_client("localhost")
+    @patch("gvm.protocols.http.openvasd._client.ssl.create_default_context")
+    def test_init_without_tls_or_api_key(
+        self, mock_ssl_ctx_factory, mock_httpx_client
+    ):
+        create_openvasd_http_client("localhost", insecure_http=True)
         mock_httpx_client.assert_called_once()
         _, kwargs = mock_httpx_client.call_args
         self.assertEqual(kwargs["base_url"], "http://localhost:3000")
         self.assertFalse(kwargs["verify"])
         self.assertNotIn("X-API-KEY", kwargs["headers"])
+        mock_ssl_ctx_factory.assert_not_called()
 
     @patch("gvm.protocols.http.openvasd._client.Client")
-    def test_init_with_api_key_only(self, mock_httpx_client):
-        create_openvasd_http_client("localhost", api_key="secret")
+    @patch("gvm.protocols.http.openvasd._client.ssl.create_default_context")
+    def test_init_with_api_key_and_insecure_http(
+        self, mock_ssl_ctx_factory, mock_httpx_client
+    ):
+        create_openvasd_http_client(
+            "localhost", api_key="secret", insecure_http=True
+        )
         _, kwargs = mock_httpx_client.call_args
         self.assertEqual(kwargs["headers"]["X-API-KEY"], "secret")
         self.assertEqual(kwargs["base_url"], "http://localhost:3000")
         self.assertFalse(kwargs["verify"])
+        mock_ssl_ctx_factory.assert_not_called()
 
     @patch("gvm.protocols.http.openvasd._client.ssl.create_default_context")
     @patch("gvm.protocols.http.openvasd._client.Client")
@@ -72,3 +82,31 @@ class TestOpenvasdClient(unittest.TestCase):
         _, kwargs = mock_httpx_client.call_args
         self.assertEqual(kwargs["base_url"], "https://localhost:3000")
         self.assertEqual(kwargs["verify"], mock_context)
+
+    @patch("gvm.protocols.http.openvasd._client.ssl.create_default_context")
+    @patch("gvm.protocols.http.openvasd._client.Client")
+    def test_init_with_mtls_missing_cert(
+        self, mock_httpx_client, mock_ssl_ctx_factory
+    ):
+        with self.assertRaises(ValueError):
+            create_openvasd_http_client(
+                "localhost",
+                server_ca_path="/path/ca.pem",
+                client_cert_paths=None,
+            )
+        mock_httpx_client.assert_not_called()
+        mock_ssl_ctx_factory.assert_not_called()
+
+    @patch("gvm.protocols.http.openvasd._client.ssl.create_default_context")
+    @patch("gvm.protocols.http.openvasd._client.Client")
+    def test_init_with_mtls_missing_ca(
+        self, mock_httpx_client, mock_ssl_ctx_factory
+    ):
+        with self.assertRaises(ValueError):
+            create_openvasd_http_client(
+                "localhost",
+                server_ca_path=None,
+                client_cert_paths="/path/client.pem",
+            )
+        mock_httpx_client.assert_not_called()
+        mock_ssl_ctx_factory.assert_not_called()
