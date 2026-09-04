@@ -13,7 +13,7 @@ class GmpGetAgentSupportBundleTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<get_agent_support_bundle agent_uuid="agent-123" days="7"/>'
+            b'<get_agent_support_bundle agent_uuid="agent-123" days="7" encryption="1"/>'
         )
 
     def test_get_agent_support_bundle_without_days_uses_zero(self):
@@ -22,7 +22,7 @@ class GmpGetAgentSupportBundleTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<get_agent_support_bundle agent_uuid="agent-123" days="0"/>'
+            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="1"/>'
         )
 
     def test_get_agent_support_bundle_with_zero_days(self):
@@ -32,7 +32,18 @@ class GmpGetAgentSupportBundleTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<get_agent_support_bundle agent_uuid="agent-123" days="0"/>'
+            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="1"/>'
+        )
+
+    def test_get_agent_support_bundle_with_zero_days_false_encryption(self):
+        self.gmp.get_agent_support_bundle(
+            agent_id="agent-123",
+            days=0,
+            encryption=False,
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="0"/>'
         )
 
     def test_get_agent_support_bundle_without_agent_id(self):
