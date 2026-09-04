@@ -438,6 +438,7 @@ class Agents:
         agent_id: EntityID,
         *,
         days: int = 0,
+        encryption: bool = True,
     ) -> Request:
         """Request a support bundle for an agent.
 
@@ -445,6 +446,7 @@ class Agents:
             agent_id: ID of the agent to get the support bundle for.
             days: Number of days of logs to include. If None, zero is sent so the
                 Agent Controller uses its configured default.
+            encryption: Whether an encrypted or plain support bundle is requested.
 
         Raises:
             RequiredArgument: If agent_id is missing.
@@ -462,5 +464,6 @@ class Agents:
         cmd = XmlCommand("get_agent_support_bundle")
         cmd.set_attribute("agent_uuid", str(agent_id))
         cmd.set_attribute("days", str(days))
+        cmd.set_attribute("encryption", to_bool(encryption))
 
         return cmd
