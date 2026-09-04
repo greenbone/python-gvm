@@ -26,6 +26,7 @@ from .requests.next import (
     ReportClosedCVEs,
     ReportCVEs,
     ReportErrors,
+    ReportExports,
     ReportHosts,
     ReportOperatingSystems,
     ReportPorts,
@@ -1806,5 +1807,27 @@ class GMPNext(GMPv227[T]):
                 notes_details=notes_details,
                 overrides_details=overrides_details,
                 result_tags=result_tags,
+            )
+        )
+
+    def get_report_exports(
+        self,
+        *,
+        report_export_id: EntityID | None = None,
+    ) -> T:
+        """Request report exports.
+
+        If report_export_id is provided, only the matching report export is
+        requested. Otherwise, the command requests a list of report exports.
+
+        Args:
+            report_export_id: UUID of an optional report export.
+
+        Returns:
+            A request for the get_report_exports GMP command.
+        """
+        return self._send_request_and_transform_response(
+            ReportExports.get_report_exports(
+                report_export_id=report_export_id,
             )
         )
