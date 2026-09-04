@@ -1826,7 +1826,7 @@ class GMPNext(GMPv227[T]):
 
     def get_report_export(
         self,
-        report_export_id: EntityID | None = None,
+        report_export_id: EntityID,
     ) -> T:
         """Request a single report export.
 

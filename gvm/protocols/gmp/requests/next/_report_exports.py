@@ -1,3 +1,8 @@
+# SPDX-FileCopyrightText: 2026 Greenbone AG
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
+from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.protocols.gmp.requests import EntityID
 from gvm.xml import XmlCommand
@@ -31,13 +36,20 @@ class ReportExports:
 
         Returns:
             A request for the get_report_exports GMP command.
-        """
-        cmd = XmlCommand("get_report_exports")
 
-        if report_export_id:
-            cmd.set_attribute(
-                "report_export_id",
-                str(report_export_id),
+        Raises:
+            RequiredArgument: If report_export_id is not provided.
+        """
+        if not report_export_id:
+            raise RequiredArgument(
+                function=cls.get_report_export.__name__,
+                argument="report_export_id",
             )
+
+        cmd = XmlCommand("get_report_exports")
+        cmd.set_attribute(
+            "report_export_id",
+            str(report_export_id),
+        )
 
         return cmd
