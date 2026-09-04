@@ -2,13 +2,16 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
+from gvm.errors import RequiredArgument
 
 
 class GmpGetReportExportTestMixin:
     def test_get_report_export_without_id(self):
-        self.gmp.get_report_export()
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_report_export(None)
 
-        self.connection.send.has_been_called_with(b"<get_report_exports/>")
+        with self.assertRaises(RequiredArgument):
+            self.gmp.get_report_export("")
 
     def test_get_report_export_with_id(self):
         self.gmp.get_report_export(report_export_id="e1")
