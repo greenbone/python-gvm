@@ -1812,22 +1812,32 @@ class GMPNext(GMPv227[T]):
 
     def get_report_exports(
         self,
-        *,
-        report_export_id: EntityID | None = None,
     ) -> T:
         """Request report exports.
 
-        If report_export_id is provided, only the matching report export is
-        requested. Otherwise, the command requests a list of report exports.
-
-        Args:
-            report_export_id: UUID of an optional report export.
+        The command requests a list of report exports.
 
         Returns:
             A request for the get_report_exports GMP command.
         """
         return self._send_request_and_transform_response(
-            ReportExports.get_report_exports(
+            ReportExports.get_report_exports()
+        )
+
+    def get_report_export(
+        self,
+        report_export_id: EntityID | None = None,
+    ) -> T:
+        """Request a single report export.
+
+        Args:
+            report_export_id: UUID of the report export.
+
+        Returns:
+            A request for the get_report_exports GMP command.
+        """
+        return self._send_request_and_transform_response(
+            ReportExports.get_report_export(
                 report_export_id=report_export_id,
             )
         )

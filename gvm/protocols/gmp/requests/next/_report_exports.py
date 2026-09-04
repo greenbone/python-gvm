@@ -7,16 +7,27 @@ class ReportExports:
     @classmethod
     def get_report_exports(
         cls,
-        *,
-        report_export_id: EntityID | None = None,
     ) -> Request:
         """Request report exports.
 
-        If report_export_id is provided, only the matching report export is
-        requested. Otherwise, the command requests a list of report exports.
+        The command requests a list of report exports.
+
+        Returns:
+            A request for the get_report_exports GMP command.
+        """
+        cmd = XmlCommand("get_report_exports")
+
+        return cmd
+
+    @classmethod
+    def get_report_export(
+        cls,
+        report_export_id: EntityID,
+    ) -> Request:
+        """Request a single report export.
 
         Args:
-            report_export_id: UUID of an optional report export.
+            report_export_id: UUID of the report export.
 
         Returns:
             A request for the get_report_exports GMP command.
