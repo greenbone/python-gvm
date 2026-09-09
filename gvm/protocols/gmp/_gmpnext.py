@@ -1844,3 +1844,21 @@ class GMPNext(GMPv227[T]):
                 report_export_id=report_export_id,
             )
         )
+
+    def download_report_export(
+        self,
+        report_export_id: EntityID,
+    ) -> T:
+        """Request a download report export.
+
+        Args:
+            report_export_id: UUID of the report export.
+
+        Returns:
+            A request for the download_report_export GMP command.
+        """
+        return self._send_request_and_transform_response(
+            ReportExports.download_report_export(
+                report_export_id=report_export_id,
+            )
+        )
