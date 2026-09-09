@@ -53,3 +53,33 @@ class ReportExports:
         )
 
         return cmd
+
+    @classmethod
+    def download_report_export(
+        cls,
+        report_export_id: EntityID,
+    ) -> Request:
+        """Request a download report export.
+
+        Args:
+            report_export_id: UUID of the report export.
+
+        Returns:
+            A request for the download_report_export GMP command.
+
+        Raises:
+            RequiredArgument: If report_export_id is not provided.
+        """
+        if not report_export_id:
+            raise RequiredArgument(
+                function=cls.get_report_export.__name__,
+                argument="report_export_id",
+            )
+
+        cmd = XmlCommand("download_report_export")
+        cmd.set_attribute(
+            "report_export_id",
+            str(report_export_id),
+        )
+
+        return cmd
