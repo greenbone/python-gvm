@@ -6,6 +6,9 @@
 from .test_export_audit_report import (
     GmpExportAuditReportTestMixin,
 )
+from .test_export_delta_audit_report import (
+    GmpExportDeltaAuditReportTestMixin,
+)
 from .test_get_audit_report import (
     GmpGetAuditReportTestMixin,
 )
@@ -15,6 +18,7 @@ from .test_get_audit_report_legacy import (
 
 __all__ = (
     "GmpExportAuditReportTestMixin",
+    "GmpExportDeltaAuditReportTestMixin",
     "GmpGetAuditReportLegacyTestMixin",
     "GmpGetAuditReportTestMixin",
 )
