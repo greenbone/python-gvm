@@ -2012,9 +2012,33 @@ class GMPNext(GMPv227[T]):
 
         Returns:
             A request for the download_report_export GMP command.
+
+        Raises:
+            RequiredArgument: If report_export_id is not provided.
         """
         return self._send_request_and_transform_response(
             ReportExports.download_report_export(
+                report_export_id=report_export_id,
+            )
+        )
+
+    def cancel_report_export(
+        self,
+        report_export_id: EntityID,
+    ) -> T:
+        """Request cancellation of a report export.
+
+        Args:
+            report_export_id: UUID of the report export to cancel.
+
+        Returns:
+            A request for the cancel_report_export GMP command.
+
+        Raises:
+            RequiredArgument: If report_export_id is not provided.
+        """
+        return self._send_request_and_transform_response(
+            ReportExports.cancel_report_export(
                 report_export_id=report_export_id,
             )
         )

@@ -5,6 +5,7 @@
 
 from ...gmpnext import GMPTestCase
 from .report_exports import (
+    GmpCancelReportExportTestMixin,
     GmpDownloadReportExportTestMixin,
     GmpGetReportExportsTestMixin,
     GmpGetReportExportTestMixin,
@@ -21,5 +22,11 @@ class GmpGmpGetReportExportTestCase(GmpGetReportExportTestMixin, GMPTestCase):
 
 class GmpGmpDownloadReportExportTestCase(
     GmpDownloadReportExportTestMixin, GMPTestCase
+):
+    pass
+
+
+class GmpCancelReportExportTestCase(
+    GmpCancelReportExportTestMixin, GMPTestCase
 ):
     pass

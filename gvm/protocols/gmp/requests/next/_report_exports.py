@@ -83,3 +83,33 @@ class ReportExports:
         )
 
         return cmd
+
+    @classmethod
+    def cancel_report_export(
+        cls,
+        report_export_id: EntityID,
+    ) -> Request:
+        """Request cancellation of a report export.
+
+        Args:
+            report_export_id: UUID of the report export to cancel.
+
+        Returns:
+            A request for the cancel_report_export GMP command.
+
+        Raises:
+            RequiredArgument: If report_export_id is not provided.
+        """
+        if not report_export_id:
+            raise RequiredArgument(
+                function=cls.cancel_report_export.__name__,
+                argument="report_export_id",
+            )
+
+        cmd = XmlCommand("cancel_report_export")
+        cmd.set_attribute(
+            "report_export_id",
+            str(report_export_id),
+        )
+
+        return cmd
