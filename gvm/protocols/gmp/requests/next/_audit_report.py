@@ -1,3 +1,7 @@
+# SPDX-FileCopyrightText: 2026 Greenbone AG
+#
+# SPDX-License-Identifier: GPL-3.0-or-later
+
 from gvm.errors import RequiredArgument
 from gvm.protocols.core import Request
 from gvm.protocols.gmp.requests import EntityID
