@@ -20,6 +20,7 @@ from .requests.next import (
     Credentials,
     CredentialStoreCredentialType,
     CredentialStores,
+    Features,
     IntegrationConfigs,
     OCIImageTargets,
     ReportApplications,
@@ -35,6 +36,7 @@ from .requests.next import (
     ScanReports,
     Targets,
     Tasks,
+    Timezones,
     WebApplicationTargets,
 )
 from .requests.v224 import AliveTest as AliveTestV224
@@ -2041,4 +2043,20 @@ class GMPNext(GMPv227[T]):
             ReportExports.cancel_report_export(
                 report_export_id=report_export_id,
             )
+        )
+
+    def get_features(
+        self,
+    ) -> T:
+        """Request a list of optional features."""
+        return self._send_request_and_transform_response(
+            Features.get_features()
+        )
+
+    def get_timezones(
+        self,
+    ) -> T:
+        """Request a list of supported timezones."""
+        return self._send_request_and_transform_response(
+            Timezones.get_timezones()
         )
