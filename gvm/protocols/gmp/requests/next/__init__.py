@@ -14,6 +14,9 @@ from gvm.protocols.gmp.requests.next._credentials import (
     Credentials,
     CredentialStoreCredentialType,
 )
+from gvm.protocols.gmp.requests.next._features import (
+    Features,
+)
 from gvm.protocols.gmp.requests.next._integration_configs import (
     IntegrationConfigs,
 )
@@ -51,6 +54,9 @@ from gvm.protocols.gmp.requests.next._report_vulnerabilities import (
 from gvm.protocols.gmp.requests.next._scan_report import ScanReports
 from gvm.protocols.gmp.requests.next._targets import AliveTest, Targets
 from gvm.protocols.gmp.requests.next._tasks import Tasks
+from gvm.protocols.gmp.requests.next._timezones import (
+    Timezones,
+)
 from gvm.protocols.gmp.requests.next._web_application_targets import (
     WebApplicationTargets,
 )
@@ -150,6 +156,7 @@ __all__ = (
     "DfnCertAdvisories",
     "EntityID",
     "EntityType",
+    "Features",
     "Feed",
     "FeedType",
     "FilterType",
@@ -207,6 +214,7 @@ __all__ = (
     "Tasks",
     "TicketStatus",
     "Tickets",
+    "Timezones",
     "TrashCan",
     "UserAuthType",
     "UserSettings",
