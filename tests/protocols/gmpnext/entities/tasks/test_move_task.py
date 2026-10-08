@@ -10,7 +10,16 @@ class GmpMoveTaskTestMixin:
     def test_move_task(self):
         self.gmp.move_task("a1")
 
-        self.connection.send.has_been_called_with(b'<move_task task_id="a1"/>')
+        self.connection.send.has_been_called_with(
+            b'<move_task task_id="a1" slave_id=""/>'
+        )
+
+    def test_move_task_to_master(self):
+        self.gmp.move_task("a1", slave_id="")
+
+        self.connection.send.has_been_called_with(
+            b'<move_task task_id="a1" slave_id=""/>'
+        )
 
     def test_move_task_to_slave(self):
         self.gmp.move_task("a1", slave_id="s1")
@@ -25,3 +34,7 @@ class GmpMoveTaskTestMixin:
 
         with self.assertRaises(GvmError):
             self.gmp.move_task("")
+
+    def test_none_slave_id(self):
+        with self.assertRaises(GvmError):
+            self.gmp.move_task("a1", slave_id=None)
