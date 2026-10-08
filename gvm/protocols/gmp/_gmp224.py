@@ -3925,9 +3925,7 @@ class GMPv224(GvmProtocol[T]):
             )
         )
 
-    def move_task(
-        self, task_id: EntityID, *, slave_id: EntityID = ""
-    ) -> T:
+    def move_task(self, task_id: EntityID, *, slave_id: EntityID = "") -> T:
         """Move an existing task to another GMP slave scanner or the master
 
         Args:
