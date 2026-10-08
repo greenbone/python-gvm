@@ -664,7 +664,14 @@ class TasksTestCase(unittest.TestCase):
         request = Tasks().move_task("task_id")
         self.assertEqual(
             bytes(request),
-            b'<move_task task_id="task_id"/>',
+            b'<move_task task_id="task_id" slave_id=""/>',
+        )
+
+    def test_move_task_to_master(self):
+        request = Tasks().move_task("task_id", slave_id="")
+        self.assertEqual(
+            bytes(request),
+            b'<move_task task_id="task_id" slave_id=""/>',
         )
 
     def test_move_task_with_slave_id(self):
@@ -680,6 +687,10 @@ class TasksTestCase(unittest.TestCase):
 
         with self.assertRaises(RequiredArgument):
             Tasks().move_task(None)
+
+    def test_move_task_none_slave_id(self):
+        with self.assertRaises(RequiredArgument):
+            Tasks().move_task("task_id", slave_id=None)
 
     def test_start_task(self):
         request = Tasks().start_task("task_id")

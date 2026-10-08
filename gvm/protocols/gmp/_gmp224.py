@@ -3926,13 +3926,14 @@ class GMPv224(GvmProtocol[T]):
         )
 
     def move_task(
-        self, task_id: EntityID, *, slave_id: EntityID | None = None
+        self, task_id: EntityID, *, slave_id: EntityID = ""
     ) -> T:
         """Move an existing task to another GMP slave scanner or the master
 
         Args:
             task_id: UUID of the task to be moved
-            slave_id: UUID of the sensor to reassign the task to, empty for master.
+            slave_id: UUID of the sensor to reassign the task to. Defaults to
+                an empty string, which selects the master.
         """
         return self._send_request_and_transform_response(
             Tasks.move_task(task_id, slave_id=slave_id)

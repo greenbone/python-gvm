@@ -695,24 +695,27 @@ class Tasks:
 
     @classmethod
     def move_task(
-        cls, task_id: EntityID, *, slave_id: EntityID | None = None
+        cls, task_id: EntityID, *, slave_id: EntityID = ""
     ) -> Request:
         """Move an existing task to another GMP slave scanner or the master
 
         Args:
             task_id: UUID of the task to be moved
-            slave_id: UUID of the sensor to reassign the task to, empty for master.
+            slave_id: UUID of the sensor to reassign the task to. Defaults to
+                an empty string, which selects the master.
         """
         if not task_id:
             raise RequiredArgument(
                 function=cls.move_task.__name__, argument="task_id"
             )
+        if slave_id is None:
+            raise RequiredArgument(
+                function=cls.move_task.__name__, argument="slave_id"
+            )
 
         cmd = XmlCommand("move_task")
         cmd.set_attribute("task_id", str(task_id))
-
-        if slave_id is not None:
-            cmd.set_attribute("slave_id", str(slave_id))
+        cmd.set_attribute("slave_id", str(slave_id))
 
         return cmd
 
