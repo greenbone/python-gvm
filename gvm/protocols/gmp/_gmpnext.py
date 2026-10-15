@@ -338,6 +338,96 @@ class GMPNext(GMPv227[T]):
             )
         )
 
+    def create_active_directory_credential(
+        self,
+        name: str,
+        *,
+        host: str,
+        bind_dn: str,
+        base_dn: str,
+        bind_password: str,
+        tls_mode: str,
+        comment: str | None = None,
+        port: int | None = None,
+        ca_certificate: str | None = None,
+    ) -> T:
+        """Create an Active Directory credential.
+
+        Requires AD integration to be enabled in gvmd.
+
+        Args:
+            name: Name of the credential.
+            host: Active Directory server hostname or IP address.
+            bind_dn: Distinguished name used to bind to the directory.
+            base_dn: Base distinguished name for directory searches.
+            bind_password: Password used to bind to the directory.
+            tls_mode: TLS mode, either "ldaps" or "starttls".
+            comment: Optional comment for the credential.
+            port: Server port (1 to 65535). Omit to use the connector default.
+            ca_certificate: Optional CA certificate in PEM format.
+        """
+        return self._send_request_and_transform_response(
+            Credentials.create_active_directory_credential(
+                name=name,
+                host=host,
+                bind_dn=bind_dn,
+                base_dn=base_dn,
+                bind_password=bind_password,
+                tls_mode=tls_mode,
+                comment=comment,
+                port=port,
+                ca_certificate=ca_certificate,
+            )
+        )
+
+    def modify_active_directory_credential(
+        self,
+        credential_id: EntityID,
+        *,
+        name: str | None = None,
+        comment: str | None = None,
+        host: str | None = None,
+        bind_dn: str | None = None,
+        base_dn: str | None = None,
+        bind_password: str | None = None,
+        tls_mode: str | None = None,
+        port: int | str | None = None,
+        ca_certificate: str | None = None,
+    ) -> T:
+        """Modify an Active Directory credential.
+
+        Requires AD integration to be enabled in gvmd. Fields set to None
+        are left unchanged.
+
+        Args:
+            credential_id: UUID of the credential to modify.
+            name: New name of the credential.
+            comment: New comment. An empty string clears the comment.
+            host: Active Directory server hostname or IP address.
+            bind_dn: Distinguished name used to bind to the directory.
+            base_dn: Base distinguished name for directory searches.
+            bind_password: Password used to bind to the directory.
+            tls_mode: TLS mode, either "ldaps" or "starttls".
+            port: Server port (1 to 65535), or an empty string to restore
+                the connector default. Nonempty strings are not accepted.
+            ca_certificate: CA certificate in PEM format. An empty string
+                clears the certificate.
+        """
+        return self._send_request_and_transform_response(
+            Credentials.modify_active_directory_credential(
+                credential_id=credential_id,
+                name=name,
+                comment=comment,
+                host=host,
+                bind_dn=bind_dn,
+                base_dn=base_dn,
+                bind_password=bind_password,
+                tls_mode=tls_mode,
+                port=port,
+                ca_certificate=ca_certificate,
+            )
+        )
+
     def create_credential_store_credential(
         self,
         name: str,

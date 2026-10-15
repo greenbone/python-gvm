@@ -2,14 +2,22 @@
 #
 #  SPDX-License-Identifier: GPL-3.0-or-later
 
+from .test_create_active_directory_credential import (
+    GmpCreateActiveDirectoryCredentialTestMixin,
+)
 from .test_create_credential_store_credential import (
     GmpCreateCredentialStoreCredentialTestMixin,
+)
+from .test_modify_active_directory_credential import (
+    GmpModifyActiveDirectoryCredentialTestMixin,
 )
 from .test_modify_credential_store_credential import (
     GmpModifyCredentialStoreCredentialTestMixin,
 )
 
 __all__ = (
+    "GmpCreateActiveDirectoryCredentialTestMixin",
     "GmpCreateCredentialStoreCredentialTestMixin",
+    "GmpModifyActiveDirectoryCredentialTestMixin",
     "GmpModifyCredentialStoreCredentialTestMixin",
 )
