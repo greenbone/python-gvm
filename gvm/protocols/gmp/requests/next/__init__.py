@@ -13,6 +13,7 @@ from gvm.protocols.gmp.requests.next._credential_stores import CredentialStores
 from gvm.protocols.gmp.requests.next._credentials import (
     Credentials,
     CredentialStoreCredentialType,
+    CredentialType,
 )
 from gvm.protocols.gmp.requests.next._features import (
     Features,
@@ -76,7 +77,6 @@ from ..v227 import (
     CertBundAdvisories,
     Cpes,
     CredentialFormat,
-    CredentialType,
     Cves,
     DfnCertAdvisories,
     EntityType,

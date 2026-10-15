@@ -1,4 +1,4 @@
-# SPDX-FileCopyrightText: 2023-2025 Greenbone AG
+# SPDX-FileCopyrightText: 2023-2026 Greenbone AG
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 #
@@ -13,7 +13,9 @@ from ...gmpv224.entities.credentials import (
     GmpModifyCredentialTestMixin,
 )
 from ..entities.credentials import (
+    GmpCreateActiveDirectoryCredentialTestMixin,
     GmpCreateCredentialStoreCredentialTestMixin,
+    GmpModifyActiveDirectoryCredentialTestMixin,
     GmpModifyCredentialStoreCredentialTestMixin,
 )
 
@@ -24,6 +26,7 @@ class GMPCloneCredentialTestCase(GmpCloneCredentialTestMixin, GMPTestCase):
 
 class GMPCreateCredentialTestCase(
     GmpCreateCredentialTestMixin,
+    GmpCreateActiveDirectoryCredentialTestMixin,
     GmpCreateCredentialStoreCredentialTestMixin,
     GMPTestCase,
 ):
@@ -44,6 +47,7 @@ class GMPGetCredentialsTestCase(GmpGetCredentialsTestMixin, GMPTestCase):
 
 class GMPModifyCredentialTestCase(
     GmpModifyCredentialTestMixin,
+    GmpModifyActiveDirectoryCredentialTestMixin,
     GmpModifyCredentialStoreCredentialTestMixin,
     GMPTestCase,
 ):
