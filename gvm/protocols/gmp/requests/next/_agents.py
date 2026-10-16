@@ -439,6 +439,7 @@ class Agents:
         *,
         days: int = 0,
         encryption: bool = True,
+        anonymized: bool = False,
     ) -> Request:
         """Request a support bundle for an agent.
 
@@ -447,6 +448,7 @@ class Agents:
             days: Number of days of logs to include. If None, zero is sent so the
                 Agent Controller uses its configured default.
             encryption: Whether an encrypted or plain support bundle is requested.
+            anonymized: Whether an anonymized support bundle is requested.
 
         Raises:
             RequiredArgument: If agent_id is missing.
@@ -465,5 +467,6 @@ class Agents:
         cmd.set_attribute("agent_uuid", str(agent_id))
         cmd.set_attribute("days", str(days))
         cmd.set_attribute("encryption", to_bool(encryption))
+        cmd.set_attribute("anonymized", to_bool(anonymized))
 
         return cmd

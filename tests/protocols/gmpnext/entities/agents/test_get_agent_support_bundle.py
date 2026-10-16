@@ -13,7 +13,7 @@ class GmpGetAgentSupportBundleTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<get_agent_support_bundle agent_uuid="agent-123" days="7" encryption="1"/>'
+            b'<get_agent_support_bundle agent_uuid="agent-123" days="7" encryption="1" anonymized="0"/>'
         )
 
     def test_get_agent_support_bundle_without_days_uses_zero(self):
@@ -22,7 +22,7 @@ class GmpGetAgentSupportBundleTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="1"/>'
+            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="1" anonymized="0"/>'
         )
 
     def test_get_agent_support_bundle_with_zero_days(self):
@@ -32,7 +32,7 @@ class GmpGetAgentSupportBundleTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="1"/>'
+            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="1" anonymized="0"/>'
         )
 
     def test_get_agent_support_bundle_with_zero_days_false_encryption(self):
@@ -43,7 +43,21 @@ class GmpGetAgentSupportBundleTestMixin:
         )
 
         self.connection.send.has_been_called_with(
-            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="0"/>'
+            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="0" anonymized="0"/>'
+        )
+
+    def test_get_agent_support_bundle_with_zero_days_false_encryption_true_anonymized(
+        self,
+    ):
+        self.gmp.get_agent_support_bundle(
+            agent_id="agent-123",
+            days=0,
+            encryption=False,
+            anonymized=True,
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<get_agent_support_bundle agent_uuid="agent-123" days="0" encryption="0" anonymized="1"/>'
         )
 
     def test_get_agent_support_bundle_without_agent_id(self):

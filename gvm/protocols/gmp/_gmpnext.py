@@ -317,6 +317,7 @@ class GMPNext(GMPv227[T]):
         agent_id: EntityID,
         days: int = 0,
         encryption: bool = True,
+        anonymized: bool = False,
     ) -> T:
         """Request a support bundle for an agent.
 
@@ -325,6 +326,7 @@ class GMPNext(GMPv227[T]):
             days: Number of days of logs to include. If None, zero is sent so the
                 Agent Controller uses its configured default.
             encryption: Whether an encrypted or plain support bundle is requested.
+            anonymized: Whether an anonymized support bundle is requested.
 
         Raises:
             RequiredArgument: If agent_id is missing.
@@ -335,6 +337,7 @@ class GMPNext(GMPv227[T]):
                 agent_id,
                 days=days,
                 encryption=encryption,
+                anonymized=anonymized,
             )
         )
 
