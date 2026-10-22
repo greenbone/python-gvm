@@ -12,12 +12,14 @@ class GmpCreateAgentGroupTestMixin:
             agent_ids=["agent-1", "agent-2"],
             comment="Sample comment",
             scheduler_cron_time="0 */5 * * *",
+            max_delay_seconds=30,
         )
 
         self.connection.send.has_been_called_with(
             b"<create_agent_group>"
             b"<name>ExampleGroup</name>"
             b"<scheduler_cron_time>0 */5 * * *</scheduler_cron_time>"
+            b"<max_delay_seconds>30</max_delay_seconds>"
             b"<comment>Sample comment</comment>"
             b'<agents><agent id="agent-1"/><agent id="agent-2"/></agents>'
             b"</create_agent_group>"
@@ -55,5 +57,37 @@ class GmpCreateAgentGroupTestMixin:
             b"<name>GroupX</name>"
             b"<scheduler_cron_time>0 */5 * * *</scheduler_cron_time>"
             b'<agents><agent id="a1"/><agent id="a2"/></agents>'
+            b"</create_agent_group>"
+        )
+
+    def test_create_agent_group_with_zero_max_delay(self):
+        self.gmp.create_agent_group(
+            name="GroupX",
+            agent_ids=["a1"],
+            scheduler_cron_time="0 */5 * * *",
+            max_delay_seconds=0,
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<create_agent_group>"
+            b"<name>GroupX</name>"
+            b"<scheduler_cron_time>0 */5 * * *</scheduler_cron_time>"
+            b"<max_delay_seconds>0</max_delay_seconds>"
+            b'<agents><agent id="a1"/></agents>'
+            b"</create_agent_group>"
+        )
+
+    def test_create_agent_group_without_max_delay(self):
+        self.gmp.create_agent_group(
+            name="GroupX",
+            agent_ids=["a1"],
+            scheduler_cron_time="0 */5 * * *",
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<create_agent_group>"
+            b"<name>GroupX</name>"
+            b"<scheduler_cron_time>0 */5 * * *</scheduler_cron_time>"
+            b'<agents><agent id="a1"/></agents>'
             b"</create_agent_group>"
         )

@@ -73,20 +73,40 @@ class Agents:
         valid_value(se, "indexer_dir_depth", "agent_script_executor.")
 
         sched = se.get("scheduler_cron_time")
-        if isinstance(sched, str):
-            items = [sched]
-        elif isinstance(sched, Sequence) and not isinstance(
-            sched, (str, bytes)
+
+        if (
+            not isinstance(sched, Sequence)
+            or isinstance(sched, (str, bytes))
+            or not sched
         ):
-            items = [str(x) for x in sched]
-        else:
-            items = []
-        if not items or any(not str(x).strip() for x in items):
             raise RequiredArgument(
                 function=caller,
                 argument="config.agent_script_executor.scheduler_cron_time",
             )
 
+        for item in sched:
+            if not isinstance(item, Mapping):
+                raise InvalidArgumentType(
+                    function=caller,
+                    argument="config.agent_script_executor.scheduler_cron_time",
+                    arg_type="Mapping",
+                )
+
+            cron = item.get("cron")
+            max_delay_seconds = item.get("max_delay_seconds")
+
+            if not isinstance(cron, str) or not cron.strip():
+                raise RequiredArgument(
+                    function=caller,
+                    argument="config.agent_script_executor.scheduler_cron_time.cron",
+                )
+
+            if type(max_delay_seconds) is not int or max_delay_seconds < 0:
+                raise InvalidArgumentType(
+                    function=caller,
+                    argument="config.agent_script_executor.scheduler_cron_time.max_delay_seconds",
+                    arg_type="non-negative integer",
+                )
         # heartbeat
         hb = valid_map(config, "heartbeat", "")
         valid_value(hb, "interval_in_seconds", "heartbeat.")
@@ -162,7 +182,12 @@ class Agents:
                     "bulk_size": 2,
                     "bulk_throttle_time_in_ms": 300,
                     "indexer_dir_depth": 100,
-                    "scheduler_cron_time": ["0 */12 * * *"],
+                    "scheduler_cron_time": [
+                        {
+                            "cron": "0 */12 * * *",
+                            "max_delay_seconds": 30,
+                        },
+                    ],
                 },
                 "heartbeat": {
                     "interval_in_seconds": 300,
@@ -212,18 +237,21 @@ class Agents:
             xml_se, "indexer_dir_depth", se.get("indexer_dir_depth")
         )
         sched = se.get("scheduler_cron_time")
-        if isinstance(sched, str):
-            sched_items = [sched]
-        else:
-            sched_items = list(sched or [])
 
-        if sched_items:
+        if sched:
             xml_sched = xml_se.add_element(
                 "scheduler_cron_time",
                 attrs={"is_list": "1"},
             )
-            for item in sched_items:
-                xml_sched.add_element("item", str(item))
+
+            for item in sched:
+                xml_item = xml_sched.add_element("item")
+                cls._add_element(xml_item, "cron", item["cron"])
+                cls._add_element(
+                    xml_item,
+                    "max_delay_seconds",
+                    item["max_delay_seconds"],
+                )
 
         # heartbeat
         hb = config["heartbeat"]
@@ -311,7 +339,12 @@ class Agents:
                       "bulk_size": 2,
                       "bulk_throttle_time_in_ms": 300,
                       "indexer_dir_depth": 100,
-                      "scheduler_cron_time": ["0 */12 * * *"],  # str or list[str]
+                      "scheduler_cron_time": [
+                          {
+                              "cron": "0 */12 * * *",
+                              "max_delay_seconds": 30,
+                          },
+                      ],
                   },
                   "heartbeat": {
                       "interval_in_seconds": 300,
@@ -393,7 +426,16 @@ class Agents:
                             "bulk_size": 2,
                             "bulk_throttle_time_in_ms": 300,
                             "indexer_dir_depth": 100,
-                            "scheduler_cron_time": ["0 */12 * * *"],
+                            "scheduler_cron_time": [
+                                {
+                                    "cron": "0 */12 * * *",
+                                    "max_delay_seconds": 30,
+                                },
+                                {
+                                    "cron": "0 23 * * *",
+                                    "max_delay_seconds": 60,
+                                },
+                            ],
                         },
                         "heartbeat": {
                             "interval_in_seconds": 300,
@@ -410,6 +452,7 @@ class Agents:
                 function=cls.modify_agent_control_scan_config.__name__,
                 argument="agent_control_id",
             )
+
         if not config_defaults:
             raise RequiredArgument(
                 function=cls.modify_agent_control_scan_config.__name__,

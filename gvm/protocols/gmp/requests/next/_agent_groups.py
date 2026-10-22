@@ -18,6 +18,7 @@ class AgentGroups:
         agent_ids: list[str],
         scheduler_cron_time: str,
         *,
+        max_delay_seconds: int | None = None,
         comment: str | None = None,
     ) -> Request:
         """Create a new agent group.
@@ -26,6 +27,7 @@ class AgentGroups:
             name: Name of the new agent group.
             agent_ids: List of agent UUIDs to include in the group (required).
             scheduler_cron_time: Cron-like time to schedule new agent groups (required).
+            max_delay_seconds: Max delay seconds to schedule the new agent group (optional).
             comment: Optional comment for the group.
 
         Raises:
@@ -49,6 +51,9 @@ class AgentGroups:
         cmd = XmlCommand("create_agent_group")
         cmd.add_element("name", name)
         cmd.add_element("scheduler_cron_time", scheduler_cron_time)
+
+        if max_delay_seconds is not None:
+            cmd.add_element("max_delay_seconds", str(max_delay_seconds))
 
         if comment:
             cmd.add_element("comment", comment)
@@ -89,6 +94,7 @@ class AgentGroups:
         name: str | None = None,
         comment: str | None = None,
         agent_ids: list[str] | None = None,
+        max_delay_seconds: int | None = None,
     ) -> Request:
         """Modify an existing agent group.
 
@@ -98,6 +104,7 @@ class AgentGroups:
             name: Optional new name for the group.
             comment: Optional comment for the group.
             agent_ids: Optional list of agent UUIDs to set for the group.
+            max_delay_seconds: Max delay seconds to schedule the new agent group.
 
         Raises:
             RequiredArgument: If agent_group_id is not provided.
@@ -127,6 +134,8 @@ class AgentGroups:
             agents_element = cmd.add_element("agents")
             for agent_id in agent_ids:
                 agents_element.add_element("agent", attrs={"id": agent_id})
+        if max_delay_seconds is not None:
+            cmd.add_element("max_delay_seconds", str(max_delay_seconds))
 
         return cmd
 
