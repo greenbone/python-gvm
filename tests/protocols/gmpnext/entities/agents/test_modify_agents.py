@@ -2,7 +2,7 @@
 #
 # SPDX-License-Identifier: GPL-3.0-or-later
 
-from gvm.errors import RequiredArgument
+from gvm.errors import InvalidArgumentType, RequiredArgument
 
 
 class GmpModifyAgentsTestMixin:
@@ -52,7 +52,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -83,7 +85,10 @@ class GmpModifyAgentsTestMixin:
             b"<bulk_throttle_time_in_ms>300</bulk_throttle_time_in_ms>"
             b"<indexer_dir_depth>100</indexer_dir_depth>"
             b'<scheduler_cron_time is_list="1">'
-            b"<item>0 */12 * * *</item>"
+            b"<item>"
+            b"<cron>0 */12 * * *</cron>"
+            b"<max_delay_seconds>30</max_delay_seconds>"
+            b"</item>"
             b"</scheduler_cron_time>"
             b"</agent_script_executor>"
             b"<heartbeat>"
@@ -108,7 +113,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {
                 "interval_in_seconds": 300,
@@ -140,7 +147,10 @@ class GmpModifyAgentsTestMixin:
             b"<bulk_throttle_time_in_ms>300</bulk_throttle_time_in_ms>"
             b"<indexer_dir_depth>100</indexer_dir_depth>"
             b'<scheduler_cron_time is_list="1">'
-            b"<item>0 */12 * * *</item>"
+            b"<item>"
+            b"<cron>0 */12 * * *</cron>"
+            b"<max_delay_seconds>30</max_delay_seconds>"
+            b"</item>"
             b"</scheduler_cron_time>"
             b"</agent_script_executor>"
             b"<heartbeat>"
@@ -214,7 +224,10 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["", "   "],
+                "scheduler_cron_time": [
+                    {"cron": "", "max_delay_seconds": 30},
+                    {"cron": "   ", "max_delay_seconds": 30},
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -228,7 +241,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -244,7 +259,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -264,7 +281,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -284,7 +303,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -304,7 +325,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -339,7 +362,9 @@ class GmpModifyAgentsTestMixin:
                 # "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -359,7 +384,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 # "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -379,7 +406,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 # "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
@@ -399,7 +428,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             # "heartbeat": missing
         }
@@ -419,7 +450,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {
                 # "interval_in_seconds": 300,
@@ -442,7 +475,9 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {
                 "interval_in_seconds": 300,
@@ -465,9 +500,132 @@ class GmpModifyAgentsTestMixin:
                 "bulk_size": 2,
                 "bulk_throttle_time_in_ms": 300,
                 "indexer_dir_depth": 100,
-                "scheduler_cron_time": ["0 */12 * * *"],
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 30}
+                ],
             },
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
         with self.assertRaises(RequiredArgument):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_scheduler_zero_max_delay(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": 0}
+                ],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+
+        self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+        self.connection.send.has_been_called_with(
+            b"<modify_agent>"
+            b'<agents><agent id="agent-123"/></agents>'
+            b"<config>"
+            b"<agent_control>"
+            b"<retry>"
+            b"<attempts>6</attempts>"
+            b"<delay_in_seconds>60</delay_in_seconds>"
+            b"<max_jitter_in_seconds>10</max_jitter_in_seconds>"
+            b"</retry>"
+            b"</agent_control>"
+            b"<agent_script_executor>"
+            b"<bulk_size>2</bulk_size>"
+            b"<bulk_throttle_time_in_ms>300</bulk_throttle_time_in_ms>"
+            b"<indexer_dir_depth>100</indexer_dir_depth>"
+            b'<scheduler_cron_time is_list="1">'
+            b"<item><cron>0 */12 * * *</cron>"
+            b"<max_delay_seconds>0</max_delay_seconds></item>"
+            b"</scheduler_cron_time>"
+            b"</agent_script_executor>"
+            b"<heartbeat>"
+            b"<interval_in_seconds>300</interval_in_seconds>"
+            b"<miss_until_inactive>1</miss_until_inactive>"
+            b"</heartbeat>"
+            b"</config>"
+            b"</modify_agent>"
+        )
+
+    def test_modify_agents_scheduler_missing_max_delay_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": [{"cron": "0 */12 * * *"}],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_scheduler_negative_max_delay_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": -1}
+                ],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+    def test_modify_agents_scheduler_item_not_mapping_raises(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": [
+                    {"cron": "0 23 * * *", "max_delay_seconds": 30},
+                    "0 22 * * *",
+                ],
+            },
+            "heartbeat": {
+                "interval_in_seconds": 300,
+                "miss_until_inactive": 1,
+            },
+        }
+
+        with self.assertRaises(InvalidArgumentType):
             self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)

@@ -12,6 +12,7 @@ class GmpModifyAgentGroupTestMixin:
             name="NewName",
             comment="Updated comment",
             scheduler_cron_time="0 */5 * * *",
+            max_delay_seconds=30,
             agent_ids=["agent-1", "agent-2"],
         )
 
@@ -21,6 +22,7 @@ class GmpModifyAgentGroupTestMixin:
             b"<name>NewName</name>"
             b"<comment>Updated comment</comment>"
             b'<agents><agent id="agent-1"/><agent id="agent-2"/></agents>'
+            b"<max_delay_seconds>30</max_delay_seconds>"
             b"</modify_agent_group>"
         )
 
@@ -81,5 +83,31 @@ class GmpModifyAgentGroupTestMixin:
             b"<scheduler_cron_time>0 */5 * * *</scheduler_cron_time>"
             b"<name>NewName</name>"
             b"<comment>Updated comment</comment>"
+            b"</modify_agent_group>"
+        )
+
+    def test_modify_agent_group_with_zero_max_delay(self):
+        self.gmp.modify_agent_group(
+            agent_group_id="group-1",
+            scheduler_cron_time="0 */5 * * *",
+            max_delay_seconds=0,
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_agent_group agent_group_id="group-1">'
+            b"<scheduler_cron_time>0 */5 * * *</scheduler_cron_time>"
+            b"<max_delay_seconds>0</max_delay_seconds>"
+            b"</modify_agent_group>"
+        )
+
+    def test_modify_agent_group_without_max_delay(self):
+        self.gmp.modify_agent_group(
+            agent_group_id="group-1",
+            scheduler_cron_time="0 */5 * * *",
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_agent_group agent_group_id="group-1">'
+            b"<scheduler_cron_time>0 */5 * * *</scheduler_cron_time>"
             b"</modify_agent_group>"
         )

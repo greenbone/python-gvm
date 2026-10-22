@@ -218,6 +218,7 @@ class GMPNext(GMPv227[T]):
         agent_ids: list[str],
         scheduler_cron_time: str,
         *,
+        max_delay_seconds: int | None = None,
         comment: str | None = None,
     ) -> T:
         """Create a new agent group.
@@ -226,6 +227,7 @@ class GMPNext(GMPv227[T]):
             name: Name of the new agent group.
             agent_ids: List of agent UUIDs to include in the group (required).
             scheduler_cron_time: Scheduler cron to use.
+            max_delay_seconds: Max delay seconds to use.
             comment: Optional comment for the group.
 
         Raises:
@@ -237,6 +239,7 @@ class GMPNext(GMPv227[T]):
                 comment=comment,
                 agent_ids=agent_ids,
                 scheduler_cron_time=scheduler_cron_time,
+                max_delay_seconds=max_delay_seconds,
             )
         )
 
@@ -248,6 +251,7 @@ class GMPNext(GMPv227[T]):
         name: str | None = None,
         comment: str | None = None,
         agent_ids: list[str] | None = None,
+        max_delay_seconds: int | None = None,
     ) -> T:
         """Modify an existing agent group.
 
@@ -257,6 +261,7 @@ class GMPNext(GMPv227[T]):
             scheduler_cron_time: Scheduler cron to use.
             comment: Optional comment for the group.
             agent_ids: Optional list of agent UUIDs to set for the group.
+            max_delay_seconds: Optional maximum delay for agent groups.
 
         Raises:
             RequiredArgument: If agent_group_id is not provided.
@@ -268,6 +273,7 @@ class GMPNext(GMPv227[T]):
                 comment=comment,
                 agent_ids=agent_ids,
                 scheduler_cron_time=scheduler_cron_time,
+                max_delay_seconds=max_delay_seconds,
             )
         )
 
