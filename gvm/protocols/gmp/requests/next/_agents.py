@@ -101,7 +101,9 @@ class Agents:
                     argument="config.agent_script_executor.scheduler_cron_time.cron",
                 )
 
-            if type(max_delay_seconds) is not int or max_delay_seconds < 0:
+            if max_delay_seconds is not None and (
+                type(max_delay_seconds) is not int or max_delay_seconds <= 0
+            ):
                 raise InvalidArgumentType(
                     function=caller,
                     argument="config.agent_script_executor.scheduler_cron_time.max_delay_seconds",
@@ -250,7 +252,7 @@ class Agents:
                 cls._add_element(
                     xml_item,
                     "max_delay_seconds",
-                    item["max_delay_seconds"],
+                    item.get("max_delay_seconds"),
                 )
 
         # heartbeat
