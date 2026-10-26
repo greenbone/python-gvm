@@ -74,7 +74,7 @@ class GmpModifyAgentControllerScanConfigTestMixin:
             b"</modify_agent_control_scan_config>"
         )
 
-    def test_modify_agent_control_scan_config_zero_max_delay(self):
+    def test_modify_agent_control_scan_config_zero_max_delay_raises(self):
         config = {
             "agent_defaults": {
                 "agent_control": {
@@ -90,6 +90,104 @@ class GmpModifyAgentControllerScanConfigTestMixin:
                     "indexer_dir_depth": 10,
                     "scheduler_cron_time": [
                         {"cron": "0 23 * * *", "max_delay_seconds": 0},
+                    ],
+                },
+                "heartbeat": {
+                    "interval_in_seconds": 600,
+                    "miss_until_inactive": 1,
+                },
+            },
+            "agent_control_defaults": {"update_to_latest": True},
+        }
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_agent_control_scan_config(
+                "3b4be213-281f-49ee-b457-5a5f34f71510",
+                config=config,
+            )
+
+    def test_modify_agent_control_scan_config_negative_max_delay_raises(self):
+        config = {
+            "agent_defaults": {
+                "agent_control": {
+                    "retry": {
+                        "attempts": 6,
+                        "delay_in_seconds": 60,
+                        "max_jitter_in_seconds": 10,
+                    }
+                },
+                "agent_script_executor": {
+                    "bulk_size": 1,
+                    "bulk_throttle_time_in_ms": 100,
+                    "indexer_dir_depth": 10,
+                    "scheduler_cron_time": [
+                        {"cron": "0 23 * * *", "max_delay_seconds": -1},
+                    ],
+                },
+                "heartbeat": {
+                    "interval_in_seconds": 600,
+                    "miss_until_inactive": 1,
+                },
+            },
+            "agent_control_defaults": {"update_to_latest": True},
+        }
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_agent_control_scan_config(
+                "3b4be213-281f-49ee-b457-5a5f34f71510",
+                config=config,
+            )
+
+    def test_modify_agent_control_scan_config_invalid_max_delay_type_raises(
+        self,
+    ):
+        config = {
+            "agent_defaults": {
+                "agent_control": {
+                    "retry": {
+                        "attempts": 6,
+                        "delay_in_seconds": 60,
+                        "max_jitter_in_seconds": 10,
+                    }
+                },
+                "agent_script_executor": {
+                    "bulk_size": 1,
+                    "bulk_throttle_time_in_ms": 100,
+                    "indexer_dir_depth": 10,
+                    "scheduler_cron_time": [
+                        {"cron": "0 23 * * *", "max_delay_seconds": "30"},
+                    ],
+                },
+                "heartbeat": {
+                    "interval_in_seconds": 600,
+                    "miss_until_inactive": 1,
+                },
+            },
+            "agent_control_defaults": {"update_to_latest": True},
+        }
+
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_agent_control_scan_config(
+                "3b4be213-281f-49ee-b457-5a5f34f71510",
+                config=config,
+            )
+
+    def test_modify_agent_control_scan_config_missing_max_delay(self):
+        config = {
+            "agent_defaults": {
+                "agent_control": {
+                    "retry": {
+                        "attempts": 6,
+                        "delay_in_seconds": 60,
+                        "max_jitter_in_seconds": 10,
+                    }
+                },
+                "agent_script_executor": {
+                    "bulk_size": 1,
+                    "bulk_throttle_time_in_ms": 100,
+                    "indexer_dir_depth": 10,
+                    "scheduler_cron_time": [
+                        {"cron": "0 23 * * *"},
                     ],
                 },
                 "heartbeat": {
@@ -116,8 +214,59 @@ class GmpModifyAgentControllerScanConfigTestMixin:
             b"<bulk_throttle_time_in_ms>100</bulk_throttle_time_in_ms>"
             b"<indexer_dir_depth>10</indexer_dir_depth>"
             b'<scheduler_cron_time is_list="1">'
-            b"<item><cron>0 23 * * *</cron>"
-            b"<max_delay_seconds>0</max_delay_seconds></item>"
+            b"<item><cron>0 23 * * *</cron></item>"
+            b"</scheduler_cron_time></agent_script_executor>"
+            b"<heartbeat><interval_in_seconds>600</interval_in_seconds>"
+            b"<miss_until_inactive>1</miss_until_inactive></heartbeat>"
+            b"</agent_defaults><agent_control_defaults>"
+            b"<update_to_latest>1</update_to_latest>"
+            b"</agent_control_defaults></config_defaults>"
+            b"</modify_agent_control_scan_config>"
+        )
+
+    def test_modify_agent_control_scan_config_none_max_delay(self):
+        config = {
+            "agent_defaults": {
+                "agent_control": {
+                    "retry": {
+                        "attempts": 6,
+                        "delay_in_seconds": 60,
+                        "max_jitter_in_seconds": 10,
+                    }
+                },
+                "agent_script_executor": {
+                    "bulk_size": 1,
+                    "bulk_throttle_time_in_ms": 100,
+                    "indexer_dir_depth": 10,
+                    "scheduler_cron_time": [
+                        {"cron": "0 23 * * *", "max_delay_seconds": None},
+                    ],
+                },
+                "heartbeat": {
+                    "interval_in_seconds": 600,
+                    "miss_until_inactive": 1,
+                },
+            },
+            "agent_control_defaults": {"update_to_latest": True},
+        }
+
+        self.gmp.modify_agent_control_scan_config(
+            "3b4be213-281f-49ee-b457-5a5f34f71510",
+            config=config,
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_agent_control_scan_config agent_control_id="3b4be213-281f-49ee-b457-5a5f34f71510">'
+            b"<config_defaults><agent_defaults><agent_control><retry>"
+            b"<attempts>6</attempts>"
+            b"<delay_in_seconds>60</delay_in_seconds>"
+            b"<max_jitter_in_seconds>10</max_jitter_in_seconds>"
+            b"</retry></agent_control><agent_script_executor>"
+            b"<bulk_size>1</bulk_size>"
+            b"<bulk_throttle_time_in_ms>100</bulk_throttle_time_in_ms>"
+            b"<indexer_dir_depth>10</indexer_dir_depth>"
+            b'<scheduler_cron_time is_list="1">'
+            b"<item><cron>0 23 * * *</cron></item>"
             b"</scheduler_cron_time></agent_script_executor>"
             b"<heartbeat><interval_in_seconds>600</interval_in_seconds>"
             b"<miss_until_inactive>1</miss_until_inactive></heartbeat>"

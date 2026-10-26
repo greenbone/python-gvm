@@ -509,7 +509,7 @@ class GmpModifyAgentsTestMixin:
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
 
-    def test_modify_agents_scheduler_zero_max_delay(self):
+    def test_modify_agents_scheduler_zero_max_delay_raises(self):
         cfg = {
             "agent_control": {
                 "retry": {
@@ -529,37 +529,10 @@ class GmpModifyAgentsTestMixin:
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
 
-        self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+        with self.assertRaises(InvalidArgumentType):
+            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
 
-        self.connection.send.has_been_called_with(
-            b"<modify_agent>"
-            b'<agents><agent id="agent-123"/></agents>'
-            b"<config>"
-            b"<agent_control>"
-            b"<retry>"
-            b"<attempts>6</attempts>"
-            b"<delay_in_seconds>60</delay_in_seconds>"
-            b"<max_jitter_in_seconds>10</max_jitter_in_seconds>"
-            b"</retry>"
-            b"</agent_control>"
-            b"<agent_script_executor>"
-            b"<bulk_size>2</bulk_size>"
-            b"<bulk_throttle_time_in_ms>300</bulk_throttle_time_in_ms>"
-            b"<indexer_dir_depth>100</indexer_dir_depth>"
-            b'<scheduler_cron_time is_list="1">'
-            b"<item><cron>0 */12 * * *</cron>"
-            b"<max_delay_seconds>0</max_delay_seconds></item>"
-            b"</scheduler_cron_time>"
-            b"</agent_script_executor>"
-            b"<heartbeat>"
-            b"<interval_in_seconds>300</interval_in_seconds>"
-            b"<miss_until_inactive>1</miss_until_inactive>"
-            b"</heartbeat>"
-            b"</config>"
-            b"</modify_agent>"
-        )
-
-    def test_modify_agents_scheduler_missing_max_delay_raises(self):
+    def test_modify_agents_scheduler_missing_max_delay(self):
         cfg = {
             "agent_control": {
                 "retry": {
@@ -577,8 +550,75 @@ class GmpModifyAgentsTestMixin:
             "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
         }
 
-        with self.assertRaises(InvalidArgumentType):
-            self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+        self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+        self.connection.send.has_been_called_with(
+            b"<modify_agent>"
+            b'<agents><agent id="agent-123"/></agents>'
+            b"<config>"
+            b"<agent_control><retry>"
+            b"<attempts>6</attempts>"
+            b"<delay_in_seconds>60</delay_in_seconds>"
+            b"<max_jitter_in_seconds>10</max_jitter_in_seconds>"
+            b"</retry></agent_control>"
+            b"<agent_script_executor>"
+            b"<bulk_size>2</bulk_size>"
+            b"<bulk_throttle_time_in_ms>300</bulk_throttle_time_in_ms>"
+            b"<indexer_dir_depth>100</indexer_dir_depth>"
+            b'<scheduler_cron_time is_list="1">'
+            b"<item>"
+            b"<cron>0 */12 * * *</cron>"
+            b"</item>"
+            b"</scheduler_cron_time>"
+            b"</agent_script_executor>"
+            b"<heartbeat><interval_in_seconds>300</interval_in_seconds>"
+            b"<miss_until_inactive>1</miss_until_inactive></heartbeat>"
+            b"</config></modify_agent>"
+        )
+
+    def test_modify_agents_scheduler_none_max_delay(self):
+        cfg = {
+            "agent_control": {
+                "retry": {
+                    "attempts": 6,
+                    "delay_in_seconds": 60,
+                    "max_jitter_in_seconds": 10,
+                }
+            },
+            "agent_script_executor": {
+                "bulk_size": 2,
+                "bulk_throttle_time_in_ms": 300,
+                "indexer_dir_depth": 100,
+                "scheduler_cron_time": [
+                    {"cron": "0 */12 * * *", "max_delay_seconds": None}
+                ],
+            },
+            "heartbeat": {"interval_in_seconds": 300, "miss_until_inactive": 1},
+        }
+
+        self.gmp.modify_agents(agent_ids=["agent-123"], config=cfg)
+
+        self.connection.send.has_been_called_with(
+            b"<modify_agent>"
+            b'<agents><agent id="agent-123"/></agents>'
+            b"<config>"
+            b"<agent_control><retry>"
+            b"<attempts>6</attempts>"
+            b"<delay_in_seconds>60</delay_in_seconds>"
+            b"<max_jitter_in_seconds>10</max_jitter_in_seconds>"
+            b"</retry></agent_control>"
+            b"<agent_script_executor>"
+            b"<bulk_size>2</bulk_size>"
+            b"<bulk_throttle_time_in_ms>300</bulk_throttle_time_in_ms>"
+            b"<indexer_dir_depth>100</indexer_dir_depth>"
+            b'<scheduler_cron_time is_list="1">'
+            b"<item><cron>0 */12 * * *</cron></item>"
+            b"</scheduler_cron_time>"
+            b"</agent_script_executor>"
+            b"<heartbeat><interval_in_seconds>300</interval_in_seconds>"
+            b"<miss_until_inactive>1</miss_until_inactive></heartbeat>"
+            b"</config></modify_agent>"
+        )
 
     def test_modify_agents_scheduler_negative_max_delay_raises(self):
         cfg = {
