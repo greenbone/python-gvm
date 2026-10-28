@@ -7,7 +7,7 @@ name = "python-gvm"
 version = "27.10.2.dev1"
 description = "Library to communicate with remote servers over GMP or OSP"
 authors = [{ name = "Greenbone AG", email = "info@greenbone.net" }]
-requires-python = ">=3.10,<4"
+requires-python = ">=3.11,<4"
 readme = "README.md"
 license = "GPL-3.0-or-later"
 classifiers = [
@@ -15,11 +15,11 @@ classifiers = [
     "Environment :: Console",
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
     "Programming Language :: Python :: 3.13",
     "Programming Language :: Python :: 3.14",
+    "Programming Language :: Python :: 3.15",
     "Operating System :: OS Independent",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
@@ -41,7 +41,7 @@ dev = [
     "lxml-stubs>=0.5.1,<0.6",
     "types-paramiko>=5.0.0.20260617,<6.0.0.0",
     "git-cliff>=2.8.0,<3",
-    "myst-parser>=4.0.0,<5 ; python_full_version >= '3.10' and python_full_version < '4'",
+    "myst-parser>=4.0.0,<5 ; python_full_version >= '3.11' and python_full_version < '4'",
 ]
 
 [tool.uv]
@@ -55,7 +55,7 @@ include = ["docs", "tests", "gvm", "uv.lock"]
 
 [tool.ruff]
 line-length = 80
-target-version = "py310"
+target-version = "py311"
 
 [tool.ruff.format]
 docstring-code-format = true

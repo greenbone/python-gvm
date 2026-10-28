@@ -4,7 +4,7 @@
 Edition installations and Greenbone Enterprise Appliances remotely.
 
 :::{note}
-**python-gvm** requires at least Python 3.9. Python 2 is not supported.
+**python-gvm** requires at least Python 3.11. Python 2 is not supported.
 :::
 
 ## User Guide
