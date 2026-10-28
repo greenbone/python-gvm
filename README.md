@@ -56,7 +56,7 @@ We frequently update these projects to add features and keep them free from bugs
 
 ### Requirements
 
-Python 3.10 and later is supported.
+Python 3.11 and later is supported.
 
 ### Install using pip
 
