@@ -347,6 +347,18 @@ class GMPNext(GMPv227[T]):
             )
         )
 
+    def get_agent_inventory_token(self) -> T:
+        """Request a short-lived agent inventory token.
+
+        The token is used to authenticate requests to the agent-control API
+        using Authorization: Bearer <token>.
+
+        The authenticated user must have the get_agents permission.
+        """
+        return self._send_request_and_transform_response(
+            Agents.get_agent_inventory_token()
+        )
+
     def create_active_directory_credential(
         self,
         name: str,

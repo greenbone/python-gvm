@@ -515,3 +515,17 @@ class Agents:
         cmd.set_attribute("anonymized", to_bool(anonymized))
 
         return cmd
+
+    @classmethod
+    def get_agent_inventory_token(cls) -> Request:
+        """Request a short-lived agent inventory token.
+
+        The token is used to authenticate requests to the agent-control API
+        using the Authorization: Bearer <token> header.
+
+        The authenticated user must have the get_agents permission.
+
+        Returns:
+            Request: GMP request for an agent inventory token.
+        """
+        return XmlCommand("get_agent_inventory_token")
