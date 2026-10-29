@@ -7,6 +7,9 @@ from ...gmpnext import GMPTestCase
 from .agents.test_delete_agents import (
     GmpDeleteAgentsTestMixin,
 )
+from .agents.test_get_agent_inventory_token import (
+    GmpGetAgentInventoryTokenTestMixin,
+)
 from .agents.test_get_agent_support_bundle import (
     GmpGetAgentSupportBundleTestMixin,
 )
@@ -46,5 +49,11 @@ class GMPSyncAgentsTestCase(GmpSyncAgentsTestMixin, GMPTestCase):
 
 class GmpGetAgentSupportBundleTestCase(
     GmpGetAgentSupportBundleTestMixin, GMPTestCase
+):
+    pass
+
+
+class GmpGetAgentInventoryTokenTestCase(
+    GmpGetAgentInventoryTokenTestMixin, GMPTestCase
 ):
     pass
