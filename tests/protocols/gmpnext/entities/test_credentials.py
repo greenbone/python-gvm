@@ -17,6 +17,7 @@ from ..entities.credentials import (
     GmpCreateCredentialStoreCredentialTestMixin,
     GmpModifyActiveDirectoryCredentialTestMixin,
     GmpModifyCredentialStoreCredentialTestMixin,
+    GmpVerifyActiveDirectoryCredentialTestMixin,
 )
 
 
@@ -50,5 +51,11 @@ class GMPModifyCredentialTestCase(
     GmpModifyActiveDirectoryCredentialTestMixin,
     GmpModifyCredentialStoreCredentialTestMixin,
     GMPTestCase,
+):
+    pass
+
+
+class GMPVerifyActiveDirectoryCredentialTestCase(
+    GmpVerifyActiveDirectoryCredentialTestMixin, GMPTestCase
 ):
     pass
