@@ -250,6 +250,77 @@ class Credentials(CredentialsV224):
         return cmd
 
     @classmethod
+    def verify_active_directory_credential(
+        cls,
+        *,
+        credential_id: EntityID | None = None,
+        host: str | None = None,
+        bind_dn: str | None = None,
+        bind_password: str | None = None,
+        base_dn: str | None = None,
+        tls_mode: str | None = None,
+        port: int | None = None,
+        ca_certificate: str | None = None,
+    ) -> Request:
+        """Verify a saved AD credential or supplied AD connection settings."""
+        function = cls.verify_active_directory_credential.__name__
+
+        has_inline_fields = (
+            host is not None
+            or bind_dn is not None
+            or bind_password is not None
+            or base_dn is not None
+            or tls_mode is not None
+            or port is not None
+            or ca_certificate is not None
+        )
+
+        if credential_id is not None:
+            if not credential_id:
+                raise RequiredArgument(
+                    function=function, argument="credential_id"
+                )
+            if has_inline_fields:
+                raise InvalidArgument(
+                    function=function, argument="credential_id"
+                )
+
+            cmd = XmlCommand("verify_active_directory_credential")
+            cmd.set_attribute("credential_id", str(credential_id))
+            return cmd
+
+        if not host:
+            raise RequiredArgument(function=function, argument="host")
+        if not bind_dn:
+            raise RequiredArgument(function=function, argument="bind_dn")
+        if not bind_password:
+            raise RequiredArgument(function=function, argument="bind_password")
+        if not base_dn:
+            raise RequiredArgument(function=function, argument="base_dn")
+        if not tls_mode:
+            raise RequiredArgument(function=function, argument="tls_mode")
+
+        if tls_mode not in ("ldaps", "starttls"):
+            raise InvalidArgument(function=function, argument="tls_mode")
+
+        if port is not None and (
+            not isinstance(port, int) or not 1 <= port <= 65535
+        ):
+            raise InvalidArgument(function=function, argument="port")
+
+        cmd = XmlCommand("verify_active_directory_credential")
+        cmd.add_element("host", host)
+        if port is not None:
+            cmd.add_element("port", str(port))
+        cmd.add_element("bind_dn", bind_dn)
+        cmd.add_element("bind_password", bind_password)
+        cmd.add_element("base_dn", base_dn)
+        cmd.add_element("tls_mode", tls_mode)
+        if ca_certificate is not None:
+            cmd.add_element("ca_certificate", ca_certificate)
+        return cmd
+
+    @classmethod
     def create_credential_store_credential(
         cls,
         name: str,

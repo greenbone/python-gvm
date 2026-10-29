@@ -449,6 +449,46 @@ class GMPNext(GMPv227[T]):
             )
         )
 
+    def verify_active_directory_credential(
+        self,
+        *,
+        credential_id: EntityID | None = None,
+        host: str | None = None,
+        bind_dn: str | None = None,
+        bind_password: str | None = None,
+        base_dn: str | None = None,
+        tls_mode: str | None = None,
+        port: int | None = None,
+        ca_certificate: str | None = None,
+    ) -> T:
+        """Verify a saved AD credential or supplied AD connection settings.
+
+        Requires AD integration to be enabled in gvmd. Provide either
+        credential_id alone or the required inline connection fields.
+
+        Args:
+            credential_id: UUID of a saved AD credential.
+            host: AD server hostname or IP address.
+            bind_dn: Distinguished name used to bind to the directory.
+            bind_password: Password used for the bind.
+            base_dn: Base distinguished name for directory searches.
+            tls_mode: Either "ldaps" or "starttls".
+            port: Optional server port, from 1 to 65535.
+            ca_certificate: Optional CA certificate in PEM format.
+        """
+        return self._send_request_and_transform_response(
+            Credentials.verify_active_directory_credential(
+                credential_id=credential_id,
+                host=host,
+                bind_dn=bind_dn,
+                bind_password=bind_password,
+                base_dn=base_dn,
+                tls_mode=tls_mode,
+                port=port,
+                ca_certificate=ca_certificate,
+            )
+        )
+
     def create_credential_store_credential(
         self,
         name: str,

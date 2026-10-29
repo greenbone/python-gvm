@@ -14,10 +14,14 @@ from .test_modify_active_directory_credential import (
 from .test_modify_credential_store_credential import (
     GmpModifyCredentialStoreCredentialTestMixin,
 )
+from .test_verify_active_directory_credential import (
+    GmpVerifyActiveDirectoryCredentialTestMixin,
+)
 
 __all__ = (
     "GmpCreateActiveDirectoryCredentialTestMixin",
     "GmpCreateCredentialStoreCredentialTestMixin",
     "GmpModifyActiveDirectoryCredentialTestMixin",
     "GmpModifyCredentialStoreCredentialTestMixin",
+    "GmpVerifyActiveDirectoryCredentialTestMixin",
 )
