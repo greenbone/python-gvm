@@ -59,6 +59,35 @@ class AliveTest(Enum):
 
 
 class Targets:
+    @staticmethod
+    def _add_multiple_credentials(
+        cmd: XmlCommand,
+        *,
+        ssh_credentials: list[tuple[EntityID, int | str]] | None = None,
+        ssh_elevate_credentials: list[EntityID] | None = None,
+        smb_credentials: list[EntityID] | None = None,
+        esxi_credentials: list[EntityID] | None = None,
+        snmp_credentials: list[EntityID] | None = None,
+        krb5_credentials: list[EntityID] | None = None,
+    ) -> None:
+        """Append a GMP element for each supplied target credential."""
+        for credential_id, port in ssh_credentials or []:
+            xml_ssh = cmd.add_element(
+                "ssh_credential", attrs={"id": str(credential_id)}
+            )
+            xml_ssh.add_element("port", str(port))
+
+        credential_lists = (
+            ("ssh_elevate_credential", ssh_elevate_credentials),
+            ("smb_credential", smb_credentials),
+            ("esxi_credential", esxi_credentials),
+            ("snmp_credential", snmp_credentials),
+            ("krb5_credential", krb5_credentials),
+        )
+        for element_name, credential_ids in credential_lists:
+            for credential_id in credential_ids or []:
+                cmd.add_element(element_name, attrs={"id": str(credential_id)})
+
     @classmethod
     def create_target(
         cls,
@@ -73,6 +102,12 @@ class Targets:
         smb_credential_id: EntityID | None = None,
         esxi_credential_id: EntityID | None = None,
         snmp_credential_id: EntityID | None = None,
+        ssh_credentials: list[tuple[EntityID, int | str]] | None = None,
+        ssh_elevate_credentials: list[EntityID] | None = None,
+        smb_credentials: list[EntityID] | None = None,
+        esxi_credentials: list[EntityID] | None = None,
+        snmp_credentials: list[EntityID] | None = None,
+        krb5_credentials: list[EntityID] | None = None,
         alive_test: str | AliveTest | AliveTestV224 | None = None,
         allow_simultaneous_ips: bool | None = None,
         reverse_lookup_only: bool | None = None,
@@ -92,6 +127,12 @@ class Targets:
             ssh_credential_port: The port to use for ssh credential
             smb_credential_id: UUID of a smb credential to use on target
             snmp_credential_id: UUID of a snmp credential to use on target
+            ssh_credentials: List of (SSH credential UUID, port) pairs.
+            ssh_elevate_credentials: List of SSH elevate credential UUIDs.
+            smb_credentials: List of SMB credential UUIDs.
+            esxi_credentials: List of ESXi credential UUIDs.
+            snmp_credentials: List of SNMP credential UUIDs.
+            krb5_credentials: List of Kerberos credential UUIDs.
             esxi_credential_id: UUID of a esxi credential to use on target
             alive_test: Which alive test to use
             allow_simultaneous_ips: Whether to scan multiple IPs of the
@@ -150,6 +191,16 @@ class Targets:
                 "snmp_credential", attrs={"id": str(snmp_credential_id)}
             )
 
+        cls._add_multiple_credentials(
+            cmd,
+            ssh_credentials=ssh_credentials,
+            ssh_elevate_credentials=ssh_elevate_credentials,
+            smb_credentials=smb_credentials,
+            esxi_credentials=esxi_credentials,
+            snmp_credentials=snmp_credentials,
+            krb5_credentials=krb5_credentials,
+        )
+
         if alive_test:
             if not isinstance(alive_test, AliveTest):
                 alive_test = AliveTest(alive_test)
@@ -190,6 +241,12 @@ class Targets:
         smb_credential_id: EntityID | None = None,
         esxi_credential_id: EntityID | None = None,
         snmp_credential_id: EntityID | None = None,
+        ssh_credentials: list[tuple[EntityID, int | str]] | None = None,
+        ssh_elevate_credentials: list[EntityID] | None = None,
+        smb_credentials: list[EntityID] | None = None,
+        esxi_credentials: list[EntityID] | None = None,
+        snmp_credentials: list[EntityID] | None = None,
+        krb5_credentials: list[EntityID] | None = None,
         alive_test: str | AliveTest | AliveTestV224 | None = None,
         allow_simultaneous_ips: bool | None = None,
         reverse_lookup_only: bool | None = None,
@@ -209,6 +266,12 @@ class Targets:
             smb_credential_id: UUID of SMB credential to use on target.
             esxi_credential_id: UUID of ESXi credential to use on target.
             snmp_credential_id: UUID of SNMP credential to use on target.
+            ssh_credentials: List of (SSH credential UUID, port) pairs.
+            ssh_elevate_credentials: List of SSH elevate credential UUIDs.
+            smb_credentials: List of SMB credential UUIDs.
+            esxi_credentials: List of ESXi credential UUIDs.
+            snmp_credentials: List of SNMP credential UUIDs.
+            krb5_credentials: List of Kerberos credential UUIDs.
             port_list_id: UUID of port list describing ports to scan.
             alive_test: Which alive tests to use.
             allow_simultaneous_ips: Whether to scan multiple IPs of the
@@ -266,6 +329,16 @@ class Targets:
             cmd.add_element(
                 "snmp_credential", attrs={"id": str(snmp_credential_id)}
             )
+
+        cls._add_multiple_credentials(
+            cmd,
+            ssh_credentials=ssh_credentials,
+            ssh_elevate_credentials=ssh_elevate_credentials,
+            smb_credentials=smb_credentials,
+            esxi_credentials=esxi_credentials,
+            snmp_credentials=snmp_credentials,
+            krb5_credentials=krb5_credentials,
+        )
 
         if allow_simultaneous_ips is not None:
             cmd.add_element(
