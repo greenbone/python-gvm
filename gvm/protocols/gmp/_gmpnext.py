@@ -1667,28 +1667,40 @@ class GMPNext(GMPv227[T]):
         reverse_lookup_unify: bool | None = None,
         port_range: str | None = None,
         port_list_id: EntityID | None = None,
+        ssh_credentials: list[tuple[EntityID, int | str]] | None = None,
+        ssh_elevate_credentials: list[EntityID] | None = None,
+        smb_credentials: list[EntityID] | None = None,
+        esxi_credentials: list[EntityID] | None = None,
+        snmp_credentials: list[EntityID] | None = None,
+        krb5_credentials: list[EntityID] | None = None,
     ) -> T:
-        """Create a new target
+        """Create a new target.
 
         Args:
-            name: Name of the target
-            asset_hosts_filter: Filter to select target host from assets hosts
-            hosts: List of hosts addresses to scan
-            exclude_hosts: List of hosts addresses to exclude from scan
-            comment: Comment for the target
-            ssh_credential_id: UUID of a ssh credential to use on target
-            ssh_credential_port: The port to use for ssh credential
-            smb_credential_id: UUID of a smb credential to use on target
-            snmp_credential_id: UUID of a snmp credential to use on target
-            esxi_credential_id: UUID of a esxi credential to use on target
-            alive_test: Which alive test to use
+            name: Name of the target.
+            asset_hosts_filter: Filter to select target hosts from assets.
+            hosts: List of host addresses to scan.
+            exclude_hosts: List of host addresses to exclude.
+            comment: Comment for the target.
+            ssh_credential_id: UUID of an SSH credential.
+            ssh_credential_port: Port for the SSH credential.
+            smb_credential_id: UUID of an SMB credential.
+            esxi_credential_id: UUID of an ESXi credential.
+            snmp_credential_id: UUID of an SNMP credential.
+            alive_test: Which alive test to use.
             allow_simultaneous_ips: Whether to scan multiple IPs of the
-                same host simultaneously
-            reverse_lookup_only: Whether to scan only hosts that have names
-            reverse_lookup_unify: Whether to scan only one IP when multiple IPs
-                have the same name.
-            port_range: Port range for the target
-            port_list_id: UUID of the port list to use on target
+                same host simultaneously.
+            reverse_lookup_only: Whether to scan only hosts with names.
+            reverse_lookup_unify: Whether to scan only one IP when
+                multiple IPs have the same name.
+            port_range: Port range for the target.
+            port_list_id: UUID of the port list.
+            ssh_credentials: List of SSH credential UUID and port pairs.
+            ssh_elevate_credentials: List of SSH elevate credential UUIDs.
+            smb_credentials: List of SMB credential UUIDs.
+            esxi_credentials: List of ESXi credential UUIDs.
+            snmp_credentials: List of SNMP credential UUIDs.
+            krb5_credentials: List of Kerberos credential UUIDs.
         """
         return self._send_request_and_transform_response(
             Targets.create_target(
@@ -1708,6 +1720,12 @@ class GMPNext(GMPv227[T]):
                 reverse_lookup_unify=reverse_lookup_unify,
                 port_range=port_range,
                 port_list_id=port_list_id,
+                ssh_credentials=ssh_credentials,
+                ssh_elevate_credentials=ssh_elevate_credentials,
+                smb_credentials=smb_credentials,
+                esxi_credentials=esxi_credentials,
+                snmp_credentials=snmp_credentials,
+                krb5_credentials=krb5_credentials,
             )
         )
 
@@ -1729,27 +1747,39 @@ class GMPNext(GMPv227[T]):
         reverse_lookup_only: bool | None = None,
         reverse_lookup_unify: bool | None = None,
         port_list_id: EntityID | None = None,
+        ssh_credentials: list[tuple[EntityID, int | str]] | None = None,
+        ssh_elevate_credentials: list[EntityID] | None = None,
+        smb_credentials: list[EntityID] | None = None,
+        esxi_credentials: list[EntityID] | None = None,
+        snmp_credentials: list[EntityID] | None = None,
+        krb5_credentials: list[EntityID] | None = None,
     ) -> T:
         """Modify an existing target.
 
         Args:
-            target_id: UUID of target to modify.
-            comment: Comment on target.
-            name: Name of target.
+            target_id: UUID of the target to modify.
+            name: Name of the target.
+            comment: Comment on the target.
             hosts: List of target hosts.
-            exclude_hosts: A list of hosts to exclude.
-            ssh_credential_id: UUID of SSH credential to use on target.
-            ssh_credential_port: The port to use for ssh credential
-            smb_credential_id: UUID of SMB credential to use on target.
-            esxi_credential_id: UUID of ESXi credential to use on target.
-            snmp_credential_id: UUID of SNMP credential to use on target.
-            port_list_id: UUID of port list describing ports to scan.
+            exclude_hosts: List of hosts to exclude.
+            ssh_credential_id: UUID of an SSH credential.
+            ssh_credential_port: Port for the SSH credential.
+            smb_credential_id: UUID of an SMB credential.
+            esxi_credential_id: UUID of an ESXi credential.
+            snmp_credential_id: UUID of an SNMP credential.
             alive_test: Which alive tests to use.
             allow_simultaneous_ips: Whether to scan multiple IPs of the
-                same host simultaneously
-            reverse_lookup_only: Whether to scan only hosts that have names.
-            reverse_lookup_unify: Whether to scan only one IP when multiple IPs
-                have the same name.
+                same host simultaneously.
+            reverse_lookup_only: Whether to scan only hosts with names.
+            reverse_lookup_unify: Whether to scan only one IP when
+                multiple IPs have the same name.
+            port_list_id: UUID of the port list.
+            ssh_credentials: List of SSH credential UUID and port pairs.
+            ssh_elevate_credentials: List of SSH elevate credential UUIDs.
+            smb_credentials: List of SMB credential UUIDs.
+            esxi_credentials: List of ESXi credential UUIDs.
+            snmp_credentials: List of SNMP credential UUIDs.
+            krb5_credentials: List of Kerberos credential UUIDs.
         """
         return self._send_request_and_transform_response(
             Targets.modify_target(
@@ -1768,6 +1798,12 @@ class GMPNext(GMPv227[T]):
                 reverse_lookup_only=reverse_lookup_only,
                 reverse_lookup_unify=reverse_lookup_unify,
                 port_list_id=port_list_id,
+                ssh_credentials=ssh_credentials,
+                ssh_elevate_credentials=ssh_elevate_credentials,
+                smb_credentials=smb_credentials,
+                esxi_credentials=esxi_credentials,
+                snmp_credentials=snmp_credentials,
+                krb5_credentials=krb5_credentials,
             )
         )
 
