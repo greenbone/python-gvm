@@ -231,3 +231,140 @@ class GmpModifyTargetTestMixin:
             b"<alive_tests>Host Discovery IPv6</alive_tests>"
             b"</modify_target>"
         )
+
+    def test_modify_target_with_multiple_ssh_credentials(self):
+        self.gmp.modify_target(
+            target_id="t1",
+            ssh_credentials=[
+                ("c1", 22),
+                ("c2", 23),
+            ],
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b'<ssh_credential id="c1">'
+            b"<port>22</port>"
+            b"</ssh_credential>"
+            b'<ssh_credential id="c2">'
+            b"<port>23</port>"
+            b"</ssh_credential>"
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_multiple_smb_credentials(self):
+        self.gmp.modify_target(target_id="t1", smb_credentials=["c1", "c2"])
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b'<smb_credential id="c1"/>'
+            b'<smb_credential id="c2"/>'
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_multiple_esxi_credentials(self):
+        self.gmp.modify_target(target_id="t1", esxi_credentials=["c1", "c2"])
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b'<esxi_credential id="c1"/>'
+            b'<esxi_credential id="c2"/>'
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_multiple_snmp_credentials(self):
+        self.gmp.modify_target(target_id="t1", snmp_credentials=["c1", "c2"])
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b'<snmp_credential id="c1"/>'
+            b'<snmp_credential id="c2"/>'
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_multiple_krb5_credentials(self):
+        self.gmp.modify_target(target_id="t1", krb5_credentials=["c1", "c2"])
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b'<krb5_credential id="c1"/>'
+            b'<krb5_credential id="c2"/>'
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_multiple_ssh_elevate_credentials(self):
+        self.gmp.modify_target(
+            target_id="t1",
+            ssh_elevate_credentials=["c1", "c2"],
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b'<ssh_elevate_credential id="c1"/>'
+            b'<ssh_elevate_credential id="c2"/>'
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_mixed_credentials(self):
+        self.gmp.modify_target(
+            target_id="t1",
+            ssh_credentials=[
+                ("ssh1", 22),
+                ("ssh2", 23),
+            ],
+            ssh_elevate_credentials=["elevate1"],
+            smb_credentials=["smb1"],
+            esxi_credentials=["esxi1"],
+            snmp_credentials=["snmp1"],
+            krb5_credentials=["krb1"],
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b'<ssh_credential id="ssh1">'
+            b"<port>22</port>"
+            b"</ssh_credential>"
+            b'<ssh_credential id="ssh2">'
+            b"<port>23</port>"
+            b"</ssh_credential>"
+            b'<ssh_elevate_credential id="elevate1"/>'
+            b'<smb_credential id="smb1"/>'
+            b'<esxi_credential id="esxi1"/>'
+            b'<snmp_credential id="snmp1"/>'
+            b'<krb5_credential id="krb1"/>'
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_single_and_multiple_credentials(self):
+        self.gmp.modify_target(
+            target_id="t1",
+            ssh_credential_id="old",
+            ssh_credential_port=22,
+            ssh_credentials=[("new", 23)],
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b'<ssh_credential id="old">'
+            b"<port>22</port>"
+            b"</ssh_credential>"
+            b'<ssh_credential id="new">'
+            b"<port>23</port>"
+            b"</ssh_credential>"
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_empty_credential_lists(self):
+        self.gmp.modify_target(
+            target_id="t1",
+            ssh_credentials=[],
+            ssh_elevate_credentials=[],
+            smb_credentials=[],
+            esxi_credentials=[],
+            snmp_credentials=[],
+            krb5_credentials=[],
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1"/>'
+        )
