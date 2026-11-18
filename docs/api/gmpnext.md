@@ -17,6 +17,27 @@
 ## Enums
 
 ```{eval-rst}
+.. autoclass:: gvm.protocols.gmp.requests.next.ActiveDirectoryObjectType
+    :members:
+    :undoc-members:
+    :no-index:
+```
+
+```{eval-rst}
+.. autoclass:: gvm.protocols.gmp.requests.next.ActiveDirectorySearchScope
+    :members:
+    :undoc-members:
+    :no-index:
+```
+
+```{eval-rst}
+.. autoclass:: gvm.protocols.gmp.requests.next.ActiveDirectoryTlsMode
+    :members:
+    :undoc-members:
+    :no-index:
+```
+
+```{eval-rst}
 .. autoclass:: gvm.protocols.gmp.requests.next.AlertCondition
     :members:
     :undoc-members:

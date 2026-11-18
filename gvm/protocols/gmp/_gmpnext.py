@@ -11,6 +11,10 @@ from ...utils import SupportsStr
 from .._protocol import T
 from ._gmp227 import GMPv227
 from .requests.next import (
+    ActiveDirectory,
+    ActiveDirectoryObjectType,
+    ActiveDirectorySearchScope,
+    ActiveDirectoryTlsMode,
     AgentGroups,
     AgentInstallerInstructionLanguageType,
     AgentInstallerInstructions,
@@ -367,7 +371,7 @@ class GMPNext(GMPv227[T]):
         bind_dn: str,
         base_dn: str,
         bind_password: str,
-        tls_mode: str,
+        tls_mode: ActiveDirectoryTlsMode | str,
         comment: str | None = None,
         port: int | None = None,
         ca_certificate: str | None = None,
@@ -411,7 +415,7 @@ class GMPNext(GMPv227[T]):
         bind_dn: str | None = None,
         base_dn: str | None = None,
         bind_password: str | None = None,
-        tls_mode: str | None = None,
+        tls_mode: ActiveDirectoryTlsMode | str | None = None,
         port: int | str | None = None,
         ca_certificate: str | None = None,
     ) -> T:
@@ -457,7 +461,7 @@ class GMPNext(GMPv227[T]):
         bind_dn: str | None = None,
         bind_password: str | None = None,
         base_dn: str | None = None,
-        tls_mode: str | None = None,
+        tls_mode: ActiveDirectoryTlsMode | str | None = None,
         port: int | None = None,
         ca_certificate: str | None = None,
     ) -> T:
@@ -472,7 +476,7 @@ class GMPNext(GMPv227[T]):
             bind_dn: Distinguished name used to bind to the directory.
             bind_password: Password used for the bind.
             base_dn: Base distinguished name for directory searches.
-            tls_mode: Either "ldaps" or "starttls".
+            tls_mode: TLS mode, either "ldaps" or "starttls".
             port: Optional server port, from 1 to 65535.
             ca_certificate: Optional CA certificate in PEM format.
         """
@@ -486,6 +490,68 @@ class GMPNext(GMPv227[T]):
                 tls_mode=tls_mode,
                 port=port,
                 ca_certificate=ca_certificate,
+            )
+        )
+
+    def get_active_directory_objects(
+        self,
+        credential_id: EntityID,
+        *,
+        base_dn: str | None = None,
+        group_dn: str | None = None,
+        scope: ActiveDirectorySearchScope | str | None = None,
+        object_types: Sequence[ActiveDirectoryObjectType | str] | None = None,
+        max_results: int | None = None,
+        include_disabled_computers: bool | None = None,
+        targets: bool | None = None,
+        tasks: bool | None = None,
+        details: bool | None = None,
+    ) -> T:
+        """Search Active Directory using a saved AD credential.
+
+        Requires AD integration to be enabled in gvmd and a saved AD
+        credential. Options set to None are omitted from the request so that
+        gvmd applies its defaults.
+
+        The response includes per-type counts for the fetched subset and an
+        objects truncated attribute indicating whether more objects were
+        available.
+
+        Args:
+            credential_id: UUID of a saved AD credential.
+            base_dn: Nonempty search base within the credential's base DN.
+                Defaults to the credential's base DN.
+            group_dn: Nonempty DN selecting explicit direct group members
+                within the search base and scope. Must be within the
+                credential's base DN.
+            scope: Search scope, either "base", "onelevel", or "subtree".
+                Defaults to "onelevel", searching immediately below base_dn. Use
+                "subtree" to search at all directory depths.
+            object_types: Nonempty selection of "ou", "container", "computer",
+                or "group". Defaults to "ou", "computer", and "group".
+                Duplicates are ignored, preserving first-occurrence order.
+            max_results: Maximum number of objects to fetch after LDAP
+                filtering, from 1 to 1000. Omit to use the server default.
+            include_disabled_computers: Include disabled computers. Defaults
+                to True.
+            targets: Include matching targets for computers. Defaults to False.
+            tasks: Include tasks and readable configurations for matching
+                targets. Requires targets=True. Defaults to False.
+            details: Include computer OS version and service principal names.
+                Defaults to False.
+        """
+        return self._send_request_and_transform_response(
+            ActiveDirectory.get_active_directory_objects(
+                credential_id=credential_id,
+                base_dn=base_dn,
+                group_dn=group_dn,
+                scope=scope,
+                object_types=object_types,
+                max_results=max_results,
+                include_disabled_computers=include_disabled_computers,
+                targets=targets,
+                tasks=tasks,
+                details=details,
             )
         )
 
