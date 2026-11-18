@@ -4,6 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.protocols.gmp.requests.next import ActiveDirectoryTlsMode
 
 
 class GmpVerifyActiveDirectoryCredentialTestMixin:
@@ -58,6 +59,43 @@ class GmpVerifyActiveDirectoryCredentialTestMixin:
             b"</verify_active_directory_credential>"
         )
 
+    def test_verify_inline_ad_credential_with_tls_mode_enum(self):
+        self.gmp.verify_active_directory_credential(
+            host="dc.example.org",
+            bind_dn="CN=Scanner,DC=example,DC=org",
+            bind_password="secret",
+            base_dn="DC=example,DC=org",
+            tls_mode=ActiveDirectoryTlsMode.LDAPS,
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<verify_active_directory_credential>"
+            b"<host>dc.example.org</host>"
+            b"<bind_dn>CN=Scanner,DC=example,DC=org</bind_dn>"
+            b"<bind_password>secret</bind_password>"
+            b"<base_dn>DC=example,DC=org</base_dn>"
+            b"<tls_mode>ldaps</tls_mode>"
+            b"</verify_active_directory_credential>"
+        )
+
+        self.gmp.verify_active_directory_credential(
+            host="dc.example.org",
+            bind_dn="CN=Scanner,DC=example,DC=org",
+            bind_password="secret",
+            base_dn="DC=example,DC=org",
+            tls_mode=ActiveDirectoryTlsMode.STARTTLS,
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<verify_active_directory_credential>"
+            b"<host>dc.example.org</host>"
+            b"<bind_dn>CN=Scanner,DC=example,DC=org</bind_dn>"
+            b"<bind_password>secret</bind_password>"
+            b"<base_dn>DC=example,DC=org</base_dn>"
+            b"<tls_mode>starttls</tls_mode>"
+            b"</verify_active_directory_credential>"
+        )
+
     def test_verify_without_saved_id_or_inline_fields(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.verify_active_directory_credential()
@@ -99,14 +137,52 @@ class GmpVerifyActiveDirectoryCredentialTestMixin:
             )
 
     def test_verify_inline_ad_credential_invalid_port(self):
-        for port in (0, 65536, "389"):
-            with self.subTest(port=port):
-                with self.assertRaises(InvalidArgument):
-                    self.gmp.verify_active_directory_credential(
-                        host="dc.example.org",
-                        bind_dn="CN=Scanner,DC=example,DC=org",
-                        bind_password="secret",
-                        base_dn="DC=example,DC=org",
-                        tls_mode="ldaps",
-                        port=port,
-                    )
+        with self.assertRaises(InvalidArgument):
+            self.gmp.verify_active_directory_credential(
+                host="dc.example.org",
+                bind_dn="CN=Scanner,DC=example,DC=org",
+                bind_password="secret",
+                base_dn="DC=example,DC=org",
+                tls_mode="ldaps",
+                port=0,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.verify_active_directory_credential(
+                host="dc.example.org",
+                bind_dn="CN=Scanner,DC=example,DC=org",
+                bind_password="secret",
+                base_dn="DC=example,DC=org",
+                tls_mode="ldaps",
+                port=65536,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.verify_active_directory_credential(
+                host="dc.example.org",
+                bind_dn="CN=Scanner,DC=example,DC=org",
+                bind_password="secret",
+                base_dn="DC=example,DC=org",
+                tls_mode="ldaps",
+                port="389",
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.verify_active_directory_credential(
+                host="dc.example.org",
+                bind_dn="CN=Scanner,DC=example,DC=org",
+                bind_password="secret",
+                base_dn="DC=example,DC=org",
+                tls_mode="ldaps",
+                port=True,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.verify_active_directory_credential(
+                host="dc.example.org",
+                bind_dn="CN=Scanner,DC=example,DC=org",
+                bind_password="secret",
+                base_dn="DC=example,DC=org",
+                tls_mode="ldaps",
+                port=False,
+            )

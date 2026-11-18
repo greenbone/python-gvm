@@ -14,6 +14,13 @@ from ..v224._credentials import (
 )
 
 
+class ActiveDirectoryTlsMode(Enum):
+    """Enum for Active Directory TLS modes"""
+
+    LDAPS = "ldaps"
+    STARTTLS = "starttls"
+
+
 class CredentialStoreCredentialType(Enum):
     """Enum for credential store credential types"""
 
@@ -49,7 +56,7 @@ class Credentials(CredentialsV224):
         bind_dn: str,
         base_dn: str,
         bind_password: str,
-        tls_mode: str,
+        tls_mode: ActiveDirectoryTlsMode | str,
         comment: str | None = None,
         port: int | None = None,
         ca_certificate: str | None = None,
@@ -105,14 +112,13 @@ class Credentials(CredentialsV224):
                 argument="tls_mode",
             )
 
-        if tls_mode not in ("ldaps", "starttls"):
-            raise InvalidArgument(
-                function=cls.create_active_directory_credential.__name__,
-                argument="tls_mode",
-            )
+        if not isinstance(tls_mode, ActiveDirectoryTlsMode):
+            tls_mode = ActiveDirectoryTlsMode(tls_mode)
 
         if port is not None and (
-            not isinstance(port, int) or not 1 <= port <= 65535
+            isinstance(port, bool)
+            or not isinstance(port, int)
+            or not 1 <= port <= 65535
         ):
             raise InvalidArgument(
                 function=cls.create_active_directory_credential.__name__,
@@ -128,7 +134,7 @@ class Credentials(CredentialsV224):
         cmd.add_element("bind_dn", bind_dn)
         cmd.add_element("base_dn", base_dn)
         cmd.add_element("bind_password", bind_password)
-        cmd.add_element("tls_mode", tls_mode)
+        cmd.add_element("tls_mode", tls_mode.value)
         if port is not None:
             cmd.add_element("port", str(port))
         if ca_certificate is not None:
@@ -146,7 +152,7 @@ class Credentials(CredentialsV224):
         bind_dn: str | None = None,
         base_dn: str | None = None,
         bind_password: str | None = None,
-        tls_mode: str | None = None,
+        tls_mode: ActiveDirectoryTlsMode | str | None = None,
         port: int | str | None = None,
         ca_certificate: str | None = None,
     ) -> Request:
@@ -211,16 +217,19 @@ class Credentials(CredentialsV224):
                 argument="tls_mode",
             )
 
-        if tls_mode is not None and tls_mode not in ("ldaps", "starttls"):
-            raise InvalidArgument(
-                function=cls.modify_active_directory_credential.__name__,
-                argument="tls_mode",
-            )
+        if tls_mode is not None and not isinstance(
+            tls_mode, ActiveDirectoryTlsMode
+        ):
+            tls_mode = ActiveDirectoryTlsMode(tls_mode)
 
         if (
             port is not None
             and port != ""
-            and (not isinstance(port, int) or not 1 <= port <= 65535)
+            and (
+                isinstance(port, bool)
+                or not isinstance(port, int)
+                or not 1 <= port <= 65535
+            )
         ):
             raise InvalidArgument(
                 function=cls.modify_active_directory_credential.__name__,
@@ -242,7 +251,7 @@ class Credentials(CredentialsV224):
         if bind_password is not None:
             cmd.add_element("bind_password", str(bind_password))
         if tls_mode is not None:
-            cmd.add_element("tls_mode", str(tls_mode))
+            cmd.add_element("tls_mode", tls_mode.value)
         if port is not None:
             cmd.add_element("port", str(port))
         if ca_certificate is not None:
@@ -258,7 +267,7 @@ class Credentials(CredentialsV224):
         bind_dn: str | None = None,
         bind_password: str | None = None,
         base_dn: str | None = None,
-        tls_mode: str | None = None,
+        tls_mode: ActiveDirectoryTlsMode | str | None = None,
         port: int | None = None,
         ca_certificate: str | None = None,
     ) -> Request:
@@ -300,11 +309,13 @@ class Credentials(CredentialsV224):
         if not tls_mode:
             raise RequiredArgument(function=function, argument="tls_mode")
 
-        if tls_mode not in ("ldaps", "starttls"):
-            raise InvalidArgument(function=function, argument="tls_mode")
+        if not isinstance(tls_mode, ActiveDirectoryTlsMode):
+            tls_mode = ActiveDirectoryTlsMode(tls_mode)
 
         if port is not None and (
-            not isinstance(port, int) or not 1 <= port <= 65535
+            isinstance(port, bool)
+            or not isinstance(port, int)
+            or not 1 <= port <= 65535
         ):
             raise InvalidArgument(function=function, argument="port")
 
@@ -315,7 +326,7 @@ class Credentials(CredentialsV224):
         cmd.add_element("bind_dn", bind_dn)
         cmd.add_element("bind_password", bind_password)
         cmd.add_element("base_dn", base_dn)
-        cmd.add_element("tls_mode", tls_mode)
+        cmd.add_element("tls_mode", tls_mode.value)
         if ca_certificate is not None:
             cmd.add_element("ca_certificate", ca_certificate)
         return cmd
