@@ -4,6 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.protocols.gmp.requests.next import ActiveDirectoryTlsMode
 
 
 class GmpModifyActiveDirectoryCredentialTestMixin:
@@ -71,6 +72,27 @@ class GmpModifyActiveDirectoryCredentialTestMixin:
             b"</modify_credential>"
         )
 
+    def test_modify_ad_credential_with_tls_mode_enum(self):
+        self.gmp.modify_active_directory_credential(
+            "credential-id", tls_mode=ActiveDirectoryTlsMode.LDAPS
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_credential credential_id="credential-id">'
+            b"<tls_mode>ldaps</tls_mode>"
+            b"</modify_credential>"
+        )
+
+        self.gmp.modify_active_directory_credential(
+            "credential-id", tls_mode=ActiveDirectoryTlsMode.STARTTLS
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_credential credential_id="credential-id">'
+            b"<tls_mode>starttls</tls_mode>"
+            b"</modify_credential>"
+        )
+
     def test_modify_ad_credential_missing_credential_id(self):
         with self.assertRaises(RequiredArgument):
             self.gmp.modify_active_directory_credential(None)
@@ -124,6 +146,16 @@ class GmpModifyActiveDirectoryCredentialTestMixin:
             )
 
     def test_modify_ad_credential_invalid_port(self):
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_active_directory_credential(
+                credential_id="credential-id", port=True
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.modify_active_directory_credential(
+                credential_id="credential-id", port=False
+            )
+
         with self.assertRaises(InvalidArgument):
             self.gmp.modify_active_directory_credential(
                 credential_id="credential-id", port=0

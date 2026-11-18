@@ -4,6 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
+from gvm.protocols.gmp.requests.next import ActiveDirectoryTlsMode
 
 
 class GmpCreateActiveDirectoryCredentialTestMixin:
@@ -76,6 +77,45 @@ class GmpCreateActiveDirectoryCredentialTestMixin:
             b"<tls_mode>ldaps</tls_mode>"
             b"<port>636</port>"
             b"<ca_certificate>PEM certificate</ca_certificate>"
+            b"</create_credential>"
+        )
+
+    def test_create_ad_credential_with_tls_mode_enum(self):
+        self.gmp.create_active_directory_credential(
+            name="AD",
+            host="dc.example.org",
+            bind_dn="CN=Scanner,DC=example,DC=org",
+            base_dn="DC=example,DC=org",
+            bind_password="secret",
+            tls_mode=ActiveDirectoryTlsMode.LDAPS,
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<create_credential><name>AD</name><type>ad</type>"
+            b"<host>dc.example.org</host>"
+            b"<bind_dn>CN=Scanner,DC=example,DC=org</bind_dn>"
+            b"<base_dn>DC=example,DC=org</base_dn>"
+            b"<bind_password>secret</bind_password>"
+            b"<tls_mode>ldaps</tls_mode>"
+            b"</create_credential>"
+        )
+
+        self.gmp.create_active_directory_credential(
+            name="AD",
+            host="dc.example.org",
+            bind_dn="CN=Scanner,DC=example,DC=org",
+            base_dn="DC=example,DC=org",
+            bind_password="secret",
+            tls_mode=ActiveDirectoryTlsMode.STARTTLS,
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<create_credential><name>AD</name><type>ad</type>"
+            b"<host>dc.example.org</host>"
+            b"<bind_dn>CN=Scanner,DC=example,DC=org</bind_dn>"
+            b"<base_dn>DC=example,DC=org</base_dn>"
+            b"<bind_password>secret</bind_password>"
+            b"<tls_mode>starttls</tls_mode>"
             b"</create_credential>"
         )
 
@@ -176,6 +216,28 @@ class GmpCreateActiveDirectoryCredentialTestMixin:
                 bind_password="secret",
                 tls_mode="ldaps",
                 port=0,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_active_directory_credential(
+                name="AD",
+                host="dc.example.org",
+                bind_dn="CN=Scanner,CN=Users,DC=example,DC=org",
+                base_dn="DC=example,DC=org",
+                bind_password="secret",
+                tls_mode="ldaps",
+                port=True,
+            )
+
+        with self.assertRaises(InvalidArgument):
+            self.gmp.create_active_directory_credential(
+                name="AD",
+                host="dc.example.org",
+                bind_dn="CN=Scanner,CN=Users,DC=example,DC=org",
+                base_dn="DC=example,DC=org",
+                bind_password="secret",
+                tls_mode="ldaps",
+                port=False,
             )
 
         with self.assertRaises(InvalidArgument):
