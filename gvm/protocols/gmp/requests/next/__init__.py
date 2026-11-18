@@ -2,6 +2,11 @@
 #
 #  SPDX-License-Identifier: GPL-3.0-or-later
 
+from gvm.protocols.gmp.requests.next._active_directory import (
+    ActiveDirectory,
+    ActiveDirectoryObjectType,
+    ActiveDirectorySearchScope,
+)
 from gvm.protocols.gmp.requests.next._agent_groups import AgentGroups
 from gvm.protocols.gmp.requests.next._agent_installer_instructions import (
     AgentInstallerInstructionLanguageType,
@@ -11,6 +16,7 @@ from gvm.protocols.gmp.requests.next._agents import Agents
 from gvm.protocols.gmp.requests.next._audit_report import AuditReport
 from gvm.protocols.gmp.requests.next._credential_stores import CredentialStores
 from gvm.protocols.gmp.requests.next._credentials import (
+    ActiveDirectoryTlsMode,
     Credentials,
     CredentialStoreCredentialType,
     CredentialType,
@@ -130,6 +136,10 @@ from ..v227 import (
 )
 
 __all__ = (
+    "ActiveDirectory",
+    "ActiveDirectoryObjectType",
+    "ActiveDirectorySearchScope",
+    "ActiveDirectoryTlsMode",
     "AgentGroups",
     "AgentInstallerInstructionLanguageType",
     "AgentInstallerInstructions",
