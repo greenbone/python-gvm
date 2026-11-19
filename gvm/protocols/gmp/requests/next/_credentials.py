@@ -113,7 +113,14 @@ class Credentials(CredentialsV224):
             )
 
         if not isinstance(tls_mode, ActiveDirectoryTlsMode):
-            tls_mode = ActiveDirectoryTlsMode(tls_mode)
+            try:
+                tls_mode = ActiveDirectoryTlsMode(tls_mode)
+            except InvalidArgument as error:
+                raise InvalidArgument(
+                    str(error),
+                    function=cls.create_active_directory_credential.__name__,
+                    argument="tls_mode",
+                ) from None
 
         if port is not None and (
             isinstance(port, bool)
@@ -220,7 +227,14 @@ class Credentials(CredentialsV224):
         if tls_mode is not None and not isinstance(
             tls_mode, ActiveDirectoryTlsMode
         ):
-            tls_mode = ActiveDirectoryTlsMode(tls_mode)
+            try:
+                tls_mode = ActiveDirectoryTlsMode(tls_mode)
+            except InvalidArgument as error:
+                raise InvalidArgument(
+                    str(error),
+                    function=cls.modify_active_directory_credential.__name__,
+                    argument="tls_mode",
+                ) from None
 
         if (
             port is not None
@@ -310,7 +324,14 @@ class Credentials(CredentialsV224):
             raise RequiredArgument(function=function, argument="tls_mode")
 
         if not isinstance(tls_mode, ActiveDirectoryTlsMode):
-            tls_mode = ActiveDirectoryTlsMode(tls_mode)
+            try:
+                tls_mode = ActiveDirectoryTlsMode(tls_mode)
+            except InvalidArgument as error:
+                raise InvalidArgument(
+                    str(error),
+                    function=function,
+                    argument="tls_mode",
+                ) from None
 
         if port is not None and (
             isinstance(port, bool)

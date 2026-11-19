@@ -239,11 +239,15 @@ class GmpGetActiveDirectoryObjectsTestMixin:
         self.connection.send.has_not_been_called()
 
     def test_get_active_directory_objects_with_invalid_scope(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgument) as context:
             self.gmp.get_active_directory_objects(
                 credential_id="credential-id", scope="invalid"
             )
 
+        self.assertEqual(context.exception.argument, "scope")
+        self.assertEqual(
+            context.exception.function, "get_active_directory_objects"
+        )
         self.connection.send.has_not_been_called()
 
     def test_get_active_directory_objects_with_invalid_object_types(self):
@@ -262,12 +266,16 @@ class GmpGetActiveDirectoryObjectsTestMixin:
                 credential_id="credential-id", object_types=[""]
             )
 
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgument) as context:
             self.gmp.get_active_directory_objects(
                 credential_id="credential-id",
                 object_types=["computer", "invalid"],
             )
 
+        self.assertEqual(context.exception.argument, "object_types")
+        self.assertEqual(
+            context.exception.function, "get_active_directory_objects"
+        )
         self.connection.send.has_not_been_called()
 
     def test_get_active_directory_objects_with_invalid_max_results(self):

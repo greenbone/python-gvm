@@ -98,7 +98,14 @@ class ActiveDirectory:
         if scope is not None and not isinstance(
             scope, ActiveDirectorySearchScope
         ):
-            scope = ActiveDirectorySearchScope(scope)
+            try:
+                scope = ActiveDirectorySearchScope(scope)
+            except InvalidArgument as error:
+                raise InvalidArgument(
+                    str(error),
+                    function=cls.get_active_directory_objects.__name__,
+                    argument="scope",
+                ) from None
         if object_types is not None and (
             isinstance(object_types, str)
             or not object_types
@@ -108,15 +115,22 @@ class ActiveDirectory:
                 function=cls.get_active_directory_objects.__name__,
                 argument="object_types",
             )
-        normalized_object_types = (
-            list(
-                dict.fromkeys(
-                    ActiveDirectoryObjectType(t) for t in object_types
+        try:
+            normalized_object_types = (
+                list(
+                    dict.fromkeys(
+                        ActiveDirectoryObjectType(t) for t in object_types
+                    )
                 )
+                if object_types is not None
+                else None
             )
-            if object_types is not None
-            else None
-        )
+        except InvalidArgument as error:
+            raise InvalidArgument(
+                str(error),
+                function=cls.get_active_directory_objects.__name__,
+                argument="object_types",
+            ) from None
         if max_results is not None and (
             isinstance(max_results, bool)
             or not isinstance(max_results, int)

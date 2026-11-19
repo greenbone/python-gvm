@@ -140,10 +140,15 @@ class GmpModifyActiveDirectoryCredentialTestMixin:
             )
 
     def test_modify_ad_credential_invalid_tls_mode(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgument) as context:
             self.gmp.modify_active_directory_credential(
                 credential_id="credential-id", tls_mode="ldap"
             )
+
+        self.assertEqual(context.exception.argument, "tls_mode")
+        self.assertEqual(
+            context.exception.function, "modify_active_directory_credential"
+        )
 
     def test_modify_ad_credential_invalid_port(self):
         with self.assertRaises(InvalidArgument):

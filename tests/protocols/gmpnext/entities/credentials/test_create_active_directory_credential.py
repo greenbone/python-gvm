@@ -196,7 +196,7 @@ class GmpCreateActiveDirectoryCredentialTestMixin:
             )
 
     def test_create_ad_credential_invalid_tls_mode(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgument) as context:
             self.gmp.create_active_directory_credential(
                 name="AD",
                 host="dc.example.org",
@@ -205,6 +205,11 @@ class GmpCreateActiveDirectoryCredentialTestMixin:
                 bind_password="secret",
                 tls_mode="ldap",
             )
+
+        self.assertEqual(context.exception.argument, "tls_mode")
+        self.assertEqual(
+            context.exception.function, "create_active_directory_credential"
+        )
 
     def test_create_ad_credential_invalid_port(self):
         with self.assertRaises(InvalidArgument):

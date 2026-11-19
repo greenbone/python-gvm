@@ -127,7 +127,7 @@ class GmpVerifyActiveDirectoryCredentialTestMixin:
                     )
 
     def test_verify_inline_ad_credential_invalid_tls_mode(self):
-        with self.assertRaises(InvalidArgument):
+        with self.assertRaises(InvalidArgument) as context:
             self.gmp.verify_active_directory_credential(
                 host="dc.example.org",
                 bind_dn="CN=Scanner,DC=example,DC=org",
@@ -135,6 +135,11 @@ class GmpVerifyActiveDirectoryCredentialTestMixin:
                 base_dn="DC=example,DC=org",
                 tls_mode="ldap",
             )
+
+        self.assertEqual(context.exception.argument, "tls_mode")
+        self.assertEqual(
+            context.exception.function, "verify_active_directory_credential"
+        )
 
     def test_verify_inline_ad_credential_invalid_port(self):
         with self.assertRaises(InvalidArgument):
