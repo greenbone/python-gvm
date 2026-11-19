@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmp.requests.next import AliveTest
+from gvm.protocols.gmp.requests.next import AliveTest, TargetSource
 
 
 class GmpCreateTargetTestMixin:
@@ -251,5 +251,83 @@ class GmpCreateTargetTestMixin:
             b"<name>foo</name>"
             b"<hosts>foo</hosts>"
             b"<alive_tests>Host Discovery IPv6</alive_tests>"
+            b"</create_target>"
+        )
+
+    def test_create_target_with_manual_source_as_string(self):
+        self.gmp.create_target("foo", hosts=["foo"], source="manual")
+
+        self.connection.send.has_been_called_with(
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<source>manual</source>"
+            b"</create_target>"
+        )
+
+    def test_create_target_with_active_directory_source_as_string(self):
+        self.gmp.create_target("foo", hosts=["foo"], source="active_directory")
+
+        self.connection.send.has_been_called_with(
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<source>active_directory</source>"
+            b"</create_target>"
+        )
+
+    def test_create_target_with_manual_source(self):
+        self.gmp.create_target("foo", hosts=["foo"], source=TargetSource.MANUAL)
+
+        self.connection.send.has_been_called_with(
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<source>manual</source>"
+            b"</create_target>"
+        )
+
+    def test_create_target_with_active_directory_source(self):
+        self.gmp.create_target(
+            "foo", hosts=["foo"], source=TargetSource.ACTIVE_DIRECTORY
+        )
+
+        self.connection.send.has_been_called_with(
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<source>active_directory</source>"
+            b"</create_target>"
+        )
+
+    def test_create_target_with_source_none(self):
+        self.gmp.create_target("foo", hosts=["foo"], source=None)
+
+        self.connection.send.has_been_called_with(
+            b"<create_target><name>foo</name><hosts>foo</hosts></create_target>"
+        )
+
+    def test_create_target_with_invalid_source(self):
+        with self.assertRaises(InvalidArgument) as context:
+            self.gmp.create_target("foo", hosts=["foo"], source="invalid")
+
+        self.assertEqual(context.exception.argument, "source")
+        self.assertEqual(context.exception.function, "create_target")
+
+    def test_create_target_with_empty_source(self):
+        with self.assertRaises(InvalidArgument) as context:
+            self.gmp.create_target("foo", hosts=["foo"], source="")
+
+        self.assertEqual(context.exception.argument, "source")
+        self.assertEqual(context.exception.function, "create_target")
+
+    def test_create_target_with_mixed_case_source(self):
+        self.gmp.create_target("foo", hosts=["foo"], source="Active Directory")
+
+        self.connection.send.has_been_called_with(
+            b"<create_target>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<source>active_directory</source>"
             b"</create_target>"
         )

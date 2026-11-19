@@ -39,6 +39,7 @@ from .requests.next import (
     ReportVulnerabilities,
     ScanReports,
     Targets,
+    TargetSource,
     Tasks,
     Timezones,
     WebApplicationTargets,
@@ -1720,6 +1721,7 @@ class GMPNext(GMPv227[T]):
         *,
         asset_hosts_filter: str | None = None,
         hosts: list[str] | None = None,
+        source: TargetSource | str | None = None,
         comment: str | None = None,
         exclude_hosts: list[str] | None = None,
         ssh_credential_id: EntityID | None = None,
@@ -1740,6 +1742,7 @@ class GMPNext(GMPv227[T]):
             name: Name of the target
             asset_hosts_filter: Filter to select target host from assets hosts
             hosts: List of hosts addresses to scan
+            source: Target source. Omit to default to manual.
             exclude_hosts: List of hosts addresses to exclude from scan
             comment: Comment for the target
             ssh_credential_id: UUID of a ssh credential to use on target
@@ -1761,6 +1764,7 @@ class GMPNext(GMPv227[T]):
                 name,
                 asset_hosts_filter=asset_hosts_filter,
                 hosts=hosts,
+                source=source,
                 comment=comment,
                 exclude_hosts=exclude_hosts,
                 ssh_credential_id=ssh_credential_id,
@@ -1784,6 +1788,7 @@ class GMPNext(GMPv227[T]):
         name: str | None = None,
         comment: str | None = None,
         hosts: list[str] | None = None,
+        source: TargetSource | str | None = None,
         exclude_hosts: list[str] | None = None,
         ssh_credential_id: EntityID | None = None,
         ssh_credential_port: str | int | None = None,
@@ -1803,6 +1808,7 @@ class GMPNext(GMPv227[T]):
             comment: Comment on target.
             name: Name of target.
             hosts: List of target hosts.
+            source: Target source. Omit to keep the current source.
             exclude_hosts: A list of hosts to exclude.
             ssh_credential_id: UUID of SSH credential to use on target.
             ssh_credential_port: The port to use for ssh credential
@@ -1823,6 +1829,7 @@ class GMPNext(GMPv227[T]):
                 name=name,
                 comment=comment,
                 hosts=hosts,
+                source=source,
                 exclude_hosts=exclude_hosts,
                 ssh_credential_id=ssh_credential_id,
                 ssh_credential_port=ssh_credential_port,
