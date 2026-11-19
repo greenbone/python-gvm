@@ -4,7 +4,7 @@
 #
 
 from gvm.errors import InvalidArgument, RequiredArgument
-from gvm.protocols.gmp.requests.next import AliveTest
+from gvm.protocols.gmp.requests.next import AliveTest, TargetSource
 
 
 class GmpModifyTargetTestMixin:
@@ -229,5 +229,92 @@ class GmpModifyTargetTestMixin:
         self.connection.send.has_been_called_with(
             b'<modify_target target_id="t1">'
             b"<alive_tests>Host Discovery IPv6</alive_tests>"
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_manual_source_as_string(self):
+        self.gmp.modify_target(target_id="t1", source="manual")
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b"<source>manual</source>"
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_active_directory_source_as_string(self):
+        self.gmp.modify_target(target_id="t1", source="active_directory")
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b"<source>active_directory</source>"
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_manual_source(self):
+        self.gmp.modify_target(target_id="t1", source=TargetSource.MANUAL)
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b"<source>manual</source>"
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_active_directory_source(self):
+        self.gmp.modify_target(
+            target_id="t1", source=TargetSource.ACTIVE_DIRECTORY
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b"<source>active_directory</source>"
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_source_none(self):
+        self.gmp.modify_target(target_id="t1", source=None)
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1"/>'
+        )
+
+    def test_modify_target_with_invalid_source(self):
+        with self.assertRaises(InvalidArgument) as context:
+            self.gmp.modify_target(target_id="t1", source="invalid")
+
+        self.assertEqual(context.exception.argument, "source")
+        self.assertEqual(context.exception.function, "modify_target")
+
+    def test_modify_target_with_empty_source(self):
+        with self.assertRaises(InvalidArgument) as context:
+            self.gmp.modify_target(target_id="t1", source="")
+
+        self.assertEqual(context.exception.argument, "source")
+        self.assertEqual(context.exception.function, "modify_target")
+
+    def test_modify_target_with_mixed_case_source(self):
+        self.gmp.modify_target(target_id="t1", source="Active Directory")
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b"<source>active_directory</source>"
+            b"</modify_target>"
+        )
+
+    def test_modify_target_with_source_and_hosts(self):
+        self.gmp.modify_target(
+            target_id="t1",
+            name="foo",
+            comment="bar",
+            hosts=["foo"],
+            source=TargetSource.ACTIVE_DIRECTORY,
+        )
+
+        self.connection.send.has_been_called_with(
+            b'<modify_target target_id="t1">'
+            b"<comment>bar</comment>"
+            b"<name>foo</name>"
+            b"<hosts>foo</hosts>"
+            b"<source>active_directory</source>"
+            b"<exclude_hosts></exclude_hosts>"
             b"</modify_target>"
         )

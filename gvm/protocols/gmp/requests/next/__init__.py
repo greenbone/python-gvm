@@ -59,7 +59,11 @@ from gvm.protocols.gmp.requests.next._report_vulnerabilities import (
     ReportVulnerabilities,
 )
 from gvm.protocols.gmp.requests.next._scan_report import ScanReports
-from gvm.protocols.gmp.requests.next._targets import AliveTest, Targets
+from gvm.protocols.gmp.requests.next._targets import (
+    AliveTest,
+    Targets,
+    TargetSource,
+)
 from gvm.protocols.gmp.requests.next._tasks import Tasks
 from gvm.protocols.gmp.requests.next._timezones import (
     Timezones,
@@ -220,6 +224,7 @@ __all__ = (
     "SystemReports",
     "TLSCertificates",
     "Tags",
+    "TargetSource",
     "Targets",
     "Tasks",
     "TicketStatus",

@@ -176,3 +176,10 @@
     :undoc-members:
     :no-index:
 ```
+
+```{eval-rst}
+.. autoclass:: gvm.protocols.gmp.requests.next.TargetSource
+    :members:
+    :undoc-members:
+    :no-index:
+```

@@ -58,6 +58,13 @@ class AliveTest(Enum):
             ) from None
 
 
+class TargetSource(Enum):
+    """Enum for choosing a target source"""
+
+    MANUAL = "manual"
+    ACTIVE_DIRECTORY = "active_directory"
+
+
 class Targets:
     @classmethod
     def create_target(
@@ -66,6 +73,7 @@ class Targets:
         *,
         asset_hosts_filter: str | None = None,
         hosts: list[str] | None = None,
+        source: TargetSource | str | None = None,
         comment: str | None = None,
         exclude_hosts: list[str] | None = None,
         ssh_credential_id: EntityID | None = None,
@@ -86,6 +94,7 @@ class Targets:
             name: Name of the target
             asset_hosts_filter: Filter to select target host from assets hosts
             hosts: List of hosts addresses to scan
+            source: Target source. Omit to default to manual.
             exclude_hosts: List of hosts addresses to exclude from scan
             comment: Comment for the target
             ssh_credential_id: UUID of a ssh credential to use on target
@@ -121,6 +130,21 @@ class Targets:
                 function=cls.create_target.__name__,
                 argument="hosts or asset_hosts_filter",
             )
+
+        if source is not None:
+            if not source:
+                raise InvalidArgument(
+                    function=cls.create_target.__name__, argument="source"
+                )
+            try:
+                source = TargetSource(source)
+            except InvalidArgument as error:
+                raise InvalidArgument(
+                    str(error),
+                    function=cls.create_target.__name__,
+                    argument="source",
+                ) from None
+            cmd.add_element("source", source.value)
 
         if comment:
             cmd.add_element("comment", comment)
@@ -184,6 +208,7 @@ class Targets:
         name: str | None = None,
         comment: str | None = None,
         hosts: list[str] | None = None,
+        source: TargetSource | str | None = None,
         exclude_hosts: list[str] | None = None,
         ssh_credential_id: EntityID | None = None,
         ssh_credential_port: str | int | None = None,
@@ -203,6 +228,7 @@ class Targets:
             comment: Comment on target.
             name: Name of target.
             hosts: List of target hosts.
+            source: Target source. Omit to keep the current source.
             exclude_hosts: A list of hosts to exclude.
             ssh_credential_id: UUID of SSH credential to use on target.
             ssh_credential_port: The port to use for ssh credential
@@ -235,6 +261,21 @@ class Targets:
             cmd.add_element("hosts", to_comma_list(hosts))
             if exclude_hosts is None:
                 exclude_hosts = [""]
+
+        if source is not None:
+            if not source:
+                raise InvalidArgument(
+                    function=cls.modify_target.__name__, argument="source"
+                )
+            try:
+                source = TargetSource(source)
+            except InvalidArgument as error:
+                raise InvalidArgument(
+                    str(error),
+                    function=cls.modify_target.__name__,
+                    argument="source",
+                ) from None
+            cmd.add_element("source", source.value)
 
         if exclude_hosts:
             cmd.add_element("exclude_hosts", to_comma_list(exclude_hosts))
