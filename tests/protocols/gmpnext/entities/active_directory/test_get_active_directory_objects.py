@@ -291,11 +291,6 @@ class GmpGetActiveDirectoryObjectsTestMixin:
 
         with self.assertRaises(InvalidArgument):
             self.gmp.get_active_directory_objects(
-                credential_id="credential-id", max_results=1001
-            )
-
-        with self.assertRaises(InvalidArgument):
-            self.gmp.get_active_directory_objects(
                 credential_id="credential-id", max_results="10"
             )
 

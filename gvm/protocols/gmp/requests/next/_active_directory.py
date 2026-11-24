@@ -66,7 +66,8 @@ class ActiveDirectory:
                 or "group". Defaults to "ou", "computer", and "group".
                 Duplicates are ignored, preserving first-occurrence order.
             max_results: Maximum number of objects to fetch after LDAP
-                filtering, from 1 to 1000. Omit to use the server default.
+                filtering. Must be a positive integer within the server's
+                configured limit. Omit to use that limit.
             include_disabled_computers: Include disabled computers. Defaults
                 to True.
             targets: Include matching targets for computers. Defaults to False.
@@ -134,7 +135,7 @@ class ActiveDirectory:
         if max_results is not None and (
             isinstance(max_results, bool)
             or not isinstance(max_results, int)
-            or not 1 <= max_results <= 1000
+            or max_results < 1
         ):
             raise InvalidArgument(
                 function=cls.get_active_directory_objects.__name__,
