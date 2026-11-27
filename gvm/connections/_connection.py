@@ -82,11 +82,22 @@ class AbstractGvmConnection(ABC):
 
         Args:
             data: Data to be send to the server as bytes.
+
+        Raises:
+            GvmError: If the socket is not connected or the remote server
+                has closed the connection. In the latter case the connection
+                needs to be re-established via :py:meth:`connect`.
         """
         if self._socket is None:
             raise GvmError("Socket is not connected")
 
-        self._socket.sendall(data)
+        try:
+            self._socket.sendall(data)
+        except ConnectionError as e:
+            # Connection was closed by server, e.g. after an error response
+            raise GvmError(
+                f"Remote closed the connection. Error was {e}"
+            ) from e
 
     def read(self) -> bytes:
         """Read data from the remote server
@@ -98,7 +109,13 @@ class AbstractGvmConnection(ABC):
             time() + self._timeout if self._timeout is not None else None
         )
 
-        data = self._read()
+        try:
+            data = self._read()
+        except ConnectionError as e:
+            # Connection was reset by server
+            raise GvmError(
+                f"Remote closed the connection. Error was {e}"
+            ) from e
 
         if not data:
             # Connection was closed by server
